@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     ChuShogiBoard.cpp \
     ChuShogiPiece.cpp \
     Piece.cpp \
-    settingsdialog.cpp
+    settingsdialog.cpp \
+    vboard.cpp
 
 HEADERS  += mainwindow.h \
     Board.h \
@@ -30,7 +31,8 @@ HEADERS  += mainwindow.h \
     ChuShogiPiece.h \
     Common.h \
     Piece.h \
-    settingsdialog.h
+    settingsdialog.h \
+    vboard.h
 
 FORMS    += mainwindow.ui \
     settingsdialog.ui

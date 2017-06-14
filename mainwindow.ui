@@ -14,7 +14,7 @@
    <string>QBoard</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="vboard" native="true">
+   <widget class="VBoard" name="vboard" native="true">
     <property name="geometry">
      <rect>
       <x>10</x>
