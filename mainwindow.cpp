@@ -12,3 +12,23 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_actionSettings_triggered()
+{
+    SettingsDialog *settingsDialog = new SettingsDialog();
+    settingsDialog->exec();
+    if (settingsDialog->result() == QDialog::Accepted)
+    {
+    }
+
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox::information(this, "About", "QBoard 1.0");
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+    QApplication::quit();
+}

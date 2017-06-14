@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     ChessPiece.cpp \
     ChuShogiBoard.cpp \
     ChuShogiPiece.cpp \
-    Piece.cpp
+    Piece.cpp \
+    settingsdialog.cpp
 
 HEADERS  += mainwindow.h \
     Board.h \
@@ -28,9 +29,11 @@ HEADERS  += mainwindow.h \
     ChuShogiBoard.h \
     ChuShogiPiece.h \
     Common.h \
-    Piece.h
+    Piece.h \
+    settingsdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    settingsdialog.ui
 
 RESOURCES += \
     resources.qrc
