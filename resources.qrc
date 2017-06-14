@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/toolbar_icons">
+        <file>toolbar/About.png</file>
+        <file>toolbar/Exit.png</file>
+        <file>toolbar/New.png</file>
+        <file>toolbar/Open.png</file>
+        <file>toolbar/Save.png</file>
+        <file>toolbar/Settings.png</file>
+    </qresource>
+</RCC>

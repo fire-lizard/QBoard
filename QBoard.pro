@@ -31,3 +31,6 @@ HEADERS  += mainwindow.h \
     Piece.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    resources.qrc
