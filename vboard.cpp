@@ -7,65 +7,65 @@ VBoard::VBoard(QWidget *parent) : QWidget(parent)
 
 void VBoard::paintEvent(QPaintEvent *)
 {
-    QPainter painter(this);
-        painter.setPen(Qt::black);
-        painter.setBrush(Qt::NoBrush);
+	QString resourcePrefix = "C:/Users/FireLizard/Desktop/QBoard/QBoard/images/";
+	QPainter painter(this);
+	painter.setPen(Qt::black);
+	painter.setBrush(Qt::NoBrush);
 
-        QSize s = this->size();;
-        int w = s.width() / _board.GetWidth();
-        int h = s.height() / _board.GetHeight();
-        for (int i = 0; i < _board.GetWidth(); i++)
-        {
-            for (int j = 0; j < _board.GetHeight(); j++)
-            {
-                QRect rect(i * w, j * h, w, h);
-                if (PossibleMove(i, j))
-                {
-                    if (_board.GetData(i, j) != nullptr)
-                    {
-                        painter.setBrush(Qt::red);
-                        painter.drawRect(rect);
-                        painter.setBrush(Qt::NoBrush);
-                    }
-                    else if (_board.GetData(i, j) == nullptr)
-                    {
-                        painter.setBrush(Qt::cyan);
-                        painter.drawRect(rect);
-                        painter.setBrush(Qt::NoBrush);
-                    }
-                }
-                else if (any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](pair<int,int> p){return p.first == i && p.second == j;}))
-                {
-                    if (_board.GetData(i, j) != nullptr && (_board.GetData(i, j)->GetType() == King || _board.GetData(i, j)->GetType() == Queen))
-                    {
-                        painter.setBrush(Qt::yellow);
-                        if (_board.GetData(i, j)->GetType() == King)
-                            _check = true;
-                    }
-                    painter.drawRect(rect);
-                    painter.setBrush(Qt::NoBrush);
-                }
-                else
-                {
-                    painter.drawRect(rect);
-                }
-            }
-        }
-        /*for (int i = 0; i < _board.GetWidth(); i++)
-        {
-            for (int j = 0; j < _board.GetHeight(); j++)
-            {
-                Piece *p = _board.GetData(i, j);
-                if (p != nullptr)
-                {
-                    PieceType t = p->GetType();
-                    PieceColour c = p->GetColour();
-                    wxImage image("images/" + Piece::GetImageFileName(t, c));
-                    wxBitmap bitmap(image);
-                    dc.DrawBitmap(bitmap, i * w + 10, j * h + 5);
-                }
-            }
-        }*/
+	QSize s = this->size();;
+	int w = s.width() / _board.GetWidth();
+	int h = s.height() / _board.GetHeight();
+	for (int i = 0; i < _board.GetWidth(); i++)
+	{
+		for (int j = 0; j < _board.GetHeight(); j++)
+		{
+			QRect rect(i * w, j * h, w, h);
+			if (PossibleMove(i, j))
+			{
+				if (_board.GetData(i, j) != nullptr)
+				{
+					painter.setBrush(Qt::red);
+					painter.drawRect(rect);
+					painter.setBrush(Qt::NoBrush);
+				}
+				else if (_board.GetData(i, j) == nullptr)
+				{
+					painter.setBrush(Qt::cyan);
+					painter.drawRect(rect);
+					painter.setBrush(Qt::NoBrush);
+				}
+			}
+			else if (any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](pair<int, int> p) {return p.first == i && p.second == j; }))
+			{
+				if (_board.GetData(i, j) != nullptr && (_board.GetData(i, j)->GetType() == King || _board.GetData(i, j)->GetType() == Queen))
+				{
+					painter.setBrush(Qt::yellow);
+					if (_board.GetData(i, j)->GetType() == King)
+						_check = true;
+				}
+				painter.drawRect(rect);
+				painter.setBrush(Qt::NoBrush);
+			}
+			else
+			{
+				painter.drawRect(rect);
+			}
+		}
+	}
+	for (int i = 0; i < _board.GetWidth(); i++)
+	{
+		for (int j = 0; j < _board.GetHeight(); j++)
+		{
+			Piece *p = _board.GetData(i, j);
+			if (p != nullptr)
+			{
+				PieceType t = p->GetType();
+				PieceColour c = p->GetColour();
+				QPixmap pixmap(resourcePrefix + QString::fromStdString(Piece::GetImageFileName(t, c)));
+				painter.drawPixmap(i * w, j * h, w, h, pixmap);
+			}
+		}
+	}
 }
 
 void VBoard::mousePressEvent(QMouseEvent *event)

@@ -12,6 +12,10 @@ ChuShogiBoard::ChuShogiBoard()
             {
                 _data[i][j] = new ChuShogiPiece(_initialSetup[j][i], j < 5 ? Black : White);
             }
+			else
+			{
+				_data[i][j] = nullptr;
+			}
         }
     }
 }

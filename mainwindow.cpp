@@ -30,5 +30,5 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionExit_triggered()
 {
-    exit(0);
+	QApplication::quit();
 }

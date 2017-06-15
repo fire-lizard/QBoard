@@ -120,7 +120,7 @@ bool Board::CheckDirectionAux(int x, int y, Direction direction) const
 
 bool Board::Move(int oldX, int oldY, int newX, int newY)
 {
-    size_t cnt = _moves.size();
+    std::size_t cnt = _moves.size();
     for (int index = 0; index < cnt; index++)
     {
         if (_moves[index].first == newX && _moves[index].second == newY)

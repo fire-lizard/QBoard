@@ -12,6 +12,10 @@ ChessBoard::ChessBoard()
             {
                 _data[i][j] = new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White);
             }
+			else
+			{
+				_data[i][j] = nullptr;
+			}
         }
     }
 }
