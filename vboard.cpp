@@ -7,7 +7,7 @@ VBoard::VBoard(QWidget *parent) : QWidget(parent)
 
 void VBoard::paintEvent(QPaintEvent *)
 {
-	QString resourcePrefix = "C:/Users/FireLizard/Desktop/QBoard/QBoard/images/";
+    QString resourcePrefix = ":/pieces_eur/images/";
 	QPainter painter(this);
 	painter.setPen(Qt::black);
 	painter.setBrush(Qt::NoBrush);
