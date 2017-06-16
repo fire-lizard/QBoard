@@ -1,6 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 #include <vector>
+#include <algorithm>
 #include <utility>
 #include "Piece.h"
 
@@ -11,7 +12,7 @@ class Board
     public:
         virtual ~Board();
         virtual void GetMoves(Piece *piece, int x, int y) = 0;
-        vector<pair<int,int>> GetAllMoves(PieceColour colour);
+		vector<pair<int, int>> GetAllMoves(PieceColour pieceColour);
         virtual bool Move(int oldX, int oldY, int newX, int newY);
         vector<pair<int,int>> Moves() const;
         Piece* GetData(int x, int y);

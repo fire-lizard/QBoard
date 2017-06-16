@@ -7,7 +7,7 @@ VBoard::VBoard(QWidget *parent) : QWidget(parent)
 
 void VBoard::paintEvent(QPaintEvent *)
 {
-    QString resourcePrefix = ":/pieces_eur/images/";
+	QString resourcePrefix = ":/pieces_eur/images/";
 	QPainter painter(this);
 	painter.setPen(Qt::black);
 	painter.setBrush(Qt::NoBrush);
@@ -62,7 +62,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				PieceType t = p->GetType();
 				PieceColour c = p->GetColour();
 				QPixmap pixmap(resourcePrefix + QString::fromStdString(Piece::GetImageFileName(t, c)));
-				painter.drawPixmap(i * w, j * h, w, h, pixmap);
+				painter.drawPixmap(i * w + w / 4, j * h + h / 4, 33, 33, pixmap);
 			}
 		}
 	}
@@ -80,18 +80,17 @@ void VBoard::mousePressEvent(QMouseEvent *event)
         if (_board.Move(_oldX, _oldY, x, y))
         {
             _currentPlayer = _currentPlayer == White ? Black : White;
-            _opponentMoves = _board.GetAllMoves(_currentPlayer == White ? Black : White);
             _currentPiece = nullptr;
             _oldX = -1;
             _oldY = -1;
             _moves.clear();
-            this->repaint();
             _check = false;
-        }
+			this->repaint();
+		}
     }
     else
     {
-        if (p != nullptr && (!_check || p->GetType() == King))
+        if (p != nullptr)
         {
             if (p->GetColour() == _currentPlayer)
             {
@@ -99,28 +98,10 @@ void VBoard::mousePressEvent(QMouseEvent *event)
                 _oldX = x;
                 _oldY = y;
                 _myMoves = _board.GetAllMoves(_currentPlayer);
-                _board.GetMoves(p, x, y);
+				_opponentMoves = _board.GetAllMoves(_currentPlayer == White ? Black : White);
+				_board.GetMoves(p, x, y);
                 _moves = _board.Moves();
-                if (_check)
-                {
-                    for (vector<pair<int,int>>::reverse_iterator iter = _moves.rbegin(); iter != _moves.rend(); ++iter)
-                    {
-                        if (any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](pair<int,int> pp)
-                                   {return pp.first == (*iter).first && pp.second == (*iter).second;}))
-                        {
-                            _moves.erase(iter == _moves.rbegin() ? (iter + 1).base() : iter.base());
-                        }
-                        if (_moves.size() == 0)
-                        {
-                            QMessageBox::information(this, "Game over...", "Checkmate!");
-                        }
-                    }
-                }
-                else if (_myMoves.size() == 0)
-                {
-                    QMessageBox::information(this, "Game over...", "Stalemate!");
-                }
-                this->repaint();
+				this->repaint();
             }
         }
     }
@@ -128,7 +109,7 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 
 bool VBoard::PossibleMove(int x, int y)
 {
-    for (unsigned index = 0; index < _moves.size(); index++)
+	for (int index = 0; index < _moves.size(); index++)
     {
         if (_moves[index].first == x && _moves[index].second == y)
         {

@@ -1,5 +1,4 @@
 #include "Board.h"
-#include <algorithm>
 
 Board::~Board()
 {
@@ -120,8 +119,7 @@ bool Board::CheckDirectionAux(int x, int y, Direction direction) const
 
 bool Board::Move(int oldX, int oldY, int newX, int newY)
 {
-    std::size_t cnt = _moves.size();
-    for (int index = 0; index < cnt; index++)
+    for (int index = 0; index < _moves.size(); index++)
     {
         if (_moves[index].first == newX && _moves[index].second == newY)
         {
@@ -137,19 +135,19 @@ bool Board::Move(int oldX, int oldY, int newX, int newY)
     return false;
 }
 
-vector<pair<int,int>> Board::GetAllMoves(PieceColour pieceColour)
+vector<pair<int, int>> Board::GetAllMoves(PieceColour pieceColour)
 {
-    vector<pair<int,int>> result;
-    for (int i = 0; i < _width; i++)
-    {
-        for (int j = 0; j < _height; j++)
-        {
-            if (_data[i][j] != nullptr && _data[i][j]->GetColour() == pieceColour)
-            {
-                GetMoves(_data[i][j], i, j);
-                for_each(_moves.begin(), _moves.end(), [&](pair<int,int> p){result.push_back(p);});
-            }
-        }
-    }
-    return result;
+	vector<pair<int, int>> result;
+	for (int i = 0; i < _width; i++)
+	{
+		for (int j = 0; j < _height; j++)
+		{
+			if (_data[i][j] != nullptr && _data[i][j]->GetColour() == pieceColour)
+			{
+				GetMoves(_data[i][j], i, j);
+				for_each(_moves.begin(), _moves.end(), [&](pair<int, int> p) {result.push_back(p); });
+			}
+		}
+	}
+	return result;
 }
