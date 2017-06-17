@@ -4,14 +4,14 @@
 
 class ChessPiece : public Piece
 {
-    public:
-        ChessPiece(PieceType pieceType, PieceColour pieceColour);
-        virtual ~ChessPiece();
-		void Promote() override;
+public:
+	ChessPiece(PieceType pieceType, PieceColour pieceColour);
+	virtual ~ChessPiece();
+	void Promote() override;
 
-    protected:
+protected:
 
-    private:
+private:
 };
 
 #endif // CHESSPIECE_H

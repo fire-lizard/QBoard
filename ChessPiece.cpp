@@ -2,15 +2,15 @@
 
 ChessPiece::ChessPiece(PieceType pieceType, PieceColour pieceColour) : Piece(pieceType, pieceColour)
 {
-    //ctor
+	//ctor
 }
 
 ChessPiece::~ChessPiece()
 {
-    //dtor
+	//dtor
 }
 
 void ChessPiece::Promote()
 {
-    //
+	//
 }

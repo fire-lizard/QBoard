@@ -5,14 +5,14 @@
 
 class ChuShogiPiece : public Piece
 {
-    public:
-        ChuShogiPiece(PieceType pieceType, PieceColour pieceColour);
-        virtual ~ChuShogiPiece();
-		void Promote() override;
+public:
+	ChuShogiPiece(PieceType pieceType, PieceColour pieceColour);
+	virtual ~ChuShogiPiece();
+	void Promote() override;
 
-    protected:
+protected:
 
-    private:
+private:
 };
 
 #endif // CHUSHOGIPIECE_H
