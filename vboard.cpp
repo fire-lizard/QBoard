@@ -3,6 +3,7 @@
 VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
 	_board = new ChessBoard();
+	this->setFixedSize(_board->GetWidth() * 66 + 1, _board->GetHeight() * 66 + 1);
 	_currentPiece = nullptr;
 }
 
