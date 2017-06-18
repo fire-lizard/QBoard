@@ -48,12 +48,20 @@ void VBoard::paintEvent(QPaintEvent *)
 				{
 					painter.setBrush(Qt::yellow);
 				}
+				else
+				{
+					if ((i + j) % 2 != 0)
+						painter.setBrush(Qt::gray);
+				}
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
 			else
 			{
+				if ((i + j) % 2 != 0)
+					painter.setBrush(Qt::gray);
 				painter.drawRect(rect);
+				painter.setBrush(Qt::NoBrush);
 			}
 		}
 	}
