@@ -4,6 +4,25 @@ ChuShogiBoard::ChuShogiBoard()
 {
 	_width = 12;
 	_height = 12;
+	ChuShogiBoard::Initialize();
+}
+
+ChuShogiBoard::~ChuShogiBoard()
+{
+	for (int i = 0; i < _width; i++)
+	{
+		for (int j = 0; j < _height; j++)
+		{
+			if (_data[i][j] != nullptr)
+			{
+				delete _data[i][j];
+			}
+		}
+	}
+}
+
+void ChuShogiBoard::Initialize()
+{
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)
@@ -20,19 +39,6 @@ ChuShogiBoard::ChuShogiBoard()
 	}
 }
 
-ChuShogiBoard::~ChuShogiBoard()
-{
-	for (int i = 0; i < _width; i++)
-	{
-		for (int j = 0; j < _height; j++)
-		{
-			if (_data[i][j] != nullptr)
-			{
-				delete _data[i][j];
-			}
-		}
-	}
-}
 
 void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 {

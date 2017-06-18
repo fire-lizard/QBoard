@@ -4,20 +4,7 @@ ChessBoard::ChessBoard()
 {
 	_width = 8;
 	_height = 8;
-	for (int i = 0; i < _width; i++)
-	{
-		for (int j = 0; j < _height; j++)
-		{
-			if (_initialSetup[j][i] != None)
-			{
-				_data[i][j] = new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White);
-			}
-			else
-			{
-				_data[i][j] = nullptr;
-			}
-		}
-	}
+	ChessBoard::Initialize();
 }
 
 ChessBoard::~ChessBoard()
@@ -29,6 +16,24 @@ ChessBoard::~ChessBoard()
 			if (_data[i][j] != nullptr)
 			{
 				delete _data[i][j];
+			}
+		}
+	}
+}
+
+void ChessBoard::Initialize()
+{
+	for (int i = 0; i < _width; i++)
+	{
+		for (int j = 0; j < _height; j++)
+		{
+			if (_initialSetup[j][i] != None)
+			{
+				_data[i][j] = new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White);
+			}
+			else
+			{
+				_data[i][j] = nullptr;
 			}
 		}
 	}
@@ -82,7 +87,7 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 			{
 				CheckMove(piece, x + 1, y + 1);
 			}
-			if (y + 1 < _height && x - 1 > 0 && _data[x - 1][y + 1] != nullptr)
+			if (y + 1 < _height && x - 1 >= 0 && _data[x - 1][y + 1] != nullptr)
 			{
 				CheckMove(piece, x - 1, y + 1);
 			}
@@ -97,7 +102,7 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 			{
 				CheckMove(piece, x + 1, y - 1);
 			}
-			if (y - 1 >= 0 && x - 1 > 0 && _data[x - 1][y - 1] != nullptr)
+			if (y - 1 >= 0 && x - 1 >= 0 && _data[x - 1][y - 1] != nullptr)
 			{
 				CheckMove(piece, x - 1, y - 1);
 			}

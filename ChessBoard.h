@@ -8,6 +8,7 @@ class ChessBoard : public Board
 public:
 	ChessBoard();
 	virtual ~ChessBoard();
+	void Initialize() override;
 	void GetMoves(Piece *piece, int x, int y) override;
 
 protected:

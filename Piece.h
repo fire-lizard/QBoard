@@ -16,7 +16,7 @@ public:
 	bool IsPromoted() const;
 
 protected:
-	Piece(PieceType pieceType, PieceColour pieceColour);
+	Piece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false);
 	PieceType _pieceType;
 	PieceColour _pieceColour;
 	bool _isPromoted;

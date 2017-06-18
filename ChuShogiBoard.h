@@ -10,6 +10,7 @@ class ChuShogiBoard : public Board
 public:
 	ChuShogiBoard();
 	virtual ~ChuShogiBoard();
+	void Initialize() override;
 	void GetMoves(Piece *piece, int x, int y) override;
 
 protected:

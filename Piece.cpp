@@ -1,10 +1,10 @@
 #include "Piece.h"
 
-Piece::Piece(PieceType pieceType, PieceColour pieceColour)
+Piece::Piece(PieceType pieceType, PieceColour pieceColour, bool isPromoted)
 {
 	_pieceType = pieceType;
 	_pieceColour = pieceColour;
-	_isPromoted = false;
+	_isPromoted = isPromoted;
 }
 
 Piece::~Piece()

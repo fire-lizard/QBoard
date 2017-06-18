@@ -112,6 +112,21 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 	}
 }
 
+Board* VBoard::GetBoard() const
+{
+	return _board;
+}
+
+PieceColour VBoard::GetCurrentPlayer() const
+{
+	return _currentPlayer;
+}
+
+void VBoard::SetCurrentPlayer(PieceColour currentPlayer)
+{
+	_currentPlayer = currentPlayer;
+}
+
 bool VBoard::PossibleMove(int x, int y)
 {
 	for (int index = 0; index < _moves.size(); index++)
@@ -136,7 +151,7 @@ void VBoard::RemoveMove(int x, int y)
 void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 {
 	int kx = 0, ky = 0;
-	ChessBoard *cb = new ChessBoard();
+	Board *cb = new ChessBoard();
 	for (int i = 0; i < _board->GetWidth(); i++)
 	{
 		for (int j = 0; j < _board->GetHeight(); j++)
@@ -157,14 +172,13 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 	}
 	cb->GetMoves(cb->GetData(oldX, oldY), oldX, oldY);
 	cb->Move(oldX, oldY, newX, newY);
-	vector<tuple<int, int, int, int>> opponentMoves = cb->GetAllMoves(_currentPlayer == White ? Black : White);
+	auto opponentMoves = cb->GetAllMoves(_currentPlayer == White ? Black : White);
 	for_each(opponentMoves.begin(), opponentMoves.end(), [=](tuple<int, int, int, int> p)
 	{
 		if (get<2>(p) == kx && get<3>(p) == ky)
 		{
 			_board->RemoveMove(newX, newY);
 			RemoveMove(newX, newY);
-			this->repaint();
 		}
 	});
 	delete cb;

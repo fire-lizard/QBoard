@@ -14,6 +14,9 @@ class VBoard : public QWidget
 public:
 	explicit VBoard(QWidget *parent = nullptr);
 	virtual ~VBoard();
+	Board* GetBoard() const;
+	PieceColour GetCurrentPlayer() const;
+	void SetCurrentPlayer(PieceColour currentPlayer);
 
 private:
 	void paintEvent(QPaintEvent *);
