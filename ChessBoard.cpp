@@ -21,6 +21,20 @@ ChessBoard::~ChessBoard()
 	}
 }
 
+Board* ChessBoard::Clone()
+{
+	ChessBoard *cb = new ChessBoard();
+	for (int i = 0; i < GetWidth(); i++)
+	{
+		for (int j = 0; j < GetHeight(); j++)
+		{
+			Piece *p = GetData(i, j);
+			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+		}
+	}
+	return cb;
+}
+
 void ChessBoard::Initialize()
 {
 	for (int i = 0; i < _width; i++)
@@ -37,6 +51,11 @@ void ChessBoard::Initialize()
 			}
 		}
 	}
+}
+
+Piece* ChessBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted)
+{
+	return new ChessPiece(pieceType, pieceColour, isPromoted);
 }
 
 void ChessBoard::GetMoves(Piece *piece, int x, int y)

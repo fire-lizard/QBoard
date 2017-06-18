@@ -39,6 +39,24 @@ void ChuShogiBoard::Initialize()
 	}
 }
 
+Board* ChuShogiBoard::Clone()
+{
+	ChuShogiBoard *cb = new ChuShogiBoard();
+	for (int i = 0; i < GetWidth(); i++)
+	{
+		for (int j = 0; j < GetHeight(); j++)
+		{
+			Piece *p = GetData(i, j);
+			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+		}
+	}
+	return cb;
+}
+
+Piece* ChuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted)
+{
+	return new ChuShogiPiece(pieceType, pieceColour, isPromoted);
+}
 
 void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 {

@@ -9,6 +9,8 @@ public:
 	ChessBoard();
 	virtual ~ChessBoard();
 	void Initialize() override;
+	Board* Clone() override;
+	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false) override;
 	void GetMoves(Piece *piece, int x, int y) override;
 
 protected:

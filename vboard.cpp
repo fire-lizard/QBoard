@@ -151,28 +151,31 @@ void VBoard::RemoveMove(int x, int y)
 void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 {
 	int kx = 0, ky = 0;
-	Board *cb = new ChessBoard();
-	for (int i = 0; i < _board->GetWidth(); i++)
-	{
-		for (int j = 0; j < _board->GetHeight(); j++)
-		{
-			Piece *p = _board->GetData(i, j);
-			if (p != nullptr && p->GetType() == King && p->GetColour() != _currentPlayer)
-			{
-				kx = i;
-				ky = _board->GetHeight() - 1 - j;
-			}
-			cb->SetData(i, j, p != nullptr ? new ChessPiece(p->GetType(), p->GetColour()) : nullptr);
-		}
-	}
-	if (cb->GetData(oldX, oldY)->GetType() == King)
+	Board *board = _board->Clone();
+	if (board->GetData(oldX, oldY)->GetType() == King)
 	{
 		kx = newX;
 		ky = newY;
 	}
-	cb->GetMoves(cb->GetData(oldX, oldY), oldX, oldY);
-	cb->Move(oldX, oldY, newX, newY);
-	auto opponentMoves = cb->GetAllMoves(_currentPlayer == White ? Black : White);
+	else
+	{
+		for (int i = 0; i < _board->GetWidth(); i++)
+		{
+			for (int j = 0; j < _board->GetHeight(); j++)
+			{
+				Piece *p = _board->GetData(i, j);
+				if (p != nullptr && p->GetType() == King && p->GetColour() != _currentPlayer)
+				{
+					kx = i;
+					ky = _board->GetHeight() - 1 - j;
+					break;
+				}
+			}
+		}
+	}
+	board->GetMoves(board->GetData(oldX, oldY), oldX, oldY);
+	board->Move(oldX, oldY, newX, newY);
+	auto opponentMoves = board->GetAllMoves(_currentPlayer == White ? Black : White);
 	for_each(opponentMoves.begin(), opponentMoves.end(), [=](tuple<int, int, int, int> p)
 	{
 		if (get<2>(p) == kx && get<3>(p) == ky)
@@ -181,5 +184,5 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 			RemoveMove(newX, newY);
 		}
 	});
-	delete cb;
+	delete board;
 }

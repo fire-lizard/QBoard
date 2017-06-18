@@ -13,6 +13,8 @@ class Board
 public:
 	virtual ~Board();
 	virtual void Initialize() = 0;
+	virtual Board* Clone() = 0;
+	virtual Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false) = 0;
 	virtual void GetMoves(Piece *piece, int x, int y) = 0;
 	void RemoveMove(int x, int y);
 	vector<tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);

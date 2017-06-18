@@ -67,7 +67,7 @@ void MainWindow::on_actionOpen_triggered()
 					PieceColour pieceColour = static_cast<PieceColour>(jsonArray[0].toInt());
 					PieceType pieceType = static_cast<PieceType>(jsonArray[1].toInt());
 					bool isPromoted = jsonArray[2].toBool();
-					Piece *piece = new ChessPiece(pieceType, pieceColour, isPromoted);
+					Piece *piece = board->CreatePiece(pieceType, pieceColour, isPromoted);
 					board->SetData(i, j, piece);
 				}
 				else
