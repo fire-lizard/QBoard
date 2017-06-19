@@ -43,7 +43,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					painter.setBrush(Qt::NoBrush);
 				}
 			}
-			else if (any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](tuple<int, int, int, int> p) {return get<2>(p) == i && get<3>(p) == j; }))
+			else if (any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](tuple<int, int, int, int> t) {return get<2>(t) == i && get<3>(t) == j; }))
 			{
 				if (_board->GetData(i, j) != nullptr && (_board->GetData(i, j)->GetType() == King || _board->GetData(i, j)->GetType() == Queen))
 				{
@@ -96,6 +96,10 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 		{
 			_currentPlayer = _currentPlayer == White ? Black : White;
 			_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
+			if (_currentPiece->GetType() == Pawn && 
+			   ((y == 7 && _currentPiece->GetColour() == Black) || 
+				 y == 0 && _currentPiece->GetColour() == White))
+				_currentPiece->Promote(Queen);
 			_currentPiece = nullptr;
 			_oldX = -1;
 			_oldY = -1;
@@ -159,7 +163,7 @@ void VBoard::RemoveMove(int x, int y)
 
 void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 {
-	int kx = 0, ky = 0;
+	int kx = -1, ky = -1;
 	Board *board = _board->Clone();
 	if (board->GetData(oldX, oldY)->GetType() == King)
 	{
@@ -168,26 +172,28 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 	}
 	else
 	{
-		for (int i = 0; i < _board->GetWidth(); i++)
+		for (int i = 0; i < board->GetWidth(); i++)
 		{
-			for (int j = 0; j < _board->GetHeight(); j++)
+			for (int j = 0; j < board->GetHeight(); j++)
 			{
-				Piece *p = _board->GetData(i, j);
-				if (p != nullptr && p->GetType() == King && p->GetColour() != _currentPlayer)
+				Piece *p = board->GetData(i, j);
+				if (p != nullptr && p->GetType() == King && p->GetColour() == _currentPlayer)
 				{
 					kx = i;
-					ky = _board->GetHeight() - 1 - j;
+					ky = j;
 					break;
 				}
 			}
+			if (kx > -1 && ky > -1)
+				break;
 		}
 	}
 	board->GetMoves(board->GetData(oldX, oldY), oldX, oldY);
 	board->Move(oldX, oldY, newX, newY);
 	auto opponentMoves = board->GetAllMoves(_currentPlayer == White ? Black : White);
-	for_each(opponentMoves.begin(), opponentMoves.end(), [=](tuple<int, int, int, int> p)
+	for_each(opponentMoves.begin(), opponentMoves.end(), [=](tuple<int, int, int, int> t)
 	{
-		if (get<2>(p) == kx && get<3>(p) == ky)
+		if (get<2>(t) == kx && get<3>(t) == ky)
 		{
 			_board->RemoveMove(newX, newY);
 			RemoveMove(newX, newY);

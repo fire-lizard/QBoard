@@ -9,7 +9,7 @@ ChuShogiPiece::~ChuShogiPiece()
 	//dtor
 }
 
-void ChuShogiPiece::Promote()
+void ChuShogiPiece::Promote(PieceType pieceType)
 {
 	_isPromoted = true;
 	switch (_pieceType)
@@ -71,4 +71,9 @@ void ChuShogiPiece::Promote()
 	default:
 		break;
 	}
+}
+
+string ChuShogiPiece::StringCode()
+{
+	return "";
 }

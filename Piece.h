@@ -10,7 +10,8 @@ class Piece
 public:
 	virtual ~Piece();
 	static string GetImageFileName(PieceType pieceType, PieceColour pieceColour);
-	virtual void Promote() = 0;
+	virtual void Promote(PieceType pieceType = None) = 0;
+	virtual string StringCode() = 0;
 	PieceType GetType() const;
 	PieceColour GetColour() const;
 	bool IsPromoted() const;

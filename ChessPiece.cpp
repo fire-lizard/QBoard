@@ -10,7 +10,13 @@ ChessPiece::~ChessPiece()
 	//dtor
 }
 
-void ChessPiece::Promote()
+void ChessPiece::Promote(PieceType pieceType)
 {
-	//
+	_isPromoted = true;
+	_pieceType = pieceType;
+}
+
+string ChessPiece::StringCode()
+{
+	return "";
 }

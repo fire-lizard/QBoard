@@ -8,7 +8,8 @@ class ChuShogiPiece : public Piece
 public:
 	ChuShogiPiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false);
 	virtual ~ChuShogiPiece();
-	void Promote() override;
+	void Promote(PieceType pieceType = None) override;
+	string StringCode() override;
 
 protected:
 
