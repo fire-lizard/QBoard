@@ -1,6 +1,11 @@
 #ifndef COMMON_H_INCLUDED
 #define COMMON_H_INCLUDED
 
+enum GameVariant
+{
+	Chess, Xiangqi, Shogi, ChuShogi, TrueChess
+};
+
 enum PieceColour
 {
 	White, Black

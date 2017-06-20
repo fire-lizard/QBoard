@@ -21,7 +21,13 @@ SOURCES += main.cpp\
     ChuShogiPiece.cpp \
     Piece.cpp \
     settingsdialog.cpp \
-    vboard.cpp
+    vboard.cpp \
+    ShogiBoard.cpp \
+    ShogiPiece.cpp \
+    TrueChessBoard.cpp \
+    TrueChessPiece.cpp \
+    XiangqiBoard.cpp \
+    XiangqiPiece.cpp
 
 HEADERS  += mainwindow.h \
     Board.h \
@@ -32,7 +38,13 @@ HEADERS  += mainwindow.h \
     Common.h \
     Piece.h \
     settingsdialog.h \
-    vboard.h
+    vboard.h \
+    ShogiBoard.h \
+    ShogiPiece.h \
+    TrueChessBoard.h \
+    TrueChessPiece.h \
+    XiangqiBoard.h \
+    XiangqiPiece.h
 
 FORMS    += mainwindow.ui \
     settingsdialog.ui
