@@ -75,5 +75,65 @@ void ChuShogiPiece::Promote(PieceType pieceType)
 
 string ChuShogiPiece::StringCode()
 {
-	return "";
+	switch (_pieceType)
+	{
+	case King:
+		return "K";
+	case Lion:
+		return "N";
+	case Queen:
+		return "Q";
+	case DragonKing:
+		return "D";
+	case DragonHorse:
+		return "H";
+	case Rook:
+		return "R";
+	case Bishop:
+		return "B";
+	case VerticalMover:
+		return "V";
+	case SideMover:
+		return "S";
+	case Cannon:
+		return "A";
+	case Lance:
+		return "L";
+	case Kylin:
+		return "O";
+	case Phoenix:
+		return "X";
+	case Elephant:
+		return "E";
+	case BlindTiger:
+		return "T";
+	case Gold:
+		return "G";
+	case Silver:
+		return "S";
+	case Copper:
+		return "C";
+	case FerociousLeopard:
+		return "F";
+	case Cobra:
+		return "I";
+	case Pawn:
+		return "P";
+	case Eagle:
+		return "+D";
+	case Unicorn:
+		return "+H";
+	case NarrowQueen:
+		return "+V";
+	case SleepingQueen:
+		return "+M";
+	case FlyingStag:
+		return "+T";
+	case WhiteHorse:
+		return "+L";
+	case Whale:
+		return "+A";
+	default:
+		return "";
+	}
 }

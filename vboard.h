@@ -3,8 +3,10 @@
 
 #include <QWidget>
 #include <QMessageBox>
+#include <QStatusBar>
 #include <QPainter>
 #include <QMouseEvent>
+#include "mainwindow.h"
 #include "ChuShogiBoard.h"
 #include "ChessBoard.h"
 
@@ -17,6 +19,7 @@ public:
 	Board* GetBoard() const;
 	PieceColour GetCurrentPlayer() const;
 	void SetCurrentPlayer(PieceColour currentPlayer);
+	void SetStatusBar(QStatusBar *statusBar);
 
 private:
 	void paintEvent(QPaintEvent *);
@@ -35,6 +38,7 @@ private:
 	vector<pair<int, int>> _moves;
 	vector<tuple<int, int, int, int>> _myMoves;
 	vector<tuple<int, int, int, int>> _opponentMoves;
+	QStatusBar *_statusBar;
 
 signals:
 

@@ -95,10 +95,11 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 		if (_board->Move(_oldX, _oldY, x, y))
 		{
 			_currentPlayer = _currentPlayer == White ? Black : White;
+			_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
 			_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
 			if (_currentPiece->GetType() == Pawn && 
-			   ((y == 7 && _currentPiece->GetColour() == Black) || 
-				 y == 0 && _currentPiece->GetColour() == White))
+			   (y == 7 && _currentPiece->GetColour() == Black || 
+				y == 0 && _currentPiece->GetColour() == White))
 				_currentPiece->Promote(Queen);
 			_currentPiece = nullptr;
 			_oldX = -1;
@@ -200,4 +201,9 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 		}
 	});
 	delete board;
+}
+
+void VBoard::SetStatusBar(QStatusBar *statusBar)
+{
+	_statusBar = statusBar;
 }
