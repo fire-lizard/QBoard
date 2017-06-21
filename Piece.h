@@ -1,5 +1,4 @@
-#ifndef PIECE_H
-#define PIECE_H
+#pragma once
 #include <string>
 #include "Common.h"
 
@@ -24,5 +23,3 @@ protected:
 
 private:
 };
-
-#endif // PIECE_H

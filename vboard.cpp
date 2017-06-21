@@ -2,7 +2,25 @@
 
 VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
-	_board = new ChessBoard();
+	_gameVariant = Xiangqi;
+	switch (_gameVariant)
+	{
+	case Shogi:
+		_board = new ShogiBoard();
+		break;
+	case ChuShogi:
+		_board = new ChuShogiBoard();
+		break;
+	case Xiangqi:
+		_board = new XiangqiBoard();
+		break;
+	case TrueChess:
+		_board = new TrueChessBoard();
+		break;
+	default:
+		_board = new ChessBoard();
+		break;
+	}
 	this->setFixedSize(_board->GetWidth() * 66 + 1, _board->GetHeight() * 66 + 1);
 	_currentPiece = nullptr;
 }
@@ -51,16 +69,22 @@ void VBoard::paintEvent(QPaintEvent *)
 				}
 				else
 				{
-					if ((i + j) % 2 != 0)
-						painter.setBrush(Qt::gray);
+					if (_gameVariant == Chess)
+					{
+						if ((i + j) % 2 != 0)
+							painter.setBrush(Qt::gray);
+					}
 				}
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
 			else
 			{
-				if ((i + j) % 2 != 0)
-					painter.setBrush(Qt::gray);
+				if (_gameVariant == Chess)
+				{
+					if ((i + j) % 2 != 0)
+						painter.setBrush(Qt::gray);
+				}
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
@@ -97,10 +121,25 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 			_currentPlayer = _currentPlayer == White ? Black : White;
 			_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
 			_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
-			if (_currentPiece->GetType() == Pawn && 
-			   (y == 7 && _currentPiece->GetColour() == Black || 
-				y == 0 && _currentPiece->GetColour() == White))
-				_currentPiece->Promote(Queen);
+			if (_gameVariant == Chess || _gameVariant == TrueChess)
+			{
+				if (_currentPiece->GetType() == Pawn &&
+					(y == 7 && _currentPiece->GetColour() == Black ||
+						y == 0 && _currentPiece->GetColour() == White))
+					_currentPiece->Promote(Queen);
+			}
+			if (_gameVariant == Shogi)
+			{
+				if (y >= 7 && _currentPiece->GetColour() == Black ||
+					y <= 1 && _currentPiece->GetColour() == White)
+					_currentPiece->Promote();
+			}
+			if (_gameVariant == ChuShogi)
+			{
+				if (y >= 10 && _currentPiece->GetColour() == Black ||
+					y <= 1 && _currentPiece->GetColour() == White)
+					_currentPiece->Promote();
+			}
 			_currentPiece = nullptr;
 			_oldX = -1;
 			_oldY = -1;
@@ -139,6 +178,11 @@ PieceColour VBoard::GetCurrentPlayer() const
 void VBoard::SetCurrentPlayer(PieceColour currentPlayer)
 {
 	_currentPlayer = currentPlayer;
+}
+
+void VBoard::SetGameVariant(GameVariant gameVariant)
+{
+	_gameVariant = gameVariant;
 }
 
 bool VBoard::PossibleMove(int x, int y)
@@ -206,4 +250,9 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 void VBoard::SetStatusBar(QStatusBar *statusBar)
 {
 	_statusBar = statusBar;
+}
+
+void VBoard::SetMainWindow(QMainWindow *window)
+{
+	_window = window;
 }

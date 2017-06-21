@@ -1,5 +1,4 @@
-#ifndef CHESSBOARD_H
-#define CHESSBOARD_H
+#pragma once
 #include "Board.h"
 #include "ChessPiece.h"
 
@@ -15,18 +14,16 @@ public:
 
 protected:
 
-private:
-
 	PieceType _initialSetup[8][8] = {
-	{Rook, WhiteHorse, Bishop, King, Queen, Bishop, WhiteHorse, Rook},
-	{Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn},
-	{None, None, None, None, None, None, None, None},
-	{None, None, None, None, None, None, None, None},
-	{None, None, None, None, None, None, None, None},
-	{None, None, None, None, None, None, None, None},
-	{Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn},
-	{Rook, WhiteHorse, Bishop, King, Queen, Bishop, WhiteHorse, Rook}
+		{ Rook, WhiteHorse, Bishop, King, Queen, Bishop, WhiteHorse, Rook },
+		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
+		{ None, None, None, None, None, None, None, None },
+		{ None, None, None, None, None, None, None, None },
+		{ None, None, None, None, None, None, None, None },
+		{ None, None, None, None, None, None, None, None },
+		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
+		{ Rook, WhiteHorse, Bishop, King, Queen, Bishop, WhiteHorse, Rook }
 	};
-};
 
-#endif // CHESSBOARD_H
+private:
+};

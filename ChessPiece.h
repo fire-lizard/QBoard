@@ -1,5 +1,4 @@
-#ifndef CHESSPIECE_H
-#define CHESSPIECE_H
+#pragma once
 #include "Piece.h"
 
 class ChessPiece : public Piece
@@ -14,5 +13,3 @@ protected:
 
 private:
 };
-
-#endif // CHESSPIECE_H

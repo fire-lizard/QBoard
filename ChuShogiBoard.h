@@ -1,5 +1,4 @@
-#ifndef CHUSHOGIBOARD_H
-#define CHUSHOGIBOARD_H
+#pragma once
 #include "Board.h"
 #include "ChuShogiPiece.h"
 
@@ -34,5 +33,3 @@ private:
 	{Lance, FerociousLeopard, Copper, Silver, Gold, King, Elephant, Gold, Silver, Copper, FerociousLeopard, Lance}
 	};
 };
-
-#endif // CHUSHOGIBOARD_H

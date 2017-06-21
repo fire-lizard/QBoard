@@ -1,6 +1,4 @@
-#ifndef SETTINGSDIALOG_H
-#define SETTINGSDIALOG_H
-
+#pragma once
 #include <QDialog>
 #include <QStyleFactory>
 #include <algorithm>
@@ -23,5 +21,3 @@ public:
 private:
 	Ui::SettingsDialog *ui;
 };
-
-#endif // SETTINGSDIALOG_H

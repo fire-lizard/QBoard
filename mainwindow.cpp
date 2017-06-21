@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->setupUi(this);
 	setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
 	setFixedSize(this->ui->vboard->width() + 100, this->ui->vboard->height() + 100);
+	this->ui->vboard->SetMainWindow(this);
 	this->ui->vboard->SetStatusBar(this->ui->statusBar);
 	this->ui->statusBar->showMessage("White move");
 }

@@ -25,7 +25,6 @@ SOURCES += main.cpp\
     ShogiBoard.cpp \
     ShogiPiece.cpp \
     TrueChessBoard.cpp \
-    TrueChessPiece.cpp \
     XiangqiBoard.cpp \
     XiangqiPiece.cpp
 
@@ -42,7 +41,6 @@ HEADERS  += mainwindow.h \
     ShogiBoard.h \
     ShogiPiece.h \
     TrueChessBoard.h \
-    TrueChessPiece.h \
     XiangqiBoard.h \
     XiangqiPiece.h
 

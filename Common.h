@@ -1,5 +1,4 @@
-#ifndef COMMON_H_INCLUDED
-#define COMMON_H_INCLUDED
+#pragma once
 
 enum GameVariant
 {
@@ -23,5 +22,3 @@ enum Direction
 {
 	NorthWest, North, NorthEast, East, SouthEast, South, SouthWest, West
 };
-
-#endif // COMMON_H_INCLUDED

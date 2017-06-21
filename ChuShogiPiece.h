@@ -1,5 +1,4 @@
-#ifndef CHUSHOGIPIECE_H
-#define CHUSHOGIPIECE_H
+#pragma once
 #include "Piece.h"
 #include "Common.h"
 
@@ -15,5 +14,3 @@ protected:
 
 private:
 };
-
-#endif // CHUSHOGIPIECE_H

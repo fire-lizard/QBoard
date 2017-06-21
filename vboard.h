@@ -1,6 +1,4 @@
-#ifndef VBOARD_H
-#define VBOARD_H
-
+#pragma once
 #include <QWidget>
 #include <QMessageBox>
 #include <QStatusBar>
@@ -9,6 +7,9 @@
 #include "mainwindow.h"
 #include "ChuShogiBoard.h"
 #include "ChessBoard.h"
+#include "XiangqiBoard.h"
+#include "ShogiBoard.h"
+#include "TrueChessBoard.h"
 
 class VBoard : public QWidget
 {
@@ -19,7 +20,9 @@ public:
 	Board* GetBoard() const;
 	PieceColour GetCurrentPlayer() const;
 	void SetCurrentPlayer(PieceColour currentPlayer);
+	void SetGameVariant(GameVariant gameVariant);
 	void SetStatusBar(QStatusBar *statusBar);
+	void SetMainWindow(QMainWindow *window);
 
 private:
 	void paintEvent(QPaintEvent *);
@@ -39,10 +42,10 @@ private:
 	vector<tuple<int, int, int, int>> _myMoves;
 	vector<tuple<int, int, int, int>> _opponentMoves;
 	QStatusBar *_statusBar;
+	QMainWindow *_window;
+	GameVariant _gameVariant;
 
 signals:
 
 	public slots :
 };
-
-#endif // VBOARD_H
