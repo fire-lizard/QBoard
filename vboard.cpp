@@ -2,34 +2,13 @@
 
 VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
-	_gameVariant = Xiangqi;
-	switch (_gameVariant)
-	{
-	case Shogi:
-		_board = new ShogiBoard();
-		break;
-	case ChuShogi:
-		_board = new ChuShogiBoard();
-		break;
-	case Xiangqi:
-		_board = new XiangqiBoard();
-		break;
-	case TrueChess:
-		_board = new TrueChessBoard();
-		break;
-	default:
-		_board = new ChessBoard();
-		break;
-	}
-	this->setFixedSize(_board->GetWidth() * 66 + 1, _board->GetHeight() * 66 + 1);
-	_currentPiece = nullptr;
+	SetGameVariant(_gameVariant);
 }
 
 VBoard::~VBoard()
 {
 	delete _board;
 }
-
 
 void VBoard::paintEvent(QPaintEvent *)
 {
@@ -170,6 +149,43 @@ Board* VBoard::GetBoard() const
 	return _board;
 }
 
+GameVariant VBoard::GetGameVariant() const
+{
+	return _gameVariant;
+}
+
+void VBoard::SetGameVariant(GameVariant gameVariant)
+{
+	_currentPiece = nullptr;
+	_moves.clear();
+	_myMoves.clear();
+	_opponentMoves.clear();
+	_gameVariant = gameVariant;
+	switch (_gameVariant)
+	{
+	case Shogi:
+		_board = new ShogiBoard();
+		break;
+	case ChuShogi:
+		_board = new ChuShogiBoard();
+		break;
+	case Xiangqi:
+		_board = new XiangqiBoard();
+		break;
+	case TrueChess:
+		_board = new TrueChessBoard();
+		break;
+	default:
+		_board = new ChessBoard();
+		break;
+	}
+	this->setFixedSize(_board->GetWidth() * 66 + 1, _board->GetHeight() * 66 + 1);
+	if (this->_window != nullptr)
+	{
+		this->_window->setFixedSize(width() + 100, height() + 100);
+	}
+}
+
 PieceColour VBoard::GetCurrentPlayer() const
 {
 	return _currentPlayer;
@@ -178,11 +194,6 @@ PieceColour VBoard::GetCurrentPlayer() const
 void VBoard::SetCurrentPlayer(PieceColour currentPlayer)
 {
 	_currentPlayer = currentPlayer;
-}
-
-void VBoard::SetGameVariant(GameVariant gameVariant)
-{
-	_gameVariant = gameVariant;
 }
 
 bool VBoard::PossibleMove(int x, int y)

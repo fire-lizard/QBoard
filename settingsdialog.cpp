@@ -17,7 +17,12 @@ SettingsDialog::~SettingsDialog()
 	delete ui;
 }
 
-void SettingsDialog::on_buttonBox_accepted()
+QComboBox* SettingsDialog::GetStyles() const
 {
-	QApplication::setStyle(ui->stylesComboBox->itemText(ui->stylesComboBox->currentIndex()));
+	return ui->stylesComboBox;
+}
+
+QComboBox* SettingsDialog::GetGameVariants() const
+{
+	return ui->variantsComboBox;
 }

@@ -18,9 +18,10 @@ public:
 	explicit VBoard(QWidget *parent = nullptr);
 	virtual ~VBoard();
 	Board* GetBoard() const;
+	GameVariant GetGameVariant() const;
+	void SetGameVariant(GameVariant gameVariant);
 	PieceColour GetCurrentPlayer() const;
 	void SetCurrentPlayer(PieceColour currentPlayer);
-	void SetGameVariant(GameVariant gameVariant);
 	void SetStatusBar(QStatusBar *statusBar);
 	void SetMainWindow(QMainWindow *window);
 
@@ -42,8 +43,8 @@ private:
 	vector<tuple<int, int, int, int>> _myMoves;
 	vector<tuple<int, int, int, int>> _opponentMoves;
 	QStatusBar *_statusBar;
-	QMainWindow *_window;
-	GameVariant _gameVariant;
+	QMainWindow *_window = nullptr;
+	GameVariant _gameVariant = Chess;
 
 signals:
 

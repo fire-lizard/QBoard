@@ -32,7 +32,7 @@
   <widget class="QComboBox" name="stylesComboBox">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>230</x>
      <y>10</y>
      <width>150</width>
      <height>22</height>
@@ -44,12 +44,70 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>55</width>
+     <width>80</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
     <string>Style</string>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>91</y>
+     <width>371</width>
+     <height>141</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="variantsComboBox">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>50</y>
+     <width>150</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Chess</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Xiangqi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Chu Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>True Chess</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="variantsLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>50</y>
+     <width>80</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Game variant</string>
    </property>
   </widget>
  </widget>

@@ -20,10 +20,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionSettings_triggered()
 {
-	SettingsDialog *settingsDialog = new SettingsDialog();
+	SettingsDialog *settingsDialog = new SettingsDialog(this);
 	settingsDialog->exec();
 	if (settingsDialog->result() == QDialog::Accepted)
 	{
+		QApplication::setStyle(settingsDialog->GetStyles()->itemText(settingsDialog->GetStyles()->currentIndex()));
+		GameVariant newGameVariant = static_cast<GameVariant>(settingsDialog->GetGameVariants()->currentIndex());
+		if (newGameVariant != this->ui->vboard->GetGameVariant())
+		{
+			this->ui->vboard->SetGameVariant(newGameVariant);
+			this->ui->vboard->GetBoard()->Initialize();
+			this->ui->vboard->SetCurrentPlayer(White);
+			this->ui->vboard->repaint();
+		}
 	}
 
 }
