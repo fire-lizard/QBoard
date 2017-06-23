@@ -37,4 +37,5 @@ public:
 
 private:
 	Ui::MainWindow *ui;
+	QString _currentStyle = "";
 };

@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
 		QFile file(settingsFile);
 		file.open(QIODevice::ReadOnly | QIODevice::Text);
 		QXmlStreamReader xmlStreamReader(&file);
-		while (!xmlStreamReader.isEndDocument()) {
+		while (!xmlStreamReader.atEnd()) {
 			QXmlStreamReader::TokenType tokenType = xmlStreamReader.readNext();
 			if (tokenType == QXmlStreamReader::StartElement)
 			{
@@ -34,7 +34,10 @@ MainWindow::MainWindow(QWidget *parent) :
 					{
 						QString style = xmlStreamReader.text().toString();
 						if (QStyleFactory::keys().contains(style))
+						{
 							QApplication::setStyle(style);
+							_currentStyle = style;
+						}
 						else
 							this->ui->statusBar->showMessage("Unsupported style");
 					}
@@ -68,10 +71,13 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionSettings_triggered()
 {
 	SettingsDialog *settingsDialog = new SettingsDialog(this);
+	settingsDialog->GetGameVariants()->setCurrentIndex(this->ui->vboard->GetGameVariant());
+	settingsDialog->GetStyles()->setCurrentText(_currentStyle);
 	settingsDialog->exec();
 	if (settingsDialog->result() == QDialog::Accepted)
 	{
 		QApplication::setStyle(settingsDialog->GetStyles()->itemText(settingsDialog->GetStyles()->currentIndex()));
+		_currentStyle = settingsDialog->GetStyles()->currentText();
 		GameVariant newGameVariant = static_cast<GameVariant>(settingsDialog->GetGameVariants()->currentIndex());
 		if (newGameVariant != this->ui->vboard->GetGameVariant())
 		{
