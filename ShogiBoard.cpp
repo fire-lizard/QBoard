@@ -2,6 +2,7 @@
 
 ShogiBoard::ShogiBoard()
 {
+	_hasDrops = true;
 	_width = 9;
 	_height = 9;
 	ShogiBoard::Initialize();
@@ -177,7 +178,38 @@ void ShogiBoard::GetMoves(Piece *piece, int x, int y)
 			CheckMove(piece, x + 1, y - 2);
 		}
 		break;
+	case Elephant:
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x - 1, y - 1);
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x, y + 1);
+		}
+		else
+		{
+			CheckMove(piece, x, y - 1);
+		}
+		break;
 	default:
 		break;
+	}
+}
+
+void ShogiBoard::SetDrops(bool hasDrops)
+{
+	_hasDrops = hasDrops;
+	if (_hasDrops)
+	{
+		_initialSetup[1][4] = None;
+		_initialSetup[7][4] = None;
+	}
+	else
+	{
+		_initialSetup[1][4] = Elephant;
+		_initialSetup[7][4] = Elephant;
 	}
 }

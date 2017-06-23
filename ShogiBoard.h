@@ -11,10 +11,12 @@ public:
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false) override;
 	void GetMoves(Piece *piece, int x, int y) override;
+	void SetDrops(bool hasDrops);
 
 protected:
 
 private:
+	bool _hasDrops;
 
 	PieceType _initialSetup[9][9] = {
 		{ Lance, WhiteHorse, Silver, Gold, King, Gold, Silver, WhiteHorse, Lance },

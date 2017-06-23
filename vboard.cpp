@@ -48,10 +48,25 @@ void VBoard::paintEvent(QPaintEvent *)
 				}
 				else
 				{
-					if (_gameVariant == Chess)
+					if (_gameVariant == Chess || _gameVariant == TrueChess)
 					{
 						if ((i + j) % 2 != 0)
 							painter.setBrush(Qt::gray);
+					}
+					else if (_gameVariant == Xiangqi)
+					{
+						if (i > 2 && i < 6 && j < 3)
+						{
+							painter.setBrush(Qt::green);
+						}
+						else if (i > 2 && i < 6 && j > 6)
+						{
+							painter.setBrush(Qt::green);
+						}
+						else if (j < 5)
+						{
+							painter.setBrush(Qt::lightGray);
+						}
 					}
 				}
 				painter.drawRect(rect);
@@ -59,10 +74,25 @@ void VBoard::paintEvent(QPaintEvent *)
 			}
 			else
 			{
-				if (_gameVariant == Chess)
+				if (_gameVariant == Chess || _gameVariant == TrueChess)
 				{
 					if ((i + j) % 2 != 0)
 						painter.setBrush(Qt::gray);
+				}
+				else if (_gameVariant == Xiangqi)
+				{
+					if (i > 2 && i < 6 && j < 3)
+					{
+						painter.setBrush(Qt::green);
+					}
+					else if (i > 2 && i < 6 && j > 6)
+					{
+						painter.setBrush(Qt::green);
+					}
+					else if (j < 5)
+					{
+						painter.setBrush(Qt::lightGray);
+					}
 				}
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
@@ -98,6 +128,7 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 		if (_board->Move(_oldX, _oldY, x, y))
 		{
 			_currentPlayer = _currentPlayer == White ? Black : White;
+			_statusBar->setStyleSheet("QStatusBar { color : black; }");
 			_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
 			_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
 			if (_gameVariant == Chess || _gameVariant == TrueChess)
@@ -165,6 +196,10 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	{
 	case Shogi:
 		_board = new ShogiBoard();
+		break;
+	case ShoShogi:
+		_board = new ShogiBoard();
+		static_cast<ShogiBoard*>(_board)->SetDrops(false);
 		break;
 	case ChuShogi:
 		_board = new ChuShogiBoard();

@@ -2,7 +2,7 @@
 
 enum GameVariant
 {
-	Chess, Xiangqi, Shogi, ChuShogi, TrueChess
+	Chess, Xiangqi, Shogi, ShoShogi, ChuShogi, TrueChess
 };
 
 enum PieceColour

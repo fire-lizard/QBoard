@@ -5,6 +5,9 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QXmlStreamWriter>
+#include <QXmlStreamReader>
+#include <QStandardPaths>
 #include "settingsdialog.h"
 
 namespace Ui {

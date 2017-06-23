@@ -88,6 +88,11 @@
    </item>
    <item>
     <property name="text">
+     <string>Sho Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>Chu Shogi</string>
     </property>
    </item>

@@ -6,11 +6,58 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
+
 	setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
 	setFixedSize(this->ui->vboard->width() + 100, this->ui->vboard->height() + 100);
 	this->ui->vboard->SetMainWindow(this);
 	this->ui->vboard->SetStatusBar(this->ui->statusBar);
+	QFont font = this->ui->statusBar->font();
+	font.setBold(true);
+	this->ui->statusBar->setFont(font);
 	this->ui->statusBar->showMessage("White move");
+
+	QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+	if (QDir(settingsDir).exists())
+	{
+		QString settingsFile = settingsDir + "/QBoardSettings.xml";
+		QFile file(settingsFile);
+		file.open(QIODevice::ReadOnly | QIODevice::Text);
+		QXmlStreamReader xmlStreamReader(&file);
+		while (!xmlStreamReader.isEndDocument()) {
+			QXmlStreamReader::TokenType tokenType = xmlStreamReader.readNext();
+			if (tokenType == QXmlStreamReader::StartElement)
+			{
+				if (xmlStreamReader.name() == "Style")
+				{
+					tokenType = xmlStreamReader.readNext();
+					if (tokenType == QXmlStreamReader::Characters)
+					{
+						QString style = xmlStreamReader.text().toString();
+						if (QStyleFactory::keys().contains(style))
+							QApplication::setStyle(style);
+						else
+							this->ui->statusBar->showMessage("Unsupported style");
+					}
+				}
+				else if (xmlStreamReader.name() == "GameVariant")
+				{
+					tokenType = xmlStreamReader.readNext();
+					if (tokenType == QXmlStreamReader::Characters)
+					{
+						int gameVariant = xmlStreamReader.text().toInt();
+						if (gameVariant < 6)
+							this->ui->vboard->SetGameVariant(static_cast<GameVariant>(gameVariant));
+						else
+							this->ui->statusBar->showMessage("Unsupported game variant");
+					}
+				}
+			}
+		}
+		if (xmlStreamReader.hasError())
+			this->ui->statusBar->showMessage("Error while opening settings file: " + xmlStreamReader.errorString());
+		
+		file.close();
+	}
 }
 
 MainWindow::~MainWindow()
@@ -33,6 +80,23 @@ void MainWindow::on_actionSettings_triggered()
 			this->ui->vboard->SetCurrentPlayer(White);
 			this->ui->vboard->repaint();
 		}
+		QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+		if (!QDir(settingsDir).exists())
+		{
+			QDir().mkdir(settingsDir);
+		}
+		QString settingsFile = settingsDir + "/QBoardSettings.xml";
+		QFile file(settingsFile);
+		file.open(QIODevice::WriteOnly | QIODevice::Text);
+		QXmlStreamWriter xmlStreamWriter(&file);
+		xmlStreamWriter.setAutoFormatting(true);
+		xmlStreamWriter.writeStartDocument();
+		xmlStreamWriter.writeStartElement("Settings");
+		xmlStreamWriter.writeTextElement("Style", settingsDialog->GetStyles()->currentText());
+		xmlStreamWriter.writeTextElement("GameVariant", QString::number(settingsDialog->GetGameVariants()->currentIndex()));
+		xmlStreamWriter.writeEndElement();
+		xmlStreamWriter.writeEndDocument();
+		file.close();
 	}
 
 }
@@ -65,7 +129,14 @@ void MainWindow::on_actionOpen_triggered()
 		file.open(QIODevice::ReadOnly | QIODevice::Text);
 		QString data = file.readAll();
 		file.close();
-		QJsonDocument jsonDoc = QJsonDocument::fromJson(data.toUtf8());
+		QJsonParseError *jsonParseError = new QJsonParseError();
+		QJsonDocument jsonDoc = QJsonDocument::fromJson(data.toUtf8(), jsonParseError);
+		if (jsonParseError->error != QJsonParseError::NoError)
+		{
+			this->ui->statusBar->setStyleSheet("QStatusBar { color : red; }");
+			this->ui->statusBar->showMessage("Error while opening file: " + jsonParseError->errorString());
+			return;
+		}
 		QJsonObject jsonObj = jsonDoc.object();
 		PieceColour currentPlayer = static_cast<PieceColour>(jsonObj["current_player"].toInt());
 		this->ui->vboard->SetCurrentPlayer(currentPlayer);
