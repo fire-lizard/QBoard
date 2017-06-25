@@ -153,3 +153,8 @@ vector<tuple<int, int, int, int>> Board::GetAllMoves(PieceColour pieceColour)
 	}
 	return result;
 }
+
+bool Board::CheckPosition(int x, int y) const
+{
+	return y < _height && y >= 0 && x < _width && x >= 0;
+}

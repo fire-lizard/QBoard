@@ -127,6 +127,10 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 		CalculateCheck(_oldX, _oldY, x, y);
 		if (_board->Move(_oldX, _oldY, x, y))
 		{
+			if (_engine != nullptr)
+			{
+				_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+			}
 			_currentPlayer = _currentPlayer == White ? Black : White;
 			_statusBar->setStyleSheet("QStatusBar { color : black; }");
 			_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
@@ -217,7 +221,8 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	this->setFixedSize(_board->GetWidth() * 66 + 1, _board->GetHeight() * 66 + 1);
 	if (this->_window != nullptr)
 	{
-		this->_window->setFixedSize(width() + 100, height() + 100);
+		this->_window->setFixedSize(width() + 280, height() + 100);
+		this->_textEdit->setGeometry(x() + width() + 10, y(), 250, height());
 	}
 }
 
@@ -229,6 +234,11 @@ PieceColour VBoard::GetCurrentPlayer() const
 void VBoard::SetCurrentPlayer(PieceColour currentPlayer)
 {
 	_currentPlayer = currentPlayer;
+}
+
+void VBoard::SetTextEdit(QTextEdit* textEdit)
+{
+	_textEdit = textEdit;
 }
 
 bool VBoard::PossibleMove(int x, int y)
@@ -301,4 +311,60 @@ void VBoard::SetStatusBar(QStatusBar *statusBar)
 void VBoard::SetMainWindow(QMainWindow *window)
 {
 	_window = window;
+}
+
+void VBoard::SetEngine(Engine* engine)
+{
+	_engine = engine;
+}
+
+void VBoard::readyReadStandardOutput()
+{
+	QProcess *p = static_cast<QProcess*>(sender());
+	QByteArray buf = p->readAllStandardOutput();
+	int len = buf.length();
+	this->_textEdit->setPlainText(buf);
+	if (len >= 6)
+	{
+		int auxPos1 = buf.lastIndexOf("getmove ");
+		int pos = buf.lastIndexOf("move ", auxPos1);
+		char x1 = buf[pos + 5] - 97;
+		char y1 = _board->GetHeight() - buf[pos + 6] + 48;
+		char x2 = buf[pos + 7] - 97;
+		char y2 = _board->GetHeight() - buf[pos + 8] + 48;
+		if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
+		{
+			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
+			_board->Move(x1, y1, x2, y2);
+			if ((_gameVariant == Chess || _gameVariant == TrueChess) && 
+				(y2 == 0 || y2 == _board->GetHeight() - 1) && 
+				_board->GetData(x2, y2)->GetType() == Pawn)
+			{
+				char promotion = buf[pos + 9];
+				switch (promotion)
+				{
+				case 'n':
+					_board->GetData(x2, y2)->Promote(WhiteHorse);
+					break;
+				case 'b':
+					_board->GetData(x2, y2)->Promote(Bishop);
+					break;
+				case 'r':
+					_board->GetData(x2, y2)->Promote(Rook);
+					break;
+				default:
+					_board->GetData(x2, y2)->Promote(Queen);
+					break;
+				}
+			}
+		}
+		_currentPlayer = White;
+		this->_statusBar->showMessage("White move");
+		this->repaint();
+	}
+}
+
+void VBoard::bytesWritten(qint64 bytes)
+{
+	this->_textEdit->setPlainText(QString::number(bytes) + " bytes written.\n");
 }

@@ -9,6 +9,8 @@
 #include <QXmlStreamReader>
 #include <QStandardPaths>
 #include "settingsdialog.h"
+#include "WbEngine.h"
+#include "UciEngine.h"
 
 namespace Ui {
 	class MainWindow;
@@ -19,7 +21,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	explicit MainWindow(QWidget *parent = 0);
+	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 
 	private slots:
@@ -38,4 +40,7 @@ public:
 private:
 	Ui::MainWindow *ui;
 	QString _currentStyle = "";
+	Engine *_engine = nullptr;
+	QString _engineFolder = "";
+	QString _engineExe = "";
 };

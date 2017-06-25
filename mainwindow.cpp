@@ -8,8 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->setupUi(this);
 
 	setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
-	setFixedSize(this->ui->vboard->width() + 100, this->ui->vboard->height() + 100);
 	this->ui->vboard->SetMainWindow(this);
+	this->ui->vboard->SetTextEdit(this->ui->textEdit);
 	this->ui->vboard->SetStatusBar(this->ui->statusBar);
 	QFont font = this->ui->statusBar->font();
 	font.setBold(true);
@@ -53,6 +53,18 @@ MainWindow::MainWindow(QWidget *parent) :
 						else
 							this->ui->statusBar->showMessage("Unsupported game variant");
 					}
+				}
+				else if (xmlStreamReader.name() == "EngineFolder")
+				{
+					tokenType = xmlStreamReader.readNext();
+					if (tokenType == QXmlStreamReader::Characters)
+						_engineFolder = xmlStreamReader.text().toString();
+				}
+				else if (xmlStreamReader.name() == "EngineExe")
+				{
+					tokenType = xmlStreamReader.readNext();
+					if (tokenType == QXmlStreamReader::Characters)
+						_engineExe = xmlStreamReader.text().toString();
 				}
 			}
 		}
@@ -100,6 +112,10 @@ void MainWindow::on_actionSettings_triggered()
 		xmlStreamWriter.writeStartElement("Settings");
 		xmlStreamWriter.writeTextElement("Style", settingsDialog->GetStyles()->currentText());
 		xmlStreamWriter.writeTextElement("GameVariant", QString::number(settingsDialog->GetGameVariants()->currentIndex()));
+		_engineFolder = settingsDialog->EngineFolder;
+		_engineExe = settingsDialog->EngineExe;
+		xmlStreamWriter.writeTextElement("EngineFolder", _engineFolder);
+		xmlStreamWriter.writeTextElement("EngineExe", _engineExe);
 		xmlStreamWriter.writeEndElement();
 		xmlStreamWriter.writeEndDocument();
 		file.close();
@@ -114,11 +130,33 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionExit_triggered()
 {
+	if (_engine != nullptr)
+	{
+		_engine->Quit();
+		delete _engine;
+	}
 	QApplication::quit();
 }
 
 void MainWindow::on_actionNew_game_triggered()
 {
+	if (_engine != nullptr)
+	{
+		_engine->Quit();
+		delete _engine;
+	}
+	if (_engineExe != "")
+	{
+		_engine = new WbEngine();
+		QString workingDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::DocumentsLocation) + "/engines/" + _engineFolder;
+		QProcess *process = _engine->RunProcess(this, workingDir, _engineExe);
+		_engine->StartGame();
+		connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
+		connect(process, SIGNAL(bytesWritten(qint64)), this->ui->vboard, SLOT(bytesWritten(qint64)));
+		this->ui->vboard->SetEngine(_engine);
+	}
+	else
+		this->ui->statusBar->showMessage("Engine not set");
 	this->ui->vboard->GetBoard()->Initialize();
 	this->ui->vboard->SetCurrentPlayer(White);
 	this->ui->vboard->repaint();

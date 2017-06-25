@@ -26,7 +26,10 @@ SOURCES += main.cpp\
     ShogiPiece.cpp \
     TrueChessBoard.cpp \
     XiangqiBoard.cpp \
-    XiangqiPiece.cpp
+    XiangqiPiece.cpp \
+    Engine.cpp \
+    UciEngine.cpp \
+    WbEngine.cpp
 
 HEADERS  += mainwindow.h \
     Board.h \
@@ -42,7 +45,10 @@ HEADERS  += mainwindow.h \
     ShogiPiece.h \
     TrueChessBoard.h \
     XiangqiBoard.h \
-    XiangqiPiece.h
+    XiangqiPiece.h \
+    Engine.h \
+    UciEngine.h \
+    WbEngine.h
 
 FORMS    += mainwindow.ui \
     settingsdialog.ui

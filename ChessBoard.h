@@ -15,14 +15,14 @@ public:
 protected:
 
 	PieceType _initialSetup[8][8] = {
-		{ Rook, WhiteHorse, Bishop, King, Queen, Bishop, WhiteHorse, Rook },
+		{ Rook, WhiteHorse, Bishop, Queen, King, Bishop, WhiteHorse, Rook },
 		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
 		{ None, None, None, None, None, None, None, None },
 		{ None, None, None, None, None, None, None, None },
 		{ None, None, None, None, None, None, None, None },
 		{ None, None, None, None, None, None, None, None },
 		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
-		{ Rook, WhiteHorse, Bishop, King, Queen, Bishop, WhiteHorse, Rook }
+		{ Rook, WhiteHorse, Bishop, Queen, King, Bishop, WhiteHorse, Rook }
 	};
 
 private:

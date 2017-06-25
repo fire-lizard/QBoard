@@ -2,7 +2,6 @@
 #include <QDialog>
 #include <QStyleFactory>
 #include <QComboBox>
-#include <algorithm>
 #include "mainwindow.h"
 
 namespace Ui {
@@ -14,12 +13,16 @@ class SettingsDialog : public QDialog
 	Q_OBJECT
 
 public:
-	explicit SettingsDialog(QWidget *parent = 0);
+	explicit SettingsDialog(QWidget *parent = nullptr);
 	~SettingsDialog();
 	QComboBox* GetStyles() const;
 	QComboBox* GetGameVariants() const;
+	QString EngineFolder = "";
+	QString EngineExe = "";
 
 	private slots:
+
+    void on_tableWidget_clicked(const QModelIndex &index);
 
 private:
 	Ui::SettingsDialog *ui;

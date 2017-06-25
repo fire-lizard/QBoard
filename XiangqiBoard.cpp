@@ -180,8 +180,3 @@ void XiangqiBoard::CheckCannonDirection(Piece *piece, int x, int y, Direction di
 	}
 	while (CheckDirectionAux(x, y, direction));
 }
-
-bool XiangqiBoard::CheckPosition(int x, int y) const
-{
-	return y < _height && y >= 0 && x < _width && x >= 0;
-}

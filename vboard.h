@@ -4,6 +4,7 @@
 #include <QStatusBar>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QTextEdit>
 #include "mainwindow.h"
 #include "ChuShogiBoard.h"
 #include "ChessBoard.h"
@@ -22,8 +23,10 @@ public:
 	void SetGameVariant(GameVariant gameVariant);
 	PieceColour GetCurrentPlayer() const;
 	void SetCurrentPlayer(PieceColour currentPlayer);
+	void SetTextEdit(QTextEdit *textEdit);
 	void SetStatusBar(QStatusBar *statusBar);
 	void SetMainWindow(QMainWindow *window);
+	void SetEngine(Engine *engine);
 
 private:
 	void paintEvent(QPaintEvent *);
@@ -43,10 +46,16 @@ private:
 	vector<tuple<int, int, int, int>> _myMoves;
 	vector<tuple<int, int, int, int>> _opponentMoves;
 	QStatusBar *_statusBar;
+	QTextEdit *_textEdit;
 	QMainWindow *_window = nullptr;
 	GameVariant _gameVariant = Chess;
+	Engine *_engine = nullptr;
 
 signals:
 
 	public slots :
+
+	void readyReadStandardOutput();
+
+	void bytesWritten(qint64 bytes);
 };

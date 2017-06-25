@@ -23,6 +23,7 @@ public:
 	void SetData(int x, int y, Piece *p);
 	int GetWidth() const;
 	int GetHeight() const;
+	bool CheckPosition(int x, int y) const;
 
 protected:
 	void CheckMove(Piece *piece, int x, int y);
@@ -31,8 +32,8 @@ protected:
 	static void CheckDirectionInc(int &x, int &y, Direction direction);
 
 	vector<pair<int, int>> _moves;
-	int _width;
-	int _height;
+	int _width = -1;
+	int _height = -1;
 	Piece* _data[12][12];
 
 private:
