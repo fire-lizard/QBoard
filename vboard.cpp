@@ -127,33 +127,43 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 		CalculateCheck(_oldX, _oldY, x, y);
 		if (_board->Move(_oldX, _oldY, x, y))
 		{
-			if (_engine != nullptr)
-			{
-				_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
-			}
-			_currentPlayer = _currentPlayer == White ? Black : White;
-			_statusBar->setStyleSheet("QStatusBar { color : black; }");
-			_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
-			_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
+			char promotion = ' ';
 			if (_gameVariant == Chess || _gameVariant == TrueChess)
 			{
 				if (_currentPiece->GetType() == Pawn &&
 					(y == 7 && _currentPiece->GetColour() == Black ||
 						y == 0 && _currentPiece->GetColour() == White))
+				{
 					_currentPiece->Promote(Queen);
+					promotion = 'q';
+				}
 			}
 			if (_gameVariant == Shogi)
 			{
-				if (y >= 7 && _currentPiece->GetColour() == Black ||
-					y <= 1 && _currentPiece->GetColour() == White)
+				if (y >= 6 && _currentPiece->GetColour() == Black ||
+					y <= 2 && _currentPiece->GetColour() == White)
+				{
 					_currentPiece->Promote();
+					promotion = '+';
+				}
 			}
 			if (_gameVariant == ChuShogi)
 			{
-				if (y >= 10 && _currentPiece->GetColour() == Black ||
-					y <= 1 && _currentPiece->GetColour() == White)
+				if (y >= 8 && _currentPiece->GetColour() == Black ||
+					y <= 3 && _currentPiece->GetColour() == White)
+				{
 					_currentPiece->Promote();
+					promotion = '+';
+				}
 			}
+			if (_engine != nullptr)
+			{
+				_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
+			}
+			_currentPlayer = _currentPlayer == White ? Black : White;
+			_statusBar->setStyleSheet("QStatusBar { color : black; }");
+			_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
+			_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
 			_currentPiece = nullptr;
 			_oldX = -1;
 			_oldY = -1;
@@ -363,6 +373,14 @@ void VBoard::readyReadStandardOutput()
 					_board->GetData(x2, y2)->Promote(Queen);
 					break;
 				}
+			}
+			if (_gameVariant == Shogi && (y2 <= 2 || y2 >= 6) && buf[pos + 9] == '+')
+			{
+				_board->GetData(x2, y2)->Promote();
+			}
+			if (_gameVariant == ChuShogi && (y2 <= 3 || y2 >= 8) && buf[pos + 9] == '+')
+			{
+				_board->GetData(x2, y2)->Promote();
 			}
 		}
 		_currentPlayer = White;
