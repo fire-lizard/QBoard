@@ -150,10 +150,15 @@ void MainWindow::on_actionNew_game_triggered()
 		_engine = new WbEngine();
 		QString workingDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::DocumentsLocation) + "/engines/" + _engineFolder;
 		QProcess *process = _engine->RunProcess(this, workingDir, _engineExe);
-		_engine->StartGame();
-		connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
-		connect(process, SIGNAL(bytesWritten(qint64)), this->ui->vboard, SLOT(bytesWritten(qint64)));
-		this->ui->vboard->SetEngine(_engine);
+		if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
+		{
+			_engine->StartGame();
+			connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
+			connect(process, SIGNAL(bytesWritten(qint64)), this->ui->vboard, SLOT(bytesWritten(qint64)));
+			this->ui->vboard->SetEngine(_engine);
+		}
+		else
+			this->ui->statusBar->showMessage("Error while running engine: " + process->errorString());
 	}
 	else
 		this->ui->statusBar->showMessage("Engine not set");

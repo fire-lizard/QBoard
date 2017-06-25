@@ -328,10 +328,17 @@ void VBoard::readyReadStandardOutput()
 	{
 		int auxPos1 = buf.lastIndexOf("getmove ");
 		int pos = buf.lastIndexOf("move ", auxPos1);
+		if (pos == -1)
+			return;
 		char x1 = buf[pos + 5] - 97;
 		char y1 = _board->GetHeight() - buf[pos + 6] + 48;
 		char x2 = buf[pos + 7] - 97;
 		char y2 = _board->GetHeight() - buf[pos + 8] + 48;
+		if (_gameVariant == Xiangqi)
+		{
+			y1--;
+			y2--;
+		}
 		if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
 		{
 			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
