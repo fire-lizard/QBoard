@@ -66,6 +66,22 @@ MainWindow::MainWindow(QWidget *parent) :
 					if (tokenType == QXmlStreamReader::Characters)
 						_engineExe = xmlStreamReader.text().toString();
 				}
+				else if (xmlStreamReader.name() == "EngineType")
+				{
+					tokenType = xmlStreamReader.readNext();
+					if (tokenType == QXmlStreamReader::Characters)
+					{
+						QString selectedEngineType = xmlStreamReader.text().toString();
+						if (selectedEngineType == "UCI")
+							_engineType = UCI;
+						else if (selectedEngineType == "UCCI")
+							_engineType = UCCI;
+						else if (selectedEngineType == "USI")
+							_engineType = USI;
+						else
+							_engineType = WinBoard;
+					}
+				}
 			}
 		}
 		if (xmlStreamReader.hasError())
@@ -114,8 +130,17 @@ void MainWindow::on_actionSettings_triggered()
 		xmlStreamWriter.writeTextElement("GameVariant", QString::number(settingsDialog->GetGameVariants()->currentIndex()));
 		_engineFolder = settingsDialog->EngineFolder;
 		_engineExe = settingsDialog->EngineExe;
+		if (settingsDialog->SelectedEngineType == "UCI")
+			_engineType = UCI;
+		else if (settingsDialog->SelectedEngineType == "UCCI")
+			_engineType = UCCI;
+		else if (settingsDialog->SelectedEngineType == "USI")
+			_engineType = USI;
+		else
+			_engineType = WinBoard;
 		xmlStreamWriter.writeTextElement("EngineFolder", _engineFolder);
 		xmlStreamWriter.writeTextElement("EngineExe", _engineExe);
+		xmlStreamWriter.writeTextElement("EngineType", settingsDialog->SelectedEngineType);
 		xmlStreamWriter.writeEndElement();
 		xmlStreamWriter.writeEndDocument();
 		file.close();
@@ -147,7 +172,15 @@ void MainWindow::on_actionNew_game_triggered()
 	}
 	if (_engineExe != "")
 	{
-		_engine = new WbEngine();
+		switch (_engineType)
+		{
+		case UCI:
+			_engine = new UciEngine();
+			break;
+		default:
+			_engine = new WbEngine();
+			break;
+		}
 		QString workingDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::DocumentsLocation) + "/engines/" + _engineFolder;
 		QProcess *process = _engine->RunProcess(this, workingDir, _engineExe);
 		if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)

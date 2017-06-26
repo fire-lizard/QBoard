@@ -19,6 +19,7 @@ public:
 	QComboBox* GetGameVariants() const;
 	QString EngineFolder = "";
 	QString EngineExe = "";
+	QString SelectedEngineType = "";
 
 	private slots:
 

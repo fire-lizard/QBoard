@@ -43,4 +43,5 @@ private:
 	Engine *_engine = nullptr;
 	QString _engineFolder = "";
 	QString _engineExe = "";
+	EngineType _engineType = WinBoard;
 };

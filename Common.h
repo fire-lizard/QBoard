@@ -1,5 +1,10 @@
 #pragma once
 
+enum EngineType
+{
+	WinBoard, UCI, UCCI, USI
+};
+
 enum GameVariant
 {
 	Chess, Xiangqi, Shogi, ShoShogi, ChuShogi, TrueChess

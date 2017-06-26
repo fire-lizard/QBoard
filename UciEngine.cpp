@@ -8,6 +8,11 @@ UciEngine::~UciEngine()
 {
 }
 
+EngineType UciEngine::GetType()
+{
+	return UCI;
+}
+
 void UciEngine::StartGame(QString variant)
 {
 	_process->write("uci\n");

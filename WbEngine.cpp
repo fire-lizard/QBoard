@@ -8,6 +8,11 @@ WbEngine::~WbEngine()
 {
 }
 
+EngineType WbEngine::GetType()
+{
+	return WinBoard;
+}
+
 void WbEngine::StartGame(QString variant)
 {
 	_process->write("xboard\n");
