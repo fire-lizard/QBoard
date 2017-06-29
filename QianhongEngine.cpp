@@ -1,25 +1,25 @@
-#include "UciEngine.h"
+#include "QianhongEngine.h"
 
-UciEngine::UciEngine()
+QianhongEngine::QianhongEngine()
 {
 }
 
-UciEngine::~UciEngine()
+QianhongEngine::~QianhongEngine()
 {
 }
 
-EngineType UciEngine::GetType()
+EngineType QianhongEngine::GetType()
 {
-	return UCI;
+	return Qianhong;
 }
 
-void UciEngine::StartGame(QString variant)
+void QianhongEngine::StartGame(QString variant)
 {
 	_process->write("uci\n");
 	_process->write("ucinewgame\n");
 }
 
-void UciEngine::Move(int x1, int y1, int x2, int y2, char promotion)
+void QianhongEngine::Move(int x1, int y1, int x2, int y2, char promotion)
 {
 	char moveStr[6];
 	moveStr[0] = char(x1 + 97);
@@ -28,7 +28,5 @@ void UciEngine::Move(int x1, int y1, int x2, int y2, char promotion)
 	moveStr[3] = QString::number(y2)[0].toLatin1();
 	moveStr[4] = promotion != ' ' ? promotion : '\n';
 	moveStr[5] = '\n';
-	_process->write("position moves ", 15);
 	_process->write(moveStr, promotion != ' ' ? 6 : 5);
-	_process->write("go movetime 1000\n", 17);
 }

@@ -2,6 +2,7 @@
 
 Piece::Piece(PieceType pieceType, PieceColour pieceColour, bool isPromoted)
 {
+	_basePieceType = pieceType;
 	_pieceType = pieceType;
 	_pieceColour = pieceColour;
 	_isPromoted = isPromoted;
@@ -10,6 +11,11 @@ Piece::Piece(PieceType pieceType, PieceColour pieceColour, bool isPromoted)
 Piece::~Piece()
 {
 	//dtor
+}
+
+PieceType Piece::GetBaseType() const
+{
+	return _basePieceType;
 }
 
 PieceType Piece::GetType() const

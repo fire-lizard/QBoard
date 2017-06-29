@@ -177,6 +177,15 @@ void MainWindow::on_actionNew_game_triggered()
 		case UCI:
 			_engine = new UciEngine();
 			break;
+		case UCCI:
+			_engine = new UcciEngine();
+			break;
+		case Qianhong:
+			_engine = new QianhongEngine();
+			break;
+		case USI:
+			_engine = new UsiEngine();
+			break;
 		default:
 			_engine = new WbEngine();
 			break;

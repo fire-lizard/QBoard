@@ -11,6 +11,9 @@
 #include "settingsdialog.h"
 #include "WbEngine.h"
 #include "UciEngine.h"
+#include "UcciEngine.h"
+#include "UsiEngine.h"
+#include "QianhongEngine.h"
 
 namespace Ui {
 	class MainWindow;

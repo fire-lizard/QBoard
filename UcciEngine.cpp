@@ -1,25 +1,25 @@
-#include "UciEngine.h"
+#include "UcciEngine.h"
 
-UciEngine::UciEngine()
+UcciEngine::UcciEngine()
 {
 }
 
-UciEngine::~UciEngine()
+UcciEngine::~UcciEngine()
 {
 }
 
-EngineType UciEngine::GetType()
+EngineType UcciEngine::GetType()
 {
-	return UCI;
+	return UCCI;
 }
 
-void UciEngine::StartGame(QString variant)
+void UcciEngine::StartGame(QString variant)
 {
-	_process->write("uci\n");
-	_process->write("ucinewgame\n");
+	_process->write("ucci\n");
+	_process->write("uccinewgame\n");
 }
 
-void UciEngine::Move(int x1, int y1, int x2, int y2, char promotion)
+void UcciEngine::Move(int x1, int y1, int x2, int y2, char promotion)
 {
 	char moveStr[6];
 	moveStr[0] = char(x1 + 97);

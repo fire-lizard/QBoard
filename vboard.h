@@ -10,7 +10,7 @@
 #include "ChessBoard.h"
 #include "XiangqiBoard.h"
 #include "ShogiBoard.h"
-#include "TrueChessBoard.h"
+#include "MiniShogiBoard.h"
 
 class VBoard : public QWidget
 {
@@ -56,6 +56,4 @@ signals:
 	public slots :
 
 	void readyReadStandardOutput();
-
-	void bytesWritten(qint64 bytes);
 };

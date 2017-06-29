@@ -24,12 +24,15 @@ SOURCES += main.cpp\
     vboard.cpp \
     ShogiBoard.cpp \
     ShogiPiece.cpp \
-    TrueChessBoard.cpp \
     XiangqiBoard.cpp \
     XiangqiPiece.cpp \
     Engine.cpp \
     UciEngine.cpp \
-    WbEngine.cpp
+    WbEngine.cpp \
+    QianhongEngine.cpp \
+    UcciEngine.cpp \
+    UsiEngine.cpp \
+    MiniShogiBoard.cpp
 
 HEADERS  += mainwindow.h \
     Board.h \
@@ -43,12 +46,15 @@ HEADERS  += mainwindow.h \
     vboard.h \
     ShogiBoard.h \
     ShogiPiece.h \
-    TrueChessBoard.h \
     XiangqiBoard.h \
     XiangqiPiece.h \
     Engine.h \
     UciEngine.h \
-    WbEngine.h
+    WbEngine.h \
+    QianhongEngine.h \
+    UcciEngine.h \
+    UsiEngine.h \
+    MiniShogiBoard.h
 
 FORMS    += mainwindow.ui \
     settingsdialog.ui

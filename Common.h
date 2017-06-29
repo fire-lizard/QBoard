@@ -2,12 +2,12 @@
 
 enum EngineType
 {
-	WinBoard, UCI, UCCI, USI
+	WinBoard, UCI, UCCI, Qianhong, USI
 };
 
 enum GameVariant
 {
-	Chess, Xiangqi, Shogi, ShoShogi, ChuShogi, TrueChess
+	Chess, Xiangqi, Shogi, ShoShogi, ChuShogi, MiniShogi
 };
 
 enum PieceColour

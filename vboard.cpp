@@ -48,7 +48,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				}
 				else
 				{
-					if (_gameVariant == Chess || _gameVariant == TrueChess)
+					if (_gameVariant == Chess)
 					{
 						if ((i + j) % 2 != 0)
 							painter.setBrush(Qt::gray);
@@ -74,7 +74,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			}
 			else
 			{
-				if (_gameVariant == Chess || _gameVariant == TrueChess)
+				if (_gameVariant == Chess)
 				{
 					if ((i + j) % 2 != 0)
 						painter.setBrush(Qt::gray);
@@ -128,7 +128,7 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 		if (_board->Move(_oldX, _oldY, x, y))
 		{
 			char promotion = ' ';
-			if (_gameVariant == Chess || _gameVariant == TrueChess)
+			if (_gameVariant == Chess)
 			{
 				if (_currentPiece->GetType() == Pawn &&
 					(y == 7 && _currentPiece->GetColour() == Black ||
@@ -158,7 +158,10 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 			}
 			if (_engine != nullptr)
 			{
-				_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
+				if (_gameVariant != Xiangqi)
+					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
+				else
+					_engine->Move(_oldX, _board->GetHeight() - _oldY - 1, x, _board->GetHeight() - y - 1, promotion);
 			}
 			_currentPlayer = _currentPlayer == White ? Black : White;
 			_statusBar->setStyleSheet("QStatusBar { color : black; }");
@@ -218,11 +221,11 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	case ChuShogi:
 		_board = new ChuShogiBoard();
 		break;
+	case MiniShogi:
+		_board = new MiniShogiBoard();
+		break;
 	case Xiangqi:
 		_board = new XiangqiBoard();
-		break;
-	case TrueChess:
-		_board = new TrueChessBoard();
 		break;
 	default:
 		_board = new ChessBoard();
@@ -353,7 +356,7 @@ void VBoard::readyReadStandardOutput()
 		{
 			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
 			_board->Move(x1, y1, x2, y2);
-			if ((_gameVariant == Chess || _gameVariant == TrueChess) && 
+			if ((_gameVariant == Chess) && 
 				(y2 == 0 || y2 == _board->GetHeight() - 1) && 
 				_board->GetData(x2, y2)->GetType() == Pawn)
 			{
@@ -387,9 +390,4 @@ void VBoard::readyReadStandardOutput()
 		this->_statusBar->showMessage("White move");
 		this->repaint();
 	}
-}
-
-void VBoard::bytesWritten(qint64 bytes)
-{
-	this->_textEdit->setPlainText(QString::number(bytes) + " bytes written.\n");
 }
