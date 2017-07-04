@@ -30,3 +30,8 @@ void QianhongEngine::Move(int x1, int y1, int x2, int y2, char promotion)
 	moveStr[5] = '\n';
 	_process->write(moveStr, promotion != ' ' ? 6 : 5);
 }
+
+QByteArray QianhongEngine::AddMove(int x1, int y1, int x2, int y2, char promotion)
+{
+	return QByteArray(1, ' ');
+}

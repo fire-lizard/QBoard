@@ -138,7 +138,16 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 					promotion = 'q';
 				}
 			}
-			if (_gameVariant == Shogi)
+			if (_gameVariant == MiniShogi)
+			{
+				if (y == 4 && _currentPiece->GetColour() == Black ||
+					y == 0 && _currentPiece->GetColour() == White)
+				{
+					_currentPiece->Promote();
+					promotion = '+';
+				}
+			}
+			if (_gameVariant == Shogi || _gameVariant == ShoShogi)
 			{
 				if (y >= 6 && _currentPiece->GetColour() == Black ||
 					y <= 2 && _currentPiece->GetColour() == White)
@@ -158,10 +167,12 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 			}
 			if (_engine != nullptr)
 			{
-				if (_gameVariant != Xiangqi)
-					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
-				else
+				if (_gameVariant == Xiangqi && _engine->GetType() == WinBoard)
 					_engine->Move(_oldX, _board->GetHeight() - _oldY - 1, x, _board->GetHeight() - y - 1, promotion);
+				if (_engine->GetType() == USI)
+					_engine->Move(_board->GetWidth() - _oldX, _oldY, _board->GetWidth() - x, y, promotion);
+				else
+					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
 			}
 			_currentPlayer = _currentPlayer == White ? Black : White;
 			_statusBar->setStyleSheet("QStatusBar { color : black; }");
@@ -183,7 +194,6 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 				_currentPiece = _board->GetData(x, y);
 				_oldX = x;
 				_oldY = y;
-				_myMoves = _board->GetAllMoves(_currentPlayer);
 				_board->GetMoves(p, x, y);
 				_moves = _board->Moves();
 				this->repaint();
@@ -206,7 +216,6 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 {
 	_currentPiece = nullptr;
 	_moves.clear();
-	_myMoves.clear();
 	_opponentMoves.clear();
 	_gameVariant = gameVariant;
 	switch (_gameVariant)
@@ -335,59 +344,71 @@ void VBoard::readyReadStandardOutput()
 {
 	QProcess *p = static_cast<QProcess*>(sender());
 	QByteArray buf = p->readAllStandardOutput();
-	int len = buf.length();
-	this->_textEdit->setPlainText(buf);
-	if (len >= 6)
+	this->_textEdit->setText(buf);
+	int auxPos1 = buf.lastIndexOf("getmove ");
+	int pos = buf.lastIndexOf("move ", auxPos1);
+	if (pos == -1)
+		return;
+	char x1, y1, x2, y2;
+	if (_engine->GetType() == USI)
 	{
-		int auxPos1 = buf.lastIndexOf("getmove ");
-		int pos = buf.lastIndexOf("move ", auxPos1);
-		if (pos == -1)
-			return;
-		char x1 = buf[pos + 5] - 97;
-		char y1 = _board->GetHeight() - buf[pos + 6] + 48;
-		char x2 = buf[pos + 7] - 97;
-		char y2 = _board->GetHeight() - buf[pos + 8] + 48;
-		if (_gameVariant == Xiangqi)
-		{
-			y1--;
-			y2--;
-		}
-		if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
-		{
-			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
-			_board->Move(x1, y1, x2, y2);
-			if ((_gameVariant == Chess) && 
-				(y2 == 0 || y2 == _board->GetHeight() - 1) && 
-				_board->GetData(x2, y2)->GetType() == Pawn)
-			{
-				char promotion = buf[pos + 9];
-				switch (promotion)
-				{
-				case 'n':
-					_board->GetData(x2, y2)->Promote(WhiteHorse);
-					break;
-				case 'b':
-					_board->GetData(x2, y2)->Promote(Bishop);
-					break;
-				case 'r':
-					_board->GetData(x2, y2)->Promote(Rook);
-					break;
-				default:
-					_board->GetData(x2, y2)->Promote(Queen);
-					break;
-				}
-			}
-			if (_gameVariant == Shogi && (y2 <= 2 || y2 >= 6) && buf[pos + 9] == '+')
-			{
-				_board->GetData(x2, y2)->Promote();
-			}
-			if (_gameVariant == ChuShogi && (y2 <= 3 || y2 >= 8) && buf[pos + 9] == '+')
-			{
-				_board->GetData(x2, y2)->Promote();
-			}
-		}
-		_currentPlayer = White;
-		this->_statusBar->showMessage("White move");
-		this->repaint();
+		x1 = _board->GetWidth() - buf[pos + 5] + 48;
+		y1 = _board->GetHeight() - buf[pos + 6] + 96;
+		x2 = _board->GetWidth() - buf[pos + 7] + 48;
+		y2 = _board->GetHeight() - buf[pos + 8] + 96;
 	}
+	else
+	{
+		x1 = buf[pos + 5] - 97;
+		y1 = _board->GetHeight() - buf[pos + 6] + 48;
+		x2 = buf[pos + 7] - 97;
+		y2 = _board->GetHeight() - buf[pos + 8] + 48;
+	}
+	if (_gameVariant == Xiangqi)
+	{
+		y1--;
+		y2--;
+	}
+	if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
+	{
+		_board->GetMoves(_board->GetData(x1, y1), x1, y1);
+		_board->Move(x1, y1, x2, y2);
+		_engine->AddMove(x1, y1, x2, y2, buf[pos + 9]);
+		if (_gameVariant == Chess &&
+			(y2 == 0 || y2 == _board->GetHeight() - 1) &&
+			_board->GetData(x2, y2)->GetType() == Pawn)
+		{
+			char promotion = buf[pos + 9];
+			switch (promotion)
+			{
+			case 'n':
+				_board->GetData(x2, y2)->Promote(WhiteHorse);
+				break;
+			case 'b':
+				_board->GetData(x2, y2)->Promote(Bishop);
+				break;
+			case 'r':
+				_board->GetData(x2, y2)->Promote(Rook);
+				break;
+			default:
+				_board->GetData(x2, y2)->Promote(Queen);
+				break;
+			}
+		}
+		if (_gameVariant == MiniShogi && (y2 == 0 || y2 == 4) && buf[pos + 9] == '+')
+		{
+			_board->GetData(x2, y2)->Promote();
+		}
+		if ((_gameVariant == Shogi || _gameVariant == ShoShogi) && (y2 <= 2 || y2 >= 6) && buf[pos + 9] == '+')
+		{
+			_board->GetData(x2, y2)->Promote();
+		}
+		if (_gameVariant == ChuShogi && (y2 <= 3 || y2 >= 8) && buf[pos + 9] == '+')
+		{
+			_board->GetData(x2, y2)->Promote();
+		}
+	}
+	_currentPlayer = White;
+	this->_statusBar->showMessage("White move");
+	this->repaint();
 }

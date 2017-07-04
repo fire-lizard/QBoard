@@ -196,7 +196,6 @@ void MainWindow::on_actionNew_game_triggered()
 		{
 			_engine->StartGame();
 			connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
-			connect(process, SIGNAL(bytesWritten(qint64)), this->ui->vboard, SLOT(bytesWritten(qint64)));
 			this->ui->vboard->SetEngine(_engine);
 		}
 		else

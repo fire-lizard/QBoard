@@ -12,9 +12,11 @@ public:
 	virtual EngineType GetType() = 0;
 	virtual void StartGame(QString variant = "") = 0;
 	virtual void Move(int x1, int y1, int x2, int y2, char promotion = ' ') = 0;
+	virtual QByteArray AddMove(int x1, int y1, int x2, int y2, char promotion = ' ') = 0;
 
 protected:
 	QProcess *_process = nullptr;
+	std::vector<QByteArray> _moves;
 
 private:
 };

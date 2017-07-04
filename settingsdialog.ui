@@ -68,47 +68,7 @@
    </row>
    <row>
     <property name="text">
-     <string>TJshogi</string>
-    </property>
-   </row>
-   <row>
-    <property name="text">
-     <string>TJshogi</string>
-    </property>
-   </row>
-   <row>
-    <property name="text">
-     <string>TJxiangqi</string>
-    </property>
-   </row>
-   <row>
-    <property name="text">
-     <string>TJchess_1.3</string>
-    </property>
-   </row>
-   <row>
-    <property name="text">
-     <string>EleEye</string>
-    </property>
-   </row>
-   <row>
-    <property name="text">
-     <string>Fruit</string>
-    </property>
-   </row>
-   <row>
-    <property name="text">
-     <string>LaramieV3</string>
-    </property>
-   </row>
-   <row>
-    <property name="text">
-     <string>Qianhong</string>
-    </property>
-   </row>
-   <row>
-    <property name="text">
-     <string>Fairy-Max</string>
+     <string>Sunfish</string>
     </property>
    </row>
    <row>
@@ -118,12 +78,87 @@
    </row>
    <row>
     <property name="text">
+     <string>Fruit</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>Rybka232a</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>Stockfish</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>komodo-9</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>TJchess_1.3</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>Fairy-Max</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
      <string>HaQi</string>
     </property>
    </row>
    <row>
     <property name="text">
+     <string>EleEye</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>Qianhong</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>TJxiangqi</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
      <string>Shokidoki</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>LaramieV3</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>TJshogi</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>TJshogi</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>TJshogi</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>TJshogi</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>HaChu</string>
     </property>
    </row>
    <column>
@@ -158,27 +193,27 @@
    </item>
    <item row="1" column="0">
     <property name="text">
-     <string>TJshogi_USI.exe</string>
+     <string>sunfish.exe</string>
     </property>
    </item>
    <item row="1" column="1">
     <property name="text">
-     <string>Shogi</string>
+     <string>Chess</string>
     </property>
    </item>
    <item row="1" column="2">
     <property name="text">
-     <string>USI</string>
+     <string>WinBoard</string>
     </property>
    </item>
    <item row="2" column="0">
     <property name="text">
-     <string>TJshogi_WB.exe</string>
+     <string>pulsar2009-9b.exe</string>
     </property>
    </item>
    <item row="2" column="1">
     <property name="text">
-     <string>Shogi</string>
+     <string>Chess</string>
     </property>
    </item>
    <item row="2" column="2">
@@ -188,22 +223,22 @@
    </item>
    <item row="3" column="0">
     <property name="text">
-     <string>TJxiangqi.exe</string>
+     <string>fruit_21.exe</string>
     </property>
    </item>
    <item row="3" column="1">
     <property name="text">
-     <string>Xiangqi</string>
+     <string>Chess</string>
     </property>
    </item>
    <item row="3" column="2">
     <property name="text">
-     <string>WinBoard</string>
+     <string>UCI</string>
     </property>
    </item>
    <item row="4" column="0">
     <property name="text">
-     <string>TJchessWB_1.3_64bit</string>
+     <string>Rybkav2.3.2a.mp.x64.exe</string>
     </property>
    </item>
    <item row="4" column="1">
@@ -213,27 +248,27 @@
    </item>
    <item row="4" column="2">
     <property name="text">
-     <string>WinBoard</string>
+     <string>UCI</string>
     </property>
    </item>
    <item row="5" column="0">
     <property name="text">
-     <string>ELEEYE.EXE</string>
+     <string>Stockfish.exe</string>
     </property>
    </item>
    <item row="5" column="1">
     <property name="text">
-     <string>Xiangqi</string>
+     <string>Chess</string>
     </property>
    </item>
    <item row="5" column="2">
     <property name="text">
-     <string>UCCI</string>
+     <string>UCI</string>
     </property>
    </item>
    <item row="6" column="0">
     <property name="text">
-     <string>fruit_21.exe</string>
+     <string>komodo-9.02-64bit.exe</string>
     </property>
    </item>
    <item row="6" column="1">
@@ -248,22 +283,22 @@
    </item>
    <item row="7" column="0">
     <property name="text">
-     <string>LaramieV3.exe</string>
+     <string>TJchessWB_1.3_64bit</string>
     </property>
    </item>
    <item row="7" column="1">
     <property name="text">
-     <string>Shogi</string>
+     <string>Chess</string>
     </property>
    </item>
    <item row="7" column="2">
     <property name="text">
-     <string>USI</string>
+     <string>WinBoard</string>
     </property>
    </item>
    <item row="8" column="0">
     <property name="text">
-     <string>QHPlugin.exe</string>
+     <string>MaxQi.exe</string>
     </property>
    </item>
    <item row="8" column="1">
@@ -273,12 +308,12 @@
    </item>
    <item row="8" column="2">
     <property name="text">
-     <string>Qianhong</string>
+     <string>WinBoard</string>
     </property>
    </item>
    <item row="9" column="0">
     <property name="text">
-     <string>MaxQi.exe</string>
+     <string>haqikid.exe</string>
     </property>
    </item>
    <item row="9" column="1">
@@ -293,22 +328,22 @@
    </item>
    <item row="10" column="0">
     <property name="text">
-     <string>pulsar2009-9b.exe</string>
+     <string>ELEEYE.EXE</string>
     </property>
    </item>
    <item row="10" column="1">
     <property name="text">
-     <string>Chess</string>
+     <string>Xiangqi</string>
     </property>
    </item>
    <item row="10" column="2">
     <property name="text">
-     <string>WinBoard</string>
+     <string>UCCI</string>
     </property>
    </item>
    <item row="11" column="0">
     <property name="text">
-     <string>haqikid.exe</string>
+     <string>QHPlugin.exe</string>
     </property>
    </item>
    <item row="11" column="1">
@@ -318,20 +353,125 @@
    </item>
    <item row="11" column="2">
     <property name="text">
-     <string>WinBoard</string>
+     <string>Qianhong</string>
     </property>
    </item>
    <item row="12" column="0">
     <property name="text">
-     <string>sdk09s.exe</string>
+     <string>TJxiangqi.exe</string>
     </property>
    </item>
    <item row="12" column="1">
     <property name="text">
-     <string>Shogi</string>
+     <string>Xiangqi</string>
     </property>
    </item>
    <item row="12" column="2">
+    <property name="text">
+     <string>WinBoard</string>
+    </property>
+   </item>
+   <item row="13" column="0">
+    <property name="text">
+     <string>sdk09s.exe</string>
+    </property>
+   </item>
+   <item row="13" column="1">
+    <property name="text">
+     <string>Shogi</string>
+    </property>
+   </item>
+   <item row="13" column="2">
+    <property name="text">
+     <string>WinBoard</string>
+    </property>
+   </item>
+   <item row="14" column="0">
+    <property name="text">
+     <string>LaramieV3.exe</string>
+    </property>
+   </item>
+   <item row="14" column="1">
+    <property name="text">
+     <string>Shogi</string>
+    </property>
+   </item>
+   <item row="14" column="2">
+    <property name="text">
+     <string>USI</string>
+    </property>
+   </item>
+   <item row="15" column="0">
+    <property name="text">
+     <string>TJshogi_USI.exe</string>
+    </property>
+   </item>
+   <item row="15" column="1">
+    <property name="text">
+     <string>Shogi</string>
+    </property>
+   </item>
+   <item row="15" column="2">
+    <property name="text">
+     <string>USI</string>
+    </property>
+   </item>
+   <item row="16" column="0">
+    <property name="text">
+     <string>TJshogi_WB.exe</string>
+    </property>
+   </item>
+   <item row="16" column="1">
+    <property name="text">
+     <string>Shogi</string>
+    </property>
+   </item>
+   <item row="16" column="2">
+    <property name="text">
+     <string>WinBoard</string>
+    </property>
+   </item>
+   <item row="17" column="0">
+    <property name="text">
+     <string>TJshogi5x5_USI.exe</string>
+    </property>
+   </item>
+   <item row="17" column="1">
+    <property name="text">
+     <string>MiniShogi</string>
+    </property>
+   </item>
+   <item row="17" column="2">
+    <property name="text">
+     <string>USI</string>
+    </property>
+   </item>
+   <item row="18" column="0">
+    <property name="text">
+     <string>TJshogi5x5_WB.exe</string>
+    </property>
+   </item>
+   <item row="18" column="1">
+    <property name="text">
+     <string>MiniShogi</string>
+    </property>
+   </item>
+   <item row="18" column="2">
+    <property name="text">
+     <string>WinBoard</string>
+    </property>
+   </item>
+   <item row="19" column="0">
+    <property name="text">
+     <string>HaChu.exe</string>
+    </property>
+   </item>
+   <item row="19" column="1">
+    <property name="text">
+     <string>Chu Shogi</string>
+    </property>
+   </item>
+   <item row="19" column="2">
     <property name="text">
      <string>WinBoard</string>
     </property>
@@ -373,7 +513,7 @@
    </item>
    <item>
     <property name="text">
-     <string>Shogi 5x5</string>
+     <string>Mini Shogi</string>
     </property>
    </item>
   </widget>

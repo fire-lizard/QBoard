@@ -43,7 +43,6 @@ private:
 	int _oldX = -1;
 	int _oldY = -1;
 	vector<pair<int, int>> _moves;
-	vector<tuple<int, int, int, int>> _myMoves;
 	vector<tuple<int, int, int, int>> _opponentMoves;
 	QStatusBar *_statusBar;
 	QTextEdit *_textEdit;

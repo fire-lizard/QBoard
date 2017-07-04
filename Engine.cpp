@@ -19,5 +19,5 @@ QProcess* Engine::RunProcess(QObject *parentObject, QString engineFolder, QStrin
 void Engine::Quit() const
 {
 	_process->write("quit\n");
-	delete _process;
+	_process->close();
 }

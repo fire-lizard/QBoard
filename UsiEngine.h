@@ -1,13 +1,13 @@
 #pragma once
-#include "Engine.h"
+#include "UciEngine.h"
 
-class UsiEngine : public Engine
+class UsiEngine : public UciEngine
 {
 public:
 	UsiEngine();
 	virtual ~UsiEngine();
 	EngineType GetType() override;
-	void StartGame(QString variant = "") override;
 	void Move(int x1, int y1, int x2, int y2, char promotion = ' ') override;
+	QByteArray AddMove(int x1, int y1, int x2, int y2, char promotion = ' ') override;
 };
 
