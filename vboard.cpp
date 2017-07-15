@@ -117,6 +117,7 @@ void VBoard::paintEvent(QPaintEvent *)
 
 void VBoard::mousePressEvent(QMouseEvent *event)
 {
+	if (_engine != nullptr && _currentPlayer == Black) return;
 	int w = this->size().width() / _board->GetWidth();
 	int h = this->size().height() / _board->GetHeight();
 	int x = event->x() / w;
@@ -167,9 +168,9 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 			}
 			if (_engine != nullptr)
 			{
-				if (_gameVariant == Xiangqi && _engine->GetType() == WinBoard)
+				if (_gameVariant == Xiangqi)
 					_engine->Move(_oldX, _board->GetHeight() - _oldY - 1, x, _board->GetHeight() - y - 1, promotion);
-				if (_engine->GetType() == USI)
+				else if (_engine->GetType() == USI)
 					_engine->Move(_board->GetWidth() - _oldX, _oldY, _board->GetWidth() - x, y, promotion);
 				else
 					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);

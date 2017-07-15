@@ -50,7 +50,7 @@ QByteArray UciEngine::AddMove(int x1, int y1, int x2, int y2, char promotion)
 		moveStr.push_back(x2);
 		moveStr.push_back(y2);
 	}
-	if (promotion == 'n' || promotion == 'b' || promotion == 'r' || promotion == 'q' || promotion == '+')
+	if (promotion == 'n' || promotion == 'b' || promotion == 'r' || promotion == 'q')
 	{
 		moveStr.push_back(promotion);
 	}
