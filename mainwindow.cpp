@@ -89,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent) :
 		
 		file.close();
 	}
+	on_actionNew_game_triggered();
 }
 
 MainWindow::~MainWindow()
@@ -145,7 +146,6 @@ void MainWindow::on_actionSettings_triggered()
 		xmlStreamWriter.writeEndDocument();
 		file.close();
 	}
-
 }
 
 void MainWindow::on_actionAbout_triggered()
@@ -190,12 +190,13 @@ void MainWindow::on_actionNew_game_triggered()
 			_engine = new WbEngine();
 			break;
 		}
-		QString workingDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::DocumentsLocation) + "/engines/" + _engineFolder;
+		QString workingDir = /*QStandardPaths::writableLocation(QStandardPaths::StandardLocation::DocumentsLocation) + */"c:/engines/" + _engineFolder;
 		QProcess *process = _engine->RunProcess(this, workingDir, _engineExe);
 		if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
 		{
 			_engine->StartGame();
 			connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
+			connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(readyReadStandardError()));
 			this->ui->vboard->SetEngine(_engine);
 		}
 		else
@@ -292,5 +293,14 @@ void MainWindow::on_actionSave_triggered()
 		file.open(QIODevice::WriteOnly | QIODevice::Text);
 		file.write(json);
 		file.close();
+	}
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+	if (_engine != nullptr)
+	{
+		_engine->Quit();
+		delete _engine;
 	}
 }

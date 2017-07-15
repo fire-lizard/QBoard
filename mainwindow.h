@@ -41,6 +41,8 @@ public:
     void on_actionSave_triggered();
 
 private:
+	void closeEvent(QCloseEvent *) override;
+
 	Ui::MainWindow *ui;
 	QString _currentStyle = "";
 	Engine *_engine = nullptr;

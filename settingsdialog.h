@@ -23,8 +23,6 @@ public:
 
 	private slots:
 
-    void on_tableWidget_clicked(const QModelIndex &index);
-
 private:
 	Ui::SettingsDialog *ui;
 };

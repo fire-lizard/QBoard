@@ -26,11 +26,3 @@ QComboBox* SettingsDialog::GetGameVariants() const
 {
 	return ui->variantsComboBox;
 }
-
-void SettingsDialog::on_tableWidget_clicked(const QModelIndex &index)
-{
-	int r = index.row();
-	EngineFolder = ui->tableWidget->verticalHeaderItem(r)->data(0).toString();
-	EngineExe = ui->tableWidget->item(r, 0)->data(0).toString();
-	SelectedEngineType = ui->tableWidget->item(r, 2)->data(0).toString();
-}

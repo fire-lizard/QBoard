@@ -255,6 +255,8 @@ PieceColour VBoard::GetCurrentPlayer() const
 
 void VBoard::SetCurrentPlayer(PieceColour currentPlayer)
 {
+	_moves.clear();
+	_opponentMoves.clear();
 	_currentPlayer = currentPlayer;
 }
 
@@ -353,9 +355,9 @@ void VBoard::readyReadStandardOutput()
 	if (_engine->GetType() == USI)
 	{
 		x1 = _board->GetWidth() - buf[pos + 5] + 48;
-		y1 = _board->GetHeight() - buf[pos + 6] + 96;
+		y1 = buf[pos + 6] - 97;
 		x2 = _board->GetWidth() - buf[pos + 7] + 48;
-		y2 = _board->GetHeight() - buf[pos + 8] + 96;
+		y2 = buf[pos + 8] - 97;
 	}
 	else
 	{
@@ -373,7 +375,7 @@ void VBoard::readyReadStandardOutput()
 	{
 		_board->GetMoves(_board->GetData(x1, y1), x1, y1);
 		_board->Move(x1, y1, x2, y2);
-		_engine->AddMove(x1, y1, x2, y2, buf[pos + 9]);
+		_engine->AddMove(buf[pos + 5], buf[pos + 6], buf[pos + 7], buf[pos + 8], buf[pos + 9]);
 		if (_gameVariant == Chess &&
 			(y2 == 0 || y2 == _board->GetHeight() - 1) &&
 			_board->GetData(x2, y2)->GetType() == Pawn)
@@ -411,4 +413,11 @@ void VBoard::readyReadStandardOutput()
 	_currentPlayer = White;
 	this->_statusBar->showMessage("White move");
 	this->repaint();
+}
+
+void VBoard::readyReadStandardError()
+{
+	QProcess *p = static_cast<QProcess*>(sender());
+	QByteArray buf = p->readAllStandardError();
+	this->_textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
 }

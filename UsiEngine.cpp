@@ -13,26 +13,43 @@ EngineType UsiEngine::GetType()
 	return USI;
 }
 
+void UsiEngine::StartGame(QString variant)
+{
+	_moves.clear();
+	_process->write("usi\n");
+	_process->write("usinewgame\n");
+}
+
 void UsiEngine::Move(int x1, int y1, int x2, int y2, char promotion)
 {
-	_process->write("position startpos moves ", 24);
+	_process->write("position startpos moves ");
 	for (int index = 0; index < _moves.size(); index++)
 	{
 		_process->write(_moves[index]);
-		_process->write(" ", 1);
+		_process->write(" ");
 	}
 	_process->write(AddMove(x1, y1, x2, y2, promotion));
-	_process->write("\n", 1);
-	_process->write("go movetime 1000\n", 17);
+	_process->write("\n");
+	_process->write("go movetime 1000\n");
 }
 
 QByteArray UsiEngine::AddMove(int x1, int y1, int x2, int y2, char promotion)
 {
 	QByteArray moveStr;
-	moveStr.push_back(QString::number(x1)[0].toLatin1());
-	moveStr.push_back(char(y1 + 97));
-	moveStr.push_back(QString::number(x2)[0].toLatin1());
-	moveStr.push_back(char(y2 + 97));
+	if (x1 < 10)
+	{
+		moveStr.push_back(QString::number(x1)[0].toLatin1());
+		moveStr.push_back(char(y1 + 97));
+		moveStr.push_back(QString::number(x2)[0].toLatin1());
+		moveStr.push_back(char(y2 + 97));
+	}
+	else
+	{
+		moveStr.push_back(x1);
+		moveStr.push_back(y1);
+		moveStr.push_back(x2);
+		moveStr.push_back(y2);
+	}
 	if (promotion == 'n' || promotion == 'b' || promotion == 'r' || promotion == 'q' || promotion == '+')
 	{
 		moveStr.push_back(promotion);

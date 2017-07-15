@@ -29,9 +29,9 @@ public:
 	void SetEngine(Engine *engine);
 
 private:
-	void paintEvent(QPaintEvent *);
+	void paintEvent(QPaintEvent *) override;
 
-	void mousePressEvent(QMouseEvent *event);
+	void mousePressEvent(QMouseEvent *event) override;
 
 	bool PossibleMove(int x, int y);
 	void RemoveMove(int x, int y);
@@ -55,4 +55,6 @@ signals:
 	public slots :
 
 	void readyReadStandardOutput();
+
+	void readyReadStandardError();
 };
