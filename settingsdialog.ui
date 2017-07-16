@@ -44,7 +44,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>80</width>
+     <width>100</width>
      <height>16</height>
     </rect>
    </property>
@@ -97,7 +97,7 @@
     <rect>
      <x>10</x>
      <y>50</y>
-     <width>80</width>
+     <width>100</width>
      <height>16</height>
     </rect>
    </property>
@@ -105,7 +105,7 @@
     <string>Game variant</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="colourComboBox">
+  <widget class="QComboBox" name="whitePlayerComboBox">
    <property name="geometry">
     <rect>
      <x>230</x>
@@ -116,29 +116,29 @@
    </property>
    <item>
     <property name="text">
-     <string>White</string>
+     <string>Human</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Black</string>
+     <string>Pulsar</string>
     </property>
    </item>
   </widget>
-  <widget class="QLabel" name="colourLabel">
+  <widget class="QLabel" name="whitePlayerLabel">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>90</y>
-     <width>80</width>
+     <width>100</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Player colour</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot;background:#ffffff;&quot;&gt;White player&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="engineComboBox">
+  <widget class="QComboBox" name="blackPlayerComboBox">
    <property name="geometry">
     <rect>
      <x>230</x>
@@ -147,18 +147,28 @@
      <height>22</height>
     </rect>
    </property>
+   <item>
+    <property name="text">
+     <string>Human</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Pulsar</string>
+    </property>
+   </item>
   </widget>
-  <widget class="QLabel" name="engineLabel">
+  <widget class="QLabel" name="blackPlayerLabel">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>130</y>
-     <width>80</width>
+     <width>100</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Engine</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot;color:#ffffff;background:#000000;&quot;&gt;Black player&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>

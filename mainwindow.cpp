@@ -66,20 +66,20 @@ MainWindow::MainWindow(QWidget *parent) :
 					if (tokenType == QXmlStreamReader::Characters)
 						_engineExe = xmlStreamReader.text().toString();
 				}
-				else if (xmlStreamReader.name() == "EngineType")
+				else if (xmlStreamReader.name() == "EngineProtocol")
 				{
 					tokenType = xmlStreamReader.readNext();
 					if (tokenType == QXmlStreamReader::Characters)
 					{
-						QString selectedEngineType = xmlStreamReader.text().toString();
-						if (selectedEngineType == "UCI")
-							_engineType = UCI;
-						else if (selectedEngineType == "UCCI")
-							_engineType = UCCI;
-						else if (selectedEngineType == "USI")
-							_engineType = USI;
+						QString selectedEngineProtocol = xmlStreamReader.text().toString();
+						if (selectedEngineProtocol == "UCI")
+							_engineProtocol = UCI;
+						else if (selectedEngineProtocol == "UCCI")
+							_engineProtocol = UCCI;
+						else if (selectedEngineProtocol == "USI")
+							_engineProtocol = USI;
 						else
-							_engineType = WinBoard;
+							_engineProtocol = WinBoard;
 					}
 				}
 			}
@@ -131,17 +131,17 @@ void MainWindow::on_actionSettings_triggered()
 		xmlStreamWriter.writeTextElement("GameVariant", QString::number(settingsDialog->GetGameVariants()->currentIndex()));
 		_engineFolder = settingsDialog->EngineFolder;
 		_engineExe = settingsDialog->EngineExe;
-		if (settingsDialog->SelectedEngineType == "UCI")
-			_engineType = UCI;
-		else if (settingsDialog->SelectedEngineType == "UCCI")
-			_engineType = UCCI;
-		else if (settingsDialog->SelectedEngineType == "USI")
-			_engineType = USI;
+		if (settingsDialog->SelectedEngineProtocol == "UCI")
+			_engineProtocol = UCI;
+		else if (settingsDialog->SelectedEngineProtocol == "UCCI")
+			_engineProtocol = UCCI;
+		else if (settingsDialog->SelectedEngineProtocol == "USI")
+			_engineProtocol = USI;
 		else
-			_engineType = WinBoard;
+			_engineProtocol = WinBoard;
 		xmlStreamWriter.writeTextElement("EngineFolder", _engineFolder);
 		xmlStreamWriter.writeTextElement("EngineExe", _engineExe);
-		xmlStreamWriter.writeTextElement("EngineType", settingsDialog->SelectedEngineType);
+		xmlStreamWriter.writeTextElement("EngineProtocol", settingsDialog->SelectedEngineProtocol);
 		xmlStreamWriter.writeEndElement();
 		xmlStreamWriter.writeEndDocument();
 		file.close();
@@ -150,17 +150,7 @@ void MainWindow::on_actionSettings_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-	QMessageBox::information(this, "About", "QBoard 1.0");
-}
-
-void MainWindow::on_actionExit_triggered()
-{
-	if (_engine != nullptr)
-	{
-		_engine->Quit();
-		delete _engine;
-	}
-	QApplication::quit();
+	QMessageBox::about(this, "About", "QBoard 1.0");
 }
 
 void MainWindow::on_actionNew_game_triggered()
@@ -172,7 +162,7 @@ void MainWindow::on_actionNew_game_triggered()
 	}
 	if (_engineExe != "")
 	{
-		switch (_engineType)
+		switch (_engineProtocol)
 		{
 		case UCI:
 			_engine = new UciEngine();
@@ -190,7 +180,7 @@ void MainWindow::on_actionNew_game_triggered()
 			_engine = new WbEngine();
 			break;
 		}
-		QString workingDir = /*QStandardPaths::writableLocation(QStandardPaths::StandardLocation::DocumentsLocation) + */"c:/engines/" + _engineFolder;
+		QString workingDir = QCoreApplication::applicationDirPath() + "/engines/" + _engineFolder;
 		QProcess *process = _engine->RunProcess(this, workingDir, _engineExe);
 		if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
 		{
@@ -294,6 +284,25 @@ void MainWindow::on_actionSave_triggered()
 		file.write(json);
 		file.close();
 	}
+}
+
+void MainWindow::on_actionStop_game_triggered()
+{
+	if (_engine != nullptr)
+	{
+		_engine->Quit();
+		delete _engine;
+	}
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+	if (_engine != nullptr)
+	{
+		_engine->Quit();
+		delete _engine;
+	}
+	QApplication::quit();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

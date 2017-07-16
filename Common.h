@@ -1,6 +1,6 @@
 #pragma once
 
-enum EngineType
+enum EngineProtocol
 {
 	WinBoard, UCI, UCCI, Qianhong, USI
 };

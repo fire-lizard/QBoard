@@ -26,3 +26,15 @@ QComboBox* SettingsDialog::GetGameVariants() const
 {
 	return ui->variantsComboBox;
 }
+
+void SettingsDialog::on_variantsComboBox_currentIndexChanged(int index)
+{
+	if (index == 1)
+	{
+		this->ui->whitePlayerLabel->setText("<html><head/><body><p><span style='color:#ffffff;background:#ff0000; '>Red player</span></p></body></html>");
+	}
+	else
+	{
+		this->ui->whitePlayerLabel->setText("<html><head/><body><p><span style='background:#ffffff; '>White player</span></p></body></html>");
+	}
+}

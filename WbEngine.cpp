@@ -8,7 +8,7 @@ WbEngine::~WbEngine()
 {
 }
 
-EngineType WbEngine::GetType()
+EngineProtocol WbEngine::GetType()
 {
 	return WinBoard;
 }

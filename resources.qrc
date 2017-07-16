@@ -6,6 +6,7 @@
         <file>toolbar/Save.png</file>
         <file>toolbar/Settings.png</file>
         <file>toolbar/New.png</file>
+        <file>toolbar/Stop.png</file>
     </qresource>
     <qresource prefix="/pieces_eur">
         <file>images/BlackAdvisor.png</file>
@@ -130,5 +131,21 @@
         <file>images_jap/WhiteSword.png</file>
         <file>images_jap/WhiteTokin.png</file>
         <file>images_jap/WhiteUnicorn.png</file>
+    </qresource>
+    <qresource prefix="/pieces_chi">
+        <file>images_chi/badvisor.png</file>
+        <file>images_chi/bcannon.png</file>
+        <file>images_chi/bchariot.png</file>
+        <file>images_chi/belephant.png</file>
+        <file>images_chi/bhorse.png</file>
+        <file>images_chi/bking.png</file>
+        <file>images_chi/bpawn.png</file>
+        <file>images_chi/radvisor.png</file>
+        <file>images_chi/rcannon.png</file>
+        <file>images_chi/rchariot.png</file>
+        <file>images_chi/relephant.png</file>
+        <file>images_chi/rhorse.png</file>
+        <file>images_chi/rking.png</file>
+        <file>images_chi/rpawn.png</file>
     </qresource>
 </RCC>

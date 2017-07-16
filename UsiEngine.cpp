@@ -8,7 +8,7 @@ UsiEngine::~UsiEngine()
 {
 }
 
-EngineType UsiEngine::GetType()
+EngineProtocol UsiEngine::GetType()
 {
 	return USI;
 }

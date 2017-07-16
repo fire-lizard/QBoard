@@ -17,7 +17,7 @@ void VBoard::paintEvent(QPaintEvent *)
 	painter.setPen(Qt::black);
 	painter.setBrush(Qt::NoBrush);
 
-	QSize s = this->size();;
+	QSize s = this->size();
 	int w = s.width() / _board->GetWidth();
 	int h = s.height() / _board->GetHeight();
 	for (int i = 0; i < _board->GetWidth(); i++)
@@ -125,7 +125,6 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 	Piece *p = _board->GetData(x, y);
 	if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
 	{
-		CalculateCheck(_oldX, _oldY, x, y);
 		if (_board->Move(_oldX, _oldY, x, y))
 		{
 			char promotion = ' ';
@@ -197,6 +196,10 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 				_oldY = y;
 				_board->GetMoves(p, x, y);
 				_moves = _board->Moves();
+				for_each(_moves.begin(), _moves.end(), [=](pair<int, int> t)
+				{
+					CalculateCheck(x, y, t.first, t.second);
+				});
 				this->repaint();
 			}
 		}
@@ -349,7 +352,7 @@ void VBoard::readyReadStandardOutput()
 	QByteArray buf = p->readAllStandardOutput();
 	this->_textEdit->setText(buf);
 	int auxPos1 = buf.lastIndexOf("getmove ");
-	int pos = buf.lastIndexOf("move ", auxPos1);
+	int pos = _engine->GetType() == WinBoard ? buf.lastIndexOf("move ", auxPos1) : buf.lastIndexOf("bestmove ", auxPos1) + 4;
 	if (pos == -1)
 		return;
 	char x1, y1, x2, y2;

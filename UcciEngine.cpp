@@ -8,7 +8,7 @@ UcciEngine::~UcciEngine()
 {
 }
 
-EngineType UcciEngine::GetType()
+EngineProtocol UcciEngine::GetType()
 {
 	return UCCI;
 }

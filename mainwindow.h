@@ -40,6 +40,8 @@ public:
 
     void on_actionSave_triggered();
 
+    void on_actionStop_game_triggered();
+
 private:
 	void closeEvent(QCloseEvent *) override;
 
@@ -48,5 +50,5 @@ private:
 	Engine *_engine = nullptr;
 	QString _engineFolder = "";
 	QString _engineExe = "";
-	EngineType _engineType = WinBoard;
+	EngineProtocol _engineProtocol = WinBoard;
 };

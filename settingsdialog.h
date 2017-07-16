@@ -19,9 +19,11 @@ public:
 	QComboBox* GetGameVariants() const;
 	QString EngineFolder = "";
 	QString EngineExe = "";
-	QString SelectedEngineType = "";
+	QString SelectedEngineProtocol = "";
 
 	private slots:
+
+    void on_variantsComboBox_currentIndexChanged(int index);
 
 private:
 	Ui::SettingsDialog *ui;

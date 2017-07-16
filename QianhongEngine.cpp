@@ -8,7 +8,7 @@ QianhongEngine::~QianhongEngine()
 {
 }
 
-EngineType QianhongEngine::GetType()
+EngineProtocol QianhongEngine::GetType()
 {
 	return Qianhong;
 }
