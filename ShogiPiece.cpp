@@ -1,4 +1,4 @@
-#include "ShogiPiece.h"
+﻿#include "ShogiPiece.h"
 
 ShogiPiece::ShogiPiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted) : ChuShogiPiece(pieceType, pieceColour, isPromoted)
 {
@@ -60,6 +60,51 @@ string ShogiPiece::StringCode()
 		return "N";
 	case Pawn:
 		return "P";
+	case Elephant:
+		return "E";
+	default:
+		return "";
+	}
+}
+
+string ShogiPiece::AsianStringCode()
+{
+	switch (_pieceType)
+	{
+	case King:
+		return _basePieceType == Elephant ? "太" : _pieceColour == Black ? "王" : "玉";
+	case DragonKing:
+		return "竜";
+	case DragonHorse:
+		return "馬";
+	case Rook:
+		return "飛";
+	case Bishop:
+		return "角";
+	case Lance:
+		return "香";
+	case Silver:
+		return "銀";
+	case Gold:
+		switch (_basePieceType)
+		{
+		case Lance:
+			return "杏";
+		case Silver:
+			return "全";
+		case WhiteHorse:
+			return "圭";
+		case Pawn:
+			return "と";
+		default:
+			return "金";
+		}
+	case WhiteHorse:
+		return "桂";
+	case Pawn:
+		return "歩";
+	case Elephant:
+		return "酔";
 	default:
 		return "";
 	}

@@ -12,6 +12,7 @@ public:
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false) override;
 	void GetMoves(Piece *piece, int x, int y) override;
 	void SetDrops(bool hasDrops);
+	void PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y);
 
 protected:
 

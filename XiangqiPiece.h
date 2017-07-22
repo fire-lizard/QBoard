@@ -8,6 +8,7 @@ public:
 	virtual ~XiangqiPiece();
 	void Promote(PieceType pieceType = None) override;
 	string StringCode() override;
+	string AsianStringCode() override;
 
 protected:
 

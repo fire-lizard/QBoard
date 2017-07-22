@@ -11,6 +11,7 @@ public:
 	static string GetImageFileName(PieceType pieceType, PieceColour pieceColour);
 	virtual void Promote(PieceType pieceType = None) = 0;
 	virtual string StringCode() = 0;
+	virtual string AsianStringCode() = 0;
 	PieceType GetBaseType() const;
 	PieceType GetType() const;
 	PieceColour GetColour() const;

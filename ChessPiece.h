@@ -8,6 +8,7 @@ public:
 	virtual ~ChessPiece();
 	void Promote(PieceType pieceType = None) override;
 	string StringCode() override;
+	string AsianStringCode() override;
 
 protected:
 

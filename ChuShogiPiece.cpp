@@ -1,4 +1,4 @@
-#include "ChuShogiPiece.h"
+﻿#include "ChuShogiPiece.h"
 
 ChuShogiPiece::ChuShogiPiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted) : Piece(pieceType, pieceColour, isPromoted)
 {
@@ -133,6 +133,77 @@ string ChuShogiPiece::StringCode()
 		return "+L";
 	case Whale:
 		return "+A";
+	default:
+		return "";
+	}
+}
+
+string ChuShogiPiece::AsianStringCode()
+{
+	switch (_pieceType)
+	{
+	case King:
+		return _basePieceType == Elephant ? "太" : _pieceColour == Black ? "王" : "玉";
+	case Lion:
+		return "獅";
+	case Queen:
+		return "奔";
+	case DragonKing:
+		return "竜";
+	case DragonHorse:
+		return "馬";
+	case Rook:
+		return "飛";
+	case Bishop:
+		return "角";
+	case VerticalMover:
+		return "竪";
+	case SideMover:
+		return "横";
+	case Cannon:
+		return "反";
+	case Lance:
+		return "香";
+	case Kylin:
+		return "麒";
+	case Phoenix:
+		return "鳳";
+	case Elephant:
+		return "酔";
+	case BlindTiger:
+		return "虎";
+	case Gold:
+		switch (_basePieceType)
+		{
+		case Pawn:
+			return "と";
+		default:
+			return "金";
+		}
+	case Silver:
+		return "銀";
+	case Copper:
+		return "銅";
+	case FerociousLeopard:
+		return "豹";
+	case Cobra:
+		return "仲";
+	case Pawn:
+		return "歩";
+	case Eagle:
+		return "鷲";
+	case Unicorn:
+		return "鷹";
+	case NarrowQueen:
+		return "牛";
+	case SleepingQueen:
+		return "猪";
+	case FlyingStag:
+		return "鹿";
+	case WhiteHorse:
+		return "駒";
+	case Whale:
+		return "鯨";
 	default:
 		return "";
 	}

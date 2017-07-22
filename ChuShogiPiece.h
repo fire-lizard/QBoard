@@ -9,6 +9,7 @@ public:
 	virtual ~ChuShogiPiece();
 	void Promote(PieceType pieceType = None) override;
 	string StringCode() override;
+	string AsianStringCode() override;
 
 protected:
 

@@ -54,12 +54,6 @@ MainWindow::MainWindow(QWidget *parent) :
 							this->ui->statusBar->showMessage("Unsupported game variant");
 					}
 				}
-				else if (xmlStreamReader.name() == "EngineFolder")
-				{
-					tokenType = xmlStreamReader.readNext();
-					if (tokenType == QXmlStreamReader::Characters)
-						_engineFolder = xmlStreamReader.text().toString();
-				}
 				else if (xmlStreamReader.name() == "EngineExe")
 				{
 					tokenType = xmlStreamReader.readNext();
@@ -129,19 +123,17 @@ void MainWindow::on_actionSettings_triggered()
 		xmlStreamWriter.writeStartElement("Settings");
 		xmlStreamWriter.writeTextElement("Style", settingsDialog->GetStyles()->currentText());
 		xmlStreamWriter.writeTextElement("GameVariant", QString::number(settingsDialog->GetGameVariants()->currentIndex()));
-		_engineFolder = settingsDialog->EngineFolder;
-		_engineExe = settingsDialog->EngineExe;
-		if (settingsDialog->SelectedEngineProtocol == "UCI")
+		_engineExe = settingsDialog->GetBlackPlayer()->currentText();
+		/*if (settingsDialog->SelectedEngineProtocol == "UCI")
 			_engineProtocol = UCI;
 		else if (settingsDialog->SelectedEngineProtocol == "UCCI")
 			_engineProtocol = UCCI;
 		else if (settingsDialog->SelectedEngineProtocol == "USI")
 			_engineProtocol = USI;
 		else
-			_engineProtocol = WinBoard;
-		xmlStreamWriter.writeTextElement("EngineFolder", _engineFolder);
+			_engineProtocol = WinBoard;*/
 		xmlStreamWriter.writeTextElement("EngineExe", _engineExe);
-		xmlStreamWriter.writeTextElement("EngineProtocol", settingsDialog->SelectedEngineProtocol);
+		//xmlStreamWriter.writeTextElement("EngineProtocol", settingsDialog->SelectedEngineProtocol);
 		xmlStreamWriter.writeEndElement();
 		xmlStreamWriter.writeEndDocument();
 		file.close();
@@ -180,13 +172,16 @@ void MainWindow::on_actionNew_game_triggered()
 			_engine = new WbEngine();
 			break;
 		}
+		QString _engineFolder = "Pulsar";
 		QString workingDir = QCoreApplication::applicationDirPath() + "/engines/" + _engineFolder;
+		_engineExe = "pulsar2009-9b.exe";
 		QProcess *process = _engine->RunProcess(this, workingDir, _engineExe);
 		if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
 		{
 			_engine->StartGame();
 			connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
 			connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(readyReadStandardError()));
+			connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(errorOccurred(QProcess::ProcessError)));
 			this->ui->vboard->SetEngine(_engine);
 		}
 		else

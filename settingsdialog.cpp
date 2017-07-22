@@ -27,6 +27,16 @@ QComboBox* SettingsDialog::GetGameVariants() const
 	return ui->variantsComboBox;
 }
 
+QComboBox* SettingsDialog::GetWhitePlayer() const
+{
+	return ui->whitePlayerComboBox;
+}
+
+QComboBox* SettingsDialog::GetBlackPlayer() const
+{
+	return ui->blackPlayerComboBox;
+}
+
 void SettingsDialog::on_variantsComboBox_currentIndexChanged(int index)
 {
 	if (index == 1)

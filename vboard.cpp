@@ -200,6 +200,10 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 				{
 					CalculateCheck(x, y, t.first, t.second);
 				});
+				for_each(_moves.begin(), _moves.end(), [=](pair<int, int> t)
+				{
+					CalculateCheck(x, y, t.first, t.second);
+				});
 				this->repaint();
 			}
 		}
@@ -380,9 +384,7 @@ void VBoard::readyReadStandardOutput()
 		_board->GetMoves(_board->GetData(x1, y1), x1, y1);
 		_board->Move(x1, y1, x2, y2);
 		_engine->AddMove(buf[pos + 5], buf[pos + 6], buf[pos + 7], buf[pos + 8], buf[pos + 9]);
-		if (_gameVariant == Chess &&
-			(y2 == 0 || y2 == _board->GetHeight() - 1) &&
-			_board->GetData(x2, y2)->GetType() == Pawn)
+		if (_gameVariant == Chess && (y2 == 0 || y2 == _board->GetHeight() - 1) && _board->GetData(x2, y2)->GetType() == Pawn)
 		{
 			char promotion = buf[pos + 9];
 			switch (promotion)
@@ -413,6 +415,38 @@ void VBoard::readyReadStandardOutput()
 		{
 			_board->GetData(x2, y2)->Promote();
 		}
+		if (_gameVariant == Shogi && (buf[pos + 6] == '@' || buf[pos + 6] == '*'))
+		{
+			PieceType newPiece;
+			switch (buf[pos + 5])
+			{
+			case 'R':
+				newPiece = Rook;
+				break;
+			case 'B':
+				newPiece = Bishop;
+				break;
+			case 'G':
+				newPiece = Gold;
+				break;
+			case 'S':
+				newPiece = Silver;
+				break;
+			case 'N':
+				newPiece = WhiteHorse;
+				break;
+			case 'L':
+				newPiece = Lance;
+				break;
+			case 'P':
+				newPiece = Pawn;
+				break;
+			default:
+				newPiece = None;
+				break;
+			}
+			static_cast<ShogiBoard*>(_board)->PlacePiece(newPiece, _currentPlayer, x2, y2);
+		}
 	}
 	_currentPlayer = White;
 	this->_statusBar->showMessage("White move");
@@ -424,4 +458,31 @@ void VBoard::readyReadStandardError()
 	QProcess *p = static_cast<QProcess*>(sender());
 	QByteArray buf = p->readAllStandardError();
 	this->_textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
+}
+
+void VBoard::errorOccurred(QProcess::ProcessError error)
+{
+	QString errorStr;
+	switch (error)
+	{
+	case QProcess::FailedToStart:
+		errorStr = "Engine failed to start";
+		break;
+	case QProcess::Crashed:
+		errorStr = "Engine crashed";
+		break;
+	case QProcess::Timedout:
+		errorStr = "Engine timed out";
+		break;
+	case QProcess::WriteError:
+		errorStr = "Write error";
+		break;
+	case QProcess::ReadError:
+		errorStr = "Read error";
+		break;
+	default:
+		errorStr = "Unknown error";
+		break;
+	}
+	this->_textEdit->setHtml("<p style='color:red; font-weight:bold'>" + errorStr + "</p>");
 }

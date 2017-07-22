@@ -57,4 +57,6 @@ signals:
 	void readyReadStandardOutput();
 
 	void readyReadStandardError();
+
+	void errorOccurred(QProcess::ProcessError error);
 };

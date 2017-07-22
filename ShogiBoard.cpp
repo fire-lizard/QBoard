@@ -213,3 +213,8 @@ void ShogiBoard::SetDrops(bool hasDrops)
 		_initialSetup[7][4] = Elephant;
 	}
 }
+
+void ShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
+{
+	_data[x][y] = new ShogiPiece(pieceType, pieceColour);
+}

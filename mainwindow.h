@@ -48,7 +48,6 @@ private:
 	Ui::MainWindow *ui;
 	QString _currentStyle = "";
 	Engine *_engine = nullptr;
-	QString _engineFolder = "";
 	QString _engineExe = "";
 	EngineProtocol _engineProtocol = WinBoard;
 };

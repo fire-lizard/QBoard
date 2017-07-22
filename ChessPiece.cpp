@@ -36,3 +36,8 @@ string ChessPiece::StringCode()
 		return "";
 	}
 }
+
+string ChessPiece::AsianStringCode()
+{
+	return "";
+}

@@ -17,9 +17,8 @@ public:
 	~SettingsDialog();
 	QComboBox* GetStyles() const;
 	QComboBox* GetGameVariants() const;
-	QString EngineFolder = "";
-	QString EngineExe = "";
-	QString SelectedEngineProtocol = "";
+	QComboBox* GetWhitePlayer() const;
+	QComboBox* GetBlackPlayer() const;
 
 	private slots:
 
