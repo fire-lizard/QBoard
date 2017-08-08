@@ -14,6 +14,7 @@
 #include "UcciEngine.h"
 #include "UsiEngine.h"
 #include "QianhongEngine.h"
+#include "enginemanager.h"
 
 namespace Ui {
 	class MainWindow;
@@ -41,6 +42,8 @@ public:
     void on_actionSave_triggered();
 
     void on_actionStop_game_triggered();
+
+    void on_actionEngine_Manager_triggered();
 
 private:
 	void closeEvent(QCloseEvent *) override;

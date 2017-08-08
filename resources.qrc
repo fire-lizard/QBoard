@@ -7,6 +7,12 @@
         <file>toolbar/Settings.png</file>
         <file>toolbar/New.png</file>
         <file>toolbar/Stop.png</file>
+        <file>toolbar/Table.png</file>
+        <file>toolbar/QBoard.icns</file>
+        <file>toolbar/QBoard.ico</file>
+        <file>toolbar/Add.png</file>
+        <file>toolbar/Edit.png</file>
+        <file>toolbar/Remove.png</file>
     </qresource>
     <qresource prefix="/pieces_eur">
         <file>images/BlackAdvisor.png</file>

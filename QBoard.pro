@@ -11,6 +11,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = QBoard
 TEMPLATE = app
 
+win32:RC_ICONS += toolbar/QBoard.ico
+macx-clang {
+    ICON = toolbar/QBoard.icns
+}
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -32,7 +36,10 @@ SOURCES += main.cpp\
     QianhongEngine.cpp \
     UcciEngine.cpp \
     UsiEngine.cpp \
-    MiniShogiBoard.cpp
+    MiniShogiBoard.cpp \
+    enginemanager.cpp \
+    comboboxitemdelegate.cpp \
+    addenginedialog.cpp
 
 HEADERS  += mainwindow.h \
     Board.h \
@@ -54,10 +61,15 @@ HEADERS  += mainwindow.h \
     QianhongEngine.h \
     UcciEngine.h \
     UsiEngine.h \
-    MiniShogiBoard.h
+    MiniShogiBoard.h \
+    enginemanager.h \
+    comboboxitemdelegate.h \
+    addenginedialog.h
 
 FORMS    += mainwindow.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    enginemanager.ui \
+    addenginedialog.ui
 
 RESOURCES += \
     resources.qrc

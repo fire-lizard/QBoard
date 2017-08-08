@@ -5,6 +5,11 @@ enum EngineProtocol
 	WinBoard, UCI, UCCI, Qianhong, USI
 };
 
+enum GameFormat
+{
+	PGN, WXF, PSN, CSA, KIF
+};
+
 enum GameVariant
 {
 	Chess, Xiangqi, Shogi, ShoShogi, ChuShogi, MiniShogi

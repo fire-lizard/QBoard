@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>QBoard</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/toolbar_icons/toolbar/QBoard.ico</normaloff>:/toolbar_icons/toolbar/QBoard.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="VBoard" name="vboard" native="true">
     <property name="geometry">
@@ -61,6 +65,8 @@
    <addaction name="actionStop_game"/>
    <addaction name="separator"/>
    <addaction name="actionSettings"/>
+   <addaction name="actionEngine_Manager"/>
+   <addaction name="separator"/>
    <addaction name="actionAbout"/>
    <addaction name="actionExit"/>
   </widget>
@@ -129,6 +135,18 @@
    </property>
    <property name="toolTip">
     <string>Stop game</string>
+   </property>
+  </action>
+  <action name="actionEngine_Manager">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/toolbar_icons/toolbar/Table.png</normaloff>:/toolbar_icons/toolbar/Table.png</iconset>
+   </property>
+   <property name="text">
+    <string>Engine Manager</string>
+   </property>
+   <property name="toolTip">
+    <string>Engine Manager</string>
    </property>
   </action>
  </widget>

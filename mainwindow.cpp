@@ -1,9 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-	QMainWindow(parent),
-	ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
 
@@ -66,14 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
 					if (tokenType == QXmlStreamReader::Characters)
 					{
 						QString selectedEngineProtocol = xmlStreamReader.text().toString();
-						if (selectedEngineProtocol == "UCI")
-							_engineProtocol = UCI;
-						else if (selectedEngineProtocol == "UCCI")
-							_engineProtocol = UCCI;
-						else if (selectedEngineProtocol == "USI")
-							_engineProtocol = USI;
-						else
-							_engineProtocol = WinBoard;
+						_engineProtocol = static_cast<EngineProtocol>(selectedEngineProtocol.toInt());
 					}
 				}
 			}
@@ -287,6 +278,7 @@ void MainWindow::on_actionStop_game_triggered()
 	{
 		_engine->Quit();
 		delete _engine;
+		_engine = nullptr;
 	}
 }
 
@@ -296,6 +288,7 @@ void MainWindow::on_actionExit_triggered()
 	{
 		_engine->Quit();
 		delete _engine;
+		_engine = nullptr;
 	}
 	QApplication::quit();
 }
@@ -306,5 +299,15 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	{
 		_engine->Quit();
 		delete _engine;
+		_engine = nullptr;
+	}
+}
+
+void MainWindow::on_actionEngine_Manager_triggered()
+{
+	EngineManager *engineManager = new EngineManager(this);
+	engineManager->exec();
+	if (engineManager->result() == QDialog::Accepted)
+	{
 	}
 }
