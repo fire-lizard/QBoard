@@ -1,6 +1,7 @@
 #pragma once
 #include <QDialog>
 #include <QMessageBox>
+#include <QTableWidget>
 #include "comboboxitemdelegate.h"
 #include "addenginedialog.h"
 
@@ -15,6 +16,7 @@ class EngineManager : public QDialog
 public:
     explicit EngineManager(QWidget *parent = nullptr);
     ~EngineManager();
+	QTableWidget* GetEngineTable();
 
 private slots:
     void on_toolButton_clicked();

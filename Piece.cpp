@@ -1,4 +1,4 @@
-#include "Piece.h"
+﻿#include "Piece.h"
 
 Piece::Piece(PieceType pieceType, PieceColour pieceColour, bool isPromoted)
 {
@@ -10,7 +10,6 @@ Piece::Piece(PieceType pieceType, PieceColour pieceColour, bool isPromoted)
 
 Piece::~Piece()
 {
-	//dtor
 }
 
 PieceType Piece::GetBaseType() const

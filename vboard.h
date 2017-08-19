@@ -18,6 +18,7 @@ class VBoard : public QWidget
 public:
 	explicit VBoard(QWidget *parent = nullptr);
 	virtual ~VBoard();
+	vector<string> GetGameRecord() const;
 	Board* GetBoard() const;
 	GameVariant GetGameVariant() const;
 	void SetGameVariant(GameVariant gameVariant);
@@ -36,6 +37,7 @@ private:
 	bool PossibleMove(int x, int y);
 	void RemoveMove(int x, int y);
 	void CalculateCheck(int oldX, int oldY, int newX, int newY);
+	void AddMove(PieceType p, int x1, int x2, int y1, int y2, char promotion);
 
 	Board *_board;
 	PieceColour _currentPlayer = White;
@@ -49,6 +51,7 @@ private:
 	QMainWindow *_window = nullptr;
 	GameVariant _gameVariant = Chess;
 	Engine *_engine = nullptr;
+	vector<string> _gameRecord;
 
 signals:
 
@@ -57,6 +60,4 @@ signals:
 	void readyReadStandardOutput();
 
 	void readyReadStandardError();
-
-	void errorOccurred(QProcess::ProcessError error);
 };

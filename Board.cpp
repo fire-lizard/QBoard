@@ -2,7 +2,6 @@
 
 Board::~Board()
 {
-	//dtor
 }
 
 vector<pair<int, int>> Board::Moves() const

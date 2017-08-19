@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -188,7 +188,7 @@ void MainWindow::on_actionNew_game_triggered()
 void MainWindow::on_actionOpen_triggered()
 {
 	QFileDialog openFileDialog;
-	QString fileName = openFileDialog.getOpenFileName(this, "Open file", "", "*.json");
+	QString fileName = openFileDialog.getOpenFileName(this, "Open file", "", "PGN Files (*.pgn)");
 	if (fileName != "")
 	{
 		QFile file;
@@ -196,38 +196,6 @@ void MainWindow::on_actionOpen_triggered()
 		file.open(QIODevice::ReadOnly | QIODevice::Text);
 		QString data = file.readAll();
 		file.close();
-		QJsonParseError *jsonParseError = new QJsonParseError();
-		QJsonDocument jsonDoc = QJsonDocument::fromJson(data.toUtf8(), jsonParseError);
-		if (jsonParseError->error != QJsonParseError::NoError)
-		{
-			this->ui->statusBar->setStyleSheet("QStatusBar { color : red; }");
-			this->ui->statusBar->showMessage("Error while opening file: " + jsonParseError->errorString());
-			return;
-		}
-		QJsonObject jsonObj = jsonDoc.object();
-		PieceColour currentPlayer = static_cast<PieceColour>(jsonObj["current_player"].toInt());
-		this->ui->vboard->SetCurrentPlayer(currentPlayer);
-		Board *board = this->ui->vboard->GetBoard();
-		for (int i = 0; i < board->GetWidth(); i++)
-		{
-			for (int j = 0; j < board->GetHeight(); j++)
-			{
-				QString key = QString::number(i) + "_" + QString::number(j);
-				if (jsonObj.contains(key))
-				{
-					QJsonArray jsonArray = jsonObj[key].toArray();
-					PieceColour pieceColour = static_cast<PieceColour>(jsonArray[0].toInt());
-					PieceType pieceType = static_cast<PieceType>(jsonArray[1].toInt());
-					bool isPromoted = jsonArray[2].toBool();
-					Piece *piece = board->CreatePiece(pieceType, pieceColour, isPromoted);
-					board->SetData(i, j, piece);
-				}
-				else
-				{
-					board->SetData(i, j, nullptr);
-				}
-			}
-		}
 		this->ui->vboard->repaint();
 	}
 }
@@ -235,39 +203,35 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionSave_triggered()
 {
 	QFileDialog saveFileDialog;
-	QString fileName = saveFileDialog.getSaveFileName(this, "Save file", "", "*.json");
+	QString fileName = saveFileDialog.getSaveFileName(this, "Save file", "", "PGN Files (*.pgn)");
 	if (fileName != "")
 	{
-		QJsonDocument jsonDoc;
-		QJsonObject jsonObj;
-		QJsonValue currentPlayer(this->ui->vboard->GetCurrentPlayer());
-		jsonObj.insert("current_player", currentPlayer);
-		Board *board = this->ui->vboard->GetBoard();
-		for (int i = 0; i < board->GetWidth(); i++)
-		{
-			for (int j = 0; j < board->GetHeight(); j++)
-			{
-				Piece *piece = board->GetData(i, j);
-				if (piece != nullptr)
-				{
-					QJsonValue pieceColour(piece->GetColour());
-					QJsonValue pieceType(piece->GetType());
-					QJsonValue pieceIsPromoted(piece->IsPromoted());
-					QString key = QString::number(i) + "_" + QString::number(j);
-					QJsonArray jsonArray;
-					jsonArray.push_back(pieceColour);
-					jsonArray.push_back(pieceType);
-					jsonArray.push_back(pieceIsPromoted);
-					jsonObj.insert(key, jsonArray);
-				}
-			}
-		}
-		jsonDoc.setObject(jsonObj);
-		QByteArray json = jsonDoc.toJson();
 		QFile file;
 		file.setFileName(fileName);
 		file.open(QIODevice::WriteOnly | QIODevice::Text);
-		file.write(json);
+		file.write("[Event \"QBoard Game\"]\n");
+		QString site = "[Site \"" + QSysInfo::machineHostName() + "\"]\n";
+		file.write(site.toLocal8Bit());
+		QString currentDate = "[Date \"" + QDate::currentDate().toString("dd/MM/yyyy") + "\"]\n";
+		file.write(currentDate.toLocal8Bit());
+		vector<string> gameRecord = ui->vboard->GetGameRecord();
+		QString currentRound = "[Round \"" + QString::number(gameRecord.size()) + "\"]\n";
+		file.write(currentRound.toLocal8Bit());
+		QString userName = qgetenv("USER");
+		if (userName.isEmpty())
+			userName = qgetenv("USERNAME");
+		QString whiteName = "[White \"" + userName + "\"]\n";
+		QString blackName = "[Black \"" + _engineName + "\"]\n\n";
+		file.write(whiteName.toLocal8Bit());
+		file.write(blackName.toLocal8Bit());
+		GameVariant gameVariant = ui->vboard->GetGameVariant();
+		for (int index = 0; index < gameRecord.size(); index++)
+		{
+			file.write(QString::number(index + 1).toLocal8Bit());
+			file.write(". ");
+			file.write(gameRecord[index].c_str());
+			file.write(" ");
+		}
 		file.close();
 	}
 }

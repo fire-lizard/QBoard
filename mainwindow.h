@@ -2,12 +2,11 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QFileDialog>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
 #include <QXmlStreamWriter>
 #include <QXmlStreamReader>
 #include <QStandardPaths>
+#include <QSysInfo>
+#include <QDate>
 #include "settingsdialog.h"
 #include "WbEngine.h"
 #include "UciEngine.h"
@@ -52,5 +51,6 @@ private:
 	QString _currentStyle = "";
 	Engine *_engine = nullptr;
 	QString _engineExe = "";
+	QString _engineName = "";
 	EngineProtocol _engineProtocol = WinBoard;
 };

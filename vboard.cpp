@@ -174,6 +174,7 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 				else
 					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
 			}
+			AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion);
 			_currentPlayer = _currentPlayer == White ? Black : White;
 			_statusBar->setStyleSheet("QStatusBar { color : black; }");
 			_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
@@ -215,6 +216,11 @@ Board* VBoard::GetBoard() const
 	return _board;
 }
 
+vector<string> VBoard::GetGameRecord() const
+{
+	return _gameRecord;
+}
+
 GameVariant VBoard::GetGameVariant() const
 {
 	return _gameVariant;
@@ -225,6 +231,7 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	_currentPiece = nullptr;
 	_moves.clear();
 	_opponentMoves.clear();
+	_gameRecord.clear();
 	_gameVariant = gameVariant;
 	switch (_gameVariant)
 	{
@@ -265,6 +272,7 @@ void VBoard::SetCurrentPlayer(PieceColour currentPlayer)
 {
 	_moves.clear();
 	_opponentMoves.clear();
+	_gameRecord.clear();
 	_currentPlayer = currentPlayer;
 }
 
@@ -335,6 +343,10 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 	delete board;
 }
 
+void VBoard::AddMove(PieceType p, int x1, int x2, int y1, int y2, char promotion)
+{
+}
+
 void VBoard::SetStatusBar(QStatusBar *statusBar)
 {
 	_statusBar = statusBar;
@@ -383,6 +395,7 @@ void VBoard::readyReadStandardOutput()
 	{
 		_board->GetMoves(_board->GetData(x1, y1), x1, y1);
 		_board->Move(x1, y1, x2, y2);
+		AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, buf[pos + 9]);
 		_engine->AddMove(buf[pos + 5], buf[pos + 6], buf[pos + 7], buf[pos + 8], buf[pos + 9]);
 		if (_gameVariant == Chess && (y2 == 0 || y2 == _board->GetHeight() - 1) && _board->GetData(x2, y2)->GetType() == Pawn)
 		{
@@ -458,31 +471,4 @@ void VBoard::readyReadStandardError()
 	QProcess *p = static_cast<QProcess*>(sender());
 	QByteArray buf = p->readAllStandardError();
 	this->_textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
-}
-
-void VBoard::errorOccurred(QProcess::ProcessError error)
-{
-	QString errorStr;
-	switch (error)
-	{
-	case QProcess::FailedToStart:
-		errorStr = "Engine failed to start";
-		break;
-	case QProcess::Crashed:
-		errorStr = "Engine crashed";
-		break;
-	case QProcess::Timedout:
-		errorStr = "Engine timed out";
-		break;
-	case QProcess::WriteError:
-		errorStr = "Write error";
-		break;
-	case QProcess::ReadError:
-		errorStr = "Read error";
-		break;
-	default:
-		errorStr = "Unknown error";
-		break;
-	}
-	this->_textEdit->setHtml("<p style='color:red; font-weight:bold'>" + errorStr + "</p>");
 }

@@ -11,7 +11,12 @@ EngineManager::EngineManager(QWidget *parent) : QDialog(parent), ui(new Ui::Engi
 
 EngineManager::~EngineManager()
 {
-    delete ui;
+	delete ui;
+}
+
+QTableWidget * EngineManager::GetEngineTable()
+{
+	return ui->engineTable;
 }
 
 void EngineManager::on_toolButton_clicked()
@@ -20,15 +25,37 @@ void EngineManager::on_toolButton_clicked()
 	addEngineDialog->exec();
 	if (addEngineDialog->result() == QDialog::Accepted)
 	{
+		QString engineName = addEngineDialog->GetEngineName()->text();
+		QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
+		QString enginePath = addEngineDialog->GetEnginePath()->text();
+		if (engineName != "" && enginePath != "")
+		{
+			ui->engineTable->insertRow(ui->engineTable->rowCount());
+			int currentRow = ui->engineTable->rowCount() - 1;
+			ui->engineTable->setItem(currentRow, 0, new QTableWidgetItem(engineName));
+			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(engineProtocol));
+			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(enginePath));
+		}
 	}
 }
 
 void EngineManager::on_toolButton_2_clicked()
 {
+	int currentRow = ui->engineTable->currentRow();
+	if (currentRow == -1) return;
 	AddEngineDialog *addEngineDialog = new AddEngineDialog(this);
 	addEngineDialog->exec();
 	if (addEngineDialog->result() == QDialog::Accepted)
 	{
+		QString engineName = addEngineDialog->GetEngineName()->text();
+		QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
+		QString enginePath = addEngineDialog->GetEnginePath()->text();
+		if (engineName != "" && enginePath != "")
+		{
+			ui->engineTable->setItem(currentRow, 0, new QTableWidgetItem(engineName));
+			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(engineProtocol));
+			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(enginePath));
+		}
 	}
 }
 
@@ -36,11 +63,9 @@ void EngineManager::on_toolButton_3_clicked()
 {
 	QItemSelectionModel *select = ui->engineTable->selectionModel();
 
-	select->hasSelection(); //check if has selection
-	select->selectedRows(); // return selected row(s)
-	select->selectedColumns(); // return selected column(s)
-	if (ui->engineTable->selectedItems().size() > 0)
+	if (select->hasSelection())
 	{
+		QModelIndexList selectedRows = select->selectedRows();
 		QMessageBox mb("Remove warning", "Do you want to remove this entry?",
 			QMessageBox::Question,
 			QMessageBox::Ok | QMessageBox::Default,
@@ -48,7 +73,12 @@ void EngineManager::on_toolButton_3_clicked()
 			QMessageBox::NoButton, this);
 		int response = mb.exec();
 		if (response == QMessageBox::Ok)
-			return;
+		{
+			for (int index = 0; index < selectedRows.size(); index++)
+			{
+				ui->engineTable->removeRow(selectedRows[index].row());
+			}
+		}
 	}
 }
 

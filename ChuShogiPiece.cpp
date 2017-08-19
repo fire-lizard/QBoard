@@ -6,7 +6,6 @@ ChuShogiPiece::ChuShogiPiece(PieceType pieceType, PieceColour pieceColour, bool 
 
 ChuShogiPiece::~ChuShogiPiece()
 {
-	//dtor
 }
 
 void ChuShogiPiece::Promote(PieceType pieceType)
