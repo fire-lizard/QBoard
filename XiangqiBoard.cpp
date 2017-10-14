@@ -67,21 +67,21 @@ void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 	case King:
 		if (x < 5)
 			CheckMove(piece, x + 1, y);
-		if (piece->GetColour() == Black && y < 2 || piece->GetColour() == White)
+        if ((piece->GetColour() == Black && y < 2) || piece->GetColour() == White)
 			CheckMove(piece, x, y + 1);
-		if (piece->GetColour() == White && y > 7 || piece->GetColour() == Black)
+        if ((piece->GetColour() == White && y > 7) || piece->GetColour() == Black)
 			CheckMove(piece, x, y - 1);
 		if (x > 3)
 			CheckMove(piece, x - 1, y);
 		break;
 	case Silver:
-		if (x < 5 && (piece->GetColour() == Black && y < 2 || piece->GetColour() == White))
+        if ((x < 5 && (piece->GetColour() == Black && y < 2)) || piece->GetColour() == White)
 			CheckMove(piece, x + 1, y + 1);
-		if (x < 5 && (piece->GetColour() == White && y > 7 || piece->GetColour() == Black))
+        if ((x < 5 && (piece->GetColour() == White && y > 7)) || piece->GetColour() == Black)
 			CheckMove(piece, x + 1, y - 1);
-		if (x > 3 && (piece->GetColour() == Black && y < 2 || piece->GetColour() == White))
+        if ((x > 3 && (piece->GetColour() == Black && y < 2)) || piece->GetColour() == White)
 			CheckMove(piece, x - 1, y + 1);
-		if (x > 3 && (piece->GetColour() == White && y > 7 || piece->GetColour() == Black))
+        if ((x > 3 && (piece->GetColour() == White && y > 7)) || piece->GetColour() == Black)
 			CheckMove(piece, x - 1, y - 1);
 		break;
 	case Rook:
@@ -91,16 +91,16 @@ void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, South);
 		break;
 	case Elephant:
-		if (piece->GetColour() == White && y > 5 || piece->GetColour() == Black)
+        if ((piece->GetColour() == White && y > 5) || piece->GetColour() == Black)
 			if (_data[x - 1][y - 1] == nullptr)
 				CheckMove(piece, x - 2, y - 2);
-		if (piece->GetColour() == White && y > 5 || piece->GetColour() == Black)
+        if ((piece->GetColour() == White && y > 5) || piece->GetColour() == Black)
 			if (_data[x + 1][y - 1] == nullptr)
 				CheckMove(piece, x + 2, y - 2);
-		if (piece->GetColour() == Black && y < 4 || piece->GetColour() == White)
+        if ((piece->GetColour() == Black && y < 4) || piece->GetColour() == White)
 			if (_data[x - 1][y + 1] == nullptr)
 				CheckMove(piece, x - 2, y + 2);
-		if (piece->GetColour() == Black && y < 4 || piece->GetColour() == White)
+        if ((piece->GetColour() == Black && y < 4) || piece->GetColour() == White)
 			if (_data[x + 1][y + 1] == nullptr)
 				CheckMove(piece, x + 2, y + 2);
 		break;

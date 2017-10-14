@@ -131,8 +131,8 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 			if (_gameVariant == Chess)
 			{
 				if (_currentPiece->GetType() == Pawn &&
-					(y == 7 && _currentPiece->GetColour() == Black ||
-						y == 0 && _currentPiece->GetColour() == White))
+                    ((y == 7 && _currentPiece->GetColour() == Black) ||
+                    (y == 0 && _currentPiece->GetColour() == White)))
 				{
 					_currentPiece->Promote(Queen);
 					promotion = 'q';
@@ -140,8 +140,8 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 			}
 			if (_gameVariant == MiniShogi)
 			{
-				if (y == 4 && _currentPiece->GetColour() == Black ||
-					y == 0 && _currentPiece->GetColour() == White)
+                if ((y == 4 && _currentPiece->GetColour() == Black) ||
+                    (y == 0 && _currentPiece->GetColour() == White))
 				{
 					_currentPiece->Promote();
 					promotion = '+';
@@ -149,8 +149,8 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 			}
 			if (_gameVariant == Shogi || _gameVariant == ShoShogi)
 			{
-				if (y >= 6 && _currentPiece->GetColour() == Black ||
-					y <= 2 && _currentPiece->GetColour() == White)
+                if ((y >= 6 && _currentPiece->GetColour() == Black) ||
+                    (y <= 2 && _currentPiece->GetColour() == White))
 				{
 					_currentPiece->Promote();
 					promotion = '+';
@@ -158,8 +158,8 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 			}
 			if (_gameVariant == ChuShogi)
 			{
-				if (y >= 8 && _currentPiece->GetColour() == Black ||
-					y <= 3 && _currentPiece->GetColour() == White)
+                if ((y >= 8 && _currentPiece->GetColour() == Black) ||
+                    (y <= 3 && _currentPiece->GetColour() == White))
 				{
 					_currentPiece->Promote();
 					promotion = '+';
