@@ -34,7 +34,7 @@ bool Piece::IsPromoted() const
 
 string Piece::GetImageFileName(PieceType pieceType, PieceColour pieceColour)
 {
-	string colour = pieceColour == White ? "White" : "Black";
+	const string colour = pieceColour == White ? "White" : "Black";
 	switch (pieceType)
 	{
 	case King:

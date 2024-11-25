@@ -19,15 +19,15 @@ public:
 	vector<tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
 	virtual bool Move(int oldX, int oldY, int newX, int newY);
 	vector<pair<int, int>> Moves() const;
-	Piece* GetData(int x, int y);
+	Piece* GetData(int x, int y) const;
 	void SetData(int x, int y, Piece *p);
 	int GetWidth() const;
 	int GetHeight() const;
 	bool CheckPosition(int x, int y) const;
 
 protected:
-	void CheckMove(Piece *piece, int x, int y);
-	void CheckDirection(Piece *piece, int x, int y, Direction direction);
+	void CheckMove(const Piece *piece, int x, int y);
+	void CheckDirection(const Piece *piece, int x, int y, Direction direction);
 	bool CheckDirectionAux(int x, int y, Direction direction) const;
 	static void CheckDirectionInc(int &x, int &y, Direction direction);
 

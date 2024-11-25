@@ -15,7 +15,7 @@ EngineManager::~EngineManager()
 	delete ui;
 }
 
-QTableWidget * EngineManager::GetEngineTable()
+QTableWidget * EngineManager::GetEngineTable() const
 {
 	return ui->engineTable;
 }
@@ -24,18 +24,17 @@ EngineProtocol EngineManager::StringToEngineProtocol(const QString& str)
 {
 	if (str == "UCI")
 		return UCI;
-	else if (str == "UCCI")
+	if (str == "UCCI")
 		return UCCI;
-	else if (str == "Qianhong")
+	if (str == "Qianhong")
 		return Qianhong;
-	else if (str == "USI")
+	if (str == "USI")
 		return USI;
-	else
-		return WinBoard;
+	return WinBoard;
 }
 
 void EngineManager::addElementToXmlStream(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath) {
-	QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+	const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
 	QFile file(settingsDir + "/" + fileName);
 	QFile tempFile(settingsDir + "/temp.xml");
 
@@ -92,7 +91,7 @@ void EngineManager::addElementToXmlStream(const QString& fileName, const QString
 }
 
 void EngineManager::modifyXmlElement(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath) {
-	QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+	const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
 	QFile file(settingsDir + "/" + fileName);
 	QFile tempFile(settingsDir + "/temp.xml");
 
@@ -124,7 +123,7 @@ void EngineManager::modifyXmlElement(const QString& fileName, const QString& eng
 
 				// Copy attributes if any
 				QXmlStreamAttributes attributes = xmlReader.attributes();
-				if (attributes.size() > 0 && attributes[0].name().toString() == "EngineName" && attributes[0].value().toString() == engineName)
+				if (!attributes.empty() && attributes[0].name().toString() == "EngineName" && attributes[0].value().toString() == engineName)
 				{
 					xmlWriter.writeAttribute("EngineName", engineName);
 					xmlWriter.writeAttribute("EngineProtocol", engineProtocol);
@@ -176,8 +175,9 @@ void EngineManager::modifyXmlElement(const QString& fileName, const QString& eng
 	}
 }
 
-void EngineManager::readXmlUsingStream(const QString& fileName) {
-	QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+void EngineManager::readXmlUsingStream(const QString& fileName) const
+{
+	const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
 	QFile file(settingsDir + "/" + fileName);
 
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -206,7 +206,7 @@ void EngineManager::readXmlUsingStream(const QString& fileName) {
 			if (engineName != "" && enginePath != "")
 			{
 				ui->engineTable->insertRow(ui->engineTable->rowCount());
-				int currentRow = ui->engineTable->rowCount() - 1;
+				const int currentRow = ui->engineTable->rowCount() - 1;
 				ui->engineTable->setItem(currentRow, 0, new QTableWidgetItem(engineName));
 				ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(engineProtocol));
 				ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(enginePath));
@@ -225,7 +225,7 @@ void EngineManager::readXmlUsingStream(const QString& fileName) {
 }
 
 bool EngineManager::hasAttributeWithSpecificValue(const QString& fileName, const QString& attributeName, const QString& attributeValue) {
-	QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+	const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
 	QFile file(settingsDir + "/" + fileName);
 
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -260,7 +260,7 @@ bool EngineManager::hasAttributeWithSpecificValue(const QString& fileName, const
 }
 
 void EngineManager::deleteXmlElementByAttribute(const QString& fileName, const QString& attributeName, const QString& attributeValue) {
-	QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+	const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
 	QFile file(settingsDir + "/" + fileName);
 	QFile tempFile(settingsDir + "/temp.xml");
 
@@ -336,24 +336,24 @@ void EngineManager::on_toolButton_clicked()
 	addEngineDialog->exec();
 	if (addEngineDialog->result() == QDialog::Accepted)
 	{
-		QString engineName = addEngineDialog->GetEngineName()->text();
+		const QString engineName = addEngineDialog->GetEngineName()->text();
 		if (hasAttributeWithSpecificValue("QBoardEngines.xml", "EngineName", engineName))
 		{
 			QMessageBox::warning(this, "Warning", "Engine with the same name already exists", QMessageBox::Ok);
 			return;
 		}
-		QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
-		QString enginePath = addEngineDialog->GetEnginePath()->text();
+		const QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
+		const QString enginePath = addEngineDialog->GetEnginePath()->text();
 		if (engineName != "" && enginePath != "")
 		{
 			ui->engineTable->insertRow(ui->engineTable->rowCount());
-			int currentRow = ui->engineTable->rowCount() - 1;
+			const int currentRow = ui->engineTable->rowCount() - 1;
 			ui->engineTable->setItem(currentRow, 0, new QTableWidgetItem(engineName));
 			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(engineProtocol));
 			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(enginePath));
 
 			// Writing added engine string to the file
-			QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+			const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
 			if (!QDir(settingsDir).exists())
 			{
 				QDir().mkdir(settingsDir);
@@ -383,7 +383,7 @@ void EngineManager::on_toolButton_clicked()
 
 void EngineManager::on_toolButton_2_clicked()
 {
-	int currentRow = ui->engineTable->currentRow();
+	const int currentRow = ui->engineTable->currentRow();
 	if (currentRow == -1) return;
 	AddEngineDialog *addEngineDialog = new AddEngineDialog(this);
 	addEngineDialog->SetEngineName(ui->engineTable->item(currentRow, 0)->text());
@@ -394,9 +394,9 @@ void EngineManager::on_toolButton_2_clicked()
 	addEngineDialog->exec();
 	if (addEngineDialog->result() == QDialog::Accepted)
 	{
-		QString engineName = addEngineDialog->GetEngineName()->text();
-		QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
-		QString enginePath = addEngineDialog->GetEnginePath()->text();
+		const QString engineName = addEngineDialog->GetEngineName()->text();
+		const QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
+		const QString enginePath = addEngineDialog->GetEnginePath()->text();
 		if (engineName != "" && enginePath != "")
 		{
 			modifyXmlElement("QBoardEngines.xml", engineName, engineProtocol, enginePath);
@@ -419,7 +419,7 @@ void EngineManager::on_toolButton_3_clicked()
 			QMessageBox::Ok | QMessageBox::Default,
 			QMessageBox::Cancel | QMessageBox::Escape,
 			QMessageBox::NoButton, this);
-		int response = mb.exec();
+		const int response = mb.exec();
 		if (response == QMessageBox::Ok)
 		{
 			int cnt = selectedRows.size();

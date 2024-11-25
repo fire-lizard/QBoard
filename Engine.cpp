@@ -8,12 +8,11 @@ Engine::~Engine()
 {
 }
 
-QProcess* Engine::RunProcess(QObject *parentObject, QString engineFolder, QString engineExe)
+QProcess* Engine::RunProcess(QObject *parentObject, const QString& engineExe)
 {
-	QString fileName = engineFolder + "/" + engineExe;
 	_process = new QProcess(parentObject);
-	_process->setWorkingDirectory(engineFolder);
-	_process->setProgram(fileName);
+	_process->setWorkingDirectory(QFileInfo(engineExe).absolutePath());
+	_process->setProgram(engineExe);
 	_process->start();
 	return _process;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include <QProcess>
+#include <QFileInfo>
 #include "Common.h"
 
 class Engine
@@ -7,7 +8,7 @@ class Engine
 public:
 	Engine();
 	virtual ~Engine();
-	QProcess* RunProcess(QObject *parentObject, QString engineFolder, QString engineExe);
+	QProcess* RunProcess(QObject *parentObject, const QString& engineExe);
 	void Quit() const;
 	virtual EngineProtocol GetType() = 0;
 	virtual void StartGame(QString variant = "") = 0;

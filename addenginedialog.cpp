@@ -11,38 +11,38 @@ AddEngineDialog::~AddEngineDialog()
     delete ui;
 }
 
-QLineEdit * AddEngineDialog::GetEngineName()
+QLineEdit * AddEngineDialog::GetEngineName() const
 {
 	return ui->engineName;
 }
 
-QComboBox * AddEngineDialog::GetEngineProtocol()
+QComboBox * AddEngineDialog::GetEngineProtocol() const
 {
 	return ui->engineProtocol;
 }
 
-QLineEdit * AddEngineDialog::GetEnginePath()
+QLineEdit * AddEngineDialog::GetEnginePath() const
 {
 	return ui->enginePath;
 }
 
-void AddEngineDialog::SetEngineName(const QString& engineName)
+void AddEngineDialog::SetEngineName(const QString& engineName) const
 {
 	ui->engineName->setText(engineName);
 }
 
-void AddEngineDialog::SetEngineProtocol(int engineProtocol)
+void AddEngineDialog::SetEngineProtocol(int engineProtocol) const
 {
 	ui->engineProtocol->setCurrentIndex(engineProtocol);
 }
 
-void AddEngineDialog::SetEnginePath(const QString& enginePath)
+void AddEngineDialog::SetEnginePath(const QString& enginePath) const
 {
 	ui->enginePath->setText(enginePath);
 }
 
 void AddEngineDialog::on_toolButton_clicked()
 {
-	QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", "Programs (*.exe)");
+	const QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", "Programs (*.exe)");
 	ui->enginePath->setText(fileName);
 }

@@ -12,7 +12,7 @@ VBoard::~VBoard()
 
 void VBoard::paintEvent(QPaintEvent *)
 {
-	QString resourcePrefix = ":/pieces_eur/images/";
+	const QString resourcePrefix = ":/pieces_eur/images/";
 	QPainter painter(this);
 	painter.setPen(Qt::black);
 	painter.setBrush(Qt::NoBrush);
@@ -240,7 +240,7 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		break;
 	case ShoShogi:
 		_board = new ShogiBoard();
-		static_cast<ShogiBoard*>(_board)->SetDrops(false);
+		dynamic_cast<ShogiBoard*>(_board)->SetDrops(false);
 		break;
 	case ChuShogi:
 		_board = new ChuShogiBoard();
@@ -281,7 +281,7 @@ void VBoard::SetTextEdit(QTextEdit* textEdit)
 	_textEdit = textEdit;
 }
 
-bool VBoard::PossibleMove(int x, int y)
+bool VBoard::PossibleMove(int x, int y) const
 {
 	for (int index = 0; index < _moves.size(); index++)
 	{
@@ -364,10 +364,10 @@ void VBoard::SetEngine(Engine* engine)
 
 void VBoard::readyReadStandardOutput()
 {
-	QProcess *p = static_cast<QProcess*>(sender());
+	QProcess *p = dynamic_cast<QProcess*>(sender());
 	QByteArray buf = p->readAllStandardOutput();
 	this->_textEdit->setText(buf);
-	int auxPos1 = buf.lastIndexOf("getmove ");
+	const int auxPos1 = buf.lastIndexOf("getmove ");
 	int pos = _engine->GetType() == WinBoard ? buf.lastIndexOf("move ", auxPos1) : buf.lastIndexOf("bestmove ", auxPos1) + 4;
 	if (pos == -1)
 		return;
@@ -458,7 +458,7 @@ void VBoard::readyReadStandardOutput()
 				newPiece = None;
 				break;
 			}
-			static_cast<ShogiBoard*>(_board)->PlacePiece(newPiece, _currentPlayer, x2, y2);
+			dynamic_cast<ShogiBoard*>(_board)->PlacePiece(newPiece, _currentPlayer, x2, y2);
 		}
 	}
 	_currentPlayer = White;
@@ -466,9 +466,9 @@ void VBoard::readyReadStandardOutput()
 	this->repaint();
 }
 
-void VBoard::readyReadStandardError()
+void VBoard::readyReadStandardError() const
 {
-	QProcess *p = static_cast<QProcess*>(sender());
-	QByteArray buf = p->readAllStandardError();
+	QProcess *p = dynamic_cast<QProcess*>(sender());
+	const QByteArray buf = p->readAllStandardError();
 	this->_textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
 }

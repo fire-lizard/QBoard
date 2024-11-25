@@ -47,6 +47,8 @@ public:
 private:
 	void closeEvent(QCloseEvent *) override;
 
+	void LoadEngine();
+
 	Ui::MainWindow *ui;
 	QString _currentStyle = "";
 	Engine *_engine = nullptr;

@@ -34,7 +34,7 @@ private:
 
 	void mousePressEvent(QMouseEvent *event) override;
 
-	bool PossibleMove(int x, int y);
+	bool PossibleMove(int x, int y) const;
 	void RemoveMove(int x, int y);
 	void CalculateCheck(int oldX, int oldY, int newX, int newY);
 	void AddMove(PieceType p, int x1, int x2, int y1, int y2, char promotion);
@@ -59,5 +59,5 @@ signals:
 
 	void readyReadStandardOutput();
 
-	void readyReadStandardError();
+	void readyReadStandardError() const;
 };

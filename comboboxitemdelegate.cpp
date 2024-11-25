@@ -13,7 +13,7 @@ QWidget* ComboBoxItemDelegate::createEditor(QWidget* parent, const QStyleOptionV
 	if (index.column() == 1)
 	{
 		QComboBox* cb = new QComboBox(parent);
-		int row = index.row();
+		const int row = index.row();
 		cb->addItem(QString("WinBoard").arg(row));
 		cb->addItem(QString("UCI").arg(row));
 		cb->addItem(QString("UCCI").arg(row));
@@ -28,8 +28,8 @@ void ComboBoxItemDelegate::setEditorData(QWidget* editor, const QModelIndex& ind
 {
     if (QComboBox* cb = qobject_cast<QComboBox*>(editor)) {
        // get the index of the text in the combobox that matches the current value of the itenm
-       QString currentText = index.data(Qt::EditRole).toString();
-       int cbIndex = cb->findText(currentText);
+       const QString currentText = index.data(Qt::EditRole).toString();
+       const int cbIndex = cb->findText(currentText);
        // if it is valid, adjust the combobox
        if (cbIndex >= 0)
            cb->setCurrentIndex(cbIndex);

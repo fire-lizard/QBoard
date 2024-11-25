@@ -39,9 +39,9 @@ QByteArray UsiEngine::AddMove(int x1, int y1, int x2, int y2, char promotion)
 	if (x1 < 10)
 	{
 		moveStr.push_back(QString::number(x1)[0].toLatin1());
-		moveStr.push_back(char(y1 + 97));
+		moveStr.push_back(static_cast<char>(y1 + 97));
 		moveStr.push_back(QString::number(x2)[0].toLatin1());
-		moveStr.push_back(char(y2 + 97));
+		moveStr.push_back(static_cast<char>(y2 + 97));
 	}
 	else
 	{

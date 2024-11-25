@@ -9,7 +9,7 @@ vector<pair<int, int>> Board::Moves() const
 	return _moves;
 }
 
-Piece* Board::GetData(int x, int y)
+Piece* Board::GetData(int x, int y) const
 {
 	return _data[x][y];
 }
@@ -60,18 +60,18 @@ void Board::CheckDirectionInc(int &x, int &y, Direction direction)
 	}
 }
 
-void Board::CheckMove(Piece *piece, int x, int y)
+void Board::CheckMove(const Piece *piece, int x, int y)
 {
 	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
 	{
 		if (_data[x][y] == nullptr || _data[x][y]->GetColour() != piece->GetColour())
 		{
-			_moves.push_back(pair<int, int>(x, y));
+			_moves.emplace_back(x, y);
 		}
 	}
 }
 
-void Board::CheckDirection(Piece *piece, int x, int y, Direction direction)
+void Board::CheckDirection(const Piece *piece, int x, int y, Direction direction)
 {
 	while (CheckDirectionAux(x, y, direction))
 	{
@@ -146,7 +146,7 @@ vector<tuple<int, int, int, int>> Board::GetAllMoves(PieceColour pieceColour)
 			if (_data[i][j] != nullptr && _data[i][j]->GetColour() == pieceColour)
 			{
 				GetMoves(_data[i][j], i, j);
-				for_each(_moves.begin(), _moves.end(), [&](pair<int, int> p) {result.push_back(make_tuple(i, j, p.first, p.second)); });
+				for_each(_moves.begin(), _moves.end(), [&](pair<int, int> p) {result.emplace_back(i, j, p.first, p.second); });
 			}
 		}
 	}

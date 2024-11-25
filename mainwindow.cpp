@@ -14,10 +14,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	this->ui->statusBar->setFont(font);
 	this->ui->statusBar->showMessage("White move");
 
-	QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+	const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
 	if (QDir(settingsDir).exists())
 	{
-		QString settingsFile = settingsDir + "/QBoardSettings.xml";
+		const QString settingsFile = settingsDir + "/QBoardSettings.xml";
 		QFile file(settingsFile);
 		file.open(QIODevice::ReadOnly | QIODevice::Text);
 		QXmlStreamReader xmlStreamReader(&file);
@@ -74,7 +74,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		
 		file.close();
 	}
-	on_actionNew_game_triggered();
 }
 
 MainWindow::~MainWindow()
@@ -92,7 +91,7 @@ void MainWindow::on_actionSettings_triggered()
 	{
 		QApplication::setStyle(settingsDialog->GetStyles()->itemText(settingsDialog->GetStyles()->currentIndex()));
 		_currentStyle = settingsDialog->GetStyles()->currentText();
-		GameVariant newGameVariant = static_cast<GameVariant>(settingsDialog->GetGameVariants()->currentIndex());
+		const GameVariant newGameVariant = static_cast<GameVariant>(settingsDialog->GetGameVariants()->currentIndex());
 		if (newGameVariant != this->ui->vboard->GetGameVariant())
 		{
 			this->ui->vboard->SetGameVariant(newGameVariant);
@@ -100,12 +99,12 @@ void MainWindow::on_actionSettings_triggered()
 			this->ui->vboard->SetCurrentPlayer(White);
 			this->ui->vboard->repaint();
 		}
-		QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+		const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
 		if (!QDir(settingsDir).exists())
 		{
 			QDir().mkdir(settingsDir);
 		}
-		QString settingsFile = settingsDir + "/QBoardSettings.xml";
+		const QString settingsFile = settingsDir + "/QBoardSettings.xml";
 		QFile file(settingsFile);
 		file.open(QIODevice::WriteOnly | QIODevice::Text);
 		QXmlStreamWriter xmlStreamWriter(&file);
@@ -143,7 +142,7 @@ void MainWindow::on_actionNew_game_triggered()
 		_engine->Quit();
 		delete _engine;
 	}
-	if (_engineExe != "")
+	if (_engineExe != "" && _engineExe != "Human")
 	{
 		switch (_engineProtocol)
 		{
@@ -163,20 +162,7 @@ void MainWindow::on_actionNew_game_triggered()
 			_engine = new WbEngine();
 			break;
 		}
-		QString _engineFolder = "Pulsar";
-		QString workingDir = QCoreApplication::applicationDirPath() + "/engines/" + _engineFolder;
-		_engineExe = "pulsar2009-9b.exe";
-		QProcess *process = _engine->RunProcess(this, workingDir, _engineExe);
-		if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
-		{
-			_engine->StartGame();
-			connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
-			connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(readyReadStandardError()));
-			connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(errorOccurred(QProcess::ProcessError)));
-			this->ui->vboard->SetEngine(_engine);
-		}
-		else
-			this->ui->statusBar->showMessage("Error while running engine: " + process->errorString());
+		LoadEngine();
 	}
 	else
 		this->ui->statusBar->showMessage("Engine not set");
@@ -185,10 +171,25 @@ void MainWindow::on_actionNew_game_triggered()
 	this->ui->vboard->repaint();
 }
 
+void MainWindow::LoadEngine()
+{
+	_engineExe = "pulsar2009-9b.exe";
+	const QProcess* process = _engine->RunProcess(this, _engineExe);
+	if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
+	{
+		_engine->StartGame();
+		connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
+		connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(readyReadStandardError()));
+		connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(errorOccurred(QProcess::ProcessError)));
+		this->ui->vboard->SetEngine(_engine);
+	}
+	else
+		this->ui->statusBar->showMessage("Error while running engine: " + process->errorString());
+}
+
 void MainWindow::on_actionOpen_triggered()
 {
-	QFileDialog openFileDialog;
-	QString fileName = openFileDialog.getOpenFileName(this, "Open file", "", "PGN Files (*.pgn)");
+	const QString fileName = QFileDialog::getOpenFileName(this, "Open file", "", "PGN Files (*.pgn)");
 	if (fileName != "")
 	{
 		QFile file;
@@ -202,8 +203,7 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
-	QFileDialog saveFileDialog;
-	QString fileName = saveFileDialog.getSaveFileName(this, "Save file", "", "PGN Files (*.pgn)");
+	const QString fileName = QFileDialog::getSaveFileName(this, "Save file", "", "PGN Files (*.pgn)");
 	if (fileName != "")
 	{
 		QFile file;
@@ -212,16 +212,16 @@ void MainWindow::on_actionSave_triggered()
 		file.write("[Event \"QBoard Game\"]\n");
 		QString site = "[Site \"" + QSysInfo::machineHostName() + "\"]\n";
 		file.write(site.toLocal8Bit());
-		QString currentDate = "[Date \"" + QDate::currentDate().toString("dd/MM/yyyy") + "\"]\n";
+		const QString currentDate = "[Date \"" + QDate::currentDate().toString("dd/MM/yyyy") + "\"]\n";
 		file.write(currentDate.toLocal8Bit());
-		vector<string> gameRecord = ui->vboard->GetGameRecord();
-		QString currentRound = "[Round \"" + QString::number(gameRecord.size()) + "\"]\n";
+		const vector<string> gameRecord = ui->vboard->GetGameRecord();
+		const QString currentRound = "[Round \"" + QString::number(gameRecord.size()) + "\"]\n";
 		file.write(currentRound.toLocal8Bit());
 		QString userName = qgetenv("USER");
 		if (userName.isEmpty())
 			userName = qgetenv("USERNAME");
-		QString whiteName = "[White \"" + userName + "\"]\n";
-		QString blackName = "[Black \"" + _engineName + "\"]\n\n";
+		const QString whiteName = "[White \"" + userName + "\"]\n";
+		const QString blackName = "[Black \"" + _engineName + "\"]\n\n";
 		file.write(whiteName.toLocal8Bit());
 		file.write(blackName.toLocal8Bit());
 		GameVariant gameVariant = ui->vboard->GetGameVariant();

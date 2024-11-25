@@ -20,7 +20,7 @@ class EngineManager : public QDialog
 public:
     explicit EngineManager(QWidget *parent = nullptr);
     ~EngineManager() override;
-	QTableWidget* GetEngineTable();
+	QTableWidget* GetEngineTable() const;
 
 private slots:
     void on_toolButton_clicked();
@@ -36,15 +36,15 @@ private slots:
 private:
     Ui::EngineManager *ui;
 
-    EngineProtocol StringToEngineProtocol(const QString& str);
-    
-    void addElementToXmlStream(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath);
+    static EngineProtocol StringToEngineProtocol(const QString& str);
 
-    void modifyXmlElement(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath);
+    static void addElementToXmlStream(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath);
 
-    void readXmlUsingStream(const QString& fileName);
+    static void modifyXmlElement(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath);
 
-    bool hasAttributeWithSpecificValue(const QString& fileName, const QString& attributeName, const QString& attributeValue);
+    void readXmlUsingStream(const QString& fileName) const;
 
-    void deleteXmlElementByAttribute(const QString& fileName, const QString& attributeName, const QString& attributeValue);
+    static bool hasAttributeWithSpecificValue(const QString& fileName, const QString& attributeName, const QString& attributeValue);
+
+    static void deleteXmlElementByAttribute(const QString& fileName, const QString& attributeName, const QString& attributeValue);
 };
