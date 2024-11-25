@@ -8,7 +8,7 @@ class ChuShogiBoard : public Board
 {
 public:
 	ChuShogiBoard();
-	virtual ~ChuShogiBoard();
+	~ChuShogiBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false) override;

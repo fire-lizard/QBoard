@@ -7,8 +7,7 @@ EngineManager::EngineManager(QWidget *parent) : QDialog(parent), ui(new Ui::Engi
 	ComboBoxItemDelegate* cbid = new ComboBoxItemDelegate(ui->engineTable);
 	ui->engineTable->setItemDelegate(cbid);
 	ui->engineTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-	QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
-	readXmlUsingStream(settingsDir + "/QBoardEngines.xml");
+	readXmlUsingStream("QBoardEngines.xml");
 }
 
 EngineManager::~EngineManager()
@@ -21,7 +20,7 @@ QTableWidget * EngineManager::GetEngineTable()
 	return ui->engineTable;
 }
 
-EngineProtocol StringToEngineProtocol(const QString& str)
+EngineProtocol EngineManager::StringToEngineProtocol(const QString& str)
 {
 	if (str == "UCI")
 		return UCI;
@@ -177,8 +176,9 @@ void EngineManager::modifyXmlElement(const QString& fileName, const QString& eng
 	}
 }
 
-void EngineManager::readXmlUsingStream(const QString& filePath) {
-	QFile file(filePath);
+void EngineManager::readXmlUsingStream(const QString& fileName) {
+	QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+	QFile file(settingsDir + "/" + fileName);
 
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		qDebug() << "Failed to open the file for reading.";
@@ -222,6 +222,41 @@ void EngineManager::readXmlUsingStream(const QString& filePath) {
 	}
 
 	file.close();
+}
+
+bool EngineManager::hasAttributeWithSpecificValue(const QString& fileName, const QString& attributeName, const QString& attributeValue) {
+	QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+	QFile file(settingsDir + "/" + fileName);
+
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		qDebug() << "Failed to open the file for reading.";
+		return false;
+	}
+
+	QXmlStreamReader xmlReader(&file);
+
+	while (!xmlReader.atEnd()) {
+		xmlReader.readNext();
+
+		// Check if it's a start element
+		if (xmlReader.isStartElement()) {
+			// Check if the element has the specified attribute
+			if (xmlReader.attributes().hasAttribute(attributeName)) {
+				QString value = xmlReader.attributes().value(attributeName).toString();
+				if (value == attributeValue) {
+					file.close();
+					return true; // Attribute with the specific value is found
+				}
+			}
+		}
+	}
+
+	if (xmlReader.hasError()) {
+		qDebug() << "Error reading XML:" << xmlReader.errorString();
+	}
+
+	file.close();
+	return false; // Attribute with specific value not found
 }
 
 void EngineManager::deleteXmlElementByAttribute(const QString& fileName, const QString& attributeName, const QString& attributeValue) {
@@ -302,6 +337,11 @@ void EngineManager::on_toolButton_clicked()
 	if (addEngineDialog->result() == QDialog::Accepted)
 	{
 		QString engineName = addEngineDialog->GetEngineName()->text();
+		if (hasAttributeWithSpecificValue("QBoardEngines.xml", "EngineName", engineName))
+		{
+			QMessageBox::warning(this, "Warning", "Engine with the same name already exists", QMessageBox::Ok);
+			return;
+		}
 		QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
 		QString enginePath = addEngineDialog->GetEnginePath()->text();
 		if (engineName != "" && enginePath != "")

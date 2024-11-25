@@ -14,7 +14,7 @@ class SettingsDialog : public QDialog
 
 public:
 	explicit SettingsDialog(QWidget *parent = nullptr);
-	~SettingsDialog();
+	~SettingsDialog() override;
 	QComboBox* GetStyles() const;
 	QComboBox* GetGameVariants() const;
 	QComboBox* GetWhitePlayer() const;

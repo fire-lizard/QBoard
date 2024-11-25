@@ -6,7 +6,7 @@ class MiniShogiBoard : public Board
 {
 public:
 	MiniShogiBoard();
-	virtual ~MiniShogiBoard();
+	~MiniShogiBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false) override;

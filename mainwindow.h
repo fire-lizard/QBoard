@@ -25,7 +25,7 @@ class MainWindow : public QMainWindow
 
 public:
 	explicit MainWindow(QWidget *parent = nullptr);
-	~MainWindow();
+	~MainWindow() override;
 
 	private slots:
 	void on_actionSettings_triggered();

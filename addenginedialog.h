@@ -14,7 +14,7 @@ class AddEngineDialog : public QDialog
 
 public:
     explicit AddEngineDialog(QWidget *parent = nullptr);
-    ~AddEngineDialog();
+    ~AddEngineDialog() override;
 	QLineEdit* GetEngineName();
 	QComboBox* GetEngineProtocol();
 	QLineEdit* GetEnginePath();

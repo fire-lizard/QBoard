@@ -6,7 +6,7 @@ class ChuShogiPiece : public Piece
 {
 public:
 	ChuShogiPiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false);
-	virtual ~ChuShogiPiece();
+	~ChuShogiPiece() override;
 	void Promote(PieceType pieceType = None) override;
 	string StringCode() override;
 	string AsianStringCode() override;

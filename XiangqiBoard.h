@@ -5,7 +5,7 @@ class XiangqiBoard : public Board
 {
 public:
 	XiangqiBoard();
-	virtual ~XiangqiBoard();
+	~XiangqiBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false) override;

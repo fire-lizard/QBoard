@@ -295,7 +295,7 @@ bool VBoard::PossibleMove(int x, int y)
 
 void VBoard::RemoveMove(int x, int y)
 {
-	for (int index = _moves.size() - 1; index >= 0; index--)
+	for (size_t index = _moves.size() - 1; index >= 0; index--)
 	{
 		if (_moves[index].first == x && _moves[index].second == y)
 			_moves.erase(_moves.begin() + index);

@@ -19,7 +19,7 @@ class EngineManager : public QDialog
 
 public:
     explicit EngineManager(QWidget *parent = nullptr);
-    ~EngineManager();
+    ~EngineManager() override;
 	QTableWidget* GetEngineTable();
 
 private slots:
@@ -36,11 +36,15 @@ private slots:
 private:
     Ui::EngineManager *ui;
 
+    EngineProtocol StringToEngineProtocol(const QString& str);
+    
     void addElementToXmlStream(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath);
 
     void modifyXmlElement(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath);
 
-    void readXmlUsingStream(const QString& filePath);
+    void readXmlUsingStream(const QString& fileName);
+
+    bool hasAttributeWithSpecificValue(const QString& fileName, const QString& attributeName, const QString& attributeValue);
 
     void deleteXmlElementByAttribute(const QString& fileName, const QString& attributeName, const QString& attributeValue);
 };

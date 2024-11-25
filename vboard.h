@@ -17,7 +17,7 @@ class VBoard : public QWidget
 	Q_OBJECT
 public:
 	explicit VBoard(QWidget *parent = nullptr);
-	virtual ~VBoard();
+	~VBoard() override;
 	vector<string> GetGameRecord() const;
 	Board* GetBoard() const;
 	GameVariant GetGameVariant() const;

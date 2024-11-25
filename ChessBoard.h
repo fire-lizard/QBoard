@@ -6,7 +6,7 @@ class ChessBoard : public Board
 {
 public:
 	ChessBoard();
-	virtual ~ChessBoard();
+	~ChessBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false) override;

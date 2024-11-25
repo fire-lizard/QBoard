@@ -5,7 +5,7 @@ class ChessPiece : public Piece
 {
 public:
 	ChessPiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false);
-	virtual ~ChessPiece();
+	~ChessPiece() override;
 	void Promote(PieceType pieceType = None) override;
 	string StringCode() override;
 	string AsianStringCode() override;
