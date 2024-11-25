@@ -92,7 +92,7 @@ void EngineManager::addElementToXmlStream(const QString& fileName, const QString
 	}
 }
 
-/*void EngineManager::modifyXmlElement(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath) {
+void EngineManager::modifyXmlElement(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath) {
 	QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
 	QFile file(settingsDir + "/" + fileName);
 	QFile tempFile(settingsDir + "/temp.xml");
@@ -119,17 +119,24 @@ void EngineManager::addElementToXmlStream(const QString& fileName, const QString
 
 		// Check if it's a start element
 		if (xmlReader.isStartElement()) {
-			if (xmlReader.name() == elementTag) {
+			if (xmlReader.name().toString() == "Engine") {
 				// Write the start element
 				xmlWriter.writeStartElement(xmlReader.name().toString());
 
 				// Copy attributes if any
-				foreach(const QXmlStreamAttribute & attr, xmlReader.attributes()) {
-					xmlWriter.writeAttribute(attr.name().toString(), attr.value().toString());
+				QXmlStreamAttributes attributes = xmlReader.attributes();
+				if (attributes.size() > 0 && attributes[0].name().toString() == "EngineName" && attributes[0].value().toString() == engineName)
+				{
+					xmlWriter.writeAttribute("EngineName", engineName);
+					xmlWriter.writeAttribute("EngineProtocol", engineProtocol);
+					xmlWriter.writeAttribute("EnginePath", enginePath);
 				}
-
-				// Modify the text content
-				xmlWriter.writeCharacters(newText);
+				else
+				{
+					foreach(const QXmlStreamAttribute & attr, attributes) {
+						xmlWriter.writeAttribute(attr.name().toString(), attr.value().toString());
+					}
+				}
 
 				// Skip the rest of this element's text
 				xmlReader.readNext(); // Move past characters/text
@@ -152,6 +159,8 @@ void EngineManager::addElementToXmlStream(const QString& fileName, const QString
 		}
 	}
 
+	xmlWriter.writeEndDocument();
+
 	if (xmlReader.hasError()) {
 		qDebug() << "Error reading XML:" << xmlReader.errorString();
 	}
@@ -166,7 +175,7 @@ void EngineManager::addElementToXmlStream(const QString& fileName, const QString
 	else {
 		qDebug() << "Failed to save changes to the original file.";
 	}
-}*/
+}
 
 void EngineManager::readXmlUsingStream(const QString& filePath) {
 	QFile file(filePath);
@@ -340,6 +349,8 @@ void EngineManager::on_toolButton_2_clicked()
 	addEngineDialog->SetEngineName(ui->engineTable->item(currentRow, 0)->text());
 	addEngineDialog->SetEngineProtocol(StringToEngineProtocol(ui->engineTable->item(currentRow, 1)->text()));
 	addEngineDialog->SetEnginePath(ui->engineTable->item(currentRow, 2)->text());
+	addEngineDialog->GetEngineName()->setStyleSheet("QLineEdit { background-color: lightgray; }");
+	addEngineDialog->GetEngineName()->setReadOnly(true);
 	addEngineDialog->exec();
 	if (addEngineDialog->result() == QDialog::Accepted)
 	{
@@ -348,6 +359,7 @@ void EngineManager::on_toolButton_2_clicked()
 		QString enginePath = addEngineDialog->GetEnginePath()->text();
 		if (engineName != "" && enginePath != "")
 		{
+			modifyXmlElement("QBoardEngines.xml", engineName, engineProtocol, enginePath);
 			ui->engineTable->setItem(currentRow, 0, new QTableWidgetItem(engineName));
 			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(engineProtocol));
 			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(enginePath));
