@@ -2,7 +2,11 @@
 #include <QDialog>
 #include <QMessageBox>
 #include <QTableWidget>
+#include <QStandardPaths>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 #include "comboboxitemdelegate.h"
+#include "Common.h"
 #include "addenginedialog.h"
 
 namespace Ui {
@@ -31,4 +35,12 @@ private slots:
 
 private:
     Ui::EngineManager *ui;
+
+    void addElementToXmlStream(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath);
+
+    void modifyXmlElement(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath);
+
+    void readXmlUsingStream(const QString& filePath);
+
+    void deleteXmlElementByAttribute(const QString& fileName, const QString& attributeName, const QString& attributeValue);
 };

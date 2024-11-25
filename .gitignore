@@ -1,2 +1,13 @@
+.qmake.stash
+QBoard.qtvscr
+QBoard_resource.aps
+QBoard_resource.rc
+ui_addenginedialog.h
+ui_enginemanager.h
+ui_mainwindow.h
+ui_settingsdialog.h
+/.vs
 /QBoard.pro.user
 /QBoard.pro.user.3.2-pre1
+/debug
+/release

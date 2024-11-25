@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 			QXmlStreamReader::TokenType tokenType = xmlStreamReader.readNext();
 			if (tokenType == QXmlStreamReader::StartElement)
 			{
-				if (xmlStreamReader.name() == "Style")
+				if (xmlStreamReader.name().toString() == "Style")
 				{
 					tokenType = xmlStreamReader.readNext();
 					if (tokenType == QXmlStreamReader::Characters)
@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 							this->ui->statusBar->showMessage("Unsupported style");
 					}
 				}
-				else if (xmlStreamReader.name() == "GameVariant")
+				else if (xmlStreamReader.name().toString() == "GameVariant")
 				{
 					tokenType = xmlStreamReader.readNext();
 					if (tokenType == QXmlStreamReader::Characters)
@@ -52,13 +52,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 							this->ui->statusBar->showMessage("Unsupported game variant");
 					}
 				}
-				else if (xmlStreamReader.name() == "EngineExe")
+				else if (xmlStreamReader.name().toString() == "EngineExe")
 				{
 					tokenType = xmlStreamReader.readNext();
 					if (tokenType == QXmlStreamReader::Characters)
 						_engineExe = xmlStreamReader.text().toString();
 				}
-				else if (xmlStreamReader.name() == "EngineProtocol")
+				else if (xmlStreamReader.name().toString() == "EngineProtocol")
 				{
 					tokenType = xmlStreamReader.readNext();
 					if (tokenType == QXmlStreamReader::Characters)

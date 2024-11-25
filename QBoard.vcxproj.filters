@@ -1,32 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
-      <Extensions>qrc;*</Extensions>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
     <Filter Include="Form Files">
       <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
       <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
-    <Filter Include="Generated Files">
-      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
-      <Extensions>moc;h;cpp</Extensions>
-      <SourceControlFiles>False</SourceControlFiles>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,101 +62,62 @@
     <ClCompile Include="ChuShogiPiece.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniShogiBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Piece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QianhongEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShogiBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShogiPiece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UcciEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UciEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UsiEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WbEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XiangqiBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XiangqiPiece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="addenginedialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="comboboxitemdelegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="enginemanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mainwindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_mainwindow.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_mainwindow.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Piece.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_resources.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="settingsdialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_settingsdialog.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_settingsdialog.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="vboard.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_vboard.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_vboard.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ShogiPiece.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XiangqiPiece.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ShogiBoard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XiangqiBoard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WbEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UciEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="QianhongEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UcciEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UsiEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MiniShogiBoard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="comboboxitemdelegate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_comboboxitemdelegate.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_comboboxitemdelegate.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="enginemanager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_enginemanager.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_enginemanager.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="addenginedialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_addenginedialog.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_addenginedialog.cpp">
-      <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,483 +139,614 @@
     <ClInclude Include="Common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_mainwindow.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Piece.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_settingsdialog.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShogiPiece.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XiangqiPiece.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShogiBoard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XiangqiBoard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WbEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UciEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QianhongEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UcciEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UsiEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MiniShogiBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_enginemanager.h">
-      <Filter>Generated Files</Filter>
+    <ClInclude Include="Piece.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_addenginedialog.h">
-      <Filter>Generated Files</Filter>
+    <ClInclude Include="QianhongEngine.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShogiBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShogiPiece.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UcciEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UciEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UsiEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WbEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XiangqiBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XiangqiPiece.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <QtMoc Include="addenginedialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="comboboxitemdelegate.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="enginemanager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="mainwindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="settingsdialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="vboard.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="mainwindow.h">
-      <Filter>Header Files</Filter>
+    <CustomBuild Include="debug\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="mainwindow.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="resources.qrc">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="settingsdialog.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="settingsdialog.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="vboard.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="comboboxitemdelegate.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="enginemanager.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="enginemanager.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="addenginedialog.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="addenginedialog.ui">
-      <Filter>Form Files</Filter>
+    <CustomBuild Include="release\moc_predefs.h.cbt">
+      <Filter>Generated Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="toolbar\About.png">
+    <QtUic Include="addenginedialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="enginemanager.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="mainwindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="settingsdialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="toolbar\About.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="toolbar\Exit.png">
+    </None>
+    <None Include="toolbar\Add.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="toolbar\Open.png">
+    </None>
+    <None Include="images\BlackAdvisor.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="toolbar\Save.png">
+    </None>
+    <None Include="images_jap\BlackAdvisor.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="toolbar\Settings.png">
+    </None>
+    <None Include="images_sho\BlackAdvisor.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackAdvisor.png">
+    </None>
+    <None Include="images\BlackArchbishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackArchbishop.png">
+    </None>
+    <None Include="images_jap\BlackArchbishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackBishop.png">
+    </None>
+    <None Include="images\BlackBishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackCanon.png">
+    </None>
+    <None Include="images_jap\BlackBishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackChancellor.png">
+    </None>
+    <None Include="images_sho\BlackBishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackClaw.png">
+    </None>
+    <None Include="images\BlackCanon.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackCobra.png">
+    </None>
+    <None Include="images_jap\BlackCanon.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackCommoner.png">
+    </None>
+    <None Include="images\BlackChancellor.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackCrownedBishop.png">
+    </None>
+    <None Include="images_jap\BlackChancellor.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackCrownedRook.png">
+    </None>
+    <None Include="images\BlackClaw.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackDolphin.png">
+    </None>
+    <None Include="images_jap\BlackClaw.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackElephant.png">
+    </None>
+    <None Include="images\BlackCobra.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackGold.png">
+    </None>
+    <None Include="images_jap\BlackCobra.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackHawk.png">
+    </None>
+    <None Include="images\BlackCommoner.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackHCrown.png">
+    </None>
+    <None Include="images_jap\BlackCommoner.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackHSword.png">
+    </None>
+    <None Include="images\BlackCrownedBishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackKing.png">
+    </None>
+    <None Include="images_jap\BlackCrownedBishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackKnight.png">
+    </None>
+    <None Include="images_sho\BlackCrownedBishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackLance.png">
+    </None>
+    <None Include="images\BlackCrownedRook.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackLeopard.png">
+    </None>
+    <None Include="images_jap\BlackCrownedRook.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackLion.png">
+    </None>
+    <None Include="images_sho\BlackCrownedRook.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackMarshall.png">
+    </None>
+    <None Include="images\BlackDolphin.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackPawn.png">
+    </None>
+    <None Include="images_jap\BlackDolphin.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackPrince.png">
+    </None>
+    <None Include="images\BlackElephant.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackPrincess.png">
+    </None>
+    <None Include="images_jap\BlackElephant.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackQueen.png">
+    </None>
+    <None Include="images\BlackGold.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackRook.png">
+    </None>
+    <None Include="images_jap\BlackGold.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackSword.png">
+    </None>
+    <None Include="images_sho\BlackGold.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackTokin.png">
+    </None>
+    <None Include="images\BlackHCrown.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\BlackUnicorn.png">
+    </None>
+    <None Include="images_jap\BlackHCrown.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteAdvisor.png">
+    </None>
+    <None Include="images\BlackHSword.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteArchbishop.png">
+    </None>
+    <None Include="images_jap\BlackHSword.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteBishop.png">
+    </None>
+    <None Include="images\BlackHawk.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteCanon.png">
+    </None>
+    <None Include="images_jap\BlackHawk.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteChancellor.png">
+    </None>
+    <None Include="images\BlackKing.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteClaw.png">
+    </None>
+    <None Include="images_jap\BlackKing.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteCobra.png">
+    </None>
+    <None Include="images_sho\BlackKing.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteCommoner.png">
+    </None>
+    <None Include="images\BlackKnight.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteCrownedBishop.png">
+    </None>
+    <None Include="images_jap\BlackKnight.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteCrownedRook.png">
+    </None>
+    <None Include="images_sho\BlackKnight.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteDolphin.png">
+    </None>
+    <None Include="images\BlackLance.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteElephant.png">
+    </None>
+    <None Include="images_jap\BlackLance.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteGold.png">
+    </None>
+    <None Include="images_sho\BlackLance.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteHawk.png">
+    </None>
+    <None Include="images\BlackLeopard.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteHCrown.png">
+    </None>
+    <None Include="images_jap\BlackLeopard.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteHSword.png">
+    </None>
+    <None Include="images\BlackLion.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteKing.png">
+    </None>
+    <None Include="images_jap\BlackLion.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteKnight.png">
+    </None>
+    <None Include="images\BlackMarshall.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteLance.png">
+    </None>
+    <None Include="images_jap\BlackMarshall.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteLeopard.png">
+    </None>
+    <None Include="images\BlackPawn.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteLion.png">
+    </None>
+    <None Include="images_jap\BlackPawn.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteMarshall.png">
+    </None>
+    <None Include="images_sho\BlackPawn.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhitePawn.png">
+    </None>
+    <None Include="images\BlackPrince.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhitePrince.png">
+    </None>
+    <None Include="images_jap\BlackPrince.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhitePrincess.png">
+    </None>
+    <None Include="images\BlackPrincess.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteQueen.png">
+    </None>
+    <None Include="images_jap\BlackPrincess.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteRook.png">
+    </None>
+    <None Include="images_sho\BlackPromotedAdvisor.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteSword.png">
+    </None>
+    <None Include="images_sho\BlackPromotedKnight.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteTokin.png">
+    </None>
+    <None Include="images_sho\BlackPromotedLance.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images\WhiteUnicorn.png">
+    </None>
+    <None Include="images\BlackQueen.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackAdvisor.png">
+    </None>
+    <None Include="images_jap\BlackQueen.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackArchbishop.png">
+    </None>
+    <None Include="images\BlackRook.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackBishop.png">
+    </None>
+    <None Include="images_jap\BlackRook.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackCanon.png">
+    </None>
+    <None Include="images_sho\BlackRook.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackChancellor.png">
+    </None>
+    <None Include="images\BlackSword.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackClaw.png">
+    </None>
+    <None Include="images_jap\BlackSword.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackCobra.png">
+    </None>
+    <None Include="images\BlackTokin.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackCommoner.png">
+    </None>
+    <None Include="images_jap\BlackTokin.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackCrownedBishop.png">
+    </None>
+    <None Include="images_sho\BlackTokin.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackCrownedRook.png">
+    </None>
+    <None Include="images\BlackUnicorn.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackDolphin.png">
+    </None>
+    <None Include="images_jap\BlackUnicorn.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackElephant.png">
+    </None>
+    <None Include="toolbar\Edit.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackGold.png">
+    </None>
+    <None Include="toolbar\Exit.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackHawk.png">
+    </None>
+    <None Include="toolbar\New.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackHCrown.png">
+    </None>
+    <None Include="toolbar\Open.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackHSword.png">
+    </None>
+    <None Include="toolbar\QBoard.icns">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackKing.png">
+    </None>
+    <None Include="toolbar\QBoard.ico">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackKnight.png">
+    </None>
+    <None Include="toolbar\Remove.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackLance.png">
+    </None>
+    <None Include="toolbar\Save.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackLeopard.png">
+    </None>
+    <None Include="toolbar\Settings.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackLion.png">
+    </None>
+    <None Include="toolbar\Stop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackMarshall.png">
+    </None>
+    <None Include="toolbar\Table.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackPawn.png">
+    </None>
+    <None Include="images\WhiteAdvisor.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackPrince.png">
+    </None>
+    <None Include="images_jap\WhiteAdvisor.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackPrincess.png">
+    </None>
+    <None Include="images_sho\WhiteAdvisor.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackQueen.png">
+    </None>
+    <None Include="images\WhiteArchbishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackRook.png">
+    </None>
+    <None Include="images_jap\WhiteArchbishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackSword.png">
+    </None>
+    <None Include="images\WhiteBishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackTokin.png">
+    </None>
+    <None Include="images_jap\WhiteBishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\BlackUnicorn.png">
+    </None>
+    <None Include="images_sho\WhiteBishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteAdvisor.png">
+    </None>
+    <None Include="images\WhiteCanon.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteArchbishop.png">
+    </None>
+    <None Include="images_jap\WhiteCanon.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteBishop.png">
+    </None>
+    <None Include="images\WhiteChancellor.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteCanon.png">
+    </None>
+    <None Include="images_jap\WhiteChancellor.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteChancellor.png">
+    </None>
+    <None Include="images\WhiteClaw.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteClaw.png">
+    </None>
+    <None Include="images_jap\WhiteClaw.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteCobra.png">
+    </None>
+    <None Include="images\WhiteCobra.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteCommoner.png">
+    </None>
+    <None Include="images_jap\WhiteCobra.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteCrownedBishop.png">
+    </None>
+    <None Include="images\WhiteCommoner.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteCrownedRook.png">
+    </None>
+    <None Include="images_jap\WhiteCommoner.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteDolphin.png">
+    </None>
+    <None Include="images\WhiteCrownedBishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteElephant.png">
+    </None>
+    <None Include="images_jap\WhiteCrownedBishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteGold.png">
+    </None>
+    <None Include="images_sho\WhiteCrownedBishop.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteHawk.png">
+    </None>
+    <None Include="images\WhiteCrownedRook.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteHCrown.png">
+    </None>
+    <None Include="images_jap\WhiteCrownedRook.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteHSword.png">
+    </None>
+    <None Include="images_sho\WhiteCrownedRook.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteKing.png">
+    </None>
+    <None Include="images\WhiteDolphin.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteKnight.png">
+    </None>
+    <None Include="images_jap\WhiteDolphin.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteLance.png">
+    </None>
+    <None Include="images\WhiteElephant.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteLeopard.png">
+    </None>
+    <None Include="images_jap\WhiteElephant.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteLion.png">
+    </None>
+    <None Include="images\WhiteGold.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteMarshall.png">
+    </None>
+    <None Include="images_jap\WhiteGold.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhitePawn.png">
+    </None>
+    <None Include="images_sho\WhiteGold.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhitePrince.png">
+    </None>
+    <None Include="images\WhiteHCrown.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhitePrincess.png">
+    </None>
+    <None Include="images_jap\WhiteHCrown.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteQueen.png">
+    </None>
+    <None Include="images\WhiteHSword.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteRook.png">
+    </None>
+    <None Include="images_jap\WhiteHSword.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteSword.png">
+    </None>
+    <None Include="images\WhiteHawk.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteTokin.png">
+    </None>
+    <None Include="images_jap\WhiteHawk.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_jap\WhiteUnicorn.png">
+    </None>
+    <None Include="images\WhiteKing.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="toolbar\New.png">
+    </None>
+    <None Include="images_jap\WhiteKing.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="toolbar\Stop.png">
+    </None>
+    <None Include="images_sho\WhiteKing.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="toolbar\Table.png">
+    </None>
+    <None Include="images\WhiteKnight.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="toolbar\Add.png">
+    </None>
+    <None Include="images_jap\WhiteKnight.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="toolbar\Edit.png">
+    </None>
+    <None Include="images_sho\WhiteKnight.png">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="toolbar\Remove.png">
+    </None>
+    <None Include="images\WhiteLance.png">
       <Filter>Resource Files</Filter>
-    </Image>
+    </None>
+    <None Include="images_jap\WhiteLance.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_sho\WhiteLance.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\WhiteLeopard.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_jap\WhiteLeopard.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\WhiteLion.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_jap\WhiteLion.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\WhiteMarshall.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_jap\WhiteMarshall.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\WhitePawn.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_jap\WhitePawn.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_sho\WhitePawn.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\WhitePrince.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_jap\WhitePrince.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\WhitePrincess.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_jap\WhitePrincess.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_sho\WhitePromotedAdvisor.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_sho\WhitePromotedKnight.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_sho\WhitePromotedLance.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\WhiteQueen.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_jap\WhiteQueen.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\WhiteRook.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_jap\WhiteRook.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_sho\WhiteRook.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\WhiteSword.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_jap\WhiteSword.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\WhiteTokin.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_jap\WhiteTokin.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_sho\WhiteTokin.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\WhiteUnicorn.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_jap\WhiteUnicorn.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_chi\badvisor.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_chi\bcannon.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_chi\bchariot.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_chi\belephant.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_chi\bhorse.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_chi\bking.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_chi\bpawn.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_chi\radvisor.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_chi\rcannon.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_chi\rchariot.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_chi\relephant.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <QtRcc Include="resources.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <None Include="images_chi\rhorse.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_chi\rking.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images_chi\rpawn.png">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="C:\Code\QBoard\QBoard_resource.rc" />
   </ItemGroup>
 </Project>

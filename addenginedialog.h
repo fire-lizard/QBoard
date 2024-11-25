@@ -18,6 +18,9 @@ public:
 	QLineEdit* GetEngineName();
 	QComboBox* GetEngineProtocol();
 	QLineEdit* GetEnginePath();
+	void SetEngineName(const QString &engineName);
+	void SetEngineProtocol(int engineProtocol);
+	void SetEnginePath(const QString& enginePath);
 
 private slots:
     void on_toolButton_clicked();
