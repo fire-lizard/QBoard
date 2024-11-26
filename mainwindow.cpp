@@ -171,22 +171,6 @@ void MainWindow::on_actionNew_game_triggered()
 	this->ui->vboard->repaint();
 }
 
-void MainWindow::LoadEngine()
-{
-	_engineExe = "pulsar2009-9b.exe";
-	const QProcess* process = _engine->RunProcess(this, _engineExe);
-	if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
-	{
-		_engine->StartGame();
-		connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
-		connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(readyReadStandardError()));
-		connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(errorOccurred(QProcess::ProcessError)));
-		this->ui->vboard->SetEngine(_engine);
-	}
-	else
-		this->ui->statusBar->showMessage("Error while running engine: " + process->errorString());
-}
-
 void MainWindow::on_actionOpen_triggered()
 {
 	const QString fileName = QFileDialog::getOpenFileName(this, "Open file", "", "PGN Files (*.pgn)");
@@ -270,8 +254,110 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::on_actionEngine_Manager_triggered()
 {
 	EngineManager *engineManager = new EngineManager(this);
+	readXmlUsingStream("QBoardEngines.xml", engineManager->GetEngineTable());
 	engineManager->exec();
 	if (engineManager->result() == QDialog::Accepted)
 	{
+		createXmlFromTable("QBoardEngines.xml", engineManager->GetEngineTable());
 	}
+}
+
+void MainWindow::LoadEngine()
+{
+	_engineExe = "pulsar2009-9b.exe";
+	const QProcess* process = _engine->RunProcess(this, _engineExe);
+	if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
+	{
+		_engine->StartGame();
+		connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
+		connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(readyReadStandardError()));
+		connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(errorOccurred(QProcess::ProcessError)));
+		this->ui->vboard->SetEngine(_engine);
+	}
+	else
+		this->ui->statusBar->showMessage("Error while running engine: " + process->errorString());
+}
+
+void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engineTable)
+{
+	const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+	QFile file(settingsDir + "/" + fileName);
+
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		qDebug() << "Failed to open the file for reading.";
+		return;
+	}
+
+	QXmlStreamReader xml(&file);
+
+	while (!xml.atEnd() && !xml.hasError()) {
+		const QXmlStreamReader::TokenType token = xml.readNext();
+
+		if (token == QXmlStreamReader::StartElement) {
+
+			// Read attributes
+			QString engineName;
+			QString engineProtocol;
+			QString enginePath;
+			foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
+				if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
+				if (attr.name().toString() == "EngineProtocol") engineProtocol = attr.value().toString();
+				if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
+			}
+			if (engineName != "" && enginePath != "")
+			{
+				engineTable->insertRow(engineTable->rowCount());
+				const int currentRow = engineTable->rowCount() - 1;
+				engineTable->setItem(currentRow, 0, new QTableWidgetItem(engineName));
+				engineTable->setItem(currentRow, 1, new QTableWidgetItem(engineProtocol));
+				engineTable->setItem(currentRow, 2, new QTableWidgetItem(enginePath));
+			}
+		}
+		else if (token == QXmlStreamReader::Characters && !xml.isWhitespace()) {
+			qDebug() << "Element text:" << xml.text().toString();
+		}
+	}
+
+	if (xml.hasError()) {
+		qDebug() << "Error reading XML:" << xml.errorString();
+	}
+
+	file.close();
+}
+
+void MainWindow::createXmlFromTable(const QString& fileName, QTableWidget* engineTable)
+{
+	const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+	QFile file(settingsDir + "/" + fileName);
+	QFile tempFile(settingsDir + "/temp.xml");
+
+	if (!tempFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		qDebug() << "Failed to open the temp file for writing.";
+		file.close();
+		return;
+	}
+
+	QXmlStreamWriter writer(&tempFile);
+
+	writer.setAutoFormatting(true);
+	writer.writeStartDocument();
+
+	writer.writeStartElement("Engines");
+
+	for (int index = 0; index < engineTable->rowCount(); index++)
+	{
+		writer.writeStartElement("Engine");
+		writer.writeAttribute("EngineName", engineTable->item(index, 0)->text());
+		writer.writeAttribute("EngineProtocol", engineTable->item(index, 1)->text());
+		writer.writeAttribute("EnginePath", engineTable->item(index, 2)->text());
+		writer.writeEndElement();
+	}
+
+	writer.writeEndDocument();
+
+	file.close();
+	tempFile.close();
+
+	file.remove();
+	tempFile.rename(settingsDir + "/" + fileName);
 }

@@ -2,12 +2,9 @@
 #include <QDialog>
 #include <QMessageBox>
 #include <QTableWidget>
-#include <QStandardPaths>
-#include <QXmlStreamReader>
-#include <QXmlStreamWriter>
 #include "comboboxitemdelegate.h"
-#include "Common.h"
 #include "addenginedialog.h"
+#include "Common.h"
 
 namespace Ui {
 class EngineManager;
@@ -37,14 +34,4 @@ private:
     Ui::EngineManager *ui;
 
     static EngineProtocol StringToEngineProtocol(const QString& str);
-
-    static void addElementToXmlStream(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath);
-
-    static void modifyXmlElement(const QString& fileName, const QString& engineName, const QString& engineProtocol, const QString& enginePath);
-
-    void readXmlUsingStream(const QString& fileName) const;
-
-    static bool hasAttributeWithSpecificValue(const QString& fileName, const QString& attributeName, const QString& attributeValue);
-
-    static void deleteXmlElementByAttribute(const QString& fileName, const QString& attributeName, const QString& attributeValue);
 };

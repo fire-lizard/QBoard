@@ -49,6 +49,10 @@ private:
 
 	void LoadEngine();
 
+	static void readXmlUsingStream(const QString& fileName, QTableWidget* engineTable);
+
+	void createXmlFromTable(const QString& fileName, QTableWidget* engineTable);
+
 	Ui::MainWindow *ui;
 	QString _currentStyle = "";
 	Engine *_engine = nullptr;
