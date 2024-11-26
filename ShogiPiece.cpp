@@ -20,14 +20,8 @@ void ShogiPiece::Promote(PieceType pieceType)
 		_pieceType = DragonHorse;
 		break;
 	case Lance:
-		_pieceType = Gold;
-		break;
 	case Silver:
-		_pieceType = Gold;
-		break;
 	case WhiteHorse:
-		_pieceType = Gold;
-		break;
 	case Pawn:
 		_pieceType = Gold;
 		break;
@@ -36,7 +30,7 @@ void ShogiPiece::Promote(PieceType pieceType)
 	}
 }
 
-string ShogiPiece::StringCode()
+std::string ShogiPiece::StringCode()
 {
 	switch (_pieceType)
 	{
@@ -67,7 +61,7 @@ string ShogiPiece::StringCode()
 	}
 }
 
-string ShogiPiece::AsianStringCode()
+std::string ShogiPiece::AsianStringCode()
 {
 	switch (_pieceType)
 	{

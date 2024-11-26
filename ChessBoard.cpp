@@ -28,7 +28,7 @@ Board* ChessBoard::Clone()
 	{
 		for (int j = 0; j < GetHeight(); j++)
 		{
-			Piece *p = GetData(i, j);
+			const Piece *p = GetData(i, j);
 			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
 		}
 	}

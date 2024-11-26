@@ -29,7 +29,7 @@ Board* XiangqiBoard::Clone()
 	{
 		for (int j = 0; j < GetHeight(); j++)
 		{
-			Piece *p = GetData(i, j);
+			const Piece *p = GetData(i, j);
 			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
 		}
 	}
@@ -157,7 +157,7 @@ void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 	}
 }
 
-void XiangqiBoard::CheckCannonDirection(Piece *piece, int x, int y, Direction direction)
+void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direction direction)
 {
 	do
 	{

@@ -14,7 +14,7 @@ public:
 protected:
 
 private:
-	void CheckCannonDirection(Piece *piece, int x, int y, Direction direction);
+	void CheckCannonDirection(const Piece *piece, int x, int y, Direction direction);
 
 	PieceType _initialSetup[10][9] = {
 		{ Rook, WhiteHorse, Elephant, Silver, King, Silver, Elephant, WhiteHorse, Rook },

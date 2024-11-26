@@ -2,16 +2,14 @@
 #include <string>
 #include "Common.h"
 
-using namespace std;
-
 class Piece
 {
 public:
 	virtual ~Piece();
-	static string GetImageFileName(PieceType pieceType, PieceColour pieceColour);
+	static std::string GetImageFileName(PieceType pieceType, PieceColour pieceColour);
 	virtual void Promote(PieceType pieceType = None) = 0;
-	virtual string StringCode() = 0;
-	virtual string AsianStringCode() = 0;
+	virtual std::string StringCode() = 0;
+	virtual std::string AsianStringCode() = 0;
 	PieceType GetBaseType() const;
 	PieceType GetType() const;
 	PieceColour GetColour() const;

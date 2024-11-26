@@ -40,7 +40,7 @@ void ComboBoxItemDelegate::setEditorData(QWidget* editor, const QModelIndex& ind
 
 void ComboBoxItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
-    if (QComboBox* cb = qobject_cast<QComboBox*>(editor))
+    if (const QComboBox* cb = qobject_cast<QComboBox*>(editor))
         // save the current text of the combo box as the current value of the item
         model->setData(index, cb->currentText(), Qt::EditRole);
     else

@@ -2,8 +2,6 @@
 #include "Board.h"
 #include "ChuShogiPiece.h"
 
-using namespace std;
-
 class ChuShogiBoard : public Board
 {
 public:

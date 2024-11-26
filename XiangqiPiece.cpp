@@ -12,7 +12,7 @@ void XiangqiPiece::Promote(PieceType pieceType)
 {
 }
 
-string XiangqiPiece::StringCode()
+std::string XiangqiPiece::StringCode()
 {
 	switch (_pieceType)
 	{
@@ -35,7 +35,7 @@ string XiangqiPiece::StringCode()
 	}
 }
 
-string XiangqiPiece::AsianStringCode()
+std::string XiangqiPiece::AsianStringCode()
 {
 	switch (_pieceType)
 	{

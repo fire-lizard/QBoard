@@ -72,7 +72,7 @@ void ChuShogiPiece::Promote(PieceType pieceType)
 	}
 }
 
-string ChuShogiPiece::StringCode()
+std::string ChuShogiPiece::StringCode()
 {
 	switch (_pieceType)
 	{
@@ -137,7 +137,7 @@ string ChuShogiPiece::StringCode()
 	}
 }
 
-string ChuShogiPiece::AsianStringCode()
+std::string ChuShogiPiece::AsianStringCode()
 {
 	switch (_pieceType)
 	{

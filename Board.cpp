@@ -4,7 +4,7 @@ Board::~Board()
 {
 }
 
-vector<pair<int, int>> Board::Moves() const
+std::vector<std::pair<int, int>> Board::Moves() const
 {
 	return _moves;
 }
@@ -111,7 +111,7 @@ bool Board::CheckDirectionAux(int x, int y, Direction direction) const
 
 bool Board::Move(int oldX, int oldY, int newX, int newY)
 {
-	for (int index = 0; index < _moves.size(); index++)
+	for (size_t index = 0; index < _moves.size(); index++)
 	{
 		if (_moves[index].first == newX && _moves[index].second == newY)
 		{
@@ -129,16 +129,16 @@ bool Board::Move(int oldX, int oldY, int newX, int newY)
 
 void Board::RemoveMove(int x, int y)
 {
-	for (int index = _moves.size() - 1; index >= 0; index--)
+	for (size_t index = _moves.size() - 1; index >= 0; index--)
 	{
 		if (_moves[index].first == x && _moves[index].second == y)
 			_moves.erase(_moves.begin() + index);
 	}
 }
 
-vector<tuple<int, int, int, int>> Board::GetAllMoves(PieceColour pieceColour)
+std::vector<std::tuple<int, int, int, int>> Board::GetAllMoves(PieceColour pieceColour)
 {
-	vector<tuple<int, int, int, int>> result;
+	std::vector<std::tuple<int, int, int, int>> result;
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)
@@ -146,7 +146,7 @@ vector<tuple<int, int, int, int>> Board::GetAllMoves(PieceColour pieceColour)
 			if (_data[i][j] != nullptr && _data[i][j]->GetColour() == pieceColour)
 			{
 				GetMoves(_data[i][j], i, j);
-				for_each(_moves.begin(), _moves.end(), [&](pair<int, int> p) {result.emplace_back(i, j, p.first, p.second); });
+				for_each(_moves.begin(), _moves.end(), [&](std::pair<int, int> p) {result.emplace_back(i, j, p.first, p.second); });
 			}
 		}
 	}

@@ -18,7 +18,7 @@ class VBoard : public QWidget
 public:
 	explicit VBoard(QWidget *parent = nullptr);
 	~VBoard() override;
-	vector<string> GetGameRecord() const;
+	std::vector<std::string> GetGameRecord() const;
 	Board* GetBoard() const;
 	GameVariant GetGameVariant() const;
 	void SetGameVariant(GameVariant gameVariant);
@@ -44,14 +44,14 @@ private:
 	Piece *_currentPiece;
 	int _oldX = -1;
 	int _oldY = -1;
-	vector<pair<int, int>> _moves;
-	vector<tuple<int, int, int, int>> _opponentMoves;
+	std::vector<std::pair<int, int>> _moves;
+	std::vector<std::tuple<int, int, int, int>> _opponentMoves;
 	QStatusBar *_statusBar;
 	QTextEdit *_textEdit;
 	QMainWindow *_window = nullptr;
 	GameVariant _gameVariant = Chess;
 	Engine *_engine = nullptr;
-	vector<string> _gameRecord;
+	std::vector<std::string> _gameRecord;
 
 signals:
 

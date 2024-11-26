@@ -32,9 +32,9 @@ bool Piece::IsPromoted() const
 	return _isPromoted;
 }
 
-string Piece::GetImageFileName(PieceType pieceType, PieceColour pieceColour)
+std::string Piece::GetImageFileName(PieceType pieceType, PieceColour pieceColour)
 {
-	const string colour = pieceColour == White ? "White" : "Black";
+	const std::string colour = pieceColour == White ? "White" : "Black";
 	switch (pieceType)
 	{
 	case King:

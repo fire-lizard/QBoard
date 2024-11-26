@@ -19,60 +19,54 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	{
 		const QString settingsFile = settingsDir + "/QBoardSettings.xml";
 		QFile file(settingsFile);
-		file.open(QIODevice::ReadOnly | QIODevice::Text);
-		QXmlStreamReader xmlStreamReader(&file);
-		while (!xmlStreamReader.atEnd()) {
-			QXmlStreamReader::TokenType tokenType = xmlStreamReader.readNext();
-			if (tokenType == QXmlStreamReader::StartElement)
+		if (file.exists())
+		{
+			if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 			{
-				if (xmlStreamReader.name().toString() == "Style")
-				{
-					tokenType = xmlStreamReader.readNext();
-					if (tokenType == QXmlStreamReader::Characters)
+				this->ui->statusBar->showMessage("Error while opening settings file");
+			}
+			else
+			{
+				QXmlStreamReader xmlStreamReader(&file);
+				while (!xmlStreamReader.atEnd()) {
+					QXmlStreamReader::TokenType tokenType = xmlStreamReader.readNext();
+					if (tokenType == QXmlStreamReader::StartElement)
 					{
-						QString style = xmlStreamReader.text().toString();
-						if (QStyleFactory::keys().contains(style))
+						if (xmlStreamReader.name().toString() == "Style")
 						{
-							QApplication::setStyle(style);
-							_currentStyle = style;
+							tokenType = xmlStreamReader.readNext();
+							if (tokenType == QXmlStreamReader::Characters)
+							{
+								QString style = xmlStreamReader.text().toString();
+								if (QStyleFactory::keys().contains(style))
+								{
+									QApplication::setStyle(style);
+									_currentStyle = style;
+								}
+								else
+									this->ui->statusBar->showMessage("Unsupported style");
+							}
 						}
-						else
-							this->ui->statusBar->showMessage("Unsupported style");
+						else if (xmlStreamReader.name().toString() == "GameVariant")
+						{
+							tokenType = xmlStreamReader.readNext();
+							if (tokenType == QXmlStreamReader::Characters)
+							{
+								int gameVariant = xmlStreamReader.text().toInt();
+								if (gameVariant < 6)
+									this->ui->vboard->SetGameVariant(static_cast<GameVariant>(gameVariant));
+								else
+									this->ui->statusBar->showMessage("Unsupported game variant");
+							}
+						}
 					}
 				}
-				else if (xmlStreamReader.name().toString() == "GameVariant")
-				{
-					tokenType = xmlStreamReader.readNext();
-					if (tokenType == QXmlStreamReader::Characters)
-					{
-						int gameVariant = xmlStreamReader.text().toInt();
-						if (gameVariant < 6)
-							this->ui->vboard->SetGameVariant(static_cast<GameVariant>(gameVariant));
-						else
-							this->ui->statusBar->showMessage("Unsupported game variant");
-					}
-				}
-				else if (xmlStreamReader.name().toString() == "EngineExe")
-				{
-					tokenType = xmlStreamReader.readNext();
-					if (tokenType == QXmlStreamReader::Characters)
-						_engineExe = xmlStreamReader.text().toString();
-				}
-				else if (xmlStreamReader.name().toString() == "EngineProtocol")
-				{
-					tokenType = xmlStreamReader.readNext();
-					if (tokenType == QXmlStreamReader::Characters)
-					{
-						QString selectedEngineProtocol = xmlStreamReader.text().toString();
-						_engineProtocol = static_cast<EngineProtocol>(selectedEngineProtocol.toInt());
-					}
-				}
+				if (xmlStreamReader.hasError())
+					this->ui->statusBar->showMessage("Error while reading settings file: " + xmlStreamReader.errorString());
+
+				file.close();
 			}
 		}
-		if (xmlStreamReader.hasError())
-			this->ui->statusBar->showMessage("Error while opening settings file: " + xmlStreamReader.errorString());
-		
-		file.close();
 	}
 }
 
@@ -102,31 +96,30 @@ void MainWindow::on_actionSettings_triggered()
 		const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
 		if (!QDir(settingsDir).exists())
 		{
-			QDir().mkdir(settingsDir);
+			if (!QDir().mkdir(settingsDir))
+			{
+				this->ui->statusBar->showMessage("Error while creating directory for the settings file");
+				return;
+			}
 		}
 		const QString settingsFile = settingsDir + "/QBoardSettings.xml";
 		QFile file(settingsFile);
-		file.open(QIODevice::WriteOnly | QIODevice::Text);
-		QXmlStreamWriter xmlStreamWriter(&file);
-		xmlStreamWriter.setAutoFormatting(true);
-		xmlStreamWriter.writeStartDocument();
-		xmlStreamWriter.writeStartElement("Settings");
-		xmlStreamWriter.writeTextElement("Style", settingsDialog->GetStyles()->currentText());
-		xmlStreamWriter.writeTextElement("GameVariant", QString::number(settingsDialog->GetGameVariants()->currentIndex()));
-		_engineExe = settingsDialog->GetBlackPlayer()->currentText();
-		/*if (settingsDialog->SelectedEngineProtocol == "UCI")
-			_engineProtocol = UCI;
-		else if (settingsDialog->SelectedEngineProtocol == "UCCI")
-			_engineProtocol = UCCI;
-		else if (settingsDialog->SelectedEngineProtocol == "USI")
-			_engineProtocol = USI;
+		if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+		{
+			this->ui->statusBar->showMessage("Error while creating the settings file");
+		}
 		else
-			_engineProtocol = WinBoard;*/
-		xmlStreamWriter.writeTextElement("EngineExe", _engineExe);
-		//xmlStreamWriter.writeTextElement("EngineProtocol", settingsDialog->SelectedEngineProtocol);
-		xmlStreamWriter.writeEndElement();
-		xmlStreamWriter.writeEndDocument();
-		file.close();
+		{
+			QXmlStreamWriter xmlStreamWriter(&file);
+			xmlStreamWriter.setAutoFormatting(true);
+			xmlStreamWriter.writeStartDocument();
+			xmlStreamWriter.writeStartElement("Settings");
+			xmlStreamWriter.writeTextElement("Style", settingsDialog->GetStyles()->currentText());
+			xmlStreamWriter.writeTextElement("GameVariant", QString::number(settingsDialog->GetGameVariants()->currentIndex()));
+			xmlStreamWriter.writeEndElement();
+			xmlStreamWriter.writeEndDocument();
+			file.close();
+		}
 	}
 }
 
@@ -194,11 +187,11 @@ void MainWindow::on_actionSave_triggered()
 		file.setFileName(fileName);
 		file.open(QIODevice::WriteOnly | QIODevice::Text);
 		file.write("[Event \"QBoard Game\"]\n");
-		QString site = "[Site \"" + QSysInfo::machineHostName() + "\"]\n";
+		const QString site = "[Site \"" + QSysInfo::machineHostName() + "\"]\n";
 		file.write(site.toLocal8Bit());
 		const QString currentDate = "[Date \"" + QDate::currentDate().toString("dd/MM/yyyy") + "\"]\n";
 		file.write(currentDate.toLocal8Bit());
-		const vector<string> gameRecord = ui->vboard->GetGameRecord();
+		const std::vector<std::string> gameRecord = ui->vboard->GetGameRecord();
 		const QString currentRound = "[Round \"" + QString::number(gameRecord.size()) + "\"]\n";
 		file.write(currentRound.toLocal8Bit());
 		QString userName = qgetenv("USER");
@@ -325,7 +318,7 @@ void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engin
 	file.close();
 }
 
-void MainWindow::createXmlFromTable(const QString& fileName, QTableWidget* engineTable)
+void MainWindow::createXmlFromTable(const QString& fileName, const QTableWidget* engineTable)
 {
 	const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
 	QFile file(settingsDir + "/" + fileName);

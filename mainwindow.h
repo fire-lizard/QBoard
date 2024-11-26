@@ -7,6 +7,8 @@
 #include <QStandardPaths>
 #include <QSysInfo>
 #include <QDate>
+#include <tuple>
+#include <vector>
 #include "settingsdialog.h"
 #include "WbEngine.h"
 #include "UciEngine.h"
@@ -51,7 +53,7 @@ private:
 
 	static void readXmlUsingStream(const QString& fileName, QTableWidget* engineTable);
 
-	void createXmlFromTable(const QString& fileName, QTableWidget* engineTable);
+	static void createXmlFromTable(const QString& fileName, const QTableWidget* engineTable);
 
 	Ui::MainWindow *ui;
 	QString _currentStyle = "";
@@ -59,4 +61,5 @@ private:
 	QString _engineExe = "";
 	QString _engineName = "";
 	EngineProtocol _engineProtocol = WinBoard;
+	std::vector<std::tuple<QString, QString, EngineProtocol>> _engines;
 };

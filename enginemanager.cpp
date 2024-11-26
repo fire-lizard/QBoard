@@ -90,8 +90,8 @@ void EngineManager::on_toolButton_3_clicked()
 		const int response = mb.exec();
 		if (response == QMessageBox::Ok)
 		{
-			const int cnt = selectedRows.size();
-			for (int index = cnt - 1; index >= 0; index--)
+			const qsizetype cnt = selectedRows.size();
+			for (qsizetype index = cnt - 1; index >= 0; index--)
 			{
 				ui->engineTable->removeRow(selectedRows[index].row());
 			}

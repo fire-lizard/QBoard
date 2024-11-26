@@ -14,7 +14,7 @@ void ChessPiece::Promote(PieceType pieceType)
 	_pieceType = pieceType;
 }
 
-string ChessPiece::StringCode()
+std::string ChessPiece::StringCode()
 {
 	switch (_pieceType)
 	{
@@ -35,7 +35,7 @@ string ChessPiece::StringCode()
 	}
 }
 
-string ChessPiece::AsianStringCode()
+std::string ChessPiece::AsianStringCode()
 {
 	return "";
 }

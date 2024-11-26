@@ -23,7 +23,7 @@ void UcciEngine::StartGame(QString variant)
 void UcciEngine::Move(int x1, int y1, int x2, int y2, char promotion)
 {
 	_process->write("position startpos moves ");
-	for (int index = 0; index < _moves.size(); index++)
+	for (size_t index = 0; index < _moves.size(); index++)
 	{
 		_process->write(_moves[index]);
 		_process->write(" ");

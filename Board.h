@@ -3,9 +3,8 @@
 #include <algorithm>
 #include <utility>
 #include <tuple>
+#include <qtypes.h>
 #include "Piece.h"
-
-using namespace std;
 
 class Board
 {
@@ -16,9 +15,9 @@ public:
 	virtual Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false) = 0;
 	virtual void GetMoves(Piece *piece, int x, int y) = 0;
 	void RemoveMove(int x, int y);
-	vector<tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
+	std::vector<std::tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
 	virtual bool Move(int oldX, int oldY, int newX, int newY);
-	vector<pair<int, int>> Moves() const;
+	std::vector<std::pair<int, int>> Moves() const;
 	Piece* GetData(int x, int y) const;
 	void SetData(int x, int y, Piece *p);
 	int GetWidth() const;
@@ -31,7 +30,7 @@ protected:
 	bool CheckDirectionAux(int x, int y, Direction direction) const;
 	static void CheckDirectionInc(int &x, int &y, Direction direction);
 
-	vector<pair<int, int>> _moves;
+	std::vector<std::pair<int, int>> _moves;
 	int _width = -1;
 	int _height = -1;
 	Piece* _data[12][12];

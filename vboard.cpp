@@ -17,9 +17,9 @@ void VBoard::paintEvent(QPaintEvent *)
 	painter.setPen(Qt::black);
 	painter.setBrush(Qt::NoBrush);
 
-	QSize s = this->size();
-	int w = s.width() / _board->GetWidth();
-	int h = s.height() / _board->GetHeight();
+	const QSize s = this->size();
+	const int w = s.width() / _board->GetWidth();
+	const int h = s.height() / _board->GetHeight();
 	for (int i = 0; i < _board->GetWidth(); i++)
 	{
 		for (int j = 0; j < _board->GetHeight(); j++)
@@ -40,7 +40,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					painter.setBrush(Qt::NoBrush);
 				}
 			}
-			else if (any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](tuple<int, int, int, int> t) {return get<2>(t) == i && get<3>(t) == j; }))
+			else if (std::any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](std::tuple<int, int, int, int> t) {return get<2>(t) == i && get<3>(t) == j; }))
 			{
 				if (_board->GetData(i, j) != nullptr && (_board->GetData(i, j)->GetType() == King || _board->GetData(i, j)->GetType() == Queen))
 				{
@@ -103,11 +103,11 @@ void VBoard::paintEvent(QPaintEvent *)
 	{
 		for (int j = 0; j < _board->GetHeight(); j++)
 		{
-			Piece *p = _board->GetData(i, j);
+			const Piece *p = _board->GetData(i, j);
 			if (p != nullptr)
 			{
-				PieceType t = p->GetType();
-				PieceColour c = p->GetColour();
+				const PieceType t = p->GetType();
+				const PieceColour c = p->GetColour();
 				QPixmap pixmap(resourcePrefix + QString::fromStdString(Piece::GetImageFileName(t, c)));
 				painter.drawPixmap(i * w + w / 4, j * h + h / 4, 33, 33, pixmap);
 			}
@@ -118,10 +118,10 @@ void VBoard::paintEvent(QPaintEvent *)
 void VBoard::mousePressEvent(QMouseEvent *event)
 {
 	if (_engine != nullptr && _currentPlayer == Black) return;
-	int w = this->size().width() / _board->GetWidth();
-	int h = this->size().height() / _board->GetHeight();
-	int x = event->x() / w;
-	int y = event->y() / h;
+	const int w = this->size().width() / _board->GetWidth();
+	const int h = this->size().height() / _board->GetHeight();
+	const int x = event->x() / w;
+	const int y = event->y() / h;
 	Piece *p = _board->GetData(x, y);
 	if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
 	{
@@ -197,11 +197,11 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 				_oldY = y;
 				_board->GetMoves(p, x, y);
 				_moves = _board->Moves();
-				for_each(_moves.begin(), _moves.end(), [=](pair<int, int> t)
+				std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
 				{
 					CalculateCheck(x, y, t.first, t.second);
 				});
-				for_each(_moves.begin(), _moves.end(), [=](pair<int, int> t)
+				std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
 				{
 					CalculateCheck(x, y, t.first, t.second);
 				});
@@ -216,7 +216,7 @@ Board* VBoard::GetBoard() const
 	return _board;
 }
 
-vector<string> VBoard::GetGameRecord() const
+std::vector<std::string> VBoard::GetGameRecord() const
 {
 	return _gameRecord;
 }
@@ -283,7 +283,7 @@ void VBoard::SetTextEdit(QTextEdit* textEdit)
 
 bool VBoard::PossibleMove(int x, int y) const
 {
-	for (int index = 0; index < _moves.size(); index++)
+	for (size_t index = 0; index < _moves.size(); index++)
 	{
 		if (_moves[index].first == x && _moves[index].second == y)
 		{
@@ -317,7 +317,7 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 		{
 			for (int j = 0; j < board->GetHeight(); j++)
 			{
-				Piece *p = board->GetData(i, j);
+				const Piece *p = board->GetData(i, j);
 				if (p != nullptr && p->GetType() == King && p->GetColour() == _currentPlayer)
 				{
 					kx = i;
@@ -332,7 +332,7 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 	board->GetMoves(board->GetData(oldX, oldY), oldX, oldY);
 	board->Move(oldX, oldY, newX, newY);
 	auto opponentMoves = board->GetAllMoves(_currentPlayer == White ? Black : White);
-	for_each(opponentMoves.begin(), opponentMoves.end(), [=](tuple<int, int, int, int> t)
+	for_each(opponentMoves.begin(), opponentMoves.end(), [=](std::tuple<int, int, int, int> t)
 	{
 		if (get<2>(t) == kx && get<3>(t) == ky)
 		{
@@ -367,8 +367,8 @@ void VBoard::readyReadStandardOutput()
 	QProcess *p = dynamic_cast<QProcess*>(sender());
 	QByteArray buf = p->readAllStandardOutput();
 	this->_textEdit->setText(buf);
-	const int auxPos1 = buf.lastIndexOf("getmove ");
-	int pos = _engine->GetType() == WinBoard ? buf.lastIndexOf("move ", auxPos1) : buf.lastIndexOf("bestmove ", auxPos1) + 4;
+	const qsizetype auxPos1 = buf.lastIndexOf("getmove ");
+	const qsizetype pos = _engine->GetType() == WinBoard ? buf.lastIndexOf("move ", auxPos1) : buf.lastIndexOf("bestmove ", auxPos1) + 4;
 	if (pos == -1)
 		return;
 	char x1, y1, x2, y2;

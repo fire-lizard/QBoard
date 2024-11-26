@@ -7,8 +7,8 @@ public:
 	XiangqiPiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false);
 	~XiangqiPiece() override;
 	void Promote(PieceType pieceType = None) override;
-	string StringCode() override;
-	string AsianStringCode() override;
+	std::string StringCode() override;
+	std::string AsianStringCode() override;
 
 protected:
 
