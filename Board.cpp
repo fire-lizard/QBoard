@@ -129,7 +129,8 @@ bool Board::Move(int oldX, int oldY, int newX, int newY)
 
 void Board::RemoveMove(int x, int y)
 {
-	for (size_t index = _moves.size() - 1; index >= 0; index--)
+	const long long cnt = _moves.size() - 1;
+	for (long long index = cnt; index >= 0; index--)
 	{
 		if (_moves[index].first == x && _moves[index].second == y)
 			_moves.erase(_moves.begin() + index);

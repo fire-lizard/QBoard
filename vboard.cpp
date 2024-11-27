@@ -112,8 +112,8 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 	if (_engine != nullptr && _currentPlayer == Black) return;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
-	const int x = event->x() / w;
-	const int y = event->y() / h;
+	const signed char x = static_cast<signed char>(event->x() / w);
+	const signed char y = static_cast<signed char>(event->y() / h);
 	Piece *p = _board->GetData(x, y);
 	if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
 	{
@@ -287,7 +287,8 @@ bool VBoard::PossibleMove(int x, int y) const
 
 void VBoard::RemoveMove(int x, int y)
 {
-	for (size_t index = _moves.size() - 1; index >= 0; index--)
+	const long long cnt = _moves.size() - 1;
+	for (long long index = cnt; index >= 0; index--)
 	{
 		if (_moves[index].first == x && _moves[index].second == y)
 			_moves.erase(_moves.begin() + index);
