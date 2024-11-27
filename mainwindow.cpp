@@ -13,61 +13,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	font.setBold(true);
 	this->ui->statusBar->setFont(font);
 	this->ui->statusBar->showMessage("White move");
-
-	const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
-	if (QDir(settingsDir).exists())
-	{
-		const QString settingsFile = settingsDir + "/QBoardSettings.xml";
-		QFile file(settingsFile);
-		if (file.exists())
-		{
-			if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-			{
-				this->ui->statusBar->showMessage("Error while opening settings file");
-			}
-			else
-			{
-				QXmlStreamReader xmlStreamReader(&file);
-				while (!xmlStreamReader.atEnd()) {
-					QXmlStreamReader::TokenType tokenType = xmlStreamReader.readNext();
-					if (tokenType == QXmlStreamReader::StartElement)
-					{
-						if (xmlStreamReader.name().toString() == "Style")
-						{
-							tokenType = xmlStreamReader.readNext();
-							if (tokenType == QXmlStreamReader::Characters)
-							{
-								QString style = xmlStreamReader.text().toString();
-								if (QStyleFactory::keys().contains(style))
-								{
-									QApplication::setStyle(style);
-									_currentStyle = style;
-								}
-								else
-									this->ui->statusBar->showMessage("Unsupported style");
-							}
-						}
-						else if (xmlStreamReader.name().toString() == "GameVariant")
-						{
-							tokenType = xmlStreamReader.readNext();
-							if (tokenType == QXmlStreamReader::Characters)
-							{
-								int gameVariant = xmlStreamReader.text().toInt();
-								if (gameVariant < 6)
-									this->ui->vboard->SetGameVariant(static_cast<GameVariant>(gameVariant));
-								else
-									this->ui->statusBar->showMessage("Unsupported game variant");
-							}
-						}
-					}
-				}
-				if (xmlStreamReader.hasError())
-					this->ui->statusBar->showMessage("Error while reading settings file: " + xmlStreamReader.errorString());
-
-				file.close();
-			}
-		}
-	}
 }
 
 MainWindow::~MainWindow()
@@ -92,33 +37,6 @@ void MainWindow::on_actionSettings_triggered()
 			this->ui->vboard->GetBoard()->Initialize();
 			this->ui->vboard->SetCurrentPlayer(White);
 			this->ui->vboard->repaint();
-		}
-		const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
-		if (!QDir(settingsDir).exists())
-		{
-			if (!QDir().mkdir(settingsDir))
-			{
-				this->ui->statusBar->showMessage("Error while creating directory for the settings file");
-				return;
-			}
-		}
-		const QString settingsFile = settingsDir + "/QBoardSettings.xml";
-		QFile file(settingsFile);
-		if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-		{
-			this->ui->statusBar->showMessage("Error while creating the settings file");
-		}
-		else
-		{
-			QXmlStreamWriter xmlStreamWriter(&file);
-			xmlStreamWriter.setAutoFormatting(true);
-			xmlStreamWriter.writeStartDocument();
-			xmlStreamWriter.writeStartElement("Settings");
-			xmlStreamWriter.writeTextElement("Style", settingsDialog->GetStyles()->currentText());
-			xmlStreamWriter.writeTextElement("GameVariant", QString::number(settingsDialog->GetGameVariants()->currentIndex()));
-			xmlStreamWriter.writeEndElement();
-			xmlStreamWriter.writeEndDocument();
-			file.close();
 		}
 	}
 }
@@ -151,7 +69,7 @@ void MainWindow::on_actionNew_game_triggered()
 		case USI:
 			_engine = new UsiEngine();
 			break;
-		default:
+		case WinBoard:
 			_engine = new WbEngine();
 			break;
 		}
@@ -202,7 +120,7 @@ void MainWindow::on_actionSave_triggered()
 		file.write(whiteName.toLocal8Bit());
 		file.write(blackName.toLocal8Bit());
 		GameVariant gameVariant = ui->vboard->GetGameVariant();
-		for (int index = 0; index < gameRecord.size(); index++)
+		for (size_t index = 0; index < gameRecord.size(); index++)
 		{
 			file.write(QString::number(index + 1).toLocal8Bit());
 			file.write(". ");
@@ -257,18 +175,20 @@ void MainWindow::on_actionEngine_Manager_triggered()
 
 void MainWindow::LoadEngine()
 {
-	_engineExe = "pulsar2009-9b.exe";
-	const QProcess* process = _engine->RunProcess(this, _engineExe);
-	if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
+	if (_engine != nullptr)
 	{
-		_engine->StartGame();
-		connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
-		connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(readyReadStandardError()));
-		connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(errorOccurred(QProcess::ProcessError)));
-		this->ui->vboard->SetEngine(_engine);
+		const QProcess* process = _engine->RunProcess(this, _engineExe);
+		if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
+		{
+			_engine->StartGame();
+			connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
+			connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(readyReadStandardError()));
+			connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(errorOccurred(QProcess::ProcessError)));
+			this->ui->vboard->SetEngine(_engine);
+		}
+		else
+			this->ui->statusBar->showMessage("Error while running engine: " + process->errorString());
 	}
-	else
-		this->ui->statusBar->showMessage("Error while running engine: " + process->errorString());
 }
 
 void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engineTable)

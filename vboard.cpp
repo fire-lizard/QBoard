@@ -55,11 +55,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					}
 					else if (_gameVariant == Xiangqi)
 					{
-						if (i > 2 && i < 6 && j < 3)
-						{
-							painter.setBrush(Qt::green);
-						}
-						else if (i > 2 && i < 6 && j > 6)
+						if ((i > 2 && i < 6 && j < 3) || (i > 2 && i < 6 && j > 6))
 						{
 							painter.setBrush(Qt::green);
 						}
@@ -81,11 +77,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				}
 				else if (_gameVariant == Xiangqi)
 				{
-					if (i > 2 && i < 6 && j < 3)
-					{
-						painter.setBrush(Qt::green);
-					}
-					else if (i > 2 && i < 6 && j > 6)
+					if ((i > 2 && i < 6 && j < 3) || (i > 2 && i < 6 && j > 6))
 					{
 						painter.setBrush(Qt::green);
 					}
@@ -374,17 +366,17 @@ void VBoard::readyReadStandardOutput()
 	char x1, y1, x2, y2;
 	if (_engine->GetType() == USI)
 	{
-		x1 = _board->GetWidth() - buf[pos + 5] + 48;
-		y1 = buf[pos + 6] - 97;
-		x2 = _board->GetWidth() - buf[pos + 7] + 48;
-		y2 = buf[pos + 8] - 97;
+		x1 = static_cast<char>(_board->GetWidth() - buf[pos + 5] + 48);
+		y1 = static_cast<char>(buf[pos + 6] - 97);
+		x2 = static_cast<char>(_board->GetWidth() - buf[pos + 7] + 48);
+		y2 = static_cast<char>(buf[pos + 8] - 97);
 	}
 	else
 	{
-		x1 = buf[pos + 5] - 97;
-		y1 = _board->GetHeight() - buf[pos + 6] + 48;
-		x2 = buf[pos + 7] - 97;
-		y2 = _board->GetHeight() - buf[pos + 8] + 48;
+		x1 = static_cast<char>(buf[pos + 5] - 97);
+		y1 = static_cast<char>(_board->GetHeight() - buf[pos + 6] + 48);
+		x2 = static_cast<char>(buf[pos + 7] - 97);
+		y2 = static_cast<char>(_board->GetHeight() - buf[pos + 8] + 48);
 	}
 	if (_gameVariant == Xiangqi)
 	{

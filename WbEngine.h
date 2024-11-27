@@ -8,6 +8,6 @@ public:
 	~WbEngine() override;
 	EngineProtocol GetType() override;
 	void StartGame(QString variant = "") override;
-	void Move(int x1, int y1, int x2, int y2, char promotion = ' ') override;
-	QByteArray AddMove(int x1, int y1, int x2, int y2, char promotion = ' ') override;
+	void Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion = ' ') override;
+	QByteArray AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion = ' ') override;
 };

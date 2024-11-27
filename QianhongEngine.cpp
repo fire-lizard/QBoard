@@ -17,14 +17,14 @@ void QianhongEngine::StartGame(QString variant)
 {
 }
 
-void QianhongEngine::Move(int x1, int y1, int x2, int y2, char promotion)
+void QianhongEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	_process->write(AddMove(x1, y1, x2, y2, promotion));
 	_process->write("\n");
 	_process->write("ai\n");
 }
 
-QByteArray QianhongEngine::AddMove(int x1, int y1, int x2, int y2, char promotion)
+QByteArray QianhongEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	QByteArray moveStr;
 	if (x1 < 10)

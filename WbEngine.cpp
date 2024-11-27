@@ -25,13 +25,13 @@ void WbEngine::StartGame(QString variant)
 	}
 }
 
-void WbEngine::Move(int x1, int y1, int x2, int y2, char promotion)
+void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	_process->write(AddMove(x1, y1, x2, y2, promotion));
 	_process->write("\n");
 }
 
-QByteArray WbEngine::AddMove(int x1, int y1, int x2, int y2, char promotion)
+QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	QByteArray moveStr;
 	if (y1 < 10)

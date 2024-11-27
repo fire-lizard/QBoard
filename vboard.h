@@ -42,8 +42,8 @@ private:
 	Board *_board;
 	PieceColour _currentPlayer = White;
 	Piece *_currentPiece;
-	int _oldX = -1;
-	int _oldY = -1;
+	signed char _oldX = -1;
+	signed char _oldY = -1;
 	std::vector<std::pair<int, int>> _moves;
 	std::vector<std::tuple<int, int, int, int>> _opponentMoves;
 	QStatusBar *_statusBar;

@@ -20,12 +20,12 @@ void UcciEngine::StartGame(QString variant)
 	_process->write("uccinewgame\n");
 }
 
-void UcciEngine::Move(int x1, int y1, int x2, int y2, char promotion)
+void UcciEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	_process->write("position startpos moves ");
-	for (size_t index = 0; index < _moves.size(); index++)
+	for (auto& _move : _moves)
 	{
-		_process->write(_moves[index]);
+		_process->write(_move);
 		_process->write(" ");
 	}
 	_process->write(AddMove(x1, y1, x2, y2, promotion));
@@ -33,7 +33,7 @@ void UcciEngine::Move(int x1, int y1, int x2, int y2, char promotion)
 	_process->write("go movetime 1000\n");
 }
 
-QByteArray UcciEngine::AddMove(int x1, int y1, int x2, int y2, char promotion)
+QByteArray UcciEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	QByteArray moveStr;
 	if (x1 < 10)
