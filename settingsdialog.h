@@ -17,6 +17,7 @@ public:
 	~SettingsDialog() override;
 	QComboBox* GetStyles() const;
 	QComboBox* GetGameVariants() const;
+	QComboBox* GetGamePieces() const;
 	QComboBox* GetWhitePlayer() const;
 	QComboBox* GetBlackPlayer() const;
 

@@ -11,6 +11,7 @@
 #include "XiangqiBoard.h"
 #include "ShogiBoard.h"
 #include "MiniShogiBoard.h"
+#include "XiangqiPiece.h"
 
 class VBoard : public QWidget
 {
@@ -22,6 +23,8 @@ public:
 	Board* GetBoard() const;
 	GameVariant GetGameVariant() const;
 	void SetGameVariant(GameVariant gameVariant);
+	PieceStyle GetPieceStyle() const;
+	void SetPieceStyle(PieceStyle pieceStyle);
 	PieceColour GetCurrentPlayer() const;
 	void SetCurrentPlayer(PieceColour currentPlayer);
 	void SetTextEdit(QTextEdit *textEdit);
@@ -43,6 +46,7 @@ private:
 
 	Board *_board;
 	PieceColour _currentPlayer = White;
+	PieceStyle _pieceStyle = European;
 	Piece *_currentPiece;
 	signed char _oldX = -1;
 	signed char _oldY = -1;

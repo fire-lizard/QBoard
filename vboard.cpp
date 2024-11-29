@@ -12,7 +12,19 @@ VBoard::~VBoard()
 
 void VBoard::paintEvent(QPaintEvent *)
 {
-	const QString resourcePrefix = ":/pieces_eur/images/";
+	QString resourcePrefix;
+	if (_pieceStyle == Chinese && _gameVariant == Xiangqi)
+	{
+		resourcePrefix = ":/pieces_chi/images_chi/";
+	}
+	else if (_pieceStyle == Japanese && _gameVariant > 1)
+	{
+		resourcePrefix = ":/pieces_jap/images_jap/";
+	}
+	else
+	{
+		resourcePrefix = ":/pieces_eur/images/";
+	}
 	QPainter painter(this);
 	painter.setPen(Qt::black);
 	painter.setBrush(Qt::NoBrush);
@@ -100,7 +112,9 @@ void VBoard::paintEvent(QPaintEvent *)
 			{
 				const PieceType t = p->GetType();
 				const PieceColour c = p->GetColour();
-				QPixmap pixmap(resourcePrefix + QString::fromStdString(Piece::GetImageFileName(t, c)));
+				const std::string imageFileName = _pieceStyle == Chinese && _gameVariant == Xiangqi ? 
+					XiangqiPiece::GetChineseImageFileName(t, c) : Piece::GetImageFileName(t, c);
+				QPixmap pixmap(resourcePrefix + QString::fromStdString(imageFileName));
 				painter.drawPixmap(i * w + w / 4, j * h + h / 4, 33, 33, pixmap);
 			}
 		}
@@ -288,6 +302,9 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	_gameVariant = gameVariant;
 	switch (_gameVariant)
 	{
+	case Chess:
+		_board = new ChessBoard();
+		break;
 	case Shogi:
 		_board = new ShogiBoard();
 		break;
@@ -304,9 +321,6 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	case Xiangqi:
 		_board = new XiangqiBoard();
 		break;
-	default:
-		_board = new ChessBoard();
-		break;
 	}
 	this->setFixedSize(_board->GetWidth() * 66 + 1, _board->GetHeight() * 66 + 1);
 	if (this->_window != nullptr)
@@ -314,6 +328,16 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		this->_window->setFixedSize(width() + 280, height() + 100);
 		this->_textEdit->setGeometry(x() + width() + 10, y(), 250, height());
 	}
+}
+
+PieceStyle VBoard::GetPieceStyle() const
+{
+	return _pieceStyle;
+}
+
+void VBoard::SetPieceStyle(PieceStyle pieceStyle)
+{
+	_pieceStyle = pieceStyle;
 }
 
 PieceColour VBoard::GetCurrentPlayer() const
@@ -426,7 +450,7 @@ void VBoard::readyReadStandardOutput()
 	if (pos == -1)
 		return;
 	char x1, y1, x2, y2;
-	if (buf.size() >= pos + 8)
+	if (buf.size() >= pos + 9)
 	{
 		if (_engine->GetType() == USI)
 		{

@@ -24,6 +24,7 @@ void MainWindow::on_actionSettings_triggered()
 {
 	SettingsDialog *settingsDialog = new SettingsDialog(this);
 	settingsDialog->GetGameVariants()->setCurrentIndex(this->ui->vboard->GetGameVariant());
+	settingsDialog->GetGamePieces()->setCurrentIndex(this->ui->vboard->GetPieceStyle());
 	settingsDialog->GetStyles()->setCurrentText(_currentStyle);
 	settingsDialog->exec();
 	if (settingsDialog->result() == QDialog::Accepted)
@@ -31,9 +32,11 @@ void MainWindow::on_actionSettings_triggered()
 		QApplication::setStyle(settingsDialog->GetStyles()->itemText(settingsDialog->GetStyles()->currentIndex()));
 		_currentStyle = settingsDialog->GetStyles()->currentText();
 		const GameVariant newGameVariant = static_cast<GameVariant>(settingsDialog->GetGameVariants()->currentIndex());
-		if (newGameVariant != this->ui->vboard->GetGameVariant())
+		const PieceStyle pieceStyle = static_cast<PieceStyle>(settingsDialog->GetGamePieces()->currentIndex());
+		if (newGameVariant != this->ui->vboard->GetGameVariant() || pieceStyle != this->ui->vboard->GetPieceStyle())
 		{
 			this->ui->vboard->SetGameVariant(newGameVariant);
+			this->ui->vboard->SetPieceStyle(pieceStyle);
 			this->ui->vboard->GetBoard()->Initialize();
 			this->ui->vboard->SetCurrentPlayer(White);
 			this->ui->vboard->repaint();
@@ -53,7 +56,7 @@ void MainWindow::on_actionNew_game_triggered()
 		_engine->Quit();
 		delete _engine;
 	}
-	if (_engineExe != "" && _engineExe != "Human")
+	if (_engineExe != "")
 	{
 		switch (_engineProtocol)
 		{

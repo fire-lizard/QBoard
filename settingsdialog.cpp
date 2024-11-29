@@ -25,6 +25,11 @@ QComboBox* SettingsDialog::GetGameVariants() const
 	return ui->variantsComboBox;
 }
 
+QComboBox* SettingsDialog::GetGamePieces() const
+{
+	return ui->piecesComboBox;
+}
+
 QComboBox* SettingsDialog::GetWhitePlayer() const
 {
 	return ui->whitePlayerComboBox;

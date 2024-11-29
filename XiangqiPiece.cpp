@@ -57,3 +57,27 @@ std::string XiangqiPiece::AsianStringCode()
 		return "";
 	}
 }
+
+std::string XiangqiPiece::GetChineseImageFileName(PieceType pieceType, PieceColour pieceColour)
+{
+	const std::string colour = pieceColour == White ? "r" : "b";
+	switch (pieceType)
+	{
+	case King:
+		return colour + "king.png";
+	case Rook:
+		return colour + "chariot.png";
+	case Cannon:
+		return colour + "cannon.png";
+	case Elephant:
+		return colour + "elephant.png";
+	case Silver:
+		return colour + "advisor.png";
+	case Pawn:
+		return colour + "pawn.png";
+	case WhiteHorse:
+		return colour + "horse.png";
+	default:
+		return "";
+	}
+}
