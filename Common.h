@@ -20,6 +20,11 @@ enum PieceColour
 	White, Black
 };
 
+enum PieceStyle
+{
+	European, Chinese, Japanese
+};
+
 enum PieceType
 {
 	None = 0, King = 1, Lion = 2, Queen = 3, DragonKing = 4, DragonHorse = 5, Rook = 6, Bishop = 7,

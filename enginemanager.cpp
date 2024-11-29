@@ -82,11 +82,8 @@ void EngineManager::on_toolButton_3_clicked()
 	if (select->hasSelection())
 	{
 		QModelIndexList selectedRows = select->selectedRows();
-		QMessageBox mb("Remove warning", "Do you want to remove this entry?",
-			QMessageBox::Question,
-			QMessageBox::Ok | QMessageBox::Default,
-			QMessageBox::Cancel | QMessageBox::Escape,
-			QMessageBox::NoButton, this);
+		QMessageBox mb(QMessageBox::Question, "Remove warning", "Do you want to remove this entry?",
+			QMessageBox::Ok | QMessageBox::Cancel, this);
 		const int response = mb.exec();
 		if (response == QMessageBox::Ok)
 		{

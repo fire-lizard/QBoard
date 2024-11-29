@@ -112,8 +112,8 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 	if (_engine != nullptr && _currentPlayer == Black) return;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
-	const signed char x = static_cast<signed char>(event->x() / w);
-	const signed char y = static_cast<signed char>(event->y() / h);
+	const signed char x = static_cast<signed char>(event->position().x() / w);
+	const signed char y = static_cast<signed char>(event->position().y() / h);
 	Piece *p = _board->GetData(x, y);
 	if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
 	{
@@ -203,6 +203,67 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 	}
 }
 
+void VBoard::mouseDoubleClickEvent(QMouseEvent* event)
+{
+	//TODO: Lion move
+	/*if (_gameVariant != ChuShogi) return;
+	if (_engine != nullptr && _currentPlayer == Black) return;
+	const int w = this->size().width() / _board->GetWidth();
+	const int h = this->size().height() / _board->GetHeight();
+	const signed char x = static_cast<signed char>(event->position().x() / w);
+	const signed char y = static_cast<signed char>(event->position().y() / h);
+	Piece* p = _board->GetData(x, y);
+	if (_currentPiece != nullptr && p != nullptr && p->GetColour() != _currentPlayer)
+	{
+		if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == Eagle || _currentPiece->GetType() == Unicorn)
+		{
+			if (_board->Move(_oldX, _oldY, x, y))
+			{
+				if (_engine != nullptr)
+				{
+					//_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
+				}
+				AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ');
+				_currentPlayer = _currentPlayer == White ? Black : White;
+				_statusBar->setStyleSheet("QStatusBar { color : black; }");
+				_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
+				_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
+				_currentPiece = nullptr;
+				_oldX = -1;
+				_oldY = -1;
+				_moves.clear();
+			}
+			this->repaint();
+		}
+	}
+	else
+	{
+		if (p != nullptr)
+		{
+			if (p->GetColour() == _currentPlayer)
+			{
+				_currentPiece = _board->GetData(x, y);
+				if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == Eagle || _currentPiece->GetType() == Unicorn)
+				{
+					_oldX = x;
+					_oldY = y;
+					_board->GetMoves(p, x, y);
+					_moves = _board->Moves();
+					std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+						{
+							CalculateCheck(x, y, t.first, t.second);
+						});
+					std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+						{
+							CalculateCheck(x, y, t.first, t.second);
+						});
+					this->repaint();
+				}
+			}
+		}
+	}*/
+}
+
 Board* VBoard::GetBoard() const
 {
 	return _board;
@@ -287,7 +348,7 @@ bool VBoard::PossibleMove(int x, int y) const
 
 void VBoard::RemoveMove(int x, int y)
 {
-	const long long cnt = _moves.size() - 1;
+	const long long cnt = static_cast<long long>(_moves.size()) - 1;
 	for (long long index = cnt; index >= 0; index--)
 	{
 		if (_moves[index].first == x && _moves[index].second == y)
@@ -365,20 +426,24 @@ void VBoard::readyReadStandardOutput()
 	if (pos == -1)
 		return;
 	char x1, y1, x2, y2;
-	if (_engine->GetType() == USI)
+	if (buf.size() >= pos + 8)
 	{
-		x1 = static_cast<char>(_board->GetWidth() - buf[pos + 5] + 48);
-		y1 = static_cast<char>(buf[pos + 6] - 97);
-		x2 = static_cast<char>(_board->GetWidth() - buf[pos + 7] + 48);
-		y2 = static_cast<char>(buf[pos + 8] - 97);
+		if (_engine->GetType() == USI)
+		{
+			x1 = static_cast<char>(_board->GetWidth() - buf[pos + 5] + 48);
+			y1 = static_cast<char>(buf[pos + 6] - 97);
+			x2 = static_cast<char>(_board->GetWidth() - buf[pos + 7] + 48);
+			y2 = static_cast<char>(buf[pos + 8] - 97);
+		}
+		else
+		{
+			x1 = static_cast<char>(buf[pos + 5] - 97);
+			y1 = static_cast<char>(_board->GetHeight() - buf[pos + 6] + 48);
+			x2 = static_cast<char>(buf[pos + 7] - 97);
+			y2 = static_cast<char>(_board->GetHeight() - buf[pos + 8] + 48);
+		}
 	}
-	else
-	{
-		x1 = static_cast<char>(buf[pos + 5] - 97);
-		y1 = static_cast<char>(_board->GetHeight() - buf[pos + 6] + 48);
-		x2 = static_cast<char>(buf[pos + 7] - 97);
-		y2 = static_cast<char>(_board->GetHeight() - buf[pos + 8] + 48);
-	}
+	else return;
 	if (_gameVariant == Xiangqi)
 	{
 		y1--;
@@ -462,6 +527,13 @@ void VBoard::readyReadStandardOutput()
 void VBoard::readyReadStandardError() const
 {
 	QProcess *p = dynamic_cast<QProcess*>(sender());
+	const QByteArray buf = p->readAllStandardError();
+	this->_textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
+}
+
+void VBoard::errorOccurred() const
+{
+	QProcess* p = dynamic_cast<QProcess*>(sender());
 	const QByteArray buf = p->readAllStandardError();
 	this->_textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
 }

@@ -34,6 +34,8 @@ private:
 
 	void mousePressEvent(QMouseEvent *event) override;
 
+	void mouseDoubleClickEvent(QMouseEvent* event) override;
+
 	bool PossibleMove(int x, int y) const;
 	void RemoveMove(int x, int y);
 	void CalculateCheck(int oldX, int oldY, int newX, int newY);
@@ -60,4 +62,6 @@ signals:
 	void readyReadStandardOutput();
 
 	void readyReadStandardError() const;
+
+	void errorOccurred() const;
 };

@@ -104,9 +104,8 @@ bool Board::CheckDirectionAux(int x, int y, Direction direction) const
 		return x > 0 && y > 0;
 	case SouthEast:
 		return x < _width - 1 && y > 0;
-	default:
-		return false;
 	}
+	return false;
 }
 
 bool Board::Move(int oldX, int oldY, int newX, int newY)
@@ -129,7 +128,7 @@ bool Board::Move(int oldX, int oldY, int newX, int newY)
 
 void Board::RemoveMove(int x, int y)
 {
-	const long long cnt = _moves.size() - 1;
+	const long long cnt = static_cast<long long>(_moves.size()) - 1;
 	for (long long index = cnt; index >= 0; index--)
 	{
 		if (_moves[index].first == x && _moves[index].second == y)
