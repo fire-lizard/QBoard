@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	QFont font = this->ui->statusBar->font();
 	font.setBold(true);
 	this->ui->statusBar->setFont(font);
-	this->ui->statusBar->showMessage("White move");
+	this->ui->statusBar->showMessage(this->ui->vboard->GetGameVariant() == Xiangqi ? "Red move" : "White move");
 }
 
 MainWindow::~MainWindow()
@@ -39,6 +39,7 @@ void MainWindow::on_actionSettings_triggered()
 			this->ui->vboard->SetPieceStyle(pieceStyle);
 			this->ui->vboard->GetBoard()->Initialize();
 			this->ui->vboard->SetCurrentPlayer(White);
+			this->ui->statusBar->showMessage(newGameVariant == Xiangqi ? "Red move" : "White move");
 			this->ui->vboard->repaint();
 		}
 	}

@@ -183,7 +183,7 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 			AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion);
 			_currentPlayer = _currentPlayer == White ? Black : White;
 			_statusBar->setStyleSheet("QStatusBar { color : black; }");
-			_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
+			_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");
 			_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
 			_currentPiece = nullptr;
 			_oldX = -1;
@@ -240,7 +240,7 @@ void VBoard::mouseDoubleClickEvent(QMouseEvent* event)
 				AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ');
 				_currentPlayer = _currentPlayer == White ? Black : White;
 				_statusBar->setStyleSheet("QStatusBar { color : black; }");
-				_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
+				_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");
 				_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
 				_currentPiece = nullptr;
 				_oldX = -1;
@@ -510,41 +510,43 @@ void VBoard::readyReadStandardOutput()
 		{
 			_board->GetData(x2, y2)->Promote();
 		}
-		if (_gameVariant == Shogi && (buf[pos + 6] == '@' || buf[pos + 6] == '*'))
+	}
+	else if (_gameVariant == Shogi && (buf[pos + 6] == '@' || buf[pos + 6] == '*'))
+	{
+		PieceType newPiece;
+		switch (buf[pos + 5])
 		{
-			PieceType newPiece;
-			switch (buf[pos + 5])
-			{
-			case 'R':
-				newPiece = Rook;
-				break;
-			case 'B':
-				newPiece = Bishop;
-				break;
-			case 'G':
-				newPiece = Gold;
-				break;
-			case 'S':
-				newPiece = Silver;
-				break;
-			case 'N':
-				newPiece = WhiteHorse;
-				break;
-			case 'L':
-				newPiece = Lance;
-				break;
-			case 'P':
-				newPiece = Pawn;
-				break;
-			default:
-				newPiece = None;
-				break;
-			}
-			dynamic_cast<ShogiBoard*>(_board)->PlacePiece(newPiece, _currentPlayer, x2, y2);
+		case 'R':
+			newPiece = Rook;
+			break;
+		case 'B':
+			newPiece = Bishop;
+			break;
+		case 'G':
+			newPiece = Gold;
+			break;
+		case 'S':
+			newPiece = Silver;
+			break;
+		case 'N':
+			newPiece = WhiteHorse;
+			break;
+		case 'L':
+			newPiece = Lance;
+			break;
+		case 'P':
+			newPiece = Pawn;
+			break;
+		default:
+			newPiece = None;
+			break;
 		}
+		dynamic_cast<ShogiBoard*>(_board)->PlacePiece(newPiece, _engine->GetType() == WinBoard ? _currentPlayer : _currentPlayer  == White ? Black : White, x2, y2);
+		AddMove(_board->GetData(x2, y2)->GetType(), buf[pos + 5], buf[pos + 6], x2, y2, buf[pos + 9]);
+		_engine->AddMove(buf[pos + 5], buf[pos + 6], buf[pos + 7], buf[pos + 8], buf[pos + 9]);
 	}
 	_currentPlayer = White;
-	this->_statusBar->showMessage("White move");
+	this->_statusBar->showMessage(_gameVariant == Xiangqi ? "Red move" : "White move");
 	this->repaint();
 }
 

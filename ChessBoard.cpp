@@ -98,7 +98,7 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 	case Pawn:
 		if (piece->GetColour() == Black)
 		{
-			if (y == 1 && _data[x][y + 2] == nullptr)
+			if (y == 1 && _data[x][y + 1] == nullptr && _data[x][y + 2] == nullptr)
 			{
 				CheckMove(piece, x, y + 2);
 			}
@@ -117,7 +117,7 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		else
 		{
-			if (y == 6 && _data[x][y - 2] == nullptr)
+			if (y == 6 && _data[x][y - 1] == nullptr && _data[x][y - 2] == nullptr)
 			{
 				CheckMove(piece, x, y - 2);
 			}
