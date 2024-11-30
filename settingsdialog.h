@@ -18,6 +18,7 @@ public:
 	QComboBox* GetStyles() const;
 	QComboBox* GetGameVariants() const;
 	QComboBox* GetGamePieces() const;
+	QComboBox* GetEngineOutput() const;
 	QComboBox* GetWhitePlayer() const;
 	QComboBox* GetBlackPlayer() const;
 

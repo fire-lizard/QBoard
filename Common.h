@@ -22,7 +22,12 @@ enum PieceColour
 
 enum PieceStyle
 {
-	European, Chinese, Japanese
+	European, Asian
+};
+
+enum EngineOutput
+{
+	Concise, Verbose
 };
 
 enum PieceType

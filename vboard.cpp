@@ -13,11 +13,11 @@ VBoard::~VBoard()
 void VBoard::paintEvent(QPaintEvent *)
 {
 	QString resourcePrefix;
-	if (_pieceStyle == Chinese && _gameVariant == Xiangqi)
+	if (_pieceStyle == Asian && _gameVariant == Xiangqi)
 	{
 		resourcePrefix = ":/pieces_chi/images_chi/";
 	}
-	else if (_pieceStyle == Japanese && _gameVariant > 1)
+	else if (_pieceStyle == Asian && _gameVariant > 1)
 	{
 		resourcePrefix = ":/pieces_jap/images_jap/";
 	}
@@ -112,7 +112,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			{
 				const PieceType t = p->GetType();
 				const PieceColour c = p->GetColour();
-				const std::string imageFileName = _pieceStyle == Chinese && _gameVariant == Xiangqi ? 
+				const std::string imageFileName = _pieceStyle == Asian && _gameVariant == Xiangqi ?
 					XiangqiPiece::GetChineseImageFileName(t, c) : Piece::GetImageFileName(t, c);
 				QPixmap pixmap(resourcePrefix + QString::fromStdString(imageFileName));
 				painter.drawPixmap(i * w + w / 4, j * h + h / 4, 33, 33, pixmap);
@@ -338,6 +338,16 @@ PieceStyle VBoard::GetPieceStyle() const
 void VBoard::SetPieceStyle(PieceStyle pieceStyle)
 {
 	_pieceStyle = pieceStyle;
+}
+
+EngineOutput VBoard::GetEngineOutput() const
+{
+	return _engineOutput;
+}
+
+void VBoard::SetEngineOutput(EngineOutput engineOutput)
+{
+	_engineOutput = engineOutput;
 }
 
 PieceColour VBoard::GetCurrentPlayer() const

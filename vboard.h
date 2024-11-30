@@ -25,6 +25,8 @@ public:
 	void SetGameVariant(GameVariant gameVariant);
 	PieceStyle GetPieceStyle() const;
 	void SetPieceStyle(PieceStyle pieceStyle);
+	EngineOutput GetEngineOutput() const;
+	void SetEngineOutput(EngineOutput engineOutput);
 	PieceColour GetCurrentPlayer() const;
 	void SetCurrentPlayer(PieceColour currentPlayer);
 	void SetTextEdit(QTextEdit *textEdit);
@@ -47,6 +49,7 @@ private:
 	Board *_board;
 	PieceColour _currentPlayer = White;
 	PieceStyle _pieceStyle = European;
+	EngineOutput _engineOutput = Concise;
 	Piece *_currentPiece;
 	signed char _oldX = -1;
 	signed char _oldY = -1;

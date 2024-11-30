@@ -25,6 +25,7 @@ void MainWindow::on_actionSettings_triggered()
 	SettingsDialog *settingsDialog = new SettingsDialog(this);
 	settingsDialog->GetGameVariants()->setCurrentIndex(this->ui->vboard->GetGameVariant());
 	settingsDialog->GetGamePieces()->setCurrentIndex(this->ui->vboard->GetPieceStyle());
+	settingsDialog->GetEngineOutput()->setCurrentIndex(this->ui->vboard->GetEngineOutput());
 	settingsDialog->GetStyles()->setCurrentText(_currentStyle);
 	settingsDialog->exec();
 	if (settingsDialog->result() == QDialog::Accepted)
@@ -33,10 +34,12 @@ void MainWindow::on_actionSettings_triggered()
 		_currentStyle = settingsDialog->GetStyles()->currentText();
 		const GameVariant newGameVariant = static_cast<GameVariant>(settingsDialog->GetGameVariants()->currentIndex());
 		const PieceStyle pieceStyle = static_cast<PieceStyle>(settingsDialog->GetGamePieces()->currentIndex());
-		if (newGameVariant != this->ui->vboard->GetGameVariant() || pieceStyle != this->ui->vboard->GetPieceStyle())
+		const EngineOutput engineOutput = static_cast<EngineOutput>(settingsDialog->GetEngineOutput()->currentIndex());
+		if (newGameVariant != this->ui->vboard->GetGameVariant() || pieceStyle != this->ui->vboard->GetPieceStyle() || engineOutput != this->ui->vboard->GetEngineOutput())
 		{
 			this->ui->vboard->SetGameVariant(newGameVariant);
 			this->ui->vboard->SetPieceStyle(pieceStyle);
+			this->ui->vboard->SetEngineOutput(engineOutput);
 			this->ui->vboard->GetBoard()->Initialize();
 			this->ui->vboard->SetCurrentPlayer(White);
 			this->ui->statusBar->showMessage(newGameVariant == Xiangqi ? "Red move" : "White move");

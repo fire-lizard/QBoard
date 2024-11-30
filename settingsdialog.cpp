@@ -30,6 +30,11 @@ QComboBox* SettingsDialog::GetGamePieces() const
 	return ui->piecesComboBox;
 }
 
+QComboBox* SettingsDialog::GetEngineOutput() const
+{
+	return ui->engineOutputComboBox;
+}
+
 QComboBox* SettingsDialog::GetWhitePlayer() const
 {
 	return ui->whitePlayerComboBox;
