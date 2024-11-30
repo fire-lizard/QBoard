@@ -184,7 +184,7 @@ void MainWindow::LoadEngine()
 {
 	if (_engine != nullptr)
 	{
-		const QProcess* process = _engine->RunProcess(this, _engineExe);
+		const QProcess* process = _engine->RunProcess(this, _engineExe, _engineArguments);
 		if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
 		{
 			_engine->StartGame();

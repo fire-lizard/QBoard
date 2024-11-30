@@ -454,12 +454,33 @@ void VBoard::readyReadStandardOutput()
 {
 	QProcess *p = dynamic_cast<QProcess*>(sender());
 	QByteArray buf = p->readAllStandardOutput();
+	char x1, y1, x2, y2;
 	this->_textEdit->setText(buf);
+	if (_gameVariant == Xiangqi && _engine->GetType() == Qianhong)
+	{
+		if (buf.size() >= 5)
+		{
+			x1 = buf[0] - 65;
+			y1 = buf[1] - '0';
+			x2 = buf[3] - 65;
+			y2 = buf[4] - '0';
+			if (_board->CheckPosition(x1, 9 - y1) && _board->GetData(x1, 9 - y1) != nullptr)
+			{
+				_board->GetMoves(_board->GetData(x1, 9 - y1), x1, 9 - y1);
+				_board->Move(x1, 9 - y1, x2, 9 - y2);
+				AddMove(_board->GetData(x2, 9 - y2)->GetType(), x1, 9 - y1, x2, 9 - y2, ' ');
+				_engine->AddMove(buf[0], buf[1], buf[3], buf[4], ' ');
+			}
+		}
+		_currentPlayer = White;
+		this->_statusBar->showMessage("Red move");
+		this->repaint();
+		return;
+	}
 	const qsizetype auxPos1 = buf.lastIndexOf("getmove ");
 	const qsizetype pos = _engine->GetType() == WinBoard ? buf.lastIndexOf("move ", auxPos1) : buf.lastIndexOf("bestmove ", auxPos1) + 4;
 	if (pos == -1)
 		return;
-	char x1, y1, x2, y2;
 	if (buf.size() >= pos + 9)
 	{
 		if (_engine->GetType() == USI)

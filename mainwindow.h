@@ -60,6 +60,7 @@ private:
 	Engine *_engine = nullptr;
 	QString _engineExe = "";
 	QString _engineName = "";
+	QStringList _engineArguments;
 	EngineProtocol _engineProtocol = WinBoard;
 	std::vector<std::tuple<QString, QString, EngineProtocol>> _engines;
 };

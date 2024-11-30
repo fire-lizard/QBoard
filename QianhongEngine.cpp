@@ -27,20 +27,16 @@ void QianhongEngine::Move(signed char x1, signed char y1, signed char x2, signed
 QByteArray QianhongEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	QByteArray moveStr;
-	if (x1 < 10)
-	{
-		moveStr.push_back(static_cast<char>(x1 + 97));
-		moveStr.push_back(QString::number(y1)[0].toLatin1());
-		moveStr.push_back(static_cast<char>(x2 + 97));
-		moveStr.push_back(QString::number(y2)[0].toLatin1());
-	}
-	else
-	{
-		moveStr.push_back(x1);
-		moveStr.push_back(y1);
-		moveStr.push_back(x2);
-		moveStr.push_back(y2);
-	}
+	moveStr.push_back('P');
+	moveStr.push_back('L');
+	moveStr.push_back('A');
+	moveStr.push_back('Y');
+	moveStr.push_back(' ');
+	moveStr.push_back(x1 + 65);
+	moveStr.push_back(y1 + '0');
+	moveStr.push_back('-');
+	moveStr.push_back(x2 + 65);
+	moveStr.push_back(y2 + '0');
 	_moves.push_back(moveStr);
 	return moveStr;
 }
