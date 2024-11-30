@@ -542,7 +542,7 @@ void VBoard::readyReadStandardOutput()
 			_board->GetData(x2, y2)->Promote();
 		}
 	}
-	else if (_gameVariant == Shogi && (buf[pos + 6] == '@' || buf[pos + 6] == '*'))
+	else if ((_gameVariant == Shogi || _gameVariant == MiniShogi) && (buf[pos + 6] == '@' || buf[pos + 6] == '*'))
 	{
 		PieceType newPiece;
 		switch (buf[pos + 5])

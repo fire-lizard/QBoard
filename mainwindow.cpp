@@ -50,7 +50,7 @@ void MainWindow::on_actionSettings_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-	QMessageBox::about(this, "About", "QBoard 1.0");
+	QMessageBox::about(this, "About", "QBoard 0.1 alpha\nFire Lizard Software\nAnatoliy Sova");
 }
 
 void MainWindow::on_actionNew_game_triggered()
@@ -217,20 +217,26 @@ void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engin
 
 			// Read attributes
 			QString engineName;
+			QString gameVariant;
 			QString engineProtocol;
 			QString enginePath;
+			QString engineParameters;
 			foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
 				if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
+				if (attr.name().toString() == "GameVariant") gameVariant = attr.value().toString();
 				if (attr.name().toString() == "EngineProtocol") engineProtocol = attr.value().toString();
 				if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
+				if (attr.name().toString() == "EngineParameters") engineParameters = attr.value().toString();
 			}
 			if (engineName != "" && enginePath != "")
 			{
 				engineTable->insertRow(engineTable->rowCount());
 				const int currentRow = engineTable->rowCount() - 1;
 				engineTable->setItem(currentRow, 0, new QTableWidgetItem(engineName));
-				engineTable->setItem(currentRow, 1, new QTableWidgetItem(engineProtocol));
-				engineTable->setItem(currentRow, 2, new QTableWidgetItem(enginePath));
+				engineTable->setItem(currentRow, 1, new QTableWidgetItem(gameVariant));
+				engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
+				engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
+				engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineParameters));
 			}
 		}
 		else if (token == QXmlStreamReader::Characters && !xml.isWhitespace()) {
@@ -268,8 +274,10 @@ void MainWindow::createXmlFromTable(const QString& fileName, const QTableWidget*
 	{
 		writer.writeStartElement("Engine");
 		writer.writeAttribute("EngineName", engineTable->item(index, 0)->text());
-		writer.writeAttribute("EngineProtocol", engineTable->item(index, 1)->text());
-		writer.writeAttribute("EnginePath", engineTable->item(index, 2)->text());
+		writer.writeAttribute("GameVariant", engineTable->item(index, 1)->text());
+		writer.writeAttribute("EngineProtocol", engineTable->item(index, 2)->text());
+		writer.writeAttribute("EnginePath", engineTable->item(index, 3)->text());
+		writer.writeAttribute("EngineParameters", engineTable->item(index, 4)->text());
 		writer.writeEndElement();
 	}
 

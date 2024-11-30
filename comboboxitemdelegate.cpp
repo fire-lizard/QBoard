@@ -14,6 +14,18 @@ QWidget* ComboBoxItemDelegate::createEditor(QWidget* parent, const QStyleOptionV
 	{
 		QComboBox* cb = new QComboBox(parent);
 		const int row = index.row();
+		cb->addItem(QString("Chess").arg(row));
+		cb->addItem(QString("Xiangqi").arg(row));
+		cb->addItem(QString("Shogi").arg(row));
+		cb->addItem(QString("Sho Shogi").arg(row));
+		cb->addItem(QString("Chu Shogi").arg(row));
+		cb->addItem(QString("Mini Shogi").arg(row));
+		return cb;
+	}
+	if (index.column() == 2)
+	{
+		QComboBox* cb = new QComboBox(parent);
+		const int row = index.row();
 		cb->addItem(QString("WinBoard").arg(row));
 		cb->addItem(QString("UCI").arg(row));
 		cb->addItem(QString("UCCI").arg(row));

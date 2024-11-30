@@ -26,15 +26,19 @@ void EngineManager::on_toolButton_clicked()
 	if (addEngineDialog->result() == QDialog::Accepted)
 	{
 		const QString engineName = addEngineDialog->GetEngineName()->text();
+		const QString gameName = addEngineDialog->GetGameVariant()->currentText();
 		const QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
 		const QString enginePath = addEngineDialog->GetEnginePath()->text();
+		const QString engineParameters = addEngineDialog->GetEngineParameters()->text();
 		if (engineName != "" && enginePath != "")
 		{
 			ui->engineTable->insertRow(ui->engineTable->rowCount());
 			const int currentRow = ui->engineTable->rowCount() - 1;
 			ui->engineTable->setItem(currentRow, 0, new QTableWidgetItem(engineName));
-			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(engineProtocol));
-			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(enginePath));
+			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(gameName));
+			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
+			ui->engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
+			ui->engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineParameters));
 		}
 	}
 }
@@ -52,25 +56,46 @@ EngineProtocol EngineManager::StringToEngineProtocol(const QString& str)
 	return WinBoard;
 }
 
+GameVariant EngineManager::StringToGameVariant(const QString& str)
+{
+	if (str == "Xiangqi")
+		return Xiangqi;
+	if (str == "Shogi")
+		return Shogi;
+	if (str == "Sho Shogi")
+		return ShoShogi;
+	if (str == "Chu Shogi")
+		return ChuShogi;
+	if (str == "Mini Shogi")
+		return MiniShogi;
+	return Chess;
+}
+
 void EngineManager::on_toolButton_2_clicked()
 {
 	const int currentRow = ui->engineTable->currentRow();
 	if (currentRow == -1) return;
 	AddEngineDialog *addEngineDialog = new AddEngineDialog(this);
 	addEngineDialog->SetEngineName(ui->engineTable->item(currentRow, 0)->text());
-	addEngineDialog->SetEngineProtocol(StringToEngineProtocol(ui->engineTable->item(currentRow, 1)->text()));
-	addEngineDialog->SetEnginePath(ui->engineTable->item(currentRow, 2)->text());
+	addEngineDialog->SetGameVariant(StringToGameVariant(ui->engineTable->item(currentRow, 1)->text()));
+	addEngineDialog->SetEngineProtocol(StringToEngineProtocol(ui->engineTable->item(currentRow, 2)->text()));
+	addEngineDialog->SetEnginePath(ui->engineTable->item(currentRow, 3)->text());
+	addEngineDialog->SetEngineParameters(ui->engineTable->item(currentRow, 4)->text());
 	addEngineDialog->exec();
 	if (addEngineDialog->result() == QDialog::Accepted)
 	{
 		const QString engineName = addEngineDialog->GetEngineName()->text();
+		const QString gameName = addEngineDialog->GetGameVariant()->currentText();
 		const QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
 		const QString enginePath = addEngineDialog->GetEnginePath()->text();
+		const QString engineParameters = addEngineDialog->GetEngineParameters()->text();
 		if (engineName != "" && enginePath != "")
 		{
 			ui->engineTable->setItem(currentRow, 0, new QTableWidgetItem(engineName));
-			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(engineProtocol));
-			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(enginePath));
+			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(gameName));
+			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
+			ui->engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
+			ui->engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineParameters));
 		}
 	}
 }

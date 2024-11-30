@@ -34,4 +34,6 @@ private:
     Ui::EngineManager *ui;
 
     static EngineProtocol StringToEngineProtocol(const QString& str);
+
+    static GameVariant StringToGameVariant(const QString& str);
 };
