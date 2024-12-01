@@ -18,6 +18,7 @@ public:
     explicit EngineManager(QWidget *parent = nullptr);
     ~EngineManager() override;
 	QTableWidget* GetEngineTable() const;
+    static GameVariant StringToGameVariant(const QString& str);
 
 private slots:
     void on_toolButton_clicked();
@@ -34,6 +35,4 @@ private:
     Ui::EngineManager *ui;
 
     static EngineProtocol StringToEngineProtocol(const QString& str);
-
-    static GameVariant StringToGameVariant(const QString& str);
 };

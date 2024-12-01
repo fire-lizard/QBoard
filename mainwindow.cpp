@@ -13,6 +13,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	font.setBold(true);
 	this->ui->statusBar->setFont(font);
 	this->ui->statusBar->showMessage(this->ui->vboard->GetGameVariant() == Xiangqi ? "Red move" : "White move");
+	_settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
+	if (QFile::exists(_settingsDir + "/" + _settingsFileName))
+	{
+		QStringList settings = IniFile::readFromIniFile(_settingsDir + "/" + _settingsFileName);
+		_currentStyle = settings[0];
+		QApplication::setStyle(_currentStyle);
+		this->ui->vboard->SetGameVariant(EngineManager::StringToGameVariant(settings[1]));
+		this->ui->vboard->SetPieceStyle(settings[2] == "Asian" ? Asian : European);
+		this->ui->vboard->SetEngineOutput(settings[3] == "Verbose" ? Verbose : Concise);
+		this->ui->vboard->GetBoard()->Initialize();
+		this->ui->statusBar->showMessage(settings[1] == "Xiangqi" ? "Red move" : "White move");
+		this->ui->vboard->repaint();
+	}
 }
 
 MainWindow::~MainWindow()
@@ -45,6 +58,10 @@ void MainWindow::on_actionSettings_triggered()
 			this->ui->statusBar->showMessage(newGameVariant == Xiangqi ? "Red move" : "White move");
 			this->ui->vboard->repaint();
 		}
+		IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, _currentStyle, 
+			settingsDialog->GetGameVariants()->currentText(), 
+			settingsDialog->GetGamePieces()->currentText(),
+			settingsDialog->GetEngineOutput()->currentText());
 	}
 }
 
@@ -172,11 +189,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::on_actionEngine_Manager_triggered()
 {
 	EngineManager *engineManager = new EngineManager(this);
-	readXmlUsingStream(_enginesListFileName, engineManager->GetEngineTable());
+	readXmlUsingStream(_settingsDir + "/" + _enginesListFileName, engineManager->GetEngineTable());
 	engineManager->exec();
 	if (engineManager->result() == QDialog::Accepted)
 	{
-		createXmlFromTable(_enginesListFileName, engineManager->GetEngineTable());
+		createXmlFromTable(_settingsDir + "/" + _enginesListFileName, engineManager->GetEngineTable());
 	}
 }
 
@@ -200,8 +217,7 @@ void MainWindow::LoadEngine()
 
 void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engineTable)
 {
-	const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
-	QFile file(settingsDir + "/" + fileName);
+	QFile file(fileName);
 
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		qDebug() << "Failed to open the file for reading.";
@@ -253,9 +269,8 @@ void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engin
 
 void MainWindow::createXmlFromTable(const QString& fileName, const QTableWidget* engineTable)
 {
-	const QString settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
-	QFile file(settingsDir + "/" + fileName);
-	QFile tempFile(settingsDir + "/temp.xml");
+	QFile file(fileName);
+	QFile tempFile(QFileInfo(fileName).absolutePath() + "/" + "temp.xml");
 
 	if (!tempFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
 		qDebug() << "Failed to open the temp file for writing.";
@@ -287,5 +302,5 @@ void MainWindow::createXmlFromTable(const QString& fileName, const QTableWidget*
 	tempFile.close();
 
 	file.remove();
-	tempFile.rename(settingsDir + "/" + fileName);
+	tempFile.rename(fileName);
 }

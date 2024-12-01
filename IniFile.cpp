@@ -2,7 +2,7 @@
 
 void IniFile::writeToIniFile(const QString& filePath, const QString& styleName, const QString& gameVariant, const QString& pieceStyle, const QString& engineOutput) {
 	// Create a QSettings object for the INI file
-	QSettings settings(filePath, QSettings::NativeFormat);
+	QSettings settings(filePath, QSettings::IniFormat);
 
 	// Write values
 	settings.beginGroup("General");
@@ -18,11 +18,11 @@ void IniFile::writeToIniFile(const QString& filePath, const QString& styleName, 
 
 QStringList IniFile::readFromIniFile(const QString& filePath) {
     // Create a QSettings object for the INI file
-    QSettings settings(filePath, QSettings::NativeFormat);
+    QSettings settings(filePath, QSettings::IniFormat);
 
     // Read values from the "General" group
     settings.beginGroup("General");
-    const QString styleName = settings.value("StyleName").toString();
+    const QString styleName = settings.value("StyleName", QApplication::style()->name()).toString();
     const QString gameVariant = settings.value("GameVariant", "Chess").toString();
     const QString pieceStyle = settings.value("PieceStyle", "European").toString();
     const QString engineOutput = settings.value("EngineOutput", "Concise").toString();

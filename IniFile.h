@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QSettings>
+#include <QApplication>
+#include <qstyle.h>
 
 class IniFile {
 public:
