@@ -91,7 +91,7 @@ void MainWindow::on_actionNew_game_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	const QString fileName = QFileDialog::getOpenFileName(this, "Open file", "", "PGN Files (*.pgn)");
+	/*const QString fileName = QFileDialog::getOpenFileName(this, "Open file", "", "PGN Files (*.pgn)");
 	if (fileName != "")
 	{
 		QFile file;
@@ -100,12 +100,12 @@ void MainWindow::on_actionOpen_triggered()
 		QString data = file.readAll();
 		file.close();
 		this->ui->vboard->repaint();
-	}
+	}*/
 }
 
 void MainWindow::on_actionSave_triggered()
 {
-	const QString fileName = QFileDialog::getSaveFileName(this, "Save file", "", "PGN Files (*.pgn)");
+	/*const QString fileName = QFileDialog::getSaveFileName(this, "Save file", "", "PGN Files (*.pgn)");
 	if (fileName != "")
 	{
 		QFile file;
@@ -135,7 +135,7 @@ void MainWindow::on_actionSave_triggered()
 			file.write(" ");
 		}
 		file.close();
-	}
+	}*/
 }
 
 void MainWindow::on_actionStop_game_triggered()
@@ -172,11 +172,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::on_actionEngine_Manager_triggered()
 {
 	EngineManager *engineManager = new EngineManager(this);
-	readXmlUsingStream("QBoardEngines.xml", engineManager->GetEngineTable());
+	readXmlUsingStream(_enginesListFileName, engineManager->GetEngineTable());
 	engineManager->exec();
 	if (engineManager->result() == QDialog::Accepted)
 	{
-		createXmlFromTable("QBoardEngines.xml", engineManager->GetEngineTable());
+		createXmlFromTable(_enginesListFileName, engineManager->GetEngineTable());
 	}
 }
 

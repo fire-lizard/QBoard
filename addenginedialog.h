@@ -21,7 +21,7 @@ public:
 	QLineEdit* GetEnginePath() const;
 	QLineEdit* GetEngineParameters() const;
 	void SetEngineName(const QString &engineName) const;
-	void SetGameVariant(int game) const;
+	void SetGameVariant(int gameVariant) const;
 	void SetEngineProtocol(int engineProtocol) const;
 	void SetEnginePath(const QString& enginePath) const;
 	void SetEngineParameters(const QString& engineParameters) const;

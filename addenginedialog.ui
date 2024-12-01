@@ -216,6 +216,14 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>engineName</tabstop>
+  <tabstop>gameVariant</tabstop>
+  <tabstop>engineProtocol</tabstop>
+  <tabstop>enginePath</tabstop>
+  <tabstop>toolButton</tabstop>
+  <tabstop>engineParameters</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

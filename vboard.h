@@ -1,5 +1,6 @@
 #pragma once
 #include <QWidget>
+#include <QMenu>
 #include <QMessageBox>
 #include <QStatusBar>
 #include <QPainter>
@@ -33,6 +34,9 @@ public:
 	void SetStatusBar(QStatusBar *statusBar);
 	void SetMainWindow(QMainWindow *window);
 	void SetEngine(Engine *engine);
+
+protected:
+	void contextMenuEvent(QContextMenuEvent* event) override;
 
 private:
 	void paintEvent(QPaintEvent *) override;

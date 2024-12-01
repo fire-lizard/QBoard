@@ -594,3 +594,28 @@ void VBoard::errorOccurred() const
 	const QByteArray buf = p->readAllStandardError();
 	this->_textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
 }
+
+void VBoard::contextMenuEvent(QContextMenuEvent* event)
+{
+	if (_gameVariant != Shogi && _gameVariant != MiniShogi) return;
+
+	QMenu menu(this);
+
+	const QAction* action1 = menu.addAction("Option 1");
+	const QAction* action2 = menu.addAction("Option 2");
+	const QAction* action3 = menu.addAction("Option 3");
+
+	// Execute the menu at the cursor position
+	const QAction* selectedAction = menu.exec(event->globalPos());
+
+	// Handle the selected action
+	if (selectedAction == action1) {
+		qDebug() << "Option 1 selected";
+	}
+	else if (selectedAction == action2) {
+		qDebug() << "Option 2 selected";
+	}
+	else if (selectedAction == action3) {
+		qDebug() << "Option 3 selected";
+	}
+}
