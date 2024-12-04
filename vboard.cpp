@@ -576,6 +576,7 @@ void VBoard::readyReadStandardOutput()
 		AddMove(_board->GetData(x2, y2)->GetType(), buf[pos + 5], buf[pos + 6], x2, y2, buf[pos + 9]);
 		_engine->AddMove(buf[pos + 5], buf[pos + 6], buf[pos + 7], buf[pos + 8], buf[pos + 9]);
 	}
+    else return;
 	_currentPlayer = White;
 	this->_statusBar->showMessage(_gameVariant == Xiangqi ? "Red move" : "White move");
 	this->repaint();

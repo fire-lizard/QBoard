@@ -48,6 +48,14 @@ void MainWindow::on_actionSettings_triggered()
 		const GameVariant newGameVariant = static_cast<GameVariant>(settingsDialog->GetGameVariants()->currentIndex());
 		const PieceStyle pieceStyle = static_cast<PieceStyle>(settingsDialog->GetGamePieces()->currentIndex());
 		const EngineOutput engineOutput = static_cast<EngineOutput>(settingsDialog->GetEngineOutput()->currentIndex());
+        if (newGameVariant != this->ui->vboard->GetGameVariant() && _engine != nullptr)
+        {
+            _engine->Quit();
+            delete _engine;
+            _engine = nullptr;
+            this->ui->textEdit->setText("");
+            this->ui->statusBar->showMessage("");
+        }
 		if (newGameVariant != this->ui->vboard->GetGameVariant() || pieceStyle != this->ui->vboard->GetPieceStyle() || engineOutput != this->ui->vboard->GetEngineOutput())
 		{
 			this->ui->vboard->SetGameVariant(newGameVariant);
@@ -73,6 +81,7 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::on_actionNew_game_triggered()
 {
     this->ui->textEdit->setText("");
+    this->ui->statusBar->showMessage("");
     NewGameDialog* newGameDialog = new NewGameDialog(this);
     newGameDialog->GetWhitePlayer()->addItem("Human");
     newGameDialog->GetBlackPlayer()->addItem("Human");
@@ -146,6 +155,7 @@ void MainWindow::on_actionNew_game_triggered()
 		{
 			_engine->Quit();
 			delete _engine;
+            _engine = nullptr;
 		}
 		if (_engineExe != "")
 		{

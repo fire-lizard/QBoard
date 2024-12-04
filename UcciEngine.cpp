@@ -30,7 +30,7 @@ void UcciEngine::Move(signed char x1, signed char y1, signed char x2, signed cha
 	}
 	_process->write(AddMove(x1, y1, x2, y2, promotion));
 	_process->write("\n");
-	_process->write("go movetime 1000\n");
+    _process->write("go movetime 1000\n");
 }
 
 QByteArray UcciEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
