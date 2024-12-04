@@ -16,6 +16,7 @@
 #include "UsiEngine.h"
 #include "QianhongEngine.h"
 #include "enginemanager.h"
+#include "newgamedialog.h"
 #include "IniFile.h"
 
 namespace Ui {

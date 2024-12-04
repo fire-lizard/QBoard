@@ -72,38 +72,107 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionNew_game_triggered()
 {
-	if (_engine != nullptr)
+	NewGameDialog* newGameDialog = new NewGameDialog(this);
+    newGameDialog->GetWhitePlayer()->addItem("Human");
+    newGameDialog->GetBlackPlayer()->addItem("Human");
+	if (this->ui->vboard->GetGameVariant() == Xiangqi)
 	{
-		_engine->Quit();
-		delete _engine;
-	}
-	if (_engineExe != "")
-	{
-		switch (_engineProtocol)
-		{
-		case UCI:
-			_engine = new UciEngine();
-			break;
-		case UCCI:
-			_engine = new UcciEngine();
-			break;
-		case Qianhong:
-			_engine = new QianhongEngine();
-			break;
-		case USI:
-			_engine = new UsiEngine();
-			break;
-		case WinBoard:
-			_engine = new WbEngine();
-			break;
-		}
-		LoadEngine();
+		newGameDialog->GetWhitePlayerLabel()->setText("<html><head/><body><p><span style='color:#ffffff;background:#ff0000; '>Red player</span></p></body></html>");
 	}
 	else
-		this->ui->statusBar->showMessage("Engine not set");
-	this->ui->vboard->GetBoard()->Initialize();
-	this->ui->vboard->SetCurrentPlayer(White);
-	this->ui->vboard->repaint();
+	{
+		newGameDialog->GetWhitePlayerLabel()->setText("<html><head/><body><p><span style='background:#ffffff; '>White player</span></p></body></html>");
+	}
+	_engines.clear();
+	QFile file(_settingsDir + "/" + _enginesListFileName);
+
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		qDebug() << "Failed to open the file for reading.";
+		return;
+	}
+
+	QXmlStreamReader xml(&file);
+
+	while (!xml.atEnd() && !xml.hasError()) {
+		const QXmlStreamReader::TokenType token = xml.readNext();
+
+		if (token == QXmlStreamReader::StartElement) {
+
+			// Read attributes
+			QString engineName;
+            GameVariant gameVariant = Chess;
+            EngineProtocol engineProtocol;
+			QString enginePath;
+			QString engineParameters;
+			foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
+				if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
+                if (attr.name().toString() == "GameVariant") gameVariant = EngineManager::StringToGameVariant(attr.value().toString());
+                if (attr.name().toString() == "EngineProtocol") engineProtocol = EngineManager::StringToEngineProtocol(attr.value().toString());
+				if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
+				if (attr.name().toString() == "EngineParameters") engineParameters = attr.value().toString();
+			}
+            if (engineName != "" && enginePath != "" && gameVariant == this->ui->vboard->GetGameVariant())
+			{
+                _engines.emplace_back(engineName, gameVariant, engineProtocol, enginePath, engineParameters);
+			}
+		}
+	}
+
+	if (xml.hasError()) {
+		qDebug() << "Error reading XML:" << xml.errorString();
+	}
+
+	file.close();
+
+	for (auto& engine : _engines)
+	{
+        newGameDialog->GetBlackPlayer()->addItem(std::get<0>(engine));
+    }
+	newGameDialog->exec();
+	if (newGameDialog->result() == QDialog::Accepted)
+	{
+        int selectedIndex = newGameDialog->GetBlackPlayer()->currentIndex();
+        if (selectedIndex > 0)
+        {
+            auto tpl = _engines[selectedIndex - 1];
+            _engineProtocol = std::get<2>(tpl);
+            _engineExe = std::get<3>(tpl);
+            _engineArguments.clear();
+            _engineArguments << std::get<4>(tpl).trimmed().split(' ', Qt::SkipEmptyParts);
+        }
+        if (_engine != nullptr)
+		{
+			_engine->Quit();
+			delete _engine;
+		}
+		if (_engineExe != "")
+		{
+			switch (_engineProtocol)
+			{
+			case UCI:
+				_engine = new UciEngine();
+				break;
+			case UCCI:
+				_engine = new UcciEngine();
+				break;
+			case Qianhong:
+				_engine = new QianhongEngine();
+				break;
+			case USI:
+				_engine = new UsiEngine();
+				break;
+			case WinBoard:
+				_engine = new WbEngine();
+				break;
+			}
+			LoadEngine();
+		}
+		else
+			this->ui->statusBar->showMessage("Engine not set");
+		this->ui->vboard->GetBoard()->Initialize();
+		this->ui->vboard->SetCurrentPlayer(White);
+		this->ui->vboard->repaint();
+	}
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -207,7 +276,7 @@ void MainWindow::LoadEngine()
 			_engine->StartGame();
 			connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
 			connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(readyReadStandardError()));
-			connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(errorOccurred(QProcess::ProcessError)));
+            connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(readyReadStandardError()));
 			this->ui->vboard->SetEngine(_engine);
 		}
 		else

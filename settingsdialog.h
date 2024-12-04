@@ -19,12 +19,8 @@ public:
 	QComboBox* GetGameVariants() const;
 	QComboBox* GetGamePieces() const;
 	QComboBox* GetEngineOutput() const;
-	QComboBox* GetWhitePlayer() const;
-	QComboBox* GetBlackPlayer() const;
 
 	private slots:
-
-    void on_variantsComboBox_currentIndexChanged(int index);
 
 private:
 	Ui::SettingsDialog *ui;

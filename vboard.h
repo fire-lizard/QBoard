@@ -73,6 +73,4 @@ signals:
 	void readyReadStandardOutput();
 
 	void readyReadStandardError() const;
-
-	void errorOccurred() const;
 };

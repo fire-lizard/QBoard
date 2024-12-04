@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QLineEdit>
 #include <QComboBox>
+#include "Common.h"
 
 namespace Ui {
 class AddEngineDialog;
@@ -21,8 +22,8 @@ public:
 	QLineEdit* GetEnginePath() const;
 	QLineEdit* GetEngineParameters() const;
 	void SetEngineName(const QString &engineName) const;
-	void SetGameVariant(int gameVariant) const;
-	void SetEngineProtocol(int engineProtocol) const;
+	void SetGameVariant(GameVariant gameVariant) const;
+	void SetEngineProtocol(EngineProtocol engineProtocol) const;
 	void SetEnginePath(const QString& enginePath) const;
 	void SetEngineParameters(const QString& engineParameters) const;
 

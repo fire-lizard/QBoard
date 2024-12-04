@@ -40,6 +40,7 @@ SOURCES += main.cpp\
     MiniShogiBoard.cpp \
     enginemanager.cpp \
     comboboxitemdelegate.cpp \
+    newgamedialog.cpp \
     addenginedialog.cpp
 
 HEADERS  += mainwindow.h \
@@ -66,11 +67,13 @@ HEADERS  += mainwindow.h \
     MiniShogiBoard.h \
     enginemanager.h \
     comboboxitemdelegate.h \
+    newgamedialog.h \
     addenginedialog.h
 
 FORMS    += mainwindow.ui \
     settingsdialog.ui \
     enginemanager.ui \
+    newgamedialog.ui \
     addenginedialog.ui
 
 RESOURCES += \

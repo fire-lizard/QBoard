@@ -211,6 +211,7 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="MiniShogiBoard.cpp" />
+    <ClCompile Include="newgamedialog.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="QianhongEngine.cpp" />
     <ClCompile Include="ShogiBoard.cpp" />
@@ -239,6 +240,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="IniFile.h" />
     <ClInclude Include="MiniShogiBoard.h" />
+    <QtMoc Include="newgamedialog.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="QianhongEngine.h" />
     <ClInclude Include="ShogiBoard.h" />
@@ -276,6 +278,7 @@
     <QtUic Include="addenginedialog.ui" />
     <QtUic Include="enginemanager.ui" />
     <QtUic Include="mainwindow.ui" />
+    <QtUic Include="newgamedialog.ui" />
     <QtUic Include="settingsdialog.ui" />
   </ItemGroup>
   <ItemGroup>

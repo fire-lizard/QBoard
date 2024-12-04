@@ -588,13 +588,6 @@ void VBoard::readyReadStandardError() const
 	this->_textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
 }
 
-void VBoard::errorOccurred() const
-{
-	QProcess* p = dynamic_cast<QProcess*>(sender());
-	const QByteArray buf = p->readAllStandardError();
-	this->_textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
-}
-
 void VBoard::contextMenuEvent(QContextMenuEvent* event)
 {
 	if (_gameVariant != Shogi && _gameVariant != MiniShogi) return;

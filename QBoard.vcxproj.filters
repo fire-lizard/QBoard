@@ -122,6 +122,9 @@
     <ClCompile Include="vboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="newgamedialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -221,6 +224,9 @@
     <QtUic Include="settingsdialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="newgamedialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <None Include="toolbar\About.png">
@@ -235,9 +241,6 @@
     <None Include="images_jap\BlackAdvisor.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_sho\BlackAdvisor.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images\BlackArchbishop.png">
       <Filter>Resource Files</Filter>
     </None>
@@ -248,9 +251,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\BlackBishop.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\BlackBishop.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\BlackCanon.png">
@@ -289,16 +289,10 @@
     <None Include="images_jap\BlackCrownedBishop.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_sho\BlackCrownedBishop.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images\BlackCrownedRook.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\BlackCrownedRook.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\BlackCrownedRook.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\BlackDolphin.png">
@@ -317,9 +311,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\BlackGold.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\BlackGold.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\BlackHCrown.png">
@@ -346,25 +337,16 @@
     <None Include="images_jap\BlackKing.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_sho\BlackKing.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images\BlackKnight.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\BlackKnight.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_sho\BlackKnight.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images\BlackLance.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\BlackLance.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\BlackLance.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\BlackLeopard.png">
@@ -391,9 +373,6 @@
     <None Include="images_jap\BlackPawn.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_sho\BlackPawn.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images\BlackPrince.png">
       <Filter>Resource Files</Filter>
     </None>
@@ -404,15 +383,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\BlackPrincess.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\BlackPromotedAdvisor.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\BlackPromotedKnight.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\BlackPromotedLance.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\BlackQueen.png">
@@ -427,9 +397,6 @@
     <None Include="images_jap\BlackRook.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_sho\BlackRook.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images\BlackSword.png">
       <Filter>Resource Files</Filter>
     </None>
@@ -440,9 +407,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\BlackTokin.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\BlackTokin.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\BlackUnicorn.png">
@@ -490,9 +454,6 @@
     <None Include="images_jap\WhiteAdvisor.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_sho\WhiteAdvisor.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images\WhiteArchbishop.png">
       <Filter>Resource Files</Filter>
     </None>
@@ -503,9 +464,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\WhiteBishop.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\WhiteBishop.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\WhiteCanon.png">
@@ -544,16 +502,10 @@
     <None Include="images_jap\WhiteCrownedBishop.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_sho\WhiteCrownedBishop.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images\WhiteCrownedRook.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\WhiteCrownedRook.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\WhiteCrownedRook.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\WhiteDolphin.png">
@@ -572,9 +524,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\WhiteGold.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\WhiteGold.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\WhiteHCrown.png">
@@ -601,25 +550,16 @@
     <None Include="images_jap\WhiteKing.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_sho\WhiteKing.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images\WhiteKnight.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\WhiteKnight.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_sho\WhiteKnight.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images\WhiteLance.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\WhiteLance.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\WhiteLance.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\WhiteLeopard.png">
@@ -646,9 +586,6 @@
     <None Include="images_jap\WhitePawn.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_sho\WhitePawn.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images\WhitePrince.png">
       <Filter>Resource Files</Filter>
     </None>
@@ -659,15 +596,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\WhitePrincess.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\WhitePromotedAdvisor.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\WhitePromotedKnight.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\WhitePromotedLance.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\WhiteQueen.png">
@@ -682,9 +610,6 @@
     <None Include="images_jap\WhiteRook.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_sho\WhiteRook.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images\WhiteSword.png">
       <Filter>Resource Files</Filter>
     </None>
@@ -695,9 +620,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\WhiteTokin.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images_sho\WhiteTokin.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\WhiteUnicorn.png">
@@ -753,6 +675,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="C:\Code\QBoard\QBoard_resource.rc" />
+    <ResourceCompile Include=".\QBoard_resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="newgamedialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>
