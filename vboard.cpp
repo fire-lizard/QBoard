@@ -572,7 +572,7 @@ void VBoard::readyReadStandardOutput()
 			newPiece = None;
 			break;
 		}
-		dynamic_cast<ShogiBoard*>(_board)->PlacePiece(newPiece, _engine->GetType() == WinBoard ? _currentPlayer : _currentPlayer  == White ? Black : White, x2, y2);
+        dynamic_cast<ShogiVariantBoard*>(_board)->PlacePiece(newPiece, _engine->GetType() == WinBoard ? _currentPlayer : _currentPlayer  == White ? Black : White, x2, y2);
 		AddMove(_board->GetData(x2, y2)->GetType(), buf[pos + 5], buf[pos + 6], x2, y2, buf[pos + 9]);
 		_engine->AddMove(buf[pos + 5], buf[pos + 6], buf[pos + 7], buf[pos + 8], buf[pos + 9]);
 	}

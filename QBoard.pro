@@ -27,6 +27,7 @@ SOURCES += main.cpp\
     settingsdialog.cpp \
     vboard.cpp \
     IniFile.cpp \
+    ShogiVariantBoard.cpp \
     ShogiBoard.cpp \
     ShogiPiece.cpp \
     XiangqiBoard.cpp \
@@ -54,6 +55,7 @@ HEADERS  += mainwindow.h \
     settingsdialog.h \
     vboard.h \
     IniFile.h \
+    ShogiVariantBoard.h \
     ShogiBoard.h \
     ShogiPiece.h \
     XiangqiBoard.h \

@@ -216,6 +216,7 @@
     <ClCompile Include="QianhongEngine.cpp" />
     <ClCompile Include="ShogiBoard.cpp" />
     <ClCompile Include="ShogiPiece.cpp" />
+    <ClCompile Include="ShogiVariantBoard.cpp" />
     <ClCompile Include="UcciEngine.cpp" />
     <ClCompile Include="UciEngine.cpp" />
     <ClCompile Include="UsiEngine.cpp" />
@@ -245,6 +246,7 @@
     <ClInclude Include="QianhongEngine.h" />
     <ClInclude Include="ShogiBoard.h" />
     <ClInclude Include="ShogiPiece.h" />
+    <ClInclude Include="ShogiVariantBoard.h" />
     <ClInclude Include="UcciEngine.h" />
     <ClInclude Include="UciEngine.h" />
     <ClInclude Include="UsiEngine.h" />

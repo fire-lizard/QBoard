@@ -10,6 +10,7 @@
 #include "ChuShogiBoard.h"
 #include "ChessBoard.h"
 #include "XiangqiBoard.h"
+#include "ShogiVariantBoard.h"
 #include "ShogiBoard.h"
 #include "MiniShogiBoard.h"
 #include "XiangqiPiece.h"

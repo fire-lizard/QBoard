@@ -72,7 +72,8 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionNew_game_triggered()
 {
-	NewGameDialog* newGameDialog = new NewGameDialog(this);
+    this->ui->textEdit->setText("");
+    NewGameDialog* newGameDialog = new NewGameDialog(this);
     newGameDialog->GetWhitePlayer()->addItem("Human");
     newGameDialog->GetBlackPlayer()->addItem("Human");
 	if (this->ui->vboard->GetGameVariant() == Xiangqi)
@@ -140,6 +141,7 @@ void MainWindow::on_actionNew_game_triggered()
             _engineArguments.clear();
             _engineArguments << std::get<4>(tpl).trimmed().split(' ', Qt::SkipEmptyParts);
         }
+        else _engineExe = "";
         if (_engine != nullptr)
 		{
 			_engine->Quit();
