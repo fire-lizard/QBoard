@@ -688,4 +688,90 @@
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="images_sho\BlackAdvisor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\BlackBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\BlackCrownedBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\BlackCrownedRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\BlackGold.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\BlackGoldKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\BlackGoldLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\BlackGoldSilver.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\BlackKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\BlackKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\BlackLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\BlackPawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\BlackRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteAdvisor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteCrownedBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteCrownedRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteGold.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteGoldKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteGoldLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteGoldSilver.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhitePawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\BlackTokin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteTokin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

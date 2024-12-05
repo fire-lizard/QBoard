@@ -436,6 +436,36 @@
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="images_sho\BlackAdvisor.png" />
+    <Image Include="images_sho\BlackBishop.png" />
+    <Image Include="images_sho\BlackCrownedBishop.png" />
+    <Image Include="images_sho\BlackCrownedRook.png" />
+    <Image Include="images_sho\BlackGold.png" />
+    <Image Include="images_sho\BlackGoldKnight.png" />
+    <Image Include="images_sho\BlackGoldLance.png" />
+    <Image Include="images_sho\BlackGoldSilver.png" />
+    <Image Include="images_sho\BlackKing.png" />
+    <Image Include="images_sho\BlackKnight.png" />
+    <Image Include="images_sho\BlackLance.png" />
+    <Image Include="images_sho\BlackPawn.png" />
+    <Image Include="images_sho\BlackRook.png" />
+    <Image Include="images_sho\BlackTokin.png" />
+    <Image Include="images_sho\WhiteAdvisor.png" />
+    <Image Include="images_sho\WhiteBishop.png" />
+    <Image Include="images_sho\WhiteCrownedBishop.png" />
+    <Image Include="images_sho\WhiteCrownedRook.png" />
+    <Image Include="images_sho\WhiteGold.png" />
+    <Image Include="images_sho\WhiteGoldKnight.png" />
+    <Image Include="images_sho\WhiteGoldLance.png" />
+    <Image Include="images_sho\WhiteGoldSilver.png" />
+    <Image Include="images_sho\WhiteKing.png" />
+    <Image Include="images_sho\WhiteKnight.png" />
+    <Image Include="images_sho\WhiteLance.png" />
+    <Image Include="images_sho\WhitePawn.png" />
+    <Image Include="images_sho\WhiteRook.png" />
+    <Image Include="images_sho\WhiteTokin.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />
   <ImportGroup Label="ExtensionTargets" />
