@@ -69,6 +69,7 @@ private:
 	std::vector<std::string> _gameRecord;
     QRegularExpression _nlre;
     QRegularExpression _csre;
+    QRegularExpression _qhre;
 
 signals:
 

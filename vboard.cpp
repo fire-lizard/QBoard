@@ -4,6 +4,7 @@ VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
     _nlre = QRegularExpression("[\r\n]+");
     _csre = QRegularExpression(R"(([a-l])(1[0-2]|[1-9])([a-l])(1[0-2]|[1-9])([+nbrq])?)");
+    _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
     SetGameVariant(_gameVariant);
 }
 
@@ -511,7 +512,22 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf)
                 result.push_back(c5);
             }
 		}
-	}
+        else if (_engine->GetType() == Qianhong)
+        {
+            QRegularExpressionMatch match = _qhre.match(part);
+            if (match.hasMatch())
+            {
+                QString firstLetter = match.captured(1);
+                QString firstDigit = match.captured(2);
+                QString secondLetter = match.captured(4);
+                QString secondDigit = match.captured(5);
+                result.push_back(firstLetter[0].toLatin1());
+                result.push_back(firstDigit.toInt());
+                result.push_back(secondLetter[0].toLatin1());
+                result.push_back(secondDigit.toInt());
+            }
+        }
+    }
 	return result;
 }
 
@@ -521,31 +537,16 @@ void VBoard::readyReadStandardOutput()
 	QByteArray buf = p->readAllStandardOutput();
     int x1, y1, x2, y2;
 	this->_textEdit->setText(buf);
-	if (_gameVariant == Xiangqi && _engine->GetType() == Qianhong)
-	{
-        const qsizetype pos = buf.lastIndexOf("-");
-        if (pos >= 2 && buf.size() >= 5)
-		{
-            x1 = buf[pos - 2] - 65;
-            y1 = buf[pos - 1] - '0';
-            x2 = buf[pos + 1] - 65;
-            y2 = buf[pos + 2] - '0';
-			if (_board->CheckPosition(x1, 9 - y1) && _board->GetData(x1, 9 - y1) != nullptr)
-			{
-				_board->GetMoves(_board->GetData(x1, 9 - y1), x1, 9 - y1);
-				_board->Move(x1, 9 - y1, x2, 9 - y2);
-				AddMove(_board->GetData(x2, 9 - y2)->GetType(), x1, 9 - y1, x2, 9 - y2, ' ');
-                _engine->AddMove(buf[pos - 2], buf[pos - 1], buf[pos + 1], buf[pos + 2], ' ');
-			}
-		}
-		_currentPlayer = White;
-		this->_statusBar->showMessage("Red move");
-		this->repaint();
-		return;
-	}
 	const QByteArray moveArray = ExtractMove(buf);
 	if (moveArray.isEmpty()) return;
-	if (_engine->GetType() == USI)
+    if (_engine->GetType() == Qianhong)
+    {
+        x1 = moveArray[0] - 65;
+        y1 = 10 - moveArray[1];
+        x2 = moveArray[2] - 65;
+        y2 = 10 - moveArray[3];
+    }
+    else if (_engine->GetType() == USI)
 	{
         x1 = _board->GetWidth() - moveArray[0] + 48;
         y1 = moveArray[1] - 97;
