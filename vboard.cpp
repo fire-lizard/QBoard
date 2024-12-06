@@ -2,7 +2,8 @@
 
 VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
-	SetGameVariant(_gameVariant);
+    _nlre = QRegularExpression("[\r\n]+");
+    SetGameVariant(_gameVariant);
 }
 
 VBoard::~VBoard()
@@ -17,11 +18,15 @@ void VBoard::paintEvent(QPaintEvent *)
 	{
 		resourcePrefix = ":/pieces_chi/images_chi/";
 	}
-	else if (_pieceStyle == Asian && _gameVariant > 1)
+    else if (_pieceStyle == Asian && _gameVariant == ChuShogi)
 	{
 		resourcePrefix = ":/pieces_jap/images_jap/";
 	}
-	else
+    else if (_pieceStyle == Asian && _gameVariant > 1)
+    {
+        resourcePrefix = ":/pieces_sho/images_sho/";
+    }
+    else
 	{
 		resourcePrefix = ":/pieces_eur/images/";
 	}
@@ -450,6 +455,45 @@ void VBoard::SetEngine(Engine* engine)
 	_engine = engine;
 }
 
+QByteArray VBoard::ExtractMove(const QByteArray& buf)
+{
+	QByteArray result;
+	QStringList parts = QString(buf).trimmed().split(_nlre, Qt::SkipEmptyParts);
+	for (auto& part : parts)
+	{
+		const bool moveFound = _engine->GetType() == WinBoard ? part.startsWith("move ") && part.length() >= 9 : part.startsWith("bestmove ") && part.length() >= 13;
+		if (moveFound)
+		{
+			const int pos = _engine->GetType() == WinBoard ? 5 : 9;
+			result.push_back(part[pos].toLatin1());
+			result.push_back(part[pos + 1].toLatin1());
+			result.push_back(part[pos + 2].toLatin1());
+			result.push_back(part[pos + 3].toLatin1());
+			char c5 = ' ';
+			if (_engine->GetType() == WinBoard ? part.length() >= 10 : part.length() >= 14)
+			{
+				const QChar promotionChar = part[pos + 4];
+				if (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == ChuShogi || _gameVariant == MiniShogi)
+				{
+					if (promotionChar == '+')
+					{
+						c5 = promotionChar.toLatin1();
+					}
+				}
+				else if (_gameVariant == Chess)
+				{
+					if (promotionChar == 'n' || promotionChar == 'b' || promotionChar == 'r' || promotionChar == 'q')
+					{
+						c5 = promotionChar.toLatin1();
+					}
+				}
+			}
+			result.push_back(c5);
+		}
+	}
+	return result;
+}
+
 void VBoard::readyReadStandardOutput()
 {
 	QProcess *p = dynamic_cast<QProcess*>(sender());
@@ -458,18 +502,19 @@ void VBoard::readyReadStandardOutput()
 	this->_textEdit->setText(buf);
 	if (_gameVariant == Xiangqi && _engine->GetType() == Qianhong)
 	{
-		if (buf.size() >= 5)
+        const qsizetype pos = buf.lastIndexOf("-");
+        if (pos >= 2 && buf.size() >= 5)
 		{
-			x1 = buf[0] - 65;
-			y1 = buf[1] - '0';
-			x2 = buf[3] - 65;
-			y2 = buf[4] - '0';
+            x1 = buf[pos - 2] - 65;
+            y1 = buf[pos - 1] - '0';
+            x2 = buf[pos + 1] - 65;
+            y2 = buf[pos + 2] - '0';
 			if (_board->CheckPosition(x1, 9 - y1) && _board->GetData(x1, 9 - y1) != nullptr)
 			{
 				_board->GetMoves(_board->GetData(x1, 9 - y1), x1, 9 - y1);
 				_board->Move(x1, 9 - y1, x2, 9 - y2);
 				AddMove(_board->GetData(x2, 9 - y2)->GetType(), x1, 9 - y1, x2, 9 - y2, ' ');
-				_engine->AddMove(buf[0], buf[1], buf[3], buf[4], ' ');
+                _engine->AddMove(buf[pos - 2], buf[pos - 1], buf[pos + 1], buf[pos + 2], ' ');
 			}
 		}
 		_currentPlayer = White;
@@ -477,106 +522,133 @@ void VBoard::readyReadStandardOutput()
 		this->repaint();
 		return;
 	}
-	const qsizetype auxPos1 = buf.lastIndexOf("getmove ");
-	const qsizetype pos = _engine->GetType() == WinBoard ? buf.lastIndexOf("move ", auxPos1) : buf.lastIndexOf("bestmove ", auxPos1) + 4;
-	if (pos == -1)
-		return;
-	if (buf.size() >= pos + 9)
+	const QByteArray moveArray = ExtractMove(buf);
+	if (moveArray.isEmpty()) return;
+	if (_engine->GetType() == USI)
 	{
-		if (_engine->GetType() == USI)
+		x1 = static_cast<char>(_board->GetWidth() - moveArray[0] + 48);
+		y1 = static_cast<char>(moveArray[1] - 97);
+		x2 = static_cast<char>(_board->GetWidth() - moveArray[2] + 48);
+		y2 = static_cast<char>(moveArray[3] - 97);
+	}
+	else
+	{
+		x1 = static_cast<char>(moveArray[0] - 97);
+		y1 = static_cast<char>(_board->GetHeight() - moveArray[1] + 48);
+		x2 = static_cast<char>(moveArray[2] - 97);
+		y2 = static_cast<char>(_board->GetHeight() - moveArray[3] + 48);
+	}
+	if (_gameVariant == ChuShogi)
+	{
+		if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
 		{
-			x1 = static_cast<char>(_board->GetWidth() - buf[pos + 5] + 48);
-			y1 = static_cast<char>(buf[pos + 6] - 97);
-			x2 = static_cast<char>(_board->GetWidth() - buf[pos + 7] + 48);
-			y2 = static_cast<char>(buf[pos + 8] - 97);
-		}
-		else
-		{
-			x1 = static_cast<char>(buf[pos + 5] - 97);
-			y1 = static_cast<char>(_board->GetHeight() - buf[pos + 6] + 48);
-			x2 = static_cast<char>(buf[pos + 7] - 97);
-			y2 = static_cast<char>(_board->GetHeight() - buf[pos + 8] + 48);
+			const bool isPromoted = moveArray[4] == '+' && (y2 <= 3 || y2 >= 8);
+			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
+			_board->Move(x1, y1, x2, y2);
+			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ');
+			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
+			if (isPromoted)
+			{
+				_board->GetData(x2, y2)->Promote();
+			}
 		}
 	}
-	else return;
 	if (_gameVariant == Xiangqi)
 	{
 		y1--;
 		y2--;
-	}
-	if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
-	{
-		_board->GetMoves(_board->GetData(x1, y1), x1, y1);
-		_board->Move(x1, y1, x2, y2);
-		AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, buf[pos + 9]);
-		_engine->AddMove(buf[pos + 5], buf[pos + 6], buf[pos + 7], buf[pos + 8], buf[pos + 9]);
-		if (_gameVariant == Chess && (y2 == 0 || y2 == _board->GetHeight() - 1) && _board->GetData(x2, y2)->GetType() == Pawn)
+		if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
 		{
-			char promotion = buf[pos + 9];
-			switch (promotion)
+			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
+			_board->Move(x1, y1, x2, y2);
+			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, ' ');
+			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
+		}
+	}
+	if (_gameVariant == Chess)
+	{
+		if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
+		{
+			const bool isPromoted = (y2 == 0 || y2 == _board->GetHeight() - 1)
+				&& _board->GetData(x2, y2)->GetType() == Pawn
+				&& (moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r' || moveArray[4] == 'q');
+			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
+			_board->Move(x1, y1, x2, y2);
+			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ');
+			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
+			if (isPromoted)
 			{
-			case 'n':
-				_board->GetData(x2, y2)->Promote(WhiteHorse);
-				break;
-			case 'b':
-				_board->GetData(x2, y2)->Promote(Bishop);
-				break;
-			case 'r':
-				_board->GetData(x2, y2)->Promote(Rook);
-				break;
-			default:
-				_board->GetData(x2, y2)->Promote(Queen);
-				break;
+				switch (moveArray[4])
+				{
+				case 'n':
+					_board->GetData(x2, y2)->Promote(WhiteHorse);
+					break;
+				case 'b':
+					_board->GetData(x2, y2)->Promote(Bishop);
+					break;
+				case 'r':
+					_board->GetData(x2, y2)->Promote(Rook);
+					break;
+				case 'q':
+					_board->GetData(x2, y2)->Promote(Queen);
+					break;
+				default:
+					break;
+				}
 			}
 		}
-		if (_gameVariant == MiniShogi && (y2 == 0 || y2 == 4) && buf[pos + 9] == '+')
-		{
-			_board->GetData(x2, y2)->Promote();
-		}
-		if ((_gameVariant == Shogi || _gameVariant == ShoShogi) && (y2 <= 2 || y2 >= 6) && buf[pos + 9] == '+')
-		{
-			_board->GetData(x2, y2)->Promote();
-		}
-		if (_gameVariant == ChuShogi && (y2 <= 3 || y2 >= 8) && buf[pos + 9] == '+')
-		{
-			_board->GetData(x2, y2)->Promote();
-		}
 	}
-	else if ((_gameVariant == Shogi || _gameVariant == MiniShogi) && (buf[pos + 6] == '@' || buf[pos + 6] == '*'))
+	if (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi)
 	{
-		PieceType newPiece;
-		switch (buf[pos + 5])
+		if ((_gameVariant == Shogi || _gameVariant == MiniShogi) && (moveArray[1] == '@' || moveArray[1] == '*'))
 		{
-		case 'R':
-			newPiece = Rook;
-			break;
-		case 'B':
-			newPiece = Bishop;
-			break;
-		case 'G':
-			newPiece = Gold;
-			break;
-		case 'S':
-			newPiece = Silver;
-			break;
-		case 'N':
-			newPiece = WhiteHorse;
-			break;
-		case 'L':
-			newPiece = Lance;
-			break;
-		case 'P':
-			newPiece = Pawn;
-			break;
-		default:
-			newPiece = None;
-			break;
+			PieceType newPiece;
+			switch (moveArray[0])
+			{
+			case 'R':
+				newPiece = Rook;
+				break;
+			case 'B':
+				newPiece = Bishop;
+				break;
+			case 'G':
+				newPiece = Gold;
+				break;
+			case 'S':
+				newPiece = Silver;
+				break;
+			case 'N':
+				newPiece = WhiteHorse;
+				break;
+			case 'L':
+				newPiece = Lance;
+				break;
+			case 'P':
+				newPiece = Pawn;
+				break;
+			default:
+				newPiece = None;
+				break;
+			}
+            dynamic_cast<ShogiVariantBoard*>(_board)->PlacePiece(newPiece, _currentPlayer, x2, y2);
+            AddMove(_board->GetData(x2, y2)->GetType(), moveArray[0], moveArray[1], x2, y2, ' ');
+			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 		}
-        dynamic_cast<ShogiVariantBoard*>(_board)->PlacePiece(newPiece, _engine->GetType() == WinBoard ? _currentPlayer : _currentPlayer  == White ? Black : White, x2, y2);
-		AddMove(_board->GetData(x2, y2)->GetType(), buf[pos + 5], buf[pos + 6], x2, y2, buf[pos + 9]);
-		_engine->AddMove(buf[pos + 5], buf[pos + 6], buf[pos + 7], buf[pos + 8], buf[pos + 9]);
+		else if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
+		{
+            const bool isPromoted =
+                (_gameVariant == MiniShogi && (y2 == 0 || y2 == 4) && moveArray[4] == '+')
+                || ((_gameVariant == Shogi || _gameVariant == ShoShogi) && (y2 <= 2 || y2 >= 6) && moveArray[4] == '+');
+			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
+			_board->Move(x1, y1, x2, y2);
+			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ');
+			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
+			if (isPromoted)
+			{
+				_board->GetData(x2, y2)->Promote();
+			}
+		}
 	}
-    else return;
 	_currentPlayer = White;
 	this->_statusBar->showMessage(_gameVariant == Xiangqi ? "Red move" : "White move");
 	this->repaint();

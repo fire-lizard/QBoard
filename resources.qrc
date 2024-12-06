@@ -154,4 +154,34 @@
         <file>images_chi/rking.png</file>
         <file>images_chi/rpawn.png</file>
     </qresource>
+    <qresource prefix="/pieces_sho">
+        <file>images_sho/BlackAdvisor.png</file>
+        <file>images_sho/BlackBishop.png</file>
+        <file>images_sho/BlackCrownedBishop.png</file>
+        <file>images_sho/BlackCrownedRook.png</file>
+        <file>images_sho/BlackGold.png</file>
+        <file>images_sho/BlackGoldKnight.png</file>
+        <file>images_sho/BlackGoldLance.png</file>
+        <file>images_sho/BlackGoldSilver.png</file>
+        <file>images_sho/BlackKing.png</file>
+        <file>images_sho/BlackKnight.png</file>
+        <file>images_sho/BlackLance.png</file>
+        <file>images_sho/BlackPawn.png</file>
+        <file>images_sho/BlackRook.png</file>
+        <file>images_sho/BlackTokin.png</file>
+        <file>images_sho/WhiteAdvisor.png</file>
+        <file>images_sho/WhiteBishop.png</file>
+        <file>images_sho/WhiteCrownedBishop.png</file>
+        <file>images_sho/WhiteCrownedRook.png</file>
+        <file>images_sho/WhiteGold.png</file>
+        <file>images_sho/WhiteGoldKnight.png</file>
+        <file>images_sho/WhiteGoldLance.png</file>
+        <file>images_sho/WhiteGoldSilver.png</file>
+        <file>images_sho/WhiteKing.png</file>
+        <file>images_sho/WhiteKnight.png</file>
+        <file>images_sho/WhiteLance.png</file>
+        <file>images_sho/WhitePawn.png</file>
+        <file>images_sho/WhiteRook.png</file>
+        <file>images_sho/WhiteTokin.png</file>
+    </qresource>
 </RCC>

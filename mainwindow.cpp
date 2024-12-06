@@ -80,8 +80,6 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionNew_game_triggered()
 {
-    this->ui->textEdit->setText("");
-    this->ui->statusBar->showMessage("");
     NewGameDialog* newGameDialog = new NewGameDialog(this);
     newGameDialog->GetWhitePlayer()->addItem("Human");
     newGameDialog->GetBlackPlayer()->addItem("Human");
@@ -141,6 +139,8 @@ void MainWindow::on_actionNew_game_triggered()
 	newGameDialog->exec();
 	if (newGameDialog->result() == QDialog::Accepted)
 	{
+        this->ui->textEdit->setText("");
+        this->ui->statusBar->showMessage("");
         int selectedIndex = newGameDialog->GetBlackPlayer()->currentIndex();
         if (selectedIndex > 0)
         {
@@ -174,7 +174,8 @@ void MainWindow::on_actionNew_game_triggered()
 				_engine = new UsiEngine();
 				break;
 			case WinBoard:
-				_engine = new WbEngine();
+                if (this->ui->vboard->GetGameVariant() == ChuShogi) _engine = new ChuShogiEngine();
+                else _engine = new WbEngine();
 				break;
 			}
 			LoadEngine();

@@ -15,6 +15,7 @@
 #include "UcciEngine.h"
 #include "UsiEngine.h"
 #include "QianhongEngine.h"
+#include "ChuShogiEngine.h"
 #include "enginemanager.h"
 #include "newgamedialog.h"
 #include "IniFile.h"

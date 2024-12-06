@@ -38,6 +38,7 @@ SOURCES += main.cpp\
     QianhongEngine.cpp \
     UcciEngine.cpp \
     UsiEngine.cpp \
+    ChuShogiEngine.cpp \
     MiniShogiBoard.cpp \
     enginemanager.cpp \
     comboboxitemdelegate.cpp \
@@ -66,6 +67,7 @@ HEADERS  += mainwindow.h \
     QianhongEngine.h \
     UcciEngine.h \
     UsiEngine.h \
+    ChuShogiEngine.h \
     MiniShogiBoard.h \
     enginemanager.h \
     comboboxitemdelegate.h \

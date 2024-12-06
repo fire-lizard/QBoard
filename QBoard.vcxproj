@@ -207,6 +207,7 @@
     <ClCompile Include="ChessBoard.cpp" />
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="ChuShogiBoard.cpp" />
+    <ClCompile Include="ChuShogiEngine.cpp" />
     <ClCompile Include="ChuShogiPiece.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="IniFile.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="ChessBoard.h" />
     <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="ChuShogiBoard.h" />
+    <ClInclude Include="ChuShogiEngine.h" />
     <ClInclude Include="ChuShogiPiece.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Engine.h" />

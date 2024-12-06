@@ -38,7 +38,8 @@ void EngineManager::on_toolButton_clicked()
 			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(gameName));
 			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
 			ui->engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
-			ui->engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineParameters));
+            ui->engineTable->setItem(currentRow, 4, new QTableWidgetItem(
+                gameName == "Xiangqi" && engineProtocol == "Qianhong" && engineParameters == "" ? "-plugin" : engineParameters));
 		}
 	}
 }

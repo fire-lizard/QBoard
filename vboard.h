@@ -50,6 +50,7 @@ private:
 	void RemoveMove(int x, int y);
 	void CalculateCheck(int oldX, int oldY, int newX, int newY);
 	void AddMove(PieceType p, int x1, int x2, int y1, int y2, char promotion);
+    QByteArray ExtractMove(const QByteArray& buf);
 
 	Board *_board;
 	PieceColour _currentPlayer = White;
@@ -66,6 +67,7 @@ private:
 	GameVariant _gameVariant = Chess;
 	Engine *_engine = nullptr;
 	std::vector<std::string> _gameRecord;
+    QRegularExpression _nlre;
 
 signals:
 
