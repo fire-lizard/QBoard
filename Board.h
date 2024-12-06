@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <utility>
 #include <tuple>
-#include <qtypes.h>
 #include "Piece.h"
 
 class Board

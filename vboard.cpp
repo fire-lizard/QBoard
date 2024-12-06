@@ -3,6 +3,7 @@
 VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
     _nlre = QRegularExpression("[\r\n]+");
+    _csre = QRegularExpression(R"(([a-l])(1[0-2]|[1-9])([a-l])(1[0-2]|[1-9])([+nbrq])?)");
     SetGameVariant(_gameVariant);
 }
 
@@ -131,8 +132,8 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 	if (_engine != nullptr && _currentPlayer == Black) return;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
-	const signed char x = static_cast<signed char>(event->position().x() / w);
-	const signed char y = static_cast<signed char>(event->position().y() / h);
+    const int x = event->position().x() / w;
+    const int y = event->position().y() / h;
 	Piece *p = _board->GetData(x, y);
 	if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
 	{
@@ -149,7 +150,7 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 					promotion = 'q';
 				}
 			}
-			if (_gameVariant == MiniShogi)
+            if (_gameVariant == MiniShogi && !_currentPiece->IsPromoted())
 			{
                 if ((y == 4 && _currentPiece->GetColour() == Black) ||
                     (y == 0 && _currentPiece->GetColour() == White))
@@ -158,7 +159,7 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 					promotion = '+';
 				}
 			}
-			if (_gameVariant == Shogi || _gameVariant == ShoShogi)
+            if ((_gameVariant == Shogi || _gameVariant == ShoShogi) && !_currentPiece->IsPromoted())
 			{
                 if ((y >= 6 && _currentPiece->GetColour() == Black) ||
                     (y <= 2 && _currentPiece->GetColour() == White))
@@ -167,7 +168,7 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 					promotion = '+';
 				}
 			}
-			if (_gameVariant == ChuShogi)
+            if (_gameVariant == ChuShogi && !_currentPiece->IsPromoted())
 			{
                 if ((y >= 8 && _currentPiece->GetColour() == Black) ||
                     (y <= 3 && _currentPiece->GetColour() == White))
@@ -229,8 +230,8 @@ void VBoard::mouseDoubleClickEvent(QMouseEvent* event)
 	if (_engine != nullptr && _currentPlayer == Black) return;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
-	const signed char x = static_cast<signed char>(event->position().x() / w);
-	const signed char y = static_cast<signed char>(event->position().y() / h);
+    const int x = event->position().x() / w;
+    const int y = event->position().y() / h;
 	Piece* p = _board->GetData(x, y);
 	if (_currentPiece != nullptr && p != nullptr && p->GetColour() != _currentPlayer)
 	{
@@ -464,31 +465,51 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf)
 		const bool moveFound = _engine->GetType() == WinBoard ? part.startsWith("move ") && part.length() >= 9 : part.startsWith("bestmove ") && part.length() >= 13;
 		if (moveFound)
 		{
-			const int pos = _engine->GetType() == WinBoard ? 5 : 9;
-			result.push_back(part[pos].toLatin1());
-			result.push_back(part[pos + 1].toLatin1());
-			result.push_back(part[pos + 2].toLatin1());
-			result.push_back(part[pos + 3].toLatin1());
-			char c5 = ' ';
-			if (_engine->GetType() == WinBoard ? part.length() >= 10 : part.length() >= 14)
-			{
-				const QChar promotionChar = part[pos + 4];
-				if (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == ChuShogi || _gameVariant == MiniShogi)
-				{
-					if (promotionChar == '+')
-					{
-						c5 = promotionChar.toLatin1();
-					}
-				}
-				else if (_gameVariant == Chess)
-				{
-					if (promotionChar == 'n' || promotionChar == 'b' || promotionChar == 'r' || promotionChar == 'q')
-					{
-						c5 = promotionChar.toLatin1();
-					}
-				}
-			}
-			result.push_back(c5);
+            if (_gameVariant == ChuShogi)
+            {
+                QRegularExpressionMatch match = _csre.match(part);
+                if (match.hasMatch())
+                {
+                    QString firstLetter = match.captured(1);
+                    QString firstDigit = match.captured(2);
+                    QString secondLetter = match.captured(3);
+                    QString secondDigit = match.captured(4);
+                    QString promotionChar = match.captured(5);
+                    result.push_back(firstLetter[0].toLatin1());
+                    result.push_back(firstDigit.toInt());
+                    result.push_back(secondLetter[0].toLatin1());
+                    result.push_back(secondDigit.toInt());
+                    if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+                }
+            }
+            else
+            {
+                const int pos = _engine->GetType() == WinBoard ? 5 : 9;
+                result.push_back(part[pos].toLatin1());
+                result.push_back(part[pos + 1].toLatin1());
+                result.push_back(part[pos + 2].toLatin1());
+                result.push_back(part[pos + 3].toLatin1());
+                char c5 = ' ';
+                if (_engine->GetType() == WinBoard ? part.length() >= 10 : part.length() >= 14)
+                {
+                    const QChar promotionChar = part[pos + 4];
+                    if (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi)
+                    {
+                        if (promotionChar == '+')
+                        {
+                            c5 = promotionChar.toLatin1();
+                        }
+                    }
+                    else if (_gameVariant == Chess)
+                    {
+                        if (promotionChar == 'n' || promotionChar == 'b' || promotionChar == 'r' || promotionChar == 'q')
+                        {
+                            c5 = promotionChar.toLatin1();
+                        }
+                    }
+                }
+                result.push_back(c5);
+            }
 		}
 	}
 	return result;
@@ -498,7 +519,7 @@ void VBoard::readyReadStandardOutput()
 {
 	QProcess *p = dynamic_cast<QProcess*>(sender());
 	QByteArray buf = p->readAllStandardOutput();
-	char x1, y1, x2, y2;
+    int x1, y1, x2, y2;
 	this->_textEdit->setText(buf);
 	if (_gameVariant == Xiangqi && _engine->GetType() == Qianhong)
 	{
@@ -526,23 +547,30 @@ void VBoard::readyReadStandardOutput()
 	if (moveArray.isEmpty()) return;
 	if (_engine->GetType() == USI)
 	{
-		x1 = static_cast<char>(_board->GetWidth() - moveArray[0] + 48);
-		y1 = static_cast<char>(moveArray[1] - 97);
-		x2 = static_cast<char>(_board->GetWidth() - moveArray[2] + 48);
-		y2 = static_cast<char>(moveArray[3] - 97);
+        x1 = _board->GetWidth() - moveArray[0] + 48;
+        y1 = moveArray[1] - 97;
+        x2 = _board->GetWidth() - moveArray[2] + 48;
+        y2 = moveArray[3] - 97;
 	}
-	else
+    else if (_gameVariant == ChuShogi)
 	{
-		x1 = static_cast<char>(moveArray[0] - 97);
-		y1 = static_cast<char>(_board->GetHeight() - moveArray[1] + 48);
-		x2 = static_cast<char>(moveArray[2] - 97);
-		y2 = static_cast<char>(_board->GetHeight() - moveArray[3] + 48);
+        x1 = moveArray[0] - 97;
+        y1 = _board->GetWidth() - moveArray[1];
+        x2 = moveArray[2] - 97;
+        y2 = _board->GetWidth() - moveArray[3];
 	}
-	if (_gameVariant == ChuShogi)
+    else
+    {
+        x1 = moveArray[0] - 97;
+        y1 = _board->GetHeight() - moveArray[1] + 48;
+        x2 = moveArray[2] - 97;
+        y2 = _board->GetHeight() - moveArray[3] + 48;
+    }
+    if (_gameVariant == ChuShogi)
 	{
 		if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
 		{
-			const bool isPromoted = moveArray[4] == '+' && (y2 <= 3 || y2 >= 8);
+            const bool isPromoted = moveArray.size() == 5 && moveArray[4] == '+' && (y2 <= 3 || y2 >= 8);
 			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
 			_board->Move(x1, y1, x2, y2);
 			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ');

@@ -63,6 +63,10 @@ void AddEngineDialog::SetEngineParameters(const QString& engineParameters) const
 
 void AddEngineDialog::on_toolButton_clicked()
 {
-	const QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", "Programs (*.exe)");
+#ifdef Q_OS_WIN
+    const QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", "Programs (*.exe)");
+#else
+    const QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", "Programs (*)");
+#endif
 	ui->enginePath->setText(fileName);
 }
