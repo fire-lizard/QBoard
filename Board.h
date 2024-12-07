@@ -21,7 +21,7 @@ public:
 	void SetData(int x, int y, Piece *p);
 	signed char GetWidth() const;
 	signed char GetHeight() const;
-	bool CheckPosition(signed char x, signed char y) const;
+	bool CheckPosition(int x, int y) const;
 
 protected:
 	void CheckMove(const Piece *piece, int x, int y);

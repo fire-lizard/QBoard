@@ -48,21 +48,27 @@ void MainWindow::on_actionSettings_triggered()
 		const GameVariant newGameVariant = static_cast<GameVariant>(settingsDialog->GetGameVariants()->currentIndex());
 		const PieceStyle pieceStyle = static_cast<PieceStyle>(settingsDialog->GetGamePieces()->currentIndex());
 		const EngineOutput engineOutput = static_cast<EngineOutput>(settingsDialog->GetEngineOutput()->currentIndex());
-        if (newGameVariant != this->ui->vboard->GetGameVariant() && _engine != nullptr)
-        {
-            _engine->Quit();
-            delete _engine;
-            _engine = nullptr;
-            this->ui->textEdit->setText("");
-            this->ui->statusBar->showMessage("");
-        }
-		if (newGameVariant != this->ui->vboard->GetGameVariant() || pieceStyle != this->ui->vboard->GetPieceStyle() || engineOutput != this->ui->vboard->GetEngineOutput())
+		if (pieceStyle != this->ui->vboard->GetPieceStyle())
 		{
-			this->ui->vboard->SetGameVariant(newGameVariant);
 			this->ui->vboard->SetPieceStyle(pieceStyle);
+			this->ui->vboard->repaint();
+		}
+		if (engineOutput != this->ui->vboard->GetEngineOutput())
+		{
 			this->ui->vboard->SetEngineOutput(engineOutput);
+		}
+		if (newGameVariant != this->ui->vboard->GetGameVariant())
+		{
+			if (_engine != nullptr)
+			{
+				_engine->Quit();
+				delete _engine;
+				_engine = nullptr;
+			}
+			this->ui->vboard->SetGameVariant(newGameVariant);
 			this->ui->vboard->GetBoard()->Initialize();
 			this->ui->vboard->SetCurrentPlayer(White);
+			this->ui->textEdit->setText("");
 			this->ui->statusBar->showMessage(newGameVariant == Xiangqi ? "Red move" : "White move");
 			this->ui->vboard->repaint();
 		}
@@ -141,10 +147,10 @@ void MainWindow::on_actionNew_game_triggered()
 	{
         this->ui->textEdit->setText("");
         this->ui->statusBar->showMessage("");
-        int selectedIndex = newGameDialog->GetBlackPlayer()->currentIndex();
+        const int selectedIndex = newGameDialog->GetBlackPlayer()->currentIndex();
         if (selectedIndex > 0)
         {
-            auto tpl = _engines[selectedIndex - 1];
+	        const auto tpl = _engines[selectedIndex - 1];
             _engineProtocol = std::get<2>(tpl);
             _engineExe = std::get<3>(tpl);
             _engineArguments.clear();

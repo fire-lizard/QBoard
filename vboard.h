@@ -50,15 +50,15 @@ private:
 	void RemoveMove(int x, int y);
 	void CalculateCheck(int oldX, int oldY, int newX, int newY);
 	void AddMove(PieceType p, int x1, int x2, int y1, int y2, char promotion);
-    QByteArray ExtractMove(const QByteArray& buf);
+    QByteArray ExtractMove(const QByteArray& buf) const;
 
 	Board *_board;
 	PieceColour _currentPlayer = White;
 	PieceStyle _pieceStyle = European;
 	EngineOutput _engineOutput = Concise;
 	Piece *_currentPiece;
-	signed char _oldX = -1;
-	signed char _oldY = -1;
+	int _oldX = -1;
+	int _oldY = -1;
 	std::vector<std::pair<int, int>> _moves;
 	std::vector<std::tuple<int, int, int, int>> _opponentMoves;
 	QStatusBar *_statusBar;

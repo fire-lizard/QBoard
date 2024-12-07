@@ -153,7 +153,7 @@ std::vector<std::tuple<int, int, int, int>> Board::GetAllMoves(PieceColour piece
 	return result;
 }
 
-bool Board::CheckPosition(signed char x, signed char y) const
+bool Board::CheckPosition(int x, int y) const
 {
 	return y < _height && y >= 0 && x < _width && x >= 0;
 }

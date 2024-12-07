@@ -135,8 +135,8 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 	if (_engine != nullptr && _currentPlayer == Black) return;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
-    const int x = event->position().x() / w;
-    const int y = event->position().y() / h;
+    const int x = static_cast<int>(event->position().x()) / w;
+    const int y = static_cast<int>(event->position().y()) / h;
 	Piece *p = _board->GetData(x, y);
 	if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
 	{
@@ -379,14 +379,7 @@ void VBoard::SetTextEdit(QTextEdit* textEdit)
 
 bool VBoard::PossibleMove(int x, int y) const
 {
-	for (size_t index = 0; index < _moves.size(); index++)
-	{
-		if (_moves[index].first == x && _moves[index].second == y)
-		{
-			return true;
-		}
-	}
-	return false;
+	return std::any_of(_moves.begin(), _moves.end(), [x, y](const std::pair<int, int>& p) {return p.first == x && p.second == y;});
 }
 
 void VBoard::RemoveMove(int x, int y)
@@ -459,7 +452,7 @@ void VBoard::SetEngine(Engine* engine)
 	_engine = engine;
 }
 
-QByteArray VBoard::ExtractMove(const QByteArray& buf)
+QByteArray VBoard::ExtractMove(const QByteArray& buf) const
 {
 	QByteArray result;
 	QStringList parts = QString(buf).trimmed().split(_nlre, Qt::SkipEmptyParts);
@@ -496,9 +489,9 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf)
                     QString secondDigit = match.captured(4);
                     QString promotionChar = match.captured(5);
                     result.push_back(firstLetter[0].toLatin1());
-                    result.push_back(firstDigit.toInt());
+                    result.push_back(static_cast<signed char>(firstDigit.toInt()));
                     result.push_back(secondLetter[0].toLatin1());
-                    result.push_back(secondDigit.toInt());
+                    result.push_back(static_cast<signed char>(secondDigit.toInt()));
                     if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
                 }
             }
@@ -530,9 +523,9 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf)
                 QString secondLetter = match.captured(4);
                 QString secondDigit = match.captured(5);
                 result.push_back(firstLetter[0].toLatin1());
-                result.push_back(firstDigit.toInt());
+                result.push_back(static_cast<signed char>(firstDigit.toInt()));
                 result.push_back(secondLetter[0].toLatin1());
-                result.push_back(secondDigit.toInt());
+                result.push_back(static_cast<signed char>(secondDigit.toInt()));
             }
         }
     }
@@ -542,7 +535,7 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf)
 void VBoard::readyReadStandardOutput()
 {
 	QProcess *p = dynamic_cast<QProcess*>(sender());
-	QByteArray buf = p->readAllStandardOutput();
+	const QByteArray buf = p->readAllStandardOutput();
     int x1, y1, x2, y2;
 	this->_textEdit->setText(buf);
 	const QByteArray moveArray = ExtractMove(buf);
