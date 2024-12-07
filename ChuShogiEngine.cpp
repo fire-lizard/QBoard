@@ -10,7 +10,7 @@ ChuShogiEngine::~ChuShogiEngine()
 
 EngineProtocol ChuShogiEngine::GetType()
 {
-	return WinBoard;
+	return XBoard;
 }
 
 void ChuShogiEngine::StartGame(QString variant)

@@ -10,7 +10,7 @@ WbEngine::~WbEngine()
 
 EngineProtocol WbEngine::GetType()
 {
-	return WinBoard;
+	return XBoard;
 }
 
 void WbEngine::StartGame(QString variant)

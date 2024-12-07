@@ -23,12 +23,14 @@ public:
 	QLineEdit* GetEngineParameters() const;
 	void SetEngineName(const QString &engineName) const;
 	void SetGameVariant(GameVariant gameVariant) const;
-	void SetEngineProtocol(EngineProtocol engineProtocol) const;
+    void SetEngineProtocol(QString engineProtocol) const;
 	void SetEnginePath(const QString& enginePath) const;
 	void SetEngineParameters(const QString& engineParameters) const;
 
 private slots:
     void on_toolButton_clicked();
+
+    void on_gameVariant_currentIndexChanged(int index);
 
 private:
     Ui::AddEngineDialog *ui;

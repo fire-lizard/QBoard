@@ -54,7 +54,7 @@ EngineProtocol EngineManager::StringToEngineProtocol(const QString& str)
 		return Qianhong;
 	if (str == "USI")
 		return USI;
-	return WinBoard;
+	return XBoard;
 }
 
 GameVariant EngineManager::StringToGameVariant(const QString& str)
@@ -79,7 +79,7 @@ void EngineManager::on_toolButton_2_clicked()
 	AddEngineDialog *addEngineDialog = new AddEngineDialog(this);
 	addEngineDialog->SetEngineName(ui->engineTable->item(currentRow, 0)->text());
 	addEngineDialog->SetGameVariant(StringToGameVariant(ui->engineTable->item(currentRow, 1)->text()));
-	addEngineDialog->SetEngineProtocol(StringToEngineProtocol(ui->engineTable->item(currentRow, 2)->text()));
+    addEngineDialog->SetEngineProtocol(ui->engineTable->item(currentRow, 2)->text());
 	addEngineDialog->SetEnginePath(ui->engineTable->item(currentRow, 3)->text());
 	addEngineDialog->SetEngineParameters(ui->engineTable->item(currentRow, 4)->text());
 	addEngineDialog->exec();
@@ -131,3 +131,9 @@ void EngineManager::on_buttonBox_rejected()
 {
 	reject();
 }
+
+void EngineManager::on_engineTable_cellDoubleClicked(int row, int column)
+{
+    on_toolButton_2_clicked();
+}
+

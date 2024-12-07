@@ -32,6 +32,8 @@ private slots:
 
 	void on_buttonBox_rejected();
 
+    void on_engineTable_cellDoubleClicked(int row, int column);
+
 private:
     Ui::EngineManager *ui;
 };

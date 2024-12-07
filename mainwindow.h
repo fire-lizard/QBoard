@@ -64,7 +64,7 @@ private:
 	QString _engineExe = "";
 	QString _engineName = "";
 	QStringList _engineArguments;
-	EngineProtocol _engineProtocol = WinBoard;
+	EngineProtocol _engineProtocol = XBoard;
 	QString _settingsDir;
 	QString _settingsFileName = "QBoard.ini";
 	QString _enginesListFileName = "QBoardEngines.xml";

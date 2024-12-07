@@ -2,7 +2,7 @@
 
 enum EngineProtocol
 {
-	WinBoard, UCI, UCCI, Qianhong, USI
+	XBoard, UCI, UCCI, Qianhong, USI
 };
 
 enum GameFormat

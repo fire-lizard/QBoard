@@ -463,7 +463,7 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf)
 	QStringList parts = QString(buf).trimmed().split(_nlre, Qt::SkipEmptyParts);
 	for (auto& part : parts)
 	{
-		const bool moveFound = _engine->GetType() == WinBoard ? part.startsWith("move ") && part.length() >= 9 : part.startsWith("bestmove ") && part.length() >= 13;
+		const bool moveFound = _engine->GetType() == XBoard ? part.startsWith("move ") && part.length() >= 9 : part.startsWith("bestmove ") && part.length() >= 13;
 		if (moveFound)
 		{
             if (_gameVariant == ChuShogi)
@@ -485,13 +485,13 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf)
             }
             else
             {
-                const int pos = _engine->GetType() == WinBoard ? 5 : 9;
+                const int pos = _engine->GetType() == XBoard ? 5 : 9;
                 result.push_back(part[pos].toLatin1());
                 result.push_back(part[pos + 1].toLatin1());
                 result.push_back(part[pos + 2].toLatin1());
                 result.push_back(part[pos + 3].toLatin1());
                 char c5 = ' ';
-                if (_engine->GetType() == WinBoard ? part.length() >= 10 : part.length() >= 14)
+                if (_engine->GetType() == XBoard ? part.length() >= 10 : part.length() >= 14)
                 {
                     const QChar promotionChar = part[pos + 4];
                     if (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi)

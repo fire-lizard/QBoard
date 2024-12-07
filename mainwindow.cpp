@@ -173,7 +173,7 @@ void MainWindow::on_actionNew_game_triggered()
 			case USI:
 				_engine = new UsiEngine();
 				break;
-			case WinBoard:
+			case XBoard:
                 if (this->ui->vboard->GetGameVariant() == ChuShogi) _engine = new ChuShogiEngine();
                 else _engine = new WbEngine();
 				break;

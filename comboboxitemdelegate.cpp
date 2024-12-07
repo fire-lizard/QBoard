@@ -26,7 +26,7 @@ QWidget* ComboBoxItemDelegate::createEditor(QWidget* parent, const QStyleOptionV
 	{
 		QComboBox* cb = new QComboBox(parent);
 		const int row = index.row();
-		cb->addItem(QString("WinBoard").arg(row));
+		cb->addItem(QString("XBoard").arg(row));
 		cb->addItem(QString("UCI").arg(row));
 		cb->addItem(QString("UCCI").arg(row));
 		cb->addItem(QString("Qianhong").arg(row));

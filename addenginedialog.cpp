@@ -4,6 +4,7 @@
 AddEngineDialog::AddEngineDialog(QWidget *parent) : QDialog(parent), ui(new Ui::AddEngineDialog)
 {
     ui->setupUi(this);
+    on_gameVariant_currentIndexChanged(0);
 }
 
 AddEngineDialog::~AddEngineDialog()
@@ -46,9 +47,9 @@ void AddEngineDialog::SetGameVariant(GameVariant gameVariant) const
 	ui->gameVariant->setCurrentIndex(gameVariant);
 }
 
-void AddEngineDialog::SetEngineProtocol(EngineProtocol engineProtocol) const
+void AddEngineDialog::SetEngineProtocol(QString engineProtocol) const
 {
-	ui->engineProtocol->setCurrentIndex(engineProtocol);
+    ui->engineProtocol->setCurrentText(engineProtocol);
 }
 
 void AddEngineDialog::SetEnginePath(const QString& enginePath) const
@@ -70,3 +71,26 @@ void AddEngineDialog::on_toolButton_clicked()
 #endif
 	ui->enginePath->setText(fileName);
 }
+
+void AddEngineDialog::on_gameVariant_currentIndexChanged(int index)
+{
+    ui->engineProtocol->clear();
+    ui->engineProtocol->addItem("XBoard");
+    GameVariant v = static_cast<GameVariant>(index);
+    switch (v)
+    {
+    case Chess:
+        ui->engineProtocol->addItem("UCI");
+        break;
+    case Xiangqi:
+        ui->engineProtocol->addItem("UCCI");
+        ui->engineProtocol->addItem("Qianhong");
+        break;
+    case Shogi:
+        ui->engineProtocol->addItem("USI");
+        break;
+    default:
+        break;
+    }
+}
+
