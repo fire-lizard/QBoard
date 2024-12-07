@@ -42,9 +42,9 @@ void AddEngineDialog::SetEngineName(const QString& engineName) const
 	ui->engineName->setText(engineName);
 }
 
-void AddEngineDialog::SetGameVariant(GameVariant gameVariant) const
+void AddEngineDialog::SetGameVariant(QString gameVariant) const
 {
-	ui->gameVariant->setCurrentIndex(gameVariant);
+    ui->gameVariant->setCurrentText(gameVariant);
 }
 
 void AddEngineDialog::SetEngineProtocol(QString engineProtocol) const

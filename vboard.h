@@ -70,6 +70,8 @@ private:
     QRegularExpression _nlre;
     QRegularExpression _csre;
     QRegularExpression _qhre;
+    QRegularExpression _sgxbre;
+    QRegularExpression _sgusre;
 
 signals:
 

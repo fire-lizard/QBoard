@@ -3,8 +3,10 @@
 VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
     _nlre = QRegularExpression("[\r\n]+");
-    _csre = QRegularExpression(R"(([a-l])(1[0-2]|[1-9])([a-l])(1[0-2]|[1-9])([+nbrq])?)");
+    _csre = QRegularExpression(R"(([a-l])(1[0-2]|[0-9])([a-l])(1[0-2]|[0-9])([+nbrq])?)");
     _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
+    _sgxbre = QRegularExpression(R"(([RBGSNLPa-l])(\*|@|[1-9])([a-l])([1-9])(\+)?)");
+    _sgusre = QRegularExpression(R"(([RBGSNLP1-9])(\*|@|[a-l])([1-9])([a-l])(\+)?)");
     SetGameVariant(_gameVariant);
 }
 
@@ -463,10 +465,27 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf)
 	QStringList parts = QString(buf).trimmed().split(_nlre, Qt::SkipEmptyParts);
 	for (auto& part : parts)
 	{
-		const bool moveFound = _engine->GetType() == XBoard ? part.startsWith("move ") && part.length() >= 9 : part.startsWith("bestmove ") && part.length() >= 13;
+        const bool moveFound = _engine->GetType() == XBoard ? part.startsWith("move ") : part.startsWith("bestmove ");
 		if (moveFound)
 		{
-            if (_gameVariant == ChuShogi)
+            if (_engine->GetType() == USI)
+            {
+                QRegularExpressionMatch match = _sgusre.match(part);
+                if (match.hasMatch())
+                {
+                    QString firstDigit = match.captured(1);
+                    QString firstLetter = match.captured(2);
+                    QString secondDigit = match.captured(3);
+                    QString secondLetter = match.captured(4);
+                    QString promotionChar = match.captured(5);
+                    result.push_back(firstDigit[0].toLatin1());
+                    result.push_back(firstLetter[0].toLatin1());
+                    result.push_back(secondDigit[0].toLatin1());
+                    result.push_back(secondLetter[0].toLatin1());
+                    if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+                }
+            }
+            else if (_gameVariant == ChuShogi)
             {
                 QRegularExpressionMatch match = _csre.match(part);
                 if (match.hasMatch())
@@ -485,31 +504,20 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf)
             }
             else
             {
-                const int pos = _engine->GetType() == XBoard ? 5 : 9;
-                result.push_back(part[pos].toLatin1());
-                result.push_back(part[pos + 1].toLatin1());
-                result.push_back(part[pos + 2].toLatin1());
-                result.push_back(part[pos + 3].toLatin1());
-                char c5 = ' ';
-                if (_engine->GetType() == XBoard ? part.length() >= 10 : part.length() >= 14)
+                QRegularExpressionMatch match = _gameVariant == Shogi || _gameVariant == MiniShogi ? _sgxbre.match(part) : _csre.match(part);
+                if (match.hasMatch())
                 {
-                    const QChar promotionChar = part[pos + 4];
-                    if (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi)
-                    {
-                        if (promotionChar == '+')
-                        {
-                            c5 = promotionChar.toLatin1();
-                        }
-                    }
-                    else if (_gameVariant == Chess)
-                    {
-                        if (promotionChar == 'n' || promotionChar == 'b' || promotionChar == 'r' || promotionChar == 'q')
-                        {
-                            c5 = promotionChar.toLatin1();
-                        }
-                    }
+                    QString firstLetter = match.captured(1);
+                    QString firstDigit = match.captured(2);
+                    QString secondLetter = match.captured(3);
+                    QString secondDigit = match.captured(4);
+                    QString promotionChar = match.captured(5);
+                    result.push_back(firstLetter[0].toLatin1());
+                    result.push_back(firstDigit[0].toLatin1());
+                    result.push_back(secondLetter[0].toLatin1());
+                    result.push_back(secondDigit[0].toLatin1());
+                    if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
                 }
-                result.push_back(c5);
             }
 		}
         else if (_engine->GetType() == Qianhong)
@@ -598,7 +606,8 @@ void VBoard::readyReadStandardOutput()
 	{
 		if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
 		{
-			const bool isPromoted = (y2 == 0 || y2 == _board->GetHeight() - 1)
+            const bool isPromoted = moveArray.size() == 5
+                && (y2 == 0 || y2 == _board->GetHeight() - 1)
 				&& _board->GetData(x2, y2)->GetType() == Pawn
 				&& (moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r' || moveArray[4] == 'q');
 			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
@@ -665,9 +674,9 @@ void VBoard::readyReadStandardOutput()
 		}
 		else if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
 		{
-            const bool isPromoted =
-                (_gameVariant == MiniShogi && (y2 == 0 || y2 == 4) && moveArray[4] == '+')
-                || ((_gameVariant == Shogi || _gameVariant == ShoShogi) && (y2 <= 2 || y2 >= 6) && moveArray[4] == '+');
+            const bool isPromoted = moveArray.size() == 5 &&
+                ((_gameVariant == MiniShogi && (y2 == 0 || y2 == 4) && moveArray[4] == '+')
+                || ((_gameVariant == Shogi || _gameVariant == ShoShogi) && (y2 <= 2 || y2 >= 6) && moveArray[4] == '+'));
 			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
 			_board->Move(x1, y1, x2, y2);
 			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ');
