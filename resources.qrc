@@ -137,6 +137,24 @@
         <file>images_jap/WhiteSword.png</file>
         <file>images_jap/WhiteTokin.png</file>
         <file>images_jap/WhiteUnicorn.png</file>
+        <file>images_jap/BlackPromoBishop.png</file>
+        <file>images_jap/BlackPromoCrownedBishop.png</file>
+        <file>images_jap/BlackPromoCrownedRook.png</file>
+        <file>images_jap/BlackPromoElephant.png</file>
+        <file>images_jap/BlackPromoHSword.png</file>
+        <file>images_jap/BlackPromoLion.png</file>
+        <file>images_jap/BlackPromoQueen.png</file>
+        <file>images_jap/BlackPromoRook.png</file>
+        <file>images_jap/BlackPromoSword.png</file>
+        <file>images_jap/WhitePromoBishop.png</file>
+        <file>images_jap/WhitePromoCrownedBishop.png</file>
+        <file>images_jap/WhitePromoCrownedRook.png</file>
+        <file>images_jap/WhitePromoElephant.png</file>
+        <file>images_jap/WhitePromoHSword.png</file>
+        <file>images_jap/WhitePromoLion.png</file>
+        <file>images_jap/WhitePromoQueen.png</file>
+        <file>images_jap/WhitePromoRook.png</file>
+        <file>images_jap/WhitePromoSword.png</file>
     </qresource>
     <qresource prefix="/pieces_chi">
         <file>images_chi/badvisor.png</file>

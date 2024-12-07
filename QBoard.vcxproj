@@ -439,6 +439,24 @@
     <ResourceCompile Include=".\QBoard_resource.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="images_jap\BlackPromoBishop.png" />
+    <Image Include="images_jap\BlackPromoCrownedBishop.png" />
+    <Image Include="images_jap\BlackPromoCrownedRook.png" />
+    <Image Include="images_jap\BlackPromoElephant.png" />
+    <Image Include="images_jap\BlackPromoHSword.png" />
+    <Image Include="images_jap\BlackPromoLion.png" />
+    <Image Include="images_jap\BlackPromoQueen.png" />
+    <Image Include="images_jap\BlackPromoRook.png" />
+    <Image Include="images_jap\BlackPromoSword.png" />
+    <Image Include="images_jap\WhitePromoBishop.png" />
+    <Image Include="images_jap\WhitePromoCrownedBishop.png" />
+    <Image Include="images_jap\WhitePromoCrownedRook.png" />
+    <Image Include="images_jap\WhitePromoElephant.png" />
+    <Image Include="images_jap\WhitePromoHSword.png" />
+    <Image Include="images_jap\WhitePromoLion.png" />
+    <Image Include="images_jap\WhitePromoQueen.png" />
+    <Image Include="images_jap\WhitePromoRook.png" />
+    <Image Include="images_jap\WhitePromoSword.png" />
     <Image Include="images_sho\BlackAdvisor.png" />
     <Image Include="images_sho\BlackBishop.png" />
     <Image Include="images_sho\BlackCrownedBishop.png" />

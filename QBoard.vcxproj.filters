@@ -785,5 +785,59 @@
     <Image Include="images_sho\WhiteTokin.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_jap\BlackPromoBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\BlackPromoCrownedBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\BlackPromoCrownedRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\BlackPromoElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\BlackPromoHSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\BlackPromoLion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\BlackPromoQueen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\BlackPromoRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\BlackPromoSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\WhitePromoBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\WhitePromoCrownedBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\WhitePromoCrownedRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\WhitePromoElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\WhitePromoHSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\WhitePromoLion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\WhitePromoQueen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\WhitePromoRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_jap\WhitePromoSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
