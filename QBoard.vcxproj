@@ -443,6 +443,7 @@
     <Image Include="images_sho\BlackBishop.png" />
     <Image Include="images_sho\BlackCrownedBishop.png" />
     <Image Include="images_sho\BlackCrownedRook.png" />
+    <Image Include="images_sho\BlackElephant.png" />
     <Image Include="images_sho\BlackGold.png" />
     <Image Include="images_sho\BlackGoldKnight.png" />
     <Image Include="images_sho\BlackGoldLance.png" />
@@ -457,6 +458,7 @@
     <Image Include="images_sho\WhiteBishop.png" />
     <Image Include="images_sho\WhiteCrownedBishop.png" />
     <Image Include="images_sho\WhiteCrownedRook.png" />
+    <Image Include="images_sho\WhiteElephant.png" />
     <Image Include="images_sho\WhiteGold.png" />
     <Image Include="images_sho\WhiteGoldKnight.png" />
     <Image Include="images_sho\WhiteGoldLance.png" />

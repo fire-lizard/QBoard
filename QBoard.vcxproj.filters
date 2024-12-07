@@ -707,6 +707,9 @@
     <Image Include="images_sho\BlackCrownedRook.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_sho\BlackElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
     <Image Include="images_sho\BlackGold.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -744,6 +747,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="images_sho\WhiteCrownedRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho\WhiteElephant.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="images_sho\WhiteGold.png">
