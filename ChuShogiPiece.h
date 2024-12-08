@@ -10,8 +10,10 @@ public:
 	void Promote(PieceType pieceType = None) override;
 	std::string StringCode() override;
 	std::string AsianStringCode() override;
+	virtual std::string GetJapaneseImageFileName();
 
 protected:
+	static void replaceSubstring(std::string& str, const std::string& from, const std::string& to);
 
 private:
 };

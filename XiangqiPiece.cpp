@@ -58,10 +58,10 @@ std::string XiangqiPiece::AsianStringCode()
 	}
 }
 
-std::string XiangqiPiece::GetChineseImageFileName(PieceType pieceType, PieceColour pieceColour)
+std::string XiangqiPiece::GetChineseImageFileName() const
 {
-	const std::string colour = pieceColour == White ? "r" : "b";
-	switch (pieceType)
+	const std::string colour = _pieceColour == White ? "r" : "b";
+	switch (_pieceType)
 	{
 	case King:
 		return colour + "king.png";

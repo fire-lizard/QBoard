@@ -9,7 +9,7 @@ public:
 	void Promote(PieceType pieceType = None) override;
 	std::string StringCode() override;
 	std::string AsianStringCode() override;
-	static std::string GetChineseImageFileName(PieceType pieceType, PieceColour pieceColour);
+	std::string GetChineseImageFileName() const;
 
 protected:
 

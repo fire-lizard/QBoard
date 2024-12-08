@@ -207,3 +207,40 @@ std::string ChuShogiPiece::AsianStringCode()
 		return "";
 	}
 }
+
+void ChuShogiPiece::replaceSubstring(std::string& str, const std::string& from, const std::string& to)
+{
+	size_t startPos = 0;
+	while ((startPos = str.find(from, startPos)) != std::string::npos) 
+	{
+		str.replace(startPos, from.length(), to);
+		startPos += to.length(); // Move past the replacement
+	}
+}
+
+std::string ChuShogiPiece::GetJapaneseImageFileName()
+{
+	std::string imageFileName = GetImageFileName();
+	if (_isPromoted)
+	{
+		constexpr PieceType pieces[] = { Gold, Bishop, Rook, Queen, Lion, Elephant, DragonHorse, DragonKing, SideMover, VerticalMover, King };
+
+		if (std::find(std::begin(pieces), std::end(pieces), _pieceType) != std::end(pieces))
+		{
+			const std::string colour = _pieceColour == White ? "White" : "Black";
+			if (_pieceType == Gold)
+			{
+				imageFileName = colour + "Tokin.png";
+			}
+			else if (_pieceType == King)
+			{
+				imageFileName = colour + "Prince.png";
+			}
+			else
+			{
+				replaceSubstring(imageFileName, colour, colour + "Promo");
+			}
+		}
+	}
+	return imageFileName;
+}

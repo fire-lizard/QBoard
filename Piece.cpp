@@ -32,13 +32,13 @@ bool Piece::IsPromoted() const
 	return _isPromoted;
 }
 
-std::string Piece::GetImageFileName(PieceType pieceType, PieceColour pieceColour)
+std::string Piece::GetImageFileName() const
 {
-	const std::string colour = pieceColour == White ? "White" : "Black";
-	switch (pieceType)
+	const std::string colour = _pieceColour == White ? "White" : "Black";
+	switch (_pieceType)
 	{
 	case King:
-		return colour + "King.png";
+		return colour + (_isPromoted ? "Prince.png" : "King.png");
 	case Lion:
 		return colour + "Lion.png";
 	case Queen:
@@ -68,7 +68,7 @@ std::string Piece::GetImageFileName(PieceType pieceType, PieceColour pieceColour
 	case BlindTiger:
 		return colour + "Claw.png";
 	case Gold:
-		return colour + "Gold.png";
+		return colour + (_isPromoted && _basePieceType == Pawn ? "Tokin.png" : "Gold.png");
 	case Silver:
 		return colour + "Advisor.png";
 	case Copper:

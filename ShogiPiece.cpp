@@ -19,6 +19,9 @@ void ShogiPiece::Promote(PieceType pieceType)
 	case Bishop:
 		_pieceType = DragonHorse;
 		break;
+	case Elephant:
+		_pieceType = King;
+		break;
 	case Lance:
 	case Silver:
 	case WhiteHorse:
@@ -102,4 +105,41 @@ std::string ShogiPiece::AsianStringCode()
 	default:
 		return "";
 	}
+}
+
+std::string ShogiPiece::GetJapaneseImageFileName()
+{
+	std::string imageFileName = GetImageFileName();
+	if (_isPromoted)
+	{
+		const std::string colour = _pieceColour == White ? "White" : "Black";
+		if (_pieceType == Gold)
+		{
+			constexpr PieceType pieces[] = { Pawn, WhiteHorse, Lance, Silver };
+
+			if (std::find(std::begin(pieces), std::end(pieces), _basePieceType) != std::end(pieces))
+			{
+				switch (_basePieceType)
+				{
+				case WhiteHorse:
+					imageFileName = colour + "GoldKnight.png";
+					break;
+				case Lance:
+					imageFileName = colour + "GoldLance.png";
+					break;
+				case Silver:
+					imageFileName = colour + "GoldSilver.png";
+					break;
+				case Pawn:
+					imageFileName = colour + "Tokin.png";
+					break;
+				}
+			}
+		}
+		else if (_pieceType == King)
+		{
+			imageFileName = colour + "King.png";
+		}
+	}
+	return imageFileName;
 }

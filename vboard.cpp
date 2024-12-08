@@ -116,13 +116,33 @@ void VBoard::paintEvent(QPaintEvent *)
 	{
 		for (int j = 0; j < _board->GetHeight(); j++)
 		{
-			const Piece *p = _board->GetData(i, j);
+			Piece *p = _board->GetData(i, j);
 			if (p != nullptr)
 			{
-				const PieceType t = p->GetType();
-				const PieceColour c = p->GetColour();
-				const std::string imageFileName = _pieceStyle == Asian && _gameVariant == Xiangqi ?
-					XiangqiPiece::GetChineseImageFileName(t, c) : Piece::GetImageFileName(t, c);
+				std::string imageFileName;
+				if (_pieceStyle == Asian)
+				{
+					if (_gameVariant == Xiangqi)
+					{
+						imageFileName = dynamic_cast<XiangqiPiece*>(p)->GetChineseImageFileName();
+					}
+					else if (std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) != std::end(_shogiVariants))
+					{
+						if (_gameVariant == ChuShogi)
+						{
+							imageFileName = dynamic_cast<ChuShogiPiece*>(p)->GetJapaneseImageFileName();
+						}
+						else
+						{
+							imageFileName = dynamic_cast<ShogiPiece*>(p)->GetJapaneseImageFileName();
+						}
+					}
+
+				}
+				else
+				{
+					imageFileName = p->GetImageFileName();
+				}
 				QPixmap pixmap(resourcePrefix + QString::fromStdString(imageFileName));
 				painter.drawPixmap(i * w + w / 4, j * h + h / 4, 33, 33, pixmap);
 			}

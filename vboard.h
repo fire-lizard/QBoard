@@ -72,6 +72,7 @@ private:
     QRegularExpression _qhre;
     QRegularExpression _sgxbre;
     QRegularExpression _sgusre;
+	GameVariant _shogiVariants[4] = {Shogi, MiniShogi, ChuShogi, ShoShogi};
 
 signals:
 
