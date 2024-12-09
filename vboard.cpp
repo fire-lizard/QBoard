@@ -63,7 +63,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			}
 			else if (std::any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](std::tuple<int, int, int, int> t) {return get<2>(t) == i && get<3>(t) == j; }))
 			{
-				if (_board->GetData(i, j) != nullptr && (_board->GetData(i, j)->GetType() == King || _board->GetData(i, j)->GetType() == Queen))
+				if (_board->GetData(i, j) != nullptr && _board->GetData(i, j)->GetType() == King)
 				{
 					painter.setBrush(Qt::yellow);
 				}
