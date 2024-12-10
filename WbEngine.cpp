@@ -22,7 +22,10 @@ void WbEngine::StartGame(QString variant)
 		const QString str = "variant " + variant + "\n";
 		_process->write(str.toLatin1());
 	}
-	_process->write("new\n");
+	else
+	{
+		_process->write("new\n");
+	}
 }
 
 void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)

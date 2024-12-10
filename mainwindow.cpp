@@ -180,8 +180,15 @@ void MainWindow::on_actionNew_game_triggered()
 				_engine = new UsiEngine();
 				break;
 			case XBoard:
-                if (this->ui->vboard->GetGameVariant() == ChuShogi) _engine = new ChuShogiEngine();
-                else _engine = new WbEngine();
+				constexpr GameVariant gameVariants[] = { ChuShogi, ShoShogi };
+				if (std::find(std::begin(gameVariants), std::end(gameVariants), this->ui->vboard->GetGameVariant()) != std::end(gameVariants))
+				{
+					_engine = new ChuShogiEngine();
+				}
+				else 
+				{
+					_engine = new WbEngine();
+				}
 				break;
 			}
 			LoadEngine();
@@ -292,7 +299,25 @@ void MainWindow::LoadEngine()
 		const QProcess* process = _engine->RunProcess(this, _engineExe, _engineArguments);
 		if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
 		{
-			_engine->StartGame();
+			if (_engine->GetType() == XBoard)
+			{
+				if (ui->vboard->GetGameVariant() == MiniShogi)
+				{
+					_engine->StartGame("5x5+5_shogi");
+				}
+				else if (ui->vboard->GetGameVariant() == ShoShogi)
+				{
+					_engine->StartGame("sho");
+				}
+				else
+				{
+					_engine->StartGame();
+				}
+			}
+			else
+			{
+				_engine->StartGame();
+			}
 			connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
 			connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(readyReadStandardError()));
             connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(readyReadStandardError()));
