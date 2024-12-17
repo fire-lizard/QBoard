@@ -9,7 +9,7 @@ public:
 	~ShogiBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
-	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false) override;
+	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
     void GetMoves(Piece *piece, int x, int y) override;
 	void SetDrops(bool hasDrops);
 

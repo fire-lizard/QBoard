@@ -53,9 +53,9 @@ void ChessBoard::Initialize()
 	}
 }
 
-Piece* ChessBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted)
+Piece* ChessBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-	return new ChessPiece(pieceType, pieceColour, isPromoted);
+	return new ChessPiece(pieceType, pieceColour);
 }
 
 void ChessBoard::GetMoves(Piece *piece, int x, int y)

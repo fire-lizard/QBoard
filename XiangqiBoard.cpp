@@ -54,9 +54,9 @@ void XiangqiBoard::Initialize()
 	}
 }
 
-Piece* XiangqiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted)
+Piece* XiangqiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-	return new XiangqiPiece(pieceType, pieceColour, isPromoted);
+	return new XiangqiPiece(pieceType, pieceColour);
 }
 
 void XiangqiBoard::GetMoves(Piece *piece, int x, int y)

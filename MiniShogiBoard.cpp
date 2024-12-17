@@ -53,9 +53,9 @@ Board* MiniShogiBoard::Clone()
 	return cb;
 }
 
-Piece* MiniShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted)
+Piece* MiniShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-	return new ShogiPiece(pieceType, pieceColour, isPromoted);
+	return new ShogiPiece(pieceType, pieceColour);
 }
 
 void MiniShogiBoard::GetMoves(Piece *piece, int x, int y)

@@ -1,6 +1,6 @@
 ﻿#include "ChuShogiPiece.h"
 
-ChuShogiPiece::ChuShogiPiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted) : Piece(pieceType, pieceColour, isPromoted)
+ChuShogiPiece::ChuShogiPiece(PieceType pieceType, PieceColour pieceColour) : Piece(pieceType, pieceColour)
 {
 }
 

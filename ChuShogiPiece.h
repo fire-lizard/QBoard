@@ -5,7 +5,7 @@
 class ChuShogiPiece : public Piece
 {
 public:
-	ChuShogiPiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false);
+	ChuShogiPiece(PieceType pieceType, PieceColour pieceColour);
 	~ChuShogiPiece() override;
 	void Promote(PieceType pieceType = None) override;
 	std::string StringCode() override;

@@ -4,7 +4,7 @@
 class ChessPiece : public Piece
 {
 public:
-	ChessPiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false);
+	ChessPiece(PieceType pieceType, PieceColour pieceColour);
 	~ChessPiece() override;
 	void Promote(PieceType pieceType = None) override;
 	std::string StringCode() override;

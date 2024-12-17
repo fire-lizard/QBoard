@@ -53,9 +53,9 @@ Board* ChuShogiBoard::Clone()
 	return cb;
 }
 
-Piece* ChuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted)
+Piece* ChuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-	return new ChuShogiPiece(pieceType, pieceColour, isPromoted);
+	return new ChuShogiPiece(pieceType, pieceColour);
 }
 
 void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)

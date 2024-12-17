@@ -4,7 +4,7 @@
 class XiangqiPiece : public Piece
 {
 public:
-	XiangqiPiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted = false);
+	XiangqiPiece(PieceType pieceType, PieceColour pieceColour);
 	~XiangqiPiece() override;
 	void Promote(PieceType pieceType = None) override;
 	std::string StringCode() override;

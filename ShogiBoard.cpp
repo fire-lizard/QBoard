@@ -54,9 +54,9 @@ Board* ShogiBoard::Clone()
 	return cb;
 }
 
-Piece* ShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour, bool isPromoted)
+Piece* ShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-	return new ShogiPiece(pieceType, pieceColour, isPromoted);
+	return new ShogiPiece(pieceType, pieceColour);
 }
 
 void ShogiBoard::GetMoves(Piece *piece, int x, int y)
