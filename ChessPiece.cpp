@@ -2,6 +2,7 @@
 
 ChessPiece::ChessPiece(PieceType pieceType, PieceColour pieceColour) : Piece(pieceType, pieceColour)
 {
+	_hasMoved = false;
 }
 
 ChessPiece::~ChessPiece()
@@ -38,4 +39,14 @@ std::string ChessPiece::StringCode()
 std::string ChessPiece::AsianStringCode()
 {
 	return "";
+}
+
+void ChessPiece::Move()
+{
+	_hasMoved = true;
+}
+
+bool ChessPiece::HasMoved() const
+{
+	return _hasMoved;
 }

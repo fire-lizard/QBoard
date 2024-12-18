@@ -7,10 +7,13 @@ public:
 	ChessPiece(PieceType pieceType, PieceColour pieceColour);
 	~ChessPiece() override;
 	void Promote(PieceType pieceType = None) override;
+	void Move();
+	bool HasMoved() const;
 	std::string StringCode() override;
 	std::string AsianStringCode() override;
 
 protected:
 
 private:
+	bool _hasMoved;
 };

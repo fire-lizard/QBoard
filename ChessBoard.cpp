@@ -72,6 +72,26 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y);
 		CheckMove(piece, x - 1, y - 1);
+		// Check castling
+		if (!dynamic_cast<ChessPiece*>(piece)->HasMoved())
+		{
+			if (_data[0][y] != nullptr)
+			{
+				const ChessPiece* cp = dynamic_cast<ChessPiece*>(_data[0][y]);
+				if (!cp->HasMoved() && cp->GetType() == Rook && _data[1][y] == nullptr && _data[2][y] == nullptr && _data[3][y] == nullptr)
+				{
+					_moves.emplace_back(0, y);
+				}
+			}
+			if (_data[7][y] != nullptr)
+			{
+				const ChessPiece* cp = dynamic_cast<ChessPiece*>(_data[7][y]);
+				if (!cp->HasMoved() && cp->GetType() == Rook && _data[5][y] == nullptr && _data[6][y] == nullptr)
+				{
+					_moves.emplace_back(7, y);
+				}
+			}
+		}
 		break;
 	case Queen:
 		CheckDirection(piece, x, y, North);
@@ -148,4 +168,14 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 	default:
 		break;
 	}
+}
+
+bool ChessBoard::Move(int oldX, int oldY, int newX, int newY)
+{
+	const bool result = Board::Move(oldX, oldY, newX, newY);
+	if (result)
+	{
+		dynamic_cast<ChessPiece*>(_data[newX][newY])->Move();
+	}
+	return result;
 }

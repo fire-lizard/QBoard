@@ -50,7 +50,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			{
 				if (_board->GetData(i, j) != nullptr)
 				{
-					painter.setBrush(Qt::red);
+					painter.setBrush(_board->GetData(i, j)->GetColour() != _currentPlayer ? Qt::red : Qt::magenta);
 					painter.drawRect(rect);
 					painter.setBrush(Qt::NoBrush);
 				}
@@ -158,7 +158,28 @@ void VBoard::mousePressEvent(QMouseEvent *event)
     const int x = static_cast<int>(event->position().x()) / w;
     const int y = static_cast<int>(event->position().y()) / h;
 	Piece *p = _board->GetData(x, y);
-	if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
+	// Castling check
+	if (_gameVariant == Chess && _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
+		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved())
+	{
+		_board->SetData(x, y, _currentPiece);
+		_board->SetData(4, y, p);
+		if (_engine != nullptr)
+		{
+			_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, ' ');
+		}
+		AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ');
+		_currentPlayer = _currentPlayer == White ? Black : White;
+		_statusBar->setStyleSheet("QStatusBar { color : black; }");
+		_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");
+		_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
+		_currentPiece = nullptr;
+		_oldX = -1;
+		_oldY = -1;
+		_moves.clear();
+		this->repaint();
+	}
+	else if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
 	{
 		if (_board->Move(_oldX, _oldY, x, y))
 		{
@@ -249,62 +270,7 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 void VBoard::mouseDoubleClickEvent(QMouseEvent* event)
 {
 	//TODO: Lion move
-	/*if (_gameVariant != ChuShogi) return;
-	if (_engine != nullptr && _currentPlayer == Black) return;
-	const int w = this->size().width() / _board->GetWidth();
-	const int h = this->size().height() / _board->GetHeight();
-    const int x = event->position().x() / w;
-    const int y = event->position().y() / h;
-	Piece* p = _board->GetData(x, y);
-	if (_currentPiece != nullptr && p != nullptr && p->GetColour() != _currentPlayer)
-	{
-		if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == Eagle || _currentPiece->GetType() == Unicorn)
-		{
-			if (_board->Move(_oldX, _oldY, x, y))
-			{
-				if (_engine != nullptr)
-				{
-					//_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
-				}
-				AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ');
-				_currentPlayer = _currentPlayer == White ? Black : White;
-				_statusBar->setStyleSheet("QStatusBar { color : black; }");
-				_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");
-				_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
-				_currentPiece = nullptr;
-				_oldX = -1;
-				_oldY = -1;
-				_moves.clear();
-			}
-			this->repaint();
-		}
-	}
-	else
-	{
-		if (p != nullptr)
-		{
-			if (p->GetColour() == _currentPlayer)
-			{
-				_currentPiece = _board->GetData(x, y);
-				if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == Eagle || _currentPiece->GetType() == Unicorn)
-				{
-					_oldX = x;
-					_oldY = y;
-					_board->GetMoves(p, x, y);
-					_moves = _board->Moves();
-					std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
-						{
-							CalculateCheck(x, y, t.first, t.second);
-						});
-					std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
-						{
-							CalculateCheck(x, y, t.first, t.second);
-						});
-					this->repaint();
-				}
-			}
-		}
-	}*/
+	//if (_gameVariant != ChuShogi) return;
 }
 
 Board* VBoard::GetBoard() const
@@ -621,7 +587,7 @@ void VBoard::readyReadStandardOutput()
 		{
             const bool isPromoted = moveArray.size() == 5
                 && (y2 == 0 || y2 == _board->GetHeight() - 1)
-				&& _board->GetData(x2, y2)->GetType() == Pawn
+				&& _board->GetData(x1, y1)->GetType() == Pawn
 				&& (moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r' || moveArray[4] == 'q');
 			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
 			_board->Move(x1, y1, x2, y2);
