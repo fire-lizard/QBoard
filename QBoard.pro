@@ -24,6 +24,7 @@ SOURCES += main.cpp\
     ChuShogiBoard.cpp \
     ChuShogiPiece.cpp \
     Piece.cpp \
+    promotiondialog.cpp \
     settingsdialog.cpp \
     vboard.cpp \
     IniFile.cpp \
@@ -53,6 +54,7 @@ HEADERS  += mainwindow.h \
     ChuShogiPiece.h \
     Common.h \
     Piece.h \
+    promotiondialog.h \
     settingsdialog.h \
     vboard.h \
     IniFile.h \
@@ -75,6 +77,7 @@ HEADERS  += mainwindow.h \
     addenginedialog.h
 
 FORMS    += mainwindow.ui \
+    promotiondialog.ui \
     settingsdialog.ui \
     enginemanager.ui \
     newgamedialog.ui \

@@ -14,6 +14,7 @@
 #include "ShogiBoard.h"
 #include "MiniShogiBoard.h"
 #include "XiangqiPiece.h"
+#include "promotiondialog.h"
 
 class VBoard : public QWidget
 {

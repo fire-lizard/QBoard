@@ -81,7 +81,7 @@ void MainWindow::on_actionSettings_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-	QMessageBox::about(this, "About", "QBoard 0.2 alpha\nFire Lizard Software\nAnatoliy Sova\n2024");
+	QMessageBox::about(this, "About", "QBoard 0.3 alpha\nFire Lizard Software\nAnatoliy Sova\n2024");
 }
 
 void MainWindow::on_actionNew_game_triggered()

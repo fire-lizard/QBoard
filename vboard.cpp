@@ -190,8 +190,26 @@ void VBoard::mousePressEvent(QMouseEvent *event)
                     ((y == 7 && _currentPiece->GetColour() == Black) ||
                     (y == 0 && _currentPiece->GetColour() == White)))
 				{
-					_currentPiece->Promote(Queen);
-					promotion = 'q';
+					PromotionDialog* pd = new PromotionDialog(this);
+					pd->exec();
+					const PieceType pt = pd->GetChosenPiece();
+					if (pt == Bishop)
+					{
+						promotion = 'b';
+					}
+					else if (pt == WhiteHorse)
+					{
+						promotion = 'n';
+					}
+					else if (pt == Rook)
+					{
+						promotion = 'r';
+					}
+					else
+					{
+						promotion = 'q';
+					}
+					_currentPiece->Promote(pt);
 				}
 			}
             if (_gameVariant == MiniShogi && !_currentPiece->IsPromoted())

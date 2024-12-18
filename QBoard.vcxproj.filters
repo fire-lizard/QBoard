@@ -131,6 +131,9 @@
     <ClCompile Include="ChuShogiEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="promotiondialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -237,6 +240,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="newgamedialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="promotiondialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -691,6 +697,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="newgamedialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="promotiondialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

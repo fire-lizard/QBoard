@@ -7,6 +7,7 @@ ui_enginemanager.h
 ui_mainwindow.h
 ui_settingsdialog.h
 ui_newgamedialog.h
+ui_promotiondialog.h
 /.vs
 /QBoard.pro.user
 /QBoard.pro.user.3.2-pre1
