@@ -24,6 +24,7 @@ ShogiBoard::~ShogiBoard()
 
 void ShogiBoard::Initialize()
 {
+	_capturedPieces.clear();
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)

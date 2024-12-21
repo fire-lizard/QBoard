@@ -110,18 +110,15 @@ bool Board::CheckDirectionAux(int x, int y, Direction direction) const
 
 bool Board::Move(int oldX, int oldY, int newX, int newY)
 {
-	for (size_t index = 0; index < _moves.size(); index++)
+	if (std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY; }))
 	{
-		if (_moves[index].first == newX && _moves[index].second == newY)
+		if (_data[newX][newY] != nullptr)
 		{
-			if (_data[newX][newY] != nullptr)
-			{
-				delete _data[newX][newY];
-			}
-			_data[newX][newY] = _data[oldX][oldY];
-			_data[oldX][oldY] = nullptr;
-			return true;
+			delete _data[newX][newY];
 		}
+		_data[newX][newY] = _data[oldX][oldY];
+		_data[oldX][oldY] = nullptr;
+		return true;
 	}
 	return false;
 }

@@ -64,6 +64,42 @@ std::string ShogiPiece::StringCode()
 	}
 }
 
+
+std::string ShogiPiece::LongStringCode() const
+{
+	switch (_pieceType)
+	{
+	case Rook:
+		return "Rook";
+	case Bishop:
+		return "Bishop";
+	case Lance:
+		return "Lance";
+	case Silver:
+		return "Silver";
+	case Gold:
+		return "Gold";
+	case WhiteHorse:
+		return "Knight";
+	case Pawn:
+		return "Pawn";
+	default:
+		return "";
+	}
+}
+
+PieceType ShogiPiece::LongStringCode2PieceType(const std::string& longStringCode)
+{
+	if (longStringCode == "Rook") return Rook;
+	if (longStringCode == "Bishop") return Bishop;
+	if (longStringCode == "Lance") return Lance;
+	if (longStringCode == "Silver") return Silver;
+	if (longStringCode == "Gold") return Gold;
+	if (longStringCode == "Knight") return WhiteHorse;
+	if (longStringCode == "Pawn") return Pawn;
+	return None;
+}
+
 std::string ShogiPiece::AsianStringCode()
 {
 	switch (_pieceType)

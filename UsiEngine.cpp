@@ -36,7 +36,14 @@ void UsiEngine::Move(signed char x1, signed char y1, signed char x2, signed char
 QByteArray UsiEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	QByteArray moveStr;
-	if (x1 < 10)
+	if (y1 == '*')
+	{
+		moveStr.push_back(x1);
+		moveStr.push_back(y1);
+		moveStr.push_back(QString::number(x2)[0].toLatin1());
+		moveStr.push_back(static_cast<char>(y2 + 97));
+	}
+	else if (x1 < 10)
 	{
 		moveStr.push_back(QString::number(x1)[0].toLatin1());
 		moveStr.push_back(static_cast<char>(y1 + 97));

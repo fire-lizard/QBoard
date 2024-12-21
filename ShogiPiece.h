@@ -10,6 +10,8 @@ public:
 	std::string StringCode() override;
 	std::string AsianStringCode() override;
 	std::string GetJapaneseImageFileName() override;
+	std::string LongStringCode() const;
+	static PieceType LongStringCode2PieceType(const std::string& longStringCode);
 
 protected:
 

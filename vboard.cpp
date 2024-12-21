@@ -166,7 +166,7 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 		_board->SetData(4, y, p);
 		if (_engine != nullptr)
 		{
-			_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, ' ');
+			_engine->Move(_oldX, _board->GetHeight() - _oldY, x == 7 ? 6 : 2, _board->GetHeight() - y, ' ');
 		}
 		AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ');
 		_currentPlayer = _currentPlayer == White ? Black : White;
@@ -212,7 +212,7 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 					_currentPiece->Promote(pt);
 				}
 			}
-            if (_gameVariant == MiniShogi && !_currentPiece->IsPromoted())
+			if (_gameVariant == MiniShogi && !_currentPiece->IsPromoted())
 			{
                 if ((y == 4 && _currentPiece->GetColour() == Black) ||
                     (y == 0 && _currentPiece->GetColour() == White))
@@ -462,8 +462,7 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf) const
 	QStringList parts = QString(buf).trimmed().split(_nlre, Qt::SkipEmptyParts);
 	for (auto& part : parts)
 	{
-        const bool moveFound = _engine->GetType() == XBoard ? part.startsWith("move ") : part.startsWith("bestmove ");
-		if (moveFound)
+		if (_engine->GetType() == XBoard ? part.startsWith("move ") : part.startsWith("bestmove "))
 		{
             if (_engine->GetType() == USI)
             {
@@ -702,21 +701,70 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 
 	QMenu menu(this);
 
-	const QAction* action1 = menu.addAction("Option 1");
-	const QAction* action2 = menu.addAction("Option 2");
-	const QAction* action3 = menu.addAction("Option 3");
+	const auto cps = dynamic_cast<ShogiVariantBoard*>(_board)->GetCapturedPieces();
+	for (const auto cp : cps)
+	{
+		ShogiPiece p(cp, _currentPlayer);
+		std::string str = p.LongStringCode() + " (" + p.AsianStringCode() + ")";
+		menu.addAction(QString::fromStdString(str));
+	}
 
 	// Execute the menu at the cursor position
 	const QAction* selectedAction = menu.exec(event->globalPos());
 
 	// Handle the selected action
-	if (selectedAction == action1) {
-		qDebug() << "Option 1 selected";
-	}
-	else if (selectedAction == action2) {
-		qDebug() << "Option 2 selected";
-	}
-	else if (selectedAction == action3) {
-		qDebug() << "Option 3 selected";
+	if (selectedAction != nullptr)
+	{
+		const std::string longStringCode = selectedAction->text().split(' ', Qt::SkipEmptyParts)[0].toStdString();
+		const PieceType newPiece = ShogiPiece::LongStringCode2PieceType(longStringCode);
+
+		const int w = this->size().width() / _board->GetWidth();
+		const int h = this->size().height() / _board->GetHeight();
+		const int x = event->x() / w;
+		const int y = event->y() / h;
+		if (_board->GetData(x, y) != nullptr)
+		{
+			QMessageBox mb(QMessageBox::Warning, "Illegal drop", "Square is already occupied",
+				QMessageBox::Ok, this);
+			mb.exec();
+			return;
+		}
+		if (newPiece == Pawn)
+		{
+			for (int index = 0; index < _board->GetHeight(); index++)
+			{
+				if (_board->GetData(x, index) != nullptr && _board->GetData(x, index)->GetType() == Pawn)
+				{
+					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place second pawn on the same line",
+						QMessageBox::Ok, this);
+					mb.exec();
+					return;
+				}
+			}
+		}
+		dynamic_cast<ShogiVariantBoard*>(_board)->PlacePiece(newPiece, _currentPlayer, x, y);
+		Piece* p = _board->GetData(x, y);
+		const char sc = p->StringCode()[0];
+		if (_engine != nullptr)
+		{
+			if (_engine->GetType() == USI)
+				_engine->Move(sc, '*', _board->GetWidth() - x, y, ' ');
+			else
+				_engine->Move(sc, '@', x, _board->GetHeight() - y, ' ');
+		}
+		if (_engine == nullptr || _engine->GetType() == USI)
+			AddMove(newPiece, sc, '*', _board->GetWidth() - x, _board->GetHeight() - y, ' ');
+		else
+			AddMove(newPiece, sc, '@', x, y, ' ');
+		dynamic_cast<ShogiVariantBoard*>(_board)->RemoveCapturedPiece(newPiece);
+		_currentPlayer = _currentPlayer == White ? Black : White;
+		_statusBar->setStyleSheet("QStatusBar { color : black; }");
+		_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
+		_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
+		_currentPiece = nullptr;
+		_oldX = -1;
+		_oldY = -1;
+		_moves.clear();
+		this->repaint();
 	}
 }
