@@ -212,31 +212,69 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 					_currentPiece->Promote(pt);
 				}
 			}
-			if (_gameVariant == MiniShogi && !_currentPiece->IsPromoted())
+			if (std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) != std::end(_shogiVariants))
 			{
-                if ((y == 4 && _currentPiece->GetColour() == Black) ||
-                    (y == 0 && _currentPiece->GetColour() == White))
+				if (_gameVariant == MiniShogi && !_currentPiece->IsPromoted())
 				{
-					_currentPiece->Promote();
-					promotion = '+';
+					if ((y == 4 && _currentPiece->GetColour() == Black) ||
+						(y == 0 && _currentPiece->GetColour() == White))
+					{
+						promotion = '+';
+					}
 				}
-			}
-            if ((_gameVariant == Shogi || _gameVariant == ShoShogi) && !_currentPiece->IsPromoted())
-			{
-                if ((y >= 6 && _currentPiece->GetColour() == Black) ||
-                    (y <= 2 && _currentPiece->GetColour() == White))
+				if ((_gameVariant == Shogi || _gameVariant == ShoShogi) && !_currentPiece->IsPromoted())
 				{
-					_currentPiece->Promote();
-					promotion = '+';
+					if ((y >= 6 && _currentPiece->GetColour() == Black) ||
+						(y <= 2 && _currentPiece->GetColour() == White))
+					{
+						promotion = '+';
+					}
 				}
-			}
-            if (_gameVariant == ChuShogi && !_currentPiece->IsPromoted())
-			{
-                if ((y >= 8 && _currentPiece->GetColour() == Black) ||
-                    (y <= 3 && _currentPiece->GetColour() == White))
+				if (_gameVariant == ChuShogi && !_currentPiece->IsPromoted())
 				{
-					_currentPiece->Promote();
-					promotion = '+';
+					if ((y >= 8 && _currentPiece->GetColour() == Black) ||
+						(y <= 3 && _currentPiece->GetColour() == White))
+					{
+						promotion = '+';
+					}
+				}
+				if (promotion == '+')
+				{
+					const PieceType pt = _currentPiece->GetType();
+					if (_gameVariant == MiniShogi && pt == Pawn)
+					{
+						_currentPiece->Promote();
+					}
+					else if ((_gameVariant == Shogi || _gameVariant == ShoShogi) && (pt == Pawn || pt == WhiteHorse || pt == Lance))
+					{
+						if ((y == 8 && _currentPiece->GetColour() == Black) ||
+							(y == 0 && _currentPiece->GetColour() == White))
+						{
+							_currentPiece->Promote();
+						}
+					}
+					else if (_gameVariant == ChuShogi && (pt == Pawn || pt == Lance))
+					{
+						if ((y == 11 && _currentPiece->GetColour() == Black) ||
+							(y == 0 && _currentPiece->GetColour() == White))
+						{
+							_currentPiece->Promote();
+						}
+					}
+					else
+					{
+						QMessageBox mb(QMessageBox::Question, "Promotion", "Would you like to promote this piece?",
+							QMessageBox::Yes | QMessageBox::No, this);
+						const int response = mb.exec();
+						if (response == QMessageBox::Yes)
+						{
+							_currentPiece->Promote();
+						}
+						else
+						{
+							promotion = ' ';
+						}
+					}
 				}
 			}
 			if (_engine != nullptr)
