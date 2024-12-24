@@ -22,7 +22,6 @@ class VBoard : public QWidget
 public:
 	explicit VBoard(QWidget *parent = nullptr);
 	~VBoard() override;
-	std::vector<std::string> GetGameRecord() const;
 	Board* GetBoard() const;
 	GameVariant GetGameVariant() const;
 	void SetGameVariant(GameVariant gameVariant);
@@ -67,13 +66,13 @@ private:
 	QMainWindow *_window = nullptr;
 	GameVariant _gameVariant = Chess;
 	Engine *_engine = nullptr;
-	std::vector<std::string> _gameRecord;
     QRegularExpression _nlre;
     QRegularExpression _csre;
     QRegularExpression _qhre;
     QRegularExpression _sgxbre;
     QRegularExpression _sgusre;
 	GameVariant _shogiVariants[4] = {Shogi, MiniShogi, ChuShogi, ShoShogi};
+	bool _lionDoubleClicked = false;
 
 signals:
 

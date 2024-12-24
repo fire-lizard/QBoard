@@ -296,19 +296,19 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, West);
 		if (piece->GetColour() == Black)
 		{
-			CheckMove(piece, x + 1, y + 1);
-			CheckMove(piece, x + 2, y + 2);
-			CheckMove(piece, x - 1, y + 1);
-			CheckMove(piece, x - 2, y + 2);
+			if (CheckLionMove(piece, x + 1, y + 1))
+				CheckMove(piece, x + 2, y + 2);
+			if (CheckLionMove(piece, x - 1, y + 1))
+				CheckMove(piece, x - 2, y + 2);
 			CheckDirection(piece, x, y, SouthEast);
 			CheckDirection(piece, x, y, SouthWest);
 		}
 		else
 		{
-			CheckMove(piece, x + 1, y - 1);
-			CheckMove(piece, x + 2, y - 2);
-			CheckMove(piece, x - 1, y - 1);
-			CheckMove(piece, x - 2, y - 2);
+			if (CheckLionMove(piece, x + 1, y - 1))
+				CheckMove(piece, x + 2, y - 2);
+			if (CheckLionMove(piece, x - 1, y - 1))
+				CheckMove(piece, x - 2, y - 2);
 			CheckDirection(piece, x, y, NorthWest);
 			CheckDirection(piece, x, y, NorthEast);
 		}
@@ -322,14 +322,14 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, NorthEast);
 		if (piece->GetColour() == Black)
 		{
-			CheckMove(piece, x, y + 1);
-			CheckMove(piece, x, y + 2);
+			if (CheckLionMove(piece, x, y + 1))
+				CheckMove(piece, x, y + 2);
 			CheckDirection(piece, x, y, South);
 		}
 		else
 		{
-			CheckMove(piece, x, y - 1);
-			CheckMove(piece, x, y - 2);
+			if (CheckLionMove(piece, x, y - 1))
+				CheckMove(piece, x, y - 2);
 			CheckDirection(piece, x, y, North);
 		}
 		break;
@@ -385,6 +385,70 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		{
 			CheckDirection(piece, x, y, NorthEast);
 			CheckDirection(piece, x, y, NorthWest);
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+bool ChuShogiBoard::CheckLionMove(const Piece* piece, int x, int y)
+{
+	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
+	{
+		if (_data[x][y] == nullptr || _data[x][y]->GetColour() != piece->GetColour())
+		{
+			_moves.emplace_back(x, y);
+			return true;
+		}
+	}
+	return false;
+}
+
+void ChuShogiBoard::GetLionMoves(const Piece* piece, int x, int y)
+{
+	_moves.clear();
+	switch (piece->GetType())
+	{
+	case Lion:
+		CheckMove(piece, x + 2, y + 2);
+		CheckMove(piece, x + 2, y + 1);
+		CheckMove(piece, x + 2, y);
+		CheckMove(piece, x + 2, y - 1);
+		CheckMove(piece, x + 2, y - 2);
+		CheckMove(piece, x + 1, y + 2);
+		CheckMove(piece, x, y + 2);
+		CheckMove(piece, x - 1, y + 2);
+
+		CheckMove(piece, x - 1, y - 2);
+		CheckMove(piece, x, y - 2);
+		CheckMove(piece, x + 1, y - 2);
+		CheckMove(piece, x - 2, y + 2);
+		CheckMove(piece, x - 2, y + 1);
+		CheckMove(piece, x - 2, y);
+		CheckMove(piece, x - 2, y - 1);
+		CheckMove(piece, x - 2, y - 2);
+		break;
+	case Eagle:
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x + 2, y + 2);
+			CheckMove(piece, x - 2, y + 2);
+		}
+		else
+		{
+			CheckMove(piece, x + 2, y - 2);
+			CheckMove(piece, x - 2, y - 2);
+		}
+		break;
+	case Unicorn:
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x, y + 2);
+		}
+		else
+		{
+			CheckMove(piece, x, y - 2);
 		}
 		break;
 	default:

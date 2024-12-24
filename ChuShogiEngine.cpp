@@ -17,14 +17,11 @@ void ChuShogiEngine::StartGame(QString variant)
 {
 	_moves.clear();
 	_process->write("xboard\n");
+	_process->write("new\n");
 	if (variant != "")
 	{
 		const QString str = "variant " + variant + "\n";
 		_process->write(str.toLatin1());
-	}
-	else
-	{
-		_process->write("new\n");
 	}
 	_process->write("memory 80\n");
 }
@@ -47,7 +44,14 @@ QByteArray ChuShogiEngine::AddMove(signed char x1, signed char y1, signed char x
     moveStr.push_back('v');
     moveStr.push_back('e');
     moveStr.push_back(' ');
-    if (y1 < 10)
+	if (y1 == '@')
+	{
+		moveStr.push_back(x1);
+		moveStr.push_back(y1);
+		moveStr.push_back(static_cast<char>(x2 + 97));
+		moveStr.push_back(QString::number(y2)[0].toLatin1());
+	}
+	else if (y1 < 10)
 	{
 		moveStr.push_back(static_cast<char>(x1 + 97));
 		moveStr.push_back(QString::number(y1)[0].toLatin1());

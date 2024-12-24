@@ -17,14 +17,11 @@ void WbEngine::StartGame(QString variant)
 {
 	_moves.clear();
 	_process->write("xboard\n");
+	_process->write("new\n");
 	if (variant != "")
 	{
 		const QString str = "variant " + variant + "\n";
 		_process->write(str.toLatin1());
-	}
-	else
-	{
-		_process->write("new\n");
 	}
 }
 

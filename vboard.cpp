@@ -56,7 +56,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				}
 				else if (_board->GetData(i, j) == nullptr)
 				{
-					painter.setBrush(Qt::cyan);
+					painter.setBrush(_lionDoubleClicked ? QColorConstants::Svg::orange : Qt::cyan);
 					painter.drawRect(rect);
 					painter.setBrush(Qt::NoBrush);
 				}
@@ -158,6 +158,7 @@ void VBoard::mousePressEvent(QMouseEvent *event)
     const int x = static_cast<int>(event->position().x()) / w;
     const int y = static_cast<int>(event->position().y()) / h;
 	Piece *p = _board->GetData(x, y);
+	_lionDoubleClicked = false;
 	// Castling check
 	if (_gameVariant == Chess && _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
 		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved())
@@ -325,18 +326,31 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 
 void VBoard::mouseDoubleClickEvent(QMouseEvent* event)
 {
-	//TODO: Lion move
-	//if (_gameVariant != ChuShogi) return;
+	if (_gameVariant != ChuShogi) return;
+	if (_engine != nullptr && _currentPlayer == Black) return;
+	const int w = this->size().width() / _board->GetWidth();
+	const int h = this->size().height() / _board->GetHeight();
+	const int x = static_cast<int>(event->position().x()) / w;
+	const int y = static_cast<int>(event->position().y()) / h;
+	Piece* p = _board->GetData(x, y);
+	if (p == nullptr || p->GetType() != Lion) return;
+	_lionDoubleClicked = true;
+	dynamic_cast<ChuShogiBoard*>(_board)->GetLionMoves(p, x, y);
+	_moves = _board->Moves();
+	std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+		{
+			CalculateCheck(x, y, t.first, t.second);
+		});
+	std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+		{
+			CalculateCheck(x, y, t.first, t.second);
+		});
+	this->repaint();
 }
 
 Board* VBoard::GetBoard() const
 {
 	return _board;
-}
-
-std::vector<std::string> VBoard::GetGameRecord() const
-{
-	return _gameRecord;
 }
 
 GameVariant VBoard::GetGameVariant() const
@@ -349,7 +363,6 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	_currentPiece = nullptr;
 	_moves.clear();
 	_opponentMoves.clear();
-	_gameRecord.clear();
 	_gameVariant = gameVariant;
 	switch (_gameVariant)
 	{
@@ -410,7 +423,6 @@ void VBoard::SetCurrentPlayer(PieceColour currentPlayer)
 {
 	_moves.clear();
 	_opponentMoves.clear();
-	_gameRecord.clear();
 	_currentPlayer = currentPlayer;
 }
 

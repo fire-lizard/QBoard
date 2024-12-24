@@ -150,7 +150,7 @@ void MainWindow::on_actionNew_game_triggered()
         const int selectedIndex = newGameDialog->GetBlackPlayer()->currentIndex();
         if (selectedIndex > 0)
         {
-	        const auto tpl = _engines[selectedIndex - 1];
+	        const std::tuple<QString, GameVariant, EngineProtocol, QString, QString> tpl = _engines[selectedIndex - 1];
             _engineProtocol = std::get<2>(tpl);
             _engineExe = std::get<3>(tpl);
             _engineArguments.clear();
@@ -180,7 +180,7 @@ void MainWindow::on_actionNew_game_triggered()
 				_engine = new UsiEngine();
 				break;
 			case XBoard:
-				constexpr GameVariant gameVariants[] = { ChuShogi, ShoShogi };
+				constexpr GameVariant gameVariants[] = { ChuShogi, ShoShogi, MiniShogi };
 				if (std::find(std::begin(gameVariants), std::end(gameVariants), this->ui->vboard->GetGameVariant()) != std::end(gameVariants))
 				{
 					_engine = new ChuShogiEngine();
@@ -203,50 +203,33 @@ void MainWindow::on_actionNew_game_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	/*const QString fileName = QFileDialog::getOpenFileName(this, "Open file", "", "PGN Files (*.pgn)");
-	if (fileName != "")
+	/*if (this->ui->vboard->GetGameVariant() == Chess)
 	{
-		QFile file;
-		file.setFileName(fileName);
-		file.open(QIODevice::ReadOnly | QIODevice::Text);
-		QString data = file.readAll();
-		file.close();
-		this->ui->vboard->repaint();
+		const QString fileName = QFileDialog::getOpenFileName(this, "Open file", "", "PGN Files (*.pgn)");
+		if (fileName != "")
+		{
+		}
 	}*/
 }
 
 void MainWindow::on_actionSave_triggered()
 {
-	/*const QString fileName = QFileDialog::getSaveFileName(this, "Save file", "", "PGN Files (*.pgn)");
-	if (fileName != "")
+	/*if (this->ui->vboard->GetGameVariant() == Chess)
 	{
-		QFile file;
-		file.setFileName(fileName);
-		file.open(QIODevice::WriteOnly | QIODevice::Text);
-		file.write("[Event \"QBoard Game\"]\n");
-		const QString site = "[Site \"" + QSysInfo::machineHostName() + "\"]\n";
-		file.write(site.toLocal8Bit());
-		const QString currentDate = "[Date \"" + QDate::currentDate().toString("dd/MM/yyyy") + "\"]\n";
-		file.write(currentDate.toLocal8Bit());
-		const std::vector<std::string> gameRecord = ui->vboard->GetGameRecord();
-		const QString currentRound = "[Round \"" + QString::number(gameRecord.size()) + "\"]\n";
-		file.write(currentRound.toLocal8Bit());
-		QString userName = qgetenv("USER");
-		if (userName.isEmpty())
-			userName = qgetenv("USERNAME");
-		const QString whiteName = "[White \"" + userName + "\"]\n";
-		const QString blackName = "[Black \"" + _engineName + "\"]\n\n";
-		file.write(whiteName.toLocal8Bit());
-		file.write(blackName.toLocal8Bit());
-		GameVariant gameVariant = ui->vboard->GetGameVariant();
-		for (size_t index = 0; index < gameRecord.size(); index++)
+		const QString fileName = QFileDialog::getSaveFileName(this, "Save file", "", "PGN Files (*.pgn)");
+		if (fileName != "")
 		{
-			file.write(QString::number(index + 1).toLocal8Bit());
-			file.write(". ");
-			file.write(gameRecord[index].c_str());
-			file.write(" ");
+			const QString evt = "[Event \"QBoard Game\"]\n";
+			const QString site = "[Site \"" + QSysInfo::machineHostName() + "\"]\n";
+			const QString currentDate = "[Date \"" + QDate::currentDate().toString("dd/MM/yyyy") + "\"]\n";
+			const QString currentRound = "[Round 1]\n";
+			QString userName = qgetenv("USER");
+			if (userName.isEmpty())
+				userName = qgetenv("USERNAME");
+			const QString whiteName = "[White \"" + userName + "\"]\n";
+			const QString blackName = "[Black \"" + _engineName + "\"]\n";
+			const QString result = "[Result \"*\"]\n\n";
 		}
-		file.close();
 	}*/
 }
 
@@ -303,7 +286,7 @@ void MainWindow::LoadEngine()
 			{
 				if (ui->vboard->GetGameVariant() == MiniShogi)
 				{
-					_engine->StartGame("5x5+5_shogi");
+					_engine->StartGame("mini");
 				}
 				else if (ui->vboard->GetGameVariant() == ShoShogi)
 				{
