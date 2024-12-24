@@ -48,9 +48,13 @@ void VBoard::paintEvent(QPaintEvent *)
 			QRect rect(i * w, j * h, w, h);
 			if (PossibleMove(i, j))
 			{
-				if (!_lionDoubleClicked && _currentPiece != nullptr && _currentPiece->GetType() == Lion)
+				if (!_lionDoubleClicked && _currentPiece != nullptr && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces))
 				{
-					if (abs(_oldX - i) == 2 || abs(_oldY - j) == 2)
+					if (((abs(_oldX - i) == 2 || abs(_oldY - j) == 2) && _currentPiece->GetType() == Lion) ||
+						(abs(_oldX - i) == 2 && _oldY - j == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
+						(abs(_oldX - i) == 2 && _oldY - j == -2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == Black) ||
+						(_oldX == i && _oldY - j == 2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == White) ||
+						(_oldX == i && _oldY - j == -2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == Black))
 					{
 						if (_board->GetData(i, j) != nullptr)
 						{
@@ -83,7 +87,18 @@ void VBoard::paintEvent(QPaintEvent *)
 				}
 				else if (_board->GetData(i, j) != nullptr)
 				{
-					painter.setBrush(_board->GetData(i, j)->GetColour() != _currentPlayer ? Qt::red : Qt::magenta);
+					if (_currentPiece != nullptr && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces))
+					{
+						painter.setBrush(QColorConstants::Svg::orangered);
+					}
+					else if (_board->GetData(i, j)->GetColour() != _currentPlayer)
+					{
+						painter.setBrush(Qt::red);
+					}
+					else
+					{
+						painter.setBrush(Qt::magenta);
+					}
 					painter.drawRect(rect);
 					painter.setBrush(Qt::NoBrush);
 				}
@@ -183,15 +198,14 @@ void VBoard::paintEvent(QPaintEvent *)
 	}
 }
 
-void VBoard::mousePressEvent(QMouseEvent *event)
+void VBoard::mousePressEvent(QMouseEvent* event)
 {
 	if (_engine != nullptr && _currentPlayer == Black) return;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
-    const int x = static_cast<int>(event->position().x()) / w;
-    const int y = static_cast<int>(event->position().y()) / h;
-	Piece *p = _board->GetData(x, y);
-	_lionDoubleClicked = false;
+	const int x = static_cast<int>(event->position().x()) / w;
+	const int y = static_cast<int>(event->position().y()) / h;
+	Piece* p = _board->GetData(x, y);
 	// Castling check
 	if (_gameVariant == Chess && _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
 		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved())
@@ -215,14 +229,60 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 	}
 	else if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
 	{
-		if (_board->Move(_oldX, _oldY, x, y))
+		// Lion move
+		/*if (!_lionDoubleClicked && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces) && !dynamic_cast<ChuShogiPiece*>(_currentPiece)->HasMovedOnce())
+		{
+			if (((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) && _currentPiece->GetType() == Lion) ||
+				(abs(_oldX - x) == 2 && _oldY - y == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
+				(abs(_oldX - x) == 2 && _oldY - y == -2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == Black) ||
+				(_oldX == x && _oldY - y == 2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == White) ||
+				(_oldX == x && _oldY - y == -2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == Black)) return;
+			if (_board->Move(_oldX, _oldY, x, y))
+			{
+				if (_engine != nullptr)
+				{
+					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, ' ');
+				}
+				AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ');
+				_oldX = x;
+				_oldY = y;
+				dynamic_cast<ChuShogiPiece*>(_currentPiece)->MoveOnce();
+				dynamic_cast<ChuShogiBoard*>(_board)->GetLionMoves(_currentPiece, x, y);
+				this->repaint();
+			}
+		}
+		else if (!_lionDoubleClicked && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces) && dynamic_cast<ChuShogiPiece*>(_currentPiece)->HasMovedOnce())
+		{
+			if (_board->Move(_oldX, _oldY, x, y))
+			{
+				if (_engine != nullptr)
+				{
+					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, ' ');
+				}
+				AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ');
+				dynamic_cast<ChuShogiPiece*>(_currentPiece)->EndMove();
+				_currentPiece = nullptr;
+				_oldX = x;
+				_oldY = y;
+				_currentPlayer = _currentPlayer == White ? Black : White;
+				_statusBar->setStyleSheet("QStatusBar { color : black; }");
+				_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
+				_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
+				_currentPiece = nullptr;
+				_oldX = -1;
+				_oldY = -1;
+				_moves.clear();
+				this->repaint();
+			}
+		}
+		else */if (_board->Move(_oldX, _oldY, x, y))
 		{
 			char promotion = ' ';
 			if (_gameVariant == Chess)
 			{
 				if (_currentPiece->GetType() == Pawn &&
-                    ((y == 7 && _currentPiece->GetColour() == Black) ||
-                    (y == 0 && _currentPiece->GetColour() == White)))
+					((y == 7 && _currentPiece->GetColour() == Black) ||
+						(y == 0 && _currentPiece->GetColour() == White)))
 				{
 					PromotionDialog* pd = new PromotionDialog(this);
 					pd->exec();
@@ -279,21 +339,16 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 					{
 						_currentPiece->Promote();
 					}
-					else if ((_gameVariant == Shogi || _gameVariant == ShoShogi) && (pt == Pawn || pt == WhiteHorse || pt == Lance))
+					else if ((_gameVariant == Shogi || _gameVariant == ShoShogi) &&
+						(pt == Pawn || pt == WhiteHorse || pt == Lance) &&
+						((y == 8 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
 					{
-						if ((y == 8 && _currentPiece->GetColour() == Black) ||
-							(y == 0 && _currentPiece->GetColour() == White))
-						{
-							_currentPiece->Promote();
-						}
+						_currentPiece->Promote();
 					}
-					else if (_gameVariant == ChuShogi && (pt == Pawn || pt == Lance))
+					else if (_gameVariant == ChuShogi && (pt == Pawn || pt == Lance) &&
+						((y == 11 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
 					{
-						if ((y == 11 && _currentPiece->GetColour() == Black) ||
-							(y == 0 && _currentPiece->GetColour() == White))
-						{
-							_currentPiece->Promote();
-						}
+						_currentPiece->Promote();
 					}
 					else
 					{
@@ -321,6 +376,7 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
 			}
 			AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion);
+			_lionDoubleClicked = false;
 			_currentPlayer = _currentPlayer == White ? Black : White;
 			_statusBar->setStyleSheet("QStatusBar { color : black; }");
 			_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");
@@ -332,25 +388,23 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 		}
 		this->repaint();
 	}
-	else
+	else if (p != nullptr && p->GetColour() == _currentPlayer)
 	{
-		if (p != nullptr && p->GetColour() == _currentPlayer)
-		{
-			_currentPiece = _board->GetData(x, y);
-			_oldX = x;
-			_oldY = y;
-			_board->GetMoves(p, x, y);
-			_moves = _board->Moves();
-			std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
-				{
-					CalculateCheck(x, y, t.first, t.second);
-				});
-			std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
-				{
-					CalculateCheck(x, y, t.first, t.second);
-				});
-			this->repaint();
-		}
+		_lionDoubleClicked = false;
+		_currentPiece = _board->GetData(x, y);
+		_oldX = x;
+		_oldY = y;
+		_board->GetMoves(p, x, y);
+		_moves = _board->Moves();
+		std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+			{
+				CalculateCheck(x, y, t.first, t.second);
+			});
+		std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+			{
+				CalculateCheck(x, y, t.first, t.second);
+			});
+		this->repaint();
 	}
 }
 
@@ -362,10 +416,11 @@ void VBoard::mouseDoubleClickEvent(QMouseEvent* event)
 	const int h = this->size().height() / _board->GetHeight();
 	const int x = static_cast<int>(event->position().x()) / w;
 	const int y = static_cast<int>(event->position().y()) / h;
-	Piece* p = _board->GetData(x, y);
-	if (p == nullptr || p->GetType() != Lion) return;
+	const Piece* p = _board->GetData(x, y);
+	if (p == nullptr || std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) == std::end(_lionPieces)) return;
+	if (dynamic_cast<ChuShogiPiece*>(_currentPiece)->HasMovedOnce()) return;
 	_lionDoubleClicked = true;
-	dynamic_cast<ChuShogiBoard*>(_board)->GetLionMoves(p, x, y);
+	dynamic_cast<ChuShogiBoard*>(_board)->GetLionJumps(p, x, y);
 	_moves = _board->Moves();
 	std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
 		{

@@ -72,6 +72,7 @@ private:
     QRegularExpression _sgxbre;
     QRegularExpression _sgusre;
 	GameVariant _shogiVariants[4] = {Shogi, MiniShogi, ChuShogi, ShoShogi};
+	PieceType _lionPieces[3] = { Lion, Eagle, Unicorn };
 	bool _lionDoubleClicked = false;
 
 signals:

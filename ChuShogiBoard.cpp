@@ -429,7 +429,7 @@ bool ChuShogiBoard::CheckLionMove(const Piece* piece, int x, int y)
 	return false;
 }
 
-void ChuShogiBoard::GetLionMoves(const Piece* piece, int x, int y)
+void ChuShogiBoard::GetLionJumps(const Piece* piece, int x, int y)
 {
 	_moves.clear();
 	switch (piece->GetType())
@@ -473,6 +473,48 @@ void ChuShogiBoard::GetLionMoves(const Piece* piece, int x, int y)
 		else
 		{
 			CheckMove(piece, x, y - 2);
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+void ChuShogiBoard::GetLionMoves(const Piece* piece, int x, int y)
+{
+	_moves.clear();
+	switch (piece->GetType())
+	{
+	case Lion:
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x - 1, y - 1);
+		break;
+	case Eagle:
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x + 1, y + 1);
+			CheckMove(piece, x - 1, y + 1);
+		}
+		else
+		{
+			CheckMove(piece, x + 1, y - 1);
+			CheckMove(piece, x - 1, y - 1);
+		}
+		break;
+	case Unicorn:
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x, y + 1);
+		}
+		else
+		{
+			CheckMove(piece, x, y - 1);
 		}
 		break;
 	default:

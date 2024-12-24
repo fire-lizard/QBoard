@@ -2,6 +2,7 @@
 
 ChuShogiPiece::ChuShogiPiece(PieceType pieceType, PieceColour pieceColour) : Piece(pieceType, pieceColour)
 {
+	_hasMovedOnce = false;
 }
 
 ChuShogiPiece::~ChuShogiPiece()
@@ -243,4 +244,19 @@ std::string ChuShogiPiece::GetJapaneseImageFileName()
 		}
 	}
 	return imageFileName;
+}
+
+void ChuShogiPiece::MoveOnce()
+{
+	_hasMovedOnce = true;
+}
+
+void ChuShogiPiece::EndMove()
+{
+	_hasMovedOnce = false;
+}
+
+bool ChuShogiPiece::HasMovedOnce() const
+{
+	return _hasMovedOnce;
 }
