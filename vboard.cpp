@@ -48,7 +48,40 @@ void VBoard::paintEvent(QPaintEvent *)
 			QRect rect(i * w, j * h, w, h);
 			if (PossibleMove(i, j))
 			{
-				if (_board->GetData(i, j) != nullptr)
+				if (!_lionDoubleClicked && _currentPiece != nullptr && _currentPiece->GetType() == Lion)
+				{
+					if (abs(_oldX - i) == 2 || abs(_oldY - j) == 2)
+					{
+						if (_board->GetData(i, j) != nullptr)
+						{
+							painter.setBrush(QColorConstants::Svg::pink);
+							painter.drawRect(rect);
+							painter.setBrush(Qt::NoBrush);
+						}
+						else if (_board->GetData(i, j) == nullptr)
+						{
+							painter.setBrush(QColorConstants::Svg::lightcyan);
+							painter.drawRect(rect);
+							painter.setBrush(Qt::NoBrush);
+						}
+					}
+					else
+					{
+						if (_board->GetData(i, j) != nullptr)
+						{
+							painter.setBrush(Qt::red);
+							painter.drawRect(rect);
+							painter.setBrush(Qt::NoBrush);
+						}
+						else if (_board->GetData(i, j) == nullptr)
+						{
+							painter.setBrush(Qt::cyan);
+							painter.drawRect(rect);
+							painter.setBrush(Qt::NoBrush);
+						}
+					}
+				}
+				else if (_board->GetData(i, j) != nullptr)
 				{
 					painter.setBrush(_board->GetData(i, j)->GetColour() != _currentPlayer ? Qt::red : Qt::magenta);
 					painter.drawRect(rect);
@@ -301,25 +334,22 @@ void VBoard::mousePressEvent(QMouseEvent *event)
 	}
 	else
 	{
-		if (p != nullptr)
+		if (p != nullptr && p->GetColour() == _currentPlayer)
 		{
-			if (p->GetColour() == _currentPlayer)
-			{
-				_currentPiece = _board->GetData(x, y);
-				_oldX = x;
-				_oldY = y;
-				_board->GetMoves(p, x, y);
-				_moves = _board->Moves();
-				std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+			_currentPiece = _board->GetData(x, y);
+			_oldX = x;
+			_oldY = y;
+			_board->GetMoves(p, x, y);
+			_moves = _board->Moves();
+			std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
 				{
 					CalculateCheck(x, y, t.first, t.second);
 				});
-				std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+			std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
 				{
 					CalculateCheck(x, y, t.first, t.second);
 				});
-				this->repaint();
-			}
+			this->repaint();
 		}
 	}
 }
