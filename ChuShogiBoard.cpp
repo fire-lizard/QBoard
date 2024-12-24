@@ -60,6 +60,14 @@ Piece* ChuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 
 void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 {
+	bool ned;
+	bool ed;
+	bool sed;
+	bool sd;
+	bool nd;
+	bool nwd;
+	bool wd;
+	bool swd;
 	_moves.clear();
 	switch (piece->GetType())
 	{
@@ -74,32 +82,48 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x - 1, y - 1);
 		break;
 	case Lion:
-		CheckMove(piece, x + 1, y + 1);
-		CheckMove(piece, x + 1, y);
-		CheckMove(piece, x + 1, y - 1);
-		CheckMove(piece, x, y + 1);
-		CheckMove(piece, x, y - 1);
-		CheckMove(piece, x - 1, y + 1);
-		CheckMove(piece, x - 1, y);
-		CheckMove(piece, x - 1, y - 1);
+		ned = CheckLionMove(piece, x + 1, y + 1);
+		ed = CheckLionMove(piece, x + 1, y);
+		sed = CheckLionMove(piece, x + 1, y - 1);
+		nd = CheckLionMove(piece, x, y + 1);
+		sd = CheckLionMove(piece, x, y - 1);
+		nwd = CheckLionMove(piece, x - 1, y + 1);
+		wd = CheckLionMove(piece, x - 1, y);
+		swd = CheckLionMove(piece, x - 1, y - 1);
 
-		CheckMove(piece, x + 2, y + 2);
-		CheckMove(piece, x + 2, y + 1);
-		CheckMove(piece, x + 2, y);
-		CheckMove(piece, x + 2, y - 1);
-		CheckMove(piece, x + 2, y - 2);
-		CheckMove(piece, x + 1, y + 2);
-		CheckMove(piece, x, y + 2);
-		CheckMove(piece, x - 1, y + 2);
+		if (ned)
+			CheckMove(piece, x + 2, y + 2);
+		if (ned || ed)
+			CheckMove(piece, x + 2, y + 1);
+		if (ned || ed || sed)
+			CheckMove(piece, x + 2, y);
+		if (ed || sed)
+			CheckMove(piece, x + 2, y - 1);
+		if (sed)
+			CheckMove(piece, x + 2, y - 2);
+		if (nd || ned)
+			CheckMove(piece, x + 1, y + 2);
+		if (nwd || nd || ned)
+			CheckMove(piece, x, y + 2);
+		if (nwd || nd)
+			CheckMove(piece, x - 1, y + 2);
 
-		CheckMove(piece, x - 1, y - 2);
-		CheckMove(piece, x, y - 2);
-		CheckMove(piece, x + 1, y - 2);
-		CheckMove(piece, x - 2, y + 2);
-		CheckMove(piece, x - 2, y + 1);
-		CheckMove(piece, x - 2, y);
-		CheckMove(piece, x - 2, y - 1);
-		CheckMove(piece, x - 2, y - 2);
+		if (swd || sd)
+			CheckMove(piece, x - 1, y - 2);
+		if (swd || sd || sed)
+			CheckMove(piece, x, y - 2);
+		if (sd || sed)
+			CheckMove(piece, x + 1, y - 2);
+		if (nwd)
+			CheckMove(piece, x - 2, y + 2);
+		if (wd || nwd)
+			CheckMove(piece, x - 2, y + 1);
+		if (swd || wd || nwd)
+			CheckMove(piece, x - 2, y);
+		if (swd || wd)
+			CheckMove(piece, x - 2, y - 1);
+		if (swd)
+			CheckMove(piece, x - 2, y - 2);
 		break;
 	case Queen:
 		CheckDirection(piece, x, y, North);
