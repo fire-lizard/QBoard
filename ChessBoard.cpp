@@ -4,6 +4,8 @@ ChessBoard::ChessBoard()
 {
 	_width = 8;
 	_height = 8;
+	_moveCount = 0;
+	_pgn = "";
 	ChessBoard::Initialize();
 }
 
@@ -178,4 +180,47 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY)
 		dynamic_cast<ChessPiece*>(_data[newX][newY])->Move();
 	}
 	return result;
+}
+
+void ChessBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture)
+{
+	if (_moveCount % 2 == 0)
+	{
+		_pgn += std::to_string((_moveCount / 2) + 1) + ". "; // Add move number for white
+	}
+	if (pieceType != Pawn)
+	{
+		_pgn += _pieceToPGN.at(pieceType);
+	}
+	_pgn.push_back(static_cast<char>(x1 + 97));
+	_pgn.push_back(std::to_string(8 - y1)[0]);
+	if (capture)
+	{
+		_pgn += "x";
+	}
+	_pgn.push_back(static_cast<char>(x2 + 97));
+	_pgn.push_back(std::to_string(y2)[0]);
+	if (promotion != ' ')
+	{
+		_pgn += "=";
+		_pgn.push_back(static_cast<char>(std::toupper(promotion)));
+	}
+	_pgn += " ";
+	_moveCount++;
+}
+
+void ChessBoard::WriteMove(const std::string& moveStr)
+{
+	if (_moveCount % 2 == 0)
+	{
+		 _pgn += std::to_string((_moveCount / 2) + 1) + ". "; // Add move number for white
+	}
+	_pgn += moveStr;
+	_pgn += " ";
+	_moveCount++;
+}
+
+std::string ChessBoard::GetPGN()
+{
+	return _pgn;
 }

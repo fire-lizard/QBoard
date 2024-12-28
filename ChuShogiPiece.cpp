@@ -1,6 +1,6 @@
 ﻿#include "ChuShogiPiece.h"
 
-ChuShogiPiece::ChuShogiPiece(PieceType pieceType, PieceColour pieceColour) : Piece(pieceType, pieceColour)
+ChuShogiPiece::ChuShogiPiece(PieceType pieceType, PieceColour pieceColour) : ShogiPiece(pieceType, pieceColour)
 {
 	_hasMovedOnce = false;
 }

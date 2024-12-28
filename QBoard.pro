@@ -45,7 +45,6 @@ SOURCES += main.cpp\
     comboboxitemdelegate.cpp \
     newgamedialog.cpp \
     addenginedialog.cpp \
-    PGN.cpp \
     WXF.cpp \
     PSN.cpp \
     CSA.cpp \
@@ -80,7 +79,6 @@ HEADERS  += mainwindow.h \
     comboboxitemdelegate.h \
     newgamedialog.h \
     addenginedialog.h \
-    PGN.h \
     WXF.h \
     PSN.h \
     CSA.h \

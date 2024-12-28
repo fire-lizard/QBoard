@@ -1,8 +1,8 @@
 #pragma once
-#include "Piece.h"
+#include "ShogiPiece.h"
 #include "Common.h"
 
-class ChuShogiPiece : public Piece
+class ChuShogiPiece : public ShogiPiece
 {
 public:
 	ChuShogiPiece(PieceType pieceType, PieceColour pieceColour);
@@ -13,7 +13,7 @@ public:
 	bool HasMovedOnce() const;
 	std::string StringCode() override;
 	std::string AsianStringCode() override;
-	virtual std::string GetJapaneseImageFileName();
+	std::string GetJapaneseImageFileName() override;
 
 protected:
 	static void replaceSubstring(std::string& str, const std::string& from, const std::string& to);

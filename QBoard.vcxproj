@@ -215,7 +215,6 @@
     <ClCompile Include="KIF.cpp" />
     <ClCompile Include="MiniShogiBoard.cpp" />
     <ClCompile Include="newgamedialog.cpp" />
-    <ClCompile Include="PGN.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="promotiondialog.cpp" />
     <ClCompile Include="PSN.cpp" />
@@ -252,7 +251,6 @@
     <ClInclude Include="KIF.h" />
     <ClInclude Include="MiniShogiBoard.h" />
     <QtMoc Include="newgamedialog.h" />
-    <ClInclude Include="PGN.h" />
     <ClInclude Include="Piece.h" />
     <QtMoc Include="promotiondialog.h" />
     <ClInclude Include="PSN.h" />

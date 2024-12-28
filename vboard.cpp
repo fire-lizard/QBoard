@@ -206,6 +206,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	const int x = static_cast<int>(event->position().x()) / w;
 	const int y = static_cast<int>(event->position().y()) / h;
 	Piece* p = _board->GetData(x, y);
+	PieceType ct = p != nullptr ? p->GetType() : None;
 	// Castling check
 	if (_gameVariant == Chess && _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
 		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved())
@@ -216,7 +217,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		{
 			_engine->Move(_oldX, _board->GetHeight() - _oldY, x == 7 ? 6 : 2, _board->GetHeight() - y, ' ');
 		}
-		AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ');
+		dynamic_cast<ChessBoard*>(_board)->WriteMove(x == 7 ? "O-O" : "O-O-O");
 		_currentPlayer = _currentPlayer == White ? Black : White;
 		_statusBar->setStyleSheet("QStatusBar { color : black; }");
 		_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");
@@ -375,7 +376,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				else
 					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
 			}
-			AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion);
+			AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None);
 			_lionDoubleClicked = false;
 			_currentPlayer = _currentPlayer == White ? Black : White;
 			_statusBar->setStyleSheet("QStatusBar { color : black; }");
@@ -572,8 +573,12 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 	delete board;
 }
 
-void VBoard::AddMove(PieceType p, int x1, int x2, int y1, int y2, char promotion)
+void VBoard::AddMove(PieceType p, int x1, int y1, int x2, int y2, char promotion, bool capture) const
 {
+	if (_gameVariant == Chess)
+	{
+		dynamic_cast<ChessBoard*>(_board)->WriteMove(p, x1, y1, x2, y2, promotion, capture);
+	}
 }
 
 void VBoard::SetStatusBar(QStatusBar *statusBar)
@@ -675,8 +680,8 @@ void VBoard::readyReadStandardOutput()
 	QProcess *p = dynamic_cast<QProcess*>(sender());
 	const QByteArray buf = p->readAllStandardOutput();
     int x1, y1, x2, y2;
-	this->_textEdit->setText(buf);
 	const QByteArray moveArray = ExtractMove(buf);
+	this->_textEdit->setText(_engineOutput == Verbose ? buf : moveArray);
 	if (moveArray.isEmpty()) return;
     if (_engine->GetType() == Qianhong)
     {
@@ -742,8 +747,9 @@ void VBoard::readyReadStandardOutput()
 				&& _board->GetData(x1, y1)->GetType() == Pawn
 				&& (moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r' || moveArray[4] == 'q');
 			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
+			PieceType ct = _board->GetData(x2, y2) != nullptr ? _board->GetData(x2, y2)->GetType() : None;
 			_board->Move(x1, y1, x2, y2);
-			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ');
+			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ct != None);
 			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
 			if (isPromoted)
 			{

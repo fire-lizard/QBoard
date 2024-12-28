@@ -81,7 +81,7 @@ void MainWindow::on_actionSettings_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-	QMessageBox::about(this, "About", "QBoard 0.4 alpha\nFire Lizard Software\nAnatoliy Sova\n2024");
+	QMessageBox::about(this, "About", "<center>QBoard 0.5 beta<br/>Fire Lizard Software<br/>Anatoliy Sova<br/>2024</center>");
 }
 
 void MainWindow::on_actionNew_game_triggered()
@@ -180,7 +180,7 @@ void MainWindow::on_actionNew_game_triggered()
 				_engine = new UsiEngine();
 				break;
 			case XBoard:
-				constexpr GameVariant gameVariants[] = { ChuShogi, ShoShogi, MiniShogi };
+				constexpr GameVariant gameVariants[] = { Shogi, ChuShogi, ShoShogi, MiniShogi };
 				if (std::find(std::begin(gameVariants), std::end(gameVariants), this->ui->vboard->GetGameVariant()) != std::end(gameVariants))
 				{
 					_engine = new ChuShogiEngine();
@@ -214,7 +214,7 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
-	/*if (this->ui->vboard->GetGameVariant() == Chess)
+	if (this->ui->vboard->GetGameVariant() == Chess)
 	{
 		const QString fileName = QFileDialog::getSaveFileName(this, "Save file", "", "PGN Files (*.pgn)");
 		if (fileName != "")
@@ -229,8 +229,14 @@ void MainWindow::on_actionSave_triggered()
 			const QString whiteName = "[White \"" + userName + "\"]\n";
 			const QString blackName = "[Black \"" + _engineName + "\"]\n";
 			const QString result = "[Result \"*\"]\n\n";
+			const QString pgn = QString::fromStdString(dynamic_cast<ChessBoard*>(this->ui->vboard->GetBoard())->GetPGN());
+			QFile file(fileName);
+			file.open(QIODevice::WriteOnly | QIODevice::Text);
+			const QByteArray str = (evt + site + currentDate + currentRound + whiteName + blackName + result + pgn).toLatin1();
+			file.write(str);
+			file.close();
 		}
-	}*/
+	}
 }
 
 void MainWindow::on_actionStop_game_triggered()
@@ -286,7 +292,7 @@ void MainWindow::LoadEngine()
 			{
 				if (ui->vboard->GetGameVariant() == MiniShogi)
 				{
-					_engine->StartGame("mini");
+					_engine->StartGame("5x5+5_shogi");
 				}
 				else if (ui->vboard->GetGameVariant() == ShoShogi)
 				{

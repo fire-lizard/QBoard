@@ -140,9 +140,6 @@
     <ClCompile Include="PSN.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PGN.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="KIF.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -242,9 +239,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PSN.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PGN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

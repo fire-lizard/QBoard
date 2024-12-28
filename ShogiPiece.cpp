@@ -1,6 +1,6 @@
 ﻿#include "ShogiPiece.h"
 
-ShogiPiece::ShogiPiece(PieceType pieceType, PieceColour pieceColour) : ChuShogiPiece(pieceType, pieceColour)
+ShogiPiece::ShogiPiece(PieceType pieceType, PieceColour pieceColour) : Piece(pieceType, pieceColour)
 {
 }
 
