@@ -49,7 +49,7 @@ private:
 	bool PossibleMove(int x, int y) const;
 	void RemoveMove(int x, int y);
 	void CalculateCheck(int oldX, int oldY, int newX, int newY);
-	void AddMove(PieceType p, int x1, int x2, int y1, int y2, char promotion, bool capture = false) const;
+	void AddMove(PieceType p, int x1, int y1, int x2, int y2, char promotion, bool capture = false) const;
     QByteArray ExtractMove(const QByteArray& buf) const;
 
 	Board *_board;

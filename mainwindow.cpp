@@ -243,7 +243,7 @@ void MainWindow::on_actionSave_triggered()
 			if (userName.isEmpty())
 				userName = qgetenv("USERNAME");
 			const QString evt = "GAME\t" + userName + " vs. " + _engineName + "\n";
-			const QString time = "TIME\t00:00 ; 00:00\n";
+			const QString gameTime = "TIME\t00:00 ; 00:00\n";
 			const QString currentDate = "DATE\t" + QDate::currentDate().toString("yyyy-MM-dd") + "\n";
 			const QString author = "AUTHOR\tQBoard (https://github.com/fire-lizard/QBoard)\n\n";
 			const QString redName = "RED\t" + userName + "\n";
@@ -252,7 +252,25 @@ void MainWindow::on_actionSave_triggered()
 			const QString wxf = "START{\n" + QString::fromStdString(dynamic_cast<XiangqiBoard*>(this->ui->vboard->GetBoard())->GetWXF()) + "\n}END";
 			QFile file(fileName);
 			file.open(QIODevice::WriteOnly | QIODevice::Text);
-			const QByteArray str = (header + evt + time + result + redName + blackName + currentDate + author + wxf).toLatin1();
+			const QByteArray str = (header + evt + gameTime + result + redName + blackName + currentDate + author + wxf).toLatin1();
+			file.write(str);
+			file.close();
+		}
+	}
+	else if (this->ui->vboard->GetGameVariant() == Shogi)
+	{
+		const QString fileName = QFileDialog::getSaveFileName(this, "Save file", "", "PSN Files (*.psn)");
+		if (fileName != "")
+		{
+			QString userName = qgetenv("USER");
+			if (userName.isEmpty())
+				userName = qgetenv("USERNAME");
+			const QString senteName = "[Sente \"" + userName + "\"]\n";
+			const QString goteName = "[Gote \"" + _engineName + "\"]\n\n";
+			const QString psn = QString::fromStdString(dynamic_cast<ShogiBoard*>(this->ui->vboard->GetBoard())->GetPSN());
+			QFile file(fileName);
+			file.open(QIODevice::WriteOnly | QIODevice::Text);
+			const QByteArray str = (senteName + goteName + psn).toLatin1();
 			file.write(str);
 			file.close();
 		}

@@ -376,7 +376,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				else
 					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
 			}
-			AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None);
+			AddMove(promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None);
 			_lionDoubleClicked = false;
 			_currentPlayer = _currentPlayer == White ? Black : White;
 			_statusBar->setStyleSheet("QStatusBar { color : black; }");
@@ -578,6 +578,10 @@ void VBoard::AddMove(PieceType p, int x1, int y1, int x2, int y2, char promotion
 	if (_gameVariant == Chess)
 	{
 		dynamic_cast<ChessBoard*>(_board)->WriteMove(p, x1, y1, x2, y2, promotion, capture);
+	}
+	else if (_gameVariant == Shogi)
+	{
+		dynamic_cast<ShogiBoard*>(_board)->WriteMove(p, x1, y1, x2, y2, promotion, capture);
 	}
 	else if (_gameVariant == Xiangqi)
 	{
@@ -832,7 +836,7 @@ void VBoard::readyReadStandardOutput()
                 || ((_gameVariant == Shogi || _gameVariant == ShoShogi) && (y2 <= 2 || y2 >= 6) && moveArray[4] == '+'));
 			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
 			_board->Move(x1, y1, x2, y2);
-			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ');
+			AddMove(isPromoted ? _board->GetData(x2, y2)->GetBaseType() : _board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ');
 			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
 			if (isPromoted)
 			{
@@ -909,10 +913,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			else
 				_engine->Move(sc, '@', x, _board->GetHeight() - y, ' ');
 		}
-		if (_engine == nullptr || _engine->GetType() == USI)
-			AddMove(newPiece, sc, '*', _board->GetWidth() - x, _board->GetHeight() - y, ' ');
-		else
-			AddMove(newPiece, sc, '@', x, y, ' ');
+		AddMove(newPiece, sc, '*', x, y, ' ');
 		dynamic_cast<ShogiVariantBoard*>(_board)->RemoveCapturedPiece(newPiece);
 		_currentPlayer = _currentPlayer == White ? Black : White;
 		_statusBar->setStyleSheet("QStatusBar { color : black; }");

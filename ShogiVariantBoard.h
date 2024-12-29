@@ -15,4 +15,3 @@ public:
 protected:
 	std::vector<PieceType> _capturedPieces;
 };
-

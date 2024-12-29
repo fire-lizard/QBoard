@@ -24,6 +24,8 @@ ShogiBoard::~ShogiBoard()
 
 void ShogiBoard::Initialize()
 {
+	_moveCount = 0;
+	_psn = "";
 	_capturedPieces.clear();
 	for (int i = 0; i < _width; i++)
 	{
@@ -213,4 +215,33 @@ void ShogiBoard::SetDrops(bool hasDrops)
 		_initialSetup[1][4] = Elephant;
 		_initialSetup[7][4] = Elephant;
 	}
+}
+
+void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture)
+{
+	_moveCount++;
+	_psn += std::to_string(_moveCount) + ".";
+	if (y1 == '*')
+	{
+		_psn.push_back(static_cast<char>(x1));
+		_psn.push_back(static_cast<char>(y1));
+		_psn += std::to_string(9 - x2);
+		_psn.push_back(static_cast<char>(y2 + 97));
+	}
+	else
+	{
+		_psn += _pieceToPSN.at(pieceType);
+		_psn += std::to_string(9 - x1);
+		_psn.push_back(static_cast<char>(y1 + 97));
+		_psn += capture ? "x" : "-";
+		_psn += std::to_string(9 - x2);
+		_psn.push_back(static_cast<char>(y2 + 97));
+		_psn += promotion;
+	}
+	_psn += "\n";
+}
+
+std::string ShogiBoard::GetPSN()
+{
+	return _psn;
 }
