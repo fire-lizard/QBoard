@@ -20,12 +20,10 @@ public:
 	QComboBox* GetGameVariant() const;
 	QComboBox* GetEngineProtocol() const;
 	QLineEdit* GetEnginePath() const;
-	QLineEdit* GetEngineParameters() const;
 	void SetEngineName(const QString &engineName) const;
     void SetGameVariant(const QString& gameVariant) const;
     void SetEngineProtocol(const QString& engineProtocol) const;
 	void SetEnginePath(const QString& enginePath) const;
-	void SetEngineParameters(const QString& engineParameters) const;
 
 private slots:
     void on_toolButton_clicked();

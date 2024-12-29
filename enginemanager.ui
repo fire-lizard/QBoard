@@ -70,11 +70,6 @@
      <string>FIle name</string>
     </property>
    </column>
-   <column>
-    <property name="text">
-     <string>Parameters</string>
-    </property>
-   </column>
   </widget>
   <widget class="QToolButton" name="toolButton">
    <property name="geometry">

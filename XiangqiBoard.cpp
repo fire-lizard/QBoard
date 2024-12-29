@@ -5,6 +5,8 @@ XiangqiBoard::XiangqiBoard()
 {
 	_width = 9;
 	_height = 10;
+	_moveCount = 0;
+	_wxf = "";
 	XiangqiBoard::Initialize();
 }
 
@@ -179,4 +181,50 @@ void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direct
 		}
 	}
 	while (CheckDirectionAux(x, y, direction));
+}
+
+
+void XiangqiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2)
+{
+	char direction = '.';
+	if (_moveCount % 2 == 0)
+	{
+		_wxf += std::to_string((_moveCount / 2) + 1) + ". "; // Add move number for red
+		_wxf += _pieceToWXF.at(pieceType);
+		if (y1 > y2) direction = '+';
+		else if (y1 < y2) direction = '-';
+		_wxf += std::to_string(9 - x1);
+		_wxf.push_back(direction);
+		if (direction == '.' || x1 != x2)
+		{
+			_wxf += std::to_string(9 - x2);
+		}
+		else
+		{
+			_wxf += std::to_string(abs(y2 - y1));
+		}
+	}
+	else
+	{
+		_wxf.push_back(static_cast<char>(std::tolower(_pieceToWXF.at(pieceType)[0])));
+		if (y2 > y1) direction = '+';
+		else if (y2 < y1) direction = '-';
+		_wxf += std::to_string(x1 + 1);
+		_wxf.push_back(direction);
+		if (direction == '.' || x1 != x2)
+		{
+			_wxf += std::to_string(x2 + 1);
+		}
+		else
+		{
+			_wxf += std::to_string(abs(y2 - y1));
+		}
+	}
+	_wxf += " ";
+	_moveCount++;
+}
+
+std::string XiangqiBoard::GetWXF()
+{
+	return _wxf;
 }

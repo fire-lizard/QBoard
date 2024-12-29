@@ -13,7 +13,7 @@ class Engine
 public:
 	Engine();
 	virtual ~Engine();
-	QProcess* RunProcess(QObject *parentObject, const QString& engineExe, const QStringList& engineArguments);
+	virtual QProcess* RunProcess(QObject *parentObject, const QString& engineExe);
 	void Quit() const;
 	virtual EngineProtocol GetType() = 0;
 	virtual void StartGame(QString variant = "") = 0;

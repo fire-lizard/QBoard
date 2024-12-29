@@ -206,7 +206,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	const int x = static_cast<int>(event->position().x()) / w;
 	const int y = static_cast<int>(event->position().y()) / h;
 	Piece* p = _board->GetData(x, y);
-	PieceType ct = p != nullptr ? p->GetType() : None;
+	const PieceType ct = p != nullptr ? p->GetType() : None;
 	// Castling check
 	if (_gameVariant == Chess && _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
 		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved())
@@ -579,6 +579,10 @@ void VBoard::AddMove(PieceType p, int x1, int y1, int x2, int y2, char promotion
 	{
 		dynamic_cast<ChessBoard*>(_board)->WriteMove(p, x1, y1, x2, y2, promotion, capture);
 	}
+	else if (_gameVariant == Xiangqi)
+	{
+		dynamic_cast<XiangqiBoard*>(_board)->WriteMove(p, x1, y1, x2, y2);
+	}
 }
 
 void VBoard::SetStatusBar(QStatusBar *statusBar)
@@ -740,14 +744,26 @@ void VBoard::readyReadStandardOutput()
 	}
 	if (_gameVariant == Chess)
 	{
-		if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
+		// Castling check
+		if ((moveArray == "e8g8" || moveArray == "e8h8" || moveArray == "e8c8" || moveArray == "e8b8" || moveArray == "e8a8" ||
+			moveArray == "e1g1" || moveArray == "e1h1" || moveArray == "e1c1" || moveArray == "e1b1" || moveArray == "e1a1") &&
+			_board->GetData(x1, y1) != nullptr && _board->GetData(x1, y1)->GetType() == King &&
+			_board->GetData(x2 > 4 ? 7 : 0, y2) != nullptr && _board->GetData(x2 > 4 ? 7 : 0, y2)->GetType() == Rook)
+		{
+			Piece* rook = _board->GetData(x2 > 4 ? 7 : 0, y2);
+			_board->SetData(x2 > 4 ? 7 : 0, y2, _board->GetData(x1, y1));
+			_board->SetData(4, y1, rook);
+			dynamic_cast<ChessBoard*>(_board)->WriteMove(x1 == 7 ? "O-O" : "O-O-O");
+			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
+		}
+		else if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
 		{
             const bool isPromoted = moveArray.size() == 5
                 && (y2 == 0 || y2 == _board->GetHeight() - 1)
 				&& _board->GetData(x1, y1)->GetType() == Pawn
 				&& (moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r' || moveArray[4] == 'q');
 			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
-			PieceType ct = _board->GetData(x2, y2) != nullptr ? _board->GetData(x2, y2)->GetType() : None;
+            const PieceType ct = _board->GetData(x2, y2) != nullptr ? _board->GetData(x2, y2)->GetType() : None;
 			_board->Move(x1, y1, x2, y2);
 			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ct != None);
 			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');

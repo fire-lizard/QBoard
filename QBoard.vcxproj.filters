@@ -134,18 +134,6 @@
     <ClCompile Include="promotiondialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WXF.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PSN.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="KIF.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CSA.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -227,18 +215,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ChuShogiEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KIF.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CSA.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WXF.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PSN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

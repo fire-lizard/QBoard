@@ -117,17 +117,15 @@ void MainWindow::on_actionNew_game_triggered()
             GameVariant gameVariant = Chess;
             EngineProtocol engineProtocol;
 			QString enginePath;
-			QString engineParameters;
 			foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
 				if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
                 if (attr.name().toString() == "GameVariant") gameVariant = EngineManager::StringToGameVariant(attr.value().toString());
                 if (attr.name().toString() == "EngineProtocol") engineProtocol = EngineManager::StringToEngineProtocol(attr.value().toString());
 				if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
-				if (attr.name().toString() == "EngineParameters") engineParameters = attr.value().toString();
 			}
             if (engineName != "" && enginePath != "" && gameVariant == this->ui->vboard->GetGameVariant())
 			{
-                _engines.emplace_back(engineName, gameVariant, engineProtocol, enginePath, engineParameters);
+                _engines.emplace_back(engineName, gameVariant, engineProtocol, enginePath);
 			}
 		}
 	}
@@ -150,11 +148,9 @@ void MainWindow::on_actionNew_game_triggered()
         const int selectedIndex = newGameDialog->GetBlackPlayer()->currentIndex();
         if (selectedIndex > 0)
         {
-	        const std::tuple<QString, GameVariant, EngineProtocol, QString, QString> tpl = _engines[selectedIndex - 1];
+	        const std::tuple<QString, GameVariant, EngineProtocol, QString> tpl = _engines[selectedIndex - 1];
             _engineProtocol = std::get<2>(tpl);
             _engineExe = std::get<3>(tpl);
-            _engineArguments.clear();
-            _engineArguments << std::get<4>(tpl).trimmed().split(' ', Qt::SkipEmptyParts);
         }
         else _engineExe = "";
         if (_engine != nullptr)
@@ -237,6 +233,30 @@ void MainWindow::on_actionSave_triggered()
 			file.close();
 		}
 	}
+	else if (this->ui->vboard->GetGameVariant() == Xiangqi)
+	{
+		const QString fileName = QFileDialog::getSaveFileName(this, "Save file", "", "WXF Files (*.wxf)");
+		if (fileName != "")
+		{
+			const QString header = "FORMAT\tWXF\n";
+			QString userName = qgetenv("USER");
+			if (userName.isEmpty())
+				userName = qgetenv("USERNAME");
+			const QString evt = "GAME\t" + userName + " vs. " + _engineName + "\n";
+			const QString time = "TIME\t00:00 ; 00:00\n";
+			const QString currentDate = "DATE\t" + QDate::currentDate().toString("yyyy-MM-dd") + "\n";
+			const QString author = "AUTHOR\tQBoard (https://github.com/fire-lizard/QBoard)\n\n";
+			const QString redName = "RED\t" + userName + "\n";
+			const QString blackName = "BLACK\t" + _engineName + "\n";
+			const QString result = "RESULT\t0-0\n";
+			const QString wxf = "START{\n" + QString::fromStdString(dynamic_cast<XiangqiBoard*>(this->ui->vboard->GetBoard())->GetWXF()) + "\n}END";
+			QFile file(fileName);
+			file.open(QIODevice::WriteOnly | QIODevice::Text);
+			const QByteArray str = (header + evt + time + result + redName + blackName + currentDate + author + wxf).toLatin1();
+			file.write(str);
+			file.close();
+		}
+	}
 }
 
 void MainWindow::on_actionStop_game_triggered()
@@ -285,7 +305,7 @@ void MainWindow::LoadEngine()
 {
 	if (_engine != nullptr)
 	{
-		const QProcess* process = _engine->RunProcess(this, _engineExe, _engineArguments);
+		const QProcess* process = _engine->RunProcess(this, _engineExe);
 		if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
 		{
 			if (_engine->GetType() == XBoard)
@@ -338,13 +358,11 @@ void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engin
 			QString gameVariant;
 			QString engineProtocol;
 			QString enginePath;
-			QString engineParameters;
 			foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
 				if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
 				if (attr.name().toString() == "GameVariant") gameVariant = attr.value().toString();
 				if (attr.name().toString() == "EngineProtocol") engineProtocol = attr.value().toString();
 				if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
-				if (attr.name().toString() == "EngineParameters") engineParameters = attr.value().toString();
 			}
 			if (engineName != "" && enginePath != "")
 			{
@@ -354,7 +372,6 @@ void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engin
 				engineTable->setItem(currentRow, 1, new QTableWidgetItem(gameVariant));
 				engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
 				engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
-				engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineParameters));
 			}
 		}
 		else if (token == QXmlStreamReader::Characters && !xml.isWhitespace()) {
@@ -394,7 +411,6 @@ void MainWindow::createXmlFromTable(const QString& fileName, const QTableWidget*
 		writer.writeAttribute("GameVariant", engineTable->item(index, 1)->text());
 		writer.writeAttribute("EngineProtocol", engineTable->item(index, 2)->text());
 		writer.writeAttribute("EnginePath", engineTable->item(index, 3)->text());
-		writer.writeAttribute("EngineParameters", engineTable->item(index, 4)->text());
 		writer.writeEndElement();
 	}
 

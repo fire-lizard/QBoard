@@ -19,12 +19,12 @@ void Board::SetData(int x, int y, Piece *p)
 	_data[x][y] = p;
 }
 
-signed char Board::GetWidth() const
+int Board::GetWidth() const
 {
 	return _width;
 }
 
-signed char Board::GetHeight() const
+int Board::GetHeight() const
 {
 	return _height;
 }

@@ -44,11 +44,7 @@ SOURCES += main.cpp\
     enginemanager.cpp \
     comboboxitemdelegate.cpp \
     newgamedialog.cpp \
-    addenginedialog.cpp \
-    WXF.cpp \
-    PSN.cpp \
-    CSA.cpp \
-    KIF.cpp
+    addenginedialog.cpp
 
 HEADERS  += mainwindow.h \
     Board.h \
@@ -78,11 +74,7 @@ HEADERS  += mainwindow.h \
     enginemanager.h \
     comboboxitemdelegate.h \
     newgamedialog.h \
-    addenginedialog.h \
-    WXF.h \
-    PSN.h \
-    CSA.h \
-    KIF.h
+    addenginedialog.h
 
 FORMS    += mainwindow.ui \
     promotiondialog.ui \

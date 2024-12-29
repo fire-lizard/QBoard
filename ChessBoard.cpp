@@ -192,18 +192,18 @@ void ChessBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 	{
 		_pgn += _pieceToPGN.at(pieceType);
 	}
-	_pgn.push_back(static_cast<char>(x1 + 97));
-	_pgn.push_back(std::to_string(8 - y1)[0]);
+	_pgn += std::to_string(x1 + 97);
+	_pgn += std::to_string(8 - y1);
 	if (capture)
 	{
 		_pgn += "x";
 	}
-	_pgn.push_back(static_cast<char>(x2 + 97));
-	_pgn.push_back(std::to_string(y2)[0]);
+	_pgn += std::to_string(x2 + 97);
+	_pgn += std::to_string(y2);
 	if (promotion != ' ')
 	{
 		_pgn += "=";
-		_pgn.push_back(static_cast<char>(std::toupper(promotion)));
+		_pgn += static_cast<char>(std::toupper(promotion));
 	}
 	_pgn += " ";
 	_moveCount++;

@@ -32,11 +32,6 @@ QLineEdit * AddEngineDialog::GetEnginePath() const
 	return ui->enginePath;
 }
 
-QLineEdit* AddEngineDialog::GetEngineParameters() const
-{
-	return ui->engineParameters;
-}
-
 void AddEngineDialog::SetEngineName(const QString& engineName) const
 {
 	ui->engineName->setText(engineName);
@@ -55,11 +50,6 @@ void AddEngineDialog::SetEngineProtocol(const QString& engineProtocol) const
 void AddEngineDialog::SetEnginePath(const QString& enginePath) const
 {
 	ui->enginePath->setText(enginePath);
-}
-
-void AddEngineDialog::SetEngineParameters(const QString& engineParameters) const
-{
-	ui->engineParameters->setText(engineParameters);
 }
 
 void AddEngineDialog::on_toolButton_clicked()

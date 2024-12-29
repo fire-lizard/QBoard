@@ -19,8 +19,8 @@ public:
 	std::vector<std::pair<int, int>> Moves() const;
 	Piece* GetData(int x, int y) const;
 	void SetData(int x, int y, Piece *p);
-	signed char GetWidth() const;
-	signed char GetHeight() const;
+	int GetWidth() const;
+	int GetHeight() const;
 	bool CheckPosition(int x, int y) const;
 
 protected:
@@ -30,8 +30,8 @@ protected:
 	static void CheckDirectionInc(int &x, int &y, Direction direction);
 
 	std::vector<std::pair<int, int>> _moves;
-	signed char _width = -1;
-	signed char _height = -1;
+	int _width = -1;
+	int _height = -1;
 	Piece* _data[12][12];
 
 private:

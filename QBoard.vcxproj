@@ -209,15 +209,12 @@
     <ClCompile Include="ChuShogiBoard.cpp" />
     <ClCompile Include="ChuShogiEngine.cpp" />
     <ClCompile Include="ChuShogiPiece.cpp" />
-    <ClCompile Include="CSA.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="IniFile.cpp" />
-    <ClCompile Include="KIF.cpp" />
     <ClCompile Include="MiniShogiBoard.cpp" />
     <ClCompile Include="newgamedialog.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="promotiondialog.cpp" />
-    <ClCompile Include="PSN.cpp" />
     <ClCompile Include="QianhongEngine.cpp" />
     <ClCompile Include="ShogiBoard.cpp" />
     <ClCompile Include="ShogiPiece.cpp" />
@@ -226,7 +223,6 @@
     <ClCompile Include="UciEngine.cpp" />
     <ClCompile Include="UsiEngine.cpp" />
     <ClCompile Include="WbEngine.cpp" />
-    <ClCompile Include="WXF.cpp" />
     <ClCompile Include="XiangqiBoard.cpp" />
     <ClCompile Include="XiangqiPiece.cpp" />
     <ClCompile Include="addenginedialog.cpp" />
@@ -245,15 +241,12 @@
     <ClInclude Include="ChuShogiEngine.h" />
     <ClInclude Include="ChuShogiPiece.h" />
     <ClInclude Include="Common.h" />
-    <ClInclude Include="CSA.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="IniFile.h" />
-    <ClInclude Include="KIF.h" />
     <ClInclude Include="MiniShogiBoard.h" />
     <QtMoc Include="newgamedialog.h" />
     <ClInclude Include="Piece.h" />
     <QtMoc Include="promotiondialog.h" />
-    <ClInclude Include="PSN.h" />
     <ClInclude Include="QianhongEngine.h" />
     <ClInclude Include="ShogiBoard.h" />
     <ClInclude Include="ShogiPiece.h" />
@@ -262,7 +255,6 @@
     <ClInclude Include="UciEngine.h" />
     <ClInclude Include="UsiEngine.h" />
     <ClInclude Include="WbEngine.h" />
-    <ClInclude Include="WXF.h" />
     <ClInclude Include="XiangqiBoard.h" />
     <ClInclude Include="XiangqiPiece.h" />
     <QtMoc Include="addenginedialog.h" />

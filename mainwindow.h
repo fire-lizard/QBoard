@@ -63,10 +63,9 @@ private:
 	Engine *_engine = nullptr;
 	QString _engineExe = "";
 	QString _engineName = "";
-	QStringList _engineArguments;
 	EngineProtocol _engineProtocol = XBoard;
 	QString _settingsDir;
 	QString _settingsFileName = "QBoard.ini";
 	QString _enginesListFileName = "QBoardEngines.xml";
-	std::vector<std::tuple<QString, GameVariant, EngineProtocol, QString, QString>> _engines;
+	std::vector<std::tuple<QString, GameVariant, EngineProtocol, QString>> _engines;
 };
