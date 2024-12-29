@@ -5,8 +5,6 @@ XiangqiBoard::XiangqiBoard()
 {
 	_width = 9;
 	_height = 10;
-	_moveCount = 0;
-	_wxf = "";
 	XiangqiBoard::Initialize();
 }
 
@@ -40,6 +38,8 @@ Board* XiangqiBoard::Clone()
 
 void XiangqiBoard::Initialize()
 {
+	_moveCount = 0;
+	_wxf = "";
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)

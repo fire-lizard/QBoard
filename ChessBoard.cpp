@@ -4,8 +4,6 @@ ChessBoard::ChessBoard()
 {
 	_width = 8;
 	_height = 8;
-	_moveCount = 0;
-	_pgn = "";
 	ChessBoard::Initialize();
 }
 
@@ -39,6 +37,8 @@ Board* ChessBoard::Clone()
 
 void ChessBoard::Initialize()
 {
+	_moveCount = 0;
+	_pgn = "";
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)
@@ -192,13 +192,13 @@ void ChessBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 	{
 		_pgn += _pieceToPGN.at(pieceType);
 	}
-	_pgn += std::to_string(x1 + 97);
+	_pgn.push_back(static_cast<char>(x1 + 97));
 	_pgn += std::to_string(8 - y1);
 	if (capture)
 	{
 		_pgn += "x";
 	}
-	_pgn += std::to_string(x2 + 97);
+	_pgn.push_back(static_cast<char>(x2 + 97));
 	_pgn += std::to_string(y2);
 	if (promotion != ' ')
 	{

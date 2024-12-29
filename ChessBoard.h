@@ -31,7 +31,6 @@ protected:
 	};
 
 private:
-	int _moveCount;
 	std::string _pgn;
 
 	const std::map<PieceType, char> _pieceToPGN = {

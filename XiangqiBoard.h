@@ -17,7 +17,6 @@ public:
 protected:
 
 private:
-	int _moveCount;
 	std::string _wxf;
 
 	const std::map<PieceType, std::string> _pieceToWXF = {
