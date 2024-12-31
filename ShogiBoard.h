@@ -25,6 +25,7 @@ private:
 	std::string _psn;
 	std::string _csa;
 	std::string _kif;
+	std::string _promotionStr = "成";
 
 	const std::map<PieceType, std::string> _pieceToPSN = {
 		{Pawn, "P"},
@@ -64,6 +65,18 @@ private:
 		{Silver, "銀"},
 		{DragonKing, "竜"},
 		{DragonHorse, "馬"}
+	};
+
+	const std::map<int, std::string> _numberToKanji = {
+		{1, "一"},
+		{2, "二"},
+		{3, "三"},
+		{4, "四"},
+		{5, "五"},
+		{6, "六"},
+		{7, "七"},
+		{8, "八"},
+		{9, "九"}
 	};
 
 	PieceType _initialSetup[9][9] = {
