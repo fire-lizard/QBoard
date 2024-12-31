@@ -862,7 +862,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 
 	QMenu menu(this);
 
-	const auto cps = dynamic_cast<ShogiVariantBoard*>(_board)->GetCapturedPieces();
+	const auto cps = dynamic_cast<ShogiVariantBoard*>(_board)->GetCapturedPieces(_currentPlayer);
 	for (const auto cp : cps)
 	{
 		ShogiPiece p(cp, _currentPlayer);
@@ -914,7 +914,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				_engine->Move(sc, '@', x, _board->GetHeight() - y, ' ');
 		}
 		AddMove(newPiece, sc, '*', x, y, ' ');
-		dynamic_cast<ShogiVariantBoard*>(_board)->RemoveCapturedPiece(newPiece);
+		dynamic_cast<ShogiVariantBoard*>(_board)->RemoveCapturedPiece(newPiece, _currentPlayer);
 		_currentPlayer = _currentPlayer == White ? Black : White;
 		_statusBar->setStyleSheet("QStatusBar { color : black; }");
 		_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");

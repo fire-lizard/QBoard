@@ -5,16 +5,24 @@ void ShogiVariantBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour,
 	_data[x][y] = new ShogiPiece(pieceType, pieceColour);
 }
 
-std::vector<PieceType> ShogiVariantBoard::GetCapturedPieces()
+std::vector<PieceType> ShogiVariantBoard::GetCapturedPieces(PieceColour pieceColour)
 {
-	return _capturedPieces;
+	std::vector<PieceType> result;
+	for (auto& capturedPiece : _capturedPieces)
+	{
+		if (capturedPiece.first == pieceColour)
+		{
+			result.emplace_back(capturedPiece.second);
+		}
+	}
+	return result;
 }
 
-void ShogiVariantBoard::RemoveCapturedPiece(PieceType p)
+void ShogiVariantBoard::RemoveCapturedPiece(PieceType p, PieceColour pieceColour)
 {
 	for (size_t index = 0; index < _capturedPieces.size(); index++)
 	{
-		if (_capturedPieces[index] == p)
+		if (_capturedPieces[index].first == pieceColour && _capturedPieces[index].second == p)
 		{
 			_capturedPieces.erase(_capturedPieces.begin() + index);
 			break;
@@ -24,11 +32,16 @@ void ShogiVariantBoard::RemoveCapturedPiece(PieceType p)
 
 bool ShogiVariantBoard::Move(int oldX, int oldY, int newX, int newY)
 {
-	PieceType pt = _data[newX][newY] != nullptr && _data[newX][newY]->GetColour() == Black ? _data[newX][newY]->GetBaseType() : None;
-	const bool result = Board::Move(oldX, oldY, newX, newY);
-	if (result && pt != None)
+	if (_data[oldX][oldY] != nullptr)
 	{
-		_capturedPieces.emplace_back(pt);
+		PieceColour pieceColour = _data[oldX][oldY]->GetColour();
+		PieceType pt = _data[newX][newY] != nullptr && _data[newX][newY]->GetColour() != _data[oldX][oldY]->GetColour() ? _data[newX][newY]->GetBaseType() : None;
+		const bool result = Board::Move(oldX, oldY, newX, newY);
+		if (result && pt != None)
+		{
+			_capturedPieces.emplace_back(pieceColour, pt);
+		}
+		return result;
 	}
-	return result;
+	return false;
 }

@@ -26,6 +26,8 @@ void ShogiBoard::Initialize()
 {
 	_moveCount = 0;
 	_psn = "";
+	_csa = "";
+	_kif = "";
 	_capturedPieces.clear();
 	for (int i = 0; i < _width; i++)
 	{
@@ -220,6 +222,7 @@ void ShogiBoard::SetDrops(bool hasDrops)
 void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture)
 {
 	_moveCount++;
+	// PSN
 	_psn += std::to_string(_moveCount) + ".";
 	if (y1 == '*')
 	{
@@ -239,9 +242,23 @@ void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 		_psn += promotion;
 	}
 	_psn += "\n";
+	// CSA
+	_csa += "\n";
+	// KIF
+	_kif += "\n";
 }
 
 std::string ShogiBoard::GetPSN()
 {
 	return _psn;
+}
+
+std::string ShogiBoard::GetCSA()
+{
+	return _csa;
+}
+
+std::string ShogiBoard::GetKIF()
+{
+	return _kif;
 }

@@ -259,18 +259,56 @@ void MainWindow::on_actionSave_triggered()
 	}
 	else if (this->ui->vboard->GetGameVariant() == Shogi)
 	{
-		const QString fileName = QFileDialog::getSaveFileName(this, "Save file", "", "PSN Files (*.psn)");
-		if (fileName != "")
+		QFileDialog fileDialog(this);
+		fileDialog.setNameFilter("PSN Files (*.psn);;CSA Files (*.csa);;KIF Files (*.kif)");
+		fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+		fileDialog.setWindowTitle("Save file");
+		if (fileDialog.exec())
 		{
+			QString fileName = fileDialog.selectedFiles()[0];
 			QString userName = qgetenv("USER");
 			if (userName.isEmpty())
 				userName = qgetenv("USERNAME");
-			const QString senteName = "[Sente \"" + userName + "\"]\n";
-			const QString goteName = "[Gote \"" + _engineName + "\"]\n\n";
-			const QString psn = QString::fromStdString(dynamic_cast<ShogiBoard*>(this->ui->vboard->GetBoard())->GetPSN());
+			QByteArray str;
+			if (fileDialog.selectedNameFilter() == "KIF Files (*.kif)")
+			{
+				QMessageBox mb(QMessageBox::Warning, "TODO", "Not implemented yet",
+					QMessageBox::Ok, this);
+				return;
+			}
+			if (fileDialog.selectedNameFilter() == "CSA Files (*.csa)")
+			{
+				QMessageBox mb(QMessageBox::Warning, "TODO", "Not implemented yet",
+					QMessageBox::Ok, this);
+				return;
+				QString csaStr;
+				csaStr += "V2.2\n";
+				csaStr += "N+" + userName + "\n";
+				csaStr += "N-" + _engineName + "\n";
+				csaStr += "P1-KY-KE-GI-KI-OU-KI-GI-KE-KY\n";
+				csaStr += "P2 * -HI *  *  *  *  * -KA *\n";
+				csaStr += "P3-FU-FU-FU-FU-FU-FU-FU-FU-FU\n";
+				csaStr += "P4 *  *  *  *  *  *  *  *  *\n";
+				csaStr += "P5 *  *  *  *  *  *  *  *  *\n";
+				csaStr += "P6 *  *  *  *  *  *  *  *  *\n";
+				csaStr += "P7+FU+FU+FU+FU+FU+FU+FU+FU+FU\n";
+				csaStr += "P8 * +KA *  *  *  *  * +HI *\n";
+				csaStr += "P9+KY+KE+GI+KI+OU+KI+GI+KE+KY\n";
+				csaStr += "P+\n";
+				csaStr += "P-\n";
+				csaStr += "+\n";
+				csaStr += QString::fromStdString(dynamic_cast<ShogiBoard*>(this->ui->vboard->GetBoard())->GetCSA());
+				str = csaStr.toLatin1();
+			}
+			else
+			{
+				const QString senteName = "[Sente \"" + userName + "\"]\n";
+				const QString goteName = "[Gote \"" + _engineName + "\"]\n\n";
+				const QString psn = QString::fromStdString(dynamic_cast<ShogiBoard*>(this->ui->vboard->GetBoard())->GetPSN());
+				str = (senteName + goteName + psn).toLatin1();
+			}
 			QFile file(fileName);
 			file.open(QIODevice::WriteOnly | QIODevice::Text);
-			const QByteArray str = (senteName + goteName + psn).toLatin1();
 			file.write(str);
 			file.close();
 		}

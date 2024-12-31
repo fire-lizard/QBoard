@@ -15,12 +15,16 @@ public:
 	void SetDrops(bool hasDrops);
 	void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture);
 	std::string GetPSN();
+	std::string GetCSA();
+	std::string GetKIF();
 
 protected:
 
 private:
 	bool _hasDrops;
 	std::string _psn;
+	std::string _csa;
+	std::string _kif;
 
 	const std::map<PieceType, std::string> _pieceToPSN = {
 		{Pawn, "P"},
