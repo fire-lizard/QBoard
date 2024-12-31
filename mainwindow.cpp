@@ -81,7 +81,7 @@ void MainWindow::on_actionSettings_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-	QMessageBox::about(this, "About", "<center>QBoard 0.5 beta<br/>Fire Lizard Software<br/>Anatoliy Sova<br/>2024</center>");
+	QMessageBox::about(this, "About", "<center>QBoard 0.6 beta<br/>Fire Lizard Software<br/>Anatoliy Sova<br/>2024</center>");
 }
 
 void MainWindow::on_actionNew_game_triggered()
@@ -272,15 +272,12 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "KIF Files (*.kif)")
 			{
-				QMessageBox mb(QMessageBox::Warning, "TODO", "Not implemented yet",
-					QMessageBox::Ok, this);
-				return;
+				QString kifStr;
+				kifStr += QString::fromStdString(dynamic_cast<ShogiBoard*>(this->ui->vboard->GetBoard())->GetCSA());
+				str = kifStr.toLatin1();
 			}
 			if (fileDialog.selectedNameFilter() == "CSA Files (*.csa)")
 			{
-				QMessageBox mb(QMessageBox::Warning, "TODO", "Not implemented yet",
-					QMessageBox::Ok, this);
-				return;
 				QString csaStr;
 				csaStr += "V2.2\n";
 				csaStr += "N+" + userName + "\n";
