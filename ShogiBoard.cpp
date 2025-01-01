@@ -245,18 +245,10 @@ void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 		_psn.push_back(static_cast<char>(y2 + 97));
 		_psn += promotion;
 	}
-	_psn += "\n";
+	_psn += "          (00:00 / 00:00:00)\n";
 	// CSA
 	_csa += _moveCount % 2 == 0 ? "+" : "-";
-	if (y1 == '*')
-	{
-		_csa += "00";
-	}
-	else
-	{
-		_csa += std::to_string(9 - x1);
-		_csa += std::to_string(y1 + 1);
-	}
+	_csa += y1 == '*' ? "00" : std::to_string(9 - x1) + std::to_string(y1 + 1);
 	_csa += std::to_string(9 - x2);
 	_csa += std::to_string(y2 + 1);
 	_csa += _pieceToCSA.at(pieceType);
@@ -270,18 +262,8 @@ void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 	{
 		_kif += _promotionStr;
 	}
-	if (y1 == '*')
-	{
-		_kif += _dropStr;
-	}
-	else
-	{
-		_kif += "(";
-		_kif += std::to_string(9 - x1);
-		_kif += std::to_string(y1 + 1);
-		_kif += ")";
-	}
-	_kif += "\n";
+	_kif += y1 == '*' ? _dropStr : "(" + std::to_string(9 - x1) + std::to_string(y1 + 1) + ")";
+	_kif += "          (00:00 / 00:00:00)\n";
 }
 
 std::string ShogiBoard::GetPSN()

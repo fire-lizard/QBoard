@@ -16,6 +16,5 @@ public:
 protected:
 
 private:
-	static void replaceSubstring(std::string& str, const std::string& from, const std::string& to);
 };
 

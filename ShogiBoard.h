@@ -27,6 +27,7 @@ private:
 	std::string _kif;
 	std::string _promotionStr = "成";
 	std::string _dropStr = "打";
+	std::string _sameCoordStr = "同";
 
 	const std::map<PieceType, std::string> _pieceToPSN = {
 		{Pawn, "P"},
