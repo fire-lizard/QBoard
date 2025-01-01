@@ -27,6 +27,8 @@ private:
 	std::string _kif;
 	std::string _promotionStr = "成";
 	std::string _dropStr = "打";
+	int _oldX2 = -1;
+	int _oldY2 = -1;
 	std::string _sameCoordStr = "同";
 
 	const std::map<PieceType, std::string> _pieceToPSN = {
@@ -69,11 +71,11 @@ private:
 		{Rook, "飛"},
 		{WhiteHorse, "桂"},
 		{Bishop, "角"},
-		{King, "王"},
+		{King, "玉"},
 		{Lance, "香"},
 		{Gold, "金"},
 		{Silver, "銀"},
-		{DragonKing, "竜"},
+		{DragonKing, "龍"},
 		{DragonHorse, "馬"},
 		{Tokin, "と"},
 		{PromotedLance, "杏"},
