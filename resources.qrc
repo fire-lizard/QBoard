@@ -22,7 +22,7 @@
         <file>images/BlackChancellor.png</file>
         <file>images/BlackClaw.png</file>
         <file>images/BlackCobra.png</file>
-        <file>images/BlackCommoner.png</file>
+        <file>images/BlackCopper.png</file>
         <file>images/BlackCrownedBishop.png</file>
         <file>images/BlackCrownedRook.png</file>
         <file>images/BlackDolphin.png</file>
@@ -38,12 +38,10 @@
         <file>images/BlackLion.png</file>
         <file>images/BlackMarshall.png</file>
         <file>images/BlackPawn.png</file>
-        <file>images/BlackPrince.png</file>
         <file>images/BlackPrincess.png</file>
         <file>images/BlackQueen.png</file>
         <file>images/BlackRook.png</file>
         <file>images/BlackSword.png</file>
-        <file>images/BlackTokin.png</file>
         <file>images/BlackUnicorn.png</file>
         <file>images/WhiteAdvisor.png</file>
         <file>images/WhiteArchbishop.png</file>
@@ -52,7 +50,7 @@
         <file>images/WhiteChancellor.png</file>
         <file>images/WhiteClaw.png</file>
         <file>images/WhiteCobra.png</file>
-        <file>images/WhiteCommoner.png</file>
+        <file>images/WhiteCopper.png</file>
         <file>images/WhiteCrownedBishop.png</file>
         <file>images/WhiteCrownedRook.png</file>
         <file>images/WhiteDolphin.png</file>
@@ -68,13 +66,19 @@
         <file>images/WhiteLion.png</file>
         <file>images/WhiteMarshall.png</file>
         <file>images/WhitePawn.png</file>
-        <file>images/WhitePrince.png</file>
         <file>images/WhitePrincess.png</file>
         <file>images/WhiteQueen.png</file>
         <file>images/WhiteRook.png</file>
         <file>images/WhiteSword.png</file>
-        <file>images/WhiteTokin.png</file>
         <file>images/WhiteUnicorn.png</file>
+        <file>images/BlackGoldKnight.png</file>
+        <file>images/BlackGoldLance.png</file>
+        <file>images/BlackGoldPawn.png</file>
+        <file>images/BlackGoldSilver.png</file>
+        <file>images/WhiteGoldKnight.png</file>
+        <file>images/WhiteGoldLance.png</file>
+        <file>images/WhiteGoldPawn.png</file>
+        <file>images/WhiteGoldSilver.png</file>
     </qresource>
     <qresource prefix="/pieces_jap">
         <file>images_jap/BlackAdvisor.png</file>
@@ -84,7 +88,7 @@
         <file>images_jap/BlackChancellor.png</file>
         <file>images_jap/BlackClaw.png</file>
         <file>images_jap/BlackCobra.png</file>
-        <file>images_jap/BlackCommoner.png</file>
+        <file>images_jap/BlackCopper.png</file>
         <file>images_jap/BlackCrownedBishop.png</file>
         <file>images_jap/BlackCrownedRook.png</file>
         <file>images_jap/BlackDolphin.png</file>
@@ -114,7 +118,7 @@
         <file>images_jap/WhiteChancellor.png</file>
         <file>images_jap/WhiteClaw.png</file>
         <file>images_jap/WhiteCobra.png</file>
-        <file>images_jap/WhiteCommoner.png</file>
+        <file>images_jap/WhiteCopper.png</file>
         <file>images_jap/WhiteCrownedBishop.png</file>
         <file>images_jap/WhiteCrownedRook.png</file>
         <file>images_jap/WhiteDolphin.png</file>
@@ -181,13 +185,13 @@
         <file>images_sho/BlackGold.png</file>
         <file>images_sho/BlackGoldKnight.png</file>
         <file>images_sho/BlackGoldLance.png</file>
+        <file>images_sho/BlackGoldPawn.png</file>
         <file>images_sho/BlackGoldSilver.png</file>
         <file>images_sho/BlackKing.png</file>
         <file>images_sho/BlackKnight.png</file>
         <file>images_sho/BlackLance.png</file>
         <file>images_sho/BlackPawn.png</file>
         <file>images_sho/BlackRook.png</file>
-        <file>images_sho/BlackTokin.png</file>
         <file>images_sho/WhiteAdvisor.png</file>
         <file>images_sho/WhiteBishop.png</file>
         <file>images_sho/WhiteCrownedBishop.png</file>
@@ -196,12 +200,12 @@
         <file>images_sho/WhiteGold.png</file>
         <file>images_sho/WhiteGoldKnight.png</file>
         <file>images_sho/WhiteGoldLance.png</file>
+        <file>images_sho/WhiteGoldPawn.png</file>
         <file>images_sho/WhiteGoldSilver.png</file>
         <file>images_sho/WhiteKing.png</file>
         <file>images_sho/WhiteKnight.png</file>
         <file>images_sho/WhiteLance.png</file>
         <file>images_sho/WhitePawn.png</file>
         <file>images_sho/WhiteRook.png</file>
-        <file>images_sho/WhiteTokin.png</file>
     </qresource>
 </RCC>

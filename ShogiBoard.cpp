@@ -132,6 +132,10 @@ void ShogiBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		break;
 	case Gold:
+	case Tokin:
+	case PromotedLance:
+	case PromotedKnight:
+	case PromotedSilver:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x, y + 1);
 		CheckMove(piece, x, y - 1);
@@ -244,8 +248,15 @@ void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 	_psn += "\n";
 	// CSA
 	_csa += _moveCount % 2 == 0 ? "+" : "-";
-	_csa += std::to_string(9 - x1);
-	_csa += std::to_string(y1 + 1);
+	if (y1 == '*')
+	{
+		_csa += "00";
+	}
+	else
+	{
+		_csa += std::to_string(9 - x1);
+		_csa += std::to_string(y1 + 1);
+	}
 	_csa += std::to_string(9 - x2);
 	_csa += std::to_string(y2 + 1);
 	_csa += _pieceToCSA.at(pieceType);
@@ -259,10 +270,17 @@ void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 	{
 		_kif += _promotionStr;
 	}
-	_kif += "(";
-	_kif += std::to_string(9 - x1);
-	_kif += std::to_string(y1 + 1);
-	_kif += ")";
+	if (y1 == '*')
+	{
+		_kif += _dropStr;
+	}
+	else
+	{
+		_kif += "(";
+		_kif += std::to_string(9 - x1);
+		_kif += std::to_string(y1 + 1);
+		_kif += ")";
+	}
 	_kif += "\n";
 }
 

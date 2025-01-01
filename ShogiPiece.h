@@ -1,20 +1,21 @@
 #pragma once
-#include "Piece.h"
+#include "KanjiPiece.h"
 
-class ShogiPiece : public Piece
+class ShogiPiece : public KanjiPiece
 {
 public:
 	ShogiPiece(PieceType pieceType, PieceColour pieceColour);
 	~ShogiPiece() override;
 	void Promote(PieceType pieceType = None) override;
 	std::string StringCode() override;
-	std::string AsianStringCode() override;
-	virtual std::string GetJapaneseImageFileName();
+	std::string KanjiStringCode() override;
+	std::string GetKanjiImageFileName() override;
 	std::string LongStringCode() const;
 	static PieceType LongStringCode2PieceType(const std::string& longStringCode);
 
 protected:
 
 private:
+	static void replaceSubstring(std::string& str, const std::string& from, const std::string& to);
 };
 

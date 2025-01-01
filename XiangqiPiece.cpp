@@ -1,6 +1,6 @@
 ﻿#include "XiangqiPiece.h"
 
-XiangqiPiece::XiangqiPiece(PieceType pieceType, PieceColour pieceColour) : Piece(pieceType, pieceColour)
+XiangqiPiece::XiangqiPiece(PieceType pieceType, PieceColour pieceColour) : KanjiPiece(pieceType, pieceColour)
 {
 }
 
@@ -35,7 +35,7 @@ std::string XiangqiPiece::StringCode()
 	}
 }
 
-std::string XiangqiPiece::AsianStringCode()
+std::string XiangqiPiece::KanjiStringCode()
 {
 	switch (_pieceType)
 	{
@@ -58,7 +58,7 @@ std::string XiangqiPiece::AsianStringCode()
 	}
 }
 
-std::string XiangqiPiece::GetChineseImageFileName() const
+std::string XiangqiPiece::GetKanjiImageFileName()
 {
 	const std::string colour = _pieceColour == White ? "r" : "b";
 	switch (_pieceType)

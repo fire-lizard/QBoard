@@ -38,7 +38,7 @@ std::string Piece::GetImageFileName() const
 	switch (_pieceType)
 	{
 	case King:
-		return colour + (_isPromoted ? "Prince.png" : "King.png");
+		return colour + "King.png";
 	case Lion:
 		return colour + "Lion.png";
 	case Queen:
@@ -68,11 +68,19 @@ std::string Piece::GetImageFileName() const
 	case BlindTiger:
 		return colour + "Claw.png";
 	case Gold:
-		return colour + (_isPromoted && _basePieceType == Pawn ? "Tokin.png" : "Gold.png");
+		return colour + "Gold.png";
+	case Tokin:
+		return colour + "GoldPawn.png";
+	case PromotedLance:
+		return colour + "GoldLance.png";
+	case PromotedKnight:
+		return colour + "GoldKnight.png";
+	case PromotedSilver:
+		return colour + "GoldSilver.png";
 	case Silver:
 		return colour + "Advisor.png";
 	case Copper:
-		return colour + "Commoner.png";
+		return colour + "Copper.png";
 	case FerociousLeopard:
 		return colour + "Leopard.png";
 	case Cobra:

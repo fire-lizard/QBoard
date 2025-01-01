@@ -295,10 +295,10 @@
     <None Include="images_jap\BlackCobra.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images\BlackCommoner.png">
+    <None Include="images\BlackCopper.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_jap\BlackCommoner.png">
+    <None Include="images_jap\BlackCopper.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\BlackCrownedBishop.png">
@@ -391,9 +391,6 @@
     <None Include="images_jap\BlackPawn.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images\BlackPrince.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images_jap\BlackPrince.png">
       <Filter>Resource Files</Filter>
     </None>
@@ -419,9 +416,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\BlackSword.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images\BlackTokin.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\BlackTokin.png">
@@ -508,10 +502,10 @@
     <None Include="images_jap\WhiteCobra.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images\WhiteCommoner.png">
+    <None Include="images\WhiteCopper.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images_jap\WhiteCommoner.png">
+    <None Include="images_jap\WhiteCopper.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\WhiteCrownedBishop.png">
@@ -604,9 +598,6 @@
     <None Include="images_jap\WhitePawn.png">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="images\WhitePrince.png">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="images_jap\WhitePrince.png">
       <Filter>Resource Files</Filter>
     </None>
@@ -632,9 +623,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\WhiteSword.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="images\WhiteTokin.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\WhiteTokin.png">
@@ -728,6 +716,9 @@
     <Image Include="images_sho\BlackGoldLance.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_sho\BlackGoldPawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
     <Image Include="images_sho\BlackGoldSilver.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -770,6 +761,9 @@
     <Image Include="images_sho\WhiteGoldLance.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_sho\WhiteGoldPawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
     <Image Include="images_sho\WhiteGoldSilver.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -786,12 +780,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="images_sho\WhiteRook.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_sho\BlackTokin.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="images_sho\WhiteTokin.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="images_jap\BlackPromoBishop.png">

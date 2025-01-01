@@ -170,22 +170,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				std::string imageFileName;
 				if (_pieceStyle == Asian)
 				{
-					if (_gameVariant == Xiangqi)
-					{
-						imageFileName = dynamic_cast<XiangqiPiece*>(p)->GetChineseImageFileName();
-					}
-					else if (std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) != std::end(_shogiVariants))
-					{
-						if (_gameVariant == ChuShogi)
-						{
-							imageFileName = dynamic_cast<ChuShogiPiece*>(p)->GetJapaneseImageFileName();
-						}
-						else
-						{
-							imageFileName = dynamic_cast<ShogiPiece*>(p)->GetJapaneseImageFileName();
-						}
-					}
-
+					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 				}
 				else
 				{
@@ -866,7 +851,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 	for (const auto cp : cps)
 	{
 		ShogiPiece p(cp, _currentPlayer);
-		std::string str = p.LongStringCode() + " (" + p.AsianStringCode() + ")";
+		std::string str = p.LongStringCode() + " (" + p.KanjiStringCode() + ")";
 		menu.addAction(QString::fromStdString(str));
 	}
 

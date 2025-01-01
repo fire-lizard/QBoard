@@ -26,6 +26,7 @@ private:
 	std::string _csa;
 	std::string _kif;
 	std::string _promotionStr = "成";
+	std::string _dropStr = "打";
 
 	const std::map<PieceType, std::string> _pieceToPSN = {
 		{Pawn, "P"},
@@ -38,7 +39,11 @@ private:
 		{Gold, "G"},
 		{Silver, "S"},
 		{DragonKing, "+R"},
-		{DragonHorse, "+B"}
+		{DragonHorse, "+B"},
+		{Tokin, "+P"},
+		{PromotedLance, "+L"},
+		{PromotedKnight, "+N"},
+		{PromotedSilver, "+S"}
 	};
 
 	const std::map<PieceType, std::string> _pieceToCSA = {
@@ -51,7 +56,11 @@ private:
 		{Gold, "KI"},
 		{Silver, "GI"},
 		{DragonKing, "RY"},
-		{DragonHorse, "UM"}
+		{DragonHorse, "UM"},
+		{Tokin, "TO"},
+		{PromotedLance, "NY"},
+		{PromotedKnight, "NK"},
+		{PromotedSilver, "NG"}
 	};
 
 	const std::map<PieceType, std::string> _pieceToKIF = {
@@ -64,7 +73,11 @@ private:
 		{Gold, "金"},
 		{Silver, "銀"},
 		{DragonKing, "竜"},
-		{DragonHorse, "馬"}
+		{DragonHorse, "馬"},
+		{Tokin, "と"},
+		{PromotedLance, "杏"},
+		{PromotedKnight, "圭"},
+		{PromotedSilver, "全"}
 	};
 
 	const std::map<int, std::string> _numberToKanji = {

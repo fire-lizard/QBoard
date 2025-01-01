@@ -12,11 +12,9 @@ public:
 	void EndMove();
 	bool HasMovedOnce() const;
 	std::string StringCode() override;
-	std::string AsianStringCode() override;
-	std::string GetJapaneseImageFileName() override;
+	std::string KanjiStringCode() override;
 
 protected:
-	static void replaceSubstring(std::string& str, const std::string& from, const std::string& to);
 
 private:
 	bool _hasMovedOnce;

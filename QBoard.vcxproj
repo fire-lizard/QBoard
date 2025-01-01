@@ -211,6 +211,7 @@
     <ClCompile Include="ChuShogiPiece.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="IniFile.cpp" />
+    <ClCompile Include="KanjiPiece.cpp" />
     <ClCompile Include="MiniShogiBoard.cpp" />
     <ClCompile Include="newgamedialog.cpp" />
     <ClCompile Include="Piece.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="IniFile.h" />
+    <ClInclude Include="KanjiPiece.h" />
     <ClInclude Include="MiniShogiBoard.h" />
     <QtMoc Include="newgamedialog.h" />
     <ClInclude Include="Piece.h" />
@@ -305,8 +307,8 @@
     <None Include="images_jap\BlackClaw.png" />
     <None Include="images\BlackCobra.png" />
     <None Include="images_jap\BlackCobra.png" />
-    <None Include="images\BlackCommoner.png" />
-    <None Include="images_jap\BlackCommoner.png" />
+    <None Include="images\BlackCopper.png" />
+    <None Include="images_jap\BlackCopper.png" />
     <None Include="images\BlackCrownedBishop.png" />
     <None Include="images_jap\BlackCrownedBishop.png" />
     <None Include="images\BlackCrownedRook.png" />
@@ -337,7 +339,6 @@
     <None Include="images_jap\BlackMarshall.png" />
     <None Include="images\BlackPawn.png" />
     <None Include="images_jap\BlackPawn.png" />
-    <None Include="images\BlackPrince.png" />
     <None Include="images_jap\BlackPrince.png" />
     <None Include="images\BlackPrincess.png" />
     <None Include="images_jap\BlackPrincess.png" />
@@ -347,7 +348,6 @@
     <None Include="images_jap\BlackRook.png" />
     <None Include="images\BlackSword.png" />
     <None Include="images_jap\BlackSword.png" />
-    <None Include="images\BlackTokin.png" />
     <None Include="images_jap\BlackTokin.png" />
     <None Include="images\BlackUnicorn.png" />
     <None Include="images_jap\BlackUnicorn.png" />
@@ -376,8 +376,8 @@
     <None Include="images_jap\WhiteClaw.png" />
     <None Include="images\WhiteCobra.png" />
     <None Include="images_jap\WhiteCobra.png" />
-    <None Include="images\WhiteCommoner.png" />
-    <None Include="images_jap\WhiteCommoner.png" />
+    <None Include="images\WhiteCopper.png" />
+    <None Include="images_jap\WhiteCopper.png" />
     <None Include="images\WhiteCrownedBishop.png" />
     <None Include="images_jap\WhiteCrownedBishop.png" />
     <None Include="images\WhiteCrownedRook.png" />
@@ -408,7 +408,6 @@
     <None Include="images_jap\WhiteMarshall.png" />
     <None Include="images\WhitePawn.png" />
     <None Include="images_jap\WhitePawn.png" />
-    <None Include="images\WhitePrince.png" />
     <None Include="images_jap\WhitePrince.png" />
     <None Include="images\WhitePrincess.png" />
     <None Include="images_jap\WhitePrincess.png" />
@@ -418,7 +417,6 @@
     <None Include="images_jap\WhiteRook.png" />
     <None Include="images\WhiteSword.png" />
     <None Include="images_jap\WhiteSword.png" />
-    <None Include="images\WhiteTokin.png" />
     <None Include="images_jap\WhiteTokin.png" />
     <None Include="images\WhiteUnicorn.png" />
     <None Include="images_jap\WhiteUnicorn.png" />
@@ -468,13 +466,13 @@
     <Image Include="images_sho\BlackGold.png" />
     <Image Include="images_sho\BlackGoldKnight.png" />
     <Image Include="images_sho\BlackGoldLance.png" />
+    <Image Include="images_sho\BlackGoldPawn.png" />
     <Image Include="images_sho\BlackGoldSilver.png" />
     <Image Include="images_sho\BlackKing.png" />
     <Image Include="images_sho\BlackKnight.png" />
     <Image Include="images_sho\BlackLance.png" />
     <Image Include="images_sho\BlackPawn.png" />
     <Image Include="images_sho\BlackRook.png" />
-    <Image Include="images_sho\BlackTokin.png" />
     <Image Include="images_sho\WhiteAdvisor.png" />
     <Image Include="images_sho\WhiteBishop.png" />
     <Image Include="images_sho\WhiteCrownedBishop.png" />
@@ -483,13 +481,13 @@
     <Image Include="images_sho\WhiteGold.png" />
     <Image Include="images_sho\WhiteGoldKnight.png" />
     <Image Include="images_sho\WhiteGoldLance.png" />
+    <Image Include="images_sho\WhiteGoldPawn.png" />
     <Image Include="images_sho\WhiteGoldSilver.png" />
     <Image Include="images_sho\WhiteKing.png" />
     <Image Include="images_sho\WhiteKnight.png" />
     <Image Include="images_sho\WhiteLance.png" />
     <Image Include="images_sho\WhitePawn.png" />
     <Image Include="images_sho\WhiteRook.png" />
-    <Image Include="images_sho\WhiteTokin.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />

@@ -248,6 +248,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		break;
 	case Gold:
+	case Tokin:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x, y + 1);
 		CheckMove(piece, x, y - 1);

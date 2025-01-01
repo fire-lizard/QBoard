@@ -10,7 +10,6 @@ public:
 	void Move();
 	bool HasMoved() const;
 	std::string StringCode() override;
-	std::string AsianStringCode() override;
 
 protected:
 

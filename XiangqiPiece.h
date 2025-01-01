@@ -1,15 +1,15 @@
 #pragma once
-#include "Piece.h"
+#include "KanjiPiece.h"
 
-class XiangqiPiece : public Piece
+class XiangqiPiece : public KanjiPiece
 {
 public:
 	XiangqiPiece(PieceType pieceType, PieceColour pieceColour);
 	~XiangqiPiece() override;
 	void Promote(PieceType pieceType = None) override;
 	std::string StringCode() override;
-	std::string AsianStringCode() override;
-	std::string GetChineseImageFileName() const;
+	std::string KanjiStringCode() override;
+	std::string GetKanjiImageFileName() override;
 
 protected:
 

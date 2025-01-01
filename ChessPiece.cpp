@@ -36,11 +36,6 @@ std::string ChessPiece::StringCode()
 	}
 }
 
-std::string ChessPiece::AsianStringCode()
-{
-	return "";
-}
-
 void ChessPiece::Move()
 {
 	_hasMoved = true;

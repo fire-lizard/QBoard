@@ -1,6 +1,6 @@
 ﻿#include "ShogiPiece.h"
 
-ShogiPiece::ShogiPiece(PieceType pieceType, PieceColour pieceColour) : Piece(pieceType, pieceColour)
+ShogiPiece::ShogiPiece(PieceType pieceType, PieceColour pieceColour) : KanjiPiece(pieceType, pieceColour)
 {
 }
 
@@ -23,10 +23,16 @@ void ShogiPiece::Promote(PieceType pieceType)
 		_pieceType = King;
 		break;
 	case Lance:
+		_pieceType = PromotedLance;
+		break;
 	case Silver:
+		_pieceType = PromotedSilver;
+		break;
 	case WhiteHorse:
+		_pieceType = PromotedKnight;
+		break;
 	case Pawn:
-		_pieceType = Gold;
+		_pieceType = Tokin;
 		break;
 	default:
 		break;
@@ -100,7 +106,7 @@ PieceType ShogiPiece::LongStringCode2PieceType(const std::string& longStringCode
 	return None;
 }
 
-std::string ShogiPiece::AsianStringCode()
+std::string ShogiPiece::KanjiStringCode()
 {
 	switch (_pieceType)
 	{
@@ -119,19 +125,15 @@ std::string ShogiPiece::AsianStringCode()
 	case Silver:
 		return "銀";
 	case Gold:
-		switch (_basePieceType)
-		{
-		case Lance:
-			return "杏";
-		case Silver:
-			return "全";
-		case WhiteHorse:
-			return "圭";
-		case Pawn:
-			return "と";
-		default:
-			return "金";
-		}
+		return "金";
+	case Tokin:
+		return "と";
+	case PromotedLance:
+		return "杏";
+	case PromotedKnight:
+		return "圭";
+	case PromotedSilver:
+		return "全";
 	case WhiteHorse:
 		return "桂";
 	case Pawn:
@@ -143,38 +145,27 @@ std::string ShogiPiece::AsianStringCode()
 	}
 }
 
-std::string ShogiPiece::GetJapaneseImageFileName()
+void ShogiPiece::replaceSubstring(std::string& str, const std::string& from, const std::string& to)
+{
+	size_t startPos = 0;
+	while ((startPos = str.find(from, startPos)) != std::string::npos)
+	{
+		str.replace(startPos, from.length(), to);
+		startPos += to.length(); // Move past the replacement
+	}
+}
+
+std::string ShogiPiece::GetKanjiImageFileName()
 {
 	std::string imageFileName = GetImageFileName();
 	if (_isPromoted)
 	{
-		const std::string colour = _pieceColour == White ? "White" : "Black";
-		if (_pieceType == Gold)
-		{
-			constexpr PieceType pieces[] = { Pawn, WhiteHorse, Lance, Silver };
+		constexpr PieceType pieces[] = { Bishop, Rook, Queen, Lion, Elephant, DragonHorse, DragonKing, SideMover, VerticalMover };
 
-			if (std::find(std::begin(pieces), std::end(pieces), _basePieceType) != std::end(pieces))
-			{
-				switch (_basePieceType)
-				{
-				case WhiteHorse:
-					imageFileName = colour + "GoldKnight.png";
-					break;
-				case Lance:
-					imageFileName = colour + "GoldLance.png";
-					break;
-				case Silver:
-					imageFileName = colour + "GoldSilver.png";
-					break;
-				case Pawn:
-					imageFileName = colour + "Tokin.png";
-					break;
-				}
-			}
-		}
-		else if (_pieceType == King)
+		if (std::find(std::begin(pieces), std::end(pieces), _pieceType) != std::end(pieces))
 		{
-			imageFileName = colour + "King.png";
+			const std::string colour = _pieceColour == White ? "White" : "Black";
+			replaceSubstring(imageFileName, colour, colour + "Promo");
 		}
 	}
 	return imageFileName;
