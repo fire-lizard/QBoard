@@ -107,4 +107,3 @@ private:
 		{ Lance, WhiteHorse, Silver, Gold, King, Gold, Silver, WhiteHorse, Lance }
 	};
 };
-

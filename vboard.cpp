@@ -877,15 +877,50 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		}
 		if (newPiece == Pawn)
 		{
+			if ((_currentPlayer == White && y == 0) || (_currentPlayer == Black && y == 8))
+			{
+				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place pawn on the last row",
+					QMessageBox::Ok, this);
+				mb.exec();
+				return;
+			}
+			if ((_currentPlayer == White && _board->GetData(x, y - 1) != nullptr && _board->GetData(x, y - 1)->GetType() == King) ||
+				(_currentPlayer == Black && _board->GetData(x, y + 1) != nullptr && _board->GetData(x, y + 1)->GetType() == King))
+			{
+				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot check king by the pawn drop",
+					QMessageBox::Ok, this);
+				mb.exec();
+				return;
+			}
 			for (int index = 0; index < _board->GetHeight(); index++)
 			{
 				if (_board->GetData(x, index) != nullptr && _board->GetData(x, index)->GetType() == Pawn)
 				{
-					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place second pawn on the same line",
+					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place second pawn on the same column",
 						QMessageBox::Ok, this);
 					mb.exec();
 					return;
 				}
+			}
+		}
+		else if (newPiece == Lance)
+		{
+			if ((_currentPlayer == White && y == 0) || (_currentPlayer == Black && y == 8))
+			{
+				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place lance on the last row",
+					QMessageBox::Ok, this);
+				mb.exec();
+				return;
+			}
+		}
+		else if (newPiece == WhiteHorse)
+		{
+			if ((_currentPlayer == White && y <= 1) || (_currentPlayer == Black && y >= 7))
+			{
+				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place knight on the last two rows",
+					QMessageBox::Ok, this);
+				mb.exec();
+				return;
 			}
 		}
 		dynamic_cast<ShogiVariantBoard*>(_board)->PlacePiece(newPiece, _currentPlayer, x, y);
