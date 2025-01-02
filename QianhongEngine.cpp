@@ -27,6 +27,7 @@ EngineProtocol QianhongEngine::GetType()
 
 void QianhongEngine::StartGame(QString variant)
 {
+	_moves.clear();
 }
 
 void QianhongEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)

@@ -20,9 +20,9 @@ protected:
 private:
 
 	PieceType _initialSetup[12][12] = {
-	{Lance, FerociousLeopard, Copper, Silver, Gold, King, Elephant, Gold, Silver, Copper, FerociousLeopard, Lance},
+	{Lance, FerociousLeopard, Copper, Silver, Gold, Elephant, King, Gold, Silver, Copper, FerociousLeopard, Lance},
 	{Cannon, None, Bishop, None, BlindTiger, Kylin, Phoenix, BlindTiger, None, Bishop, None, Cannon},
-	{SideMover, VerticalMover, Rook, DragonHorse, DragonKing, Lion, Queen, DragonKing, DragonHorse, Rook, VerticalMover, SideMover},
+	{SideMover, VerticalMover, Rook, DragonHorse, DragonKing, Queen, Lion, DragonKing, DragonHorse, Rook, VerticalMover, SideMover},
 	{Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn},
 	{None, None, None, Cobra, None, None, None, None, Cobra, None, None, None},
 	{None, None, None, None, None, None, None, None, None, None, None, None},

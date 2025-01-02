@@ -149,7 +149,8 @@ void MainWindow::on_actionNew_game_triggered()
         if (selectedIndex > 0)
         {
 	        const std::tuple<QString, GameVariant, EngineProtocol, QString> tpl = _engines[selectedIndex - 1];
-            _engineProtocol = std::get<2>(tpl);
+			_engineName = std::get<0>(tpl);
+        	_engineProtocol = std::get<2>(tpl);
             _engineExe = std::get<3>(tpl);
         }
         else _engineExe = "";

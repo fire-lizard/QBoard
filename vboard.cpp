@@ -361,7 +361,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				else
 					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
 			}
-			AddMove(promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None);
+			AddMove(promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None ? 'x' : ' ');
 			_lionDoubleClicked = false;
 			_currentPlayer = _currentPlayer == White ? Black : White;
 			_statusBar->setStyleSheet("QStatusBar { color : black; }");
@@ -558,15 +558,15 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 	delete board;
 }
 
-void VBoard::AddMove(PieceType p, int x1, int y1, int x2, int y2, char promotion, bool capture) const
+void VBoard::AddMove(PieceType p, int x1, int y1, int x2, int y2, int x3, int y3) const
 {
 	if (_gameVariant == Chess)
 	{
-		dynamic_cast<ChessBoard*>(_board)->WriteMove(p, x1, y1, x2, y2, promotion, capture);
+		dynamic_cast<ChessBoard*>(_board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
 	else if (_gameVariant == Shogi)
 	{
-		dynamic_cast<ShogiBoard*>(_board)->WriteMove(p, x1, y1, x2, y2, promotion, capture);
+		dynamic_cast<ShogiBoard*>(_board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
 	else if (_gameVariant == Xiangqi)
 	{
@@ -708,14 +708,43 @@ void VBoard::readyReadStandardOutput()
 	{
 		if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
 		{
-            const bool isPromoted = moveArray.size() == 5 && moveArray[4] == '+' && (y2 <= 3 || y2 >= 8);
-			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
-			_board->Move(x1, y1, x2, y2);
-			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ');
-			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
-			if (isPromoted)
+			if (moveArray.size() < 8)
 			{
-				_board->GetData(x2, y2)->Promote();
+				const bool isPromoted = moveArray.size() == 5 && moveArray[4] == '+' && (y2 <= 3 || y2 >= 8);
+				_board->GetMoves(_board->GetData(x1, y1), x1, y1);
+				if (_board->GetData(x2, y2) != nullptr)
+				{
+					delete _board->GetData(x2, y2);
+				}
+				_board->SetData(x2, y2, _board->GetData(x1, y1));
+				_board->SetData(x1, y1, nullptr);
+				AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ' ');
+				_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
+				if (isPromoted)
+				{
+					_board->GetData(x2, y2)->Promote();
+				}
+			}
+			else
+			{
+				const int x3 = moveArray[6] - 97;
+				const int y3 = _board->GetWidth() - moveArray[7];
+				if (_board->GetData(x2, y2) != nullptr)
+				{
+					delete _board->GetData(x2, y2);
+				}
+				if (x1 != x3 || y1 != y3)
+				{
+					if (_board->GetData(x3, y3) != nullptr)
+					{
+						delete _board->GetData(x3, y3);
+					}
+					_board->SetData(x3, y3, _board->GetData(x1, y1));
+					_board->SetData(x1, y1, nullptr);
+				}
+				_board->SetData(x2, y2, nullptr);
+				AddMove(_board->GetData(x3, y3)->GetType(), x1, y1, x2, y2, x3, y3);
+				//_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
 			}
 		}
 	}
@@ -727,7 +756,7 @@ void VBoard::readyReadStandardOutput()
 		{
 			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
 			_board->Move(x1, y1, x2, y2);
-			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, ' ');
+			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, ' ', ' ');
 			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 		}
 	}
@@ -754,7 +783,7 @@ void VBoard::readyReadStandardOutput()
 			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
             const PieceType ct = _board->GetData(x2, y2) != nullptr ? _board->GetData(x2, y2)->GetType() : None;
 			_board->Move(x1, y1, x2, y2);
-			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ct != None);
+			AddMove(_board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ct != None ? 'x' : ' ');
 			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
 			if (isPromoted)
 			{
@@ -811,7 +840,7 @@ void VBoard::readyReadStandardOutput()
 				break;
 			}
             dynamic_cast<ShogiVariantBoard*>(_board)->PlacePiece(newPiece, _currentPlayer, x2, y2);
-            AddMove(_board->GetData(x2, y2)->GetType(), moveArray[0], moveArray[1], x2, y2, ' ');
+            AddMove(_board->GetData(x2, y2)->GetType(), moveArray[0], moveArray[1], x2, y2, ' ', ' ');
 			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 		}
 		else if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
@@ -821,7 +850,7 @@ void VBoard::readyReadStandardOutput()
                 || ((_gameVariant == Shogi || _gameVariant == ShoShogi) && (y2 <= 2 || y2 >= 6) && moveArray[4] == '+'));
 			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
 			_board->Move(x1, y1, x2, y2);
-			AddMove(isPromoted ? _board->GetData(x2, y2)->GetBaseType() : _board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ');
+			AddMove(isPromoted ? _board->GetData(x2, y2)->GetBaseType() : _board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ' ');
 			_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
 			if (isPromoted)
 			{
@@ -877,7 +906,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		}
 		if (newPiece == Pawn)
 		{
-			if ((_currentPlayer == White && y == 0) || (_currentPlayer == Black && y == 8))
+			if ((_currentPlayer == White && y == 0) || (_currentPlayer == Black && y == _board->GetHeight() - 1))
 			{
 				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place pawn on the last row",
 					QMessageBox::Ok, this);
@@ -905,7 +934,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		}
 		else if (newPiece == Lance)
 		{
-			if ((_currentPlayer == White && y == 0) || (_currentPlayer == Black && y == 8))
+			if ((_currentPlayer == White && y == 0) || (_currentPlayer == Black && y == _board->GetHeight() - 1))
 			{
 				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place lance on the last row",
 					QMessageBox::Ok, this);
@@ -915,7 +944,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		}
 		else if (newPiece == WhiteHorse)
 		{
-			if ((_currentPlayer == White && y <= 1) || (_currentPlayer == Black && y >= 7))
+			if ((_currentPlayer == White && y <= 1) || (_currentPlayer == Black && y >= _board->GetHeight() - 2))
 			{
 				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place knight on the last two rows",
 					QMessageBox::Ok, this);
@@ -933,7 +962,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			else
 				_engine->Move(sc, '@', x, _board->GetHeight() - y, ' ');
 		}
-		AddMove(newPiece, sc, '*', x, y, ' ');
+		AddMove(newPiece, sc, '*', x, y, ' ', ' ');
 		dynamic_cast<ShogiVariantBoard*>(_board)->RemoveCapturedPiece(newPiece, _currentPlayer);
 		_currentPlayer = _currentPlayer == White ? Black : White;
 		_statusBar->setStyleSheet("QStatusBar { color : black; }");
