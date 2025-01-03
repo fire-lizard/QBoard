@@ -51,12 +51,14 @@ QByteArray ChuShogiEngine::AddMove(signed char x1, signed char y1, signed char x
 		moveStr.push_back(static_cast<char>(x2 + 97));
 		moveStr.push_back(QString::number(y2)[0].toLatin1());
 	}
-	else if (y1 < 10)
+	else if (y1 <= 12 || y2 <= 12)
 	{
-		moveStr.push_back(static_cast<char>(x1 + 97));
+		moveStr.push_back(static_cast<char>(x1 < 30 ? x1 + 97 : x1));
 		moveStr.push_back(QString::number(y1)[0].toLatin1());
-		moveStr.push_back(static_cast<char>(x2 + 97));
+		if (y1 >= 10) moveStr.push_back(QString::number(y1)[1].toLatin1());
+		moveStr.push_back(static_cast<char>(x2 < 30 ? x2 + 97 : x2));
 		moveStr.push_back(QString::number(y2)[0].toLatin1());
+		if (y2 >= 10) moveStr.push_back(QString::number(y2)[1].toLatin1());
 	}
 	else
 	{
@@ -85,12 +87,14 @@ QByteArray ChuShogiEngine::AddMove(signed char x1, signed char y1, signed char x
 	moveStr.push_back('v');
 	moveStr.push_back('e');
 	moveStr.push_back(' ');
-	if (y1 < 10)
+	if (y1 <= 12 || y2 <= 12)
 	{
-		moveStr.push_back(static_cast<char>(x1 + 97));
+		moveStr.push_back(static_cast<char>(x1 < 30 ? x1 + 97 : x1));
 		moveStr.push_back(QString::number(y1)[0].toLatin1());
-		moveStr.push_back(static_cast<char>(x2 + 97));
+		if (y1 >= 10) moveStr.push_back(QString::number(y1)[1].toLatin1());
+		moveStr.push_back(static_cast<char>(x2 < 30 ? x2 + 97 : x2));
 		moveStr.push_back(QString::number(y2)[0].toLatin1());
+		if (y2 >= 10) moveStr.push_back(QString::number(y2)[1].toLatin1());
 	}
 	else
 	{
@@ -100,12 +104,14 @@ QByteArray ChuShogiEngine::AddMove(signed char x1, signed char y1, signed char x
 		moveStr.push_back(y2);
 	}
 	moveStr.push_back(',');
-	if (y1 < 10)
+	if (y2 <= 12 || y3 <= 12)
 	{
-		moveStr.push_back(static_cast<char>(x2 + 97));
+		moveStr.push_back(static_cast<char>(x2 < 30 ? x2 + 97 : x2));
 		moveStr.push_back(QString::number(y2)[0].toLatin1());
-		moveStr.push_back(static_cast<char>(x3 + 97));
+		if (y2 >= 10) moveStr.push_back(QString::number(y2)[1].toLatin1());
+		moveStr.push_back(static_cast<char>(x3 < 30 ? x3 + 97 : x3));
 		moveStr.push_back(QString::number(y3)[0].toLatin1());
+		if (y3 >= 10) moveStr.push_back(QString::number(y3)[1].toLatin1());
 	}
 	else
 	{
