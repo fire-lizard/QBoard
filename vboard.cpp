@@ -746,7 +746,7 @@ void VBoard::readyReadStandardOutput()
 				}
 				_board->SetData(x2, y2, nullptr);
 				AddMove(_board->GetData(x3, y3)->GetType(), x1, y1, x2, y2, x3, y3);
-				//dynamic_cast<ChuShogiEngine*>(_engine)->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
+				dynamic_cast<ChuShogiEngine*>(_engine)->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
 			}
 		}
 	}
