@@ -403,7 +403,9 @@ void VBoard::mouseDoubleClickEvent(QMouseEvent* event)
 	const int x = static_cast<int>(event->position().x()) / w;
 	const int y = static_cast<int>(event->position().y()) / h;
 	const Piece* p = _board->GetData(x, y);
-	if (p == nullptr || std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) == std::end(_lionPieces)) return;
+	if (p == nullptr) return;
+	if (p->GetColour() != _currentPlayer) return;
+	if (std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) == std::end(_lionPieces)) return;
 	if (dynamic_cast<ChuShogiPiece*>(_currentPiece)->HasMovedOnce()) return;
 	_lionDoubleClicked = true;
 	dynamic_cast<ChuShogiBoard*>(_board)->GetLionJumps(p, x, y);
@@ -744,7 +746,7 @@ void VBoard::readyReadStandardOutput()
 				}
 				_board->SetData(x2, y2, nullptr);
 				AddMove(_board->GetData(x3, y3)->GetType(), x1, y1, x2, y2, x3, y3);
-				//_engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
+				//dynamic_cast<ChuShogiEngine*>(_engine)->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
 			}
 		}
 	}
