@@ -177,15 +177,7 @@ void MainWindow::on_actionNew_game_triggered()
 				_engine = new UsiEngine();
 				break;
 			case XBoard:
-				constexpr GameVariant gameVariants[] = { Shogi, ChuShogi, ShoShogi, MiniShogi };
-				if (std::find(std::begin(gameVariants), std::end(gameVariants), this->ui->vboard->GetGameVariant()) != std::end(gameVariants))
-				{
-					_engine = new ChuShogiEngine();
-				}
-				else 
-				{
-					_engine = new WbEngine();
-				}
+				_engine = new WbEngine();
 				break;
 			}
 			LoadEngine();

@@ -19,6 +19,8 @@ public:
 	std::vector<std::pair<int, int>> Moves() const;
 	Piece* GetData(int x, int y) const;
 	void SetData(int x, int y, Piece *p);
+	std::string GetFEN();
+	void SetFEN(std::string fen);
 	int GetWidth() const;
 	int GetHeight() const;
 	bool CheckPosition(int x, int y) const;
@@ -29,6 +31,7 @@ protected:
 	bool CheckDirectionAux(int x, int y, Direction direction) const;
 	static void CheckDirectionInc(int &x, int &y, Direction direction);
 
+	std::string _fen;
 	std::vector<std::pair<int, int>> _moves;
 	int _width = -1;
 	int _height = -1;

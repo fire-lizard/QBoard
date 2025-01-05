@@ -1,5 +1,7 @@
 #include "Engine.h"
 
+#include <utility>
+
 Engine::Engine()
 {
 }
@@ -22,4 +24,9 @@ void Engine::Quit() const
 	_process->write("quit\n");
 	_process->close();
 	delete _process;
+}
+
+void Engine::SetFEN(std::string fen)
+{
+	_fen = std::move(fen);
 }

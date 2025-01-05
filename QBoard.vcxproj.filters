@@ -128,9 +128,6 @@
     <ClCompile Include="ShogiVariantBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChuShogiEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="promotiondialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -215,9 +212,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <ClInclude Include="ShogiVariantBoard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChuShogiEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="KanjiPiece.h">

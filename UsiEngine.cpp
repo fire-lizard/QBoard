@@ -2,6 +2,7 @@
 
 UsiEngine::UsiEngine()
 {
+	_fen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1";
 }
 
 UsiEngine::~UsiEngine()
@@ -17,6 +18,7 @@ void UsiEngine::StartGame(QString variant)
 {
 	_moves.clear();
 	_process->write("usi\n");
+	_process->write("isready\n");
 	_process->write("usinewgame\n");
 }
 

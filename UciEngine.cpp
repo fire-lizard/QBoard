@@ -2,6 +2,7 @@
 
 UciEngine::UciEngine()
 {
+	_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 }
 
 UciEngine::~UciEngine()
@@ -17,6 +18,7 @@ void UciEngine::StartGame(QString variant)
 {
 	_moves.clear();
 	_process->write("uci\n");
+	_process->write("isready\n");
 	_process->write("ucinewgame\n");
 }
 

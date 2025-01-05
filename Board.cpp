@@ -1,5 +1,7 @@
 #include "Board.h"
 
+#include <utility>
+
 Board::~Board()
 {
 }
@@ -17,6 +19,16 @@ Piece* Board::GetData(int x, int y) const
 void Board::SetData(int x, int y, Piece *p)
 {
 	_data[x][y] = p;
+}
+
+std::string Board::GetFEN()
+{
+	return _fen;
+}
+
+void Board::SetFEN(std::string fen)
+{
+	_fen = std::move(fen);
 }
 
 int Board::GetWidth() const

@@ -225,11 +225,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				(_oldX == x && _oldY - y == -2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == Black)) return;
 			if (_board->Move(_oldX, _oldY, x, y))
 			{
-				if (_engine != nullptr)
-				{
-					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, ' ');
-				}
-				AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ');
 				_oldX = x;
 				_oldY = y;
 				dynamic_cast<ChuShogiPiece*>(_currentPiece)->MoveOnce();
@@ -245,7 +240,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				{
 					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, ' ');
 				}
-				AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ');
+				//AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ');
 				dynamic_cast<ChuShogiPiece*>(_currentPiece)->EndMove();
 				_currentPiece = nullptr;
 				_oldX = x;
@@ -674,6 +669,16 @@ void VBoard::readyReadStandardOutput()
 {
 	QProcess *p = dynamic_cast<QProcess*>(sender());
 	const QByteArray buf = p->readAllStandardOutput();
+	if (_engine->GetType() == XBoard)
+	{
+		const QString str = QString(buf);
+		if (str.contains("setboard=0")) dynamic_cast<WbEngine*>(_engine)->SetOption("setboard", false);
+		if (str.contains("setboard=1")) dynamic_cast<WbEngine*>(_engine)->SetOption("setboard", true);
+		if (str.contains("memory=0")) dynamic_cast<WbEngine*>(_engine)->SetOption("memory", false);
+		if (str.contains("memory=1")) dynamic_cast<WbEngine*>(_engine)->SetOption("memory", true);
+		if (str.contains("usermove=0")) dynamic_cast<WbEngine*>(_engine)->SetOption("usermove", false);
+		if (str.contains("usermove=1")) dynamic_cast<WbEngine*>(_engine)->SetOption("usermove", true);
+	}
     int x1, y1, x2, y2;
 	const QByteArray moveArray = ExtractMove(buf);
 	this->_textEdit->setText(_engineOutput == Verbose ? buf : moveArray);
@@ -746,7 +751,7 @@ void VBoard::readyReadStandardOutput()
 				}
 				_board->SetData(x2, y2, nullptr);
 				AddMove(_board->GetData(x3, y3)->GetType(), x1, y1, x2, y2, x3, y3);
-				dynamic_cast<ChuShogiEngine*>(_engine)->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
+				dynamic_cast<WbEngine*>(_engine)->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
 			}
 		}
 	}

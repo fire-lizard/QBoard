@@ -30,7 +30,7 @@ private:
 	{None, None, None, Cobra, None, None, None, None, Cobra, None, None, None},
 	{Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn},
 	{SideMover, VerticalMover, Rook, DragonHorse, DragonKing, Lion, Queen, DragonKing, DragonHorse, Rook, VerticalMover, SideMover},
-	{Cannon, None, Bishop, None, BlindTiger, Kylin, Phoenix, BlindTiger, None, Bishop, None, Cannon},
+	{Cannon, None, Bishop, None, BlindTiger, Phoenix, Kylin, BlindTiger, None, Bishop, None, Cannon},
 	{Lance, FerociousLeopard, Copper, Silver, Gold, King, Elephant, Gold, Silver, Copper, FerociousLeopard, Lance}
 	};
 };

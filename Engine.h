@@ -15,6 +15,7 @@ public:
 	virtual ~Engine();
 	virtual QProcess* RunProcess(QObject *parentObject, const QString& engineExe);
 	void Quit() const;
+	void SetFEN(std::string fen);
 	virtual EngineProtocol GetType() = 0;
 	virtual void StartGame(QString variant = "") = 0;
 	virtual void Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion = ' ') = 0;
@@ -23,6 +24,7 @@ public:
 protected:
 	QProcess *_process = nullptr;
 	std::vector<QByteArray> _moves;
+	std::string _fen;
 
 private:
 };
