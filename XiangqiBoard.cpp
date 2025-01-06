@@ -214,6 +214,17 @@ void XiangqiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2
 		{
 			_wxf += y1 < _pieceFiles[1] ? "+" : "-";
 		}
+		else if (_pieceFiles[1] != -1 && _pieceFiles[2] != -1)
+		{
+			for (int index = 0; index < 5; index++) 
+			{
+				if (_pieceFiles[index] == y1) 
+				{
+					_wxf += std::to_string(index + 1);
+					break;
+				}
+			}
+		}
 		else
 		{
 			_wxf += std::to_string(9 - x1);
@@ -239,7 +250,18 @@ void XiangqiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2
 		else if (y2 < y1) direction = '-';
 		if (_pieceFiles[1] != -1 && _pieceFiles[2] == -1)
 		{
-			_wxf += y1 < _pieceFiles[1] ? "+" : "-";
+			_wxf += y1 >= _pieceFiles[1] ? "+" : "-";
+		}
+		else if (_pieceFiles[1] != -1 && _pieceFiles[2] != -1)
+		{
+			for (int index = 0; index < 5; index++)
+			{
+				if (_pieceFiles[index] == y1)
+				{
+					_wxf += std::to_string(5 - index);
+					break;
+				}
+			}
 		}
 		else
 		{
@@ -253,6 +275,10 @@ void XiangqiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2
 		else
 		{
 			_wxf += std::to_string(abs(y2 - y1));
+		}
+		if (_moveCount > 0 && _moveCount % 3 == 0)
+		{
+			_wxf.push_back('\n');
 		}
 	}
 	_wxf += " ";
