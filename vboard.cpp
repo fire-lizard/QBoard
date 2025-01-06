@@ -272,7 +272,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						promotion = 'b';
 					}
-					else if (pt == WhiteHorse)
+					else if (pt == Knight)
 					{
 						promotion = 'n';
 					}
@@ -321,7 +321,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						_currentPiece->Promote();
 					}
 					else if ((_gameVariant == Shogi || _gameVariant == ShoShogi) &&
-						(pt == Pawn || pt == WhiteHorse || pt == Lance) &&
+						(pt == Pawn || pt == Knight || pt == Lance) &&
 						((y == 8 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
 					{
 						_currentPiece->Promote();
@@ -797,7 +797,7 @@ void VBoard::readyReadStandardOutput()
 				switch (moveArray[4])
 				{
 				case 'n':
-					_board->GetData(x2, y2)->Promote(WhiteHorse);
+					_board->GetData(x2, y2)->Promote(Knight);
 					break;
 				case 'b':
 					_board->GetData(x2, y2)->Promote(Bishop);
@@ -834,7 +834,7 @@ void VBoard::readyReadStandardOutput()
 				newPiece = Silver;
 				break;
 			case 'N':
-				newPiece = WhiteHorse;
+				newPiece = Knight;
 				break;
 			case 'L':
 				newPiece = Lance;
@@ -949,7 +949,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				return;
 			}
 		}
-		else if (newPiece == WhiteHorse)
+		else if (newPiece == Knight)
 		{
 			if ((_currentPlayer == White && y <= 1) || (_currentPlayer == Black && y >= _board->GetHeight() - 2))
 			{

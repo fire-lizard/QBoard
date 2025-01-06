@@ -126,7 +126,7 @@ void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 			}
 		}
 		break;
-	case WhiteHorse:
+	case Knight:
 		if (_data[x][y + 1] == nullptr)
 		{
 			CheckMove(piece, x + 1, y + 2);
@@ -183,6 +183,23 @@ void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direct
 	while (CheckDirectionAux(x, y, direction));
 }
 
+bool XiangqiBoard::Move(int oldX, int oldY, int newX, int newY)
+{
+	for (int& _pieceFile : _pieceFiles) _pieceFile = -1;
+	const PieceColour pieceColour = _data[oldX][oldY]->GetColour();
+	const PieceType pieceType = _data[oldX][oldY]->GetType();
+	int pieceCount = 0;
+	for (int index = 0; index < _height; index++)
+	{
+		const Piece* p = _data[oldX][index];
+		if (p != nullptr && p->GetColour() == pieceColour && p->GetType() == pieceType)
+		{
+			_pieceFiles[pieceCount] = index;
+			pieceCount++;
+		}
+	}
+	return Board::Move(oldX, oldY, newX, newY);
+}
 
 void XiangqiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2)
 {
@@ -190,11 +207,22 @@ void XiangqiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2
 	if (_moveCount % 2 == 0)
 	{
 		_wxf += std::to_string((_moveCount / 2) + 1) + ". "; // Add move number for red
+		// single-letter piece abbreviation
 		_wxf += _pieceToWXF.at(pieceType);
+		// former file
+		if (_pieceFiles[1] != -1 && _pieceFiles[2] == -1)
+		{
+			_wxf += y1 < _pieceFiles[1] ? "+" : "-";
+		}
+		else
+		{
+			_wxf += std::to_string(9 - x1);
+		}
+		// operator indicating direction of movement
 		if (y1 > y2) direction = '+';
 		else if (y1 < y2) direction = '-';
-		_wxf += std::to_string(9 - x1);
 		_wxf.push_back(direction);
+		// new file, or in the case of purely vertical movement, number of ranks traversed
 		if (direction == '.' || x1 != x2)
 		{
 			_wxf += std::to_string(9 - x2);
@@ -209,7 +237,14 @@ void XiangqiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2
 		_wxf.push_back(static_cast<char>(std::tolower(_pieceToWXF.at(pieceType)[0])));
 		if (y2 > y1) direction = '+';
 		else if (y2 < y1) direction = '-';
-		_wxf += std::to_string(x1 + 1);
+		if (_pieceFiles[1] != -1 && _pieceFiles[2] == -1)
+		{
+			_wxf += y1 < _pieceFiles[1] ? "+" : "-";
+		}
+		else
+		{
+			_wxf += std::to_string(x1 + 1);
+		}
 		_wxf.push_back(direction);
 		if (direction == '.' || x1 != x2)
 		{

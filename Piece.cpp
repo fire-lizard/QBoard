@@ -97,6 +97,7 @@ std::string Piece::GetImageFileName() const
 		return colour + "HCrown.png";
 	case FlyingStag:
 		return colour + "Chancellor.png";
+	case Knight:
 	case WhiteHorse:
 		return colour + "Knight.png";
 	case Whale:

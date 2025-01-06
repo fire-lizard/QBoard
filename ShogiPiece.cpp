@@ -28,7 +28,7 @@ void ShogiPiece::Promote(PieceType pieceType)
 	case Silver:
 		_pieceType = PromotedSilver;
 		break;
-	case WhiteHorse:
+	case Knight:
 		_pieceType = PromotedKnight;
 		break;
 	case Pawn:
@@ -59,7 +59,7 @@ std::string ShogiPiece::StringCode()
 		return "S";
 	case Gold:
 		return "G";
-	case WhiteHorse:
+	case Knight:
 		return "N";
 	case Pawn:
 		return "P";
@@ -85,7 +85,7 @@ std::string ShogiPiece::LongStringCode() const
 		return "Silver";
 	case Gold:
 		return "Gold";
-	case WhiteHorse:
+	case Knight:
 		return "Knight";
 	case Pawn:
 		return "Pawn";
@@ -101,7 +101,7 @@ PieceType ShogiPiece::LongStringCode2PieceType(const std::string& longStringCode
 	if (longStringCode == "Lance") return Lance;
 	if (longStringCode == "Silver") return Silver;
 	if (longStringCode == "Gold") return Gold;
-	if (longStringCode == "Knight") return WhiteHorse;
+	if (longStringCode == "Knight") return Knight;
 	if (longStringCode == "Pawn") return Pawn;
 	return None;
 }
@@ -134,7 +134,7 @@ std::string ShogiPiece::KanjiStringCode()
 		return "圭";
 	case PromotedSilver:
 		return "全";
-	case WhiteHorse:
+	case Knight:
 		return "桂";
 	case Pawn:
 		return "歩";

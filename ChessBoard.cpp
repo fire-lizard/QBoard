@@ -157,7 +157,7 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 			}
 		}
 		break;
-	case WhiteHorse:
+	case Knight:
 		CheckMove(piece, x + 1, y + 2);
 		CheckMove(piece, x - 1, y + 2);
 		CheckMove(piece, x + 2, y + 1);

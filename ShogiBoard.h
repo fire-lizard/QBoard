@@ -34,7 +34,7 @@ private:
 	const std::map<PieceType, std::string> _pieceToPSN = {
 		{Pawn, "P"},
 		{Rook, "R"},
-		{WhiteHorse, "N"},
+		{Knight, "N"},
 		{Bishop, "B"},
 		{Queen, "Q"},
 		{King, "K"},
@@ -52,7 +52,7 @@ private:
 	const std::map<PieceType, std::string> _pieceToCSA = {
 		{Pawn, "FU"},
 		{Rook, "HI"},
-		{WhiteHorse, "KE"},
+		{Knight, "KE"},
 		{Bishop, "KA"},
 		{King, "OU"},
 		{Lance, "KY"},
@@ -69,7 +69,7 @@ private:
 	const std::map<PieceType, std::string> _pieceToKIF = {
 		{Pawn, "歩"},
 		{Rook, "飛"},
-		{WhiteHorse, "桂"},
+		{Knight, "桂"},
 		{Bishop, "角"},
 		{King, "玉"},
 		{Lance, "香"},
@@ -96,7 +96,7 @@ private:
 	};
 
 	PieceType _initialSetup[9][9] = {
-		{ Lance, WhiteHorse, Silver, Gold, King, Gold, Silver, WhiteHorse, Lance },
+		{ Lance, Knight, Silver, Gold, King, Gold, Silver, Knight, Lance },
 		{ None, Rook, None, None, None, None, None, Bishop, None },
 		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
 		{ None, None, None, None, None, None, None, None, None },
@@ -104,6 +104,6 @@ private:
 		{ None, None, None, None, None, None, None, None, None },
 		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
 		{ None, Bishop, None, None, None, None, None, Rook, None },
-		{ Lance, WhiteHorse, Silver, Gold, King, Gold, Silver, WhiteHorse, Lance }
+		{ Lance, Knight, Silver, Gold, King, Gold, Silver, Knight, Lance }
 	};
 };

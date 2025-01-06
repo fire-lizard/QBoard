@@ -175,7 +175,7 @@ void ShogiBoard::GetMoves(Piece *piece, int x, int y)
 			CheckMove(piece, x, y - 1);
 		}
 		break;
-	case WhiteHorse:
+	case Knight:
 		if (piece->GetColour() == Black)
 		{
 			CheckMove(piece, x - 1, y + 2);

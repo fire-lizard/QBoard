@@ -11,6 +11,7 @@ public:
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
 	void GetMoves(Piece *piece, int x, int y) override;
+	bool Move(int oldX, int oldY, int newX, int newY) override;
 	void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2);
 	std::string GetWXF();
 
@@ -18,11 +19,12 @@ protected:
 
 private:
 	std::string _wxf;
+	int _pieceFiles[5] = {-1, -1, -1, -1, -1};
 
 	const std::map<PieceType, std::string> _pieceToWXF = {
-		{Pawn, "S"},
+		{Pawn, "P"},
 		{Rook, "R"},
-		{WhiteHorse, "H"},
+		{Knight, "H"},
 		{Elephant, "E"},
 		{King, "G"},
 		{Silver, "A"},
@@ -32,7 +34,7 @@ private:
 	void CheckCannonDirection(const Piece *piece, int x, int y, Direction direction);
 
 	PieceType _initialSetup[10][9] = {
-		{ Rook, WhiteHorse, Elephant, Silver, King, Silver, Elephant, WhiteHorse, Rook },
+		{ Rook, Knight, Elephant, Silver, King, Silver, Elephant, Knight, Rook },
 		{ None, None, None, None, None, None, None, None, None },
 		{ None, Cannon, None, None, None, None, None, Cannon, None },
 		{ Pawn, None, Pawn, None, Pawn, None, Pawn, None, Pawn },
@@ -41,7 +43,7 @@ private:
 		{ Pawn, None, Pawn, None, Pawn, None, Pawn, None, Pawn },
 		{ None, Cannon, None, None, None, None, None, Cannon, None },
 		{ None, None, None, None, None, None, None, None, None },
-		{ Rook, WhiteHorse, Elephant, Silver, King, Silver, Elephant, WhiteHorse, Rook }
+		{ Rook, Knight, Elephant, Silver, King, Silver, Elephant, Knight, Rook }
 	};
 };
 

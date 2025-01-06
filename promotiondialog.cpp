@@ -22,7 +22,7 @@ void PromotionDialog::on_toolButton_clicked()
 
 void PromotionDialog::on_toolButton_2_clicked()
 {
-    _chosenPiece = WhiteHorse;
+    _chosenPiece = Knight;
     close();
 }
 

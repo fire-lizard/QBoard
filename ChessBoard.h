@@ -20,14 +20,14 @@ public:
 protected:
 
 	PieceType _initialSetup[8][8] = {
-		{ Rook, WhiteHorse, Bishop, Queen, King, Bishop, WhiteHorse, Rook },
+		{ Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook },
 		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
 		{ None, None, None, None, None, None, None, None },
 		{ None, None, None, None, None, None, None, None },
 		{ None, None, None, None, None, None, None, None },
 		{ None, None, None, None, None, None, None, None },
 		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
-		{ Rook, WhiteHorse, Bishop, Queen, King, Bishop, WhiteHorse, Rook }
+		{ Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook }
 	};
 
 private:
@@ -36,7 +36,7 @@ private:
 	const std::map<PieceType, char> _pieceToPGN = {
 		{Pawn, 'P'},
 		{Rook, 'R'},
-		{WhiteHorse, 'N'},
+		{Knight, 'N'},
 		{Bishop, 'B'},
 		{Queen, 'Q'},
 		{King, 'K'}

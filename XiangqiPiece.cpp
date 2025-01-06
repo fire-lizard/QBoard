@@ -24,7 +24,7 @@ std::string XiangqiPiece::StringCode()
 		return "R";
 	case Cannon:
 		return "C";
-	case WhiteHorse:
+	case Knight:
 		return "H";
 	case Elephant:
 		return "E";
@@ -47,7 +47,7 @@ std::string XiangqiPiece::KanjiStringCode()
 		return _pieceColour == Black ? "車" : "俥";
 	case Cannon:
 		return _pieceColour == Black ? "砲" : "炮";
-	case WhiteHorse:
+	case Knight:
 		return _pieceColour == Black ? "馬" : "傌";
 	case Elephant:
 		return _pieceColour == Black ? "象" : "相";
@@ -75,7 +75,7 @@ std::string XiangqiPiece::GetKanjiImageFileName()
 		return colour + "advisor.png";
 	case Pawn:
 		return colour + "pawn.png";
-	case WhiteHorse:
+	case Knight:
 		return colour + "horse.png";
 	default:
 		return "";

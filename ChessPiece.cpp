@@ -27,7 +27,7 @@ std::string ChessPiece::StringCode()
 		return "R";
 	case Bishop:
 		return "B";
-	case WhiteHorse:
+	case Knight:
 		return "N";
 	case Pawn:
 		return "P";
