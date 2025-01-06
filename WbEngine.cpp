@@ -113,16 +113,6 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 		moveStr.push_back(y2);
 	}
 	moveStr.push_back(',');
-	moveStr.push_back('\n');
-	moveStr.push_back('u');
-	moveStr.push_back('s');
-	moveStr.push_back('e');
-	moveStr.push_back('r');
-	moveStr.push_back('m');
-	moveStr.push_back('o');
-	moveStr.push_back('v');
-	moveStr.push_back('e');
-	moveStr.push_back(' ');
 	if (y2 <= 12 || y3 <= 12)
 	{
 		moveStr.push_back(static_cast<char>(x2 < 30 ? x2 + 97 : x2));

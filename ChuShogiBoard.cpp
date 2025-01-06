@@ -60,14 +60,6 @@ Piece* ChuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 
 void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 {
-	bool ned;
-	bool ed;
-	bool sed;
-	bool sd;
-	bool nd;
-	bool nwd;
-	bool wd;
-	bool swd;
 	_moves.clear();
 	switch (piece->GetType())
 	{
@@ -82,48 +74,32 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x - 1, y - 1);
 		break;
 	case Lion:
-		ned = CheckLionMove(piece, x + 1, y + 1);
-		ed = CheckLionMove(piece, x + 1, y);
-		sed = CheckLionMove(piece, x + 1, y - 1);
-		nd = CheckLionMove(piece, x, y + 1);
-		sd = CheckLionMove(piece, x, y - 1);
-		nwd = CheckLionMove(piece, x - 1, y + 1);
-		wd = CheckLionMove(piece, x - 1, y);
-		swd = CheckLionMove(piece, x - 1, y - 1);
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x - 1, y - 1);
 
-		if (ned)
-			CheckMove(piece, x + 2, y + 2);
-		if (ned || ed)
-			CheckMove(piece, x + 2, y + 1);
-		if (ned || ed || sed)
-			CheckMove(piece, x + 2, y);
-		if (ed || sed)
-			CheckMove(piece, x + 2, y - 1);
-		if (sed)
-			CheckMove(piece, x + 2, y - 2);
-		if (nd || ned)
-			CheckMove(piece, x + 1, y + 2);
-		if (nwd || nd || ned)
-			CheckMove(piece, x, y + 2);
-		if (nwd || nd)
-			CheckMove(piece, x - 1, y + 2);
+		CheckMove(piece, x + 2, y + 2);
+		CheckMove(piece, x + 2, y + 1);
+		CheckMove(piece, x + 2, y);
+		CheckMove(piece, x + 2, y - 1);
+		CheckMove(piece, x + 2, y - 2);
+		CheckMove(piece, x + 1, y + 2);
+		CheckMove(piece, x, y + 2);
+		CheckMove(piece, x - 1, y + 2);
 
-		if (swd || sd)
-			CheckMove(piece, x - 1, y - 2);
-		if (swd || sd || sed)
-			CheckMove(piece, x, y - 2);
-		if (sd || sed)
-			CheckMove(piece, x + 1, y - 2);
-		if (nwd)
-			CheckMove(piece, x - 2, y + 2);
-		if (wd || nwd)
-			CheckMove(piece, x - 2, y + 1);
-		if (swd || wd || nwd)
-			CheckMove(piece, x - 2, y);
-		if (swd || wd)
-			CheckMove(piece, x - 2, y - 1);
-		if (swd)
-			CheckMove(piece, x - 2, y - 2);
+		CheckMove(piece, x - 1, y - 2);
+		CheckMove(piece, x, y - 2);
+		CheckMove(piece, x + 1, y - 2);
+		CheckMove(piece, x - 2, y + 2);
+		CheckMove(piece, x - 2, y + 1);
+		CheckMove(piece, x - 2, y);
+		CheckMove(piece, x - 2, y - 1);
+		CheckMove(piece, x - 2, y - 2);
 		break;
 	case Queen:
 		CheckDirection(piece, x, y, North);
@@ -321,19 +297,19 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, West);
 		if (piece->GetColour() == Black)
 		{
-			if (CheckLionMove(piece, x + 1, y + 1))
-				CheckMove(piece, x + 2, y + 2);
-			if (CheckLionMove(piece, x - 1, y + 1))
-				CheckMove(piece, x - 2, y + 2);
+			CheckMove(piece, x + 1, y + 1);
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 2, y + 2);
+			CheckMove(piece, x - 2, y + 2);
 			CheckDirection(piece, x, y, SouthEast);
 			CheckDirection(piece, x, y, SouthWest);
 		}
 		else
 		{
-			if (CheckLionMove(piece, x + 1, y - 1))
-				CheckMove(piece, x + 2, y - 2);
-			if (CheckLionMove(piece, x - 1, y - 1))
-				CheckMove(piece, x - 2, y - 2);
+			CheckMove(piece, x + 1, y - 1);
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 2, y - 2);
+			CheckMove(piece, x - 2, y - 2);
 			CheckDirection(piece, x, y, NorthWest);
 			CheckDirection(piece, x, y, NorthEast);
 		}
@@ -347,14 +323,14 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, NorthEast);
 		if (piece->GetColour() == Black)
 		{
-			if (CheckLionMove(piece, x, y + 1))
-				CheckMove(piece, x, y + 2);
+			CheckMove(piece, x, y + 1);
+			CheckMove(piece, x, y + 2);
 			CheckDirection(piece, x, y, South);
 		}
 		else
 		{
-			if (CheckLionMove(piece, x, y - 1))
-				CheckMove(piece, x, y - 2);
+			CheckMove(piece, x, y - 1);
+			CheckMove(piece, x, y - 2);
 			CheckDirection(piece, x, y, North);
 		}
 		break;
@@ -410,112 +386,6 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		{
 			CheckDirection(piece, x, y, NorthEast);
 			CheckDirection(piece, x, y, NorthWest);
-		}
-		break;
-	default:
-		break;
-	}
-}
-
-bool ChuShogiBoard::CheckLionMove(const Piece* piece, int x, int y)
-{
-	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
-	{
-		if (_data[x][y] == nullptr || _data[x][y]->GetColour() != piece->GetColour())
-		{
-			_moves.emplace_back(x, y);
-			return true;
-		}
-	}
-	return false;
-}
-
-void ChuShogiBoard::GetLionJumps(const Piece* piece, int x, int y)
-{
-	_moves.clear();
-	switch (piece->GetType())
-	{
-	case Lion:
-		CheckMove(piece, x + 2, y + 2);
-		CheckMove(piece, x + 2, y + 1);
-		CheckMove(piece, x + 2, y);
-		CheckMove(piece, x + 2, y - 1);
-		CheckMove(piece, x + 2, y - 2);
-		CheckMove(piece, x + 1, y + 2);
-		CheckMove(piece, x, y + 2);
-		CheckMove(piece, x - 1, y + 2);
-
-		CheckMove(piece, x - 1, y - 2);
-		CheckMove(piece, x, y - 2);
-		CheckMove(piece, x + 1, y - 2);
-		CheckMove(piece, x - 2, y + 2);
-		CheckMove(piece, x - 2, y + 1);
-		CheckMove(piece, x - 2, y);
-		CheckMove(piece, x - 2, y - 1);
-		CheckMove(piece, x - 2, y - 2);
-		break;
-	case Eagle:
-		if (piece->GetColour() == Black)
-		{
-			CheckMove(piece, x + 2, y + 2);
-			CheckMove(piece, x - 2, y + 2);
-		}
-		else
-		{
-			CheckMove(piece, x + 2, y - 2);
-			CheckMove(piece, x - 2, y - 2);
-		}
-		break;
-	case Unicorn:
-		if (piece->GetColour() == Black)
-		{
-			CheckMove(piece, x, y + 2);
-		}
-		else
-		{
-			CheckMove(piece, x, y - 2);
-		}
-		break;
-	default:
-		break;
-	}
-}
-
-void ChuShogiBoard::GetLionMoves(const Piece* piece, int x, int y)
-{
-	_moves.clear();
-	switch (piece->GetType())
-	{
-	case Lion:
-		CheckMove(piece, x + 1, y + 1);
-		CheckMove(piece, x + 1, y);
-		CheckMove(piece, x + 1, y - 1);
-		CheckMove(piece, x, y + 1);
-		CheckMove(piece, x, y - 1);
-		CheckMove(piece, x - 1, y + 1);
-		CheckMove(piece, x - 1, y);
-		CheckMove(piece, x - 1, y - 1);
-		break;
-	case Eagle:
-		if (piece->GetColour() == Black)
-		{
-			CheckMove(piece, x + 1, y + 1);
-			CheckMove(piece, x - 1, y + 1);
-		}
-		else
-		{
-			CheckMove(piece, x + 1, y - 1);
-			CheckMove(piece, x - 1, y - 1);
-		}
-		break;
-	case Unicorn:
-		if (piece->GetColour() == Black)
-		{
-			CheckMove(piece, x, y + 1);
-		}
-		else
-		{
-			CheckMove(piece, x, y - 1);
 		}
 		break;
 	default:

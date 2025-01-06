@@ -44,8 +44,6 @@ private:
 
 	void mousePressEvent(QMouseEvent *event) override;
 
-	void mouseDoubleClickEvent(QMouseEvent* event) override;
-
 	bool PossibleMove(int x, int y) const;
 	void RemoveMove(int x, int y);
 	void CalculateCheck(int oldX, int oldY, int newX, int newY);
@@ -73,7 +71,6 @@ private:
     QRegularExpression _sgusre;
 	GameVariant _shogiVariants[4] = {Shogi, MiniShogi, ChuShogi, ShoShogi};
 	PieceType _lionPieces[3] = { Lion, Eagle, Unicorn };
-	bool _lionDoubleClicked = false;
 
 signals:
 

@@ -48,7 +48,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			QRect rect(i * w, j * h, w, h);
 			if (PossibleMove(i, j))
 			{
-				if (!_lionDoubleClicked && _currentPiece != nullptr && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces))
+				if (_currentPiece != nullptr && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces))
 				{
 					if (((abs(_oldX - i) == 2 || abs(_oldY - j) == 2) && _currentPiece->GetType() == Lion) ||
 						(abs(_oldX - i) == 2 && _oldY - j == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
@@ -104,7 +104,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				}
 				else if (_board->GetData(i, j) == nullptr)
 				{
-					painter.setBrush(_lionDoubleClicked ? QColorConstants::Svg::orange : Qt::cyan);
+					painter.setBrush(Qt::cyan);
 					painter.drawRect(rect);
 					painter.setBrush(Qt::NoBrush);
 				}
@@ -216,7 +216,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	else if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
 	{
 		// Lion move
-		/*if (!_lionDoubleClicked && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces) && !dynamic_cast<ChuShogiPiece*>(_currentPiece)->HasMovedOnce())
+		/*if (std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces) && !dynamic_cast<ChuShogiPiece*>(_currentPiece)->HasMovedOnce())
 		{
 			if (((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) && _currentPiece->GetType() == Lion) ||
 				(abs(_oldX - x) == 2 && _oldY - y == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
@@ -228,11 +228,10 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				_oldX = x;
 				_oldY = y;
 				dynamic_cast<ChuShogiPiece*>(_currentPiece)->MoveOnce();
-				dynamic_cast<ChuShogiBoard*>(_board)->GetLionMoves(_currentPiece, x, y);
 				this->repaint();
 			}
 		}
-		else if (!_lionDoubleClicked && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces) && dynamic_cast<ChuShogiPiece*>(_currentPiece)->HasMovedOnce())
+		else if (std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces) && dynamic_cast<ChuShogiPiece*>(_currentPiece)->HasMovedOnce())
 		{
 			if (_board->Move(_oldX, _oldY, x, y))
 			{
@@ -305,7 +304,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						promotion = '+';
 					}
 				}
-				if (_gameVariant == ChuShogi && !_currentPiece->IsPromoted())
+				if (_gameVariant == ChuShogi && !_currentPiece->IsPromoted() && _currentPiece->GetType() != King &&
+					_currentPiece->GetType() != Queen && _currentPiece->GetType() != Lion)
 				{
 					if ((y >= 8 && _currentPiece->GetColour() == Black) ||
 						(y <= 3 && _currentPiece->GetColour() == White))
@@ -357,7 +357,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
 			}
 			AddMove(promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None ? 'x' : ' ');
-			_lionDoubleClicked = false;
 			_currentPlayer = _currentPlayer == White ? Black : White;
 			_statusBar->setStyleSheet("QStatusBar { color : black; }");
 			_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");
@@ -371,7 +370,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	}
 	else if (p != nullptr && p->GetColour() == _currentPlayer)
 	{
-		_lionDoubleClicked = false;
 		_currentPiece = _board->GetData(x, y);
 		_oldX = x;
 		_oldY = y;
@@ -387,33 +385,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			});
 		this->repaint();
 	}
-}
-
-void VBoard::mouseDoubleClickEvent(QMouseEvent* event)
-{
-	if (_gameVariant != ChuShogi) return;
-	if (_engine != nullptr && _currentPlayer == Black) return;
-	const int w = this->size().width() / _board->GetWidth();
-	const int h = this->size().height() / _board->GetHeight();
-	const int x = static_cast<int>(event->position().x()) / w;
-	const int y = static_cast<int>(event->position().y()) / h;
-	const Piece* p = _board->GetData(x, y);
-	if (p == nullptr) return;
-	if (p->GetColour() != _currentPlayer) return;
-	if (std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) == std::end(_lionPieces)) return;
-	if (dynamic_cast<ChuShogiPiece*>(_currentPiece)->HasMovedOnce()) return;
-	_lionDoubleClicked = true;
-	dynamic_cast<ChuShogiBoard*>(_board)->GetLionJumps(p, x, y);
-	_moves = _board->Moves();
-	std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
-		{
-			CalculateCheck(x, y, t.first, t.second);
-		});
-	std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
-		{
-			CalculateCheck(x, y, t.first, t.second);
-		});
-	this->repaint();
 }
 
 Board* VBoard::GetBoard() const
