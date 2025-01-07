@@ -49,6 +49,7 @@ private:
 	void CalculateCheck(int oldX, int oldY, int newX, int newY);
 	void AddMove(PieceType p, int x1, int y1, int x2, int y2, int x3, int y3) const;
     QByteArray ExtractMove(const QByteArray& buf) const;
+	void FinishMove();
 
 	Board *_board;
 	PieceColour _currentPlayer = White;
@@ -71,6 +72,8 @@ private:
     QRegularExpression _sgusre;
 	GameVariant _shogiVariants[4] = {Shogi, MiniShogi, ChuShogi, ShoShogi};
 	PieceType _lionPieces[3] = { Lion, Eagle, Unicorn };
+	bool _lionMovedOnce = false;
+	std::pair<int, int> _lionFirstMove;
 
 signals:
 

@@ -392,3 +392,31 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		break;
 	}
 }
+
+bool ChuShogiBoard::IsMovePossible(int oldX, int oldY, int newX, int newY)
+{
+	return std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY; });
+}
+
+bool ChuShogiBoard::Move(int x1, int y1, int x2, int y2, int x3, int y3)
+{
+	if ((x1 == x3 && y1 == y3) || std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x3 && t.second == y3; }))
+	{
+		if (_data[x2][y2] != nullptr)
+		{
+			delete _data[x2][y2];
+			_data[x2][y2] = nullptr;
+		}
+		if (x1 != x3 || y1 != y3)
+		{
+			if (_data[x3][y3] != nullptr)
+			{
+				delete _data[x3][y3];
+			}
+			_data[x3][y3] = _data[x1][y1];
+			_data[x1][y1] = nullptr;
+		}
+		return true;
+	}
+	return false;
+}

@@ -183,6 +183,19 @@ void VBoard::paintEvent(QPaintEvent *)
 	}
 }
 
+void VBoard::FinishMove()
+{
+	_currentPlayer = _currentPlayer == White ? Black : White;
+	_statusBar->setStyleSheet("QStatusBar { color : black; }");
+	_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");
+	_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
+	_currentPiece = nullptr;
+	_oldX = -1;
+	_oldY = -1;
+	_moves.clear();
+	this->repaint();
+}
+
 void VBoard::mousePressEvent(QMouseEvent* event)
 {
 	if (_engine != nullptr && _currentPlayer == Black) return;
@@ -203,59 +216,63 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			_engine->Move(_oldX, _board->GetHeight() - _oldY, x == 7 ? 6 : 2, _board->GetHeight() - y, ' ');
 		}
 		dynamic_cast<ChessBoard*>(_board)->WriteMove(x == 7 ? "O-O" : "O-O-O");
-		_currentPlayer = _currentPlayer == White ? Black : White;
-		_statusBar->setStyleSheet("QStatusBar { color : black; }");
-		_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");
-		_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
-		_currentPiece = nullptr;
-		_oldX = -1;
-		_oldY = -1;
-		_moves.clear();
-		this->repaint();
+		FinishMove();
 	}
 	else if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
 	{
 		// Lion move
-		/*if (std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces) && !dynamic_cast<ChuShogiPiece*>(_currentPiece)->HasMovedOnce())
+		if (std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces) && !_lionMovedOnce)
 		{
 			if (((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) && _currentPiece->GetType() == Lion) ||
 				(abs(_oldX - x) == 2 && _oldY - y == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
 				(abs(_oldX - x) == 2 && _oldY - y == -2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == Black) ||
 				(_oldX == x && _oldY - y == 2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == White) ||
-				(_oldX == x && _oldY - y == -2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == Black)) return;
-			if (_board->Move(_oldX, _oldY, x, y))
+				(_oldX == x && _oldY - y == -2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == Black))
 			{
-				_oldX = x;
-				_oldY = y;
-				dynamic_cast<ChuShogiPiece*>(_currentPiece)->MoveOnce();
+				if (_board->Move(_oldX, _oldY, x, y))
+				{
+					if (_engine != nullptr)
+					{
+						_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+					}
+					AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ', ' ');
+					FinishMove();
+				}
+			}
+			else if (_board->GetData(x, y) == nullptr)
+			{
+				if (_board->Move(_oldX, _oldY, x, y))
+				{
+					if (_engine != nullptr)
+					{
+						_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+					}
+					AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ', ' ');
+					FinishMove();
+				}
+			}
+			else if (dynamic_cast<ChuShogiBoard*>(_board)->IsMovePossible(_oldX, _oldY, x, y))
+			{
+				_lionFirstMove.first = x;
+				_lionFirstMove.second = y;
+				_lionMovedOnce = true;
 				this->repaint();
 			}
 		}
-		else if (std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces) && dynamic_cast<ChuShogiPiece*>(_currentPiece)->HasMovedOnce())
+		else if (std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces) && _lionMovedOnce)
 		{
-			if (_board->Move(_oldX, _oldY, x, y))
+			if (dynamic_cast<ChuShogiBoard*>(_board)->Move(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 			{
 				if (_engine != nullptr)
 				{
-					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, ' ');
+					dynamic_cast<WbEngine*>(_engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 				}
-				//AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ');
-				dynamic_cast<ChuShogiPiece*>(_currentPiece)->EndMove();
-				_currentPiece = nullptr;
-				_oldX = x;
-				_oldY = y;
-				_currentPlayer = _currentPlayer == White ? Black : White;
-				_statusBar->setStyleSheet("QStatusBar { color : black; }");
-				_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
-				_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
-				_currentPiece = nullptr;
-				_oldX = -1;
-				_oldY = -1;
-				_moves.clear();
-				this->repaint();
+				AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
+				_lionMovedOnce = false;
+				FinishMove();
 			}
 		}
-		else */if (_board->Move(_oldX, _oldY, x, y))
+		else if (_board->Move(_oldX, _oldY, x, y))
 		{
 			char promotion = ' ';
 			if (_gameVariant == Chess)
@@ -357,16 +374,22 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
 			}
 			AddMove(promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None ? 'x' : ' ');
-			_currentPlayer = _currentPlayer == White ? Black : White;
-			_statusBar->setStyleSheet("QStatusBar { color : black; }");
-			_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");
-			_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
-			_currentPiece = nullptr;
-			_oldX = -1;
-			_oldY = -1;
-			_moves.clear();
+			_lionMovedOnce = false;
+			FinishMove();
 		}
-		this->repaint();
+	}
+	else if (x == _oldX && y == _oldY && _lionMovedOnce)
+	{
+		if (dynamic_cast<ChuShogiBoard*>(_board)->Move(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
+		{
+			if (_engine != nullptr)
+			{
+				dynamic_cast<WbEngine*>(_engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
+			}
+			AddMove(_board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
+			_lionMovedOnce = false;
+			FinishMove();
+		}
 	}
 	else if (p != nullptr && p->GetColour() == _currentPlayer)
 	{
@@ -375,6 +398,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		_oldY = y;
 		_board->GetMoves(p, x, y);
 		_moves = _board->Moves();
+		_lionMovedOnce = false;
 		std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
 			{
 				CalculateCheck(x, y, t.first, t.second);
@@ -942,14 +966,6 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		}
 		AddMove(newPiece, sc, '*', x, y, ' ', ' ');
 		dynamic_cast<ShogiVariantBoard*>(_board)->RemoveCapturedPiece(newPiece, _currentPlayer);
-		_currentPlayer = _currentPlayer == White ? Black : White;
-		_statusBar->setStyleSheet("QStatusBar { color : black; }");
-		_statusBar->showMessage(_currentPlayer == White ? "White move" : "Black move");
-		_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
-		_currentPiece = nullptr;
-		_oldX = -1;
-		_oldY = -1;
-		_moves.clear();
-		this->repaint();
+		FinishMove();
 	}
 }
