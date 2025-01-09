@@ -42,6 +42,10 @@ SOURCES += main.cpp\
     UsiEngine.cpp \
     MiniShogiBoard.cpp \
     JudkinShogiBoard.cpp \
+    ShatranjBoard.cpp \
+    ShatranjPiece.cpp \
+    MakrukBoard.cpp \
+    MakrukPiece.cpp \
     enginemanager.cpp \
     comboboxitemdelegate.cpp \
     newgamedialog.cpp \
@@ -73,6 +77,10 @@ HEADERS  += mainwindow.h \
     UsiEngine.h \
     MiniShogiBoard.h \
     JudkinShogiBoard.h \
+    ShatranjBoard.h \
+    ShatranjPiece.h \
+    MakrukBoard.h \
+    MakrukPiece.h \
     enginemanager.h \
     comboboxitemdelegate.h \
     newgamedialog.h \

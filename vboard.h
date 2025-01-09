@@ -14,6 +14,8 @@
 #include "ShogiBoard.h"
 #include "MiniShogiBoard.h"
 #include "JudkinShogiBoard.h"
+#include "ShatranjBoard.h"
+#include "MakrukBoard.h"
 #include "XiangqiPiece.h"
 #include "promotiondialog.h"
 

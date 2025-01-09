@@ -81,7 +81,7 @@ void MainWindow::on_actionSettings_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-	QMessageBox::about(this, "About", "<center>QBoard 0.8 beta<br/>Fire Lizard Software<br/>Anatoliy Sova<br/>2025</center>");
+	QMessageBox::about(this, "About", "<center>QBoard 0.8.1 beta<br/>Fire Lizard Software<br/>Anatoliy Sova<br/>2025</center>");
 }
 
 void MainWindow::on_actionNew_game_triggered()
@@ -376,6 +376,14 @@ void MainWindow::LoadEngine()
 				else if (ui->vboard->GetGameVariant() == Shogi)
 				{
 					_engine->StartGame("shogi");
+				}
+				else if (ui->vboard->GetGameVariant() == Shatranj)
+				{
+					_engine->StartGame("shatranj");
+				}
+				else if (ui->vboard->GetGameVariant() == Makruk)
+				{
+					_engine->StartGame("makruk");
 				}
 				else
 				{

@@ -76,6 +76,16 @@
    </item>
    <item>
     <property name="text">
+     <string>Shatranj</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Makruk</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>Shogi</string>
     </property>
    </item>

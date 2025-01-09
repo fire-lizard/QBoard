@@ -1,7 +1,7 @@
 #pragma once
-#include "Piece.h"
+#include "ShatranjPiece.h"
 
-class ChessPiece : public Piece
+class ChessPiece : public ShatranjPiece
 {
 public:
 	ChessPiece(PieceType pieceType, PieceColour pieceColour);
@@ -9,7 +9,6 @@ public:
 	void Promote(PieceType pieceType = None) override;
 	void Move();
 	bool HasMoved() const;
-	std::string StringCode() override;
 
 protected:
 

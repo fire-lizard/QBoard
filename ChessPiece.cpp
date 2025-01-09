@@ -1,6 +1,6 @@
 #include "ChessPiece.h"
 
-ChessPiece::ChessPiece(PieceType pieceType, PieceColour pieceColour) : Piece(pieceType, pieceColour)
+ChessPiece::ChessPiece(PieceType pieceType, PieceColour pieceColour) : ShatranjPiece(pieceType, pieceColour)
 {
 	_hasMoved = false;
 }
@@ -13,27 +13,6 @@ void ChessPiece::Promote(PieceType pieceType)
 {
 	_isPromoted = true;
 	_pieceType = pieceType;
-}
-
-std::string ChessPiece::StringCode()
-{
-	switch (_pieceType)
-	{
-	case King:
-		return "K";
-	case Queen:
-		return "Q";
-	case Rook:
-		return "R";
-	case Bishop:
-		return "B";
-	case Knight:
-		return "N";
-	case Pawn:
-		return "P";
-	default:
-		return "";
-	}
 }
 
 void ChessPiece::Move()
