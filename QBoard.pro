@@ -41,6 +41,7 @@ SOURCES += main.cpp\
     UcciEngine.cpp \
     UsiEngine.cpp \
     MiniShogiBoard.cpp \
+    JudkinShogiBoard.cpp \
     enginemanager.cpp \
     comboboxitemdelegate.cpp \
     newgamedialog.cpp \
@@ -71,6 +72,7 @@ HEADERS  += mainwindow.h \
     UcciEngine.h \
     UsiEngine.h \
     MiniShogiBoard.h \
+    JudkinShogiBoard.h \
     enginemanager.h \
     comboboxitemdelegate.h \
     newgamedialog.h \

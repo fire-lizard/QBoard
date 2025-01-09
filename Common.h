@@ -12,7 +12,7 @@ enum GameFormat
 
 enum GameVariant
 {
-	Chess, Xiangqi, Shogi, ShoShogi, ChuShogi, MiniShogi
+	Chess, Xiangqi, Shogi, ShoShogi, ChuShogi, MiniShogi, JudkinShogi
 };
 
 enum PieceColour

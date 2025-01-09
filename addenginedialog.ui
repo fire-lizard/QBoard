@@ -191,6 +191,11 @@
      <string>Mini Shogi</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>Judkins Shogi</string>
+    </property>
+   </item>
   </widget>
  </widget>
  <tabstops>

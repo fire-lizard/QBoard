@@ -13,6 +13,7 @@
 #include "ShogiVariantBoard.h"
 #include "ShogiBoard.h"
 #include "MiniShogiBoard.h"
+#include "JudkinShogiBoard.h"
 #include "XiangqiPiece.h"
 #include "promotiondialog.h"
 
@@ -70,7 +71,7 @@ private:
     QRegularExpression _qhre;
     QRegularExpression _sgxbre;
     QRegularExpression _sgusre;
-	GameVariant _shogiVariants[4] = {Shogi, MiniShogi, ChuShogi, ShoShogi};
+	GameVariant _shogiVariants[5] = {Shogi, MiniShogi, JudkinShogi, ChuShogi, ShoShogi};
 	PieceType _lionPieces[3] = { Lion, Eagle, Unicorn };
 	bool _lionMovedOnce = false;
 	std::pair<int, int> _lionFirstMove;

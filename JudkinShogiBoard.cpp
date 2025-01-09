@@ -1,13 +1,13 @@
-#include "MiniShogiBoard.h"
+#include "JudkinShogiBoard.h"
 
-MiniShogiBoard::MiniShogiBoard()
+JudkinShogiBoard::JudkinShogiBoard()
 {
-	_width = 5;
-	_height = 5;
-	MiniShogiBoard::Initialize();
+	_width = 6;
+	_height = 6;
+	JudkinShogiBoard::Initialize();
 }
 
-MiniShogiBoard::~MiniShogiBoard()
+JudkinShogiBoard::~JudkinShogiBoard()
 {
 	for (int i = 0; i < _width; i++)
 	{
@@ -21,7 +21,7 @@ MiniShogiBoard::~MiniShogiBoard()
 	}
 }
 
-void MiniShogiBoard::Initialize()
+void JudkinShogiBoard::Initialize()
 {
 	_capturedPieces.clear();
 	for (int i = 0; i < _width; i++)
@@ -40,26 +40,26 @@ void MiniShogiBoard::Initialize()
 	}
 }
 
-Board* MiniShogiBoard::Clone()
+Board* JudkinShogiBoard::Clone()
 {
-	MiniShogiBoard *cb = new MiniShogiBoard();
+	JudkinShogiBoard* cb = new JudkinShogiBoard();
 	for (int i = 0; i < GetWidth(); i++)
 	{
 		for (int j = 0; j < GetHeight(); j++)
 		{
-			const Piece *p = GetData(i, j);
+			const Piece* p = GetData(i, j);
 			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
 		}
 	}
 	return cb;
 }
 
-Piece* MiniShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
+Piece* JudkinShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
 	return new ShogiPiece(pieceType, pieceColour);
 }
 
-void MiniShogiBoard::GetMoves(Piece *piece, int x, int y)
+void JudkinShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();
 	switch (piece->GetType())
@@ -148,6 +148,18 @@ void MiniShogiBoard::GetMoves(Piece *piece, int x, int y)
 		else
 		{
 			CheckMove(piece, x, y - 1);
+		}
+		break;
+	case Knight:
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x - 1, y + 2);
+			CheckMove(piece, x + 1, y + 2);
+		}
+		else
+		{
+			CheckMove(piece, x - 1, y - 2);
+			CheckMove(piece, x + 1, y - 2);
 		}
 		break;
 	default:
