@@ -208,6 +208,8 @@
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="ChuShogiBoard.cpp" />
     <ClCompile Include="ChuShogiPiece.cpp" />
+    <ClCompile Include="DaiShogiBoard.cpp" />
+    <ClCompile Include="DaiShogiPiece.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="JudkinShogiBoard.cpp" />
@@ -245,6 +247,8 @@
     <ClInclude Include="ChuShogiBoard.h" />
     <ClInclude Include="ChuShogiPiece.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="DaiShogiBoard.h" />
+    <ClInclude Include="DaiShogiPiece.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="IniFile.h" />
     <ClInclude Include="JudkinShogiBoard.h" />
@@ -448,6 +452,20 @@
     <ResourceCompile Include=".\QBoard_resource.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="images\BlackDragon.png" />
+    <Image Include="images\BlackGnu.png" />
+    <Image Include="images\BlackIron.png" />
+    <Image Include="images\BlackPromoHSword.png" />
+    <Image Include="images\BlackPromoSword.png" />
+    <Image Include="images\BlackTower.png" />
+    <Image Include="images\BlackWolf.png" />
+    <Image Include="images\WhiteDragon.png" />
+    <Image Include="images\WhiteGnu.png" />
+    <Image Include="images\WhiteIron.png" />
+    <Image Include="images\WhitePromoHSword.png" />
+    <Image Include="images\WhitePromoSword.png" />
+    <Image Include="images\WhiteTower.png" />
+    <Image Include="images\WhiteWolf.png" />
     <Image Include="images_jap\BlackPromoBishop.png" />
     <Image Include="images_jap\BlackPromoCrownedBishop.png" />
     <Image Include="images_jap\BlackPromoCrownedRook.png" />

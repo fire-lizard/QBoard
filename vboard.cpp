@@ -358,6 +358,15 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						promotion = '+';
 					}
 				}
+				if (_gameVariant == DaiShogi && !_currentPiece->IsPromoted() && _currentPiece->GetType() != King &&
+					_currentPiece->GetType() != Queen && _currentPiece->GetType() != Lion)
+				{
+					if ((y >= 10 && _currentPiece->GetColour() == Black) ||
+						(y <= 4 && _currentPiece->GetColour() == White))
+					{
+						promotion = '+';
+					}
+				}
 				if (promotion == '+')
 				{
 					const PieceType pt = _currentPiece->GetType();
@@ -373,6 +382,11 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					}
 					else if (_gameVariant == ChuShogi && (pt == Pawn || pt == Lance) &&
 						((y == 11 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
+					{
+						_currentPiece->Promote();
+					}
+					else if (_gameVariant == DaiShogi && (pt == Pawn || pt == Lance) &&
+						((y == 14 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
 					{
 						_currentPiece->Promote();
 					}
@@ -469,6 +483,9 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		break;
 	case ChuShogi:
 		_board = new ChuShogiBoard();
+		break;
+	case DaiShogi:
+		_board = new DaiShogiBoard();
 		break;
 	case MiniShogi:
 		_board = new MiniShogiBoard();
@@ -643,7 +660,7 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf) const
                     if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
                 }
             }
-            else if (_gameVariant == ChuShogi)
+            else if (_gameVariant == ChuShogi || _gameVariant == DaiShogi)
             {
                 QRegularExpressionMatch match = _csre.match(part);
                 if (match.hasMatch())
@@ -730,7 +747,7 @@ void VBoard::readyReadStandardOutput()
         x2 = _board->GetWidth() - moveArray[2] + 48;
         y2 = moveArray[3] - 97;
 	}
-    else if (_gameVariant == ChuShogi)
+    else if (_gameVariant == ChuShogi || _gameVariant == DaiShogi)
 	{
         x1 = moveArray[0] - 97;
         y1 = _board->GetWidth() - moveArray[1];
@@ -744,7 +761,7 @@ void VBoard::readyReadStandardOutput()
         x2 = moveArray[2] - 97;
         y2 = _board->GetHeight() - moveArray[3] + 48;
     }
-    if (_gameVariant == ChuShogi)
+    if (_gameVariant == ChuShogi || _gameVariant == DaiShogi)
 	{
 		if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
 		{

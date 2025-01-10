@@ -12,7 +12,7 @@ enum GameFormat
 
 enum GameVariant
 {
-	Chess, Xiangqi, Shatranj, Makruk, Shogi, ShoShogi, ChuShogi, MiniShogi, JudkinShogi
+	Chess, Xiangqi, Shatranj, Makruk, Shogi, ShoShogi, ChuShogi, DaiShogi, MiniShogi, JudkinShogi
 };
 
 enum PieceColour
@@ -39,7 +39,7 @@ enum PieceType
 	// Promoted Shogi pieces
 	PromotedLance = 30, PromotedKnight = 31, PromotedSilver = 32, Tokin = 33,
 	// Dai Shogi pieces
-	ViolentOxen = 34, FlyingDragon = 35, AngryBoar = 36, CatSword = 37, EvilWolf = 38, Iron = 39, Stone = 40
+	ViolentOx = 34, FlyingDragon = 35, AngryBoar = 36, CatSword = 37, EvilWolf = 38, Iron = 39, Stone = 40
 };
 
 enum Direction

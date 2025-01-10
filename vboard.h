@@ -8,6 +8,7 @@
 #include <QTextEdit>
 #include "mainwindow.h"
 #include "ChuShogiBoard.h"
+#include "DaiShogiBoard.h"
 #include "ChessBoard.h"
 #include "XiangqiBoard.h"
 #include "ShogiVariantBoard.h"
@@ -73,7 +74,7 @@ private:
     QRegularExpression _qhre;
     QRegularExpression _sgxbre;
     QRegularExpression _sgusre;
-	GameVariant _shogiVariants[5] = {Shogi, MiniShogi, JudkinShogi, ChuShogi, ShoShogi};
+	GameVariant _shogiVariants[6] = {Shogi, MiniShogi, JudkinShogi, ChuShogi, DaiShogi, ShoShogi};
 	PieceType _lionPieces[3] = { Lion, Eagle, Unicorn };
 	bool _lionMovedOnce = false;
 	std::pair<int, int> _lionFirstMove;

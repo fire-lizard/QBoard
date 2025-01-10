@@ -46,6 +46,8 @@ SOURCES += main.cpp\
     ShatranjPiece.cpp \
     MakrukBoard.cpp \
     MakrukPiece.cpp \
+    DaiShogiBoard.cpp \
+    DaiShogiPiece.cpp \
     enginemanager.cpp \
     comboboxitemdelegate.cpp \
     newgamedialog.cpp \
@@ -81,6 +83,8 @@ HEADERS  += mainwindow.h \
     ShatranjPiece.h \
     MakrukBoard.h \
     MakrukPiece.h \
+    DaiShogiBoard.h \
+    DaiShogiPiece.h \
     enginemanager.h \
     comboboxitemdelegate.h \
     newgamedialog.h \

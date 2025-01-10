@@ -373,6 +373,10 @@ void MainWindow::LoadEngine()
 				{
 					_engine->StartGame("sho");
 				}
+				else if (ui->vboard->GetGameVariant() == DaiShogi)
+				{
+					_engine->StartGame("dai");
+				}
 				else if (ui->vboard->GetGameVariant() == Shogi)
 				{
 					_engine->StartGame("shogi");

@@ -198,6 +198,11 @@
    </item>
    <item>
     <property name="text">
+     <string>Dai Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>Mini Shogi</string>
     </property>
    </item>

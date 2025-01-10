@@ -149,6 +149,12 @@
     <ClCompile Include="MakrukBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DaiShogiPiece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DaiShogiBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -245,6 +251,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MakrukPiece.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DaiShogiBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DaiShogiPiece.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -864,6 +876,48 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="images_jap\WhitePromoSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BlackDragon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BlackGnu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BlackIron.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BlackPromoHSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BlackPromoSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BlackTower.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BlackWolf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\WhiteDragon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\WhiteGnu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\WhiteIron.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\WhitePromoHSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\WhitePromoSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\WhiteTower.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\WhiteWolf.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

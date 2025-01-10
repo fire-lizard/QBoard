@@ -102,6 +102,20 @@ std::string Piece::GetImageFileName() const
 		return colour + "Knight.png";
 	case Whale:
 		return colour + "Dolphin.png";
+	case Iron:
+		return colour + "Iron.png";
+	case Stone:
+		return colour + "Tower.png";
+	case AngryBoar:
+		return colour + "PromoHSword.png";
+	case ViolentOx:
+		return colour + "Gnu.png";
+	case FlyingDragon:
+		return colour + "Dragon.png";
+	case EvilWolf:
+		return colour + "Wolf.png";
+	case CatSword:
+		return colour + "PromoSword.png";
 	default:
 		return "";
 	}
