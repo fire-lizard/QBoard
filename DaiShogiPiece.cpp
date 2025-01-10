@@ -38,17 +38,21 @@ std::string DaiShogiPiece::StringCode()
 	case Stone:
 		return "U";
 	case AngryBoar:
-		return "AB";
+		return "A'";
 	case ViolentOx:
-		return "VO";
+		return "V'";
 	case FlyingDragon:
-		return "FD";
+		return "F'";
 	case EvilWolf:
-		return "EW";
+		return "W";
 	case CatSword:
-		return "CS";
+		return "C'";
 	case Knight:
 		return "N";
+	case GoBetween:
+		return "P'";
+	case Lion:
+		return "L!'";
 	default:
 		return ChuShogiPiece::StringCode();
 	}

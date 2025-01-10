@@ -279,7 +279,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y - 1);
 		break;
-	case Cobra:
+	case GoBetween:
 		CheckMove(piece, x, y + 1);
 		CheckMove(piece, x, y - 1);
 		break;
@@ -337,7 +337,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 			CheckDirection(piece, x, y, North);
 		}
 		break;
-	case NarrowQueen:
+	case FlyingOx:
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, NorthEast);
 		CheckDirection(piece, x, y, SouthEast);
@@ -345,7 +345,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, SouthWest);
 		CheckDirection(piece, x, y, NorthWest);
 		break;
-	case SleepingQueen:
+	case FreeBoar:
 		CheckDirection(piece, x, y, NorthEast);
 		CheckDirection(piece, x, y, East);
 		CheckDirection(piece, x, y, SouthEast);

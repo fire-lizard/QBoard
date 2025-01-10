@@ -26,10 +26,10 @@ void ChuShogiPiece::Promote(PieceType pieceType)
 		_pieceType = DragonHorse;
 		break;
 	case VerticalMover:
-		_pieceType = NarrowQueen;
+		_pieceType = FlyingOx;
 		break;
 	case SideMover:
-		_pieceType = SleepingQueen;
+		_pieceType = FreeBoar;
 		break;
 	case Cannon:
 		_pieceType = Whale;
@@ -61,7 +61,7 @@ void ChuShogiPiece::Promote(PieceType pieceType)
 	case FerociousLeopard:
 		_pieceType = Bishop;
 		break;
-	case Cobra:
+	case GoBetween:
 		_pieceType = Elephant;
 		break;
 	case Pawn:
@@ -93,7 +93,7 @@ std::string ChuShogiPiece::StringCode()
 	case VerticalMover:
 		return "V";
 	case SideMover:
-		return "S";
+		return "M";
 	case Cannon:
 		return "A";
 	case Lance:
@@ -114,7 +114,7 @@ std::string ChuShogiPiece::StringCode()
 		return "C";
 	case FerociousLeopard:
 		return "F";
-	case Cobra:
+	case GoBetween:
 		return "I";
 	case Pawn:
 		return "P";
@@ -122,9 +122,9 @@ std::string ChuShogiPiece::StringCode()
 		return "+D";
 	case Unicorn:
 		return "+H";
-	case NarrowQueen:
+	case FlyingOx:
 		return "+V";
-	case SleepingQueen:
+	case FreeBoar:
 		return "+M";
 	case FlyingStag:
 		return "+T";
@@ -181,7 +181,7 @@ std::string ChuShogiPiece::KanjiStringCode()
 		return "銅";
 	case FerociousLeopard:
 		return "豹";
-	case Cobra:
+	case GoBetween:
 		return "仲";
 	case Pawn:
 		return "歩";
@@ -189,9 +189,9 @@ std::string ChuShogiPiece::KanjiStringCode()
 		return "鷲";
 	case Unicorn:
 		return "鷹";
-	case NarrowQueen:
+	case FlyingOx:
 		return "牛";
-	case SleepingQueen:
+	case FreeBoar:
 		return "猪";
 	case FlyingStag:
 		return "鹿";
