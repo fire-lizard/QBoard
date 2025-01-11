@@ -264,7 +264,7 @@ std::string WaShogiPiece::GetImageFileName() const
 	case FlyingFalcon:
 		return colour + "FlyingFalcon.bmp";
 	case FlyingCock:
-		return colour + "FlyingCock.bmp";
+		return colour + "FlyingCockerel.bmp";
 	case RaidingFalcon:
 		return colour + "RaidingFalcon.bmp";
 	case FlyingGoose:
@@ -274,7 +274,7 @@ std::string WaShogiPiece::GetImageFileName() const
 	case Silver:
 		return colour + "ViolentStag.bmp";
 	case BlindDog:
-		return colour + "BlindDog.bmp";
+		return colour + "Blinddog.bmp";
 	case Gold:
 		return colour + "ViolentWolf.bmp";
 	case Elephant:
