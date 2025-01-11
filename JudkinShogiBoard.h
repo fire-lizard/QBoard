@@ -1,15 +1,12 @@
 #pragma once
-#include "ShogiVariantBoard.h"
+#include "ShogiBoard.h"
 
-class JudkinShogiBoard : public ShogiVariantBoard
+class JudkinShogiBoard : public ShogiBoard
 {
 public:
 	JudkinShogiBoard();
 	~JudkinShogiBoard() override;
 	void Initialize() override;
-	Board* Clone() override;
-	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
-	void GetMoves(Piece* piece, int x, int y) override;
 
 protected:
 

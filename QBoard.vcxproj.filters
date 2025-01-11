@@ -155,6 +155,12 @@
     <ClCompile Include="DaiShogiBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WaShogiPiece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WaShogiBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -257,6 +263,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DaiShogiPiece.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WaShogiBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WaShogiPiece.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

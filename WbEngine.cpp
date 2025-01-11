@@ -66,7 +66,7 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 		moveStr.push_back(static_cast<char>(x2 + 97));
 		moveStr.push_back(QString::number(y2)[0].toLatin1());
 	}
-	else if (y1 <= 12 || y2 <= 12)
+	else if (y1 <= 15 || y2 <= 15)
 	{
 		moveStr.push_back(static_cast<char>(x1 < 30 ? x1 + 97 : x1));
 		moveStr.push_back(QString::number(y1)[0].toLatin1());
@@ -102,7 +102,7 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 	moveStr.push_back('v');
 	moveStr.push_back('e');
 	moveStr.push_back(' ');
-	if (y1 <= 12 || y2 <= 12)
+	if (y1 <= 15 || y2 <= 15)
 	{
 		moveStr.push_back(static_cast<char>(x1 < 30 ? x1 + 97 : x1));
 		moveStr.push_back(QString::number(y1)[0].toLatin1());
@@ -119,7 +119,7 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 		moveStr.push_back(y2);
 	}
 	moveStr.push_back(',');
-	if (y2 <= 12 || y3 <= 12)
+	if (y2 <= 15 || y3 <= 15)
 	{
 		moveStr.push_back(static_cast<char>(x2 < 30 ? x2 + 97 : x2));
 		moveStr.push_back(QString::number(y2)[0].toLatin1());

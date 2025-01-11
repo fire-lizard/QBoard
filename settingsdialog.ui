@@ -114,6 +114,16 @@
      <string>Judkins Shogi</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>Wa Shogi (no drops)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Wa Shogi</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLabel" name="variantsLabel">
    <property name="geometry">

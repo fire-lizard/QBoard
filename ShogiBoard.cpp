@@ -10,6 +10,9 @@ ShogiBoard::ShogiBoard()
 
 ShogiBoard::~ShogiBoard()
 {
+	// In case it is not actual regular Shogi Board we do not need to dispose the data again
+	// Actually if we do, it would crash the application
+	if (_width != 9 || _height != 9) return;
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)
@@ -232,37 +235,37 @@ void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 	{
 		_psn.push_back(static_cast<char>(x1));
 		_psn.push_back(static_cast<char>(y1));
-		_psn += std::to_string(9 - x2);
+		_psn += std::to_string(_width - x2);
 		_psn.push_back(static_cast<char>(y2 + 97));
 	}
 	else
 	{
 		_psn += _pieceToPSN.at(pieceType);
-		_psn += std::to_string(9 - x1);
+		_psn += std::to_string(_width - x1);
 		_psn.push_back(static_cast<char>(y1 + 97));
 		_psn += capture ? "x" : "-";
-		_psn += std::to_string(9 - x2);
+		_psn += std::to_string(_width - x2);
 		_psn.push_back(static_cast<char>(y2 + 97));
 		_psn += promotion;
 	}
 	_psn += "          (00:00 / 00:00:00)\n";
 	// CSA
 	_csa += (_moveCount + 1) % 2 == 0 ? "+" : "-";
-	_csa += y1 == '*' ? "00" : std::to_string(9 - x1) + std::to_string(y1 + 1);
-	_csa += std::to_string(9 - x2);
+	_csa += y1 == '*' ? "00" : std::to_string(_width - x1) + std::to_string(y1 + 1);
+	_csa += std::to_string(_width - x2);
 	_csa += std::to_string(y2 + 1);
 	_csa += _pieceToCSA.at(promotion != '+' ? pieceType : _data[x2][y2]->GetType());
 	_csa += ",T1\n";
 	// KIF
 	_kif += "  " + std::to_string(_moveCount) + " "; // Add move number
-	_kif += x2 == _oldX2 && y2 == _oldY2 ? _sameCoordStr : std::to_string(9 - x2);
+	_kif += x2 == _oldX2 && y2 == _oldY2 ? _sameCoordStr : std::to_string(_width - x2);
 	_kif += x2 == _oldX2 && y2 == _oldY2 ? " " : _numberToKanji.at(y2 + 1);
 	_kif += _pieceToKIF.at(pieceType);
 	if (promotion == '+')
 	{
 		_kif += _promotionStr;
 	}
-	_kif += y1 == '*' ? _dropStr : "(" + std::to_string(9 - x1) + std::to_string(y1 + 1) + ")";
+	_kif += y1 == '*' ? _dropStr : "(" + std::to_string(_width - x1) + std::to_string(y1 + 1) + ")";
 	_kif += "          (00:00 / 00:00:00)\n";
 	_oldX2 = y1 != '*' ? x2 : _oldX2;
 	_oldY2 = y1 != '*' ? y2 : _oldX2;

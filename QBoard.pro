@@ -48,6 +48,8 @@ SOURCES += main.cpp\
     MakrukPiece.cpp \
     DaiShogiBoard.cpp \
     DaiShogiPiece.cpp \
+    WaShogiBoard.cpp \
+    WaShogiPiece.cpp \
     enginemanager.cpp \
     comboboxitemdelegate.cpp \
     newgamedialog.cpp \
@@ -85,6 +87,8 @@ HEADERS  += mainwindow.h \
     MakrukPiece.h \
     DaiShogiBoard.h \
     DaiShogiPiece.h \
+    WaShogiBoard.h \
+    WaShogiPiece.h \
     enginemanager.h \
     comboboxitemdelegate.h \
     newgamedialog.h \

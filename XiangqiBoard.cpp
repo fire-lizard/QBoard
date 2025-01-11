@@ -227,7 +227,7 @@ void XiangqiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2
 		}
 		else
 		{
-			_wxf += std::to_string(9 - x1);
+			_wxf += std::to_string(_width - x1);
 		}
 		// operator indicating direction of movement
 		if (y1 > y2) direction = '+';
@@ -236,7 +236,7 @@ void XiangqiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2
 		// new file, or in the case of purely vertical movement, number of ranks traversed
 		if (direction == '.' || x1 != x2)
 		{
-			_wxf += std::to_string(9 - x2);
+			_wxf += std::to_string(_width - x2);
 		}
 		else
 		{

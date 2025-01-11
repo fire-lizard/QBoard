@@ -365,9 +365,17 @@ void MainWindow::LoadEngine()
 				{
 					_engine->StartGame("5x5+5_shogi");
 				}
-				if (ui->vboard->GetGameVariant() == JudkinShogi)
+				else if (ui->vboard->GetGameVariant() == JudkinShogi)
 				{
 					_engine->StartGame("6x6+6_shogi");
+				}
+				else if (ui->vboard->GetGameVariant() == WaShogi)
+				{
+					_engine->StartGame("washogi");
+				}
+				else if (ui->vboard->GetGameVariant() == CrazyWa)
+				{
+					_engine->StartGame("crazywa");
 				}
 				else if (ui->vboard->GetGameVariant() == ShoShogi)
 				{

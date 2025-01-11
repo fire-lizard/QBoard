@@ -3,10 +3,10 @@
 VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
     _nlre = QRegularExpression("[\r\n]+");
-    _csre = QRegularExpression(R"(([a-l])(1[0-2]|[0-9])([a-l])(1[0-2]|[0-9])([+nbrq])?)");
+    _csre = QRegularExpression(R"(([a-o])(1[0-5]|[0-9])([a-o])(1[0-5]|[0-9])([+nbrq])?)");
     _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
-    _sgxbre = QRegularExpression(R"(([RBGSNLPa-l])(\*|@|[1-9])([a-l])([1-9])(\+)?)");
-    _sgusre = QRegularExpression(R"(([RBGSNLP1-9])(\*|@|[a-l])([1-9])([a-l])(\+)?)");
+    _sgxbre = QRegularExpression(R"(([RBGSNLPa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
+    _sgusre = QRegularExpression(R"(([RBGSNLP1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");
     SetGameVariant(_gameVariant);
 }
 
@@ -341,7 +341,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						promotion = '+';
 					}
 				}
-				if ((_gameVariant == Shogi || _gameVariant == ShoShogi) && !_currentPiece->IsPromoted())
+				if ((_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == WaShogi || _gameVariant == CrazyWa) && !_currentPiece->IsPromoted())
 				{
 					if ((y >= 6 && _currentPiece->GetColour() == Black) ||
 						(y <= 2 && _currentPiece->GetColour() == White))
@@ -377,6 +377,12 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					else if ((_gameVariant == Shogi || _gameVariant == ShoShogi) &&
 						(pt == Pawn || pt == Knight || pt == Lance) &&
 						((y == 8 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
+					{
+						_currentPiece->Promote();
+					}
+					else if ((_gameVariant == WaShogi || _gameVariant == CrazyWa) &&
+						(pt == Pawn || pt == Knight || pt == Lance) &&
+						((y == 10 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
 					{
 						_currentPiece->Promote();
 					}
@@ -492,6 +498,13 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		break;
 	case JudkinShogi:
 		_board = new JudkinShogiBoard();
+		break;
+	case WaShogi:
+		_board = new WaShogiBoard();
+		dynamic_cast<ShogiBoard*>(_board)->SetDrops(false);
+		break;
+	case CrazyWa:
+		_board = new WaShogiBoard();
 		break;
 	case Xiangqi:
 		_board = new XiangqiBoard();
@@ -660,7 +673,8 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf) const
                     if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
                 }
             }
-            else if (_gameVariant == ChuShogi || _gameVariant == DaiShogi)
+			//TODO: CrazyWa handling
+			else if (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == WaShogi || _gameVariant == CrazyWa)
             {
                 QRegularExpressionMatch match = _csre.match(part);
                 if (match.hasMatch())
@@ -679,7 +693,7 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf) const
             }
             else
             {
-                QRegularExpressionMatch match = _gameVariant == Shogi || _gameVariant == MiniShogi || _gameVariant ==JudkinShogi
+                QRegularExpressionMatch match = _gameVariant == Shogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi
             		? _sgxbre.match(part) : _csre.match(part);
                 if (match.hasMatch())
                 {
@@ -896,9 +910,9 @@ void VBoard::readyReadStandardOutput()
 			}
 		}
 	}
-	else if (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi)
+	else if (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi || _gameVariant == WaShogi || _gameVariant == CrazyWa)
 	{
-		if ((_gameVariant == Shogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi) && (moveArray[1] == '@' || moveArray[1] == '*'))
+		if ((_gameVariant == Shogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi || _gameVariant == CrazyWa) && (moveArray[1] == '@' || moveArray[1] == '*'))
 		{
 			PieceType newPiece;
 			switch (moveArray[0])
@@ -937,7 +951,8 @@ void VBoard::readyReadStandardOutput()
             const bool isPromoted = moveArray.size() == 5 &&
                 ((_gameVariant == MiniShogi && (y2 == 0 || y2 == 4) && moveArray[4] == '+')
 				|| (_gameVariant == JudkinShogi && (y2 == 0 || y2 == 5) && moveArray[4] == '+')
-                || ((_gameVariant == Shogi || _gameVariant == ShoShogi) && (y2 <= 2 || y2 >= 6) && moveArray[4] == '+'));
+                || ((_gameVariant == Shogi || _gameVariant == ShoShogi) && (y2 <= 2 || y2 >= 6) && moveArray[4] == '+')
+                || ((_gameVariant == WaShogi || _gameVariant == CrazyWa) && (y2 <= 2 || y2 >= 8) && moveArray[4] == '+'));
 			_board->GetMoves(_board->GetData(x1, y1), x1, y1);
 			_board->Move(x1, y1, x2, y2);
 			AddMove(isPromoted ? _board->GetData(x2, y2)->GetBaseType() : _board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ' ');
@@ -962,7 +977,7 @@ void VBoard::readyReadStandardError() const
 
 void VBoard::contextMenuEvent(QContextMenuEvent* event)
 {
-	if (_gameVariant != Shogi && _gameVariant != MiniShogi && _gameVariant != JudkinShogi) return;
+	if (_gameVariant != Shogi && _gameVariant != MiniShogi && _gameVariant != JudkinShogi && _gameVariant != CrazyWa) return;
 
 	QMenu menu(this);
 

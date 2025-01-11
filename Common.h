@@ -12,7 +12,7 @@ enum GameFormat
 
 enum GameVariant
 {
-	Chess, Xiangqi, Shatranj, Makruk, Shogi, ShoShogi, ChuShogi, DaiShogi, MiniShogi, JudkinShogi
+	Chess, Xiangqi, Shatranj, Makruk, Shogi, ShoShogi, ChuShogi, DaiShogi, MiniShogi, JudkinShogi, WaShogi, CrazyWa
 };
 
 enum PieceColour
@@ -39,7 +39,11 @@ enum PieceType
 	// Promoted Shogi pieces
 	PromotedLance = 30, PromotedKnight = 31, PromotedSilver = 32, Tokin = 33,
 	// Dai Shogi pieces
-	ViolentOx = 34, FlyingDragon = 35, AngryBoar = 36, CatSword = 37, EvilWolf = 38, Iron = 39, Stone = 40
+	ViolentOx = 34, FlyingDragon = 35, AngryBoar = 36, CatSword = 37, EvilWolf = 38, Iron = 39, Stone = 40,
+	// Wa Shogi pieces
+	PloddingOx = 41, LiberatedHorse = 42, HeavenlyHorse = 43, SwoopingOwl = 44, CloudEagle = 45,
+	StruttingCrow = 46, FlyingFalcon = 47, FlyingCock = 48, RaidingFalcon = 49, FlyingGoose = 50,
+	ClimbingMonkey = 51, BlindDog = 52, BearEyes = 53, RunningRabbit = 54, TreacherousFox = 55, TenaciousFalcon = 56
 };
 
 enum Direction
@@ -56,6 +60,8 @@ inline char SHOGIFEN[] = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKG
 inline char MINISHOGIFEN[] = "rbsgk/4p/5/P4/KGSBR w";
 
 inline char JUDKINSHOGIFEN[] = "rbnsgk/5p/6/6/P5/KGSNBR w";
+
+inline char WASHOGIFEN[] = "hmlcvkwgudo/1e3s3f1/ppprpppxppp/3p3p3/11/11/11/3P3P3/PPPXPPPRPPP/1F3S3E1/ODUGWKVCLMH w";
 
 inline char CHUSHOGIFEN[] = "lfcsgekgscfl/a1b1txot1b1a/mvrhdqndhrvm/pppppppppppp/3i4i3"
 "/12/12/"
