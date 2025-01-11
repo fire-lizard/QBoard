@@ -10,16 +10,6 @@ XiangqiBoard::XiangqiBoard()
 
 XiangqiBoard::~XiangqiBoard()
 {
-	for (int i = 0; i < _width; i++)
-	{
-		for (int j = 0; j < _height; j++)
-		{
-			if (_data[i][j] != nullptr)
-			{
-				delete _data[i][j];
-			}
-		}
-	}
 }
 
 Board* XiangqiBoard::Clone()

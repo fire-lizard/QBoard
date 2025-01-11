@@ -9,19 +9,6 @@ ChuShogiBoard::ChuShogiBoard()
 
 ChuShogiBoard::~ChuShogiBoard()
 {
-	// In case it is not actual Chu Shogi Board we do not need to dispose the data again
-	// Actually if we do, it would crash the application
-	if (_width != 12 || _height != 12) return;
-	for (int i = 0; i < _width; i++)
-	{
-		for (int j = 0; j < _height; j++)
-		{
-			if (_data[i][j] != nullptr)
-			{
-				delete _data[i][j];
-			}
-		}
-	}
 }
 
 void ChuShogiBoard::Initialize()
