@@ -790,7 +790,7 @@ void VBoard::readyReadStandardOutput()
         x2 = _board->GetWidth() - moveArray[2] + 48;
         y2 = moveArray[3] - 97;
 	}
-    else if (_gameVariant == ChuShogi || _gameVariant == DaiShogi)
+    else if (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == WaShogi || _gameVariant == CrazyWa)
 	{
         x1 = moveArray[0] - 97;
         y1 = _board->GetWidth() - moveArray[1];
