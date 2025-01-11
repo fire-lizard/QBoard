@@ -354,7 +354,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						promotion = '+';
 					}
 				}
-				if ((_gameVariant == WaShogi || _gameVariant == CrazyWa) && !_currentPiece->IsPromoted())
+				if ((_gameVariant == WaShogi || _gameVariant == CrazyWa) && !_currentPiece->IsPromoted()  &&
+					_currentPiece->GetType() != King && _currentPiece->GetType() != CloudEagle && _currentPiece->GetType() != TreacherousFox)
 				{
 					if ((y >= 8 && _currentPiece->GetColour() == Black) ||
 						(y <= 2 && _currentPiece->GetColour() == White))
