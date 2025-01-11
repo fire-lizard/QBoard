@@ -116,12 +116,12 @@
    </item>
    <item>
     <property name="text">
-     <string>Wa Shogi (no drops)</string>
+     <string>Wa Shogi</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Wa Shogi</string>
+     <string>CrazyWa</string>
     </property>
    </item>
   </widget>

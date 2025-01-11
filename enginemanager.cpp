@@ -74,9 +74,9 @@ GameVariant EngineManager::StringToGameVariant(const QString& str)
 		return Shatranj;
 	if (str == "Makruk")
 		return Makruk;
-	if (str == "Wa Shogi (no drops)")
-		return WaShogi;
 	if (str == "Wa Shogi")
+		return WaShogi;
+	if (str == "CrazyWa")
 		return CrazyWa;
 	return Chess;
 }
