@@ -82,11 +82,19 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 		{
 			CheckDirection(piece, x, y, North);
 			CheckMove(piece, x, y - 1);
+			if (_data[x][y - 1] == nullptr)
+			{
+				CheckMove(piece, x, y - 2);
+			}
 		}
 		else
 		{
 			CheckDirection(piece, x, y, South);
 			CheckMove(piece, x, y + 1);
+			if (_data[x][y + 1] == nullptr)
+			{
+				CheckMove(piece, x, y + 2);
+			}
 		}
 		break;
 	case HeavenlyHorse:
@@ -96,16 +104,111 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x + 1, y - 2);
 		break;
 	case SwoopingOwl:
-		break;
-	case CloudEagle:
-		break;
 	case StruttingCrow:
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x, y - 1);
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
+		}
+		else
+		{
+			CheckMove(piece, x, y + 1);
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y - 1);
+		}
+		break;
+		case CloudEagle:
+		CheckDirection(piece, x, y, North);
+		CheckDirection(piece, x, y, South);
+		CheckMove(piece, x - 1, y - 1);
+		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x + 1, y + 1);
+		if (piece->GetColour() == Black)
+		{
+			if (_data[x - 1][y - 1] == nullptr)
+			{
+				CheckMove(piece, x - 2, y - 2);
+			}
+			if (_data[x + 1][y - 1] == nullptr)
+			{
+				CheckMove(piece, x + 2, y - 2);
+			}
+			if (_data[x - 1][y - 1] == nullptr && _data[x - 2][y - 2] == nullptr)
+			{
+				CheckMove(piece, x - 3, y - 3);
+			}
+			if (_data[x + 1][y - 1] == nullptr && _data[x + 2][y - 2] == nullptr)
+			{
+				CheckMove(piece, x + 3, y - 3);
+			}
+		}
+		else
+		{
+			if (_data[x - 1][y + 1] == nullptr)
+			{
+				CheckMove(piece, x - 2, y + 2);
+			}
+			if (_data[x + 1][y + 1] == nullptr)
+			{
+				CheckMove(piece, x + 2, y + 2);
+			}
+			if (_data[x - 1][y + 1] == nullptr && _data[x - 2][y + 2] == nullptr)
+			{
+				CheckMove(piece, x - 3, y + 3);
+			}
+			if (_data[x + 1][y + 1] == nullptr && _data[x + 2][y + 2] == nullptr)
+			{
+				CheckMove(piece, x + 3, y + 3);
+			}
+		}
 		break;
 	case FlyingFalcon:
+		CheckDirection(piece, x, y, NorthWest);
+		CheckDirection(piece, x, y, NorthEast);
+		CheckDirection(piece, x, y, SouthWest);
+		CheckDirection(piece, x, y, SouthEast);
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x, y - 1);
+		}
+		else
+		{
+			CheckMove(piece, x, y + 1);
+		}
 		break;
 	case FlyingCock:
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x - 1, y);
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y - 1);
+		}
+		else
+		{
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
+		}
 		break;
 	case RaidingFalcon:
+		CheckDirection(piece, x, y, North);
+		CheckDirection(piece, x, y, South);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x - 1, y);
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y - 1);
+		}
+		else
+		{
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
+		}
 		break;
 	case FlyingGoose:
 	case ClimbingMonkey:
@@ -123,12 +226,60 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case BlindDog:
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x - 1, y);
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x, y + 1);
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y - 1);
+		}
+		else
+		{
+			CheckMove(piece, x, y - 1);
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
+		}
 		break;
 	case RunningRabbit:
+		CheckMove(piece, x - 1, y - 1);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x + 1, y + 1);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, North);
+			CheckMove(piece, x, y - 1);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, South);
+			CheckMove(piece, x, y + 1);
+		}
 		break;
 	case TreacherousFox:
+		CheckMove(piece, x - 1, y - 1);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x - 2, y - 2);
+		CheckMove(piece, x + 2, y - 2);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x - 2, y + 2);
+		CheckMove(piece, x + 2, y + 2);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 2);
+		CheckMove(piece, x, y + 2);
 		break;
 	case TenaciousFalcon:
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x - 1, y);
+		CheckDirection(piece, x, y, North);
+		CheckDirection(piece, x, y, South);
+		CheckDirection(piece, x, y, NorthWest);
+		CheckDirection(piece, x, y, NorthEast);
+		CheckDirection(piece, x, y, SouthWest);
+		CheckDirection(piece, x, y, SouthEast);
 		break;
 	default:
 		ShogiBoard::GetMoves(piece, x, y);
