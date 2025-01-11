@@ -1026,7 +1026,8 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 	if (selectedAction != nullptr)
 	{
 		const std::string longStringCode = selectedAction->text().split(' ', Qt::SkipEmptyParts)[0].toStdString();
-		const PieceType newPiece = ShogiPiece::LongStringCode2PieceType(longStringCode);
+		const PieceType newPiece = _gameVariant == CrazyWa ? 
+			WaShogiPiece::LongStringCode2PieceType(longStringCode) : ShogiPiece::LongStringCode2PieceType(longStringCode);
 
 		const int w = this->size().width() / _board->GetWidth();
 		const int h = this->size().height() / _board->GetHeight();
