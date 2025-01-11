@@ -95,12 +95,6 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, West);
 		CheckDirection(piece, x, y, NorthWest);
 		break;
-	case Rook:
-		CheckDirection(piece, x, y, North);
-		CheckDirection(piece, x, y, East);
-		CheckDirection(piece, x, y, West);
-		CheckDirection(piece, x, y, South);
-		break;
 	case Bishop:
 		CheckDirection(piece, x, y, NorthEast);
 		CheckDirection(piece, x, y, SouthEast);
@@ -147,17 +141,8 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 			}
 		}
 		break;
-	case Knight:
-		CheckMove(piece, x + 1, y + 2);
-		CheckMove(piece, x - 1, y + 2);
-		CheckMove(piece, x + 2, y + 1);
-		CheckMove(piece, x + 2, y - 1);
-		CheckMove(piece, x - 2, y + 1);
-		CheckMove(piece, x - 2, y - 1);
-		CheckMove(piece, x + 1, y - 2);
-		CheckMove(piece, x - 1, y - 2);
-		break;
 	default:
+		ShatranjBoard::GetMoves(piece, x, y);
 		break;
 	}
 }
@@ -172,33 +157,6 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY)
 	return result;
 }
 
-void ChessBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture)
-{
-	if (_moveCount % 2 == 0)
-	{
-		_pgn += std::to_string((_moveCount / 2) + 1) + ". "; // Add move number for white
-	}
-	if (pieceType != Pawn)
-	{
-		_pgn += _pieceToPGN.at(pieceType);
-	}
-	_pgn.push_back(static_cast<char>(x1 + 97));
-	_pgn += std::to_string(_height - y1);
-	if (capture)
-	{
-		_pgn += "x";
-	}
-	_pgn.push_back(static_cast<char>(x2 + 97));
-	_pgn += std::to_string(y2);
-	if (promotion != ' ')
-	{
-		_pgn += "=";
-		_pgn += static_cast<char>(std::toupper(promotion));
-	}
-	_pgn += " ";
-	_moveCount++;
-}
-
 void ChessBoard::WriteMove(const std::string& moveStr)
 {
 	if (_moveCount % 2 == 0)
@@ -208,9 +166,4 @@ void ChessBoard::WriteMove(const std::string& moveStr)
 	_pgn += moveStr;
 	_pgn += " ";
 	_moveCount++;
-}
-
-std::string ChessBoard::GetPGN()
-{
-	return _pgn;
 }

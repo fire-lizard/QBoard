@@ -1,10 +1,10 @@
 #pragma once
 #include <map>
 #include "Common.h"
-#include "Board.h"
+#include "ShatranjBoard.h"
 #include "MakrukPiece.h"
 
-class MakrukBoard : public Board
+class MakrukBoard : public ShatranjBoard
 {
 public:
 	MakrukBoard();
@@ -13,8 +13,6 @@ public:
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
 	void GetMoves(Piece* piece, int x, int y) override;
-	void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture);
-	std::string GetPGN();
 
 protected:
 
@@ -30,15 +28,5 @@ protected:
 	};
 
 private:
-	std::string _pgn;
-
-	const std::map<PieceType, char> _pieceToPGN = {
-		{Pawn, 'P'},
-		{Rook, 'R'},
-		{Knight, 'N'},
-		{Silver, 'B'},
-		{Queen, 'Q'},
-		{King, 'K'}
-	};
 };
 

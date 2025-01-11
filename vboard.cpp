@@ -619,9 +619,9 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 
 void VBoard::AddMove(PieceType p, int x1, int y1, int x2, int y2, int x3, int y3) const
 {
-	if (_gameVariant == Chess)
+	if (_gameVariant == Chess || _gameVariant == Shatranj || _gameVariant == Makruk)
 	{
-		dynamic_cast<ChessBoard*>(_board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
+		dynamic_cast<ShatranjBoard*>(_board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
 	else if (_gameVariant == Shogi)
 	{

@@ -17,6 +17,7 @@ public:
 	std::string GetPGN();
 
 protected:
+	std::string _pgn;
 
 	PieceType _initialSetup[8][8] = {
 		{ Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook },
@@ -30,8 +31,6 @@ protected:
 	};
 
 private:
-	std::string _pgn;
-
 	const std::map<PieceType, char> _pieceToPGN = {
 		{Pawn, 'P'},
 		{Rook, 'R'},
