@@ -67,6 +67,12 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x - 1, y);
 		CheckMove(piece, x - 1, y - 1);
 		break;
+	case SideMover:
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
+		CheckDirection(piece, x, y, East);
+		CheckDirection(piece, x, y, West);
+		break;
 	case LiberatedHorse:
 		if (piece->GetColour() == Black)
 		{
