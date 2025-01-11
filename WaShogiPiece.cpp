@@ -261,7 +261,7 @@ std::string WaShogiPiece::GetImageFileName() const
 	case Pawn:
 		return colour + "SparrowPawn.bmp";
 	case SideMover:
-		return colour + "SwallowsWings.bmp";
+		return colour + "Swallowswings.bmp";
 	case PloddingOx:
 		return colour + "PloddingOx.bmp";
 	case LiberatedHorse:
