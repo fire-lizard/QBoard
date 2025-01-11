@@ -132,7 +132,7 @@ std::string WaShogiPiece::LongStringCode() const
 	case CloudEagle:
 		return "Cloud Eagle";
 	case LiberatedHorse:
-		return "LiberatedHorse";
+		return "Liberated Horse";
 	case SwoopingOwl:
 		return "Swooping Owl";
 	case StruttingCrow:
@@ -165,6 +165,19 @@ PieceType WaShogiPiece::LongStringCode2PieceType(const std::string& longStringCo
 	if (longStringCode == "Oxcart") return Lance;
 	if (longStringCode == "Sparrow Pawn") return Pawn;
 	if (longStringCode == "Swallow's Wings") return SideMover;
+	if (longStringCode == "Cloud Eagle") return CloudEagle;
+	if (longStringCode == "Liberated Horse") return LiberatedHorse;
+	if (longStringCode == "Swooping Owl") return SwoopingOwl;
+	if (longStringCode == "Strutting Crow") return StruttingCrow;
+	if (longStringCode == "Flying Falcon") return FlyingFalcon;
+	if (longStringCode == "Flying Cock") return FlyingCock;
+	if (longStringCode == "Flying Goose") return FlyingGoose;
+	if (longStringCode == "Climbing Monkey") return ClimbingMonkey;
+	if (longStringCode == "Violent Stag") return Silver;
+	if (longStringCode == "Violent Wolf") return Gold;
+	if (longStringCode == "Blind Dog") return BlindDog;
+	if (longStringCode == "Running Rabbit") return RunningRabbit;
+	if (longStringCode == "Treacherous Fox") return TreacherousFox;
 	return None;
 }
 
