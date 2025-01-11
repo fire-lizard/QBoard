@@ -43,7 +43,11 @@ enum PieceType
 	// Wa Shogi pieces
 	PloddingOx = 41, LiberatedHorse = 42, HeavenlyHorse = 43, SwoopingOwl = 44, CloudEagle = 45,
 	StruttingCrow = 46, FlyingFalcon = 47, FlyingCock = 48, RaidingFalcon = 49, FlyingGoose = 50,
-	ClimbingMonkey = 51, BlindDog = 52, BearEyes = 53, RunningRabbit = 54, TreacherousFox = 55, TenaciousFalcon = 56
+	ClimbingMonkey = 51, BlindDog = 52, BearEyes = 53, RunningRabbit = 54, TreacherousFox = 55, TenaciousFalcon = 56,
+	// Tenjiku Shogi pieces
+	ViceGeneral = 57, GreatGeneral = 58, BishopGeneral = 59, RookGeneral = 60, MultiGeneral = 61, Dog = 62,
+	FreeEagle = 63, LionHawk = 64, SideSoldier = 65, VerticalSoldier = 66, ChariotSoldier = 67, JeweledGeneral = 68,
+	HeavenlyTetrarch = 69, FireDemon = 70
 };
 
 enum Direction

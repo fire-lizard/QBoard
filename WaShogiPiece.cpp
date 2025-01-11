@@ -67,53 +67,53 @@ std::string WaShogiPiece::StringCode()
 	case King:
 		return "K";
 	case Rook:
-		return "R";
+		return "+S";
 	case Lance:
-		return "L";
+		return "O";
 	case Tokin:
-		return "G";
+		return "+P";
 	case Pawn:
 		return "P";
 	case SideMover:
-		return "E";
+		return "S";
 	case PloddingOx:
-		return "E";
+		return "+O";
 	case LiberatedHorse:
-		return "E";
+		return "H";
 	case HeavenlyHorse:
-		return "E";
+		return "+H";
 	case SwoopingOwl:
-		return "E";
+		return "L";
 	case CloudEagle:
 		return "E";
 	case StruttingCrow:
-		return "E";
+		return "U";
 	case FlyingFalcon:
-		return "E";
+		return "F";
 	case FlyingCock:
-		return "E";
+		return "C";
 	case RaidingFalcon:
-		return "E";
+		return "+C";
 	case FlyingGoose:
-		return "E";
+		return "G";
 	case ClimbingMonkey:
-		return "E";
+		return "M";
 	case Silver:
-		return "E";
+		return "V";
 	case BlindDog:
-		return "E";
+		return "D";
 	case Gold:
-		return "E";
+		return "+D";
 	case Elephant:
-		return "E";
+		return "+V";
 	case BearEyes:
-		return "E";
+		return "+W";
 	case RunningRabbit:
-		return "E";
+		return "R";
 	case TreacherousFox:
-		return "E";
+		return "X";
 	case TenaciousFalcon:
-		return "E";
+		return "+F";
 	default:
 		return "";
 	}

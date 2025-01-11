@@ -3,8 +3,8 @@
 VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
     _nlre = QRegularExpression("[\r\n]+");
-    _csre = QRegularExpression(R"(([a-o])(1[0-5]|[0-9])([a-o])(1[0-5]|[0-9])([+nbrq])?)");
-	_cwre = QRegularExpression(R"(([a-o])(1[0-5]|[0-9])([a-o])(1[0-5]|[0-9])([+nbrq])?)");
+    _csre = QRegularExpression(R"(([a-o])(1[0-6]|[0-9])([a-o])(1[0-6]|[0-9])([+nbrq])?)");
+	_cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-o])(@|1[0-1]|[0-9])([a-o])(1[0-1]|[0-9])([+nbrq])?)");
     _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
     _sgxbre = QRegularExpression(R"(([RBGSNLPa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
     _sgusre = QRegularExpression(R"(([RBGSNLP1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");
