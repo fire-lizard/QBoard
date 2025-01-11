@@ -10,6 +10,7 @@ public:
 	void Promote(PieceType pieceType = None) override;
 	std::string StringCode() override;
 	std::string KanjiStringCode() override;
+	std::string GetImageFileName() const override;
 	std::string GetKanjiImageFileName() override;
 	std::string LongStringCode() const;
 	static PieceType LongStringCode2PieceType(const std::string& longStringCode);

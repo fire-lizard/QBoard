@@ -4,6 +4,7 @@ VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
     _nlre = QRegularExpression("[\r\n]+");
     _csre = QRegularExpression(R"(([a-o])(1[0-5]|[0-9])([a-o])(1[0-5]|[0-9])([+nbrq])?)");
+	_cwre = QRegularExpression(R"(([a-o])(1[0-5]|[0-9])([a-o])(1[0-5]|[0-9])([+nbrq])?)");
     _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
     _sgxbre = QRegularExpression(R"(([RBGSNLPa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
     _sgusre = QRegularExpression(R"(([RBGSNLP1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");
@@ -26,11 +27,15 @@ void VBoard::paintEvent(QPaintEvent *)
 	{
 		resourcePrefix = ":/pieces_jap/images_jap/";
 	}
-    else if (_pieceStyle == Asian && _gameVariant > 1)
+    else if (_pieceStyle == Asian && (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi))
     {
         resourcePrefix = ":/pieces_sho/images_sho/";
     }
-    else
+	else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)
+	{
+		resourcePrefix = ":/pieces_wa/images_wa/";
+	}
+	else
 	{
 		resourcePrefix = ":/pieces_eur/images/";
 	}
@@ -168,7 +173,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			if (p != nullptr)
 			{
 				std::string imageFileName;
-				if (_pieceStyle == Asian)
+				if (_pieceStyle == Asian && (_gameVariant == Xiangqi || std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) != std::end(_shogiVariants)))
 				{
 					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 				}
@@ -341,9 +346,17 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						promotion = '+';
 					}
 				}
-				if ((_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == WaShogi || _gameVariant == CrazyWa) && !_currentPiece->IsPromoted())
+				if ((_gameVariant == Shogi || _gameVariant == ShoShogi) && !_currentPiece->IsPromoted())
 				{
 					if ((y >= 6 && _currentPiece->GetColour() == Black) ||
+						(y <= 2 && _currentPiece->GetColour() == White))
+					{
+						promotion = '+';
+					}
+				}
+				if ((_gameVariant == WaShogi || _gameVariant == CrazyWa) && !_currentPiece->IsPromoted())
+				{
+					if ((y >= 8 && _currentPiece->GetColour() == Black) ||
 						(y <= 2 && _currentPiece->GetColour() == White))
 					{
 						promotion = '+';
@@ -673,8 +686,7 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf) const
                     if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
                 }
             }
-			//TODO: CrazyWa handling
-			else if (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == WaShogi || _gameVariant == CrazyWa)
+			else if (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == WaShogi)
             {
                 QRegularExpressionMatch match = _csre.match(part);
                 if (match.hasMatch())
@@ -691,7 +703,24 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf) const
                     if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
                 }
             }
-            else
+			else if (_gameVariant == CrazyWa)
+			{
+				QRegularExpressionMatch match = _cwre.match(part);
+				if (match.hasMatch())
+				{
+					QString firstLetter = match.captured(1);
+					QString firstDigit = match.captured(2);
+					QString secondLetter = match.captured(3);
+					QString secondDigit = match.captured(4);
+					QString promotionChar = match.captured(5);
+					result.push_back(firstLetter[0].toLatin1());
+					result.push_back(static_cast<signed char>(firstDigit.toInt()));
+					result.push_back(secondLetter[0].toLatin1());
+					result.push_back(static_cast<signed char>(secondDigit.toInt()));
+					if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+				}
+			}
+			else
             {
                 QRegularExpressionMatch match = _gameVariant == Shogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi
             		? _sgxbre.match(part) : _csre.match(part);

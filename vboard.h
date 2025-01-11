@@ -72,7 +72,8 @@ private:
 	Engine *_engine = nullptr;
     QRegularExpression _nlre;
     QRegularExpression _csre;
-    QRegularExpression _qhre;
+	QRegularExpression _cwre;
+	QRegularExpression _qhre;
     QRegularExpression _sgxbre;
     QRegularExpression _sgusre;
 	GameVariant _shogiVariants[8] = {Shogi, MiniShogi, JudkinShogi, ChuShogi, DaiShogi, ShoShogi, WaShogi, CrazyWa};
