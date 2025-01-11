@@ -714,7 +714,7 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf) const
 					QString secondDigit = match.captured(4);
 					QString promotionChar = match.captured(5);
 					result.push_back(firstLetter[0].toLatin1());
-					result.push_back(static_cast<signed char>(firstDigit.toInt()));
+					result.push_back(firstDigit[0].toLatin1());
 					result.push_back(secondLetter[0].toLatin1());
 					result.push_back(static_cast<signed char>(secondDigit.toInt()));
 					if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
