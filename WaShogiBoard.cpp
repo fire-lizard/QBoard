@@ -51,6 +51,11 @@ Piece* WaShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 	return new WaShogiPiece(pieceType, pieceColour);
 }
 
+void WaShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
+{
+	_data[x][y] = new WaShogiPiece(pieceType, pieceColour);
+}
+
 void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();

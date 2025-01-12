@@ -3,8 +3,8 @@
 VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
     _nlre = QRegularExpression("[\r\n]+");
-    _csre = QRegularExpression(R"(([a-o])(1[0-6]|[0-9])([a-o])(1[0-6]|[0-9])([+nbrq])?)");
-	_cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-o])(@|1[0-1]|[0-9])([a-o])(1[0-1]|[0-9])([+nbrq])?)");
+    _csre = QRegularExpression(R"(([a-p])(1[0-6]|[0-9])([a-p])(1[0-6]|[0-9])([+nbrq])?)");
+	_cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])([+nbrq])?)");
     _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
     _sgxbre = QRegularExpression(R"(([RBGSNLPa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
     _sgusre = QRegularExpression(R"(([RBGSNLP1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");
@@ -945,32 +945,92 @@ void VBoard::readyReadStandardOutput()
 		if ((_gameVariant == Shogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi || _gameVariant == CrazyWa) && (moveArray[1] == '@' || moveArray[1] == '*'))
 		{
 			PieceType newPiece;
-			switch (moveArray[0])
+			if (_gameVariant != CrazyWa)
 			{
-			case 'R':
-				newPiece = Rook;
-				break;
-			case 'B':
-				newPiece = Bishop;
-				break;
-			case 'G':
-				newPiece = Gold;
-				break;
-			case 'S':
-				newPiece = Silver;
-				break;
-			case 'N':
-				newPiece = Knight;
-				break;
-			case 'L':
-				newPiece = Lance;
-				break;
-			case 'P':
-				newPiece = Pawn;
-				break;
-			default:
-				newPiece = None;
-				break;
+				switch (moveArray[0])
+				{
+				case 'R':
+					newPiece = Rook;
+					break;
+				case 'B':
+					newPiece = Bishop;
+					break;
+				case 'G':
+					newPiece = Gold;
+					break;
+				case 'S':
+					newPiece = Silver;
+					break;
+				case 'N':
+					newPiece = Knight;
+					break;
+				case 'L':
+					newPiece = Lance;
+					break;
+				case 'P':
+					newPiece = Pawn;
+					break;
+				default:
+					newPiece = None;
+					break;
+				}
+			}
+			else
+			{
+				switch (moveArray[0])
+				{
+				case 'D':
+					newPiece = BlindDog;
+					break;
+				case 'R':
+					newPiece = RunningRabbit;
+					break;
+				case 'W':
+					newPiece = Gold;
+					break;
+				case 'V':
+					newPiece = Silver;
+					break;
+				case 'X':
+					newPiece = TreacherousFox;
+					break;
+				case 'M':
+					newPiece = ClimbingMonkey;
+					break;
+				case 'G':
+					newPiece = FlyingGoose;
+					break;
+				case 'C':
+					newPiece = FlyingCock;
+					break;
+				case 'F':
+					newPiece = FlyingFalcon;
+					break;
+				case 'U':
+					newPiece = StruttingCrow;
+					break;
+				case 'E':
+					newPiece = CloudEagle;
+					break;
+				case 'L':
+					newPiece = SwoopingOwl;
+					break;
+				case 'H':
+					newPiece = LiberatedHorse;
+					break;
+				case 'S':
+					newPiece = SideMover;
+					break;
+				case 'O':
+					newPiece = Lance;
+					break;
+				case 'P':
+					newPiece = Pawn;
+					break;
+				default:
+					newPiece = None;
+					break;
+				}
 			}
             dynamic_cast<ShogiVariantBoard*>(_board)->PlacePiece(newPiece, _currentPlayer, x2, y2);
             AddMove(_board->GetData(x2, y2)->GetType(), moveArray[0], moveArray[1], x2, y2, ' ', ' ');
@@ -1014,8 +1074,17 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 	const auto cps = dynamic_cast<ShogiVariantBoard*>(_board)->GetCapturedPieces(_currentPlayer);
 	for (const auto cp : cps)
 	{
-		ShogiPiece p(cp, _currentPlayer);
-		std::string str = p.LongStringCode() + " (" + p.KanjiStringCode() + ")";
+		std::string str;
+		if (_gameVariant == CrazyWa)
+		{
+			WaShogiPiece p(cp, _currentPlayer);
+			str = p.LongStringCode() + " (" + p.KanjiStringCode() + ")";
+		}
+		else
+		{
+			ShogiPiece p(cp, _currentPlayer);
+			str = p.LongStringCode() + " (" + p.KanjiStringCode() + ")";
+		}
 		menu.addAction(QString::fromStdString(str));
 	}
 
@@ -1025,7 +1094,9 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 	// Handle the selected action
 	if (selectedAction != nullptr)
 	{
-		const std::string longStringCode = selectedAction->text().split(' ', Qt::SkipEmptyParts)[0].toStdString();
+		QStringList parts = selectedAction->text().split(' ', Qt::SkipEmptyParts);
+		const std::string longStringCode = _gameVariant == CrazyWa && selectedAction->text() != "Oxcart" ?
+			(parts[0] + " " + parts[1]).toStdString() : parts[0].toStdString();
 		const PieceType newPiece = _gameVariant == CrazyWa ? 
 			WaShogiPiece::LongStringCode2PieceType(longStringCode) : ShogiPiece::LongStringCode2PieceType(longStringCode);
 
@@ -1049,8 +1120,8 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				mb.exec();
 				return;
 			}
-			if ((_currentPlayer == White && _board->GetData(x, y - 1) != nullptr && _board->GetData(x, y - 1)->GetType() == King) ||
-				(_currentPlayer == Black && _board->GetData(x, y + 1) != nullptr && _board->GetData(x, y + 1)->GetType() == King))
+			Piece* kp = _currentPlayer == White ? _board->GetData(x, y - 1) : _board->GetData(x, y + 1);
+			if (kp != nullptr && kp->GetType() == King && kp->GetColour() != _currentPlayer)
 			{
 				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot check king by the pawn drop",
 					QMessageBox::Ok, this);
@@ -1059,7 +1130,8 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			}
 			for (int index = 0; index < _board->GetHeight(); index++)
 			{
-				if (_board->GetData(x, index) != nullptr && _board->GetData(x, index)->GetType() == Pawn)
+				Piece* p = _board->GetData(x, index);
+				if (p != nullptr && p->GetType() == Pawn && p->GetColour() == _currentPlayer)
 				{
 					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place second pawn on the same column",
 						QMessageBox::Ok, this);

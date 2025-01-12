@@ -103,7 +103,7 @@ std::string WaShogiPiece::StringCode()
 	case BlindDog:
 		return "D";
 	case Gold:
-		return "+D";
+		return "W";
 	case Elephant:
 		return "+V";
 	case BearEyes:
