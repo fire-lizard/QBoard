@@ -251,55 +251,55 @@ std::string WaShogiPiece::GetImageFileName() const
 	switch (_pieceType)
 	{
 	case King:
-		return colour + "craneking.bmp";
+		return colour + "craneking.png";
 	case Rook:
-		return colour + "GlidingSwallow.bmp";
+		return colour + "GlidingSwallow.png";
 	case Lance:
-		return colour + "oxcart.bmp";
+		return colour + "oxcart.png";
 	case Tokin:
-		return colour + "GoldenBird.bmp";
+		return colour + "GoldenBird.png";
 	case Pawn:
-		return colour + "SparrowPawn.bmp";
+		return colour + "SparrowPawn.png";
 	case SideMover:
-		return colour + "Swallowswings.bmp";
+		return colour + "Swallowswings.png";
 	case PloddingOx:
-		return colour + "PloddingOx.bmp";
+		return colour + "PloddingOx.png";
 	case LiberatedHorse:
-		return colour + "LiberatedHorse.bmp";
+		return colour + "LiberatedHorse.png";
 	case HeavenlyHorse:
-		return colour + "HeavenlyHorse.bmp";
+		return colour + "HeavenlyHorse.png";
 	case SwoopingOwl:
-		return colour + "SwoopingOwl.bmp";
+		return colour + "SwoopingOwl.png";
 	case CloudEagle:
-		return colour + "CloudEagle.bmp";
+		return colour + "CloudEagle.png";
 	case StruttingCrow:
-		return colour + "StruttingCrow.bmp";
+		return colour + "StruttingCrow.png";
 	case FlyingFalcon:
-		return colour + "FlyingFalcon.bmp";
+		return colour + "FlyingFalcon.png";
 	case FlyingCock:
-		return colour + "FlyingCockerel.bmp";
+		return colour + "FlyingCockerel.png";
 	case RaidingFalcon:
-		return colour + "RaidingFalcon.bmp";
+		return colour + "RaidingFalcon.png";
 	case FlyingGoose:
-		return colour + "FlyingGoose.bmp";
+		return colour + "FlyingGoose.png";
 	case ClimbingMonkey:
-		return colour + "ClimbingMonkey.bmp";
+		return colour + "ClimbingMonkey.png";
 	case Silver:
-		return colour + "ViolentStag.bmp";
+		return colour + "ViolentStag.png";
 	case BlindDog:
-		return colour + "Blinddog.bmp";
+		return colour + "Blinddog.png";
 	case Gold:
-		return colour + "ViolentWolf.bmp";
+		return colour + "ViolentWolf.png";
 	case Elephant:
-		return colour + "RoamingBoar.bmp";
+		return colour + "RoamingBoar.png";
 	case BearEyes:
-		return colour + "BearEyes.bmp";
+		return colour + "BearEyes.png";
 	case RunningRabbit:
-		return colour + "RunningRabbit.bmp";
+		return colour + "RunningRabbit.png";
 	case TreacherousFox:
-		return colour + "TreacherousFox.bmp";
+		return colour + "TreacherousFox.png";
 	case TenaciousFalcon:
-		return colour + "TenaciousFalcon.bmp";
+		return colour + "TenaciousFalcon.png";
 	default:
 		return "";
 	}

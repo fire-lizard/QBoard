@@ -932,196 +932,196 @@
     <Image Include="images\WhiteWolf.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\B+CloudEagle.bmp">
+    <Image Include="images_wa\B+CloudEagle.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\B+FlyingFalcon.bmp">
+    <Image Include="images_wa\B+FlyingFalcon.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\B+GlidingSwallow.bmp">
+    <Image Include="images_wa\B+GlidingSwallow.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\B+Swallowswings.bmp">
+    <Image Include="images_wa\B+Swallowswings.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\B+TreacherousFox.bmp">
+    <Image Include="images_wa\B+TreacherousFox.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\B+ViolentStag.bmp">
+    <Image Include="images_wa\B+ViolentStag.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\B+ViolentWolf.bmp">
+    <Image Include="images_wa\B+ViolentWolf.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BBearEyes.bmp">
+    <Image Include="images_wa\BBearEyes.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BBlinddog.bmp">
+    <Image Include="images_wa\BBlinddog.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BClimbingMonkey.bmp">
+    <Image Include="images_wa\BClimbingMonkey.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BCloudEagle.bmp">
+    <Image Include="images_wa\BCloudEagle.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\Bcraneking.bmp">
+    <Image Include="images_wa\Bcraneking.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BFlyingCockerel.bmp">
+    <Image Include="images_wa\BFlyingCockerel.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BFlyingFalcon.bmp">
+    <Image Include="images_wa\BFlyingFalcon.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BFlyingGoose.bmp">
+    <Image Include="images_wa\BFlyingGoose.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BGlidingSwallow.bmp">
+    <Image Include="images_wa\BGlidingSwallow.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BGoldenBird.bmp">
+    <Image Include="images_wa\BGoldenBird.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BHeavenlyHorse.bmp">
+    <Image Include="images_wa\BHeavenlyHorse.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BLiberatedHorse.bmp">
+    <Image Include="images_wa\BLiberatedHorse.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\Boxcart.bmp">
+    <Image Include="images_wa\Boxcart.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BPloddingOx.bmp">
+    <Image Include="images_wa\BPloddingOx.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BRaidingFalcon.bmp">
+    <Image Include="images_wa\BRaidingFalcon.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BRoamingBoar.bmp">
+    <Image Include="images_wa\BRoamingBoar.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BRunningRabbit.bmp">
+    <Image Include="images_wa\BRunningRabbit.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BSparrowPawn.bmp">
+    <Image Include="images_wa\BSparrowPawn.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BStruttingCrow.bmp">
+    <Image Include="images_wa\BStruttingCrow.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BSwallowswings.bmp">
+    <Image Include="images_wa\BSwallowswings.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BSwoopingOwl.bmp">
+    <Image Include="images_wa\BSwoopingOwl.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BTenaciousFalcon.bmp">
+    <Image Include="images_wa\BTenaciousFalcon.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BTreacherousFox.bmp">
+    <Image Include="images_wa\BTreacherousFox.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BViolentStag.bmp">
+    <Image Include="images_wa\BViolentStag.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\BViolentWolf.bmp">
+    <Image Include="images_wa\BViolentWolf.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\W+CloudEagle.bmp">
+    <Image Include="images_wa\W+CloudEagle.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\W+FlyingFalcon.bmp">
+    <Image Include="images_wa\W+FlyingFalcon.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\W+GlidingSwallow.bmp">
+    <Image Include="images_wa\W+GlidingSwallow.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\W+Swallowswings.bmp">
+    <Image Include="images_wa\W+Swallowswings.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\W+TreacherousFox.bmp">
+    <Image Include="images_wa\W+TreacherousFox.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\W+ViolentStag.bmp">
+    <Image Include="images_wa\W+ViolentStag.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\W+ViolentWolf.bmp">
+    <Image Include="images_wa\W+ViolentWolf.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WBearEyes.bmp">
+    <Image Include="images_wa\WBearEyes.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WBlinddog.bmp">
+    <Image Include="images_wa\WBlinddog.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WClimbingMonkey.bmp">
+    <Image Include="images_wa\WClimbingMonkey.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WCloudEagle.bmp">
+    <Image Include="images_wa\WCloudEagle.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\Wcraneking.bmp">
+    <Image Include="images_wa\Wcraneking.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WFlyingCockerel.bmp">
+    <Image Include="images_wa\WFlyingCockerel.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WFlyingFalcon.bmp">
+    <Image Include="images_wa\WFlyingFalcon.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WFlyingGoose.bmp">
+    <Image Include="images_wa\WFlyingGoose.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WGlidingSwallow.bmp">
+    <Image Include="images_wa\WGlidingSwallow.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WGoldenBird.bmp">
+    <Image Include="images_wa\WGoldenBird.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WHeavenlyHorse.bmp">
+    <Image Include="images_wa\WHeavenlyHorse.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WLiberatedHorse.bmp">
+    <Image Include="images_wa\WLiberatedHorse.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\Woxcart.bmp">
+    <Image Include="images_wa\Woxcart.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WPloddingOx.bmp">
+    <Image Include="images_wa\WPloddingOx.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WRaidingFalcon.bmp">
+    <Image Include="images_wa\WRaidingFalcon.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WRoamingBoar.bmp">
+    <Image Include="images_wa\WRoamingBoar.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WRunningRabbit.bmp">
+    <Image Include="images_wa\WRunningRabbit.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WSparrowPawn.bmp">
+    <Image Include="images_wa\WSparrowPawn.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WStruttingCrow.bmp">
+    <Image Include="images_wa\WStruttingCrow.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WSwallowswings.bmp">
+    <Image Include="images_wa\WSwallowswings.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WSwoopingOwl.bmp">
+    <Image Include="images_wa\WSwoopingOwl.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WTenaciousFalcon.bmp">
+    <Image Include="images_wa\WTenaciousFalcon.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WTreacherousFox.bmp">
+    <Image Include="images_wa\WTreacherousFox.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WViolentStag.bmp">
+    <Image Include="images_wa\WViolentStag.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images_wa\WViolentWolf.bmp">
+    <Image Include="images_wa\WViolentWolf.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
