@@ -1124,5 +1124,293 @@
     <Image Include="images_wa\WViolentWolf.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_dai\BlackAdvisor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackAngryBoar.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackArchbishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackCanon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackCatSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackChancellor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackClaw.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackCobra.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackCopper.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackCrownedBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackCrownedRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackDolphin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackDragon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackHawk.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackGnu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackGold.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackHCrown.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackHSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackIron.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackLeopard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackLion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackMarshall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackPawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackPrincess.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackPromoBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackPromoCrownedBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackPromoCrownedRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackPromoElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackPromoGold.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackPromoHSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackPromoKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackPromoLion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackPromoQueen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackPromoRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackPromoSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackQueen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackStone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackTokin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackUnicorn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackWhiteHorse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\BlackWolf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteAdvisor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteAngryBoar.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteArchbishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteCanon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteCatSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteChancellor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteClaw.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteCobra.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteCopper.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteCrownedBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteCrownedRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteDolphin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteDragon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteHawk.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteGnu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteGold.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteHCrown.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteHSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteIron.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteLeopard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteLion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteMarshall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhitePawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhitePrincess.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhitePromoBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhitePromoCrownedBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhitePromoCrownedRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhitePromoElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhitePromoGold.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhitePromoHSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhitePromoKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhitePromoLion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhitePromoQueen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhitePromoRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhitePromoSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteQueen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteStone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteTokin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteUnicorn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteWhiteHorse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_dai\WhiteWolf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

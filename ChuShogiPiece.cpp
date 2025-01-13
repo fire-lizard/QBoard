@@ -221,10 +221,14 @@ std::string ChuShogiPiece::GetKanjiImageFileName()
 	{
 		constexpr PieceType pieces[] = { Bishop, Rook, Queen, Lion, Elephant, DragonHorse, DragonKing, SideMover, VerticalMover };
 
+		const std::string colour = _pieceColour == White ? "White" : "Black";
 		if (std::find(std::begin(pieces), std::end(pieces), _pieceType) != std::end(pieces))
 		{
-			const std::string colour = _pieceColour == White ? "White" : "Black";
 			replaceSubstring(imageFileName, colour, colour + "Promo");
+		}
+		else if (_pieceType == Tokin)
+		{
+			return colour + "Tokin.png";
 		}
 	}
 	return imageFileName;

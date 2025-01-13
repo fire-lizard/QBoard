@@ -29,7 +29,7 @@ void VBoard::paintEvent(QPaintEvent *)
 	}
 	else if (_pieceStyle == Asian && _gameVariant == DaiShogi)
 	{
-		resourcePrefix = ":/pieces_jap/images_dai/";
+		resourcePrefix = ":/pieces_dai/images_dai/";
 	}
 	else if (_pieceStyle == Asian && (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi))
     {
