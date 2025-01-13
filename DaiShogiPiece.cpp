@@ -82,3 +82,28 @@ std::string DaiShogiPiece::KanjiStringCode()
 		return ChuShogiPiece::KanjiStringCode();
 	}
 }
+
+std::string DaiShogiPiece::GetKanjiImageFileName()
+{
+	switch (_pieceType)
+	{
+	case Iron:
+		return "鉄";
+	case Stone:
+		return "石";
+	case AngryBoar:
+		return "猪";
+	case ViolentOx:
+		return "牛";
+	case FlyingDragon:
+		return "龍";
+	case EvilWolf:
+		return "狼";
+	case CatSword:
+		return "猫";
+	case Knight:
+		return "桂";
+	default:
+		return ChuShogiPiece::GetKanjiImageFileName();
+	}
+}

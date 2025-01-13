@@ -27,7 +27,11 @@ void VBoard::paintEvent(QPaintEvent *)
 	{
 		resourcePrefix = ":/pieces_jap/images_jap/";
 	}
-    else if (_pieceStyle == Asian && (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi))
+	else if (_pieceStyle == Asian && _gameVariant == DaiShogi)
+	{
+		resourcePrefix = ":/pieces_jap/images_dai/";
+	}
+	else if (_pieceStyle == Asian && (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi))
     {
         resourcePrefix = ":/pieces_sho/images_sho/";
     }
@@ -594,7 +598,7 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 {
 	int kx = -1, ky = -1;
 	Board *board = _board->Clone();
-	if (board->GetData(oldX, oldY)->GetType() == King)
+	if (board->GetData(oldX, oldY)->GetBaseType() == King)
 	{
 		kx = newX;
 		ky = newY;
@@ -606,7 +610,7 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 			for (int j = 0; j < board->GetHeight(); j++)
 			{
 				const Piece *p = board->GetData(i, j);
-				if (p != nullptr && p->GetType() == King && p->GetColour() == _currentPlayer)
+				if (p != nullptr && p->GetBaseType() == King && p->GetColour() == _currentPlayer)
 				{
 					kx = i;
 					ky = j;
