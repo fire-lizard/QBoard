@@ -48,6 +48,8 @@ SOURCES += main.cpp\
     MakrukPiece.cpp \
     DaiShogiBoard.cpp \
     DaiShogiPiece.cpp \
+    TenjikuShogiBoard.cpp \
+    TenjikuShogiPiece.cpp \
     WaShogiBoard.cpp \
     WaShogiPiece.cpp \
     enginemanager.cpp \
@@ -87,6 +89,8 @@ HEADERS  += mainwindow.h \
     MakrukPiece.h \
     DaiShogiBoard.h \
     DaiShogiPiece.h \
+    TenjikuShogiBoard.h \
+    TenjikuShogiPiece.h \
     WaShogiBoard.h \
     WaShogiPiece.h \
     enginemanager.h \
