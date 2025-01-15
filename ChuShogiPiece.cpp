@@ -233,3 +233,72 @@ std::string ChuShogiPiece::GetKanjiImageFileName()
 	}
 	return imageFileName;
 }
+
+std::string ChuShogiPiece::GetMnemonicImageFileName()
+{
+	const std::string colour = _pieceColour == White ? "_B" : "_W";
+	const std::string promo = _isPromoted ? "P" : "";
+	switch (_pieceType)
+	{
+	case King:
+		return "King" + colour + ".png";
+	case Lion:
+		return promo + "Lion" + colour + ".png";
+	case Queen:
+		return promo + "FreeKing" + colour + ".png";
+	case DragonKing:
+		return promo + "Dragon" + colour + ".png";
+	case DragonHorse:
+		return promo + "Horse" + colour + ".png";
+	case Rook:
+		return promo + "Rook" + colour + ".png";
+	case Bishop:
+		return promo + "Bishop" + colour + ".png";
+	case VerticalMover:
+		return promo + "Vertical" + colour + ".png";
+	case SideMover:
+		return promo + "Side" + colour + ".png";
+	case Cannon:
+		return "Reverse" + colour + ".png";
+	case Lance:
+		return "Lance" + colour + ".png";
+	case Kylin:
+		return "Kylin" + colour + ".png";
+	case Phoenix:
+		return "Phoenix" + colour + ".png";
+	case Elephant:
+		return promo + "Elephant" + colour + ".png";
+	case BlindTiger:
+		return "Tiger" + colour + ".png";
+	case FerociousLeopard:
+		return "Leopard" + colour + ".png";
+	case Gold:
+		return "Gold" + colour + ".png";
+	case Silver:
+		return "Silver" + colour + ".png";
+	case Copper:
+		return "Copper" + colour + ".png";
+	case GoBetween:
+		return "GoBetween" + colour + ".png";
+	case Eagle:
+		return "Eagle" + colour + ".png";
+	case Unicorn:
+		return "Falcon" + colour + ".png";
+	case FlyingStag:
+		return "Stag" + colour + ".png";
+	case FreeBoar:
+		return "Boar" + colour + ".png";
+	case FlyingOx:
+		return "Ox" + colour + ".png";
+	case WhiteHorse:
+		return "WHorse" + colour + ".png";
+	case Whale:
+		return "Whale" + colour + ".png";
+	case Tokin:
+		return "Tokin" + colour + ".png";
+	case Pawn:
+		return "Pawn" + colour + ".png";
+	default:
+		return "";
+	}
+}

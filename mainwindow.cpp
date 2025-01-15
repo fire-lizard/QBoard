@@ -20,7 +20,20 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		_currentStyle = settings[0];
 		QApplication::setStyle(_currentStyle);
 		this->ui->vboard->SetGameVariant(EngineManager::StringToGameVariant(settings[1]));
-		this->ui->vboard->SetPieceStyle(settings[2] == "Asian" ? Asian : European);
+		PieceStyle pieceStyle;
+		if (settings[2] == "Mnemonic")
+		{
+			pieceStyle = Mnemonic;
+		}
+		else if (settings[2] == "Asian")
+		{
+			pieceStyle = Asian;
+		}
+		else
+		{
+			pieceStyle = European;
+		}
+		this->ui->vboard->SetPieceStyle(pieceStyle);
 		this->ui->vboard->SetEngineOutput(settings[3] == "Verbose" ? Verbose : Concise);
 		this->ui->vboard->GetBoard()->Initialize();
 		this->ui->statusBar->showMessage(settings[1] == "Xiangqi" ? "Red move" : "White move");

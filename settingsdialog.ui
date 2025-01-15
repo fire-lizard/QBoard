@@ -157,6 +157,11 @@
      <string>Asian</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>Mnemonic</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLabel" name="piecesLabel">
    <property name="geometry">

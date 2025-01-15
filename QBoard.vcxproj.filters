@@ -1796,5 +1796,473 @@
     <Image Include="Images_ten\WHorse_W.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_chu\Bishop_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Bishop_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Boar_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Boar_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Copper_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Copper_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Dragon_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Dragon_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Eagle_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Eagle_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Elephant_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Elephant_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Falcon_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Falcon_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\FreeKing_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\FreeKing_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\GoBetween_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\GoBetween_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Gold_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Gold_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Horse_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Horse_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\King_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\King_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Kylin_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Kylin_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Lance_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Lance_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Leopard_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Leopard_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Lion_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Lion_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Ox_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Ox_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Pawn_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Pawn_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PBishop_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PBishop_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PDragon_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PDragon_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PElephant_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PElephant_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PFreeKing_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PFreeKing_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Phoenix_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Phoenix_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PHorse_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PHorse_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PLion_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PLion_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Prince_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Prince_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PRook_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PRook_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PSide_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PSide_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PVertical_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\PVertical_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Reverse_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Reverse_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Rook_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Rook_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Side_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Side_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Silver_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Silver_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Stag_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Stag_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Tiger_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Tiger_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Tokin_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Tokin_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Vertical_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Vertical_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Whale_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\Whale_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\WHorse_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chu\WHorse_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JBishop_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JBishop_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JBoar_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JBoar_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JCopper_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JCopper_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JDragon_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JDragon_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JEagle_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JEagle_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JElephant_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JElephant_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JFalcon_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JFalcon_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JFreeKing_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JFreeKing_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JGoBetween_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JGoBetween_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JGold_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JGold_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JHorse_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JHorse_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JKing_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JKing_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JKylin_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JKylin_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JLance_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JLance_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JLeopard_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JLeopard_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JLion_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JLion_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JOx_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JOx_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPawn_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPawn_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPBishop_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPBishop_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPDragon_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPDragon_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPElephant_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPElephant_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPFreeKing_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPFreeKing_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPhoenix_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPhoenix_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPHorse_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPHorse_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPLion_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPLion_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPrince_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPrince_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPRook_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPRook_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPSide_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPSide_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPVertical_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JPVertical_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JReverse_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JReverse_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JRook_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JRook_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JSide_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JSide_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JSilver_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JSilver_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JStag_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JStag_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JTiger_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JTiger_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JTokin_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JTokin_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JVertical_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JVertical_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JWhale_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JWhale_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JWHorse_B.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_knj\JWHorse_W.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -27,6 +27,10 @@ void VBoard::paintEvent(QPaintEvent *)
 	{
 		resourcePrefix = ":/pieces_jap/images_jap/";
 	}
+	else if (_pieceStyle == Mnemonic && _gameVariant == ChuShogi)
+	{
+		resourcePrefix = ":/pieces_chu/images_chu/";
+	}
 	else if (_pieceStyle == Asian && _gameVariant == DaiShogi)
 	{
 		resourcePrefix = ":/pieces_dai/images_dai/";
@@ -180,6 +184,10 @@ void VBoard::paintEvent(QPaintEvent *)
 				if (_pieceStyle == Asian && (_gameVariant == Xiangqi || std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) != std::end(_shogiVariants)))
 				{
 					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
+				}
+				else if (_pieceStyle == Mnemonic && _gameVariant == ChuShogi)
+				{
+					imageFileName = dynamic_cast<ChuShogiPiece*>(p)->GetMnemonicImageFileName();
 				}
 				else
 				{
