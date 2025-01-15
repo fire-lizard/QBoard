@@ -46,7 +46,7 @@ void WaShogiPiece::Promote(PieceType pieceType)
 	case Silver:
 		_pieceType = Elephant;
 		break;
-	case BlindDog:
+	case Dog:
 		_pieceType = Gold;
 		break;
 	case Gold:
@@ -100,7 +100,7 @@ std::string WaShogiPiece::StringCode()
 		return "M";
 	case Silver:
 		return "V";
-	case BlindDog:
+	case Dog:
 		return "D";
 	case Gold:
 		return "W";
@@ -149,7 +149,7 @@ std::string WaShogiPiece::LongStringCode() const
 		return "Violent Stag";
 	case Gold:
 		return "Violent Wolf";
-	case BlindDog:
+	case Dog:
 		return "Blind Dog";
 	case RunningRabbit:
 		return "Running Rabbit";
@@ -175,7 +175,7 @@ PieceType WaShogiPiece::LongStringCode2PieceType(const std::string& longStringCo
 	if (longStringCode == "Climbing Monkey") return ClimbingMonkey;
 	if (longStringCode == "Violent Stag") return Silver;
 	if (longStringCode == "Violent Wolf") return Gold;
-	if (longStringCode == "Blind Dog") return BlindDog;
+	if (longStringCode == "Blind Dog") return Dog;
 	if (longStringCode == "Running Rabbit") return RunningRabbit;
 	if (longStringCode == "Treacherous Fox") return TreacherousFox;
 	return None;
@@ -221,7 +221,7 @@ std::string WaShogiPiece::KanjiStringCode()
 		return "猿";
 	case Silver:
 		return "鹿";
-	case BlindDog:
+	case Dog:
 		return "犬";
 	case Gold:
 		return "狼";
@@ -286,7 +286,7 @@ std::string WaShogiPiece::GetImageFileName() const
 		return colour + "ClimbingMonkey.png";
 	case Silver:
 		return colour + "ViolentStag.png";
-	case BlindDog:
+	case Dog:
 		return colour + "Blinddog.png";
 	case Gold:
 		return colour + "ViolentWolf.png";

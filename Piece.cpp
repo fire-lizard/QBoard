@@ -65,7 +65,7 @@ std::string Piece::GetImageFileName() const
 		return colour + "Archbishop.png";
 	case Elephant:
 		return colour + "Elephant.png";
-	case BlindTiger:
+	case Tiger:
 		return colour + "Claw.png";
 	case Gold:
 		return colour + "Gold.png";
@@ -81,7 +81,7 @@ std::string Piece::GetImageFileName() const
 		return colour + "Advisor.png";
 	case Copper:
 		return colour + "Copper.png";
-	case FerociousLeopard:
+	case Leopard:
 		return colour + "Leopard.png";
 	case GoBetween:
 		return colour + "Cobra.png";

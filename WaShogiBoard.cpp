@@ -119,7 +119,7 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 			CheckMove(piece, x + 1, y - 1);
 		}
 		break;
-		case CloudEagle:
+	case CloudEagle:
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, South);
 		CheckMove(piece, x - 1, y - 1);
@@ -226,7 +226,7 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 			CheckMove(piece, x + 1, y - 1);
 		}
 		break;
-	case BlindDog:
+	case Dog:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
 		if (piece->GetColour() == Black)

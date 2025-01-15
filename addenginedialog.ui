@@ -221,6 +221,11 @@
      <string>CrazyWa</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>Tenjiku Shogi</string>
+    </property>
+   </item>
   </widget>
  </widget>
  <tabstops>

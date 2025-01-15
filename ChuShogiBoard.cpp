@@ -197,7 +197,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 			CheckMove(piece, x, y - 1);
 		}
 		break;
-	case BlindTiger:
+	case Tiger:
 		CheckMove(piece, x + 1, y + 1);
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x + 1, y - 1);
@@ -258,7 +258,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 			CheckMove(piece, x + 1, y - 1);
 		}
 		break;
-	case FerociousLeopard:
+	case Leopard:
 		CheckMove(piece, x + 1, y + 1);
 		CheckMove(piece, x + 1, y - 1);
 		CheckMove(piece, x, y + 1);

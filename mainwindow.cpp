@@ -398,6 +398,10 @@ void MainWindow::LoadEngine()
 				{
 					_engine->StartGame("dai");
 				}
+				else if (ui->vboard->GetGameVariant() == TenjikuShogi)
+				{
+					_engine->StartGame("tenjiku");
+				}
 				else if (ui->vboard->GetGameVariant() == Shogi)
 				{
 					_engine->StartGame("shogi");

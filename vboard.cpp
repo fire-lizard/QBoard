@@ -43,6 +43,10 @@ void VBoard::paintEvent(QPaintEvent *)
 	{
 		resourcePrefix = ":/pieces_wa/images_wa/";
 	}
+	else if (_gameVariant == TenjikuShogi)
+	{
+		resourcePrefix = ":/pieces_ten/images_ten/";
+	}
 	else
 	{
 		resourcePrefix = ":/pieces_eur/images/";
@@ -194,7 +198,22 @@ void VBoard::paintEvent(QPaintEvent *)
 					imageFileName = p->GetImageFileName();
 				}
 				QPixmap pixmap(resourcePrefix + QString::fromStdString(imageFileName));
-				painter.drawPixmap(i * w + w / 4, j * h + h / 4, 33, 33, pixmap);
+				if (_pieceStyle == Asian && (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi || _gameVariant == ChuShogi))
+				{
+					painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
+				}
+				else if (_pieceStyle == Asian && _gameVariant == DaiShogi)
+				{
+					painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
+				}
+				else if (_pieceStyle == Asian && (_gameVariant == WaShogi || _gameVariant == CrazyWa))
+				{
+					painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+				}
+				else
+				{
+					painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+				}
 			}
 		}
 	}
@@ -384,10 +403,19 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						promotion = '+';
 					}
 				}
-				if (_gameVariant == DaiShogi && !_currentPiece->IsPromoted() && _currentPiece->GetType() != King &&
+				if (_gameVariant == DaiShogi &&	!_currentPiece->IsPromoted() && _currentPiece->GetType() != King &&
 					_currentPiece->GetType() != Queen && _currentPiece->GetType() != Lion)
 				{
 					if ((y >= 10 && _currentPiece->GetColour() == Black) ||
+						(y <= 4 && _currentPiece->GetColour() == White))
+					{
+						promotion = '+';
+					}
+				}
+				if (_gameVariant == TenjikuShogi &&	!_currentPiece->IsPromoted() && _currentPiece->GetType() != King &&
+					_currentPiece->GetType() != Queen && _currentPiece->GetType() != Lion)
+				{
+					if ((y >= 11 && _currentPiece->GetColour() == Black) ||
 						(y <= 4 && _currentPiece->GetColour() == White))
 					{
 						promotion = '+';
@@ -419,6 +447,11 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					}
 					else if (_gameVariant == DaiShogi && (pt == Pawn || pt == Lance) &&
 						((y == 14 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
+					{
+						_currentPiece->Promote();
+					}
+					else if (_gameVariant == TenjikuShogi && (pt == Pawn || pt == Lance) &&
+						((y == 15 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
 					{
 						_currentPiece->Promote();
 					}
@@ -518,6 +551,9 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		break;
 	case DaiShogi:
 		_board = new DaiShogiBoard();
+		break;
+	case TenjikuShogi:
+		_board = new TenjikuShogiBoard();
 		break;
 	case MiniShogi:
 		_board = new MiniShogiBoard();
@@ -699,7 +735,7 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf) const
                     if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
                 }
             }
-			else if (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == WaShogi)
+			else if (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == WaShogi || _gameVariant == TenjikuShogi)
             {
                 QRegularExpressionMatch match = _csre.match(part);
                 if (match.hasMatch())
@@ -803,7 +839,7 @@ void VBoard::readyReadStandardOutput()
         x2 = _board->GetWidth() - moveArray[2] + 48;
         y2 = moveArray[3] - 97;
 	}
-    else if (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == WaShogi || _gameVariant == CrazyWa)
+    else if (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == WaShogi || _gameVariant == CrazyWa || _gameVariant == TenjikuShogi)
 	{
         x1 = moveArray[0] - 97;
         y1 = _board->GetWidth() - moveArray[1];
@@ -817,7 +853,7 @@ void VBoard::readyReadStandardOutput()
         x2 = moveArray[2] - 97;
         y2 = _board->GetHeight() - moveArray[3] + 48;
     }
-    if (_gameVariant == ChuShogi || _gameVariant == DaiShogi)
+    if (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi)
 	{
 		if (_board->CheckPosition(x1, y1) && _board->GetData(x1, y1) != nullptr)
 		{
@@ -992,7 +1028,7 @@ void VBoard::readyReadStandardOutput()
 				switch (moveArray[0])
 				{
 				case 'D':
-					newPiece = BlindDog;
+					newPiece = Dog;
 					break;
 				case 'R':
 					newPiece = RunningRabbit;

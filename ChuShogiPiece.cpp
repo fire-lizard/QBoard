@@ -46,7 +46,7 @@ void ChuShogiPiece::Promote(PieceType pieceType)
 	case Elephant:
 		_pieceType = King;
 		break;
-	case BlindTiger:
+	case Tiger:
 		_pieceType = FlyingStag;
 		break;
 	case Gold:
@@ -58,7 +58,7 @@ void ChuShogiPiece::Promote(PieceType pieceType)
 	case Copper:
 		_pieceType = SideMover;
 		break;
-	case FerociousLeopard:
+	case Leopard:
 		_pieceType = Bishop;
 		break;
 	case GoBetween:
@@ -104,7 +104,7 @@ std::string ChuShogiPiece::StringCode()
 		return "X";
 	case Elephant:
 		return "E";
-	case BlindTiger:
+	case Tiger:
 		return "T";
 	case Gold:
 		return "G";
@@ -112,7 +112,7 @@ std::string ChuShogiPiece::StringCode()
 		return "S";
 	case Copper:
 		return "C";
-	case FerociousLeopard:
+	case Leopard:
 		return "F";
 	case GoBetween:
 		return "I";
@@ -142,7 +142,7 @@ std::string ChuShogiPiece::KanjiStringCode()
 	switch (_pieceType)
 	{
 	case King:
-		return _basePieceType == Elephant ? "太" : _pieceColour == Black ? "王" : "玉";
+		return _basePieceType == Elephant ? "太" : _pieceColour == White ? "王" : "玉";
 	case Lion:
 		return "獅";
 	case Queen:
@@ -169,7 +169,7 @@ std::string ChuShogiPiece::KanjiStringCode()
 		return "鳳";
 	case Elephant:
 		return "酔";
-	case BlindTiger:
+	case Tiger:
 		return "虎";
 	case Gold:
 		return "金";
@@ -179,7 +179,7 @@ std::string ChuShogiPiece::KanjiStringCode()
 		return "銀";
 	case Copper:
 		return "銅";
-	case FerociousLeopard:
+	case Leopard:
 		return "豹";
 	case GoBetween:
 		return "仲";
@@ -234,7 +234,7 @@ std::string ChuShogiPiece::GetKanjiImageFileName()
 	return imageFileName;
 }
 
-std::string ChuShogiPiece::GetMnemonicImageFileName()
+std::string ChuShogiPiece::GetMnemonicImageFileName() const
 {
 	const std::string colour = _pieceColour == White ? "_B" : "_W";
 	const std::string promo = _isPromoted ? "P" : "";
@@ -268,9 +268,9 @@ std::string ChuShogiPiece::GetMnemonicImageFileName()
 		return "Phoenix" + colour + ".png";
 	case Elephant:
 		return promo + "Elephant" + colour + ".png";
-	case BlindTiger:
+	case Tiger:
 		return "Tiger" + colour + ".png";
-	case FerociousLeopard:
+	case Leopard:
 		return "Leopard" + colour + ".png";
 	case Gold:
 		return "Gold" + colour + ".png";

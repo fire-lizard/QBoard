@@ -19,8 +19,8 @@ protected:
 private:
 
 	PieceType _initialSetup[12][12] = {
-	{Lance, FerociousLeopard, Copper, Silver, Gold, Elephant, King, Gold, Silver, Copper, FerociousLeopard, Lance},
-	{Cannon, None, Bishop, None, BlindTiger, Kylin, Phoenix, BlindTiger, None, Bishop, None, Cannon},
+	{Lance, Leopard, Copper, Silver, Gold, Elephant, King, Gold, Silver, Copper, Leopard, Lance},
+	{Cannon, None, Bishop, None, Tiger, Kylin, Phoenix, Tiger, None, Bishop, None, Cannon},
 	{SideMover, VerticalMover, Rook, DragonHorse, DragonKing, Queen, Lion, DragonKing, DragonHorse, Rook, VerticalMover, SideMover},
 	{Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn},
 	{None, None, None, GoBetween, None, None, None, None, GoBetween, None, None, None},
@@ -29,7 +29,7 @@ private:
 	{None, None, None, GoBetween, None, None, None, None, GoBetween, None, None, None},
 	{Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn},
 	{SideMover, VerticalMover, Rook, DragonHorse, DragonKing, Lion, Queen, DragonKing, DragonHorse, Rook, VerticalMover, SideMover},
-	{Cannon, None, Bishop, None, BlindTiger, Phoenix, Kylin, BlindTiger, None, Bishop, None, Cannon},
-	{Lance, FerociousLeopard, Copper, Silver, Gold, King, Elephant, Gold, Silver, Copper, FerociousLeopard, Lance}
+	{Cannon, None, Bishop, None, Tiger, Phoenix, Kylin, Tiger, None, Bishop, None, Cannon},
+	{Lance, Leopard, Copper, Silver, Gold, King, Elephant, Gold, Silver, Copper, Leopard, Lance}
 	};
 };

@@ -1424,376 +1424,376 @@
     <Image Include="images_dai\WhiteWolf.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Bishop_B.png">
+    <Image Include="images_ten\Bishop_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Bishop_W.png">
+    <Image Include="images_ten\Bishop_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\BishopGeneral_B.png">
+    <Image Include="images_ten\BishopGeneral_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\BishopGeneral_W.png">
+    <Image Include="images_ten\BishopGeneral_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\ChariotSoldier_B.png">
+    <Image Include="images_ten\ChariotSoldier_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\ChariotSoldier_W.png">
+    <Image Include="images_ten\ChariotSoldier_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Copper_B.png">
+    <Image Include="images_ten\Copper_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Copper_W.png">
+    <Image Include="images_ten\Copper_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Dog_B.png">
+    <Image Include="images_ten\Dog_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Dog_W.png">
+    <Image Include="images_ten\Dog_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Dragon_B.png">
+    <Image Include="images_ten\Dragon_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Dragon_W.png">
+    <Image Include="images_ten\Dragon_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Eagle_B.png">
+    <Image Include="images_ten\Eagle_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Eagle_W.png">
+    <Image Include="images_ten\Eagle_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Elephant_B.png">
+    <Image Include="images_ten\Elephant_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Elephant_W.png">
+    <Image Include="images_ten\Elephant_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Falcon_B.png">
+    <Image Include="images_ten\Falcon_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Falcon_W.png">
+    <Image Include="images_ten\Falcon_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\FBoar_B.png">
+    <Image Include="images_ten\FBoar_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\FBoar_W.png">
+    <Image Include="images_ten\FBoar_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\FireDemon_B.png">
+    <Image Include="images_ten\FireDemon_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\FireDemon_W.png">
+    <Image Include="images_ten\FireDemon_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\FireDemonNB_B.png">
+    <Image Include="images_ten\FireDemonNB_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\FireDemonNB_W.png">
+    <Image Include="images_ten\FireDemonNB_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\FreeEagle_B.png">
+    <Image Include="images_ten\FreeEagle_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\FreeEagle_W.png">
+    <Image Include="images_ten\FreeEagle_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Gold_B.png">
+    <Image Include="images_ten\Gold_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Gold_W.png">
+    <Image Include="images_ten\Gold_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\GreatGeneral_B.png">
+    <Image Include="images_ten\GreatGeneral_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\GreatGeneral_W.png">
+    <Image Include="images_ten\GreatGeneral_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Heaven_B.png">
+    <Image Include="images_ten\Heaven_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Heaven_W.png">
+    <Image Include="images_ten\Heaven_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Horse_B.png">
+    <Image Include="images_ten\Horse_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Horse_W.png">
+    <Image Include="images_ten\Horse_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Iron_B.png">
+    <Image Include="images_ten\Iron_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Iron_W.png">
+    <Image Include="images_ten\Iron_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\King_B.png">
+    <Image Include="images_ten\King_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\King_W.png">
+    <Image Include="images_ten\King_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Knight_B.png">
+    <Image Include="images_ten\Knight_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Knight_W.png">
+    <Image Include="images_ten\Knight_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Kylin_B.png">
+    <Image Include="images_ten\Kylin_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Kylin_W.png">
+    <Image Include="images_ten\Kylin_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Lance_B.png">
+    <Image Include="images_ten\Lance_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Lance_W.png">
+    <Image Include="images_ten\Lance_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Leopard_B.png">
+    <Image Include="images_ten\Leopard_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Leopard_W.png">
+    <Image Include="images_ten\Leopard_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Lion_B.png">
+    <Image Include="images_ten\Lion_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Lion_W.png">
+    <Image Include="images_ten\Lion_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Lion-Hawk_B.png">
+    <Image Include="images_ten\Lion-Hawk_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Lion-Hawk_W.png">
+    <Image Include="images_ten\Lion-Hawk_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Multi-General_B2.png">
+    <Image Include="images_ten\Multi-General_B2.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Multi-General_W2.png">
+    <Image Include="images_ten\Multi-General_W2.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Pawn_B.png">
+    <Image Include="images_ten\Pawn_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Pawn_W.png">
+    <Image Include="images_ten\Pawn_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PBishop_B.png">
+    <Image Include="images_ten\PBishop_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PBishop_W.png">
+    <Image Include="images_ten\PBishop_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PBishopGeneral_B.png">
+    <Image Include="images_ten\PBishopGeneral_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PBishopGeneral_W.png">
+    <Image Include="images_ten\PBishopGeneral_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PChariotSoldier_B.png">
+    <Image Include="images_ten\PChariotSoldier_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PChariotSoldier_W.png">
+    <Image Include="images_ten\PChariotSoldier_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PDragon_B.png">
+    <Image Include="images_ten\PDragon_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PDragon_W.png">
+    <Image Include="images_ten\PDragon_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PEagle_B.png">
+    <Image Include="images_ten\PEagle_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PEagle_W.png">
+    <Image Include="images_ten\PEagle_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PFalcon_B.png">
+    <Image Include="images_ten\PFalcon_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PFalcon_W.png">
+    <Image Include="images_ten\PFalcon_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PGold_B.png">
+    <Image Include="images_ten\PGold_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PGold_W.png">
+    <Image Include="images_ten\PGold_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Phoenix_B.png">
+    <Image Include="images_ten\Phoenix_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Phoenix_W.png">
+    <Image Include="images_ten\Phoenix_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PHorse_B.png">
+    <Image Include="images_ten\PHorse_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PHorse_W.png">
+    <Image Include="images_ten\PHorse_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PLion_B.png">
+    <Image Include="images_ten\PLion_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PLion_W.png">
+    <Image Include="images_ten\PLion_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\pOx_B.png">
+    <Image Include="images_ten\pOx_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\pOx_W.png">
+    <Image Include="images_ten\pOx_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PQueen_B.png">
+    <Image Include="images_ten\PQueen_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PQueen_W.png">
+    <Image Include="images_ten\PQueen_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Prince_B.png">
+    <Image Include="images_ten\Prince_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Prince_W.png">
+    <Image Include="images_ten\Prince_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PRook_B.png">
+    <Image Include="images_ten\PRook_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PRook_W.png">
+    <Image Include="images_ten\PRook_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PRookGeneral_B.png">
+    <Image Include="images_ten\PRookGeneral_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PRookGeneral_W.png">
+    <Image Include="images_ten\PRookGeneral_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PSide_B.png">
+    <Image Include="images_ten\PSide_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PSide_W.png">
+    <Image Include="images_ten\PSide_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PSideSoldier_B.png">
+    <Image Include="images_ten\PSideSoldier_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PSideSoldier_W.png">
+    <Image Include="images_ten\PSideSoldier_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PVertical_B.png">
+    <Image Include="images_ten\PVertical_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PVertical_W.png">
+    <Image Include="images_ten\PVertical_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PVerticalSoldier_B.png">
+    <Image Include="images_ten\PVerticalSoldier_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PVerticalSoldier_W.png">
+    <Image Include="images_ten\PVerticalSoldier_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PWaterBuffalo_B.png">
+    <Image Include="images_ten\PWaterBuffalo_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\PWaterBuffalo_W.png">
+    <Image Include="images_ten\PWaterBuffalo_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Queen_B.png">
+    <Image Include="images_ten\Queen_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Queen_W.png">
+    <Image Include="images_ten\Queen_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Reverse_B.png">
+    <Image Include="images_ten\Reverse_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Reverse_W.png">
+    <Image Include="images_ten\Reverse_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Rook_B.png">
+    <Image Include="images_ten\Rook_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Rook_W.png">
+    <Image Include="images_ten\Rook_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\RookGeneral_B.png">
+    <Image Include="images_ten\RookGeneral_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\RookGeneral_W.png">
+    <Image Include="images_ten\RookGeneral_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Side_B.png">
+    <Image Include="images_ten\Side_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Side_W.png">
+    <Image Include="images_ten\Side_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\SideSoldier_B.png">
+    <Image Include="images_ten\SideSoldier_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\SideSoldier_W.png">
+    <Image Include="images_ten\SideSoldier_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Silver_B.png">
+    <Image Include="images_ten\Silver_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Silver_W.png">
+    <Image Include="images_ten\Silver_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Stag_B.png">
+    <Image Include="images_ten\Stag_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Stag_W.png">
+    <Image Include="images_ten\Stag_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Tiger_B.png">
+    <Image Include="images_ten\Tiger_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Tiger_W.png">
+    <Image Include="images_ten\Tiger_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Vertical_B.png">
+    <Image Include="images_ten\Vertical_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Vertical_W.png">
+    <Image Include="images_ten\Vertical_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\VerticalSoldier_B.png">
+    <Image Include="images_ten\VerticalSoldier_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\VerticalSoldier_W.png">
+    <Image Include="images_ten\VerticalSoldier_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\ViceGeneral_B.png">
+    <Image Include="images_ten\ViceGeneral_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\ViceGeneral_W.png">
+    <Image Include="images_ten\ViceGeneral_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\WaterBuffalo_B.png">
+    <Image Include="images_ten\WaterBuffalo_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\WaterBuffalo_W.png">
+    <Image Include="images_ten\WaterBuffalo_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Whale_B.png">
+    <Image Include="images_ten\Whale_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\Whale_W.png">
+    <Image Include="images_ten\Whale_W.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\WHorse_B.png">
+    <Image Include="images_ten\WHorse_B.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images_ten\WHorse_W.png">
+    <Image Include="images_ten\WHorse_W.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="images_chu\Bishop_B.png">

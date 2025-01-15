@@ -12,7 +12,7 @@ enum GameFormat
 
 enum GameVariant
 {
-	Chess, Xiangqi, Shatranj, Makruk, Shogi, ShoShogi, ChuShogi, DaiShogi, MiniShogi, JudkinShogi, WaShogi, CrazyWa
+	Chess, Xiangqi, Shatranj, Makruk, Shogi, ShoShogi, ChuShogi, DaiShogi, MiniShogi, JudkinShogi, WaShogi, CrazyWa, TenjikuShogi
 };
 
 enum PieceColour
@@ -34,7 +34,7 @@ enum PieceType
 {
 	None = 0, King = 1, Lion = 2, Queen = 3, DragonKing = 4, DragonHorse = 5, Rook = 6, Bishop = 7, Knight = 8,
 	VerticalMover = 9, SideMover = 10, Cannon = 11, Lance = 12, Kylin = 13, Phoenix = 14, Elephant = 15,
-	BlindTiger = 16, Gold = 17, Silver = 18, Copper = 19, FerociousLeopard = 20, GoBetween = 21, Pawn = 22,
+	Tiger = 16, Gold = 17, Silver = 18, Copper = 19, Leopard = 20, GoBetween = 21, Pawn = 22,
 	Eagle = 23, Unicorn = 24, FlyingOx = 25, FreeBoar = 26, FlyingStag = 27, WhiteHorse = 28, Whale = 29,
 	// Promoted Shogi pieces
 	PromotedLance = 30, PromotedKnight = 31, PromotedSilver = 32, Tokin = 33,
@@ -43,11 +43,11 @@ enum PieceType
 	// Wa Shogi pieces
 	PloddingOx = 41, LiberatedHorse = 42, HeavenlyHorse = 43, SwoopingOwl = 44, CloudEagle = 45,
 	StruttingCrow = 46, FlyingFalcon = 47, FlyingCock = 48, RaidingFalcon = 49, FlyingGoose = 50,
-	ClimbingMonkey = 51, BlindDog = 52, BearEyes = 53, RunningRabbit = 54, TreacherousFox = 55, TenaciousFalcon = 56,
+	ClimbingMonkey = 51, Dog = 52, BearEyes = 53, RunningRabbit = 54, TreacherousFox = 55, TenaciousFalcon = 56,
 	// Tenjiku Shogi pieces
-	ViceGeneral = 57, GreatGeneral = 58, BishopGeneral = 59, RookGeneral = 60, MultiGeneral = 61, Dog = 62,
-	FreeEagle = 63, LionHawk = 64, SideSoldier = 65, VerticalSoldier = 66, ChariotSoldier = 67, JeweledGeneral = 68,
-	HeavenlyTetrarch = 69, FireDemon = 70
+	ViceGeneral = 57, GreatGeneral = 58, BishopGeneral = 59, RookGeneral = 60, MultiGeneral = 61,
+	FreeEagle = 62, LionHawk = 63, SideSoldier = 64, VerticalSoldier = 65, ChariotSoldier = 66, WaterBuffalo = 67,
+	HeavenlyTetrarch = 68, FireDemon = 69
 };
 
 enum Direction

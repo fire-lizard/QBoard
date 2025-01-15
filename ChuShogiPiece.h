@@ -11,7 +11,7 @@ public:
 	std::string StringCode() override;
 	std::string KanjiStringCode() override;
 	std::string GetKanjiImageFileName() override;
-	std::string GetMnemonicImageFileName();
+	std::string GetMnemonicImageFileName() const;
 
 protected:
 	static void replaceSubstring(std::string& str, const std::string& from, const std::string& to);

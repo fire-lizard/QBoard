@@ -20,7 +20,7 @@ protected:
 private:
 
 	PieceType _initialSetup[11][11] = {
-		{ LiberatedHorse, ClimbingMonkey, SwoopingOwl, FlyingCock, Silver, King, Gold, FlyingGoose, StruttingCrow, BlindDog, Lance },
+		{ LiberatedHorse, ClimbingMonkey, SwoopingOwl, FlyingCock, Silver, King, Gold, FlyingGoose, StruttingCrow, Dog, Lance },
 		{ None, CloudEagle, None, None, None, SideMover, None, None, None, FlyingFalcon, None },
 		{ Pawn, Pawn, Pawn, RunningRabbit, Pawn, Pawn, Pawn, TreacherousFox, Pawn, Pawn, Pawn },
 		{ None, None, None, Pawn, None, None, None, Pawn, None, None, None },
@@ -30,7 +30,7 @@ private:
 		{ None, None, None, Pawn, None, None, None, Pawn, None, None, None },
 		{ Pawn, Pawn, Pawn, TreacherousFox, Pawn, Pawn, Pawn, RunningRabbit, Pawn, Pawn, Pawn },
 		{ None, FlyingFalcon, None, None, None, SideMover, None, None, None, CloudEagle, None },
-		{ Lance, BlindDog, StruttingCrow, FlyingGoose, Gold, King, Silver, FlyingCock, SwoopingOwl, ClimbingMonkey, LiberatedHorse }
+		{ Lance, Dog, StruttingCrow, FlyingGoose, Gold, King, Silver, FlyingCock, SwoopingOwl, ClimbingMonkey, LiberatedHorse }
 	};
 };
 
