@@ -48,19 +48,46 @@ Piece* TenjikuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColo
 	return new TenjikuShogiPiece(pieceType, pieceColour);
 }
 
+void TenjikuShogiBoard::CheckJump(const Piece* piece, int x, int y, Direction direction)
+{
+	while (CheckDirectionAux(x, y, direction))
+	{
+		CheckDirectionInc(x, y, direction);
+		CheckMove(piece, x, y);
+		if (_data[x][y] != nullptr)
+		{
+			break;
+		}
+	}
+}
+
 void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();
 	switch (piece->GetType())
 	{
-	/*case ViceGeneral:
-		return "ViceGeneral" + colour + ".png";
 	case GreatGeneral:
-		return "GreatGeneral" + colour + ".png";
+		CheckJump(piece, x, y, SouthWest);
+		CheckJump(piece, x, y, SouthEast);
+		CheckJump(piece, x, y, NorthWest);
+		CheckJump(piece, x, y, NorthEast);
+		CheckJump(piece, x, y, West);
+		CheckJump(piece, x, y, East);
+		CheckJump(piece, x, y, North);
+		CheckJump(piece, x, y, South);
+		break;
 	case BishopGeneral:
-		return promo + "BishopGeneral" + colour + ".png";
+		CheckJump(piece, x, y, SouthWest);
+		CheckJump(piece, x, y, SouthEast);
+		CheckJump(piece, x, y, NorthWest);
+		CheckJump(piece, x, y, NorthEast);
+		break;
 	case RookGeneral:
-		return promo + "RookGeneral" + colour + ".png";*/
+		CheckJump(piece, x, y, West);
+		CheckJump(piece, x, y, East);
+		CheckJump(piece, x, y, North);
+		CheckJump(piece, x, y, South);
+		break;
 	case MultiGeneral:
 		if (piece->GetColour() == Black)
 		{
@@ -141,7 +168,9 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x, y - 2);
 		break;
-	/*case FreeEagle:
+	/*case ViceGeneral:
+		return "ViceGeneral" + colour + ".png";
+	case FreeEagle:
 		return "FreeEagle" + colour + ".png";
 	case LionHawk:
 		return "Lion-Hawk" + colour + ".png";

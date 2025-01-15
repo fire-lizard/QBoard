@@ -16,6 +16,7 @@ public:
 protected:
 
 private:
+	void CheckJump(const Piece* piece, int x, int y, Direction direction);
 
 	PieceType _initialSetup[16][16] = {
 	{Lance, Knight, Leopard, Iron, Copper, Silver, Gold, Elephant, King, Gold, Silver, Copper, Iron, Leopard, Knight, Lance},
