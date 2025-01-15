@@ -60,9 +60,21 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case BishopGeneral:
 		return promo + "BishopGeneral" + colour + ".png";
 	case RookGeneral:
-		return promo + "RookGeneral" + colour + ".png";
+		return promo + "RookGeneral" + colour + ".png";*/
 	case MultiGeneral:
-		return "Multi-General" + colour + "2.png";*/
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, North);
+			CheckDirection(piece, x, y, SouthWest);
+			CheckDirection(piece, x, y, SouthEast);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, South);
+			CheckDirection(piece, x, y, NorthWest);
+			CheckDirection(piece, x, y, NorthEast);
+		}
+		break;
 	case Dog:
 		if (piece->GetColour() == Black)
 		{
@@ -77,18 +89,62 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 			CheckMove(piece, x + 1, y - 1);
 		}
 		break;
+	case SideSoldier:
+		CheckDirection(piece, x, y, West);
+		CheckDirection(piece, x, y, East);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x, y + 1);
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x, y - 2);
+		}
+		else
+		{
+			CheckMove(piece, x, y + 2);
+		}
+		break;
+	case VerticalSoldier:
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x, y + 1);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, North);
+			CheckMove(piece, x, y + 1);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, South);
+			CheckMove(piece, x, y - 1);
+		}
+		break;
+	case ChariotSoldier:
+		CheckDirection(piece, x, y, SouthWest);
+		CheckDirection(piece, x, y, SouthEast);
+		CheckDirection(piece, x, y, NorthWest);
+		CheckDirection(piece, x, y, NorthEast);
+		CheckDirection(piece, x, y, South);
+		CheckDirection(piece, x, y, North);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x + 2, y);
+		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x - 2, y);
+		break;
+	case WaterBuffalo:
+		CheckDirection(piece, x, y, SouthWest);
+		CheckDirection(piece, x, y, SouthEast);
+		CheckDirection(piece, x, y, NorthWest);
+		CheckDirection(piece, x, y, NorthEast);
+		CheckDirection(piece, x, y, West);
+		CheckDirection(piece, x, y, East);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y + 2);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x, y - 2);
+		break;
 	/*case FreeEagle:
 		return "FreeEagle" + colour + ".png";
 	case LionHawk:
 		return "Lion-Hawk" + colour + ".png";
-	case SideSoldier:
-		return promo + "SideSoldier" + colour + ".png";
-	case VerticalSoldier:
-		return promo + "VerticalSoldier" + colour + ".png";
-	case ChariotSoldier:
-		return promo + "ChariotSoldier" + colour + ".png";
-	case WaterBuffalo:
-		return promo + "WaterBuffalo" + colour + ".png";
 	case HeavenlyTetrarch:
 		return "Heaven" + colour + ".png";
 	case FireDemon:
