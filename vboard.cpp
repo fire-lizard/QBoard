@@ -206,7 +206,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				{
 					painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
 				}
-				else if (_pieceStyle == Asian && (_gameVariant == WaShogi || _gameVariant == CrazyWa))
+				else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)
 				{
 					painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
 				}

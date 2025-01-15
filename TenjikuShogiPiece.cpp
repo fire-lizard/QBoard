@@ -62,26 +62,34 @@ std::string TenjikuShogiPiece::StringCode()
 {
 	switch (_pieceType)
 	{
-	case Iron:
-		return "I";
-	case Stone:
-		return "U";
-	case AngryBoar:
-		return "A'";
-	case ViolentOx:
+	case Dog:
+		return "D";
+	case ViceGeneral:
+		return "V!";
+	case GreatGeneral:
+		return "Q!";
+	case BishopGeneral:
+		return "B!";
+	case RookGeneral:
+		return "R!";
+	case FreeEagle:
+		return "Q'";
+	case LionHawk:
+		return "H!";
+	case SideSoldier:
+		return "S'";
+	case VerticalSoldier:
 		return "V'";
-	case FlyingDragon:
-		return "F'";
-	case EvilWolf:
-		return "W";
-	case CatSword:
-		return "C'";
-	case Knight:
-		return "N";
-	case GoBetween:
-		return "P'";
-	case Lion:
-		return "L!'";
+	case ChariotSoldier:
+		return "C!";
+	case WaterBuffalo:
+		return "W!";
+	case FireDemon:
+		return "D!";
+	case Unicorn:
+		return "F!";
+	case Eagle:
+		return "E!";
 	default:
 		return DaiShogiPiece::StringCode();
 	}
