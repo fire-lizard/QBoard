@@ -747,9 +747,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include=".\QBoard_resource.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <QtMoc Include="newgamedialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -2264,5 +2261,46 @@
     <Image Include="images_knj\JWHorse_W.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images\BlackLShield.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BlackPromoBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BlackPromoDragon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BlackPromoHorse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BlackPromoRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\BlackRShield.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\WhiteLShield.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\WhitePromoBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\WhitePromoDragon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\WhitePromoHorse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\WhitePromoRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\WhiteRShield.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include=".\QBoard_resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

@@ -202,11 +202,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					imageFileName = p->GetImageFileName();
 				}
 				QPixmap pixmap(resourcePrefix + QString::fromStdString(imageFileName));
-				if (_pieceStyle == Asian && (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi || _gameVariant == ChuShogi))
-				{
-					painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
-				}
-				else if (_pieceStyle == Asian && _gameVariant == DaiShogi)
+				if (_pieceStyle == Asian && (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi || _gameVariant == ChuShogi || _gameVariant == DaiShogi))
 				{
 					painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
 				}
@@ -582,7 +578,8 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		_board = new MakrukBoard();
 		break;
 	}
-	this->setFixedSize(_board->GetWidth() * 66 + 1, _board->GetHeight() * 66 + 1);
+	int s = _gameVariant == TenjikuShogi ? 56 : _gameVariant == DaiShogi ? 60 : 66;
+	this->setFixedSize(_board->GetWidth() * s + 1, _board->GetHeight() * s + 1);
 	if (this->_window != nullptr)
 	{
 		this->_window->setFixedSize(width() + 280, height() + 100);
