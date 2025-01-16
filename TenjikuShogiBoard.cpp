@@ -86,7 +86,7 @@ void TenjikuShogiBoard::CheckIgui(const Piece* piece, int x, int y)
 
 bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY)
 {
-	if (_data[oldX][oldY]->GetType() == HeavenlyTetrarch && abs(oldX - newX) <= 1 && abs(oldY - newY) <= 1)
+	if (_data[oldX][oldY]->GetType() == HeavenlyTetrarch && abs(oldX - newX) <= 1 && abs(oldY - newY) <= 1 && (oldX != newX || oldY != newY))
 	{
 		if (std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY; }))
 		{

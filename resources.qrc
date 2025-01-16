@@ -84,14 +84,14 @@
         <file>images/BlackIron.png</file>
         <file>images/BlackPromoHSword.png</file>
         <file>images/BlackPromoSword.png</file>
-        <file>images/BlackTower.png</file>
+        <file>images/BlackCommoner.png</file>
         <file>images/BlackWolf.png</file>
         <file>images/WhiteDragon.png</file>
         <file>images/WhiteGnu.png</file>
         <file>images/WhiteIron.png</file>
         <file>images/WhitePromoHSword.png</file>
         <file>images/WhitePromoSword.png</file>
-        <file>images/WhiteTower.png</file>
+        <file>images/WhiteCommoner.png</file>
         <file>images/WhiteWolf.png</file>
     </qresource>
     <qresource prefix="/pieces_jap">

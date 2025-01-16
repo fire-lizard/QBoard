@@ -465,14 +465,14 @@
     <Image Include="images\BlackIron.png" />
     <Image Include="images\BlackPromoHSword.png" />
     <Image Include="images\BlackPromoSword.png" />
-    <Image Include="images\BlackTower.png" />
+    <Image Include="images\BlackCommoner.png" />
     <Image Include="images\BlackWolf.png" />
     <Image Include="images\WhiteDragon.png" />
     <Image Include="images\WhiteGnu.png" />
     <Image Include="images\WhiteIron.png" />
     <Image Include="images\WhitePromoHSword.png" />
     <Image Include="images\WhitePromoSword.png" />
-    <Image Include="images\WhiteTower.png" />
+    <Image Include="images\WhiteCommoner.png" />
     <Image Include="images\WhiteWolf.png" />
     <Image Include="images_chu\Bishop_B.png" />
     <Image Include="images_chu\Bishop_W.png" />

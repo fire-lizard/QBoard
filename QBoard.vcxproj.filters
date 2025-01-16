@@ -917,7 +917,7 @@
     <Image Include="images\BlackPromoSword.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images\BlackTower.png">
+    <Image Include="images\BlackCommoner.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="images\BlackWolf.png">
@@ -938,7 +938,7 @@
     <Image Include="images\WhitePromoSword.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images\WhiteTower.png">
+    <Image Include="images\WhiteCommoner.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="images\WhiteWolf.png">

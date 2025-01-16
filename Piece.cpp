@@ -105,7 +105,7 @@ std::string Piece::GetImageFileName() const
 	case Iron:
 		return colour + "Iron.png";
 	case Stone:
-		return colour + "Tower.png";
+		return colour + "Commoner.png";
 	case AngryBoar:
 		return colour + "PromoHSword.png";
 	case ViolentOx:
