@@ -180,12 +180,43 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x, y - 2);
 		break;
+	case LionHawk:
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x - 1, y - 1);
+
+		CheckMove(piece, x + 2, y + 2);
+		CheckMove(piece, x + 2, y + 1);
+		CheckMove(piece, x + 2, y);
+		CheckMove(piece, x + 2, y - 1);
+		CheckMove(piece, x + 2, y - 2);
+		CheckMove(piece, x + 1, y + 2);
+		CheckMove(piece, x, y + 2);
+		CheckMove(piece, x - 1, y + 2);
+
+		CheckMove(piece, x - 1, y - 2);
+		CheckMove(piece, x, y - 2);
+		CheckMove(piece, x + 1, y - 2);
+		CheckMove(piece, x - 2, y + 2);
+		CheckMove(piece, x - 2, y + 1);
+		CheckMove(piece, x - 2, y);
+		CheckMove(piece, x - 2, y - 1);
+		CheckMove(piece, x - 2, y - 2);
+
+		CheckDirection(piece, x, y, SouthWest);
+		CheckDirection(piece, x, y, SouthEast);
+		CheckDirection(piece, x, y, NorthWest);
+		CheckDirection(piece, x, y, NorthEast);
+		break;
 	/*case ViceGeneral:
 		return "ViceGeneral" + colour + ".png";
 	case FreeEagle:
 		return "FreeEagle" + colour + ".png";
-	case LionHawk:
-		return "Lion-Hawk" + colour + ".png";
 	case HeavenlyTetrarch:
 		return "Heaven" + colour + ".png";
 	case FireDemon:
