@@ -12,11 +12,13 @@ public:
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
 	void GetMoves(Piece* piece, int x, int y) override;
+	bool Move(int oldX, int oldY, int newX, int newY) override;
 
 protected:
 
 private:
 	void CheckJump(const Piece* piece, int x, int y, Direction direction);
+	void CheckIgui(const Piece* piece, int x, int y);
 
 	PieceType _jumpingPieces[4] = { GreatGeneral, ViceGeneral, BishopGeneral, RookGeneral };
 

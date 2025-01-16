@@ -73,11 +73,64 @@ void TenjikuShogiBoard::CheckJump(const Piece* piece, int x, int y, Direction di
 	}
 }
 
+void TenjikuShogiBoard::CheckIgui(const Piece* piece, int x, int y)
+{
+	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
+	{
+		if (_data[x][y] != nullptr && _data[x][y]->GetColour() != piece->GetColour())
+		{
+			_moves.emplace_back(x, y);
+		}
+	}
+}
+
+bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY)
+{
+	if (_data[oldX][oldY]->GetType() == HeavenlyTetrarch && abs(oldX - newX) <= 1 && abs(oldY - newY) <= 1)
+	{
+		if (std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY; }))
+		{
+			delete _data[newX][newY];
+			_data[newX][newY] = nullptr;
+			return true;
+		}
+	}
+	return Board::Move(oldX, oldY, newX, newY);
+}
+
 void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();
 	switch (piece->GetType())
 	{
+	case HeavenlyTetrarch:
+		CheckIgui(piece, x + 1, y + 1);
+		CheckIgui(piece, x + 1, y);
+		CheckIgui(piece, x + 1, y - 1);
+		CheckIgui(piece, x, y + 1);
+		CheckIgui(piece, x, y - 1);
+		CheckIgui(piece, x - 1, y + 1);
+		CheckIgui(piece, x - 1, y);
+		CheckIgui(piece, x - 1, y - 1);
+
+		CheckDirection(piece, x + 1, y + 1, SouthEast);
+		CheckDirection(piece, x + 1, y - 1, NorthEast);
+		CheckDirection(piece, x, y + 1, South);
+		CheckDirection(piece, x, y - 1, North);
+		CheckDirection(piece, x - 1, y + 1, SouthWest);
+		CheckDirection(piece, x - 1, y - 1, NorthWest);
+
+		CheckMove(piece, x + 2, y);
+		if (IsMovePossible(x + 2, y))
+		{
+			CheckMove(piece, x + 3, y);
+		}
+		CheckMove(piece, x - 2, y);
+		if (IsMovePossible(x - 2, y))
+		{
+			CheckMove(piece, x - 3, y);
+		}
+		break;
 	case GreatGeneral:
 		CheckJump(piece, x, y, SouthWest);
 		CheckJump(piece, x, y, SouthEast);
@@ -241,8 +294,6 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		break;
 	/*case ViceGeneral:
 		return "ViceGeneral" + colour + ".png";
-	case HeavenlyTetrarch:
-		return "Heaven" + colour + ".png";
 	case FireDemon:
 		return "FireDemon" + colour + ".png";*/
 	default:

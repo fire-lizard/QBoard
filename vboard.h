@@ -78,7 +78,7 @@ private:
     QRegularExpression _sgxbre;
     QRegularExpression _sgusre;
 	GameVariant _shogiVariants[9] = {Shogi, MiniShogi, JudkinShogi, ChuShogi, DaiShogi, ShoShogi, WaShogi, CrazyWa, TenjikuShogi};
-	PieceType _lionPieces[3] = { Lion, Eagle, Unicorn };
+	PieceType _lionPieces[4] = { Lion, Eagle, Unicorn, LionHawk };
 	bool _lionMovedOnce = false;
 	std::pair<int, int> _lionFirstMove;
 
