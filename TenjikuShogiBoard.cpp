@@ -103,6 +103,22 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 	_moves.clear();
 	switch (piece->GetType())
 	{
+	case ViceGeneral:
+		CheckJump(piece, x, y, SouthWest);
+		CheckJump(piece, x, y, SouthEast);
+		CheckJump(piece, x, y, NorthWest);
+		CheckJump(piece, x, y, NorthEast);
+		//TODO: Demon move
+		break;
+	case FireDemon:
+		CheckDirection(piece, x + 1, y + 1, SouthEast);
+		CheckDirection(piece, x + 1, y - 1, NorthEast);
+		CheckDirection(piece, x, y + 1, East);
+		CheckDirection(piece, x, y - 1, West);
+		CheckDirection(piece, x - 1, y + 1, SouthWest);
+		CheckDirection(piece, x - 1, y - 1, NorthWest);
+		//TODO: Demon move
+		break;
 	case HeavenlyTetrarch:
 		CheckIgui(piece, x + 1, y + 1);
 		CheckIgui(piece, x + 1, y);
@@ -121,12 +137,12 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x - 1, y - 1, NorthWest);
 
 		CheckMove(piece, x + 2, y);
-		if (IsMovePossible(x + 2, y))
+		if (_data[x + 2][y] == nullptr)
 		{
 			CheckMove(piece, x + 3, y);
 		}
 		CheckMove(piece, x - 2, y);
-		if (IsMovePossible(x - 2, y))
+		if (_data[x - 2][y] == nullptr)
 		{
 			CheckMove(piece, x - 3, y);
 		}
@@ -292,10 +308,6 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, NorthWest);
 		CheckDirection(piece, x, y, NorthEast);
 		break;
-	/*case ViceGeneral:
-		return "ViceGeneral" + colour + ".png";
-	case FireDemon:
-		return "FireDemon" + colour + ".png";*/
 	default:
 		DaiShogiBoard::GetMoves(piece, x, y);
 		break;

@@ -93,6 +93,18 @@
         <file>images/WhitePromoSword.png</file>
         <file>images/WhiteCommoner.png</file>
         <file>images/WhiteWolf.png</file>
+        <file>images/BlackLShield.png</file>
+        <file>images/BlackPromoBishop.png</file>
+        <file>images/BlackPromoDragon.png</file>
+        <file>images/BlackPromoHorse.png</file>
+        <file>images/BlackPromoRook.png</file>
+        <file>images/BlackRShield.png</file>
+        <file>images/WhiteLShield.png</file>
+        <file>images/WhitePromoBishop.png</file>
+        <file>images/WhitePromoDragon.png</file>
+        <file>images/WhitePromoHorse.png</file>
+        <file>images/WhitePromoRook.png</file>
+        <file>images/WhiteRShield.png</file>
     </qresource>
     <qresource prefix="/pieces_jap">
         <file>images_jap/BlackAdvisor.png</file>

@@ -35,6 +35,7 @@ bool Piece::IsPromoted() const
 std::string Piece::GetImageFileName() const
 {
 	const std::string colour = _pieceColour == White ? "White" : "Black";
+	const std::string promo = _isPromoted ? "Promo" : "";
 	switch (_pieceType)
 	{
 	case King:
@@ -44,17 +45,17 @@ std::string Piece::GetImageFileName() const
 	case Queen:
 		return colour + "Queen.png";
 	case DragonKing:
-		return colour + "CrownedRook.png";
+		return colour + (_isPromoted ? "PromoDragon" : "CrownedRook") + ".png";
 	case DragonHorse:
-		return colour + "CrownedBishop.png";
+		return colour + (_isPromoted ? "PromoHorse" : "CrownedBishop") + ".png";
 	case Rook:
-		return colour + "Rook.png";
+		return colour + promo + "Rook.png";
 	case Bishop:
-		return colour + "Bishop.png";
+		return colour + promo + "Bishop.png";
 	case VerticalMover:
-		return colour + "Sword.png";
+		return colour + promo + "Sword.png";
 	case SideMover:
-		return colour + "HSword.png";
+		return colour + promo + "HSword.png";
 	case Cannon:
 		return colour + "Canon.png";
 	case Lance:
@@ -107,7 +108,7 @@ std::string Piece::GetImageFileName() const
 	case Stone:
 		return colour + "Commoner.png";
 	case AngryBoar:
-		return colour + "PromoHSword.png";
+		return colour + "LShield.png";
 	case ViolentOx:
 		return colour + "Gnu.png";
 	case FlyingDragon:
@@ -115,7 +116,7 @@ std::string Piece::GetImageFileName() const
 	case EvilWolf:
 		return colour + "Wolf.png";
 	case CatSword:
-		return colour + "PromoSword.png";
+		return colour + "RShield.png";
 	default:
 		return "";
 	}
