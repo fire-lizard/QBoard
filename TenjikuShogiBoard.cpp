@@ -213,10 +213,34 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, NorthWest);
 		CheckDirection(piece, x, y, NorthEast);
 		break;
+	case FreeEagle:
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y - 1);
+
+		CheckMove(piece, x + 2, y + 2);
+		CheckMove(piece, x + 2, y);
+		CheckMove(piece, x + 2, y - 2);
+		CheckMove(piece, x, y + 2);
+
+		CheckMove(piece, x, y - 2);
+		CheckMove(piece, x - 2, y + 2);
+		CheckMove(piece, x - 2, y);
+		CheckMove(piece, x - 2, y - 2);
+
+		CheckDirection(piece, x, y, West);
+		CheckDirection(piece, x, y, East);
+		CheckDirection(piece, x, y, North);
+		CheckDirection(piece, x, y, South);
+
+		CheckDirection(piece, x, y, SouthWest);
+		CheckDirection(piece, x, y, SouthEast);
+		CheckDirection(piece, x, y, NorthWest);
+		CheckDirection(piece, x, y, NorthEast);
+		break;
 	/*case ViceGeneral:
 		return "ViceGeneral" + colour + ".png";
-	case FreeEagle:
-		return "FreeEagle" + colour + ".png";
 	case HeavenlyTetrarch:
 		return "Heaven" + colour + ".png";
 	case FireDemon:
