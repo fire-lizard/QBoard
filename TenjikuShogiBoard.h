@@ -18,6 +18,8 @@ protected:
 private:
 	void CheckJump(const Piece* piece, int x, int y, Direction direction);
 
+	PieceType _jumpingPieces[4] = { GreatGeneral, ViceGeneral, BishopGeneral, RookGeneral };
+
 	PieceType _initialSetup[16][16] = {
 	{Lance, Knight, Leopard, Iron, Copper, Silver, Gold, Elephant, King, Gold, Silver, Copper, Iron, Leopard, Knight, Lance},
 	{Cannon, None, ChariotSoldier, ChariotSoldier, None, Tiger, Phoenix, Queen, Lion, Kylin, Tiger, None, ChariotSoldier, ChariotSoldier, None, Cannon},

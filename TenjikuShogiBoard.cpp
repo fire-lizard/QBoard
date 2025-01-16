@@ -56,7 +56,19 @@ void TenjikuShogiBoard::CheckJump(const Piece* piece, int x, int y, Direction di
 		CheckMove(piece, x, y);
 		if (_data[x][y] != nullptr)
 		{
-			break;
+			PieceType pieceType = _data[x][y]->GetType();
+			if (pieceType == King)
+			{
+				break;
+			}
+			else if (piece->GetType() == pieceType || pieceType == GreatGeneral)
+			{
+				break;
+			}
+			else if (std::find(std::begin(_jumpingPieces), std::end(_jumpingPieces), pieceType) != std::end(_jumpingPieces))
+			{
+				break;
+			}
 		}
 	}
 }
