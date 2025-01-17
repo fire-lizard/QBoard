@@ -40,7 +40,7 @@ std::string DaiShogiPiece::StringCode()
 	case AngryBoar:
 		return "A'";
 	case ViolentOx:
-		return "V'";
+		return "X'";
 	case FlyingDragon:
 		return "F'";
 	case EvilWolf:
@@ -52,7 +52,7 @@ std::string DaiShogiPiece::StringCode()
 	case GoBetween:
 		return "P'";
 	case Lion:
-		return "L!'";
+		return "L!";
 	default:
 		return ChuShogiPiece::StringCode();
 	}

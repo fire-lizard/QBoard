@@ -7,3 +7,16 @@ MakrukPiece::MakrukPiece(PieceType pieceType, PieceColour pieceColour) : Shatran
 MakrukPiece::~MakrukPiece()
 {
 }
+
+std::string MakrukPiece::StringCode()
+{
+	switch (_pieceType)
+	{
+	case Queen:
+		return "M";
+	case Silver:
+		return "S";
+	default:
+		return ShatranjPiece::StringCode();
+	}
+}

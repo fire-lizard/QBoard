@@ -31,9 +31,49 @@ void Board::SetData(int x, int y, Piece *p)
 	_data[x][y] = p;
 }
 
+template <typename T> std::basic_string<T> Board::lowercase(const std::basic_string<T>& s)
+{
+	std::basic_string<T> s2 = s;
+	std::transform(s2.begin(), s2.end(), s2.begin(),
+		[](const T v) { return static_cast<T>(std::tolower(v)); });
+	return s2;
+}
+
 std::string Board::GetFEN()
 {
-	return _fen;
+	std::string fen;
+	int emptySquares = 0;
+	for (int j = 0; j < _height; j++)
+	{
+		for (int i = 0; i < _width; i++)
+		{
+			if (_data[i][j] != nullptr)
+			{
+				if (emptySquares > 0)
+				{
+					fen.append(std::to_string(emptySquares));
+					emptySquares = 0;
+				}
+				std::string sc = _data[i][j]->GetColour() == Black ?
+					lowercase(_data[i][j]->StringCode()) : _data[i][j]->StringCode();
+				fen.append(sc);
+			}
+			else
+			{
+				emptySquares++;
+			}
+		}
+		if (emptySquares > 0)
+		{
+			fen.append(std::to_string(emptySquares));
+		}
+		if (j < _height - 1)
+		{
+			fen.append("/");
+		}
+		emptySquares = 0;
+	}
+	return fen;
 }
 
 void Board::SetFEN(std::string fen)

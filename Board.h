@@ -30,6 +30,7 @@ protected:
 	void CheckDirection(const Piece *piece, int x, int y, Direction direction);
 	bool CheckDirectionAux(int x, int y, Direction direction) const;
 	static void CheckDirectionInc(int &x, int &y, Direction direction);
+	template <typename T> std::basic_string<T> lowercase(const std::basic_string<T>& s);
 
 	std::string _fen;
 	std::vector<std::pair<int, int>> _moves;

@@ -24,7 +24,7 @@ protected:
 		{ None, None, None, None, None, None, None, None },
 		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
 		{ None, None, None, None, None, None, None, None },
-		{ Rook, Knight, Silver, Queen, King, Silver, Knight, Rook }
+		{ Rook, Knight, Silver, King, Queen, Silver, Knight, Rook }
 	};
 
 private:

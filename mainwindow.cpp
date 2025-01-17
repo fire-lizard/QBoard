@@ -94,7 +94,7 @@ void MainWindow::on_actionSettings_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-	QMessageBox::about(this, "About", "<center>QBoard 0.8.3 beta<br/>Fire Lizard Software<br/>Anatoliy Sova<br/>Wa Shogi graphics by Ilya V. Novikov<br/>2025</center>");
+	QMessageBox::about(this, "About", "<center>QBoard 0.8.4 beta<br/>Fire Lizard Software<br/>Anatoliy Sova<br/>Wa Shogi graphics by Ilya V. Novikov<br/>2025</center>");
 }
 
 void MainWindow::on_actionNew_game_triggered()
@@ -218,47 +218,71 @@ void MainWindow::on_actionSave_triggered()
 {
 	if (this->ui->vboard->GetGameVariant() == Chess)
 	{
-		const QString fileName = QFileDialog::getSaveFileName(this, "Save file", "", "PGN Files (*.pgn)");
-		if (fileName != "")
+		QFileDialog fileDialog(this);
+		fileDialog.setNameFilter("FEN Files (*.fen);;PGN Files (*.pgn)");
+		fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+		fileDialog.setWindowTitle("Save file");
+		if (fileDialog.exec())
 		{
-			const QString evt = "[Event \"QBoard Game\"]\n";
-			const QString site = "[Site \"" + QSysInfo::machineHostName() + "\"]\n";
-			const QString currentDate = "[Date \"" + QDate::currentDate().toString("dd/MM/yyyy") + "\"]\n";
-			const QString currentRound = "[Round 1]\n";
-			QString userName = qgetenv("USER");
-			if (userName.isEmpty())
-				userName = qgetenv("USERNAME");
-			const QString whiteName = "[White \"" + userName + "\"]\n";
-			const QString blackName = "[Black \"" + _engineName + "\"]\n";
-			const QString result = "[Result \"*\"]\n\n";
-			const QString pgn = QString::fromStdString(dynamic_cast<ChessBoard*>(this->ui->vboard->GetBoard())->GetPGN());
+			QString fileName = fileDialog.selectedFiles()[0];
+			QByteArray str;
+			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
+			{
+				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
+			}
+			else if (fileDialog.selectedNameFilter() == "PGN Files (*.pgn)")
+			{
+				QString userName = qgetenv("USER");
+				if (userName.isEmpty())
+					userName = qgetenv("USERNAME");
+				const QString evt = "[Event \"QBoard Game\"]\n";
+				const QString site = "[Site \"" + QSysInfo::machineHostName() + "\"]\n";
+				const QString currentDate = "[Date \"" + QDate::currentDate().toString("dd/MM/yyyy") + "\"]\n";
+				const QString currentRound = "[Round 1]\n";
+				const QString whiteName = "[White \"" + userName + "\"]\n";
+				const QString blackName = "[Black \"" + _engineName + "\"]\n";
+				const QString result = "[Result \"*\"]\n\n";
+				const QString pgn = QString::fromStdString(dynamic_cast<ChessBoard*>(this->ui->vboard->GetBoard())->GetPGN());
+				str = (evt + site + currentDate + currentRound + whiteName + blackName + result + pgn).toLatin1();
+			}
 			QFile file(fileName);
 			file.open(QIODevice::WriteOnly | QIODevice::Text);
-			const QByteArray str = (evt + site + currentDate + currentRound + whiteName + blackName + result + pgn).toLatin1();
 			file.write(str);
 			file.close();
 		}
 	}
 	else if (this->ui->vboard->GetGameVariant() == Xiangqi)
 	{
-		const QString fileName = QFileDialog::getSaveFileName(this, "Save file", "", "WXF Files (*.wxf)");
-		if (fileName != "")
+		QFileDialog fileDialog(this);
+		fileDialog.setNameFilter("FEN Files (*.fen);;WXF Files (*.wxf)");
+		fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+		fileDialog.setWindowTitle("Save file");
+		if (fileDialog.exec())
 		{
-			const QString header = "FORMAT\tWXF\n";
-			QString userName = qgetenv("USER");
-			if (userName.isEmpty())
-				userName = qgetenv("USERNAME");
-			const QString evt = "GAME\t" + userName + " vs. " + _engineName + "\n";
-			const QString gameTime = "TIME\t00:00 ; 00:00\n";
-			const QString currentDate = "DATE\t" + QDate::currentDate().toString("yyyy-MM-dd") + "\n";
-			const QString author = "AUTHOR\tQBoard (https://github.com/fire-lizard/QBoard)\n\n";
-			const QString redName = "RED\t" + userName + "\n";
-			const QString blackName = "BLACK\t" + _engineName + "\n";
-			const QString result = "RESULT\t0-0\n";
-			const QString wxf = "START{\n" + QString::fromStdString(dynamic_cast<XiangqiBoard*>(this->ui->vboard->GetBoard())->GetWXF()) + "\n}END";
+			QString fileName = fileDialog.selectedFiles()[0];
+			QByteArray str;
+			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
+			{
+				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
+			}
+			else if (fileDialog.selectedNameFilter() == "WXF Files (*.wxf)")
+			{
+				const QString header = "FORMAT\tWXF\n";
+				QString userName = qgetenv("USER");
+				if (userName.isEmpty())
+					userName = qgetenv("USERNAME");
+				const QString evt = "GAME\t" + userName + " vs. " + _engineName + "\n";
+				const QString gameTime = "TIME\t00:00 ; 00:00\n";
+				const QString currentDate = "DATE\t" + QDate::currentDate().toString("yyyy-MM-dd") + "\n";
+				const QString author = "AUTHOR\tQBoard (https://github.com/fire-lizard/QBoard)\n\n";
+				const QString redName = "RED\t" + userName + "\n";
+				const QString blackName = "BLACK\t" + _engineName + "\n";
+				const QString result = "RESULT\t0-0\n";
+				const QString wxf = "START{\n" + QString::fromStdString(dynamic_cast<XiangqiBoard*>(this->ui->vboard->GetBoard())->GetWXF()) + "\n}END";
+				str = (header + evt + gameTime + result + redName + blackName + currentDate + author + wxf).toLatin1();
+			}
 			QFile file(fileName);
 			file.open(QIODevice::WriteOnly | QIODevice::Text);
-			const QByteArray str = (header + evt + gameTime + result + redName + blackName + currentDate + author + wxf).toLatin1();
 			file.write(str);
 			file.close();
 		}
@@ -266,7 +290,7 @@ void MainWindow::on_actionSave_triggered()
 	else if (this->ui->vboard->GetGameVariant() == Shogi)
 	{
 		QFileDialog fileDialog(this);
-		fileDialog.setNameFilter("PSN Files (*.psn);;CSA Files (*.csa);;KIF Files (*.kif)");
+		fileDialog.setNameFilter("FEN Files (*.fen);;PSN Files (*.psn);;CSA Files (*.csa);;KIF Files (*.kif)");
 		fileDialog.setAcceptMode(QFileDialog::AcceptSave);
 		fileDialog.setWindowTitle("Save file");
 		if (fileDialog.exec())
@@ -276,7 +300,11 @@ void MainWindow::on_actionSave_triggered()
 			if (userName.isEmpty())
 				userName = qgetenv("USERNAME");
 			QByteArray str;
-			if (fileDialog.selectedNameFilter() == "KIF Files (*.kif)")
+			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
+			{
+				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
+			}
+			else if (fileDialog.selectedNameFilter() == "KIF Files (*.kif)")
 			{
 				QString kifStr;
 				kifStr += "#KIF version=2.0 encoding=UTF-8\n";
@@ -308,13 +336,30 @@ void MainWindow::on_actionSave_triggered()
 				csaStr += QString::fromStdString(dynamic_cast<ShogiBoard*>(this->ui->vboard->GetBoard())->GetCSA());
 				str = csaStr.toLatin1();
 			}
-			else
+			else if (fileDialog.selectedNameFilter() == "PSN Files (*.psn)")
 			{
 				const QString senteName = "[Sente \"" + userName + "\"]\n";
 				const QString goteName = "[Gote \"" + _engineName + "\"]\n\n";
 				const QString psn = QString::fromStdString(dynamic_cast<ShogiBoard*>(this->ui->vboard->GetBoard())->GetPSN());
 				str = (senteName + goteName + psn).toLatin1();
 			}
+			QFile file(fileName);
+			file.open(QIODevice::WriteOnly | QIODevice::Text);
+			file.write(str);
+			file.close();
+		}
+	}
+	else
+	{
+		QFileDialog fileDialog(this);
+		fileDialog.setNameFilter("FEN Files (*.fen)");
+		fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+		fileDialog.setWindowTitle("Save file");
+		if (fileDialog.exec())
+		{
+			QString fileName = fileDialog.selectedFiles()[0];
+			QByteArray str;
+			str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 			QFile file(fileName);
 			file.open(QIODevice::WriteOnly | QIODevice::Text);
 			file.write(str);

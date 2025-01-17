@@ -7,5 +7,6 @@ class MakrukPiece : public ShatranjPiece
 public:
 	MakrukPiece(PieceType pieceType, PieceColour pieceColour);
 	~MakrukPiece() override;
+	std::string StringCode() override;
 };
 

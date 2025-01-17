@@ -64,6 +64,8 @@ std::string TenjikuShogiPiece::StringCode()
 	{
 	case Dog:
 		return "D";
+	case MultiGeneral:
+		return "+D";
 	case ViceGeneral:
 		return "V!";
 	case GreatGeneral:
@@ -82,6 +84,8 @@ std::string TenjikuShogiPiece::StringCode()
 		return "V'";
 	case ChariotSoldier:
 		return "C!";
+	case HeavenlyTetrarch:
+		return "+C!";
 	case WaterBuffalo:
 		return "W!";
 	case FireDemon:
