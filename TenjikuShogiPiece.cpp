@@ -99,6 +99,31 @@ std::string TenjikuShogiPiece::StringCode()
 	}
 }
 
+PieceType TenjikuShogiPiece::FromStringCode(const std::string& code)
+{
+	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
+		{"D", Dog},
+		{"+D", MultiGeneral},
+		{"V!", ViceGeneral},
+		{"Q!", GreatGeneral},
+		{"B!", BishopGeneral},
+		{"R!", RookGeneral},
+		{"Q'", FreeEagle},
+		{"H!", LionHawk},
+		{"S'", SideSoldier},
+		{"V'", VerticalSoldier},
+		{"C!", ChariotSoldier},
+		{"+C!", HeavenlyTetrarch},
+		{"W!", WaterBuffalo},
+		{"D!", FireDemon},
+		{"F!", Unicorn},
+		{"E!", Eagle}
+	};
+
+	auto it = codeToPieceType.find(code);
+	return it != codeToPieceType.end() ? it->second : DaiShogiPiece::FromStringCode(code);
+}
+
 std::string TenjikuShogiPiece::KanjiStringCode()
 {
 	switch (_pieceType)

@@ -119,6 +119,40 @@ std::string WaShogiPiece::StringCode()
 	}
 }
 
+PieceType WaShogiPiece::FromStringCode(const std::string& code)
+{
+	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
+		{"K", King},
+		{"+S", Rook},
+		{"O", Lance},
+		{"+P", Tokin},
+		{"P", Pawn},
+		{"S", SideMover},
+		{"+O", PloddingOx},
+		{"H", LiberatedHorse},
+		{"+H", HeavenlyHorse},
+		{"L", SwoopingOwl},
+		{"E", CloudEagle},
+		{"U", StruttingCrow},
+		{"F", FlyingFalcon},
+		{"C", FlyingCock},
+		{"+C", RaidingFalcon},
+		{"G", FlyingGoose},
+		{"M", ClimbingMonkey},
+		{"V", Silver},
+		{"D", Dog},
+		{"W", Gold},
+		{"+V", Elephant},
+		{"+W", BearEyes},
+		{"R", RunningRabbit},
+		{"X", TreacherousFox},
+		{"+F", TenaciousFalcon}
+	};
+
+	auto it = codeToPieceType.find(code);
+	return it != codeToPieceType.end() ? it->second : None;
+}
+
 std::string WaShogiPiece::LongStringCode() const
 {
 	switch (_pieceType)

@@ -9,6 +9,7 @@ public:
 	virtual std::string GetImageFileName() const;
 	virtual void Promote(PieceType pieceType = None) = 0;
 	virtual std::string StringCode() = 0;
+	virtual PieceType FromStringCode(const std::string& code) = 0;
 	PieceType GetBaseType() const;
 	PieceType GetType() const;
 	PieceColour GetColour() const;

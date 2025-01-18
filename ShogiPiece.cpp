@@ -70,6 +70,25 @@ std::string ShogiPiece::StringCode()
 	}
 }
 
+PieceType ShogiPiece::FromStringCode(const std::string& code)
+{
+	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
+		{"K", King},
+		{"D", DragonKing},
+		{"H", DragonHorse},
+		{"R", Rook},
+		{"B", Bishop},
+		{"L", Lance},
+		{"S", Silver},
+		{"G", Gold},
+		{"N", Knight},
+		{"P", Pawn},
+		{"E", Elephant}
+	};
+
+	auto it = codeToPieceType.find(code);
+	return it != codeToPieceType.end() ? it->second : None;
+}
 
 std::string ShogiPiece::LongStringCode() const
 {

@@ -137,6 +137,43 @@ std::string ChuShogiPiece::StringCode()
 	}
 }
 
+PieceType ChuShogiPiece::FromStringCode(const std::string& code)
+{
+	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
+		{"K", King},
+		{"N", Lion},
+		{"Q", Queen},
+		{"D", DragonKing},
+		{"H", DragonHorse},
+		{"R", Rook},
+		{"B", Bishop},
+		{"V", VerticalMover},
+		{"M", SideMover},
+		{"A", Cannon},
+		{"L", Lance},
+		{"O", Kylin},
+		{"X", Phoenix},
+		{"E", Elephant},
+		{"T", Tiger},
+		{"G", Gold},
+		{"S", Silver},
+		{"C", Copper},
+		{"F", Leopard},
+		{"I", GoBetween},
+		{"P", Pawn},
+		{"+D", Eagle},
+		{"+H", Unicorn},
+		{"+V", FlyingOx},
+		{"+M", FreeBoar},
+		{"+T", FlyingStag},
+		{"+L", WhiteHorse},
+		{"+A", Whale}
+	};
+
+	auto it = codeToPieceType.find(code);
+	return it != codeToPieceType.end() ? it->second : None;
+}
+
 std::string ChuShogiPiece::KanjiStringCode()
 {
 	switch (_pieceType)

@@ -1,4 +1,5 @@
 #pragma once
+#include <unordered_map>
 #include "Common.h"
 #include "DaiShogiPiece.h"
 
@@ -10,6 +11,7 @@ public:
 	std::string GetImageFileName() const override;
 	void Promote(PieceType pieceType = None) override;
 	std::string StringCode() override;
+	PieceType FromStringCode(const std::string& code) override;
 	std::string KanjiStringCode() override;
 };
 

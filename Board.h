@@ -13,9 +13,10 @@ public:
 	virtual Board* Clone() = 0;
 	virtual Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) = 0;
 	virtual void GetMoves(Piece *piece, int x, int y) = 0;
-    void RemoveMove(int x, int y);
-	std::vector<std::tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
 	virtual bool Move(int oldX, int oldY, int newX, int newY);
+	void Clear();
+	void RemoveMove(int x, int y);
+	std::vector<std::tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
 	std::vector<std::pair<int, int>> Moves() const;
 	Piece* GetData(int x, int y) const;
 	void SetData(int x, int y, Piece *p);

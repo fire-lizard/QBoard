@@ -58,6 +58,25 @@ std::string DaiShogiPiece::StringCode()
 	}
 }
 
+PieceType DaiShogiPiece::FromStringCode(const std::string& code)
+{
+	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
+		{"I", Iron},
+		{"U", Stone},
+		{"A'", AngryBoar},
+		{"X'", ViolentOx},
+		{"F'", FlyingDragon},
+		{"W", EvilWolf},
+		{"C'", CatSword},
+		{"N", Knight},
+		{"P'", GoBetween},
+		{"L!", Lion}
+	};
+
+	auto it = codeToPieceType.find(code);
+	return it != codeToPieceType.end() ? it->second : ChuShogiPiece::FromStringCode(code);
+}
+
 std::string DaiShogiPiece::KanjiStringCode()
 {
 	switch (_pieceType)

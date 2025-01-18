@@ -53,6 +53,8 @@ private:
 
 	void LoadEngine();
 
+	template <typename T> std::basic_string<T> uppercase(const std::basic_string<T>& s);
+	
 	static void readXmlUsingStream(const QString& fileName, QTableWidget* engineTable);
 
 	static void createXmlFromTable(const QString& fileName, const QTableWidget* engineTable);

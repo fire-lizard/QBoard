@@ -35,6 +35,22 @@ std::string XiangqiPiece::StringCode()
 	}
 }
 
+PieceType XiangqiPiece::FromStringCode(const std::string& code)
+{
+	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
+		{"K", King},
+		{"A", Silver},
+		{"R", Rook},
+		{"C", Cannon},
+		{"N", Knight},
+		{"B", Elephant},
+		{"P", Pawn}
+	};
+
+	auto it = codeToPieceType.find(code);
+	return it != codeToPieceType.end() ? it->second : None;
+}
+
 std::string XiangqiPiece::KanjiStringCode()
 {
 	switch (_pieceType)

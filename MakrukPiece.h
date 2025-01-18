@@ -1,4 +1,5 @@
 #pragma once
+#include <unordered_map>
 #include "Common.h"
 #include "ShatranjPiece.h"
 
@@ -8,5 +9,6 @@ public:
 	MakrukPiece(PieceType pieceType, PieceColour pieceColour);
 	~MakrukPiece() override;
 	std::string StringCode() override;
+	PieceType FromStringCode(const std::string& code) override;
 };
 

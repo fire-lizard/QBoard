@@ -203,15 +203,93 @@ void MainWindow::on_actionNew_game_triggered()
 	}
 }
 
+template <typename T> std::basic_string<T> MainWindow::uppercase(const std::basic_string<T>& s)
+{
+	std::basic_string<T> s2 = s;
+	std::transform(s2.begin(), s2.end(), s2.begin(),
+		[](const T v) { return static_cast<T>(std::toupper(v)); });
+	return s2;
+}
+
 void MainWindow::on_actionOpen_triggered()
 {
-	/*if (this->ui->vboard->GetGameVariant() == Chess)
+	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
+	if (gameVariant != WaShogi && gameVariant != ChuShogi && gameVariant != DaiShogi && gameVariant != TenjikuShogi)
 	{
-		const QString fileName = QFileDialog::getOpenFileName(this, "Open file", "", "PGN Files (*.pgn)");
-		if (fileName != "")
+		QFileDialog fileDialog(this);
+		fileDialog.setNameFilter("FEN Files (*.fen)");
+		fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+		fileDialog.setWindowTitle("Open file");
+		if (fileDialog.exec())
 		{
+			QString fileName = fileDialog.selectedFiles()[0];
+			QByteArray str;
+			str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
+			QFile file(fileName);
+			file.open(QIODevice::ReadOnly | QIODevice::Text);
+			str = file.readAll();
+			file.close();
+			Board* board = this->ui->vboard->GetBoard();
+			board->Clear();
+			int w = board->GetWidth();
+			int h = board->GetHeight();
+			int i = 0, j = 0, k = 0;
+			do
+			{
+				char c = str[k];
+				if (c == '/')
+				{
+					k++;
+					j++;
+					i = 0;
+				}
+				else if (c >= '0' && c <= '9')
+				{
+					k++;
+					i += c - 48;
+				}
+				else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+				{
+					std::string stringCode(1, c);
+					PieceType pieceType = None;
+					if (gameVariant == Chess || gameVariant == Shatranj)
+					{
+						ChessPiece chessPiece(None, Black);
+						pieceType = chessPiece.FromStringCode(uppercase(stringCode));
+					}
+					else if (gameVariant == Xiangqi)
+					{
+						XiangqiPiece xiangqiPiece(None, Black);
+						pieceType = xiangqiPiece.FromStringCode(uppercase(stringCode));
+					}
+					else if (gameVariant == Makruk)
+					{
+						MakrukPiece makrukPiece(None, Black);
+						pieceType = makrukPiece.FromStringCode(uppercase(stringCode));
+					}
+					else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
+					{
+						ShogiPiece shogiPiece(None, Black);
+						pieceType = shogiPiece.FromStringCode(uppercase(stringCode));
+					}
+					if (pieceType == None)
+					{
+						QMessageBox::critical(this, "Error", "Invalid character found in the FEN string at position " + QString::number(k));
+						return;
+					}
+					if (j == h || i == w)
+					{
+						QMessageBox::critical(this, "Error", "Invalid FEN string for this game");
+						return;
+					}
+					Piece* piece = board->CreatePiece(pieceType, c >= 'a' && c <= 'z' ? Black : White);
+					board->SetData(i, j, piece);
+					k++;
+					i++;
+				}
+			} while (i < w - 1 || j < h - 1);
 		}
-	}*/
+	}
 }
 
 void MainWindow::on_actionSave_triggered()

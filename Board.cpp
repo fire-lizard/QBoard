@@ -4,6 +4,11 @@
 
 Board::~Board()
 {
+	Clear();
+}
+
+void Board::Clear()
+{
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)
@@ -11,6 +16,7 @@ Board::~Board()
 			if (_data[i][j] != nullptr)
 			{
 				delete _data[i][j];
+				_data[i][j] = nullptr;
 			}
 		}
 	}
