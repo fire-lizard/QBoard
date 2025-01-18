@@ -24,7 +24,7 @@ void UcciEngine::StartGame(QString variant)
 
 void UcciEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
-    _process->write("position startpos moves ");
+	_process->write(QByteArray::fromStdString("position fen " + _fen + " moves "));
 	for (auto& _move : _moves)
 	{
 		_process->write(_move);

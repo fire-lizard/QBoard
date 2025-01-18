@@ -24,7 +24,7 @@ void UsiEngine::StartGame(QString variant)
 
 void UsiEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
-    _process->write("position startpos moves ");
+	_process->write(QByteArray::fromStdString("position sfen " + _fen + " moves "));
 	for (auto& _move : _moves)
 	{
 		_process->write(_move);

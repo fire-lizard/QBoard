@@ -686,7 +686,7 @@ void VBoard::AddMove(PieceType p, int x1, int y1, int x2, int y2, int x3, int y3
 	{
 		dynamic_cast<ShatranjBoard*>(_board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
-	else if (_gameVariant == Shogi)
+	else if (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi)
 	{
 		dynamic_cast<ShogiBoard*>(_board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}

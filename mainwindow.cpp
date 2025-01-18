@@ -207,11 +207,9 @@ void MainWindow::on_actionOpen_triggered()
 		if (fileDialog.exec())
 		{
 			QString fileName = fileDialog.selectedFiles()[0];
-			QByteArray str;
-			str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 			QFile file(fileName);
 			file.open(QIODevice::ReadOnly | QIODevice::Text);
-			str = file.readAll();
+			QByteArray str = file.readAll();
 			file.close();
 			Board* board = this->ui->vboard->GetBoard();
 			board->Clear();
@@ -293,6 +291,7 @@ void MainWindow::on_actionSave_triggered()
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
+				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b KQkq - 0 1" : " w KQkq - 0 1";
 			}
 			else if (fileDialog.selectedNameFilter() == "PGN Files (*.pgn)")
 			{
@@ -328,6 +327,7 @@ void MainWindow::on_actionSave_triggered()
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
+				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b - - 0 1" : " w - - 0 1";
 			}
 			else if (fileDialog.selectedNameFilter() == "WXF Files (*.wxf)")
 			{
@@ -367,6 +367,14 @@ void MainWindow::on_actionSave_triggered()
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
+				if (gameVariant == Shogi)
+				{
+					str += this->ui->vboard->GetCurrentPlayer() == Black ? " B - 1" : " W - 1";
+				}
+				else if (gameVariant == MiniShogi || gameVariant == JudkinShogi)
+				{
+					str += this->ui->vboard->GetCurrentPlayer() == Black ? " B" : " W";
+				}
 			}
 			else if (fileDialog.selectedNameFilter() == "KIF Files (*.kif)")
 			{
@@ -424,6 +432,7 @@ void MainWindow::on_actionSave_triggered()
 			QString fileName = fileDialog.selectedFiles()[0];
 			QByteArray str;
 			str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
+			str += this->ui->vboard->GetCurrentPlayer() == Black ? " b" : " w";
 			QFile file(fileName);
 			file.open(QIODevice::WriteOnly | QIODevice::Text);
 			file.write(str);
