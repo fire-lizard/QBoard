@@ -11,7 +11,7 @@ public:
 	std::string GetImageFileName() const override;
 	void Promote(PieceType pieceType = None) override;
 	std::string StringCode() override;
-	PieceType FromStringCode(const std::string& code) override;
 	std::string KanjiStringCode() override;
+	static PieceType FromStringCode(const std::string& code);
 };
 

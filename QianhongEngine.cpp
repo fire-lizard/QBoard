@@ -2,6 +2,7 @@
 
 QianhongEngine::QianhongEngine()
 {
+	_fen = XIANGQIFEN;
 }
 
 QianhongEngine::~QianhongEngine()

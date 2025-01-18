@@ -72,18 +72,7 @@ void MainWindow::on_actionSettings_triggered()
 		}
 		if (newGameVariant != this->ui->vboard->GetGameVariant())
 		{
-			if (_engine != nullptr)
-			{
-				_engine->Quit();
-				delete _engine;
-				_engine = nullptr;
-			}
-			this->ui->vboard->SetGameVariant(newGameVariant);
-			this->ui->vboard->GetBoard()->Initialize();
-			this->ui->vboard->SetCurrentPlayer(White);
-			this->ui->textEdit->setText("");
-			this->ui->statusBar->showMessage(newGameVariant == Xiangqi ? "Red move" : "White move");
-			this->ui->vboard->repaint();
+			StartNewGame(newGameVariant);
 		}
 		IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, _currentStyle, 
 			settingsDialog->GetGameVariants()->currentText(), 
@@ -167,12 +156,7 @@ void MainWindow::on_actionNew_game_triggered()
             _engineExe = std::get<3>(tpl);
         }
         else _engineExe = "";
-        if (_engine != nullptr)
-		{
-			_engine->Quit();
-			delete _engine;
-            _engine = nullptr;
-		}
+		StopEngine();
 		if (_engineExe != "")
 		{
 			switch (_engineProtocol)
@@ -254,23 +238,19 @@ void MainWindow::on_actionOpen_triggered()
 					PieceType pieceType = None;
 					if (gameVariant == Chess || gameVariant == Shatranj)
 					{
-						ChessPiece chessPiece(None, Black);
-						pieceType = chessPiece.FromStringCode(uppercase(stringCode));
+						pieceType = ShatranjPiece::FromStringCode(uppercase(stringCode));
 					}
 					else if (gameVariant == Xiangqi)
 					{
-						XiangqiPiece xiangqiPiece(None, Black);
-						pieceType = xiangqiPiece.FromStringCode(uppercase(stringCode));
+						pieceType = XiangqiPiece::FromStringCode(uppercase(stringCode));
 					}
 					else if (gameVariant == Makruk)
 					{
-						MakrukPiece makrukPiece(None, Black);
-						pieceType = makrukPiece.FromStringCode(uppercase(stringCode));
+						pieceType = MakrukPiece::FromStringCode(uppercase(stringCode));
 					}
 					else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
 					{
-						ShogiPiece shogiPiece(None, Black);
-						pieceType = shogiPiece.FromStringCode(uppercase(stringCode));
+						pieceType = ShogiPiece::FromStringCode(uppercase(stringCode));
 					}
 					if (pieceType == None)
 					{
@@ -287,14 +267,20 @@ void MainWindow::on_actionOpen_triggered()
 					k++;
 					i++;
 				}
-			} while (i < w - 1 || j < h - 1);
+			} while (i < w || j < h - 1);
+			LoadEngine();
+			if (_engine != nullptr)
+			{
+				_engine->SetFEN(str.toStdString());
+			}
 		}
 	}
 }
 
 void MainWindow::on_actionSave_triggered()
 {
-	if (this->ui->vboard->GetGameVariant() == Chess)
+	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
+	if (gameVariant == Chess || gameVariant == Shatranj)
 	{
 		QFileDialog fileDialog(this);
 		fileDialog.setNameFilter("FEN Files (*.fen);;PGN Files (*.pgn)");
@@ -365,7 +351,7 @@ void MainWindow::on_actionSave_triggered()
 			file.close();
 		}
 	}
-	else if (this->ui->vboard->GetGameVariant() == Shogi)
+	else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
 	{
 		QFileDialog fileDialog(this);
 		fileDialog.setNameFilter("FEN Files (*.fen);;PSN Files (*.psn);;CSA Files (*.csa);;KIF Files (*.kif)");
@@ -448,33 +434,18 @@ void MainWindow::on_actionSave_triggered()
 
 void MainWindow::on_actionStop_game_triggered()
 {
-	if (_engine != nullptr)
-	{
-		_engine->Quit();
-		delete _engine;
-		_engine = nullptr;
-	}
+	StopEngine();
 }
 
 void MainWindow::on_actionExit_triggered()
 {
-	if (_engine != nullptr)
-	{
-		_engine->Quit();
-		delete _engine;
-		_engine = nullptr;
-	}
+	StopEngine();
 	QApplication::quit();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	if (_engine != nullptr)
-	{
-		_engine->Quit();
-		delete _engine;
-		_engine = nullptr;
-	}
+	StopEngine();
 }
 
 void MainWindow::on_actionEngine_Manager_triggered()
@@ -486,6 +457,17 @@ void MainWindow::on_actionEngine_Manager_triggered()
 	{
 		createXmlFromTable(_settingsDir + "/" + _enginesListFileName, engineManager->GetEngineTable());
 	}
+}
+
+void MainWindow::StartNewGame(GameVariant newGameVariant)
+{
+	StopEngine();
+	this->ui->vboard->SetGameVariant(newGameVariant);
+	this->ui->vboard->GetBoard()->Initialize();
+	this->ui->vboard->SetCurrentPlayer(White);
+	this->ui->textEdit->setText("");
+	this->ui->statusBar->showMessage(newGameVariant == Xiangqi ? "Red move" : "White move");
+	this->ui->vboard->repaint();
 }
 
 void MainWindow::LoadEngine()
@@ -553,6 +535,16 @@ void MainWindow::LoadEngine()
 		}
 		else
 			this->ui->statusBar->showMessage("Error while running engine: " + process->errorString());
+	}
+}
+
+void MainWindow::StopEngine()
+{
+	if (_engine != nullptr)
+	{
+		_engine->Quit();
+		delete _engine;
+		_engine = nullptr;
 	}
 }
 

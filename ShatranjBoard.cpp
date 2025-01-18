@@ -141,7 +141,7 @@ void ShatranjBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y
 		_pgn += _pieceToPGN.at(pieceType);
 	}
 	_pgn.push_back(static_cast<char>(x1 + 97));
-	_pgn += std::to_string(8 - y1);
+	_pgn += std::to_string(_height - y1);
 	if (capture)
 	{
 		_pgn += "x";

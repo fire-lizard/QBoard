@@ -10,6 +10,6 @@ public:
 	~ShatranjPiece() override;
 	void Promote(PieceType pieceType = None) override;
 	std::string StringCode() override;
-	PieceType FromStringCode(const std::string& code) override;
+	static PieceType FromStringCode(const std::string& code);
 };
 

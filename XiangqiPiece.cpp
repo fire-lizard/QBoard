@@ -43,6 +43,7 @@ PieceType XiangqiPiece::FromStringCode(const std::string& code)
 		{"R", Rook},
 		{"C", Cannon},
 		{"N", Knight},
+		{"H", Knight},
 		{"B", Elephant},
 		{"P", Pawn}
 	};

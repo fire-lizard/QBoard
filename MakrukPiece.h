@@ -9,6 +9,6 @@ public:
 	MakrukPiece(PieceType pieceType, PieceColour pieceColour);
 	~MakrukPiece() override;
 	std::string StringCode() override;
-	PieceType FromStringCode(const std::string& code) override;
+	static PieceType FromStringCode(const std::string& code);
 };
 
