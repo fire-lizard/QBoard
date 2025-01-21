@@ -83,7 +83,7 @@ void MainWindow::on_actionSettings_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-	QMessageBox::about(this, "About", "<center>QBoard 0.8.4 beta<br/>Fire Lizard Software<br/>Anatoliy Sova<br/>Wa Shogi graphics by Ilya V. Novikov<br/>2025</center>");
+	QMessageBox::about(this, "About", "<center>QBoard 0.8.5 beta<br/>Fire Lizard Software<br/>Anatoliy Sova<br/>Wa Shogi graphics by Ilya V. Novikov<br/>2025</center>");
 }
 
 void MainWindow::on_actionNew_game_triggered()
@@ -269,7 +269,14 @@ void MainWindow::on_actionOpen_triggered()
 			LoadEngine();
 			if (_engine != nullptr)
 			{
-				_engine->SetFEN(str.toStdString());
+				if (_engine->GetType() == XBoard && !dynamic_cast<WbEngine*>(_engine)->GetOption("setboard"))
+				{
+					dynamic_cast<WbEngine*>(_engine)->Edit(ui->vboard->GetBoard());
+				}
+				else
+				{
+					_engine->SetFEN(str.toStdString());
+				}
 			}
 		}
 	}
@@ -286,12 +293,16 @@ void MainWindow::on_actionSave_triggered()
 		fileDialog.setWindowTitle("Save file");
 		if (fileDialog.exec())
 		{
+			QString mcStr = QString::number((ui->vboard->GetBoard()->MoveCount()));
+			QString clStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->Castling()) : "-";
+			QString epStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->EnPassant()) : "-";
 			QString fileName = fileDialog.selectedFiles()[0];
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
-				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b KQkq - 0 1" : " w KQkq - 0 1";
+				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
+				str += (clStr + " " + epStr + " 0 " + mcStr).toLatin1();
 			}
 			else if (fileDialog.selectedNameFilter() == "PGN Files (*.pgn)")
 			{
@@ -488,49 +499,51 @@ void MainWindow::LoadEngine()
 		{
 			if (_engine->GetType() == XBoard)
 			{
-				if (ui->vboard->GetGameVariant() == MiniShogi)
+				GameVariant gameVariant = ui->vboard->GetGameVariant();
+				switch (gameVariant)
 				{
+				case MiniShogi:
 					_engine->StartGame("5x5+5_shogi");
-				}
-				else if (ui->vboard->GetGameVariant() == JudkinShogi)
-				{
+					break;
+				case JudkinShogi:
 					_engine->StartGame("6x6+6_shogi");
-				}
-				else if (ui->vboard->GetGameVariant() == WaShogi)
-				{
-					_engine->StartGame("washogi");
-				}
-				else if (ui->vboard->GetGameVariant() == CrazyWa)
-				{
-					_engine->StartGame("crazywa");
-				}
-				else if (ui->vboard->GetGameVariant() == ShoShogi)
-				{
+					break;
+				case ShoShogi:
 					_engine->StartGame("sho");
-				}
-				else if (ui->vboard->GetGameVariant() == DaiShogi)
-				{
+					break;
+				case WaShogi:
+					_engine->StartGame("washogi");
+					break;
+				case CrazyWa:
+					_engine->StartGame("crazywa");
+					break;
+				case ChuShogi:
+					_engine->StartGame("chu");
+					break;
+				case DaiShogi:
 					_engine->StartGame("dai");
-				}
-				else if (ui->vboard->GetGameVariant() == TenjikuShogi)
-				{
+					break;
+				case TenjikuShogi:
 					_engine->StartGame("tenjiku");
-				}
-				else if (ui->vboard->GetGameVariant() == Shogi)
-				{
+					break;
+				case Shogi:
 					_engine->StartGame("shogi");
-				}
-				else if (ui->vboard->GetGameVariant() == Shatranj)
-				{
+					break;
+				case Shatranj:
 					_engine->StartGame("shatranj");
-				}
-				else if (ui->vboard->GetGameVariant() == Makruk)
-				{
+					break;
+				case Makruk:
 					_engine->StartGame("makruk");
-				}
-				else
-				{
+					break;
+				case Xiangqi:
+					_engine->StartGame("xiangqi");
+					break;
+				case Chess:
+					_engine->StartGame("normal");
+					break;
+				default:
 					_engine->StartGame();
+					break;
 				}
 			}
 			else

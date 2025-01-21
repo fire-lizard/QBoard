@@ -506,14 +506,17 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		_board->GetMoves(p, x, y);
 		_moves = _board->Moves();
 		_lionMovedOnce = false;
-		std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
-			{
-				CalculateCheck(x, y, t.first, t.second);
-			});
-		std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
-			{
-				CalculateCheck(x, y, t.first, t.second);
-			});
+		if (std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) == std::end(_shogiVariants))
+		{
+			std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+				{
+					CalculateCheck(x, y, t.first, t.second);
+				});
+			std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+				{
+					CalculateCheck(x, y, t.first, t.second);
+				});
+		}
 		this->repaint();
 	}
 }
@@ -530,6 +533,12 @@ GameVariant VBoard::GetGameVariant() const
 
 void VBoard::SetGameVariant(GameVariant gameVariant)
 {
+	if (_engine != nullptr)
+	{
+		_engine->Quit();
+		delete _engine;
+		_engine = nullptr;
+	}
 	_currentPiece = nullptr;
 	_moves.clear();
 	_opponentMoves.clear();

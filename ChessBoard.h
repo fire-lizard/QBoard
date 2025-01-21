@@ -14,6 +14,8 @@ public:
 	void GetMoves(Piece *piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY) override;
 	void WriteMove(const std::string& moveStr);
+	std::string Castling();
+	std::string EnPassant();
 
 protected:
 
@@ -29,4 +31,9 @@ protected:
 	};
 
 private:
+	bool _wkc = true;
+	bool _wqc = true;
+	bool _bkc = true;
+	bool _bqc = true;
+	std::string _ep = "-";
 };

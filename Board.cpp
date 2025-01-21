@@ -37,6 +37,11 @@ void Board::SetData(int x, int y, Piece *p)
 	_data[x][y] = p;
 }
 
+int Board::MoveCount()
+{
+	return (_moveCount / 2) + 1;
+}
+
 template <typename T> std::basic_string<T> Board::lowercase(const std::basic_string<T>& s)
 {
 	std::basic_string<T> s2 = s;

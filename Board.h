@@ -24,6 +24,7 @@ public:
 	void SetFEN(std::string fen);
 	int GetWidth() const;
 	int GetHeight() const;
+	int MoveCount();
 	bool CheckPosition(int x, int y) const;
 
 protected:

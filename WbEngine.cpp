@@ -13,6 +13,46 @@ EngineProtocol WbEngine::GetType()
 	return XBoard;
 }
 
+void WbEngine::SetFEN(std::string fen)
+{
+	if (_setboard)
+	{
+		_process->write(QByteArray::fromStdString("setboard " + _fen + "\n"));
+	}
+	_fen = std::move(fen);
+}
+
+void WbEngine::Edit(Board* board)
+{
+	PieceColour pieceColour = White;
+	_process->write("edit\n");
+	_process->write("#\n");
+	for (int j = 0; j < board->GetHeight(); j++)
+	{
+		for (int i = 0; i < board->GetWidth(); i++)
+		{
+			Piece* p = board->GetData(i, j);
+			if (p != nullptr)
+			{
+				std::string str;
+				char letter = i + 97;
+				PieceColour newPieceColour = p->GetColour();
+				if (newPieceColour != pieceColour)
+				{
+					_process->write("c\n");
+					pieceColour = newPieceColour;
+				}
+				str += p->StringCode();
+				str.push_back(letter);
+				str += std::to_string(j + 1);
+				str.push_back('\n');
+				_process->write(QByteArray::fromStdString(str));
+			}
+		}
+	}
+	_process->write(".\n");
+}
+
 void WbEngine::StartGame(QString variant)
 {
 	_moves.clear();
@@ -144,4 +184,12 @@ void WbEngine::SetOption(const std::string& name, bool value)
 	if (name == "setboard") _setboard = value;
 	if (name == "memory") _memory = value;
 	if (name == "usermove") _usermove = value;
+}
+
+bool WbEngine::GetOption(const std::string& name)
+{
+	if (name == "setboard") return _setboard;
+	if (name == "memory") return _memory;
+	if (name == "usermove") return _usermove;
+	return false;
 }

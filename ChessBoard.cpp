@@ -50,6 +50,22 @@ Piece* ChessBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 	return new ChessPiece(pieceType, pieceColour);
 }
 
+std::string ChessBoard::Castling()
+{
+	std::string str;
+	if (_wkc) str += "K";
+	if (_wqc) str += "Q";
+	if (_bkc) str += "k";
+	if (_bqc) str += "q";
+	if (str == "") str += "-";
+	return str;
+}
+
+std::string ChessBoard::EnPassant()
+{
+	return _ep;
+}
+
 void ChessBoard::GetMoves(Piece *piece, int x, int y)
 {
 	_moves.clear();
@@ -159,6 +175,28 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY)
 
 void ChessBoard::WriteMove(const std::string& moveStr)
 {
+	if (moveStr == "O-O")
+	{
+		if (_moveCount % 2 == 0)
+		{
+			_wkc = false;
+		}
+		else
+		{
+			_bkc = false;
+		}
+	}
+	else if (moveStr == "O-O-O")
+	{
+		if (_moveCount % 2 == 0)
+		{
+			_wqc = false;
+		}
+		else
+		{
+			_bqc = false;
+		}
+	}
 	if (_moveCount % 2 == 0)
 	{
 		 _pgn += std::to_string((_moveCount / 2) + 1) + ". "; // Add move number for white
