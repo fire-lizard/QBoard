@@ -12,6 +12,7 @@ public:
 	void Promote(PieceType pieceType = None) override;
 	std::string StringCode() override;
 	std::string KanjiStringCode() override;
+	std::string GetKanjiImageFileName() override;
 	static PieceType FromStringCode(const std::string& code);
 };
 

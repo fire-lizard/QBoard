@@ -2483,6 +2483,402 @@
     <Image Include="images_wa2\ViolentWolfPFlip.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_tnk\Bishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\BishopFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\BishopGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\BishopGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\BishopGeneralP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\BishopGeneralPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\BishopP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\BishopPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Chariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\ChariotFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\ChariotSoldier.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\ChariotSoldierFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\ChariotSoldierP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\ChariotSoldierPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Copper.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\CopperFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Dog.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\DogFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\DragonHorse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\DragonHorseFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\DragonHorseP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\DragonHorsePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\DragonKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\DragonKingFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\DragonKingP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\DragonKingPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Eagle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\EagleFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\EagleP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\EaglePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Elephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\ElephantFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FireDemon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FireDemonFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FireDemonP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FireDemonPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FlyingOxP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FlyingOxPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FreeBoarP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FreeBoarPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FreeEagle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FreeEagleFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FreeEagleP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FreeEaglePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Gold.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\GoldFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\GoldP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\GoldPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Great.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\GreatFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\GreatP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\GreatPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Hawk.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\HawkFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\HawkP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\HawkPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\HeavenlyTetrarchP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\HeavenlyTetrarchPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Iron.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\IronFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\King.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\KingFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Kirin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\KirinFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Knight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\KnightFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Lance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\LanceFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Leopard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\LeopardFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Lion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\LionFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\LionHawk.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\LionHawkFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\LionHawkP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\LionHawkPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\LionP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\LionPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\MultiP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\MultiPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Pawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\PawnFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Phoenix.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\PhoenixFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\PrinceP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\PrincePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Queen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\QueenFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\QueenP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\QueenPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Rook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\RookFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\RookGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\RookGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\RookGeneralP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\RookGeneralPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\RookP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\RookPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\SideMover.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\SideMoverFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\SideMoverP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\SideMoverPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\SideSoldier.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\SideSoldierFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\SideSoldierP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\SideSoldierPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Silver.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\SilverFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\StagP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\StagPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Tiger.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\TigerFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\VerticalMover.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\VerticalMoverFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\VerticalMoverP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\VerticalMoverPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\VerticalSoldier.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\VerticalSoldierFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\VerticalSoldierP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\VerticalSoldierPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Vice.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\ViceFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\ViceP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\VicePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\WaterBuffalo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\WaterBuffaloFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\WaterBuffaloP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\WaterBuffaloPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\WhaleP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\WhalePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\WhiteP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\WhitePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc">

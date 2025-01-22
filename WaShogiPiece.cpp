@@ -342,7 +342,7 @@ std::string WaShogiPiece::GetImageFileName() const
 std::string WaShogiPiece::GetKanjiImageFileName()
 {
 	std::string colour = _pieceColour == White ? "" : "Flip";
-	if (_isPromoted && _pieceType != King)
+	if (_isPromoted)
 	{
 		colour = "P" + colour;
 	}

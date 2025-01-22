@@ -47,6 +47,10 @@ void VBoard::paintEvent(QPaintEvent *)
 	{
 		resourcePrefix = ":/pieces_wa/images_wa/";
 	}
+	else if (_pieceStyle == Asian && _gameVariant == TenjikuShogi)
+	{
+		resourcePrefix = ":/pieces_tnk/images_tnk/";
+	}
 	else if (_gameVariant == TenjikuShogi)
 	{
 		resourcePrefix = ":/pieces_ten/images_ten/";
@@ -189,7 +193,11 @@ void VBoard::paintEvent(QPaintEvent *)
 			if (p != nullptr)
 			{
 				std::string imageFileName;
-				if (_gameVariant == TenjikuShogi)
+				if (_pieceStyle == Asian && _gameVariant == TenjikuShogi)
+				{
+					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
+				}
+				else if (_gameVariant == TenjikuShogi)
 				{
 					imageFileName = p->GetImageFileName();
 				}
