@@ -26,6 +26,8 @@ public:
 	int GetHeight() const;
 	int MoveCount();
 	bool CheckPosition(int x, int y) const;
+	std::vector<std::pair<int, int>> Attackers(int x, int y);
+	std::vector<std::pair<int, int>> Defenders(int x, int y);
 
 protected:
 	void CheckMove(const Piece *piece, int x, int y);

@@ -39,6 +39,10 @@ void VBoard::paintEvent(QPaintEvent *)
     {
         resourcePrefix = ":/pieces_sho/images_sho/";
     }
+	else if (_pieceStyle == Asian && (_gameVariant == WaShogi || _gameVariant == CrazyWa))
+	{
+		resourcePrefix = ":/pieces_wa2/images_wa2/";
+	}
 	else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)
 	{
 		resourcePrefix = ":/pieces_wa/images_wa/";
@@ -424,34 +428,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				if (promotion == '+')
 				{
 					const PieceType pt = _currentPiece->GetType();
-					if ((_gameVariant == MiniShogi || _gameVariant == JudkinShogi) && pt == Pawn)
-					{
-						_currentPiece->Promote();
-					}
-					else if ((_gameVariant == Shogi || _gameVariant == ShoShogi) &&
-						(pt == Pawn || pt == Knight || pt == Lance) &&
-						((y == 8 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
-					{
-						_currentPiece->Promote();
-					}
-					else if ((_gameVariant == WaShogi || _gameVariant == CrazyWa) &&
-						(pt == Pawn || pt == Knight || pt == Lance) &&
-						((y == 10 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
-					{
-						_currentPiece->Promote();
-					}
-					else if (_gameVariant == ChuShogi && (pt == Pawn || pt == Lance) &&
-						((y == 11 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
-					{
-						_currentPiece->Promote();
-					}
-					else if (_gameVariant == DaiShogi && (pt == Pawn || pt == Lance) &&
-						((y == 14 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
-					{
-						_currentPiece->Promote();
-					}
-					else if (_gameVariant == TenjikuShogi && (pt == Pawn || pt == Lance) &&
-						((y == 15 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
+					if ((pt == Pawn || pt == Knight || pt == Lance) &&
+						((y == _board->GetHeight() -1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
 					{
 						_currentPiece->Promote();
 					}
@@ -521,6 +499,19 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	}
 }
 
+void VBoard::mouseMoveEvent(QMouseEvent* event)
+{
+	const int w = this->size().width() / _board->GetWidth();
+	const int h = this->size().height() / _board->GetHeight();
+	const int x = static_cast<int>(event->position().x()) / w;
+	const int y = static_cast<int>(event->position().y()) / h;
+	Piece* p = _board->GetData(x, y);
+	if (p != nullptr)
+	{
+		//
+	}
+}
+
 Board* VBoard::GetBoard() const
 {
 	return _board;
@@ -533,12 +524,6 @@ GameVariant VBoard::GetGameVariant() const
 
 void VBoard::SetGameVariant(GameVariant gameVariant)
 {
-	if (_engine != nullptr)
-	{
-		_engine->Quit();
-		delete _engine;
-		_engine = nullptr;
-	}
 	_currentPiece = nullptr;
 	_moves.clear();
 	_opponentMoves.clear();

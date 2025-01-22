@@ -44,7 +44,7 @@ void WbEngine::Edit(Board* board)
 				}
 				str += p->StringCode();
 				str.push_back(letter);
-				str += std::to_string(j + 1);
+				str += std::to_string(board->GetHeight() - j);
 				str.push_back('\n');
 				_process->write(QByteArray::fromStdString(str));
 			}

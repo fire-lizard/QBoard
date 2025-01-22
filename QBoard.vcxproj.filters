@@ -2297,6 +2297,192 @@
     <Image Include="images\WhiteRShield.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_wa2\BearEyeP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\BearEyePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\BlindDog.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\BlindDogFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\ClimbingMonkey.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\ClimbingMonkeyFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\CloudEagle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\CloudEagleFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\CloudEagleP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\CloudEaglePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\CraneKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\CraneKingFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\FlyingCock.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\FlyingCockFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\FlyingGoose.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\FlyingGooseFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\FlyingHawk.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\FlyingHawkFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\FlyingHawkP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\FlyingHawkPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\GlidingSwallowP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\GlidingSwallowPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\GoldenBirdP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\GoldenBirdPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\HeavenlyHorseP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\HeavenlyHorsePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\LiberatedHorse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\LiberatedHorseFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\OxCart.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\OxCartFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\PloddingOxP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\PloddingOxPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\RaidingHawkP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\RaidingHawkPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\RoamingBoarP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\RoamingBoarPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\RunningRabbit.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\RunningRabbitFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\SparrowPawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\SparrowPawnFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\StruttingCrow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\StruttingCrowFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\SwallowWing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\SwallowWingFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\SwallowWingP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\SwallowWingPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\SwoopingKite.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\SwoopingKiteFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\TenaciousHawkP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\TenaciousHawkPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\TreacherousFox.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\TreacherousFoxFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\TreacherousFoxP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\TreacherousFoxPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\ViolentStag.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\ViolentStagFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\ViolentStagP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\ViolentStagPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\ViolentWolf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\ViolentWolfFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\ViolentWolfP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_wa2\ViolentWolfPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc">

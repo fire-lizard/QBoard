@@ -341,5 +341,64 @@ std::string WaShogiPiece::GetImageFileName() const
 
 std::string WaShogiPiece::GetKanjiImageFileName()
 {
-	return GetImageFileName();
+	std::string colour = _pieceColour == White ? "" : "Flip";
+	if (_isPromoted && _pieceType != King)
+	{
+		colour = "P" + colour;
+	}
+	switch (_pieceType)
+	{
+	case King:
+		return "CraneKing" + colour + ".png";
+	case Rook:
+		return "GlidingSwallow" + colour + ".png";
+	case Lance:
+		return "OxCart" + colour + ".png";
+	case Tokin:
+		return "GoldenBird" + colour + ".png";
+	case Pawn:
+		return "SparrowPawn" + colour + ".png";
+	case SideMover:
+		return "SwallowWing" + colour + ".png";
+	case PloddingOx:
+		return "PloddingOx" + colour + ".png";
+	case LiberatedHorse:
+		return "LiberatedHorse" + colour + ".png";
+	case HeavenlyHorse:
+		return "HeavenlyHorse" + colour + ".png";
+	case SwoopingOwl:
+		return "SwoopingKite" + colour + ".png";
+	case CloudEagle:
+		return "CloudEagle" + colour + ".png";
+	case StruttingCrow:
+		return "StruttingCrow" + colour + ".png";
+	case FlyingFalcon:
+		return "FlyingHawk" + colour + ".png";
+	case FlyingCock:
+		return "FlyingCock" + colour + ".png";
+	case RaidingFalcon:
+		return "RaidingHawk" + colour + ".png";
+	case FlyingGoose:
+		return "FlyingGoose" + colour + ".png";
+	case ClimbingMonkey:
+		return "ClimbingMonkey" + colour + ".png";
+	case Silver:
+		return "ViolentStag" + colour + ".png";
+	case Dog:
+		return "BlindDog" + colour + ".png";
+	case Gold:
+		return "ViolentWolf" + colour + ".png";
+	case Elephant:
+		return "RoamingBoar" + colour + ".png";
+	case BearEyes:
+		return "BearEye" + colour + ".png";
+	case RunningRabbit:
+		return "RunningRabbit" + colour + ".png";
+	case TreacherousFox:
+		return "TreacherousFox" + colour + ".png";
+	case TenaciousFalcon:
+		return "TenaciousHawk" + colour + ".png";
+	default:
+		return "";
+	}
 }
