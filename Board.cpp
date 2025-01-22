@@ -271,3 +271,18 @@ void Board::GetDefenders(int x, int y, std::vector<std::pair<int, int>>& vec)
 	}
 	delete board;
 }
+
+bool Board::operator == (const PieceType other[16][16]) const
+{
+	for (int i = 0; i < _width; i++)
+	{
+		for (int j = 0; j < _height; j++)
+		{
+			if (_data[j][i] != nullptr && _data[j][i]->GetType() != other[i][j])
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}

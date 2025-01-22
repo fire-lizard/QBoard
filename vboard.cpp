@@ -84,7 +84,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					{
 						if (_board->GetData(i, j) != nullptr)
 						{
-							painter.setBrush(QColorConstants::Svg::pink);
+							painter.setBrush(QColorConstants::Svg::lightpink);
 							painter.drawRect(rect);
 							painter.setBrush(Qt::NoBrush);
 						}
@@ -143,7 +143,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			}
 			else if (std::any_of(_defenders.begin(), _defenders.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}))
 			{
-				painter.setBrush(QColorConstants::Svg::lime);
+				painter.setBrush(QColorConstants::Svg::aquamarine);
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
@@ -290,6 +290,19 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				(_oldX == x && _oldY - y == 2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == White) ||
 				(_oldX == x && _oldY - y == -2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == Black))
 			{
+				// Lion capture rule #1
+				if ((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) && _currentPiece->GetType() == Lion)
+				{
+					if (_board->GetData(x, y) != nullptr && _board->GetData(x, y)->GetType() == Lion)
+					{
+						std::vector<std::pair<int, int>> lionDefenders;
+						_board->GetDefenders(x, y, lionDefenders);
+						if (!lionDefenders.empty())
+						{
+							return;
+						}
+					}
+				}
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
 					if (_engine != nullptr)
@@ -529,7 +542,7 @@ bool VBoard::event(QEvent* event)
 		const int h = this->size().height() / _board->GetHeight();
 		const int x = static_cast<int>(hoverEvent->position().x()) / w;
 		const int y = static_cast<int>(hoverEvent->position().y()) / h;
-		if (x != _px || y != _py)
+		if (x < _board->GetWidth() && y < _board->GetHeight() && (x != _px || y != _py))
 		{
 			_px = x;
 			_py = y;
@@ -562,9 +575,15 @@ GameVariant VBoard::GetGameVariant() const
 
 void VBoard::SetGameVariant(GameVariant gameVariant)
 {
+	if (_engine != nullptr)
+	{
+		_engine = nullptr;
+	}
 	_currentPiece = nullptr;
 	_moves.clear();
 	_opponentMoves.clear();
+	_attackers.clear();
+	_defenders.clear();
 	_gameVariant = gameVariant;
 	switch (_gameVariant)
 	{
