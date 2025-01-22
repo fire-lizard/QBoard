@@ -48,6 +48,20 @@ Piece* ChuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 	return new ChuShogiPiece(pieceType, pieceColour);
 }
 
+bool ChuShogiBoard::Move(int oldX, int oldY, int newX, int newY)
+{
+	// Lion capture rule #2
+	if (_wasLionCapturedByNonLion)
+	{
+		if (_data[oldX][oldY]->GetType() != Lion && _data[newX][newY] != nullptr && _data[newX][newY]->GetType() == Lion)
+		{
+			return false;
+		}
+	}
+	_wasLionCapturedByNonLion = _data[oldX][oldY]->GetType() != Lion && _data[newX][newY] != nullptr && _data[newX][newY]->GetType() == Lion;
+	return Board::Move(oldX, oldY, newX, newY);
+}
+
 void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 {
 	_moves.clear();

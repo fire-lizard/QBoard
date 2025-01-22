@@ -11,12 +11,14 @@ public:
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
 	void GetMoves(Piece *piece, int x, int y) override;
+	bool Move(int oldX, int oldY, int newX, int newY) override;
 	bool LionMove(int x1, int y1, int x2, int y2, int x3, int y3);
 	bool IsMovePossible(int x, int y);
 
 protected:
 
 private:
+	bool _wasLionCapturedByNonLion = false;
 
 	PieceType _initialSetup[12][12] = {
 	{Lance, Leopard, Copper, Silver, Gold, Elephant, King, Gold, Silver, Copper, Leopard, Lance},

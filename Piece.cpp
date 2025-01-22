@@ -45,9 +45,9 @@ std::string Piece::GetImageFileName() const
 	case Queen:
 		return colour + "Queen.png";
 	case DragonKing:
-		return colour + (_isPromoted ? "PromoDragon" : "CrownedRook") + ".png";
+		return colour + promo + "CrownedRook.png";
 	case DragonHorse:
-		return colour + (_isPromoted ? "PromoHorse" : "CrownedBishop") + ".png";
+		return colour + promo + "CrownedBishop.png";
 	case Rook:
 		return colour + promo + "Rook.png";
 	case Bishop:

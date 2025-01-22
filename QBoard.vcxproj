@@ -465,8 +465,8 @@
     <Image Include="images\BlackIron.png" />
     <Image Include="images\BlackLShield.png" />
     <Image Include="images\BlackPromoBishop.png" />
-    <Image Include="images\BlackPromoDragon.png" />
-    <Image Include="images\BlackPromoHorse.png" />
+    <Image Include="images\BlackPromoCrownedRook.png" />
+    <Image Include="images\BlackPromoCrownedBishop.png" />
     <Image Include="images\BlackPromoHSword.png" />
     <Image Include="images\BlackPromoRook.png" />
     <Image Include="images\BlackPromoSword.png" />
@@ -478,8 +478,8 @@
     <Image Include="images\WhiteIron.png" />
     <Image Include="images\WhiteLShield.png" />
     <Image Include="images\WhitePromoBishop.png" />
-    <Image Include="images\WhitePromoDragon.png" />
-    <Image Include="images\WhitePromoHorse.png" />
+    <Image Include="images\WhitePromoCrownedRook.png" />
+    <Image Include="images\WhitePromoCrownedBishop.png" />
     <Image Include="images\WhitePromoHSword.png" />
     <Image Include="images\WhitePromoRook.png" />
     <Image Include="images\WhitePromoSword.png" />

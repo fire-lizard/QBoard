@@ -2267,10 +2267,10 @@
     <Image Include="images\BlackPromoBishop.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images\BlackPromoDragon.png">
+    <Image Include="images\BlackPromoCrownedRook.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images\BlackPromoHorse.png">
+    <Image Include="images\BlackPromoCrownedBishop.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="images\BlackPromoRook.png">
@@ -2285,10 +2285,10 @@
     <Image Include="images\WhitePromoBishop.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images\WhitePromoDragon.png">
+    <Image Include="images\WhitePromoCrownedRook.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="images\WhitePromoHorse.png">
+    <Image Include="images\WhitePromoCrownedBishop.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="images\WhitePromoRook.png">

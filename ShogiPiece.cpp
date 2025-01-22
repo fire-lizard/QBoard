@@ -58,6 +58,10 @@ std::string ShogiPiece::StringCode()
 	case Silver:
 		return "S";
 	case Gold:
+	case Tokin:
+	case PromotedLance:
+	case PromotedKnight:
+	case PromotedSilver:
 		return "G";
 	case Knight:
 		return "N";
@@ -166,5 +170,18 @@ std::string ShogiPiece::KanjiStringCode()
 
 std::string ShogiPiece::GetKanjiImageFileName()
 {
-	return GetImageFileName();
+	std::string imageFileName = GetImageFileName();
+	if (_isPromoted)
+	{
+		const std::string colour = _pieceColour == White ? "White" : "Black";
+		if (_pieceType == DragonHorse)
+		{
+			return colour + "CrownedBishop.png";
+		}
+		else if (_pieceType == DragonKing)
+		{
+			return colour + "CrownedRook.png";
+		}
+	}
+	return imageFileName;
 }
