@@ -228,12 +228,12 @@ bool Board::CheckPosition(int x, int y) const
 	return y < _height && y >= 0 && x < _width && x >= 0;
 }
 
-std::vector<std::pair<int, int>> Board::Attackers(int x, int y)
+void Board::GetAttackers(int x, int y, std::vector<std::pair<int, int>>& vec)
 {
-	std::vector<std::pair<int, int>> result;
+	vec.clear();
 	if (_data[x][y] == nullptr)
 	{
-		return result;
+		return;
 	}
 	PieceColour pieceColour = _data[x][y]->GetColour();
 	Board* board = this->Clone();
@@ -244,19 +244,18 @@ std::vector<std::pair<int, int>> Board::Attackers(int x, int y)
 		auto tpl = opponentMoves[index];
 		if (std::get<2>(tpl) == x && std::get<3>(tpl) == y)
 		{
-			result.push_back(std::pair<int, int>(std::get<0>(tpl), std::get<1>(tpl)));
+			vec.emplace_back(std::get<0>(tpl), std::get<1>(tpl));
 		}
 	}
 	delete board;
-	return result;
 }
 
-std::vector<std::pair<int, int>> Board::Defenders(int x, int y)
+void Board::GetDefenders(int x, int y, std::vector<std::pair<int, int>>& vec)
 {
-	std::vector<std::pair<int, int>> result;
+	vec.clear();
 	if (_data[x][y] == nullptr)
 	{
-		return result;
+		return;
 	}
 	PieceColour pieceColour = _data[x][y]->GetColour();
 	Board* board = this->Clone();
@@ -267,9 +266,8 @@ std::vector<std::pair<int, int>> Board::Defenders(int x, int y)
 		auto tpl = playerMoves[index];
 		if (std::get<2>(tpl) == x && std::get<3>(tpl) == y)
 		{
-			result.push_back(std::pair<int, int>(std::get<0>(tpl), std::get<1>(tpl)));
+			vec.emplace_back(std::get<0>(tpl), std::get<1>(tpl));
 		}
 	}
 	delete board;
-	return result;
 }

@@ -45,12 +45,12 @@ public:
 protected:
 	void contextMenuEvent(QContextMenuEvent* event) override;
 
+	bool event(QEvent* event) override;
+
 private:
 	void paintEvent(QPaintEvent *) override;
 
 	void mousePressEvent(QMouseEvent *event) override;
-
-	void mouseMoveEvent(QMouseEvent* event) override;
 
 	bool PossibleMove(int x, int y) const;
 	void RemoveMove(int x, int y);
@@ -66,7 +66,11 @@ private:
 	Piece *_currentPiece;
 	int _oldX = -1;
 	int _oldY = -1;
+	int _px = -1;
+	int _py = -1;
 	std::vector<std::pair<int, int>> _moves;
+	std::vector<std::pair<int, int>> _attackers;
+	std::vector<std::pair<int, int>> _defenders;
 	std::vector<std::tuple<int, int, int, int>> _opponentMoves;
 	QStatusBar *_statusBar;
 	QTextEdit *_textEdit;

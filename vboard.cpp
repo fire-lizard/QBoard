@@ -2,7 +2,8 @@
 
 VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
-    _nlre = QRegularExpression("[\r\n]+");
+	setAttribute(Qt::WA_Hover, true);
+	_nlre = QRegularExpression("[\r\n]+");
     _csre = QRegularExpression(R"(([a-p])(1[0-6]|[0-9])([a-p])(1[0-6]|[0-9])([+nbrq])?)");
 	_cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])([+nbrq])?)");
     _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
@@ -133,6 +134,18 @@ void VBoard::paintEvent(QPaintEvent *)
 					painter.drawRect(rect);
 					painter.setBrush(Qt::NoBrush);
 				}
+			}
+			else if (std::any_of(_attackers.begin(), _attackers.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}))
+			{
+				painter.setBrush(QColorConstants::Svg::salmon);
+				painter.drawRect(rect);
+				painter.setBrush(Qt::NoBrush);
+			}
+			else if (std::any_of(_defenders.begin(), _defenders.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}))
+			{
+				painter.setBrush(QColorConstants::Svg::lime);
+				painter.drawRect(rect);
+				painter.setBrush(Qt::NoBrush);
 			}
 			else if (std::any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](std::tuple<int, int, int, int> t) {return get<2>(t) == i && get<3>(t) == j; }))
 			{
@@ -507,17 +520,34 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	}
 }
 
-void VBoard::mouseMoveEvent(QMouseEvent* event)
+bool VBoard::event(QEvent* event)
 {
-	const int w = this->size().width() / _board->GetWidth();
-	const int h = this->size().height() / _board->GetHeight();
-	const int x = static_cast<int>(event->position().x()) / w;
-	const int y = static_cast<int>(event->position().y()) / h;
-	Piece* p = _board->GetData(x, y);
-	if (p != nullptr)
+	if (event->type() == QEvent::HoverMove && std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) != std::end(_shogiVariants))
 	{
-		//
+		QHoverEvent* hoverEvent = static_cast<QHoverEvent*>(event);
+		const int w = this->size().width() / _board->GetWidth();
+		const int h = this->size().height() / _board->GetHeight();
+		const int x = static_cast<int>(hoverEvent->position().x()) / w;
+		const int y = static_cast<int>(hoverEvent->position().y()) / h;
+		if (x != _px || y != _py)
+		{
+			_px = x;
+			_py = y;
+			Piece* p = _board->GetData(x, y);
+			if (p != nullptr)
+			{
+				_board->GetAttackers(x, y, _attackers);
+				_board->GetDefenders(x, y, _defenders);
+			}
+			else
+			{
+				_attackers.clear();
+				_defenders.clear();
+			}
+			this->repaint();
+		}
 	}
+	return QWidget::event(event); // Call base class implementation
 }
 
 Board* VBoard::GetBoard() const
