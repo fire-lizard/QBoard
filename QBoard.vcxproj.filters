@@ -2879,6 +2879,54 @@
     <Image Include="images_tnk\WhitePFlip.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_tnk\AngryBoar.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\AngryBoarFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Cat.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\CatFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\ElephantP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\ElephantPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\GoBetween.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\GoBetweenFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Stone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\StoneFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\Wolf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\WolfFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FlyingDragon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\FlyingDragonFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\ViolentOx.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_tnk\ViolentOxFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc">

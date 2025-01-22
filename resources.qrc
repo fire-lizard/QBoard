@@ -881,5 +881,21 @@
         <file>images_tnk/WhalePFlip.png</file>
         <file>images_tnk/WhiteP.png</file>
         <file>images_tnk/WhitePFlip.png</file>
+        <file>images_tnk/AngryBoar.png</file>
+        <file>images_tnk/AngryBoarFlip.png</file>
+        <file>images_tnk/Cat.png</file>
+        <file>images_tnk/CatFlip.png</file>
+        <file>images_tnk/ElephantP.png</file>
+        <file>images_tnk/ElephantPFlip.png</file>
+        <file>images_tnk/GoBetween.png</file>
+        <file>images_tnk/GoBetweenFlip.png</file>
+        <file>images_tnk/Stone.png</file>
+        <file>images_tnk/StoneFlip.png</file>
+        <file>images_tnk/Wolf.png</file>
+        <file>images_tnk/WolfFlip.png</file>
+        <file>images_tnk/FlyingDragon.png</file>
+        <file>images_tnk/FlyingDragonFlip.png</file>
+        <file>images_tnk/ViolentOx.png</file>
+        <file>images_tnk/ViolentOxFlip.png</file>
     </qresource>
 </RCC>
