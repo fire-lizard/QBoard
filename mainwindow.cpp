@@ -224,6 +224,7 @@ void MainWindow::on_actionOpen_triggered()
 			int w = board->GetWidth();
 			int h = board->GetHeight();
 			int i = 0, j = 0, k = 0;
+			std::string promo;
 			do
 			{
 				char c = str[k];
@@ -232,6 +233,11 @@ void MainWindow::on_actionOpen_triggered()
 					k++;
 					j++;
 					i = 0;
+				}
+				if (c == '+')
+				{
+					k++;
+					promo = "+";
 				}
 				else if (c >= '0' && c <= '9')
 				{
@@ -256,7 +262,7 @@ void MainWindow::on_actionOpen_triggered()
 					}
 					else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
 					{
-						pieceType = ShogiPiece::FromStringCode(uppercase(stringCode));
+						pieceType = ShogiPiece::FromStringCode(promo + uppercase(stringCode));
 					}
 					if (pieceType == None)
 					{
@@ -270,6 +276,7 @@ void MainWindow::on_actionOpen_triggered()
 					}
 					Piece* piece = board->CreatePiece(pieceType, c >= 'a' && c <= 'z' ? Black : White);
 					board->SetData(i, j, piece);
+					promo = "";
 					k++;
 					i++;
 				}
@@ -301,13 +308,13 @@ void MainWindow::on_actionSave_triggered()
 		fileDialog.setWindowTitle("Save file");
 		if (fileDialog.exec())
 		{
-			QString mcStr = QString::number((ui->vboard->GetBoard()->MoveCount()));
-			QString clStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->Castling()) : "-";
-			QString epStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->EnPassant()) : "-";
 			QString fileName = fileDialog.selectedFiles()[0];
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
+				QString mcStr = QString::number((ui->vboard->GetBoard()->MoveCount()));
+				QString clStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->Castling()) : "-";
+				QString epStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->EnPassant()) : "-";
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
 				str += (clStr + " " + epStr + " 0 " + mcStr).toLatin1();
@@ -345,8 +352,10 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
+				QString mcStr = QString::number((ui->vboard->GetBoard()->MoveCount()));
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
-				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b - - 0 1" : " w - - 0 1";
+				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b - - 0 " : " w - - 0 ";
+				str += mcStr.toLatin1();
 			}
 			else if (fileDialog.selectedNameFilter() == "WXF Files (*.wxf)")
 			{

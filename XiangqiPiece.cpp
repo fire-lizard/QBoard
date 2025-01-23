@@ -25,9 +25,9 @@ std::string XiangqiPiece::StringCode()
 	case Cannon:
 		return "C";
 	case Knight:
-		return "N";
+		return "H";
 	case Elephant:
-		return "B";
+		return "E";
 	case Pawn:
 		return "P";
 	default:
@@ -45,6 +45,7 @@ PieceType XiangqiPiece::FromStringCode(const std::string& code)
 		{"N", Knight},
 		{"H", Knight},
 		{"B", Elephant},
+		{"E", Elephant},
 		{"P", Pawn}
 	};
 

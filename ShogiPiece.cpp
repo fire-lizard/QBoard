@@ -47,9 +47,9 @@ std::string ShogiPiece::StringCode()
 	case Prince:
 		return "K";
 	case DragonKing:
-		return "D";
+		return "+R";
 	case DragonHorse:
-		return "H";
+		return "+N";
 	case Rook:
 		return "R";
 	case Bishop:
@@ -79,8 +79,8 @@ PieceType ShogiPiece::FromStringCode(const std::string& code)
 {
 	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
 		{"K", King},
-		{"D", DragonKing},
-		{"H", DragonHorse},
+		{"+R", DragonKing},
+		{"+N", DragonHorse},
 		{"R", Rook},
 		{"B", Bishop},
 		{"L", Lance},

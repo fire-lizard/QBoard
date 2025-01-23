@@ -165,10 +165,64 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 
 bool ChessBoard::Move(int oldX, int oldY, int newX, int newY)
 {
+	PieceType pieceType = _data[oldX][oldY]->GetType();
+	PieceColour pieceColour = _data[oldX][oldY]->GetColour();
+	PieceType destPieceType = _data[newX][newY] != nullptr ? _data[newX][newY]->GetType() : None;
 	const bool result = Board::Move(oldX, oldY, newX, newY);
 	if (result)
 	{
 		dynamic_cast<ChessPiece*>(_data[newX][newY])->Move();
+		if (pieceType == Rook)
+		{
+			if (oldX == 0 && oldY == _height - 1)
+			{
+				_wqc = false;
+			}
+			else if (oldX == _width - 1 && oldY == _height - 1)
+			{
+				_wkc = false;
+			}
+			else if (oldX == 0 && oldY == 0)
+			{
+				_bqc = false;
+			}
+			else if (oldX == _width - 1 && oldY == 0)
+			{
+				_bkc = false;
+			}
+		}
+		else if (pieceType == King)
+		{
+			if (pieceColour == White)
+			{
+				_wqc = false;
+				_wkc = false;
+			}
+			else
+			{
+				_bqc = false;
+				_bkc = false;
+			}
+		}
+		if (destPieceType == Rook)
+		{
+			if (newX == 0 && newY == _height - 1)
+			{
+				_wqc = false;
+			}
+			else if (newX == _width - 1 && newY == _height - 1)
+			{
+				_wkc = false;
+			}
+			else if (newX == 0 && newY == 0)
+			{
+				_bqc = false;
+			}
+			else if (newX == _width - 1 && newY == 0)
+			{
+				_bkc = false;
+			}
+		}
 	}
 	return result;
 }

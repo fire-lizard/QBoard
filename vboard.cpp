@@ -399,7 +399,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			else if (std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) != std::end(_shogiVariants))
 			{
-				if (_gameVariant == MiniShogi && !_currentPiece->IsPromoted())
+				if (_gameVariant == MiniShogi && !_currentPiece->IsPromoted() &&
+					_currentPiece->GetType() != King && _currentPiece->GetType() != Gold &&
+					_currentPiece->GetType() != DragonKing && _currentPiece->GetType() != DragonHorse)
 				{
 					if ((y == 4 && _currentPiece->GetColour() == Black) ||
 						(y == 0 && _currentPiece->GetColour() == White))
@@ -407,7 +409,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						promotion = '+';
 					}
 				}
-				if (_gameVariant == JudkinShogi && !_currentPiece->IsPromoted())
+				if (_gameVariant == JudkinShogi && !_currentPiece->IsPromoted() &&
+					_currentPiece->GetType() != King && _currentPiece->GetType() != Gold &&
+					_currentPiece->GetType() != DragonKing && _currentPiece->GetType() != DragonHorse)
 				{
 					if ((y == 5 && _currentPiece->GetColour() == Black) ||
 						(y == 0 && _currentPiece->GetColour() == White))
@@ -415,7 +419,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						promotion = '+';
 					}
 				}
-				if ((_gameVariant == Shogi || _gameVariant == ShoShogi) && !_currentPiece->IsPromoted())
+				if ((_gameVariant == Shogi || _gameVariant == ShoShogi) && !_currentPiece->IsPromoted() &&
+					_currentPiece->GetType() != King && _currentPiece->GetType() != Gold &&
+					_currentPiece->GetType() != DragonKing && _currentPiece->GetType() != DragonHorse)
 				{
 					if ((y >= 6 && _currentPiece->GetColour() == Black) ||
 						(y <= 2 && _currentPiece->GetColour() == White))
@@ -423,7 +429,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						promotion = '+';
 					}
 				}
-				if ((_gameVariant == WaShogi || _gameVariant == CrazyWa) && !_currentPiece->IsPromoted()  &&
+				if ((_gameVariant == WaShogi || _gameVariant == CrazyWa) && !_currentPiece->IsPromoted() &&
 					_currentPiece->GetType() != King && _currentPiece->GetType() != CloudEagle && _currentPiece->GetType() != TreacherousFox)
 				{
 					if ((y >= 8 && _currentPiece->GetColour() == Black) ||
