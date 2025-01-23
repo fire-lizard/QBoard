@@ -451,7 +451,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					}
 				}
 				if (_gameVariant == TenjikuShogi &&	!_currentPiece->IsPromoted() && _currentPiece->GetType() != King &&
-					_currentPiece->GetType() != Queen && _currentPiece->GetType() != Lion)
+					_currentPiece->GetType() != Queen && _currentPiece->GetType() != Lion && _currentPiece->GetType() != LionHawk &&
+					_currentPiece->GetType() != ViceGeneral && _currentPiece->GetType() != GreatGeneral &&
+					_currentPiece->GetType() != FireDemon && _currentPiece->GetType() != FreeEagle)
 				{
 					if ((y >= 11 && _currentPiece->GetColour() == Black) ||
 						(y <= 4 && _currentPiece->GetColour() == White))
