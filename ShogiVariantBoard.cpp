@@ -18,6 +18,11 @@ std::vector<PieceType> ShogiVariantBoard::GetCapturedPieces(PieceColour pieceCol
 	return result;
 }
 
+void ShogiVariantBoard::AddCapturedPiece(PieceType p, PieceColour pieceColour)
+{
+	_capturedPieces.emplace_back(pieceColour, p);
+}
+
 void ShogiVariantBoard::RemoveCapturedPiece(PieceType p, PieceColour pieceColour)
 {
 	for (size_t index = 0; index < _capturedPieces.size(); index++)

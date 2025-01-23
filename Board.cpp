@@ -42,14 +42,6 @@ int Board::MoveCount()
 	return (_moveCount / 2) + 1;
 }
 
-template <typename T> std::basic_string<T> Board::lowercase(const std::basic_string<T>& s)
-{
-	std::basic_string<T> s2 = s;
-	std::transform(s2.begin(), s2.end(), s2.begin(),
-		[](const T v) { return static_cast<T>(std::tolower(v)); });
-	return s2;
-}
-
 std::string Board::GetFEN()
 {
 	std::string fen;
@@ -65,8 +57,11 @@ std::string Board::GetFEN()
 					fen.append(std::to_string(emptySquares));
 					emptySquares = 0;
 				}
-				std::string sc = _data[i][j]->GetColour() == Black ?
-					lowercase(_data[i][j]->StringCode()) : _data[i][j]->StringCode();
+				std::string sc = _data[i][j]->StringCode();
+				if (_data[i][j]->GetColour() == Black)
+				{
+					std::transform(sc.begin(), sc.end(), sc.begin(), [](const char v) { return static_cast<char>(std::tolower(v)); });
+				}
 				fen.append(sc);
 			}
 			else

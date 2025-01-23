@@ -13,6 +13,7 @@ public:
 	PieceType GetType() const;
 	PieceColour GetColour() const;
 	bool IsPromoted() const;
+	void SetPromoted(bool isPromoted);
 
 protected:
 	Piece(PieceType pieceType, PieceColour pieceColour);

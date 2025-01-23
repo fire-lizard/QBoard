@@ -32,6 +32,11 @@ bool Piece::IsPromoted() const
 	return _isPromoted;
 }
 
+void Piece::SetPromoted(bool isPromoted)
+{
+	_isPromoted = isPromoted;
+}
+
 std::string Piece::GetImageFileName() const
 {
 	const std::string colour = _pieceColour == White ? "White" : "Black";

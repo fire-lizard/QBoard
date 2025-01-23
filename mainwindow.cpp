@@ -203,10 +203,18 @@ template <typename T> std::basic_string<T> MainWindow::uppercase(const std::basi
 	return s2;
 }
 
+template <typename T> std::basic_string<T> MainWindow::lowercase(const std::basic_string<T>& s)
+{
+	std::basic_string<T> s2 = s;
+	std::transform(s2.begin(), s2.end(), s2.begin(),
+		[](const T v) { return static_cast<T>(std::tolower(v)); });
+	return s2;
+}
+
 void MainWindow::on_actionOpen_triggered()
 {
 	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
-	if (gameVariant != WaShogi && gameVariant != ChuShogi && gameVariant != DaiShogi && gameVariant != TenjikuShogi)
+	if (gameVariant != CrazyWa && gameVariant != WaShogi && gameVariant != ChuShogi && gameVariant != DaiShogi && gameVariant != TenjikuShogi)
 	{
 		QFileDialog fileDialog(this);
 		fileDialog.setNameFilter("FEN Files (*.fen)");
@@ -218,6 +226,8 @@ void MainWindow::on_actionOpen_triggered()
 			QFile file(fileName);
 			file.open(QIODevice::ReadOnly | QIODevice::Text);
 			QByteArray str = file.readAll();
+			QStringList parts = QString(str).trimmed().split(' ', Qt::SkipEmptyParts);
+			QString fen = parts[0];
 			file.close();
 			Board* board = this->ui->vboard->GetBoard();
 			board->Clear();
@@ -227,7 +237,7 @@ void MainWindow::on_actionOpen_triggered()
 			std::string promo;
 			do
 			{
-				char c = str[k];
+				char c = fen[k].toLatin1();
 				if (c == '/')
 				{
 					k++;
@@ -275,12 +285,33 @@ void MainWindow::on_actionOpen_triggered()
 						return;
 					}
 					Piece* piece = board->CreatePiece(pieceType, c >= 'a' && c <= 'z' ? Black : White);
+					piece->SetPromoted(promo == "+");
 					board->SetData(i, j, piece);
 					promo = "";
 					k++;
 					i++;
 				}
-			} while (i < w || j < h - 1);
+			} while ((i < w || j < h - 1) && k < fen.size());
+			if (gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
+			{
+				if (parts.size() >= 3)
+				{
+					k = 0;
+					do
+					{
+						// The pieces are always listed in the order rook, bishop, gold, silver, knight, lance, pawn
+						if (parts[2][k] >= 'a' && parts[2][k] <= 'z')
+						{
+							dynamic_cast<ShogiVariantBoard*>(board)->AddCapturedPiece(ShogiPiece::FromStringCode(uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
+						}
+						else if (parts[2][k] >= 'A' && parts[2][k] <= 'Z')
+						{
+							dynamic_cast<ShogiVariantBoard*>(board)->AddCapturedPiece(ShogiPiece::FromStringCode(std::string(1, parts[2][k].toLatin1())), White);
+						}
+						k++;
+					} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z')));
+				}
+			}
 			LoadEngine();
 			if (_engine != nullptr)
 			{
@@ -394,15 +425,24 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
+				QString mcStr = QString::number((ui->vboard->GetBoard()->MoveCount()));
+				auto whiteCapturedPieces = dynamic_cast<ShogiVariantBoard*>(ui->vboard->GetBoard())->GetCapturedPieces(White);
+				auto blackCapturedPieces = dynamic_cast<ShogiVariantBoard*>(ui->vboard->GetBoard())->GetCapturedPieces(Black);
+				QString cpStr;
+				if (whiteCapturedPieces.empty() && blackCapturedPieces.empty())
+				{
+					cpStr = "-";
+				}
+				else
+				{
+					std::for_each(whiteCapturedPieces.begin(), whiteCapturedPieces.end(), [&](PieceType p) {cpStr += ShogiPiece::ToStringCode(p);});
+					std::for_each(blackCapturedPieces.begin(), blackCapturedPieces.end(), [&](PieceType p) {cpStr += lowercase(ShogiPiece::ToStringCode(p));});
+				}
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
-				if (gameVariant == Shogi)
-				{
-					str += this->ui->vboard->GetCurrentPlayer() == Black ? " B - 1" : " W - 1";
-				}
-				else if (gameVariant == MiniShogi || gameVariant == JudkinShogi)
-				{
-					str += this->ui->vboard->GetCurrentPlayer() == Black ? " B" : " W";
-				}
+				str += this->ui->vboard->GetCurrentPlayer() == Black ? " B " : " W ";
+				str += cpStr.toLatin1();
+				str += " ";
+				str += mcStr.toLatin1();
 			}
 			else if (fileDialog.selectedNameFilter() == "KIF Files (*.kif)")
 			{

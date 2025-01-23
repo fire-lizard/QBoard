@@ -44,12 +44,13 @@ std::string ShogiPiece::StringCode()
 	switch (_pieceType)
 	{
 	case King:
-	case Prince:
 		return "K";
+	case Prince:
+		return "+E";
 	case DragonKing:
 		return "+R";
 	case DragonHorse:
-		return "+N";
+		return "+B";
 	case Rook:
 		return "R";
 	case Bishop:
@@ -59,11 +60,15 @@ std::string ShogiPiece::StringCode()
 	case Silver:
 		return "S";
 	case Gold:
-	case Tokin:
-	case PromotedLance:
-	case PromotedKnight:
-	case PromotedSilver:
 		return "G";
+	case Tokin:
+		return "+P";
+	case PromotedLance:
+		return "+L";
+	case PromotedKnight:
+		return "+N";
+	case PromotedSilver:
+		return "+S";
 	case Knight:
 		return "N";
 	case Pawn:
@@ -80,19 +85,49 @@ PieceType ShogiPiece::FromStringCode(const std::string& code)
 	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
 		{"K", King},
 		{"+R", DragonKing},
-		{"+N", DragonHorse},
+		{"+B", DragonHorse},
 		{"R", Rook},
 		{"B", Bishop},
 		{"L", Lance},
+		{"+L", PromotedLance},
 		{"S", Silver},
+		{"+S", PromotedSilver},
 		{"G", Gold},
 		{"N", Knight},
+		{"+N", PromotedKnight},
 		{"P", Pawn},
-		{"E", Elephant}
+		{"+P", Tokin},
+		{"E", Elephant},
+		{"+E", Prince}
 	};
 
 	auto it = codeToPieceType.find(code);
 	return it != codeToPieceType.end() ? it->second : None;
+}
+
+std::string ShogiPiece::ToStringCode(PieceType piece)
+{
+	static const std::unordered_map<PieceType, std::string> pieceTypeToCode = {
+		{King, "K"},
+		{DragonKing, "+R"},
+		{DragonHorse, "+B"},
+		{Rook, "R"},
+		{Bishop, "B"},
+		{Lance, "L"},
+		{PromotedLance, "+L"},
+		{Silver, "S"},
+		{PromotedSilver, "+S"},
+		{Gold, "G"},
+		{Knight, "N"},
+		{PromotedKnight, "+N"},
+		{Pawn, "P"},
+		{Tokin, "+P"},
+		{Elephant, "E"},
+		{Prince, "+E"}
+	};
+
+	auto it = pieceTypeToCode.find(piece);
+	return it != pieceTypeToCode.end() ? it->second : "";
 }
 
 std::string ShogiPiece::LongStringCode() const
