@@ -39,6 +39,7 @@ std::string Piece::GetImageFileName() const
 	switch (_pieceType)
 	{
 	case King:
+	case Prince:
 		return colour + "King.png";
 	case Lion:
 		return colour + "Lion.png";

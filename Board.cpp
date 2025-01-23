@@ -216,7 +216,7 @@ std::vector<std::tuple<int, int, int, int>> Board::GetAllMoves(PieceColour piece
 			if (_data[i][j] != nullptr && _data[i][j]->GetColour() == pieceColour)
 			{
 				GetMoves(_data[i][j], i, j);
-				for_each(_moves.begin(), _moves.end(), [&](std::pair<int, int> p) {result.emplace_back(i, j, p.first, p.second); });
+				for_each(_moves.begin(), _moves.end(), [&](std::pair<int, int> p) {result.emplace_back(i, j, p.first, p.second);});
 			}
 		}
 	}

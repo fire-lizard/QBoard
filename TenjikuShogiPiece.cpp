@@ -231,6 +231,8 @@ std::string TenjikuShogiPiece::GetKanjiImageFileName()
 	{
 	case King:
 		return "King" + colour + ".png";
+	case Prince:
+		return "Prince" + colour + ".png";
 	case Lion:
 		return "Lion" + colour + ".png";
 	case Queen:

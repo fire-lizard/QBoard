@@ -16,7 +16,7 @@ public:
 	static PieceType FromStringCode(const std::string& code);
 
 protected:
-	static void replaceSubstring(std::string& str, const std::string& from, const std::string& to);
 
 private:
+	static void replaceSubstring(std::string& str, const std::string& from, const std::string& to);
 };

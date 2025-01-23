@@ -68,6 +68,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 	switch (piece->GetType())
 	{
 	case King:
+	case Prince:
 		CheckMove(piece, x + 1, y + 1);
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x + 1, y - 1);

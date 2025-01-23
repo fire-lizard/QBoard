@@ -108,15 +108,17 @@ std::string DaiShogiPiece::GetKanjiImageFileName()
 	const std::string colour = _pieceColour == White ? "White" : "Black";
 	if (_isPromoted)
 	{
-		constexpr PieceType pieces[] = { Gold, King };
-
-		if (std::find(std::begin(pieces), std::end(pieces), _pieceType) != std::end(pieces))
+		if (_pieceType == Gold)
 		{
-			replaceSubstring(imageFileName, colour, colour + "Promo");
+			return colour + "PromoGold.png";
 		}
 		else if (_pieceType == WhiteHorse)
 		{
 			return colour + "WhiteHorse.png";
+		}
+		else if (_pieceType == Prince)
+		{
+			return colour + "PromoKing.png";
 		}
 	}
 	else if (_pieceType == Stone)

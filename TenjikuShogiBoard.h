@@ -1,7 +1,12 @@
 #pragma once
+#include <queue>
 #include "Common.h"
 #include "DaiShogiBoard.h"
 #include "TenjikuShogiPiece.h"
+
+struct Position {
+	int x, y, steps;
+};
 
 class TenjikuShogiBoard : public DaiShogiBoard
 {
@@ -19,8 +24,11 @@ protected:
 private:
 	void CheckJump(const Piece* piece, int x, int y, Direction direction);
 	void CheckIgui(const Piece* piece, int x, int y);
+	void GetPossibleMoves(int x, int y);
+	std::vector<std::pair<int, int>> GetEnemyPiecesAround(int x, int y, PieceColour pieceColour) const;
 
 	PieceType _jumpingPieces[4] = { GreatGeneral, ViceGeneral, BishopGeneral, RookGeneral };
+	int _vcMoves[7][7];
 
 	PieceType _initialSetup[16][16] = {
 	{Lance, Knight, Leopard, Iron, Copper, Silver, Gold, Elephant, King, Gold, Silver, Copper, Iron, Leopard, Knight, Lance},

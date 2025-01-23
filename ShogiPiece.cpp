@@ -20,7 +20,7 @@ void ShogiPiece::Promote(PieceType pieceType)
 		_pieceType = DragonHorse;
 		break;
 	case Elephant:
-		_pieceType = King;
+		_pieceType = Prince;
 		break;
 	case Lance:
 		_pieceType = PromotedLance;
@@ -44,6 +44,7 @@ std::string ShogiPiece::StringCode()
 	switch (_pieceType)
 	{
 	case King:
+	case Prince:
 		return "K";
 	case DragonKing:
 		return "D";
@@ -134,7 +135,9 @@ std::string ShogiPiece::KanjiStringCode()
 	switch (_pieceType)
 	{
 	case King:
-		return _basePieceType == Elephant ? "太" : _pieceColour == Black ? "王" : "玉";
+		return _pieceColour == White ? "王" : "玉";
+	case Prince:
+		return "太";
 	case DragonKing:
 		return "竜";
 	case DragonHorse:
@@ -181,6 +184,10 @@ std::string ShogiPiece::GetKanjiImageFileName()
 		else if (_pieceType == DragonKing)
 		{
 			return colour + "CrownedRook.png";
+		}
+		else if (_pieceType == Prince)
+		{
+			return colour + "King.png";
 		}
 	}
 	return imageFileName;

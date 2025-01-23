@@ -492,7 +492,10 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				else
 					_engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
 			}
-			AddMove(promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None ? 'x' : ' ');
+			if (_board->GetData(x, y) != nullptr)
+			{
+				AddMove(promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None ? 'x' : ' ');
+			}
 			_lionMovedOnce = false;
 			FinishMove();
 		}

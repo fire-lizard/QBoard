@@ -33,21 +33,21 @@ enum EngineOutput
 enum PieceType
 {
 	None = 0, King = 1, Lion = 2, Queen = 3, DragonKing = 4, DragonHorse = 5, Rook = 6, Bishop = 7, Knight = 8,
-	VerticalMover = 9, SideMover = 10, Cannon = 11, Lance = 12, Kylin = 13, Phoenix = 14, Elephant = 15,
-	Tiger = 16, Gold = 17, Silver = 18, Copper = 19, Leopard = 20, GoBetween = 21, Pawn = 22,
-	Eagle = 23, Unicorn = 24, FlyingOx = 25, FreeBoar = 26, FlyingStag = 27, WhiteHorse = 28, Whale = 29,
+	VerticalMover = 9, SideMover = 10, Cannon = 11, Lance = 12, Kylin = 13, Phoenix = 14, Elephant = 15, Prince = 16,
+	Tiger = 17, Gold = 18, Silver = 19, Copper = 20, Leopard = 21, GoBetween = 22, Pawn = 23,
+	Eagle = 24, Unicorn = 25, FlyingOx = 26, FreeBoar = 27, FlyingStag = 28, WhiteHorse = 29, Whale = 30,
 	// Promoted Shogi pieces
-	PromotedLance = 30, PromotedKnight = 31, PromotedSilver = 32, Tokin = 33,
+	PromotedLance = 31, PromotedKnight = 32, PromotedSilver = 33, Tokin = 34,
 	// Dai Shogi pieces
-	ViolentOx = 34, FlyingDragon = 35, AngryBoar = 36, CatSword = 37, EvilWolf = 38, Iron = 39, Stone = 40,
+	ViolentOx = 35, FlyingDragon = 36, AngryBoar = 37, CatSword = 38, EvilWolf = 39, Iron = 40, Stone = 41,
 	// Wa Shogi pieces
-	PloddingOx = 41, LiberatedHorse = 42, HeavenlyHorse = 43, SwoopingOwl = 44, CloudEagle = 45,
-	StruttingCrow = 46, FlyingFalcon = 47, FlyingCock = 48, RaidingFalcon = 49, FlyingGoose = 50,
-	ClimbingMonkey = 51, Dog = 52, BearEyes = 53, RunningRabbit = 54, TreacherousFox = 55, TenaciousFalcon = 56,
+	PloddingOx = 42, LiberatedHorse = 43, HeavenlyHorse = 44, SwoopingOwl = 45, CloudEagle = 46,
+	StruttingCrow = 47, FlyingFalcon = 48, FlyingCock = 49, RaidingFalcon = 50, FlyingGoose = 51,
+	ClimbingMonkey = 52, Dog = 53, BearEyes = 54, RunningRabbit = 55, TreacherousFox = 56, TenaciousFalcon = 57,
 	// Tenjiku Shogi pieces
-	ViceGeneral = 57, GreatGeneral = 58, BishopGeneral = 59, RookGeneral = 60, MultiGeneral = 61,
-	FreeEagle = 62, LionHawk = 63, SideSoldier = 64, VerticalSoldier = 65, ChariotSoldier = 66, WaterBuffalo = 67,
-	HeavenlyTetrarch = 68, FireDemon = 69
+	ViceGeneral = 58, GreatGeneral = 59, BishopGeneral = 60, RookGeneral = 61, MultiGeneral = 62,
+	FreeEagle = 63, LionHawk = 64, SideSoldier = 65, VerticalSoldier = 66, ChariotSoldier = 67, WaterBuffalo = 68,
+	HeavenlyTetrarch = 69, FireDemon = 70
 };
 
 enum Direction

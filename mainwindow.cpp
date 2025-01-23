@@ -84,7 +84,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-	aboutStr.append("<center>QBoard 0.8.5 beta<br/>");
+	aboutStr.append("<center>QBoard 0.8.6 beta<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");

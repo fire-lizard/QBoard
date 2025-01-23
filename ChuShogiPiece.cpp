@@ -44,7 +44,7 @@ void ChuShogiPiece::Promote(PieceType pieceType)
 		_pieceType = Queen;
 		break;
 	case Elephant:
-		_pieceType = King;
+		_pieceType = Prince;
 		break;
 	case Tiger:
 		_pieceType = FlyingStag;
@@ -77,6 +77,7 @@ std::string ChuShogiPiece::StringCode()
 	switch (_pieceType)
 	{
 	case King:
+	case Prince:
 		return "K";
 	case Lion:
 		return "N";
@@ -179,7 +180,9 @@ std::string ChuShogiPiece::KanjiStringCode()
 	switch (_pieceType)
 	{
 	case King:
-		return _basePieceType == Elephant ? "太" : _pieceColour == White ? "王" : "玉";
+		return _pieceColour == White ? "王" : "玉";
+	case Prince:
+		return "太";
 	case Lion:
 		return "獅";
 	case Queen:
@@ -261,6 +264,10 @@ std::string ChuShogiPiece::GetKanjiImageFileName()
 		{
 			return colour + "Tokin.png";
 		}
+		else if (_pieceType == Prince)
+		{
+			return colour + "Prince.png";
+		}
 	}
 	return imageFileName;
 }
@@ -273,6 +280,8 @@ std::string ChuShogiPiece::GetMnemonicImageFileName() const
 	{
 	case King:
 		return "King" + colour + ".png";
+	case Prince:
+		return "Prince" + colour + ".png";
 	case Lion:
 		return promo + "Lion" + colour + ".png";
 	case Queen:
