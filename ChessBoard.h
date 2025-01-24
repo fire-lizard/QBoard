@@ -14,8 +14,10 @@ public:
 	void GetMoves(Piece *piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY) override;
 	void WriteMove(const std::string& moveStr);
-	std::string Castling();
-	std::string EnPassant();
+	std::string GetCastling();
+	std::string GetEnPassant();
+	void SetCastling(std::string val);
+	void SetEnPassant(std::string val);
 
 protected:
 

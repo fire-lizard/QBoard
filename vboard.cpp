@@ -147,6 +147,14 @@ void VBoard::paintEvent(QPaintEvent *)
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
+			else if (_gameVariant == Chess && dynamic_cast<ChessBoard*>(_board)->GetEnPassant() != "-" &&
+				dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[0] - 97 == i &&
+				(_currentPlayer == White && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 49 == j || _currentPlayer == Black && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 46 == j))
+			{
+				painter.setBrush(QColorConstants::Svg::blue);
+				painter.drawRect(rect);
+				painter.setBrush(Qt::NoBrush);
+			}
 			else if (std::any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](std::tuple<int, int, int, int> t) {return get<2>(t) == i && get<3>(t) == j; }))
 			{
 				if (_board->GetData(i, j) != nullptr && _board->GetData(i, j)->GetType() == King)

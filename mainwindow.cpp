@@ -292,20 +292,40 @@ void MainWindow::on_actionOpen_triggered()
 					i++;
 				}
 			} while ((i < w || j < h - 1) && k < fen.size());
+			if (gameVariant == Chess)
+			{
+				ChessBoard* cb = dynamic_cast<ChessBoard*>(board);
+				if (parts.size() >= 3)
+				{
+					cb->SetCastling(parts[2].toStdString());
+				}
+				if (parts.size() >= 4)
+				{
+					if (parts[3].size() == 2 && parts[3][0] >= 'a' && parts[3][0] <= 'h' && parts[3][1] >= '1' && parts[3][1] <= '8')
+					{
+						cb->SetEnPassant(parts[3].toStdString());
+					}
+					else
+					{
+						cb->SetEnPassant("-");
+					}
+				}
+			}
 			if (gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
 			{
 				if (parts.size() >= 3)
 				{
+					ShogiVariantBoard* svb = dynamic_cast<ShogiVariantBoard*>(board);
 					k = 0;
 					do
 					{
 						if (parts[2][k] >= 'a' && parts[2][k] <= 'z')
 						{
-							dynamic_cast<ShogiVariantBoard*>(board)->AddCapturedPiece(ShogiPiece::FromStringCode(uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
+							svb->AddCapturedPiece(ShogiPiece::FromStringCode(uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
 						}
 						else if (parts[2][k] >= 'A' && parts[2][k] <= 'Z')
 						{
-							dynamic_cast<ShogiVariantBoard*>(board)->AddCapturedPiece(ShogiPiece::FromStringCode(std::string(1, parts[2][k].toLatin1())), White);
+							svb->AddCapturedPiece(ShogiPiece::FromStringCode(std::string(1, parts[2][k].toLatin1())), White);
 						}
 						k++;
 					} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z')));
@@ -343,8 +363,8 @@ void MainWindow::on_actionSave_triggered()
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
 				QString mcStr = QString::number((ui->vboard->GetBoard()->MoveCount()));
-				QString clStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->Castling()) : "-";
-				QString epStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->EnPassant()) : "-";
+				QString clStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetCastling()) : "-";
+				QString epStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetEnPassant()) : "-";
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
 				str += (clStr + " " + epStr + " 0 " + mcStr).toLatin1();
@@ -364,8 +384,9 @@ void MainWindow::on_actionSave_triggered()
 				const QString pgn = QString::fromStdString(dynamic_cast<ChessBoard*>(this->ui->vboard->GetBoard())->GetPGN());
 				str = (evt + site + currentDate + currentRound + whiteName + blackName + result + pgn).toLatin1();
 			}
+			str += "\n\n";
 			QFile file(fileName);
-			file.open(QIODevice::WriteOnly | QIODevice::Text);
+			file.open(QIODevice::Append | QIODevice::Text);
 			file.write(str);
 			file.close();
 		}
@@ -403,8 +424,9 @@ void MainWindow::on_actionSave_triggered()
 				const QString wxf = "START{\n" + QString::fromStdString(dynamic_cast<XiangqiBoard*>(this->ui->vboard->GetBoard())->GetWXF()) + "\n}END";
 				str = (header + evt + gameTime + result + redName + blackName + currentDate + author + wxf).toLatin1();
 			}
+			str += "\n\n";
 			QFile file(fileName);
-			file.open(QIODevice::WriteOnly | QIODevice::Text);
+			file.open(QIODevice::Append | QIODevice::Text);
 			file.write(str);
 			file.close();
 		}
@@ -471,8 +493,9 @@ void MainWindow::on_actionSave_triggered()
 				const QString psn = QString::fromStdString(dynamic_cast<ShogiBoard*>(this->ui->vboard->GetBoard())->GetPSN());
 				str = (senteName + goteName + psn).toLatin1();
 			}
+			str += "\n\n";
 			QFile file(fileName);
-			file.open(QIODevice::WriteOnly | QIODevice::Text);
+			file.open(QIODevice::Append | QIODevice::Text);
 			file.write(str);
 			file.close();
 		}
@@ -489,8 +512,9 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 			str += this->ui->vboard->GetCurrentPlayer() == Black ? " b" : " w";
+			str += "\n\n";
 			QFile file(fileName);
-			file.open(QIODevice::WriteOnly | QIODevice::Text);
+			file.open(QIODevice::Append | QIODevice::Text);
 			file.write(str);
 			file.close();
 		}

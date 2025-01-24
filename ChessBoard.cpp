@@ -29,6 +29,11 @@ void ChessBoard::Initialize()
 {
 	_moveCount = 0;
 	_pgn = "";
+	_wkc = true;
+	_wqc = true;
+	_bkc = true;
+	_bqc = true;
+	_ep = "-";
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)
@@ -50,7 +55,7 @@ Piece* ChessBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 	return new ChessPiece(pieceType, pieceColour);
 }
 
-std::string ChessBoard::Castling()
+std::string ChessBoard::GetCastling()
 {
 	std::string str;
 	if (_wkc) str += "K";
@@ -61,9 +66,29 @@ std::string ChessBoard::Castling()
 	return str;
 }
 
-std::string ChessBoard::EnPassant()
+std::string ChessBoard::GetEnPassant()
 {
 	return _ep;
+}
+
+void ChessBoard::SetCastling(std::string val)
+{
+	_wkc = false;
+	_wqc = false;
+	_bkc = false;
+	_bqc = false;
+	for (size_t index = 0; index < val.size(); index++)
+	{
+		if (val[index] == 'K') _wkc = true;
+		if (val[index] == 'Q') _wqc = true;
+		if (val[index] == 'k') _bkc = true;
+		if (val[index] == 'q') _bqc = true;
+	}
+}
+
+void ChessBoard::SetEnPassant(std::string val)
+{
+	_ep = val;
 }
 
 void ChessBoard::GetMoves(Piece *piece, int x, int y)
@@ -136,6 +161,16 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 			{
 				CheckMove(piece, x - 1, y + 1);
 			}
+			// En passant
+			if (_ep != "-")
+			{
+				int letter = _ep[0] - 97;
+				int number = _ep[1] - 48;
+				if (abs(x - letter) == 1 && y == number + 1)
+				{
+					CheckMove(piece, letter, number + 2);
+				}
+			}
 		}
 		else
 		{
@@ -155,6 +190,16 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 			{
 				CheckMove(piece, x - 1, y - 1);
 			}
+			// En passant
+			if (_ep != "-")
+			{
+				int letter = _ep[0] - 97;
+				int number = _ep[1] - 48;
+				if (abs(x - letter) == 1 && y == number)
+				{
+					CheckMove(piece, letter, number - 1);
+				}
+			}
 		}
 		break;
 	default:
@@ -172,6 +217,7 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY)
 	if (result)
 	{
 		dynamic_cast<ChessPiece*>(_data[newX][newY])->Move();
+		// Castling
 		if (pieceType == Rook)
 		{
 			if (oldX == 0 && oldY == _height - 1)
@@ -222,6 +268,40 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY)
 			{
 				_bkc = false;
 			}
+		}
+		// En passant
+		if (pieceType == Pawn && abs(oldY - newY) == 2)
+		{
+			_ep = "";
+			char letter = newX + 97;
+			_ep.push_back(letter);
+			_ep.append(oldY == 5 ? "6" : "3");
+		}
+		else if (pieceType == Pawn && _ep != "-")
+		{
+			char letter = newX + 97;
+			int number = _ep[1] - 48;
+			if (letter == _ep[0] &&	((pieceColour == White && newY == number - 1) || (pieceColour == Black && newY == number + 2)))
+			{
+				Piece* p = pieceColour == White ? _data[newX][number] : _data[newX][number + 1];
+				if (p != nullptr && p->GetType() == Pawn && p->GetColour() != pieceColour)
+				{
+					delete p;
+					if (pieceColour == White)
+					{
+						_data[newX][number] = nullptr;
+					}
+					else
+					{
+						_data[newX][number + 1] = nullptr;
+					}
+				}
+			}
+			_ep = "-";
+		}
+		else
+		{
+			_ep = "-";
 		}
 	}
 	return result;
