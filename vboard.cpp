@@ -1202,7 +1202,14 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 {
 	QProcess* p = dynamic_cast<QProcess*>(sender());
 	ReadStandardOutput(p, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, _currentPlayer);
-	_currentPlayer = Black;
+	if (_blackEngine != nullptr && p->state() == QProcess::Running)
+	{
+		_blackEngine->Move();
+	}
+	else 
+	{
+		_currentPlayer = Black;
+	}
 	this->_statusBar->showMessage("Black move");
 	this->repaint();
 }
@@ -1216,7 +1223,14 @@ void VBoard::blackEngineReadyReadStandardOutput()
 {
 	QProcess *p = dynamic_cast<QProcess*>(sender());
 	ReadStandardOutput(p, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, _currentPlayer);
-	_currentPlayer = White;
+	if (_whiteEngine != nullptr && p->state() == QProcess::Running)
+	{
+		_whiteEngine->Move();
+	}
+	else
+	{
+		_currentPlayer = White;
+	}
 	this->_statusBar->showMessage(_gameVariant == Xiangqi ? "Red move" : "White move");
 	this->repaint();
 }
