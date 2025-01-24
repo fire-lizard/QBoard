@@ -84,7 +84,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-	aboutStr.append("<center>QBoard 0.8.6 beta<br/>");
+	aboutStr.append("<center>QBoard 0.8.7 beta<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
@@ -299,7 +299,6 @@ void MainWindow::on_actionOpen_triggered()
 					k = 0;
 					do
 					{
-						// The pieces are always listed in the order rook, bishop, gold, silver, knight, lance, pawn
 						if (parts[2][k] >= 'a' && parts[2][k] <= 'z')
 						{
 							dynamic_cast<ShogiVariantBoard*>(board)->AddCapturedPiece(ShogiPiece::FromStringCode(uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
@@ -426,18 +425,7 @@ void MainWindow::on_actionSave_triggered()
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
 				QString mcStr = QString::number((ui->vboard->GetBoard()->MoveCount()));
-				auto whiteCapturedPieces = dynamic_cast<ShogiVariantBoard*>(ui->vboard->GetBoard())->GetCapturedPieces(White);
-				auto blackCapturedPieces = dynamic_cast<ShogiVariantBoard*>(ui->vboard->GetBoard())->GetCapturedPieces(Black);
-				QString cpStr;
-				if (whiteCapturedPieces.empty() && blackCapturedPieces.empty())
-				{
-					cpStr = "-";
-				}
-				else
-				{
-					std::for_each(whiteCapturedPieces.begin(), whiteCapturedPieces.end(), [&](PieceType p) {cpStr += ShogiPiece::ToStringCode(p);});
-					std::for_each(blackCapturedPieces.begin(), blackCapturedPieces.end(), [&](PieceType p) {cpStr += lowercase(ShogiPiece::ToStringCode(p));});
-				}
+				QString cpStr = QString::fromStdString(dynamic_cast<ShogiVariantBoard*>(ui->vboard->GetBoard())->CapturedPieceString());
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 				str += this->ui->vboard->GetCurrentPlayer() == Black ? " B " : " W ";
 				str += cpStr.toLatin1();
