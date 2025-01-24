@@ -22,6 +22,12 @@ void UciEngine::StartGame(QString variant)
 	_process->write("ucinewgame\n");
 }
 
+void UciEngine::Move()
+{
+	_process->write(QByteArray::fromStdString("position fen " + _fen + "\n"));
+	_process->write("go depth 10\n");
+}
+
 void UciEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	_process->write(QByteArray::fromStdString("position fen " + _fen + " moves "));

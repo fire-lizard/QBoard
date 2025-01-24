@@ -34,7 +34,20 @@
       <x>793</x>
       <y>6</y>
       <width>201</width>
-      <height>511</height>
+      <height>261</height>
+     </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textEdit_2">
+    <property name="geometry">
+     <rect>
+      <x>793</x>
+      <y>270</y>
+      <width>201</width>
+      <height>261</height>
      </rect>
     </property>
     <property name="readOnly">
@@ -48,7 +61,7 @@
      <x>0</x>
      <y>0</y>
      <width>1008</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

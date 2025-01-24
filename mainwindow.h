@@ -51,9 +51,9 @@ public:
 private:
 	void closeEvent(QCloseEvent *) override;
 
-	void LoadEngine();
+	void LoadEngine(Engine *engine, QString engineExe, PieceColour player);
 
-	void StopEngine();
+	void StopEngine(Engine *engine);
 
 	void StartNewGame(GameVariant newGameVariant);
 
@@ -67,10 +67,14 @@ private:
 
 	Ui::MainWindow *ui;
 	QString _currentStyle = "";
-	Engine *_engine = nullptr;
-	QString _engineExe = "";
-	QString _engineName = "";
-	EngineProtocol _engineProtocol = XBoard;
+	Engine* _whiteEngine = nullptr;
+	QString _whiteEngineExe = "";
+	QString _whiteEngineName = "";
+	EngineProtocol _whiteEngineProtocol = XBoard;
+	Engine *_blackEngine = nullptr;
+	QString _blackEngineExe = "";
+	QString _blackEngineName = "";
+	EngineProtocol _blackEngineProtocol = XBoard;
 	QString _settingsDir;
 	QString _settingsFileName = "QBoard.ini";
 	QString _enginesListFileName = "QBoardEngines.xml";

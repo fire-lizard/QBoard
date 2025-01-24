@@ -32,6 +32,16 @@ void QianhongEngine::StartGame(QString variant)
 	_fenSet = false;
 }
 
+void QianhongEngine::Move()
+{
+	if (!_fenSet)
+	{
+		_process->write(QByteArray::fromStdString("FEN " + _fen + "\n"));
+		_fenSet = true;
+	}
+	_process->write("ai\n");
+}
+
 void QianhongEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	if (!_fenSet)

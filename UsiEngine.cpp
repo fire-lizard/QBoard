@@ -22,6 +22,12 @@ void UsiEngine::StartGame(QString variant)
 	_process->write("usinewgame\n");
 }
 
+void UsiEngine::Move()
+{
+	_process->write(QByteArray::fromStdString("position sfen " + _fen + "\n"));
+	_process->write("go depth 10\n");
+}
+
 void UsiEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	_process->write(QByteArray::fromStdString("position sfen " + _fen + " moves "));

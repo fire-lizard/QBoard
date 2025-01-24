@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
 	this->ui->vboard->SetMainWindow(this);
 	this->ui->vboard->SetTextEdit(this->ui->textEdit);
+	this->ui->vboard->SetTextEdit2(this->ui->textEdit_2);
 	this->ui->vboard->SetStatusBar(this->ui->statusBar);
 	QFont font = this->ui->statusBar->font();
 	font.setBold(true);
@@ -148,47 +149,78 @@ void MainWindow::on_actionNew_game_triggered()
 
 	for (auto& engine : _engines)
 	{
-        newGameDialog->GetBlackPlayer()->addItem(std::get<0>(engine));
+		newGameDialog->GetWhitePlayer()->addItem(std::get<0>(engine));
+		newGameDialog->GetBlackPlayer()->addItem(std::get<0>(engine));
     }
 	newGameDialog->exec();
 	if (newGameDialog->result() == QDialog::Accepted)
 	{
         this->ui->textEdit->setText("");
         this->ui->statusBar->showMessage("");
-        const int selectedIndex = newGameDialog->GetBlackPlayer()->currentIndex();
-        if (selectedIndex > 0)
+        const int bpSelectedIndex = newGameDialog->GetBlackPlayer()->currentIndex();
+		const int wpSelectedIndex = newGameDialog->GetWhitePlayer()->currentIndex();
+		if (bpSelectedIndex > 0)
         {
-	        const std::tuple<QString, GameVariant, EngineProtocol, QString> tpl = _engines[selectedIndex - 1];
-			_engineName = std::get<0>(tpl);
-        	_engineProtocol = std::get<2>(tpl);
-            _engineExe = std::get<3>(tpl);
+	        const std::tuple<QString, GameVariant, EngineProtocol, QString> tpl = _engines[bpSelectedIndex - 1];
+			_blackEngineName = std::get<0>(tpl);
+			_blackEngineProtocol = std::get<2>(tpl);
+			_blackEngineExe = std::get<3>(tpl);
         }
-        else _engineExe = "";
-		StopEngine();
-		if (_engineExe != "")
+        else _blackEngineExe = "";
+		if (wpSelectedIndex > 0)
 		{
-			switch (_engineProtocol)
+			const std::tuple<QString, GameVariant, EngineProtocol, QString> tpl = _engines[wpSelectedIndex - 1];
+			_whiteEngineName = std::get<0>(tpl);
+			_whiteEngineProtocol = std::get<2>(tpl);
+			_whiteEngineExe = std::get<3>(tpl);
+		}
+		else _whiteEngineExe = "";
+		StopEngine(_whiteEngine);
+		StopEngine(_blackEngine);
+		if (_blackEngineExe != "")
+		{
+			switch (_blackEngineProtocol)
 			{
 			case UCI:
-				_engine = new UciEngine();
+				_blackEngine = new UciEngine();
 				break;
 			case UCCI:
-				_engine = new UcciEngine();
+				_blackEngine = new UcciEngine();
 				break;
 			case Qianhong:
-				_engine = new QianhongEngine();
+				_blackEngine = new QianhongEngine();
 				break;
 			case USI:
-				_engine = new UsiEngine();
+				_blackEngine = new UsiEngine();
 				break;
 			case XBoard:
-				_engine = new WbEngine();
+				_blackEngine = new WbEngine();
 				break;
 			}
-			LoadEngine();
+			LoadEngine(_blackEngine, _blackEngineExe, Black);
 		}
-		else
-			this->ui->statusBar->showMessage("Engine not set");
+		if (_whiteEngineExe != "")
+		{
+			switch (_whiteEngineProtocol)
+			{
+			case UCI:
+				_whiteEngine = new UciEngine();
+				break;
+			case UCCI:
+				_whiteEngine = new UcciEngine();
+				break;
+			case Qianhong:
+				_whiteEngine = new QianhongEngine();
+				break;
+			case USI:
+				_whiteEngine = new UsiEngine();
+				break;
+			case XBoard:
+				_whiteEngine = new WbEngine();
+				break;
+			}
+			LoadEngine(_whiteEngine, _whiteEngineExe, White);
+		}
 		this->ui->vboard->GetBoard()->Initialize();
 		this->ui->vboard->SetCurrentPlayer(White);
 		this->ui->vboard->repaint();
@@ -331,16 +363,28 @@ void MainWindow::on_actionOpen_triggered()
 					} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z')));
 				}
 			}
-			LoadEngine();
-			if (_engine != nullptr)
+			LoadEngine(_blackEngine, _blackEngineExe, Black);
+			if (_blackEngine != nullptr)
 			{
-				if (_engine->GetType() == XBoard && !dynamic_cast<WbEngine*>(_engine)->GetOption("setboard"))
+				if (_blackEngine->GetType() == XBoard && !dynamic_cast<WbEngine*>(_blackEngine)->GetOption("setboard"))
 				{
-					dynamic_cast<WbEngine*>(_engine)->Edit(ui->vboard->GetBoard());
+					dynamic_cast<WbEngine*>(_blackEngine)->Edit(ui->vboard->GetBoard());
 				}
 				else
 				{
-					_engine->SetFEN(str.toStdString());
+					_blackEngine->SetFEN(str.toStdString());
+				}
+			}
+			LoadEngine(_whiteEngine, _whiteEngineExe, White);
+			if (_whiteEngine != nullptr)
+			{
+				if (_whiteEngine->GetType() == XBoard && !dynamic_cast<WbEngine*>(_whiteEngine)->GetOption("setboard"))
+				{
+					dynamic_cast<WbEngine*>(_whiteEngine)->Edit(ui->vboard->GetBoard());
+				}
+				else
+				{
+					_whiteEngine->SetFEN(str.toStdString());
 				}
 			}
 		}
@@ -379,7 +423,7 @@ void MainWindow::on_actionSave_triggered()
 				const QString currentDate = "[Date \"" + QDate::currentDate().toString("dd/MM/yyyy") + "\"]\n";
 				const QString currentRound = "[Round 1]\n";
 				const QString whiteName = "[White \"" + userName + "\"]\n";
-				const QString blackName = "[Black \"" + _engineName + "\"]\n";
+				const QString blackName = "[Black \"" + _blackEngineName + "\"]\n";
 				const QString result = "[Result \"*\"]\n\n";
 				const QString pgn = QString::fromStdString(dynamic_cast<ChessBoard*>(this->ui->vboard->GetBoard())->GetPGN());
 				str = (evt + site + currentDate + currentRound + whiteName + blackName + result + pgn).toLatin1();
@@ -414,12 +458,12 @@ void MainWindow::on_actionSave_triggered()
 				QString userName = qgetenv("USER");
 				if (userName.isEmpty())
 					userName = qgetenv("USERNAME");
-				const QString evt = "GAME\t" + userName + " vs. " + _engineName + "\n";
+				const QString evt = "GAME\t" + userName + " vs. " + _blackEngineName + "\n";
 				const QString gameTime = "TIME\t00:00 ; 00:00\n";
 				const QString currentDate = "DATE\t" + QDate::currentDate().toString("yyyy-MM-dd") + "\n";
 				const QString author = "AUTHOR\tQBoard (https://github.com/fire-lizard/QBoard)\n\n";
 				const QString redName = "RED\t" + userName + "\n";
-				const QString blackName = "BLACK\t" + _engineName + "\n";
+				const QString blackName = "BLACK\t" + _blackEngineName + "\n";
 				const QString result = "RESULT\t0-0\n";
 				const QString wxf = "START{\n" + QString::fromStdString(dynamic_cast<XiangqiBoard*>(this->ui->vboard->GetBoard())->GetWXF()) + "\n}END";
 				str = (header + evt + gameTime + result + redName + blackName + currentDate + author + wxf).toLatin1();
@@ -461,7 +505,7 @@ void MainWindow::on_actionSave_triggered()
 				kifStr += "# KIF形式棋譜ファイル\n";
 				kifStr += "# Generated by QBoard\n";
 				kifStr += "先手: " + userName + "\n";
-				kifStr += "後手: " + _engineName + "\n";
+				kifStr += "後手: " + _blackEngineName + "\n";
 				kifStr += QString::fromStdString(dynamic_cast<ShogiBoard*>(this->ui->vboard->GetBoard())->GetKIF());
 				str = kifStr.toUtf8();
 			}
@@ -470,7 +514,7 @@ void MainWindow::on_actionSave_triggered()
 				QString csaStr;
 				csaStr += "V2.2\n";
 				csaStr += "N+" + userName + "\n";
-				csaStr += "N-" + _engineName + "\n";
+				csaStr += "N-" + _blackEngineName + "\n";
 				csaStr += "P1-KY-KE-GI-KI-OU-KI-GI-KE-KY\n";
 				csaStr += "P2 * -HI *  *  *  *  * -KA *\n";
 				csaStr += "P3-FU-FU-FU-FU-FU-FU-FU-FU-FU\n";
@@ -489,7 +533,7 @@ void MainWindow::on_actionSave_triggered()
 			else if (fileDialog.selectedNameFilter() == "PSN Files (*.psn)")
 			{
 				const QString senteName = "[Sente \"" + userName + "\"]\n";
-				const QString goteName = "[Gote \"" + _engineName + "\"]\n\n";
+				const QString goteName = "[Gote \"" + _blackEngineName + "\"]\n\n";
 				const QString psn = QString::fromStdString(dynamic_cast<ShogiBoard*>(this->ui->vboard->GetBoard())->GetPSN());
 				str = (senteName + goteName + psn).toLatin1();
 			}
@@ -523,18 +567,21 @@ void MainWindow::on_actionSave_triggered()
 
 void MainWindow::on_actionStop_game_triggered()
 {
-	StopEngine();
+	StopEngine(_whiteEngine);
+	StopEngine(_blackEngine);
 }
 
 void MainWindow::on_actionExit_triggered()
 {
-	StopEngine();
+	StopEngine(_whiteEngine);
+	StopEngine(_blackEngine);
 	QApplication::quit();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	StopEngine();
+	StopEngine(_whiteEngine);
+	StopEngine(_blackEngine);
 }
 
 void MainWindow::on_actionEngine_Manager_triggered()
@@ -550,7 +597,8 @@ void MainWindow::on_actionEngine_Manager_triggered()
 
 void MainWindow::StartNewGame(GameVariant newGameVariant)
 {
-	StopEngine();
+	StopEngine(_whiteEngine);
+	StopEngine(_blackEngine);
 	this->ui->vboard->SetGameVariant(newGameVariant);
 	this->ui->vboard->GetBoard()->Initialize();
 	this->ui->vboard->SetCurrentPlayer(White);
@@ -559,83 +607,94 @@ void MainWindow::StartNewGame(GameVariant newGameVariant)
 	this->ui->vboard->repaint();
 }
 
-void MainWindow::LoadEngine()
+void MainWindow::LoadEngine(Engine* engine, QString engineExe, PieceColour player)
 {
-	if (_engine != nullptr)
+	if (engine != nullptr)
 	{
-		const QProcess* process = _engine->RunProcess(this, _engineExe);
+		const QProcess* process = engine->RunProcess(this, engineExe);
 		if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
 		{
-			if (_engine->GetType() == XBoard)
+			if (engine->GetType() == XBoard)
 			{
 				GameVariant gameVariant = ui->vboard->GetGameVariant();
 				switch (gameVariant)
 				{
 				case MiniShogi:
-					_engine->StartGame("5x5+5_shogi");
+					engine->StartGame("5x5+5_shogi");
 					break;
 				case JudkinShogi:
-					_engine->StartGame("6x6+6_shogi");
+					engine->StartGame("6x6+6_shogi");
 					break;
 				case ShoShogi:
-					_engine->StartGame("sho");
+					engine->StartGame("sho");
 					break;
 				case WaShogi:
-					_engine->StartGame("washogi");
+					engine->StartGame("washogi");
 					break;
 				case CrazyWa:
-					_engine->StartGame("crazywa");
+					engine->StartGame("crazywa");
 					break;
 				case ChuShogi:
-					_engine->StartGame("chu");
+					engine->StartGame("chu");
 					break;
 				case DaiShogi:
-					_engine->StartGame("dai");
+					engine->StartGame("dai");
 					break;
 				case TenjikuShogi:
-					_engine->StartGame("tenjiku");
+					engine->StartGame("tenjiku");
 					break;
 				case Shogi:
-					_engine->StartGame("shogi");
+					engine->StartGame("shogi");
 					break;
 				case Shatranj:
-					_engine->StartGame("shatranj");
+					engine->StartGame("shatranj");
 					break;
 				case Makruk:
-					_engine->StartGame("makruk");
+					engine->StartGame("makruk");
 					break;
 				case Xiangqi:
-					_engine->StartGame("xiangqi");
+					engine->StartGame("xiangqi");
 					break;
 				case Chess:
-					_engine->StartGame("normal");
+					engine->StartGame("normal");
 					break;
 				default:
-					_engine->StartGame();
+					engine->StartGame();
 					break;
 				}
 			}
 			else
 			{
-				_engine->StartGame();
+				engine->StartGame();
 			}
-			connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(readyReadStandardOutput()));
-			connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(readyReadStandardError()));
-            connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(readyReadStandardError()));
-			this->ui->vboard->SetEngine(_engine);
+			if (player == Black)
+			{
+				connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(blackEngineReadyReadStandardOutput()));
+				connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(blackEngineReadyReadStandardError()));
+				connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(blackEngineReadyReadStandardError()));
+				this->ui->vboard->SetBlackEngine(engine);
+			}
+			else
+			{
+				connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(whiteEngineReadyReadStandardOutput()));
+				connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(whiteEngineReadyReadStandardError()));
+				connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(whiteEngineReadyReadStandardError()));
+				this->ui->vboard->SetWhiteEngine(engine);
+				engine->Move();
+			}
 		}
 		else
 			this->ui->statusBar->showMessage("Error while running engine: " + process->errorString());
 	}
 }
 
-void MainWindow::StopEngine()
+void MainWindow::StopEngine(Engine *engine)
 {
-	if (_engine != nullptr)
+	if (engine != nullptr)
 	{
-		_engine->Quit();
-		delete _engine;
-		_engine = nullptr;
+		engine->Quit();
+		delete engine;
+		engine = nullptr;
 	}
 }
 

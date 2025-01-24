@@ -66,6 +66,17 @@ void WbEngine::StartGame(QString variant)
 	}
 }
 
+void WbEngine::Move()
+{
+	if (_memory && !_memorySet)
+	{
+		const QString memoryStr = "memory " + QString::number(_memorySize) + "\n";
+		_process->write(memoryStr.toLatin1());
+		_memorySet = true;
+	}
+	_process->write("go\n");
+}
+
 void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	if (_memory && !_memorySet)

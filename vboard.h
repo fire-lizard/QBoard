@@ -38,9 +38,14 @@ public:
 	PieceColour GetCurrentPlayer() const;
 	void SetCurrentPlayer(PieceColour currentPlayer);
 	void SetTextEdit(QTextEdit *textEdit);
+	void SetTextEdit2(QTextEdit* textEdit);
 	void SetStatusBar(QStatusBar *statusBar);
 	void SetMainWindow(QMainWindow *window);
-	void SetEngine(Engine *engine);
+	void SetWhiteEngine(Engine *engine);
+	void SetBlackEngine(Engine* engine);
+	static void ReadStandardOutput(QProcess* process, Engine* engine, Board* board, QTextEdit* textEdit,
+		GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer);
+	static void ReadStandardError(QProcess* process, QTextEdit* textEdit);
 
 protected:
 	void contextMenuEvent(QContextMenuEvent* event) override;
@@ -55,9 +60,9 @@ private:
 	bool PossibleMove(int x, int y) const;
 	void RemoveMove(int x, int y);
 	void CalculateCheck(int oldX, int oldY, int newX, int newY);
-	void AddMove(PieceType p, int x1, int y1, int x2, int y2, int x3, int y3) const;
-    QByteArray ExtractMove(const QByteArray& buf) const;
 	void FinishMove();
+	static void AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3);
+    static QByteArray ExtractMove(const QByteArray& buf, Engine* engine, GameVariant gameVariant);
 
 	Board *_board;
 	PieceColour _currentPlayer = White;
@@ -74,15 +79,11 @@ private:
 	std::vector<std::tuple<int, int, int, int>> _opponentMoves;
 	QStatusBar *_statusBar;
 	QTextEdit *_textEdit;
+	QTextEdit *_textEdit2;
 	QMainWindow *_window = nullptr;
 	GameVariant _gameVariant = Chess;
-	Engine *_engine = nullptr;
-    QRegularExpression _nlre;
-    QRegularExpression _csre;
-	QRegularExpression _cwre;
-	QRegularExpression _qhre;
-    QRegularExpression _sgxbre;
-    QRegularExpression _sgusre;
+	Engine *_whiteEngine = nullptr;
+	Engine *_blackEngine = nullptr;
 	GameVariant _shogiVariants[9] = {Shogi, MiniShogi, JudkinShogi, ChuShogi, DaiShogi, ShoShogi, WaShogi, CrazyWa, TenjikuShogi};
 	PieceType _lionPieces[4] = { Lion, Eagle, Unicorn, LionHawk };
 	bool _lionMovedOnce = false;
@@ -92,7 +93,11 @@ signals:
 
 	public slots :
 
-	void readyReadStandardOutput();
+	void whiteEngineReadyReadStandardOutput();
 
-	void readyReadStandardError() const;
+	void whiteEngineReadyReadStandardError() const;
+
+	void blackEngineReadyReadStandardOutput();
+
+	void blackEngineReadyReadStandardError() const;
 };
