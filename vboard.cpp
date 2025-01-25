@@ -1202,7 +1202,7 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 {
 	QProcess* p = dynamic_cast<QProcess*>(sender());
 	ReadStandardOutput(p, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, _currentPlayer);
-	if (_blackEngine != nullptr && p->state() == QProcess::Running)
+	if (_blackEngine != nullptr)
 	{
 		_blackEngine->Move();
 	}
@@ -1223,7 +1223,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 {
 	QProcess *p = dynamic_cast<QProcess*>(sender());
 	ReadStandardOutput(p, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, _currentPlayer);
-	if (_whiteEngine != nullptr && p->state() == QProcess::Running)
+	if (_whiteEngine != nullptr)
 	{
 		_whiteEngine->Move();
 	}

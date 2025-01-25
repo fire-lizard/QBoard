@@ -75,6 +75,7 @@ private:
 	QString _blackEngineExe = "";
 	QString _blackEngineName = "";
 	EngineProtocol _blackEngineProtocol = XBoard;
+	QString _userName;
 	QString _settingsDir;
 	QString _settingsFileName = "QBoard.ini";
 	QString _enginesListFileName = "QBoardEngines.xml";

@@ -127,3 +127,82 @@ std::string Piece::GetImageFileName() const
 		return "";
 	}
 }
+
+std::string Piece::Description()
+{
+	switch (_pieceType)
+	{
+	case None: return "None";
+	case King: return "King";
+	case Lion: return "Lion";
+	case Queen: return "Queen";
+	case DragonKing: return "Dragon King";
+	case DragonHorse: return "Dragon Horse";
+	case Rook: return "Rook";
+	case Bishop: return "Bishop";
+	case Knight: return "Knight";
+	case VerticalMover: return "Vertical Mover";
+	case SideMover: return "Side Mover";
+	case Cannon: return "Cannon";
+	case Lance: return "Lance";
+	case Kylin: return "Kylin";
+	case Phoenix: return "Phoenix";
+	case Elephant: return "Elephant";
+	case Prince: return "Prince";
+	case Tiger: return "Tiger";
+	case Gold: return "Gold";
+	case Silver: return "Silver";
+	case Copper: return "Copper";
+	case Leopard: return "Leopard";
+	case GoBetween: return "Go Between";
+	case Pawn: return "Pawn";
+	case Eagle: return "Eagle";
+	case Unicorn: return "Unicorn";
+	case FlyingOx: return "Flying Ox";
+	case FreeBoar: return "Free Boar";
+	case FlyingStag: return "Flying Stag";
+	case WhiteHorse: return "White Horse";
+	case Whale: return "Whale";
+	case PromotedLance: return "Promoted Lance";
+	case PromotedKnight: return "Promoted Knight";
+	case PromotedSilver: return "Promoted Silver";
+	case Tokin: return "Tokin";
+	case ViolentOx: return "Violent Ox";
+	case FlyingDragon: return "Flying Dragon";
+	case AngryBoar: return "Angry Boar";
+	case CatSword: return "Cat Sword";
+	case EvilWolf: return "Evil Wolf";
+	case Iron: return "Iron";
+	case Stone: return "Stone";
+	case PloddingOx: return "Plodding Ox";
+	case LiberatedHorse: return "Liberated Horse";
+	case HeavenlyHorse: return "Heavenly Horse";
+	case SwoopingOwl: return "Swooping Owl";
+	case CloudEagle: return "Cloud Eagle";
+	case StruttingCrow: return "Strutting Crow";
+	case FlyingFalcon: return "Flying Falcon";
+	case FlyingCock: return "Flying Cock";
+	case RaidingFalcon: return "Raiding Falcon";
+	case FlyingGoose: return "Flying Goose";
+	case ClimbingMonkey: return "Climbing Monkey";
+	case Dog: return "Dog";
+	case BearEyes: return "Bear Eyes";
+	case RunningRabbit: return "Running Rabbit";
+	case TreacherousFox: return "Treacherous Fox";
+	case TenaciousFalcon: return "Tenacious Falcon";
+	case ViceGeneral: return "Vice General";
+	case GreatGeneral: return "Great General";
+	case BishopGeneral: return "Bishop General";
+	case RookGeneral: return "Rook General";
+	case MultiGeneral: return "Multi General";
+	case FreeEagle: return "Free Eagle";
+	case LionHawk: return "Lion Hawk";
+	case SideSoldier: return "Side Soldier";
+	case VerticalSoldier: return "Vertical Soldier";
+	case ChariotSoldier: return "Chariot Soldier";
+	case WaterBuffalo: return "Water Buffalo";
+	case HeavenlyTetrarch: return "Heavenly Tetrarch";
+	case FireDemon: return "Fire Demon";
+	default: return "Unknown piece type";
+	}
+}
