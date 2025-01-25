@@ -214,6 +214,7 @@
     <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="JudkinShogiBoard.cpp" />
     <ClCompile Include="KanjiPiece.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MakrukBoard.cpp" />
     <ClCompile Include="MakrukPiece.cpp" />
     <ClCompile Include="MiniShogiBoard.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="IniFile.h" />
     <ClInclude Include="JudkinShogiBoard.h" />
     <ClInclude Include="KanjiPiece.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="MakrukBoard.h" />
     <ClInclude Include="MakrukPiece.h" />
     <ClInclude Include="MiniShogiBoard.h" />

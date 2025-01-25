@@ -430,7 +430,7 @@ void MainWindow::on_actionSave_triggered()
 			}
 			str += "\n\n";
 			QFile file(fileName);
-			file.open(QIODevice::Append | QIODevice::Text);
+			file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
 			file.write(str);
 			file.close();
 		}
@@ -470,7 +470,7 @@ void MainWindow::on_actionSave_triggered()
 			}
 			str += "\n\n";
 			QFile file(fileName);
-			file.open(QIODevice::Append | QIODevice::Text);
+			file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
 			file.write(str);
 			file.close();
 		}
@@ -539,7 +539,7 @@ void MainWindow::on_actionSave_triggered()
 			}
 			str += "\n\n";
 			QFile file(fileName);
-			file.open(QIODevice::Append | QIODevice::Text);
+			file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
 			file.write(str);
 			file.close();
 		}
@@ -558,7 +558,7 @@ void MainWindow::on_actionSave_triggered()
 			str += this->ui->vboard->GetCurrentPlayer() == Black ? " b" : " w";
 			str += "\n\n";
 			QFile file(fileName);
-			file.open(QIODevice::Append | QIODevice::Text);
+			file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
 			file.write(str);
 			file.close();
 		}

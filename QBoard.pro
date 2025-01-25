@@ -25,6 +25,7 @@ SOURCES += main.cpp\
     ChuShogiPiece.cpp \
     Piece.cpp \
     KanjiPiece.cpp \
+    Logger.cpp \
     promotiondialog.cpp \
     settingsdialog.cpp \
     vboard.cpp \
@@ -66,6 +67,7 @@ HEADERS  += mainwindow.h \
     Common.h \
     Piece.h \
     KanjiPiece.h \
+    Logger.h \
     promotiondialog.h \
     settingsdialog.h \
     vboard.h \
