@@ -22,7 +22,7 @@ void WbEngine::SetFEN(std::string fen)
 	_fen = std::move(fen);
 }
 
-void WbEngine::Edit(Board* board)
+void WbEngine::Edit(const Board* board)
 {
 	PieceColour pieceColour = White;
 	_process->write("edit\n");

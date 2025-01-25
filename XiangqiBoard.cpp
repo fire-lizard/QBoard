@@ -83,18 +83,20 @@ void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, South);
 		break;
 	case Elephant:
-        if ((piece->GetColour() == White && y > 5) || piece->GetColour() == Black)
+		if ((piece->GetColour() == White && y > 5) || piece->GetColour() == Black)
+		{
 			if (_data[x - 1][y - 1] == nullptr)
 				CheckMove(piece, x - 2, y - 2);
-        if ((piece->GetColour() == White && y > 5) || piece->GetColour() == Black)
 			if (_data[x + 1][y - 1] == nullptr)
 				CheckMove(piece, x + 2, y - 2);
-        if ((piece->GetColour() == Black && y < 4) || piece->GetColour() == White)
+		}
+		if ((piece->GetColour() == Black && y < 4) || piece->GetColour() == White)
+		{
 			if (_data[x - 1][y + 1] == nullptr)
 				CheckMove(piece, x - 2, y + 2);
-        if ((piece->GetColour() == Black && y < 4) || piece->GetColour() == White)
 			if (_data[x + 1][y + 1] == nullptr)
 				CheckMove(piece, x + 2, y + 2);
+		}
 		break;
 	case Pawn:
 		if (piece->GetColour() == Black)

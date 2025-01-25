@@ -341,7 +341,7 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 std::vector<std::pair<int, int>> TenjikuShogiBoard::GetEnemyPiecesAround(int x, int y, PieceColour pieceColour) const
 {
 	std::vector<std::pair<int, int>> result;
-	int directions[8][2] =
+	const int directions[8][2] =
 	{
 		{0, 1}, {1, 0}, {0, -1}, {-1, 0}, // Right, Down, Left, Up
 		{-1, -1}, {-1, 1}, {1, -1}, {1, 1} // NW, NE, SW, SE
@@ -358,11 +358,11 @@ std::vector<std::pair<int, int>> TenjikuShogiBoard::GetEnemyPiecesAround(int x, 
 		{
 			continue;
 		}
-		else if (_data[i][j] != nullptr && _data[i][j]->GetColour() == pieceColour)
+		else if (_data[i][j]->GetColour() == pieceColour)
 		{
 			continue;
 		}
-		else if (_data[i][j] != nullptr && _data[i][j]->GetColour() != pieceColour)
+		else if (_data[i][j]->GetColour() != pieceColour)
 		{
 			result.emplace_back(i, j);
 		}
@@ -372,7 +372,7 @@ std::vector<std::pair<int, int>> TenjikuShogiBoard::GetEnemyPiecesAround(int x, 
 
 void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 {
-	int directions[8][2] = 
+	const int directions[8][2] = 
 	{
 		{0, 1}, {1, 0}, {0, -1}, {-1, 0}, // Right, Down, Left, Up
 		{-1, -1}, {-1, 1}, {1, -1}, {1, 1} // NW, NE, SW, SE
@@ -418,7 +418,7 @@ void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 
 		if (current.steps == 3) continue;
 
-		for (auto& dir : directions) 
+		for (const auto& dir : directions) 
 		{
 			int newX = current.x + dir[0];
 			int newY = current.y + dir[1];
