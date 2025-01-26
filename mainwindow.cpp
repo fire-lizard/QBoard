@@ -424,11 +424,12 @@ void MainWindow::on_actionSave_triggered()
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
 				QString mcStr = QString::number((ui->vboard->GetBoard()->MoveCount()));
+				QString hmStr = QString::number((dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->HalfMoveCount()));
 				QString clStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetCastling()) : "-";
 				QString epStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetEnPassant()) : "-";
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
-				str += (clStr + " " + epStr + " 0 " + mcStr).toLatin1();
+				str += (clStr + " " + epStr + " " + hmStr + " " + mcStr).toLatin1();
 			}
 			else if (fileDialog.selectedNameFilter() == "PGN Files (*.pgn)")
 			{

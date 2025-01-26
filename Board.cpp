@@ -267,7 +267,7 @@ void Board::GetDefenders(int x, int y, std::vector<std::pair<int, int>>& vec)
 	delete board;
 }
 
-bool Board::operator == (const PieceType other[16][16]) const
+bool Board::operator == (const std::array<std::array<PieceType, 16>, 16>& other) const
 {
 	for (int i = 0; i < _width; i++)
 	{

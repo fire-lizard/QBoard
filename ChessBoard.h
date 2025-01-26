@@ -16,6 +16,7 @@ public:
 	void WriteMove(const std::string& moveStr);
 	std::string GetCastling();
 	std::string GetEnPassant();
+	int HalfMoveCount();
 	void SetCastling(std::string val);
 	void SetEnPassant(std::string val);
 
@@ -37,5 +38,6 @@ private:
 	bool _wqc = true;
 	bool _bkc = true;
 	bool _bqc = true;
+	int _halfMoveCount;
 	std::string _ep = "-";
 };

@@ -28,6 +28,7 @@ Board* ChessBoard::Clone()
 void ChessBoard::Initialize()
 {
 	_moveCount = 0;
+	_halfMoveCount = 0;
 	_pgn = "";
 	_wkc = true;
 	_wqc = true;
@@ -303,8 +304,21 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 		{
 			_ep = "-";
 		}
+		if (pieceType == Pawn || destPieceType != None)
+		{
+			_halfMoveCount = 0;
+		}
+		else
+		{
+			_halfMoveCount++;
+		}
 	}
 	return result;
+}
+
+int ChessBoard::HalfMoveCount()
+{
+	return _halfMoveCount;
 }
 
 void ChessBoard::WriteMove(const std::string& moveStr)
