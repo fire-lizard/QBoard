@@ -188,21 +188,22 @@ void MainWindow::on_actionNew_game_triggered()
 			switch (_blackEngineProtocol)
 			{
 			case UCI:
-				_blackEngine = new UciEngine();
+				_blackEngine = std::make_shared<UciEngine>();
 				break;
 			case UCCI:
-				_blackEngine = new UcciEngine();
+				_blackEngine = std::make_shared<UcciEngine>();
 				break;
 			case Qianhong:
-				_blackEngine = new QianhongEngine();
+				_blackEngine = std::make_shared<QianhongEngine>();
 				break;
 			case USI:
-				_blackEngine = new UsiEngine();
+				_blackEngine = std::make_shared<UsiEngine>();
 				break;
 			case XBoard:
-				_blackEngine = new WbEngine();
+				_blackEngine = std::make_shared<WbEngine>();
 				break;
 			}
+			_blackEngine->SetActive(true);
 			LoadEngine(_blackEngine, _blackEngineExe, Black);
 		}
 		else
@@ -213,21 +214,22 @@ void MainWindow::on_actionNew_game_triggered()
 			switch (_whiteEngineProtocol)
 			{
 			case UCI:
-				_whiteEngine = new UciEngine();
+				_whiteEngine = std::make_shared<UciEngine>();
 				break;
 			case UCCI:
-				_whiteEngine = new UcciEngine();
+				_whiteEngine = std::make_shared<UcciEngine>();
 				break;
 			case Qianhong:
-				_whiteEngine = new QianhongEngine();
+				_whiteEngine = std::make_shared<QianhongEngine>();
 				break;
 			case USI:
-				_whiteEngine = new UsiEngine();
+				_whiteEngine = std::make_shared<UsiEngine>();
 				break;
 			case XBoard:
-				_whiteEngine = new WbEngine();
+				_whiteEngine = std::make_shared<WbEngine>();
 				break;
 			}
+			_whiteEngine->SetActive(true);
 			LoadEngine(_whiteEngine, _whiteEngineExe, White);
 		}
 		else
@@ -375,24 +377,24 @@ void MainWindow::on_actionOpen_triggered()
 					} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z')));
 				}
 			}
-			LoadEngine(_blackEngine, _blackEngineExe, Black);
-			if (_blackEngine != nullptr)
+			if (_blackEngine != nullptr && _blackEngine->IsActive())
 			{
-				if (_blackEngine->GetType() == XBoard && !dynamic_cast<WbEngine*>(_blackEngine)->GetOption("setboard"))
+				LoadEngine(_blackEngine, _blackEngineExe, Black);
+				if (_blackEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_blackEngine)->GetOption("setboard"))
 				{
-					dynamic_cast<WbEngine*>(_blackEngine)->Edit(ui->vboard->GetBoard());
+					std::dynamic_pointer_cast<WbEngine>(_blackEngine)->Edit(ui->vboard->GetBoard());
 				}
 				else
 				{
 					_blackEngine->SetFEN(str.toStdString());
 				}
 			}
-			LoadEngine(_whiteEngine, _whiteEngineExe, White);
-			if (_whiteEngine != nullptr)
+			if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 			{
-				if (_whiteEngine->GetType() == XBoard && !dynamic_cast<WbEngine*>(_whiteEngine)->GetOption("setboard"))
+				LoadEngine(_whiteEngine, _whiteEngineExe, White);
+				if (_whiteEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->GetOption("setboard"))
 				{
-					dynamic_cast<WbEngine*>(_whiteEngine)->Edit(ui->vboard->GetBoard());
+					std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->Edit(ui->vboard->GetBoard());
 				}
 				else
 				{
@@ -610,7 +612,7 @@ void MainWindow::StartNewGame(GameVariant newGameVariant)
 	this->ui->vboard->repaint();
 }
 
-void MainWindow::LoadEngine(Engine* engine, QString engineExe, PieceColour player)
+void MainWindow::LoadEngine(std::shared_ptr<Engine> engine, QString engineExe, PieceColour player)
 {
 	if (engine != nullptr)
 	{
@@ -691,12 +693,13 @@ void MainWindow::LoadEngine(Engine* engine, QString engineExe, PieceColour playe
 	}
 }
 
-void MainWindow::StopEngine(Engine *engine)
+void MainWindow::StopEngine(std::shared_ptr<Engine> engine)
 {
-	if (engine != nullptr)
+	if (engine)
 	{
+		engine->SetActive(false);
 		engine->Quit();
-		engine = nullptr;
+		engine.reset();
 	}
 }
 

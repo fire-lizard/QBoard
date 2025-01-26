@@ -41,9 +41,9 @@ public:
 	void SetTextEdit2(QTextEdit* textEdit);
 	void SetStatusBar(QStatusBar *statusBar);
 	void SetMainWindow(QMainWindow *window);
-	void SetWhiteEngine(Engine *engine);
-	void SetBlackEngine(Engine *engine);
-	static void ReadStandardOutput(QProcess* process, Engine* engine, Board* board, QTextEdit* textEdit,
+	void SetWhiteEngine(std::shared_ptr<Engine> engine);
+	void SetBlackEngine(std::shared_ptr<Engine> engine);
+	static void ReadStandardOutput(QProcess* process, std::shared_ptr<Engine> engine, Board* board, QTextEdit* textEdit,
 		GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer);
 	static void ReadStandardError(QProcess* process, QTextEdit* textEdit);
 
@@ -82,8 +82,8 @@ private:
 	QTextEdit *_textEdit2;
 	QMainWindow *_window = nullptr;
 	GameVariant _gameVariant = Chess;
-	Engine *_whiteEngine = nullptr;
-	Engine *_blackEngine = nullptr;
+	std::shared_ptr<Engine> _whiteEngine = nullptr;
+	std::shared_ptr<Engine> _blackEngine = nullptr;
 	GameVariant _shogiVariants[9] = {Shogi, MiniShogi, JudkinShogi, ChuShogi, DaiShogi, ShoShogi, WaShogi, CrazyWa, TenjikuShogi};
 	PieceType _lionPieces[4] = { Lion, Eagle, Unicorn, LionHawk };
 	bool _lionMovedOnce = false;

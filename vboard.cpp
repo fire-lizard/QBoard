@@ -262,8 +262,9 @@ void VBoard::FinishMove()
 
 void VBoard::mousePressEvent(QMouseEvent* event)
 {
-	if ((_blackEngine != nullptr && _currentPlayer == Black) || (_whiteEngine != nullptr && _currentPlayer == White)) return;
-	Engine* engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
+	if ((_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black) ||
+		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;
+	std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
 	const int x = static_cast<int>(event->position().x()) / w;
@@ -276,7 +277,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	{
 		_board->SetData(x, y, _currentPiece);
 		_board->SetData(4, y, p);
-		if (engine != nullptr)
+		if (engine != nullptr && engine->IsActive())
 		{
 			engine->Move(_oldX, _board->GetHeight() - _oldY, x == 7 ? 6 : 2, _board->GetHeight() - y, ' ');
 		}
@@ -309,7 +310,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
-					if (engine != nullptr)
+					if (engine != nullptr && engine->IsActive())
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
@@ -321,7 +322,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
-					if (engine != nullptr)
+					if (engine != nullptr && engine->IsActive())
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
@@ -341,9 +342,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		{
 			if (dynamic_cast<ChuShogiBoard*>(_board)->LionMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 			{
-				if (engine != nullptr)
+				if (engine != nullptr && engine->IsActive())
 				{
-					dynamic_cast<WbEngine*>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
+					std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 				}
 				AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
 				_lionMovedOnce = false;
@@ -495,7 +496,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					}
 				}
 			}
-			if (engine != nullptr)
+			if (engine != nullptr && engine->IsActive())
 			{
 				if (_gameVariant == Xiangqi)
 					engine->Move(_oldX, _board->GetHeight() - _oldY - 1, x, _board->GetHeight() - y - 1, promotion);
@@ -516,9 +517,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	{
 		if (dynamic_cast<ChuShogiBoard*>(_board)->LionMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 		{
-			if (engine != nullptr)
+			if (engine != nullptr && engine->IsActive())
 			{
-				dynamic_cast<WbEngine*>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
+				std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 			}
 			AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
 			_lionMovedOnce = false;
@@ -592,11 +593,11 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 {
 	if (_whiteEngine != nullptr)
 	{
-		_whiteEngine = nullptr;
+		_whiteEngine->SetActive(false);
 	}
 	if (_blackEngine != nullptr)
 	{
-		_blackEngine = nullptr;
+		_blackEngine->SetActive(false);
 	}
 	_currentPiece = nullptr;
 	_moves.clear();
@@ -782,12 +783,12 @@ void VBoard::SetMainWindow(QMainWindow *window)
 	_window = window;
 }
 
-void VBoard::SetWhiteEngine(Engine* engine)
+void VBoard::SetWhiteEngine(std::shared_ptr<Engine> engine)
 {
 	_whiteEngine = engine;
 }
 
-void VBoard::SetBlackEngine(Engine* engine)
+void VBoard::SetBlackEngine(std::shared_ptr<Engine> engine)
 {
 	_blackEngine = engine;
 }
@@ -895,20 +896,20 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf, EngineProtocol engineProto
 	return result;
 }
 
-void VBoard::ReadStandardOutput(QProcess *process, Engine *engine, Board *board, QTextEdit *textEdit,
+void VBoard::ReadStandardOutput(QProcess *process, std::shared_ptr<Engine> engine, Board *board, QTextEdit *textEdit,
 	GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer)
 {
-	if (engine == nullptr) return;
+	if (engine == nullptr || !engine->IsActive()) return;
 	const QByteArray buf = process->readAllStandardOutput();
 	if (engine->GetType() == XBoard)
 	{
 		const QString str = QString(buf);
-		if (str.contains("setboard=0")) dynamic_cast<WbEngine*>(engine)->SetOption("setboard", false);
-		if (str.contains("setboard=1")) dynamic_cast<WbEngine*>(engine)->SetOption("setboard", true);
-		if (str.contains("memory=0")) dynamic_cast<WbEngine*>(engine)->SetOption("memory", false);
-		if (str.contains("memory=1")) dynamic_cast<WbEngine*>(engine)->SetOption("memory", true);
-		if (str.contains("usermove=0")) dynamic_cast<WbEngine*>(engine)->SetOption("usermove", false);
-		if (str.contains("usermove=1")) dynamic_cast<WbEngine*>(engine)->SetOption("usermove", true);
+		if (str.contains("setboard=0")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("setboard", false);
+		if (str.contains("setboard=1")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("setboard", true);
+		if (str.contains("memory=0")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("memory", false);
+		if (str.contains("memory=1")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("memory", true);
+		if (str.contains("usermove=0")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("usermove", false);
+		if (str.contains("usermove=1")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("usermove", true);
 	}
 	int x1, y1, x2, y2;
 	const QByteArray moveArray = ExtractMove(buf, engine->GetType(), gameVariant);
@@ -982,7 +983,7 @@ void VBoard::ReadStandardOutput(QProcess *process, Engine *engine, Board *board,
 				}
 				board->SetData(x2, y2, nullptr);
 				AddMove(board, gameVariant, board->GetData(x3, y3)->GetType(), x1, y1, x2, y2, x3, y3);
-				dynamic_cast<WbEngine*>(engine)->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
+				std::dynamic_pointer_cast<WbEngine>(engine)->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
 			}
 		}
 	}
@@ -1202,7 +1203,7 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 {
 	QProcess* p = dynamic_cast<QProcess*>(sender());
 	ReadStandardOutput(p, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, _currentPlayer);
-	if (_blackEngine != nullptr)
+	if (_blackEngine != nullptr && _blackEngine->IsActive())
 	{
 		_blackEngine->Move();
 	}
@@ -1223,7 +1224,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 {
 	QProcess *p = dynamic_cast<QProcess*>(sender());
 	ReadStandardOutput(p, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, _currentPlayer);
-	if (_whiteEngine != nullptr)
+	if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 	{
 		_whiteEngine->Move();
 	}
@@ -1243,6 +1244,8 @@ void VBoard::blackEngineReadyReadStandardError() const
 void VBoard::contextMenuEvent(QContextMenuEvent* event)
 {
 	if (_gameVariant != Shogi && _gameVariant != MiniShogi && _gameVariant != JudkinShogi && _gameVariant != CrazyWa) return;
+	if ((_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black) ||
+		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;
 
 	QMenu menu(this);
 
@@ -1338,8 +1341,8 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		dynamic_cast<ShogiVariantBoard*>(_board)->PlacePiece(newPiece, _currentPlayer, x, y);
 		Piece* p = _board->GetData(x, y);
 		const char sc = p->StringCode()[0];
-		Engine* engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
-		if (engine != nullptr)
+		std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
+		if (engine != nullptr && engine->IsActive())
 		{
 			if (engine->GetType() == USI)
 				engine->Move(sc, '*', _board->GetWidth() - x, y, ' ');

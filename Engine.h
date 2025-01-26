@@ -15,6 +15,8 @@ public:
 	virtual ~Engine();
 	virtual QProcess* RunProcess(QObject *parentObject, const QString& engineExe);
 	void Quit() const;
+	bool IsActive() const;
+	void SetActive(bool val);
 	virtual void SetFEN(std::string fen);
 	virtual EngineProtocol GetType() = 0;
 	virtual void StartGame(QString variant = "") = 0;
@@ -24,6 +26,7 @@ public:
 
 protected:
 	mutable std::unique_ptr<QProcess> _process = nullptr;
+	bool _isActive = false;
 	std::vector<QByteArray> _moves;
 	std::string _fen;
 

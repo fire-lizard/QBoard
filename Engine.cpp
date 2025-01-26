@@ -30,6 +30,16 @@ void Engine::Quit() const
 	}
 }
 
+bool Engine::IsActive() const
+{
+	return _isActive;
+}
+
+void Engine::SetActive(bool val)
+{
+	_isActive = val;
+}
+
 void Engine::SetFEN(std::string fen)
 {
 	_fen = std::move(fen);
