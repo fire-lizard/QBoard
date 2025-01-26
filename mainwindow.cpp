@@ -159,7 +159,8 @@ void MainWindow::on_actionNew_game_triggered()
 	if (newGameDialog->result() == QDialog::Accepted)
 	{
         this->ui->textEdit->setText("");
-        this->ui->statusBar->showMessage("");
+		this->ui->textEdit_2->setText("");
+		this->ui->statusBar->showMessage("");
         const int bpSelectedIndex = newGameDialog->GetBlackPlayer()->currentIndex();
 		const int wpSelectedIndex = newGameDialog->GetWhitePlayer()->currentIndex();
 
@@ -203,6 +204,7 @@ void MainWindow::on_actionNew_game_triggered()
 				_blackEngine = std::make_shared<WbEngine>();
 				break;
 			}
+			_blackEngine->SetTextEdit(ui->textEdit_2);
 			_blackEngine->SetActive(true);
 			LoadEngine(_blackEngine, _blackEngineExe, Black);
 		}
@@ -229,6 +231,7 @@ void MainWindow::on_actionNew_game_triggered()
 				_whiteEngine = std::make_shared<WbEngine>();
 				break;
 			}
+			_whiteEngine->SetTextEdit(ui->textEdit);
 			_whiteEngine->SetActive(true);
 			LoadEngine(_whiteEngine, _whiteEngineExe, White);
 		}
@@ -608,6 +611,7 @@ void MainWindow::StartNewGame(GameVariant newGameVariant)
 	this->ui->vboard->GetBoard()->Initialize();
 	this->ui->vboard->SetCurrentPlayer(White);
 	this->ui->textEdit->setText("");
+	this->ui->textEdit_2->setText("");
 	this->ui->statusBar->showMessage(newGameVariant == Xiangqi ? "Red move" : "White move");
 	this->ui->vboard->repaint();
 }

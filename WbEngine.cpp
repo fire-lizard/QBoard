@@ -18,7 +18,7 @@ void WbEngine::SetFEN(std::string fen)
 {
 	if (_setboard)
 	{
-		_process->write(QByteArray::fromStdString("setboard " + _fen + "\n"));
+		WriteToProcess(QByteArray::fromStdString("setboard " + _fen + "\n"));
 	}
 	_fen = std::move(fen);
 }
@@ -26,8 +26,8 @@ void WbEngine::SetFEN(std::string fen)
 void WbEngine::Edit(const Board* board)
 {
 	PieceColour pieceColour = White;
-	_process->write("edit\n");
-	//_process->write("#\n");
+	WriteToProcess("edit\n");
+	//WriteToProcess("#\n");
 	for (int j = 0; j < board->GetHeight(); j++)
 	{
 		for (int i = 0; i < board->GetWidth(); i++)
@@ -41,7 +41,7 @@ void WbEngine::Edit(const Board* board)
 				PieceColour newPieceColour = p->GetColour();
 				if (newPieceColour != pieceColour)
 				{
-					_process->write("c\n");
+					WriteToProcess("c\n");
 					pieceColour = newPieceColour;
 				}
 				str += p->StringCode();
@@ -53,22 +53,22 @@ void WbEngine::Edit(const Board* board)
 			str.push_back(letter);
 			str += std::to_string(number);
 			str.push_back('\n');
-			_process->write(QByteArray::fromStdString(str));
+			WriteToProcess(QByteArray::fromStdString(str));
 		}
 	}
-	_process->write(".\n");
+	WriteToProcess(".\n");
 }
 
 void WbEngine::StartGame(QString variant)
 {
 	_moves.clear();
-	_process->write("xboard\n");
-	_process->write("protover\n");
-	_process->write("new\n");
+	WriteToProcess("xboard\n");
+	WriteToProcess("protover\n");
+	WriteToProcess("new\n");
 	if (variant != "")
 	{
 		const QString str = "variant " + variant + "\n";
-		_process->write(str.toLatin1());
+		WriteToProcess(str.toLatin1());
 	}
 }
 
@@ -77,10 +77,10 @@ void WbEngine::Move()
 	if (_memory && !_memorySet)
 	{
 		const QString memoryStr = "memory " + QString::number(_memorySize) + "\n";
-		_process->write(memoryStr.toLatin1());
+		WriteToProcess(memoryStr.toLatin1());
 		_memorySet = true;
 	}
-	_process->write("go\n");
+	WriteToProcess("go\n");
 }
 
 void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
@@ -88,17 +88,17 @@ void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char 
 	if (_memory && !_memorySet)
 	{
 		const QString memoryStr = "memory " + QString::number(_memorySize) + "\n";
-		_process->write(memoryStr.toLatin1());
+		WriteToProcess(memoryStr.toLatin1());
 		_memorySet = true;
 	}
-	_process->write(AddMove(x1, y1, x2, y2, promotion));
-	_process->write("\n");
+	WriteToProcess(AddMove(x1, y1, x2, y2, promotion));
+	WriteToProcess("\n");
 }
 
 void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, signed char x3, signed char y3)
 {
-	_process->write(AddMove(x1, y1, x2, y2, x3, y3));
-	_process->write("\n");
+	WriteToProcess(AddMove(x1, y1, x2, y2, x3, y3));
+	WriteToProcess("\n");
 }
 
 QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)

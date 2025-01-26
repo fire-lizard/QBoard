@@ -40,8 +40,14 @@ void Engine::SetActive(bool val)
 	_isActive = val;
 }
 
+void Engine::SetTextEdit(QTextEdit* textEdit)
+{
+	_textEdit = textEdit;
+}
+
 void Engine::WriteToProcess(QByteArray buf)
 {
+	_textEdit->append(buf);
 	_process->write(buf);
 }
 

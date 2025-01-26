@@ -18,34 +18,34 @@ EngineProtocol UciEngine::GetType()
 void UciEngine::StartGame(QString variant)
 {
 	_moves.clear();
-	_process->write("uci\n");
-	_process->write("isready\n");
-	_process->write("ucinewgame\n");
+	WriteToProcess("uci\n");
+	WriteToProcess("isready\n");
+	WriteToProcess("ucinewgame\n");
 }
 
 void UciEngine::Move()
 {
-	_process->write(QByteArray::fromStdString("position fen " + _fen + " moves "));
+	WriteToProcess(QByteArray::fromStdString("position fen " + _fen + " moves "));
 	for (auto& _move : _moves)
 	{
-		_process->write(_move);
-		_process->write(" ");
+		WriteToProcess(_move);
+		WriteToProcess(" ");
 	}
-	_process->write("\n");
-	_process->write("go depth 10\n");
+	WriteToProcess("\n");
+	WriteToProcess("go depth 10\n");
 }
 
 void UciEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
-	_process->write(QByteArray::fromStdString("position fen " + _fen + " moves "));
+	WriteToProcess(QByteArray::fromStdString("position fen " + _fen + " moves "));
 	for (auto& _move : _moves)
 	{
-		_process->write(_move);
-		_process->write(" ");
+		WriteToProcess(_move);
+		WriteToProcess(" ");
     }
-	_process->write(AddMove(x1, y1, x2, y2, promotion));
-	_process->write("\n");
-	_process->write("go depth 10\n");
+	WriteToProcess(AddMove(x1, y1, x2, y2, promotion));
+	WriteToProcess("\n");
+	WriteToProcess("go depth 10\n");
 }
 
 QByteArray UciEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)

@@ -537,13 +537,13 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		if (std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) == std::end(_shogiVariants))
 		{
 			std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
-				{
-					CalculateCheck(x, y, t.first, t.second);
-				});
+			{
+				CalculateCheck(x, y, t.first, t.second);
+			});
 			std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
-				{
-					CalculateCheck(x, y, t.first, t.second);
-				});
+			{
+				CalculateCheck(x, y, t.first, t.second);
+			});
 		}
 		this->repaint();
 	}
@@ -994,7 +994,7 @@ void VBoard::ReadStandardOutput(QProcess *process, std::shared_ptr<Engine> engin
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
 		{
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
-			board->Move(x1, y1, x2, y2);
+			board->Move(x1, y1, x2, y2, false);
 			AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, ' ', ' ');
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 		}
@@ -1021,7 +1021,7 @@ void VBoard::ReadStandardOutput(QProcess *process, std::shared_ptr<Engine> engin
 				&& (moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r' || moveArray[4] == 'q');
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
 			const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
-			board->Move(x1, y1, x2, y2);
+			board->Move(x1, y1, x2, y2, false);
 			AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ct != None ? 'x' : ' ');
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
 			if (isPromoted)
@@ -1053,7 +1053,7 @@ void VBoard::ReadStandardOutput(QProcess *process, std::shared_ptr<Engine> engin
 			const bool isPromoted = board->GetData(x1, y1)->GetType() == Pawn && (y2 == 0 || y2 == board->GetHeight() - 1);
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
 			const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
-			board->Move(x1, y1, x2, y2);
+			board->Move(x1, y1, x2, y2, false);
 			AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, ' ', ct != None ? 'x' : ' ');
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 			if (isPromoted)
@@ -1069,7 +1069,7 @@ void VBoard::ReadStandardOutput(QProcess *process, std::shared_ptr<Engine> engin
 			const bool isPromoted = board->GetData(x1, y1)->GetType() == Pawn && (y2 <= 2 || y2 >= board->GetHeight() - 3);
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
 			const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
-			board->Move(x1, y1, x2, y2);
+			board->Move(x1, y1, x2, y2, false);
 			AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, ' ', ct != None ? 'x' : ' ');
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 			if (isPromoted)
@@ -1182,7 +1182,7 @@ void VBoard::ReadStandardOutput(QProcess *process, std::shared_ptr<Engine> engin
 					|| ((gameVariant == Shogi || gameVariant == ShoShogi) && (y2 <= 2 || y2 >= 6) && moveArray[4] == '+')
 					|| ((gameVariant == WaShogi || gameVariant == CrazyWa) && (y2 <= 2 || y2 >= 8) && moveArray[4] == '+'));
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
-			board->Move(x1, y1, x2, y2);
+			board->Move(x1, y1, x2, y2, false);
 			AddMove(board, gameVariant, isPromoted ? board->GetData(x2, y2)->GetBaseType() : board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ' ');
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
 			if (isPromoted)

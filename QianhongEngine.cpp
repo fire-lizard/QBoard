@@ -37,22 +37,22 @@ void QianhongEngine::Move()
 {
 	if (!_fenSet)
 	{
-		_process->write(QByteArray::fromStdString("FEN " + _fen + "\n"));
+		WriteToProcess(QByteArray::fromStdString("FEN " + _fen + "\n"));
 		_fenSet = true;
 	}
-	_process->write("ai\n");
+	WriteToProcess("ai\n");
 }
 
 void QianhongEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	if (!_fenSet)
 	{
-		_process->write(QByteArray::fromStdString("FEN " + _fen + "\n"));
+		WriteToProcess(QByteArray::fromStdString("FEN " + _fen + "\n"));
 		_fenSet = true;
 	}
-	_process->write(AddMove(x1, y1, x2, y2, promotion));
-	_process->write("\n");
-	_process->write("ai\n");
+	WriteToProcess(AddMove(x1, y1, x2, y2, promotion));
+	WriteToProcess("\n");
+	WriteToProcess("ai\n");
 }
 
 QByteArray QianhongEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)

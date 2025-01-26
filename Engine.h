@@ -1,6 +1,7 @@
 #pragma once
 #include <QProcess>
 #include <QFileInfo>
+#include <QTextEdit>
 #include "Common.h"
 
 constexpr signed char operator "" _c(unsigned long long arg) noexcept
@@ -17,6 +18,7 @@ public:
 	void Quit() const;
 	bool IsActive() const;
 	void SetActive(bool val);
+	void SetTextEdit(QTextEdit* textEdit);
 	void WriteToProcess(QByteArray buf);
 	virtual void SetFEN(std::string fen);
 	virtual EngineProtocol GetType() = 0;
@@ -27,6 +29,7 @@ public:
 
 protected:
 	mutable std::unique_ptr<QProcess> _process = nullptr;
+	QTextEdit *_textEdit;
 	bool _isActive = false;
 	std::vector<QByteArray> _moves;
 	std::string _fen;
