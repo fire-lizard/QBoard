@@ -18,7 +18,7 @@ void WbEngine::SetFEN(std::string fen)
 {
 	if (_setboard)
 	{
-		WriteToProcess(QByteArray::fromStdString("setboard " + _fen + "\n"));
+		WriteToProcess(QByteArray::fromStdString("setboard " + fen + "\n"));
 	}
 	_fen = std::move(fen);
 }

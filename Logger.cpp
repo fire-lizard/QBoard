@@ -19,10 +19,10 @@ void Logger::writeToLog(const QString& message, const LogLevel level)
     QString levelStr;
     switch (level)
     {
-    Warning:
+    case LogLevel::Warning:
         levelStr = "WARNING";
         break;
-    Error:
+    case LogLevel::Error:
         levelStr = "ERROR";
         break;
     default:

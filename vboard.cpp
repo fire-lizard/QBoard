@@ -1200,7 +1200,12 @@ void VBoard::ReadStandardOutput(QProcess *process, std::shared_ptr<Engine> engin
 void VBoard::ReadStandardError(QProcess *process, QTextEdit *textEdit)
 {
 	const QByteArray buf = process->readAllStandardError();
-	textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
+	if (!buf.isEmpty())
+	{
+		Logger::writeToLog("Error while running process " + process->program(), LogLevel::Error);
+		Logger::writeToLog(buf, LogLevel::Error);
+		textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
+	}
 }
 
 void VBoard::whiteEngineReadyReadStandardOutput()

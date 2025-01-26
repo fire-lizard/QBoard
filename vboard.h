@@ -21,6 +21,7 @@
 #include "MakrukBoard.h"
 #include "XiangqiPiece.h"
 #include "promotiondialog.h"
+#include "Logger.h"
 
 class VBoard : public QWidget
 {

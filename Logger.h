@@ -5,11 +5,11 @@
 #include <QDateTime>
 #include <QDebug>
 
-enum LogLevel {Info, Warning, Error};
+enum class LogLevel {Info, Warning, Error};
 
 class Logger
 {
 public:
-	static void writeToLog(const QString& message, const LogLevel level = Info);
+	static void writeToLog(const QString& message, const LogLevel level = LogLevel::Info);
 };
 
