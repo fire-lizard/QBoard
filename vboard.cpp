@@ -792,7 +792,7 @@ void VBoard::SetBlackEngine(Engine* engine)
 	_blackEngine = engine;
 }
 
-QByteArray VBoard::ExtractMove(const QByteArray& buf, Engine *engine, GameVariant gameVariant)
+QByteArray VBoard::ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant)
 {
 	const QRegularExpression _nlre = QRegularExpression("[\r\n]+");
 	const QRegularExpression _csre = QRegularExpression(R"(([a-p])(1[0-6]|[0-9])([a-p])(1[0-6]|[0-9])([+nbrq])?)");
@@ -804,9 +804,9 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf, Engine *engine, GameVarian
 	QStringList parts = QString(buf).trimmed().split(_nlre, Qt::SkipEmptyParts);
 	for (auto& part : parts)
 	{
-		if (engine->GetType() == XBoard ? part.startsWith("move ") : part.startsWith("bestmove "))
+		if (engineProtocol == XBoard ? part.startsWith("move ") : part.startsWith("bestmove "))
 		{
-            if (engine->GetType() == USI)
+            if (engineProtocol == USI)
             {
                 QRegularExpressionMatch match = _sgusre.match(part);
                 if (match.hasMatch())
@@ -876,7 +876,7 @@ QByteArray VBoard::ExtractMove(const QByteArray& buf, Engine *engine, GameVarian
                 }
             }
 		}
-        else if (engine->GetType() == Qianhong)
+        else if (engineProtocol == Qianhong)
         {
             QRegularExpressionMatch match = _qhre.match(part);
             if (match.hasMatch())
@@ -911,7 +911,7 @@ void VBoard::ReadStandardOutput(QProcess *process, Engine *engine, Board *board,
 		if (str.contains("usermove=1")) dynamic_cast<WbEngine*>(engine)->SetOption("usermove", true);
 	}
 	int x1, y1, x2, y2;
-	const QByteArray moveArray = ExtractMove(buf, engine, gameVariant);
+	const QByteArray moveArray = ExtractMove(buf, engine->GetType(), gameVariant);
 	textEdit->setText(engineOutput == Verbose ? buf : moveArray);
 	if (moveArray.isEmpty()) return;
 	if (engine->GetType() == Qianhong)

@@ -162,6 +162,7 @@ void MainWindow::on_actionNew_game_triggered()
         this->ui->statusBar->showMessage("");
         const int bpSelectedIndex = newGameDialog->GetBlackPlayer()->currentIndex();
 		const int wpSelectedIndex = newGameDialog->GetWhitePlayer()->currentIndex();
+
 		if (bpSelectedIndex > 0)
         {
 	        const std::tuple<QString, GameVariant, EngineProtocol, QString> tpl = _engines[bpSelectedIndex - 1];
@@ -169,7 +170,9 @@ void MainWindow::on_actionNew_game_triggered()
 			_blackEngineProtocol = std::get<2>(tpl);
 			_blackEngineExe = std::get<3>(tpl);
         }
-        else _blackEngineExe = "";
+        else
+			_blackEngineExe = "";
+
 		if (wpSelectedIndex > 0)
 		{
 			const std::tuple<QString, GameVariant, EngineProtocol, QString> tpl = _engines[wpSelectedIndex - 1];
@@ -177,9 +180,9 @@ void MainWindow::on_actionNew_game_triggered()
 			_whiteEngineProtocol = std::get<2>(tpl);
 			_whiteEngineExe = std::get<3>(tpl);
 		}
-		else _whiteEngineExe = "";
-		StopEngine(_whiteEngine);
-		StopEngine(_blackEngine);
+		else
+			_whiteEngineExe = "";
+
 		if (_blackEngineExe != "")
 		{
 			switch (_blackEngineProtocol)
@@ -202,6 +205,9 @@ void MainWindow::on_actionNew_game_triggered()
 			}
 			LoadEngine(_blackEngine, _blackEngineExe, Black);
 		}
+		else
+			StopEngine(_blackEngine);
+
 		if (_whiteEngineExe != "")
 		{
 			switch (_whiteEngineProtocol)
@@ -224,6 +230,9 @@ void MainWindow::on_actionNew_game_triggered()
 			}
 			LoadEngine(_whiteEngine, _whiteEngineExe, White);
 		}
+		else
+			StopEngine(_whiteEngine);
+
 		this->ui->vboard->GetBoard()->Initialize();
 		this->ui->vboard->SetCurrentPlayer(White);
 		this->ui->vboard->repaint();
@@ -687,7 +696,6 @@ void MainWindow::StopEngine(Engine *engine)
 	if (engine != nullptr)
 	{
 		engine->Quit();
-		delete engine;
 		engine = nullptr;
 	}
 }
