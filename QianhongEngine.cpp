@@ -7,18 +7,19 @@ QianhongEngine::QianhongEngine()
 
 QianhongEngine::~QianhongEngine()
 {
+	Quit();
 }
 
 QProcess* QianhongEngine::RunProcess(QObject* parentObject, const QString& engineExe)
 {
-	_process = new QProcess(parentObject);
+	_process = std::make_unique<QProcess>(parentObject);
 	_process->setWorkingDirectory(QFileInfo(engineExe).absolutePath());
 	_process->setProgram(engineExe);
 	QStringList engineArguments;
 	engineArguments << "-plugin";
 	_process->setArguments(engineArguments);
 	_process->start();
-	return _process;
+	return _process.get();
 }
 
 EngineProtocol QianhongEngine::GetType()

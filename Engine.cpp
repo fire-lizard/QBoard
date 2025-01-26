@@ -8,22 +8,26 @@ Engine::Engine()
 
 Engine::~Engine()
 {
+	Quit();
 }
 
 QProcess* Engine::RunProcess(QObject *parentObject, const QString& engineExe)
 {
-	_process = new QProcess(parentObject);
+	_process = std::make_unique<QProcess>(parentObject);
 	_process->setWorkingDirectory(QFileInfo(engineExe).absolutePath());
 	_process->setProgram(engineExe);
 	_process->start();
-	return _process;
+	return _process.get();
 }
 
 void Engine::Quit() const
 {
-	_process->write("quit\n");
-	_process->close();
-	delete _process;
+	if (_process)
+	{
+		_process->write("quit\n");
+		_process->close();
+		_process.reset();
+	}
 }
 
 void Engine::SetFEN(std::string fen)

@@ -7,6 +7,7 @@ UciEngine::UciEngine()
 
 UciEngine::~UciEngine()
 {
+	Quit();
 }
 
 EngineProtocol UciEngine::GetType()

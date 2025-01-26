@@ -23,7 +23,7 @@ public:
 	virtual QByteArray AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion = ' ') = 0;
 
 protected:
-	QProcess *_process = nullptr;
+	mutable std::unique_ptr<QProcess> _process = nullptr;
 	std::vector<QByteArray> _moves;
 	std::string _fen;
 

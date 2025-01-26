@@ -6,6 +6,7 @@ WbEngine::WbEngine()
 
 WbEngine::~WbEngine()
 {
+	Quit();
 }
 
 EngineProtocol WbEngine::GetType()
@@ -26,16 +27,17 @@ void WbEngine::Edit(const Board* board)
 {
 	PieceColour pieceColour = White;
 	_process->write("edit\n");
-	_process->write("#\n");
+	//_process->write("#\n");
 	for (int j = 0; j < board->GetHeight(); j++)
 	{
 		for (int i = 0; i < board->GetWidth(); i++)
 		{
 			Piece* p = board->GetData(i, j);
+			char letter = i + 97;
+			int number = board->GetHeight() - j;
+			std::string str;
 			if (p != nullptr)
 			{
-				std::string str;
-				char letter = i + 97;
 				PieceColour newPieceColour = p->GetColour();
 				if (newPieceColour != pieceColour)
 				{
@@ -43,11 +45,15 @@ void WbEngine::Edit(const Board* board)
 					pieceColour = newPieceColour;
 				}
 				str += p->StringCode();
-				str.push_back(letter);
-				str += std::to_string(board->GetHeight() - j);
-				str.push_back('\n');
-				_process->write(QByteArray::fromStdString(str));
 			}
+			else
+			{
+				str += "x";
+			}
+			str.push_back(letter);
+			str += std::to_string(number);
+			str.push_back('\n');
+			_process->write(QByteArray::fromStdString(str));
 		}
 	}
 	_process->write(".\n");

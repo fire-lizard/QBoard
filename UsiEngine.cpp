@@ -7,6 +7,7 @@ UsiEngine::UsiEngine()
 
 UsiEngine::~UsiEngine()
 {
+	Quit();
 }
 
 EngineProtocol UsiEngine::GetType()
