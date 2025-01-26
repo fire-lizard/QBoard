@@ -37,14 +37,17 @@ void UciEngine::Move()
 
 void UciEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
-	WriteToProcess(QByteArray::fromStdString("position fen " + _fen + " moves "));
+	_textEdit->setText("");
+	QByteArray moveStr;
+	moveStr += "position fen " + _fen + " moves ";
 	for (auto& _move : _moves)
 	{
-		WriteToProcess(_move);
-		WriteToProcess(" ");
+		moveStr += _move;
+		moveStr += " ";
     }
-	WriteToProcess(AddMove(x1, y1, x2, y2, promotion));
-	WriteToProcess("\n");
+	moveStr += AddMove(x1, y1, x2, y2, promotion);
+	moveStr += "\n";
+	WriteToProcess(moveStr);
 	WriteToProcess("go depth 10\n");
 }
 

@@ -23,31 +23,6 @@ void UcciEngine::StartGame(QString variant)
 	WriteToProcess("uccinewgame\n");
 }
 
-void UcciEngine::Move()
-{
-	WriteToProcess(QByteArray::fromStdString("position fen " + _fen + " moves "));
-	for (auto& _move : _moves)
-	{
-		WriteToProcess(_move);
-		WriteToProcess(" ");
-	}
-	WriteToProcess("\n");
-	WriteToProcess("go depth 10\n");
-}
-
-void UcciEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
-{
-	WriteToProcess(QByteArray::fromStdString("position fen " + _fen + " moves "));
-	for (auto& _move : _moves)
-	{
-		WriteToProcess(_move);
-		WriteToProcess(" ");
-    }
-	WriteToProcess(AddMove(x1, y1, x2, y2, promotion));
-	WriteToProcess("\n");
-	WriteToProcess("go depth 10\n");
-}
-
 QByteArray UcciEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	QByteArray moveStr;

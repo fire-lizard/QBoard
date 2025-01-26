@@ -13,6 +13,7 @@ public:
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
 	void GetMoves(Piece* piece, int x, int y) override;
+	void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture);
 
 protected:
 
@@ -28,5 +29,13 @@ protected:
 	};
 
 private:
+	const std::map<PieceType, char> _pieceToPGN = {
+		{Pawn, 'P'},
+		{Rook, 'R'},
+		{Knight, 'N'},
+		{Silver, 'S'},
+		{Queen, 'M'},
+		{King, 'K'}
+	};
 };
 

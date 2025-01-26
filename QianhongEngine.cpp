@@ -45,13 +45,13 @@ void QianhongEngine::Move()
 
 void QianhongEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
+	_textEdit->setText("");
 	if (!_fenSet)
 	{
 		WriteToProcess(QByteArray::fromStdString("FEN " + _fen + "\n"));
 		_fenSet = true;
 	}
-	WriteToProcess(AddMove(x1, y1, x2, y2, promotion));
-	WriteToProcess("\n");
+	WriteToProcess(AddMove(x1, y1, x2, y2, promotion) + "\n");
 	WriteToProcess("ai\n");
 }
 

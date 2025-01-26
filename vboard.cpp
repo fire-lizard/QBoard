@@ -759,9 +759,13 @@ void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 
 void VBoard::AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3)
 {
-	if (gameVariant == Chess || gameVariant == Shatranj || gameVariant == Makruk)
+	if (gameVariant == Chess || gameVariant == Shatranj)
 	{
 		dynamic_cast<ShatranjBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
+	}
+	else if (gameVariant == Makruk)
+	{
+		dynamic_cast<MakrukBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
 	else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
 	{

@@ -85,6 +85,7 @@ void WbEngine::Move()
 
 void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
+	_textEdit->setText("");
 	if (_memory && !_memorySet)
 	{
 		const QString memoryStr = "memory " + QString::number(_memorySize) + "\n";
@@ -97,6 +98,7 @@ void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char 
 
 void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, signed char x3, signed char y3)
 {
+	_textEdit->setText("");
 	WriteToProcess(AddMove(x1, y1, x2, y2, x3, y3));
 	WriteToProcess("\n");
 }

@@ -18,6 +18,7 @@ public:
 	void Quit() const;
 	bool IsActive() const;
 	void SetActive(bool val);
+	QTextEdit* GetTextEdit();
 	void SetTextEdit(QTextEdit* textEdit);
 	void WriteToProcess(QByteArray buf);
 	virtual void SetFEN(std::string fen);
