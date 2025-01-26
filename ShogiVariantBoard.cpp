@@ -78,13 +78,13 @@ std::string ShogiVariantBoard::CapturedPieceString()
 	}
 }
 
-bool ShogiVariantBoard::Move(int oldX, int oldY, int newX, int newY)
+bool ShogiVariantBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	if (_data[oldX][oldY] != nullptr)
 	{
 		PieceColour pieceColour = _data[oldX][oldY]->GetColour();
 		PieceType pt = _data[newX][newY] != nullptr && _data[newX][newY]->GetColour() != _data[oldX][oldY]->GetColour() ? _data[newX][newY]->GetBaseType() : None;
-		const bool result = Board::Move(oldX, oldY, newX, newY);
+		const bool result = Board::Move(oldX, oldY, newX, newY, cl);
 		if (result && pt != None)
 		{
 			_capturedPieces.emplace_back(pieceColour, pt);

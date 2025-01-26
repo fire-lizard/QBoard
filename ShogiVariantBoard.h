@@ -12,7 +12,7 @@
 class ShogiVariantBoard : public Board
 {
 public:
-	bool Move(int oldX, int oldY, int newX, int newY) override;
+	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 	virtual void PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y);
 	std::vector<PieceType> GetCapturedPieces(PieceColour pieceColour);
 	void AddCapturedPiece(PieceType p, PieceColour pieceColour);

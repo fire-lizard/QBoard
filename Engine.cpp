@@ -40,6 +40,11 @@ void Engine::SetActive(bool val)
 	_isActive = val;
 }
 
+void Engine::WriteToProcess(QByteArray buf)
+{
+	_process->write(buf);
+}
+
 void Engine::SetFEN(std::string fen)
 {
 	_fen = std::move(fen);

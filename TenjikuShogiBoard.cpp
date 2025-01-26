@@ -84,7 +84,7 @@ void TenjikuShogiBoard::CheckIgui(const Piece* piece, int x, int y)
 	}
 }
 
-bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY)
+bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	// Heavenly Tetrach moves
 	if (_data[oldX][oldY]->GetType() == HeavenlyTetrarch && abs(oldX - newX) <= 1 && abs(oldY - newY) <= 1 && (oldX != newX || oldY != newY))
@@ -119,7 +119,7 @@ bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY)
 			}
 		}
 	}
-	return Board::Move(oldX, oldY, newX, newY);
+	return Board::Move(oldX, oldY, newX, newY, cl);
 }
 
 void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)

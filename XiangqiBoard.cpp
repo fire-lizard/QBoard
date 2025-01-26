@@ -175,7 +175,7 @@ void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direct
 	while (CheckDirectionAux(x, y, direction));
 }
 
-bool XiangqiBoard::Move(int oldX, int oldY, int newX, int newY)
+bool XiangqiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	for (int& _pieceFile : _pieceFiles) _pieceFile = -1;
 	const PieceColour pieceColour = _data[oldX][oldY]->GetColour();
@@ -190,7 +190,7 @@ bool XiangqiBoard::Move(int oldX, int oldY, int newX, int newY)
 			pieceCount++;
 		}
 	}
-	return Board::Move(oldX, oldY, newX, newY);
+	return Board::Move(oldX, oldY, newX, newY, cl);
 }
 
 void XiangqiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2)

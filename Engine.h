@@ -17,6 +17,7 @@ public:
 	void Quit() const;
 	bool IsActive() const;
 	void SetActive(bool val);
+	void WriteToProcess(QByteArray buf);
 	virtual void SetFEN(std::string fen);
 	virtual EngineProtocol GetType() = 0;
 	virtual void StartGame(QString variant = "") = 0;

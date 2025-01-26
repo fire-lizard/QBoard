@@ -12,7 +12,7 @@ public:
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
 	void GetMoves(Piece *piece, int x, int y) override;
-	bool Move(int oldX, int oldY, int newX, int newY) override;
+	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 	void WriteMove(const std::string& moveStr);
 	std::string GetCastling();
 	std::string GetEnPassant();

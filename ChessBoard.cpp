@@ -208,12 +208,12 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 	}
 }
 
-bool ChessBoard::Move(int oldX, int oldY, int newX, int newY)
+bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	PieceType pieceType = _data[oldX][oldY]->GetType();
 	PieceColour pieceColour = _data[oldX][oldY]->GetColour();
 	PieceType destPieceType = _data[newX][newY] != nullptr ? _data[newX][newY]->GetType() : None;
-	const bool result = Board::Move(oldX, oldY, newX, newY);
+	const bool result = Board::Move(oldX, oldY, newX, newY, cl);
 	if (result)
 	{
 		dynamic_cast<ChessPiece*>(_data[newX][newY])->Move();

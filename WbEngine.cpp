@@ -106,15 +106,7 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 	QByteArray moveStr;
 	if (_usermove)
 	{
-		moveStr.push_back('u');
-		moveStr.push_back('s');
-		moveStr.push_back('e');
-		moveStr.push_back('r');
-		moveStr.push_back('m');
-		moveStr.push_back('o');
-		moveStr.push_back('v');
-		moveStr.push_back('e');
-		moveStr.push_back(' ');
+		moveStr += "usermove ";
 	}
 	if (y1 == '@')
 	{
@@ -150,15 +142,7 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, signed char x3, signed char y3)
 {
 	QByteArray moveStr;
-	moveStr.push_back('u');
-	moveStr.push_back('s');
-	moveStr.push_back('e');
-	moveStr.push_back('r');
-	moveStr.push_back('m');
-	moveStr.push_back('o');
-	moveStr.push_back('v');
-	moveStr.push_back('e');
-	moveStr.push_back(' ');
+	moveStr += "usermove ";
 	if (y1 <= 16 || y2 <= 16)
 	{
 		moveStr.push_back(static_cast<char>(x1 < 30 ? x1 + 97 : x1));
