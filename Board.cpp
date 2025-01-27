@@ -42,7 +42,7 @@ int Board::MoveCount()
 	return (_moveCount / 2) + 1;
 }
 
-std::string Board::GetFEN()
+std::string Board::GetFEN() const
 {
 	std::string fen;
 	int emptySquares = 0;
@@ -267,7 +267,7 @@ void Board::GetDefenders(int x, int y, std::vector<std::pair<int, int>>& vec)
 	delete board;
 }
 
-bool Board::operator == (const std::array<std::array<PieceType, 16>, 16>& other) const
+bool Board::operator == (const PieceType other[16][16]) const
 {
 	for (int i = 0; i < _width; i++)
 	{
@@ -280,4 +280,9 @@ bool Board::operator == (const std::array<std::array<PieceType, 16>, 16>& other)
 		}
 	}
 	return true;
+}
+
+bool Board::operator == (const std::string& fen) const
+{
+	return GetFEN() == fen;
 }

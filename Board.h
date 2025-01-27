@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <utility>
 #include <tuple>
-#include <array>
 #include "Piece.h"
 
 class Board
@@ -21,7 +20,7 @@ public:
 	std::vector<std::pair<int, int>> Moves() const;
 	Piece* GetData(int x, int y) const;
 	void SetData(int x, int y, Piece *p);
-	std::string GetFEN();
+	std::string GetFEN() const;
 	void SetFEN(std::string fen);
 	int GetWidth() const;
 	int GetHeight() const;
@@ -29,7 +28,8 @@ public:
 	bool CheckPosition(int x, int y) const;
 	void GetAttackers(int x, int y, std::vector<std::pair<int, int>>& vec);
 	void GetDefenders(int x, int y, std::vector<std::pair<int, int>>& vec);
-	bool operator == (const std::array<std::array<PieceType, 16>, 16>& other) const;
+	bool operator == (const PieceType other[16][16]) const;
+	bool operator == (const std::string& fen) const;
 
 protected:
 	void CheckMove(const Piece *piece, int x, int y);
