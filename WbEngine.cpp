@@ -27,17 +27,17 @@ void WbEngine::Edit(const Board* board)
 {
 	PieceColour pieceColour = White;
 	WriteToProcess("edit\n");
-	//WriteToProcess("#\n");
+	WriteToProcess("#\n");
 	for (int j = 0; j < board->GetHeight(); j++)
 	{
 		for (int i = 0; i < board->GetWidth(); i++)
 		{
 			Piece* p = board->GetData(i, j);
-			char letter = i + 97;
-			int number = board->GetHeight() - j;
-			std::string str;
 			if (p != nullptr)
 			{
+				char letter = i + 97;
+				int number = board->GetHeight() - j;
+				std::string str;
 				PieceColour newPieceColour = p->GetColour();
 				if (newPieceColour != pieceColour)
 				{
@@ -45,15 +45,11 @@ void WbEngine::Edit(const Board* board)
 					pieceColour = newPieceColour;
 				}
 				str += p->StringCode();
+				str.push_back(letter);
+				str += std::to_string(number);
+				str.push_back('\n');
+				WriteToProcess(QByteArray::fromStdString(str));
 			}
-			else
-			{
-				str += "x";
-			}
-			str.push_back(letter);
-			str += std::to_string(number);
-			str.push_back('\n');
-			WriteToProcess(QByteArray::fromStdString(str));
 		}
 	}
 	WriteToProcess(".\n");
