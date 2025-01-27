@@ -382,7 +382,6 @@ void MainWindow::on_actionOpen_triggered()
 			}
 			if (_blackEngine != nullptr && _blackEngine->IsActive())
 			{
-				LoadEngine(_blackEngine, _blackEngineExe, Black);
 				if (_blackEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_blackEngine)->GetOption("setboard"))
 				{
 					std::dynamic_pointer_cast<WbEngine>(_blackEngine)->Edit(ui->vboard->GetBoard());
@@ -394,7 +393,6 @@ void MainWindow::on_actionOpen_triggered()
 			}
 			if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 			{
-				LoadEngine(_whiteEngine, _whiteEngineExe, White);
 				if (_whiteEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->GetOption("setboard"))
 				{
 					std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->Edit(ui->vboard->GetBoard());
