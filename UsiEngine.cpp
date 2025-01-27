@@ -10,6 +10,12 @@ UsiEngine::~UsiEngine()
 	Quit();
 }
 
+void UsiEngine::SetFEN(std::string fen)
+{
+	_fen = std::move(fen);
+	WriteToProcess("usinewgame\n");
+}
+
 EngineProtocol UsiEngine::GetType()
 {
 	return USI;

@@ -58,8 +58,3 @@ void Engine::WriteToProcess(QByteArray buf)
 	}
 	_process->write(buf);
 }
-
-void Engine::SetFEN(std::string fen)
-{
-	_fen = std::move(fen);
-}

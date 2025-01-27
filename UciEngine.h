@@ -6,6 +6,7 @@ class UciEngine : public Engine
 public:
 	UciEngine();
 	~UciEngine() override;
+	void SetFEN(std::string fen) override;
 	EngineProtocol GetType() override;
 	void StartGame(QString variant = "") override;
 	void Move() override;

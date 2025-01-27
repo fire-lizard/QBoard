@@ -22,6 +22,12 @@ QProcess* QianhongEngine::RunProcess(QObject* parentObject, const QString& engin
 	return _process.get();
 }
 
+void QianhongEngine::SetFEN(std::string fen)
+{
+	_fen = std::move(fen);
+	WriteToProcess(QByteArray::fromStdString("FEN " + _fen + "\n"));
+}
+
 EngineProtocol QianhongEngine::GetType()
 {
 	return Qianhong;
@@ -30,27 +36,16 @@ EngineProtocol QianhongEngine::GetType()
 void QianhongEngine::StartGame(QString variant)
 {
 	_moves.clear();
-	_fenSet = false;
 }
 
 void QianhongEngine::Move()
 {
-	if (!_fenSet)
-	{
-		WriteToProcess(QByteArray::fromStdString("FEN " + _fen + "\n"));
-		_fenSet = true;
-	}
 	WriteToProcess("ai\n");
 }
 
 void QianhongEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	_textEdit->setText("");
-	if (!_fenSet)
-	{
-		WriteToProcess(QByteArray::fromStdString("FEN " + _fen + "\n"));
-		_fenSet = true;
-	}
 	WriteToProcess(AddMove(x1, y1, x2, y2, promotion) + "\n");
 	WriteToProcess("ai\n");
 }

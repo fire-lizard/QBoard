@@ -10,6 +10,12 @@ UcciEngine::~UcciEngine()
 	Quit();
 }
 
+void UcciEngine::SetFEN(std::string fen)
+{
+	_fen = std::move(fen);
+	WriteToProcess("uccinewgame\n");
+}
+
 EngineProtocol UcciEngine::GetType()
 {
 	return UCCI;

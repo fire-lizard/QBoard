@@ -16,9 +16,10 @@ EngineProtocol WbEngine::GetType()
 
 void WbEngine::SetFEN(std::string fen)
 {
+	_fen = std::move(fen);
 	if (_setboard)
 	{
-		WriteToProcess(QByteArray::fromStdString("setboard " + fen + "\n"));
+		WriteToProcess(QByteArray::fromStdString("setboard " + _fen + "\n"));
 	}
 	_fen = std::move(fen);
 }

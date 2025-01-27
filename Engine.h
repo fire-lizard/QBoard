@@ -21,7 +21,7 @@ public:
 	QTextEdit* GetTextEdit();
 	void SetTextEdit(QTextEdit* textEdit);
 	void WriteToProcess(QByteArray buf);
-	virtual void SetFEN(std::string fen);
+	virtual void SetFEN(std::string fen) = 0;
 	virtual EngineProtocol GetType() = 0;
 	virtual void StartGame(QString variant = "") = 0;
 	virtual void Move() = 0;
