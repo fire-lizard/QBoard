@@ -20,6 +20,7 @@ public:
 	void SetActive(bool val);
 	QTextEdit* GetTextEdit();
 	void SetTextEdit(QTextEdit* textEdit);
+	QProcess* GetProcess();
 	void WriteToProcess(QByteArray buf);
 	virtual void SetFEN(std::string fen) = 0;
 	virtual EngineProtocol GetType() = 0;

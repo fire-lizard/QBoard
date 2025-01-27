@@ -67,6 +67,7 @@ private:
 
 	Ui::MainWindow *ui;
 	QString _currentStyle = "";
+	int _engineMemorySize = 80;
 	std::shared_ptr<Engine> _whiteEngine = nullptr;
 	QString _whiteEngineExe = "";
 	QString _whiteEngineName = "";

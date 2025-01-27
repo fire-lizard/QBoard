@@ -21,7 +21,6 @@ void WbEngine::SetFEN(std::string fen)
 	{
 		WriteToProcess(QByteArray::fromStdString("setboard " + _fen + "\n"));
 	}
-	_fen = std::move(fen);
 }
 
 void WbEngine::Edit(const Board* board)
@@ -69,26 +68,21 @@ void WbEngine::StartGame(QString variant)
 	}
 }
 
+void WbEngine::SetMemory(int memorySize)
+{
+	const QString memoryStr = "memory " + QString::number(_memorySize) + "\n";
+	WriteToProcess(memoryStr.toLatin1());
+	_memorySize = memorySize;
+}
+
 void WbEngine::Move()
 {
-	if (_memory && !_memorySet)
-	{
-		const QString memoryStr = "memory " + QString::number(_memorySize) + "\n";
-		WriteToProcess(memoryStr.toLatin1());
-		_memorySet = true;
-	}
 	WriteToProcess("go\n");
 }
 
 void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	_textEdit->setText("");
-	if (_memory && !_memorySet)
-	{
-		const QString memoryStr = "memory " + QString::number(_memorySize) + "\n";
-		WriteToProcess(memoryStr.toLatin1());
-		_memorySet = true;
-	}
 	WriteToProcess(AddMove(x1, y1, x2, y2, promotion));
 	WriteToProcess("\n");
 }

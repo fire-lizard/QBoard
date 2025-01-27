@@ -50,6 +50,11 @@ void Engine::SetTextEdit(QTextEdit* textEdit)
 	_textEdit = textEdit;
 }
 
+QProcess* Engine::GetProcess()
+{
+	return _process.get();
+}
+
 void Engine::WriteToProcess(QByteArray buf)
 {
 	if (std::any_of(buf.begin(), buf.end(), [=](char t) {return isprint(t);}))

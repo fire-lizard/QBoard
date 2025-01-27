@@ -12,6 +12,7 @@ UcciEngine::~UcciEngine()
 
 void UcciEngine::SetFEN(std::string fen)
 {
+	trimNewline(fen);
 	_fen = std::move(fen);
 	WriteToProcess("uccinewgame\n");
 }

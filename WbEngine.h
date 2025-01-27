@@ -8,6 +8,7 @@ public:
 	WbEngine();
 	~WbEngine() override;
 	void SetFEN(std::string fen) override;
+	void SetMemory(int memorySize);
 	EngineProtocol GetType() override;
 	void StartGame(QString variant = "") override;
 	void Move() override;
@@ -20,9 +21,8 @@ public:
 	void Edit(const Board* board);
 
 private:
-	bool _setboard = false;
 	bool _memory = false;
 	int _memorySize = 80;
-	bool _memorySet = false;
 	bool _usermove = false;
+	bool _setboard = false;
 };

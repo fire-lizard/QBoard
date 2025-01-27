@@ -12,6 +12,7 @@ UciEngine::~UciEngine()
 
 void UciEngine::SetFEN(std::string fen)
 {
+	trimNewline(fen);
 	_fen = std::move(fen);
 	WriteToProcess("ucinewgame\n");
 }
@@ -80,4 +81,12 @@ QByteArray UciEngine::AddMove(signed char x1, signed char y1, signed char x2, si
 	}
 	_moves.push_back(moveStr);
 	return moveStr;
+}
+
+void UciEngine::trimNewline(std::string& str) 
+{
+	if (!str.empty() && (str.back() == '\n' || str.back() == '\r')) 
+	{
+		str.erase(str.find_last_not_of("\r\n") + 1);
+	}
 }

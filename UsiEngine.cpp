@@ -12,6 +12,7 @@ UsiEngine::~UsiEngine()
 
 void UsiEngine::SetFEN(std::string fen)
 {
+	trimNewline(fen);
 	_fen = std::move(fen);
 	WriteToProcess("usinewgame\n");
 }
