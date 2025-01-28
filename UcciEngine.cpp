@@ -15,6 +15,7 @@ void UcciEngine::SetFEN(std::string fen)
 	trimNewline(fen);
 	_fen = std::move(fen);
 	WriteToProcess("uccinewgame\n");
+	_moves.clear();
 }
 
 EngineProtocol UcciEngine::GetType()

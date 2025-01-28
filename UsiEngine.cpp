@@ -15,6 +15,7 @@ void UsiEngine::SetFEN(std::string fen)
 	trimNewline(fen);
 	_fen = std::move(fen);
 	WriteToProcess("usinewgame\n");
+	_moves.clear();
 }
 
 EngineProtocol UsiEngine::GetType()

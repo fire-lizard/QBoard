@@ -249,6 +249,14 @@ void VBoard::paintEvent(QPaintEvent *)
 
 void VBoard::FinishMove()
 {
+	if (_currentPlayer == White)
+	{
+		_whiteMoves.push_back(_board->GetFEN());
+	}
+	else
+	{
+		_blackMoves.push_back(_board->GetFEN());
+	}
 	_currentPlayer = _currentPlayer == White ? Black : White;
 	_statusBar->setStyleSheet("QStatusBar { color : black; }");
 	_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");

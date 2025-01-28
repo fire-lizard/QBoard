@@ -21,6 +21,7 @@ void WbEngine::SetFEN(std::string fen)
 	{
 		WriteToProcess(QByteArray::fromStdString("setboard " + _fen + "\n"));
 	}
+	_moves.clear();
 }
 
 void WbEngine::Edit(const Board* board)

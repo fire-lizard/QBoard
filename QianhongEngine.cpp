@@ -26,6 +26,7 @@ void QianhongEngine::SetFEN(std::string fen)
 {
 	_fen = std::move(fen);
 	WriteToProcess(QByteArray::fromStdString("FEN " + _fen + "\n"));
+	_moves.clear();
 }
 
 EngineProtocol QianhongEngine::GetType()
