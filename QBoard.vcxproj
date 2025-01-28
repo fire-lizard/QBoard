@@ -211,6 +211,7 @@
     <ClCompile Include="DaiShogiBoard.cpp" />
     <ClCompile Include="DaiShogiPiece.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="EngineOutputHandler.cpp" />
     <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="JudkinShogiBoard.cpp" />
     <ClCompile Include="KanjiPiece.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="DaiShogiBoard.h" />
     <ClInclude Include="DaiShogiPiece.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="EngineOutputHandler.h" />
     <ClInclude Include="IniFile.h" />
     <ClInclude Include="JudkinShogiBoard.h" />
     <ClInclude Include="KanjiPiece.h" />

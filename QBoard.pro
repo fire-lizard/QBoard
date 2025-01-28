@@ -53,6 +53,7 @@ SOURCES += main.cpp\
     TenjikuShogiPiece.cpp \
     WaShogiBoard.cpp \
     WaShogiPiece.cpp \
+    EngineOutputHandler.cpp \
     enginemanager.cpp \
     comboboxitemdelegate.cpp \
     newgamedialog.cpp \
@@ -95,6 +96,7 @@ HEADERS  += mainwindow.h \
     TenjikuShogiPiece.h \
     WaShogiBoard.h \
     WaShogiPiece.h \
+    EngineOutputHandler.h \
     enginemanager.h \
     comboboxitemdelegate.h \
     newgamedialog.h \

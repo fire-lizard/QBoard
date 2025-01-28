@@ -21,7 +21,7 @@
 #include "MakrukBoard.h"
 #include "XiangqiPiece.h"
 #include "promotiondialog.h"
-#include "Logger.h"
+#include "EngineOutputHandler.h"
 
 class VBoard : public QWidget
 {
@@ -44,9 +44,6 @@ public:
 	void SetMainWindow(QMainWindow *window);
 	void SetWhiteEngine(std::shared_ptr<Engine> engine);
 	void SetBlackEngine(std::shared_ptr<Engine> engine);
-	static void ReadStandardOutput(QProcess* process, std::shared_ptr<Engine> engine, Board* board, QTextEdit* textEdit,
-		GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer);
-	static void ReadStandardError(QProcess* process, QTextEdit* textEdit);
 
 protected:
 	void contextMenuEvent(QContextMenuEvent* event) override;
@@ -62,8 +59,6 @@ private:
 	void RemoveMove(int x, int y);
 	void CalculateCheck(int oldX, int oldY, int newX, int newY);
 	void FinishMove();
-	static void AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3);
-    static QByteArray ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant);
 
 	Board *_board;
 	PieceColour _currentPlayer = White;

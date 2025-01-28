@@ -223,6 +223,21 @@ bool Board::CheckPosition(int x, int y) const
 	return y < _height && y >= 0 && x < _width && x >= 0;
 }
 
+bool Board::HasPiece(PieceType pieceType) const
+{
+	for (int i = 0; i < _width; i++)
+	{
+		for (int j = 0; j < _height; j++)
+		{
+			if (_data[i][j] != nullptr && _data[i][j]->GetType() == pieceType)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 void Board::GetAttackers(int x, int y, std::vector<std::pair<int, int>>& vec)
 {
 	vec.clear();
