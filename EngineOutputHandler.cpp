@@ -422,3 +422,133 @@ void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceTy
 		dynamic_cast<XiangqiBoard*>(board)->WriteMove(p, x1, y1, x2, y2);
 	}
 }
+
+template <typename T> std::basic_string<T> uppercase(const std::basic_string<T>& s)
+{
+	std::basic_string<T> s2 = s;
+	std::transform(s2.begin(), s2.end(), s2.begin(),
+		[](const T v) { return static_cast<T>(std::toupper(v)); });
+	return s2;
+}
+
+template <typename T> std::basic_string<T> lowercase(const std::basic_string<T>& s)
+{
+	std::basic_string<T> s2 = s;
+	std::transform(s2.begin(), s2.end(), s2.begin(),
+		[](const T v) { return static_cast<T>(std::tolower(v)); });
+	return s2;
+}
+
+QString EngineOutputHandler::SetFenToBoard(Board* board, QByteArray str, GameVariant gameVariant)
+{
+	QStringList parts = QString(str).trimmed().split(' ', Qt::SkipEmptyParts);
+	QString fen = parts[0];
+	board->Clear();
+	int w = board->GetWidth();
+	int h = board->GetHeight();
+	int i = 0, j = 0, k = 0;
+	std::string promo;
+	do
+	{
+		char c = fen[k].toLatin1();
+		if (c == '/')
+		{
+			k++;
+			j++;
+			i = 0;
+		}
+		if (c == '+')
+		{
+			k++;
+			promo = "+";
+		}
+		else if (c >= '0' && c <= '9')
+		{
+			k++;
+			i += c - 48;
+		}
+		else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		{
+			std::string stringCode(1, c);
+			PieceType pieceType = None;
+			if (gameVariant == Chess || gameVariant == Shatranj)
+			{
+				pieceType = ShatranjPiece::FromStringCode(uppercase(stringCode));
+			}
+			else if (gameVariant == Xiangqi)
+			{
+				pieceType = XiangqiPiece::FromStringCode(uppercase(stringCode));
+			}
+			else if (gameVariant == Makruk)
+			{
+				pieceType = MakrukPiece::FromStringCode(uppercase(stringCode));
+			}
+			else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
+			{
+				pieceType = ShogiPiece::FromStringCode(promo + uppercase(stringCode));
+			}
+			else if (gameVariant == WaShogi)
+			{
+				pieceType = WaShogiPiece::FromStringCode(uppercase(stringCode));
+			}
+			else if (gameVariant == ChuShogi)
+			{
+				pieceType = ChuShogiPiece::FromStringCode(uppercase(stringCode));
+			}
+			if (pieceType == None)
+			{
+				return "Invalid character found in the FEN string at position " + QString::number(k);
+			}
+			if (j == h || i == w)
+			{
+				return "Invalid FEN string for this game";
+			}
+			Piece* piece = board->CreatePiece(pieceType, c >= 'a' && c <= 'z' ? Black : White);
+			piece->SetPromoted(promo == "+");
+			board->SetData(i, j, piece);
+			promo = "";
+			k++;
+			i++;
+		}
+	} while ((i < w || j < h - 1) && k < fen.size());
+	if (gameVariant == Chess)
+	{
+		ChessBoard* cb = dynamic_cast<ChessBoard*>(board);
+		if (parts.size() >= 3)
+		{
+			cb->SetCastling(parts[2].toStdString());
+		}
+		if (parts.size() >= 4)
+		{
+			if (parts[3].size() == 2 && parts[3][0] >= 'a' && parts[3][0] <= 'h' && parts[3][1] >= '1' && parts[3][1] <= '8')
+			{
+				cb->SetEnPassant(parts[3].toStdString());
+			}
+			else
+			{
+				cb->SetEnPassant("-");
+			}
+		}
+	}
+	if (gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
+	{
+		if (parts.size() >= 3)
+		{
+			ShogiVariantBoard* svb = dynamic_cast<ShogiVariantBoard*>(board);
+			k = 0;
+			do
+			{
+				if (parts[2][k] >= 'a' && parts[2][k] <= 'z')
+				{
+					svb->AddCapturedPiece(ShogiPiece::FromStringCode(uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
+				}
+				else if (parts[2][k] >= 'A' && parts[2][k] <= 'Z')
+				{
+					svb->AddCapturedPiece(ShogiPiece::FromStringCode(std::string(1, parts[2][k].toLatin1())), White);
+				}
+				k++;
+			} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z')));
+		}
+	}
+	return "";
+}

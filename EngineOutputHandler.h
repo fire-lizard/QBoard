@@ -6,6 +6,9 @@
 #include "XiangqiBoard.h"
 #include "ShogiBoard.h"
 #include "MakrukBoard.h"
+#include "XiangqiPiece.h"
+#include "WaShogiPiece.h"
+#include "ChuShogiPiece.h"
 
 class EngineOutputHandler
 {
@@ -15,5 +18,6 @@ public:
 		GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer);
 	static void ReadStandardError(const QByteArray& buf, QTextEdit* textEdit);
 	static void AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3);
+	static QString SetFenToBoard(Board* board, QByteArray str, GameVariant gameVariant);
 };
 
