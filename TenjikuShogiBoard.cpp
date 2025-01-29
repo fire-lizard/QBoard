@@ -134,18 +134,16 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 	switch (piece->GetType())
 	{
 	case ViceGeneral:
-		_moves.push_back({ x, y });
-
 		CheckJump(piece, x, y, SouthWest);
 		CheckJump(piece, x, y, SouthEast);
 		CheckJump(piece, x, y, NorthWest);
 		CheckJump(piece, x, y, NorthEast);
 
 		GetPossibleMoves(x, y);
+
+		CheckNullMove(piece, x, y);
 		break;
 	case FireDemon:
-		_moves.push_back({ x, y });
-
 		CheckDirection(piece, x + 1, y + 1, SouthEast);
 		CheckDirection(piece, x + 1, y - 1, NorthEast);
 		CheckDirection(piece, x, y + 1, East);
@@ -154,6 +152,8 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x - 1, y - 1, NorthWest);
 
 		GetPossibleMoves(x, y);
+
+		CheckNullMove(piece, x, y);
 		break;
 	case HeavenlyTetrarch:
 		CheckIgui(piece, x + 1, y + 1);
@@ -164,6 +164,8 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckIgui(piece, x - 1, y + 1);
 		CheckIgui(piece, x - 1, y);
 		CheckIgui(piece, x - 1, y - 1);
+
+		CheckNullMove(piece, x, y);
 
 		CheckDirection(piece, x + 1, y + 1, SouthEast);
 		CheckDirection(piece, x + 1, y - 1, NorthEast);
@@ -286,8 +288,6 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x, y - 2);
 		break;
 	case LionHawk:
-		_moves.push_back({ x, y });
-
 		CheckMove(piece, x + 1, y + 1);
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x + 1, y - 1);
@@ -296,6 +296,8 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y);
 		CheckMove(piece, x - 1, y - 1);
+
+		CheckNullMove(piece, x, y);
 
 		CheckMove(piece, x + 2, y + 2);
 		CheckMove(piece, x + 2, y + 1);

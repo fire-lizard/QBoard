@@ -290,6 +290,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	const int y = static_cast<int>(event->position().y()) / h;
 	Piece* p = _board->GetData(x, y);
 	const PieceType ct = p != nullptr ? p->GetType() : None;
+	bool isLionPiece = _currentPiece != nullptr && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces);
 	// Castling check
 	if (_gameVariant == Chess && _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
 		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved())
@@ -302,6 +303,19 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 		dynamic_cast<ChessBoard*>(_board)->WriteMove(x == 7 ? "O-O" : "O-O-O");
 		FinishMove();
+	}
+	else if ((_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi) && _currentPiece != nullptr &&
+		(isLionPiece || _currentPiece->GetType() == ViceGeneral || _currentPiece->GetType() == FireDemon || _currentPiece->GetType() == HeavenlyTetrarch) &&
+		p != nullptr && p->GetColour() == _currentPlayer && x == _oldX && y == _oldY)
+	{
+		if (dynamic_cast<ChuShogiBoard*>(_board)->IsMovePossible(x, y))
+		{
+			if (engine != nullptr && engine->IsActive())
+			{
+				engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, ' ');
+			}
+			FinishMove();
+		}
 	}
 	else if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
 	{
@@ -321,7 +335,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 		}*/
 		// Lion move
-		bool isLionPiece = std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces);
 		if (isLionPiece && !_lionMovedOnce)
 		{
 			if (((abs(_oldX - x) >= 2 || abs(_oldY - y) >= 2) && (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk)) ||
