@@ -6,7 +6,8 @@
 #include "TenjikuShogiPiece.h"
 
 // A small helper struct for BFS states.
-struct State {
+struct State
+{
 	int r, c, steps;
 };
 

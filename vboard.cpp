@@ -830,7 +830,15 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	const QByteArray buf = p->readAllStandardOutput();
 	if (buf.contains("Illegal move"))
 	{
-		// TODO: Handle illegal moves
+		QMessageBox mb(QMessageBox::Warning, "Illegal move", "Illegal move", QMessageBox::Ok, this);
+		mb.exec();
+		if (!_blackMoves.empty())
+		{
+			_board->SetFEN(_blackMoves[_blackMoves.size() - 1]);
+			this->repaint();
+		}
+		_currentPlayer = Black;
+		return;
 	}
 	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, _currentPlayer);
 	if (_blackEngine != nullptr && _blackEngine->IsActive())
@@ -864,7 +872,15 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	const QByteArray buf = p->readAllStandardOutput();
 	if (buf.contains("Illegal move"))
 	{
-		// TODO: Handle illegal moves
+		QMessageBox mb(QMessageBox::Warning, "Illegal move", "Illegal move", QMessageBox::Ok, this);
+		mb.exec();
+		if (!_whiteMoves.empty())
+		{
+			_board->SetFEN(_whiteMoves[_whiteMoves.size() - 1]);
+			this->repaint();
+		}
+		_currentPlayer = White;
+		return;
 	}
 	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, _currentPlayer);
 	if (_whiteEngine != nullptr && _whiteEngine->IsActive())

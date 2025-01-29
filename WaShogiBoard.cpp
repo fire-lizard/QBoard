@@ -231,15 +231,15 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x - 1, y);
 		if (piece->GetColour() == Black)
 		{
-			CheckMove(piece, x, y + 1);
-			CheckMove(piece, x - 1, y - 1);
-			CheckMove(piece, x + 1, y - 1);
-		}
-		else
-		{
 			CheckMove(piece, x, y - 1);
 			CheckMove(piece, x - 1, y + 1);
 			CheckMove(piece, x + 1, y + 1);
+		}
+		else
+		{
+			CheckMove(piece, x, y + 1);
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y - 1);
 		}
 		break;
 	case RunningRabbit:

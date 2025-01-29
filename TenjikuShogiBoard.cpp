@@ -224,15 +224,15 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case Dog:
 		if (piece->GetColour() == Black)
 		{
-			CheckMove(piece, x, y - 1);
-			CheckMove(piece, x - 1, y + 1);
-			CheckMove(piece, x + 1, y + 1);
-		}
-		else
-		{
 			CheckMove(piece, x, y + 1);
 			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
+		}
+		else
+		{
+			CheckMove(piece, x, y - 1);
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
 		}
 		break;
 	case SideSoldier:
@@ -386,108 +386,6 @@ std::vector<std::pair<int, int>> TenjikuShogiBoard::GetEnemyPiecesAround(int x, 
 	return result;
 }
 
-std::vector<std::pair<int, int>> getPossibleMoves(const char board[7][7])
-{
-	// Board is 7x7 by problem statement.
-	const int N = 7;
-
-	// Starting position is the center (3,3).
-	const int startR = 3;
-	const int startC = 3;
-
-	// Directions: 8 neighbors (vertical, horizontal, diagonal).
-	static const std::vector<std::pair<int, int>> directions =
-	{
-		{-1,  0}, {1,  0},  // up, down
-		{0, -1},  {0,  1},  // left, right
-		{-1, -1}, {-1,  1}, // diag up-left, up-right
-		{ 1, -1}, { 1,  1}  // diag down-left, down-right
-	};
-
-	// We will do a BFS up to 3 steps.
-	// visited[r][c][stepsUsed] = true if that state has been visited.
-	bool visited[N][N][4];
-	for (int r = 0; r < N; r++)
-	{
-		for (int c = 0; c < N; c++)
-		{
-			for (int s = 0; s < 4; s++)
-			{
-				visited[r][c][s] = false;
-			}
-		}
-	}
-
-	// A queue for BFS states (r, c, stepsUsed so far).
-	std::queue<State> q;
-	// Start from (3,3) with 0 steps used.
-	q.push({ startR, startC, 0 });
-	visited[startR][startC][0] = true;
-
-	// We'll keep track of all reachable squares in a set to avoid duplicates.
-	std::set<std::pair<int, int>> reachablePositions;
-	reachablePositions.insert({ startR, startC });
-
-	while (!q.empty())
-	{
-		State st = q.front();
-		q.pop();
-
-		int r = st.r;
-		int c = st.c;
-		int s = st.steps; // steps used so far
-
-		// If we've already used 3 steps, we can't move further.
-		if (s == 3)
-		{
-			continue;
-		}
-
-		// Try all 8 directions for the next step.
-		for (auto& dir : directions)
-		{
-			int rr = r + dir.first;
-			int cc = c + dir.second;
-
-			// Check boundaries
-			if (rr < 0 || rr >= N || cc < 0 || cc >= N)
-			{
-				continue;
-			}
-
-			// Check if black flag => cannot pass at all.
-			if (board[rr][cc] == 'B')
-			{
-				continue;
-			}
-
-			// We can move onto white or empty squares if not visited with steps+1
-			if (!visited[rr][cc][s + 1])
-			{
-				visited[rr][cc][s + 1] = true;
-				reachablePositions.insert({ rr, cc });
-
-				// If it's a white flag, we can land but not continue from there.
-				if (board[rr][cc] == 'W')
-				{
-					// Do not add it back to queue for further steps.
-					// Because we cannot pass through a white flag.
-				}
-				else
-				{
-					// It's empty: we can continue from there if we haven't used up 3 steps.
-					q.push({ rr, cc, s + 1 });
-				}
-			}
-		}
-	}
-
-	// Convert set of reachable positions to a vector.
-	std::vector<std::pair<int, int>> result;
-	result.insert(result.end(), reachablePositions.begin(), reachablePositions.end());
-	return result;
-}
-
 void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 {
 	const int BOARD_SIZE = 7;
@@ -516,9 +414,99 @@ void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 		}
 	}
 
-	auto possibleMoves = getPossibleMoves(board);
-	for (const auto& possibleMove : possibleMoves) 
+	// Initial position.
+	const int startR = MAX_MOVES;
+	const int startC = MAX_MOVES;
+
+	// Directions: 8 neighbors (vertical, horizontal, diagonal).
+	static const std::vector<std::pair<int, int>> directions =
 	{
-		_moves.emplace_back(x + possibleMove.first - MAX_MOVES, y + possibleMove.second - MAX_MOVES);
+		{-1,  0}, {1,  0},  // up, down
+		{0, -1},  {0,  1},  // left, right
+		{-1, -1}, {-1,  1}, // diag up-left, up-right
+		{ 1, -1}, { 1,  1}  // diag down-left, down-right
+	};
+
+	// We will do a BFS.
+	// visited[r][c][stepsUsed] = true if that state has been visited.
+	bool visited[BOARD_SIZE][BOARD_SIZE][4];
+	for (int r = 0; r < BOARD_SIZE; r++)
+	{
+		for (int c = 0; c < BOARD_SIZE; c++)
+		{
+			for (int s = 0; s < 4; s++)
+			{
+				visited[r][c][s] = false;
+			}
+		}
+	}
+
+	// A queue for BFS states (r, c, stepsUsed so far).
+	std::queue<State> q;
+	// Start from the initial position with 0 steps used.
+	q.push({ startR, startC, 0 });
+	visited[startR][startC][0] = true;
+
+	// We'll keep track of all reachable squares in a set to avoid duplicates.
+	std::set<std::pair<int, int>> reachablePositions;
+	reachablePositions.insert({ startR, startC });
+
+	while (!q.empty())
+	{
+		State st = q.front();
+		q.pop();
+
+		int r = st.r;
+		int c = st.c;
+		int s = st.steps; // steps used so far
+
+		// If we've already used all steps, we can't move further.
+		if (s == MAX_MOVES)
+		{
+			continue;
+		}
+
+		// Try all 8 directions for the next step.
+		for (auto& dir : directions)
+		{
+			int rr = r + dir.first;
+			int cc = c + dir.second;
+
+			// Check boundaries
+			if (rr < 0 || rr >= BOARD_SIZE || cc < 0 || cc >= BOARD_SIZE)
+			{
+				continue;
+			}
+
+			// Check if black flag => cannot pass at all.
+			if (board[rr][cc] == 'B')
+			{
+				continue;
+			}
+
+			// We can move onto white or empty squares if not visited with steps+1
+			if (!visited[rr][cc][s + 1])
+			{
+				visited[rr][cc][s + 1] = true;
+				reachablePositions.insert({ rr, cc });
+
+				// If it's a white flag, we can land but not continue from there.
+				if (board[rr][cc] == 'W')
+				{
+					// Do not add it back to queue for further steps.
+					// Because we cannot pass through a white flag.
+				}
+				else
+				{
+					// It's empty: we can continue from there if we haven't used up all the steps.
+					q.push({ rr, cc, s + 1 });
+				}
+			}
+		}
+	}
+
+	for (const auto& reachablePosition : reachablePositions)
+	{
+		_moves.emplace_back(x + reachablePosition.first - MAX_MOVES, y + reachablePosition.second - MAX_MOVES);
 	}
 }
