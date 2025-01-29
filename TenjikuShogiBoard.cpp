@@ -141,7 +141,7 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 
 		GetPossibleMoves(x, y);
 
-		CheckNullMove(piece, x, y);
+		CheckNullMove(x, y);
 		break;
 	case FireDemon:
 		CheckDirection(piece, x + 1, y + 1, SouthEast);
@@ -153,7 +153,7 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 
 		GetPossibleMoves(x, y);
 
-		CheckNullMove(piece, x, y);
+		CheckNullMove(x, y);
 		break;
 	case HeavenlyTetrarch:
 		CheckIgui(piece, x + 1, y + 1);
@@ -165,7 +165,7 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckIgui(piece, x - 1, y);
 		CheckIgui(piece, x - 1, y - 1);
 
-		CheckNullMove(piece, x, y);
+		CheckNullMove(x, y);
 
 		CheckDirection(piece, x + 1, y + 1, SouthEast);
 		CheckDirection(piece, x + 1, y - 1, NorthEast);
@@ -297,7 +297,7 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x - 1, y);
 		CheckMove(piece, x - 1, y - 1);
 
-		CheckNullMove(piece, x, y);
+		CheckNullMove(x, y);
 
 		CheckMove(piece, x + 2, y + 2);
 		CheckMove(piece, x + 2, y + 1);
@@ -386,72 +386,139 @@ std::vector<std::pair<int, int>> TenjikuShogiBoard::GetEnemyPiecesAround(int x, 
 	return result;
 }
 
-void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
+std::vector<std::pair<int, int>> getPossibleMoves(const char board[7][7])
 {
-	const int directions[8][2] = 
+	// Board is 7x7 by problem statement.
+	const int N = 7;
+
+	// Starting position is the center (3,3).
+	const int startR = 3;
+	const int startC = 3;
+
+	// Directions: 8 neighbors (vertical, horizontal, diagonal).
+	static const std::vector<std::pair<int, int>> directions =
 	{
-		{0, 1}, {1, 0}, {0, -1}, {-1, 0}, // Right, Down, Left, Up
-		{-1, -1}, {-1, 1}, {1, -1}, {1, 1} // NW, NE, SW, SE
+		{-1,  0}, {1,  0},  // up, down
+		{0, -1},  {0,  1},  // left, right
+		{-1, -1}, {-1,  1}, // diag up-left, up-right
+		{ 1, -1}, { 1,  1}  // diag down-left, down-right
 	};
-	int n = 7;
-	std::vector<std::vector<bool>> visited(n, std::vector<bool>(n, false));
-	std::queue<Position> q;
-	for (int i = -3; i <= 3; i++)
+
+	// We will do a BFS up to 3 steps.
+	// visited[r][c][stepsUsed] = true if that state has been visited.
+	bool visited[N][N][4];
+	for (int r = 0; r < N; r++)
 	{
-		for (int j = -3; j <= 3; j++)
+		for (int c = 0; c < N; c++)
 		{
-			if (x + i < 0 || x + i > _width - 1 || y + j < 0 || y + j > _height - 1)
+			for (int s = 0; s < 4; s++)
 			{
-				_vcMoves[i + 3][j + 3] = 1;
-			}
-			else if (_data[x + i][y + j] != nullptr && _data[x + i][y + j]->GetColour() != _data[x][y]->GetColour())
-			{
-				_vcMoves[i + 3][j + 3] = 1;
-			}
-			else if (_data[x + i][y + j] != nullptr && _data[x + i][y + j]->GetColour() == _data[x][y]->GetColour())
-			{
-				_vcMoves[i + 3][j + 3] = 2;
-			}
-			else
-			{
-				_vcMoves[i + 3][j + 3] = 0;
+				visited[r][c][s] = false;
 			}
 		}
 	}
 
-	q.push({ 3, 3, 0 });
-	visited[3][3] = true;
+	// A queue for BFS states (r, c, stepsUsed so far).
+	std::queue<State> q;
+	// Start from (3,3) with 0 steps used.
+	q.push({ startR, startC, 0 });
+	visited[startR][startC][0] = true;
 
-	while (!q.empty()) 
+	// We'll keep track of all reachable squares in a set to avoid duplicates.
+	std::set<std::pair<int, int>> reachablePositions;
+	reachablePositions.insert({ startR, startC });
+
+	while (!q.empty())
 	{
-		Position current = q.front();
+		State st = q.front();
 		q.pop();
 
-		if (current.steps > 0) 
+		int r = st.r;
+		int c = st.c;
+		int s = st.steps; // steps used so far
+
+		// If we've already used 3 steps, we can't move further.
+		if (s == 3)
 		{
-			_moves.push_back({ x + current.x - 3, y + current.y - 3 });
+			continue;
 		}
 
-		if (current.steps == 3) continue;
-
-		for (const auto& dir : directions) 
+		// Try all 8 directions for the next step.
+		for (auto& dir : directions)
 		{
-			int newX = current.x + dir[0];
-			int newY = current.y + dir[1];
+			int rr = r + dir.first;
+			int cc = c + dir.second;
 
-			if (newX >= 0 && newX < n && newY >= 0 && newY < n && !visited[newX][newY])
+			// Check boundaries
+			if (rr < 0 || rr >= N || cc < 0 || cc >= N)
 			{
-				if (_vcMoves[newX][newY] == 0)
+				continue;
+			}
+
+			// Check if black flag => cannot pass at all.
+			if (board[rr][cc] == 'B')
+			{
+				continue;
+			}
+
+			// We can move onto white or empty squares if not visited with steps+1
+			if (!visited[rr][cc][s + 1])
+			{
+				visited[rr][cc][s + 1] = true;
+				reachablePositions.insert({ rr, cc });
+
+				// If it's a white flag, we can land but not continue from there.
+				if (board[rr][cc] == 'W')
 				{
-					visited[newX][newY] = true;
-					q.push({ newX, newY, current.steps + 1 });
+					// Do not add it back to queue for further steps.
+					// Because we cannot pass through a white flag.
 				}
-				else if (_vcMoves[newX][newY] == 1)
+				else
 				{
-					q.push({ newX, newY, current.steps + 1 });
-					break;
+					// It's empty: we can continue from there if we haven't used up 3 steps.
+					q.push({ rr, cc, s + 1 });
 				}
 			}
 		}
+	}
+
+	// Convert set of reachable positions to a vector.
+	std::vector<std::pair<int, int>> result;
+	result.insert(result.end(), reachablePositions.begin(), reachablePositions.end());
+	return result;
+}
+
+void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
+{
+	const int BOARD_SIZE = 7;
+	const int MAX_MOVES = 3;
+	char board[BOARD_SIZE][BOARD_SIZE];
+	for (int i = -MAX_MOVES; i <= MAX_MOVES; i++)
+	{
+		for (int j = -MAX_MOVES; j <= MAX_MOVES; j++)
+		{
+			if (x + i < 0 || x + i > _width - 1 || y + j < 0 || y + j > _height - 1)
+			{
+				board[i + MAX_MOVES][j + MAX_MOVES] = 'W';
+			}
+			else if (_data[x + i][y + j] != nullptr && _data[x + i][y + j]->GetColour() != _data[x][y]->GetColour())
+			{
+				board[i + MAX_MOVES][j + MAX_MOVES] = 'W';
+			}
+			else if (_data[x + i][y + j] != nullptr && _data[x + i][y + j]->GetColour() == _data[x][y]->GetColour())
+			{
+				board[i + MAX_MOVES][j + MAX_MOVES] = 'B';
+			}
+			else
+			{
+				board[i + MAX_MOVES][j + MAX_MOVES] = '.';
+			}
+		}
+	}
+
+	auto possibleMoves = getPossibleMoves(board);
+	for (const auto& possibleMove : possibleMoves) 
+	{
+		_moves.emplace_back(x + possibleMove.first - MAX_MOVES, y + possibleMove.second - MAX_MOVES);
 	}
 }

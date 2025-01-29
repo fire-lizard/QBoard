@@ -16,7 +16,7 @@ public:
 	bool IsMovePossible(int x, int y);
 
 protected:
-	void CheckNullMove(const Piece* piece, int x, int y);
+	void CheckNullMove(int x, int y);
 
 private:
 	bool _wasLionCapturedByNonLion = false;

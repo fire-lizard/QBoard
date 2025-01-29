@@ -1,11 +1,13 @@
 #pragma once
 #include <queue>
+#include <set>
 #include "Common.h"
 #include "DaiShogiBoard.h"
 #include "TenjikuShogiPiece.h"
 
-struct Position {
-	int x, y, steps;
+// A small helper struct for BFS states.
+struct State {
+	int r, c, steps;
 };
 
 class TenjikuShogiBoard : public DaiShogiBoard
@@ -28,7 +30,6 @@ private:
 	std::vector<std::pair<int, int>> GetEnemyPiecesAround(int x, int y, PieceColour pieceColour) const;
 
 	PieceType _jumpingPieces[4] = { GreatGeneral, ViceGeneral, BishopGeneral, RookGeneral };
-	int _vcMoves[7][7];
 
 	PieceType _initialSetup[16][16] = {
 	{Lance, Knight, Leopard, Iron, Copper, Silver, Gold, Elephant, King, Gold, Silver, Copper, Iron, Leopard, Knight, Lance},

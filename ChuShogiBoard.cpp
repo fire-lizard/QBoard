@@ -64,7 +64,7 @@ bool ChuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	return Board::Move(oldX, oldY, newX, newY, cl);
 }
 
-void ChuShogiBoard::CheckNullMove(const Piece* piece, int x, int y)
+void ChuShogiBoard::CheckNullMove(int x, int y)
 {
 	if (IsMovePossible(x + 1, y + 1) || IsMovePossible(x + 1, y) || IsMovePossible(x + 1, y - 1) || IsMovePossible(x, y + 1) ||
 		IsMovePossible(x, y - 1) || IsMovePossible(x - 1, y + 1) || IsMovePossible(x - 1, y) || IsMovePossible(x - 1, y - 1))
@@ -99,7 +99,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x - 1, y);
 		CheckMove(piece, x - 1, y - 1);
 
-		CheckNullMove(piece, x, y);
+		CheckNullMove(x, y);
 
 		CheckMove(piece, x + 2, y + 2);
 		CheckMove(piece, x + 2, y + 1);
