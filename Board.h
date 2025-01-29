@@ -26,11 +26,11 @@ public:
 	int GetHeight() const;
 	int MoveCount();
 	bool CheckPosition(int x, int y) const;
-	bool HasPiece(PieceType pieceType) const;
+	bool HasPiece(PieceType pieceType, PieceColour pieceColour) const;
 	void GetAttackers(int x, int y, std::vector<std::pair<int, int>>& vec);
 	void GetDefenders(int x, int y, std::vector<std::pair<int, int>>& vec);
 	bool operator == (const PieceType other[16][16]) const;
-	bool operator == (const std::string& fen) const;
+	bool operator == (const std::string fen) const;
 
 protected:
 	void CheckMove(const Piece *piece, int x, int y);

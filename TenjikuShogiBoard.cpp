@@ -50,12 +50,18 @@ Piece* TenjikuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColo
 
 void TenjikuShogiBoard::CheckJump(const Piece* piece, int x, int y, Direction direction)
 {
+	bool beforeJump = true;
 	while (CheckDirectionAux(x, y, direction))
 	{
 		CheckDirectionInc(x, y, direction);
-		CheckMove(piece, x, y);
+		if (beforeJump)
+		{
+			CheckMove(piece, x, y);
+		}
 		if (_data[x][y] != nullptr)
 		{
+			beforeJump = false;
+			CheckMove(piece, x, y);
 			PieceType pieceType = _data[x][y]->GetType();
 			if (pieceType == King)
 			{
@@ -128,19 +134,25 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 	switch (piece->GetType())
 	{
 	case ViceGeneral:
+		_moves.push_back({ x, y });
+
 		CheckJump(piece, x, y, SouthWest);
 		CheckJump(piece, x, y, SouthEast);
 		CheckJump(piece, x, y, NorthWest);
 		CheckJump(piece, x, y, NorthEast);
+
 		GetPossibleMoves(x, y);
 		break;
 	case FireDemon:
+		_moves.push_back({ x, y });
+
 		CheckDirection(piece, x + 1, y + 1, SouthEast);
 		CheckDirection(piece, x + 1, y - 1, NorthEast);
 		CheckDirection(piece, x, y + 1, East);
 		CheckDirection(piece, x, y - 1, West);
 		CheckDirection(piece, x - 1, y + 1, SouthWest);
 		CheckDirection(piece, x - 1, y - 1, NorthWest);
+
 		GetPossibleMoves(x, y);
 		break;
 	case HeavenlyTetrarch:
@@ -274,6 +286,8 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x, y - 2);
 		break;
 	case LionHawk:
+		_moves.push_back({ x, y });
+
 		CheckMove(piece, x + 1, y + 1);
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x + 1, y - 1);
@@ -378,6 +392,8 @@ void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 		{-1, -1}, {-1, 1}, {1, -1}, {1, 1} // NW, NE, SW, SE
 	};
 	int n = 7;
+	std::vector<std::vector<bool>> visited(n, std::vector<bool>(n, false));
+	std::queue<Position> q;
 	for (int i = -3; i <= 3; i++)
 	{
 		for (int j = -3; j <= 3; j++)
@@ -400,8 +416,6 @@ void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 			}
 		}
 	}
-	std::vector<std::vector<bool>> visited(n, std::vector<bool>(n, false));
-	std::queue<Position> q;
 
 	q.push({ 3, 3, 0 });
 	visited[3][3] = true;

@@ -70,7 +70,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			{
 				if (_currentPiece != nullptr && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces))
 				{
-					if (((abs(_oldX - i) == 2 || abs(_oldY - j) == 2) && _currentPiece->GetType() == Lion) ||
+					if (((abs(_oldX - i) == 2 || abs(_oldY - j) == 2) && (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk)) ||
 						(abs(_oldX - i) == 2 && _oldY - j == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
 						(abs(_oldX - i) == 2 && _oldY - j == -2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == Black) ||
 						(_oldX == i && _oldY - j == 2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == White) ||
@@ -85,6 +85,21 @@ void VBoard::paintEvent(QPaintEvent *)
 						else if (_board->GetData(i, j) == nullptr)
 						{
 							painter.setBrush(QColorConstants::Svg::lightcyan);
+							painter.drawRect(rect);
+							painter.setBrush(Qt::NoBrush);
+						}
+					}
+					else if (i == _oldX && j == _oldY)
+					{
+						if (_board->GetData(i, j) != nullptr)
+						{
+							painter.setBrush(Qt::blue);
+							painter.drawRect(rect);
+							painter.setBrush(Qt::NoBrush);
+						}
+						else if (_board->GetData(i, j) == nullptr)
+						{
+							painter.setBrush(Qt::cyan);
 							painter.drawRect(rect);
 							painter.setBrush(Qt::NoBrush);
 						}
@@ -107,11 +122,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				}
 				else if (_board->GetData(i, j) != nullptr)
 				{
-					if (_currentPiece != nullptr && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces))
-					{
-						painter.setBrush(QColorConstants::Svg::orangered);
-					}
-					else if (_board->GetData(i, j)->GetColour() != _currentPlayer)
+					if (_board->GetData(i, j)->GetColour() != _currentPlayer)
 					{
 						painter.setBrush(Qt::red);
 					}
@@ -146,7 +157,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[0] - 97 == i &&
 				(_currentPlayer == White && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 49 == j || _currentPlayer == Black && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 46 == j))
 			{
-				painter.setBrush(QColorConstants::Svg::blue);
+				painter.setBrush(QColorConstants::blue);
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}*/
@@ -294,26 +305,40 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	}
 	else if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
 	{
-		// Lion move
-		if (std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces) && !_lionMovedOnce)
+		// TODO: Shogi repetition rule
+		/*if (_currentPlayer == White)
 		{
-			if (((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) && _currentPiece->GetType() == Lion) ||
+			if (std::any_of(_whiteMoves.begin(), _whiteMoves.end(), [=](const std::string t) {return *_board == t; }))
+			{
+				//
+			}
+		}
+		else
+		{
+			if (std::any_of(_blackMoves.begin(), _blackMoves.end(), [=](const std::string t) {return *_board == t; }))
+			{
+				//
+			}
+		}*/
+		// Lion move
+		bool isLionPiece = std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces);
+		if (isLionPiece && !_lionMovedOnce)
+		{
+			if (((abs(_oldX - x) >= 2 || abs(_oldY - y) >= 2) && (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk)) ||
 				(abs(_oldX - x) == 2 && _oldY - y == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
 				(abs(_oldX - x) == 2 && _oldY - y == -2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == Black) ||
 				(_oldX == x && _oldY - y == 2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == White) ||
 				(_oldX == x && _oldY - y == -2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == Black))
 			{
 				// Lion capture rule #1
-				if ((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) && _currentPiece->GetType() == Lion)
+				if ((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) && _currentPiece->GetType() == Lion &&
+					_board->GetData(x, y) != nullptr && _board->GetData(x, y)->GetType() == Lion)
 				{
-					if (_board->GetData(x, y) != nullptr && _board->GetData(x, y)->GetType() == Lion)
+					std::vector<std::pair<int, int>> lionDefenders;
+					_board->GetDefenders(x, y, lionDefenders);
+					if (!lionDefenders.empty())
 					{
-						std::vector<std::pair<int, int>> lionDefenders;
-						_board->GetDefenders(x, y, lionDefenders);
-						if (!lionDefenders.empty())
-						{
-							return;
-						}
+						return;
 					}
 				}
 				if (_board->Move(_oldX, _oldY, x, y))
@@ -346,7 +371,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				this->repaint();
 			}
 		}
-		else if (std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces) && _lionMovedOnce)
+		else if (isLionPiece && _lionMovedOnce)
 		{
 			if (dynamic_cast<ChuShogiBoard*>(_board)->LionMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 			{

@@ -223,13 +223,13 @@ bool Board::CheckPosition(int x, int y) const
 	return y < _height && y >= 0 && x < _width && x >= 0;
 }
 
-bool Board::HasPiece(PieceType pieceType) const
+bool Board::HasPiece(PieceType pieceType, PieceColour pieceColour) const
 {
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)
 		{
-			if (_data[i][j] != nullptr && _data[i][j]->GetType() == pieceType)
+			if (_data[i][j] != nullptr && _data[i][j]->GetType() == pieceType && _data[i][j]->GetColour() == pieceColour)
 			{
 				return true;
 			}
@@ -297,7 +297,7 @@ bool Board::operator == (const PieceType other[16][16]) const
 	return true;
 }
 
-bool Board::operator == (const std::string& fen) const
+bool Board::operator == (const std::string fen) const
 {
 	return GetFEN() == fen;
 }

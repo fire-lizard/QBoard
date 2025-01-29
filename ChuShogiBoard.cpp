@@ -79,6 +79,8 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x - 1, y - 1);
 		break;
 	case Lion:
+		_moves.push_back({x, y});
+		
 		CheckMove(piece, x + 1, y + 1);
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x + 1, y - 1);
@@ -296,6 +298,8 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		break;
 	case Eagle:
+		_moves.push_back({ x, y });
+
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, East);
 		CheckDirection(piece, x, y, South);
@@ -320,6 +324,8 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		break;
 	case Unicorn:
+		_moves.push_back({ x, y });
+
 		CheckDirection(piece, x, y, East);
 		CheckDirection(piece, x, y, West);
 		CheckDirection(piece, x, y, SouthEast);
@@ -408,18 +414,16 @@ bool ChuShogiBoard::LionMove(int x1, int y1, int x2, int y2, int x3, int y3)
 	if ((x1 == x3 && y1 == y3) || std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x3 && t.second == y3; }))
 	{
 		// Lion capture rule #1
-		if (abs(x1 - x3) == 2 || abs(y1 - y3) == 2)
+		if ((abs(x1 - x3) == 2 || abs(y1 - y3) == 2) &&
+			_data[x3][y3] != nullptr && _data[x3][y3]->GetType() == Lion)
 		{
-			if (_data[x3][y3] != nullptr && _data[x3][y3]->GetType() == Lion)
+			std::vector<std::pair<int, int>> lionDefenders;
+			GetDefenders(x3, y3, lionDefenders);
+			if (!lionDefenders.empty())
 			{
-				std::vector<std::pair<int, int>> lionDefenders;
-				GetDefenders(x3, y3, lionDefenders);
-				if (!lionDefenders.empty())
+				if (_data[x2][y2] == nullptr || (_data[x2][y2]->GetType() != Pawn && _data[x2][y2]->GetType() != GoBetween))
 				{
-					if (_data[x2][y2] == nullptr || (_data[x2][y2]->GetType() != Pawn && _data[x2][y2]->GetType() != GoBetween))
-					{
-						return false;
-					}
+					return false;
 				}
 			}
 		}

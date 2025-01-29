@@ -88,7 +88,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-	aboutStr.append("<center>QBoard 0.8.8 beta<br/>");
+	aboutStr.append("<center>QBoard 0.8.9 beta<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
@@ -263,7 +263,7 @@ template <typename T> std::basic_string<T> MainWindow::lowercase(const std::basi
 void MainWindow::on_actionOpen_triggered()
 {
 	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
-	if (gameVariant != CrazyWa && gameVariant != WaShogi && gameVariant != ChuShogi && gameVariant != DaiShogi && gameVariant != TenjikuShogi)
+	if (gameVariant != DaiShogi && gameVariant != TenjikuShogi)
 	{
 		QFileDialog fileDialog(this);
 		fileDialog.setNameFilter("FEN Files (*.fen)");
@@ -322,6 +322,14 @@ void MainWindow::on_actionOpen_triggered()
 					else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
 					{
 						pieceType = ShogiPiece::FromStringCode(promo + uppercase(stringCode));
+					}
+					else if (gameVariant == WaShogi)
+					{
+						pieceType = WaShogiPiece::FromStringCode(uppercase(stringCode));
+					}
+					else if (gameVariant == ChuShogi)
+					{
+						pieceType = ChuShogiPiece::FromStringCode(uppercase(stringCode));
 					}
 					if (pieceType == None)
 					{
