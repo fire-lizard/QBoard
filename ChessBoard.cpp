@@ -92,6 +92,16 @@ void ChessBoard::SetEnPassant(std::string val)
 	_ep = val;
 }
 
+bool ChessBoard::EnemyPawnsAround(int x, int y)
+{
+	Piece *fp = x > 0 ? _data[x - 1][y] : nullptr;
+	Piece *sp = x < _width - 1 ? _data[x + 1][y] : nullptr;
+	PieceColour pieceColour = y == 3 ? White : Black;
+	bool fpa = (fp != nullptr) && (fp->GetType() == Pawn) && (fp->GetColour() == pieceColour);
+	bool spa = (sp != nullptr) && (sp->GetType() == Pawn) && (sp->GetColour() == pieceColour);
+	return fpa || spa;
+}
+
 void ChessBoard::GetMoves(Piece *piece, int x, int y)
 {
 	_moves.clear();
@@ -271,7 +281,7 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 			}
 		}
 		// En passant
-		if (pieceType == Pawn && abs(oldY - newY) == 2)
+		if (pieceType == Pawn && abs(oldY - newY) == 2 && EnemyPawnsAround(newX, newY))
 		{
 			_ep = "";
 			char letter = newX + 97;

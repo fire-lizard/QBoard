@@ -153,14 +153,14 @@ void VBoard::paintEvent(QPaintEvent *)
 				painter.setBrush(Qt::NoBrush);
 			}
 			// En Passant square highlighting
-			/*else if (_gameVariant == Chess && dynamic_cast<ChessBoard*>(_board)->GetEnPassant() != "-" &&
+			else if (_gameVariant == Chess && dynamic_cast<ChessBoard*>(_board)->GetEnPassant() != "-" &&
 				dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[0] - 97 == i &&
-				(_currentPlayer == White && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 49 == j || _currentPlayer == Black && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 46 == j))
+				(_currentPlayer == White && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 48 == j || _currentPlayer == Black && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 47 == j))
 			{
-				painter.setBrush(QColorConstants::blue);
+				painter.setBrush(Qt::blue);
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
-			}*/
+			}
 			else if (std::any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](std::tuple<int, int, int, int> t) {return get<2>(t) == i && get<3>(t) == j; }))
 			{
 				if (_board->GetData(i, j) != nullptr && _board->GetData(i, j)->GetType() == King)
@@ -831,11 +831,13 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	if (buf.contains("Illegal move"))
 	{
 		QMessageBox::critical(this, "Error", "Illegal move");
-		if (!_blackMoves.empty())
+		if (_blackMoves.size() > 1)
 		{
-			_board->SetFEN(_blackMoves[_blackMoves.size() - 1]);
+			_blackMoves.pop_back();
+			EngineOutputHandler::SetFenToBoard(_board, QByteArray::fromStdString(_blackMoves[_blackMoves.size() - 1]), _gameVariant);
 			this->repaint();
 		}
+		this->_statusBar->showMessage("Black move");
 		_currentPlayer = Black;
 		return;
 	}
@@ -872,11 +874,13 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	if (buf.contains("Illegal move"))
 	{
 		QMessageBox::critical(this, "Error", "Illegal move");
-		if (!_whiteMoves.empty())
+		if (_whiteMoves.size() > 1)
 		{
-			_board->SetFEN(_whiteMoves[_whiteMoves.size() - 1]);
+			_whiteMoves.pop_back();
+			EngineOutputHandler::SetFenToBoard(_board, QByteArray::fromStdString(_whiteMoves[_whiteMoves.size() - 1]), _gameVariant);
 			this->repaint();
 		}
+		this->_statusBar->showMessage(_gameVariant == Xiangqi ? "Red move" : "White move");
 		_currentPlayer = White;
 		return;
 	}

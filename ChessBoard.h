@@ -40,4 +40,6 @@ private:
 	bool _bqc = true;
 	int _halfMoveCount;
 	std::string _ep = "-";
+
+	bool EnemyPawnsAround(int x, int y);
 };
