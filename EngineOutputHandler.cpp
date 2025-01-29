@@ -103,11 +103,9 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 	return result;
 }
 
-void EngineOutputHandler::ReadStandardOutput(QProcess * process, std::shared_ptr<Engine> engine, Board * board, QTextEdit * textEdit,
+void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, std::shared_ptr<Engine> engine, Board * board, QTextEdit * textEdit,
 	GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer)
 {
-	if (engine == nullptr || !engine->IsActive()) return;
-	const QByteArray buf = process->readAllStandardOutput();
 	if (engine->GetType() == XBoard)
 	{
 		const QString str = QString(buf);
@@ -400,15 +398,9 @@ void EngineOutputHandler::ReadStandardOutput(QProcess * process, std::shared_ptr
 	}
 }
 
-void EngineOutputHandler::ReadStandardError(QProcess* process, QTextEdit* textEdit)
+void EngineOutputHandler::ReadStandardError(const QByteArray& buf, QTextEdit* textEdit)
 {
-	const QByteArray buf = process->readAllStandardError();
-	if (!buf.isEmpty())
-	{
-		Logger::writeToLog("Error while running process " + process->program(), LogLevel::Error);
-		Logger::writeToLog(buf, LogLevel::Error);
-		textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
-	}
+	textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
 }
 
 void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3)

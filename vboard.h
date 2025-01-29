@@ -22,6 +22,7 @@
 #include "XiangqiPiece.h"
 #include "promotiondialog.h"
 #include "EngineOutputHandler.h"
+#include "Logger.h"
 
 class VBoard : public QWidget
 {

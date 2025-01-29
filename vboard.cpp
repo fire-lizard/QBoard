@@ -825,8 +825,14 @@ void VBoard::SetBlackEngine(std::shared_ptr<Engine> engine)
 
 void VBoard::whiteEngineReadyReadStandardOutput()
 {
+	if (_whiteEngine == nullptr || !_whiteEngine->IsActive()) return;
 	QProcess* p = dynamic_cast<QProcess*>(sender());
-	EngineOutputHandler::ReadStandardOutput(p, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, _currentPlayer);
+	const QByteArray buf = p->readAllStandardOutput();
+	if (buf.contains("Illegal move"))
+	{
+		// TODO: Handle illegal moves
+	}
+	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, _currentPlayer);
 	if (_blackEngine != nullptr && _blackEngine->IsActive())
 	{
 		_blackEngine->Move();
@@ -841,13 +847,26 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 
 void VBoard::whiteEngineReadyReadStandardError() const
 {
-	EngineOutputHandler::ReadStandardError(dynamic_cast<QProcess*>(sender()), this->_textEdit2);
+	QProcess* process = dynamic_cast<QProcess*>(sender());
+	const QByteArray buf = process->readAllStandardError();
+	if (!buf.isEmpty())
+	{
+		Logger::writeToLog("Error while running process " + process->program(), LogLevel::Error);
+		Logger::writeToLog(buf, LogLevel::Error);
+		EngineOutputHandler::ReadStandardError(buf, this->_textEdit2);
+	}
 }
 
 void VBoard::blackEngineReadyReadStandardOutput()
 {
+	if (_blackEngine == nullptr || !_blackEngine->IsActive()) return;
 	QProcess *p = dynamic_cast<QProcess*>(sender());
-	EngineOutputHandler::ReadStandardOutput(p, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, _currentPlayer);
+	const QByteArray buf = p->readAllStandardOutput();
+	if (buf.contains("Illegal move"))
+	{
+		// TODO: Handle illegal moves
+	}
+	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, _currentPlayer);
 	if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 	{
 		_whiteEngine->Move();
@@ -862,7 +881,14 @@ void VBoard::blackEngineReadyReadStandardOutput()
 
 void VBoard::blackEngineReadyReadStandardError() const
 {
-	EngineOutputHandler::ReadStandardError(dynamic_cast<QProcess*>(sender()), this->_textEdit);
+	QProcess* process = dynamic_cast<QProcess*>(sender());
+	const QByteArray buf = process->readAllStandardError();
+	if (!buf.isEmpty())
+	{
+		Logger::writeToLog("Error while running process " + process->program(), LogLevel::Error);
+		Logger::writeToLog(buf, LogLevel::Error);
+		EngineOutputHandler::ReadStandardError(buf, this->_textEdit);
+	}
 }
 
 void VBoard::contextMenuEvent(QContextMenuEvent* event)
