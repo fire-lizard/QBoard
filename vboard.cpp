@@ -830,8 +830,7 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	const QByteArray buf = p->readAllStandardOutput();
 	if (buf.contains("Illegal move"))
 	{
-		QMessageBox mb(QMessageBox::Warning, "Illegal move", "Illegal move", QMessageBox::Ok, this);
-		mb.exec();
+		QMessageBox::critical(this, "Error", "Illegal move");
 		if (!_blackMoves.empty())
 		{
 			_board->SetFEN(_blackMoves[_blackMoves.size() - 1]);
@@ -872,8 +871,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	const QByteArray buf = p->readAllStandardOutput();
 	if (buf.contains("Illegal move"))
 	{
-		QMessageBox mb(QMessageBox::Warning, "Illegal move", "Illegal move", QMessageBox::Ok, this);
-		mb.exec();
+		QMessageBox::critical(this, "Error", "Illegal move");
 		if (!_whiteMoves.empty())
 		{
 			_board->SetFEN(_whiteMoves[_whiteMoves.size() - 1]);
