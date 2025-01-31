@@ -10,10 +10,16 @@
 #include "WaShogiPiece.h"
 #include "ChuShogiPiece.h"
 
+struct Move
+{
+	int x1, y1, x2, y2;
+};
+
 class EngineOutputHandler
 {
 public:
     static QByteArray ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant);
+	static Move ByteArrayToMove(QByteArray moveArray, EngineProtocol engineProtocol, GameVariant gameVariant, int width, int height);
 	static void ReadStandardOutput(const QByteArray& buf, std::shared_ptr<Engine> engine, Board* board, QTextEdit* textEdit,
 		GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer);
 	static void ReadStandardError(const QByteArray& buf, QTextEdit* textEdit);

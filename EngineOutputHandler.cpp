@@ -103,6 +103,40 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 	return result;
 }
 
+Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol engineProtocol, GameVariant gameVariant, int width, int height)
+{
+	Move m;
+	if (engineProtocol == Qianhong)
+	{
+		m.x1 = moveArray[0] - 65;
+		m.y1 = 10 - moveArray[1];
+		m.x2 = moveArray[2] - 65;
+		m.y2 = 10 - moveArray[3];
+	}
+	else if (engineProtocol == USI)
+	{
+		m.x1 = width - moveArray[0] + 48;
+		m.y1 = moveArray[1] - 97;
+		m.x2 = width - moveArray[2] + 48;
+		m.y2 = moveArray[3] - 97;
+	}
+	else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == WaShogi || gameVariant == CrazyWa || gameVariant == TenjikuShogi)
+	{
+		m.x1 = moveArray[0] - 97;
+		m.y1 = width - moveArray[1];
+		m.x2 = moveArray[2] - 97;
+		m.y2 = width - moveArray[3];
+	}
+	else
+	{
+		m.x1 = moveArray[0] - 97;
+		m.y1 = height - moveArray[1] + 48;
+		m.x2 = moveArray[2] - 97;
+		m.y2 = height - moveArray[3] + 48;
+	}
+	return m;
+}
+
 void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, std::shared_ptr<Engine> engine, Board * board, QTextEdit * textEdit,
 	GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer)
 {
@@ -116,38 +150,14 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, std::shared_
 		if (str.contains("usermove=0")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("usermove", false);
 		if (str.contains("usermove=1")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("usermove", true);
 	}
-	int x1, y1, x2, y2;
 	const QByteArray moveArray = ExtractMove(buf, engine->GetType(), gameVariant);
 	textEdit->setText(engineOutput == Verbose ? buf : moveArray);
 	if (moveArray.isEmpty()) return;
-	if (engine->GetType() == Qianhong)
-	{
-		x1 = moveArray[0] - 65;
-		y1 = 10 - moveArray[1];
-		x2 = moveArray[2] - 65;
-		y2 = 10 - moveArray[3];
-	}
-	else if (engine->GetType() == USI)
-	{
-		x1 = board->GetWidth() - moveArray[0] + 48;
-		y1 = moveArray[1] - 97;
-		x2 = board->GetWidth() - moveArray[2] + 48;
-		y2 = moveArray[3] - 97;
-	}
-	else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == WaShogi || gameVariant == CrazyWa || gameVariant == TenjikuShogi)
-	{
-		x1 = moveArray[0] - 97;
-		y1 = board->GetWidth() - moveArray[1];
-		x2 = moveArray[2] - 97;
-		y2 = board->GetWidth() - moveArray[3];
-	}
-	else
-	{
-		x1 = moveArray[0] - 97;
-		y1 = board->GetHeight() - moveArray[1] + 48;
-		x2 = moveArray[2] - 97;
-		y2 = board->GetHeight() - moveArray[3] + 48;
-	}
+	Move m = ByteArrayToMove(moveArray, engine->GetType(), gameVariant, board->GetWidth(), board->GetHeight());
+	int x1 = m.x1;
+	int y1 = m.y1;
+	int x2 = m.x2;
+	int y2 = m.y2;
 	if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi)
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)

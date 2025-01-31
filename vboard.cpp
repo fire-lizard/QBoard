@@ -308,7 +308,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		(isLionPiece || _currentPiece->GetType() == ViceGeneral || _currentPiece->GetType() == FireDemon || _currentPiece->GetType() == HeavenlyTetrarch) &&
 		p != nullptr && p->GetColour() == _currentPlayer && x == _oldX && y == _oldY)
 	{
-		if (dynamic_cast<ChuShogiBoard*>(_board)->IsMovePossible(x, y))
+		if (dynamic_cast<ChuShogiBoard*>(_board)->IsMovePossible(x, y) && !CheckRepetition(_oldX, _oldY, x, y))
 		{
 			if (engine != nullptr && engine->IsActive())
 			{
@@ -317,35 +317,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			FinishMove();
 		}
 	}
-	else if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
+	else if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer) && !CheckRepetition(_oldX, _oldY, x, y))
 	{
-		// TODO: Repetition rule
-		/*int repetitions = 0;
-		if (_currentPlayer == White)
-		{
-			for (size_t index = 0; index < _whiteMoves.size(); index++)
-			{
-				if (*_board == _whiteMoves[index])
-				{
-					repetitions++;
-				}
-			}
-		}
-		else
-		{
-			for (size_t index = 0; index < _blackMoves.size(); index++)
-			{
-				if (*_board == _blackMoves[index])
-				{
-					repetitions++;
-				}
-			}
-		}
-		if (repetitions >= 4)
-		{
-			QMessageBox::warning(this, "Warning", "Repetition rule violated.\nPlease make another move.");
-			return;
-		}*/
 		// Lion move
 		if (isLionPiece && !_lionMovedOnce)
 		{
@@ -833,6 +806,41 @@ void VBoard::SetWhiteEngine(std::shared_ptr<Engine> engine)
 void VBoard::SetBlackEngine(std::shared_ptr<Engine> engine)
 {
 	_blackEngine = engine;
+}
+
+bool VBoard::CheckRepetition(int oldX, int oldY, int newX, int newY)
+{
+	// TODO: Repetition rule
+	Board *board = _board->Clone();
+	board->Move(oldX, oldY, newX, newY);
+	int repetitions = 0;
+	if (_currentPlayer == White)
+	{
+		for (size_t index = 0; index < _whiteMoves.size(); index++)
+		{
+			if (*board == _whiteMoves[index])
+			{
+				repetitions++;
+			}
+		}
+	}
+	else
+	{
+		for (size_t index = 0; index < _blackMoves.size(); index++)
+		{
+			if (*board == _blackMoves[index])
+			{
+				repetitions++;
+			}
+		}
+	}
+	delete board;
+	if (repetitions >= 4)
+	{
+		QMessageBox::warning(this, "Warning", "Repetition rule violated.\nPlease make another move.");
+		return true;
+	}
+	return false;
 }
 
 void VBoard::whiteEngineReadyReadStandardOutput()
