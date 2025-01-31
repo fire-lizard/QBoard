@@ -415,12 +415,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 	}
 }
 
-bool ChuShogiBoard::IsMovePossible(int x, int y)
-{
-	return std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x && t.second == y; });
-}
-
-bool ChuShogiBoard::LionMove(int x1, int y1, int x2, int y2, int x3, int y3)
+bool ChuShogiBoard::DoubleMove(int x1, int y1, int x2, int y2, int x3, int y3)
 {
 	if ((x1 == x3 && y1 == y3) || std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x3 && t.second == y3; }))
 	{

@@ -295,7 +295,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	const bool isLionPiece = _currentPiece != nullptr && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces);
 	// Castling check
 	if (_gameVariant == Chess && _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
-		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved())
+		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved() && _board->IsMovePossible(x, y))
 	{
 		_board->SetData(x, y, _currentPiece);
 		_board->SetData(4, y, p);
@@ -310,7 +310,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		(isLionPiece || _currentPiece->GetType() == ViceGeneral || _currentPiece->GetType() == FireDemon || _currentPiece->GetType() == HeavenlyTetrarch) &&
 		p != nullptr && p->GetColour() == _currentPlayer && x == _oldX && y == _oldY)
 	{
-		if (dynamic_cast<ChuShogiBoard*>(_board)->IsMovePossible(x, y) && !CheckRepetition(_oldX, _oldY, x, y))
+		if (_board->IsMovePossible(x, y) && !CheckRepetition(_oldX, _oldY, x, y))
 		{
 			if (engine != nullptr && engine->IsActive())
 			{
@@ -363,7 +363,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove();
 				}
 			}
-			else if (dynamic_cast<ChuShogiBoard*>(_board)->IsMovePossible(x, y))
+			else if (_board->IsMovePossible(x, y))
 			{
 				_lionFirstMove.first = x;
 				_lionFirstMove.second = y;
@@ -373,7 +373,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 		else if (isLionPiece && _lionMovedOnce)
 		{
-			if (dynamic_cast<ChuShogiBoard*>(_board)->LionMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
+			if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 			{
 				if (engine != nullptr && engine->IsActive())
 				{
@@ -548,7 +548,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	}
 	else if (x == _oldX && y == _oldY && _lionMovedOnce)
 	{
-		if (dynamic_cast<ChuShogiBoard*>(_board)->LionMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
+		if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 		{
 			if (engine != nullptr && engine->IsActive())
 			{

@@ -280,6 +280,11 @@ void Board::GetDefenders(int x, int y, std::vector<std::pair<int, int>>& vec)
 	delete board;
 }
 
+bool Board::IsMovePossible(int x, int y)
+{
+	return std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x && t.second == y; });
+}
+
 bool Board::operator == (const PieceType other[16][16]) const
 {
 	for (int i = 0; i < _width; i++)

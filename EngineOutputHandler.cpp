@@ -126,36 +126,36 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 
 Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol engineProtocol, GameVariant gameVariant, int width, int height)
 {
-	Move m;
+	int x1, y1, x2, y2;
 	if (engineProtocol == Qianhong)
 	{
-		m.x1 = moveArray[0] - 65;
-		m.y1 = 10 - moveArray[1];
-		m.x2 = moveArray[2] - 65;
-		m.y2 = 10 - moveArray[3];
+		x1 = moveArray[0] - 65;
+		y1 = 10 - moveArray[1];
+		x2 = moveArray[2] - 65;
+		y2 = 10 - moveArray[3];
 	}
 	else if (engineProtocol == USI)
 	{
-		m.x1 = width - moveArray[0] + 48;
-		m.y1 = moveArray[1] - 97;
-		m.x2 = width - moveArray[2] + 48;
-		m.y2 = moveArray[3] - 97;
+		x1 = width - moveArray[0] + 48;
+		y1 = moveArray[1] - 97;
+		x2 = width - moveArray[2] + 48;
+		y2 = moveArray[3] - 97;
 	}
 	else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == WaShogi || gameVariant == CrazyWa || gameVariant == TenjikuShogi)
 	{
-		m.x1 = moveArray[0] - 97;
-		m.y1 = width - moveArray[1];
-		m.x2 = moveArray[2] - 97;
-		m.y2 = width - moveArray[3];
+		x1 = moveArray[0] - 97;
+		y1 = width - moveArray[1];
+		x2 = moveArray[2] - 97;
+		y2 = width - moveArray[3];
 	}
 	else
 	{
-		m.x1 = moveArray[0] - 97;
-		m.y1 = height - moveArray[1] + 48;
-		m.x2 = moveArray[2] - 97;
-		m.y2 = height - moveArray[3] + 48;
+		x1 = moveArray[0] - 97;
+		y1 = height - moveArray[1] + 48;
+		x2 = moveArray[2] - 97;
+		y2 = height - moveArray[3] + 48;
 	}
-	return m;
+	return {x1, y1, x2, y2};
 }
 
 void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::shared_ptr<Engine>& engine, Board * board, QTextEdit * textEdit,
