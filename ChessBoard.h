@@ -14,10 +14,10 @@ public:
 	void GetMoves(Piece *piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 	void WriteMove(const std::string& moveStr);
-	std::string GetCastling();
+	std::string GetCastling() const;
 	std::string GetEnPassant();
-	int HalfMoveCount();
-	void SetCastling(std::string val);
+	int HalfMoveCount() const;
+	void SetCastling(const std::string& val);
 	void SetEnPassant(std::string val);
 
 protected:
@@ -41,5 +41,5 @@ private:
 	int _halfMoveCount;
 	std::string _ep = "-";
 
-	bool EnemyPawnsAround(int x, int y);
+	bool EnemyPawnsAround(int x, int y) const;
 };

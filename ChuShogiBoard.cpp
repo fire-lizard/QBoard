@@ -51,8 +51,8 @@ Piece* ChuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 bool ChuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	// Lion capture rule #2
-	Piece* ap = _data[oldX][oldY];
-	Piece* dp = _data[newX][newY];
+	const Piece* ap = _data[oldX][oldY];
+	const Piece* dp = _data[newX][newY];
 	if (_wasLionCapturedByNonLion)
 	{
 		if (ap != nullptr && ap->GetType() != Lion && dp != nullptr && dp->GetType() == Lion)
@@ -309,7 +309,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		break;
 	case Eagle:
-		_moves.push_back({ x, y });
+		_moves.emplace_back(x, y);
 
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, East);
@@ -335,7 +335,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		break;
 	case Unicorn:
-		_moves.push_back({ x, y });
+		_moves.emplace_back(x, y);
 
 		CheckDirection(piece, x, y, East);
 		CheckDirection(piece, x, y, West);

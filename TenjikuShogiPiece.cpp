@@ -120,7 +120,7 @@ PieceType TenjikuShogiPiece::FromStringCode(const std::string& code)
 		{"E!", Eagle}
 	};
 
-	auto it = codeToPieceType.find(code);
+	const auto it = codeToPieceType.find(code);
 	return it != codeToPieceType.end() ? it->second : DaiShogiPiece::FromStringCode(code);
 }
 

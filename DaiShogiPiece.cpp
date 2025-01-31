@@ -73,7 +73,7 @@ PieceType DaiShogiPiece::FromStringCode(const std::string& code)
 		{"L!", Lion}
 	};
 
-	auto it = codeToPieceType.find(code);
+	const auto it = codeToPieceType.find(code);
 	return it != codeToPieceType.end() ? it->second : ChuShogiPiece::FromStringCode(code);
 }
 

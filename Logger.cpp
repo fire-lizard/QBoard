@@ -15,17 +15,17 @@ void Logger::writeToLog(const QString& message, const LogLevel level)
     QTextStream logStream(&logFile);
 
     // Format the log message with a timestamp
-    QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
+    const QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
     QString levelStr;
     switch (level)
     {
-    case LogLevel::Warning:
-        levelStr = "WARNING";
-        break;
     case LogLevel::Error:
         levelStr = "ERROR";
         break;
-    default:
+    case LogLevel::Warning:
+        levelStr = "WARNING";
+        break;
+    case LogLevel::Info:
         levelStr = "INFO";
         break;
     }

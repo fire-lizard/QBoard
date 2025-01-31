@@ -23,5 +23,5 @@ protected:
 	std::vector<std::pair<PieceColour, PieceType>> _capturedPieces;
 
 private:
-	std::string formatEnumCounts(const std::vector<PieceType>& enumList);
+	static std::string formatEnumCounts(const std::vector<PieceType>& enumList);
 };

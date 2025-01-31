@@ -128,7 +128,7 @@ std::string Piece::GetImageFileName() const
 	}
 }
 
-std::string Piece::Description()
+std::string Piece::Description() const
 {
 	switch (_pieceType)
 	{
@@ -203,6 +203,5 @@ std::string Piece::Description()
 	case WaterBuffalo: return "Water Buffalo";
 	case HeavenlyTetrarch: return "Heavenly Tetrarch";
 	case FireDemon: return "Fire Demon";
-	default: return "Unknown piece type";
 	}
 }

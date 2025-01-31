@@ -246,7 +246,7 @@ void MainWindow::on_actionNew_game_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
+	const GameVariant gameVariant = this->ui->vboard->GetGameVariant();
 	if (gameVariant != DaiShogi && gameVariant != TenjikuShogi)
 	{
 		QFileDialog fileDialog(this);
@@ -255,13 +255,13 @@ void MainWindow::on_actionOpen_triggered()
 		fileDialog.setWindowTitle("Open file");
 		if (fileDialog.exec())
 		{
-			QString fileName = fileDialog.selectedFiles()[0];
+			const QString fileName = fileDialog.selectedFiles()[0];
 			QFile file(fileName);
 			file.open(QIODevice::ReadOnly | QIODevice::Text);
-			QByteArray str = file.readAll();
+			const QByteArray str = file.readAll();
 			file.close();
 			Board* board = this->ui->vboard->GetBoard();
-			QString errorStr = EngineOutputHandler::SetFenToBoard(board, str, ui->vboard->GetGameVariant());
+			const QString errorStr = EngineOutputHandler::SetFenToBoard(board, str, ui->vboard->GetGameVariant());
 			if (!errorStr.isEmpty())
 			{
 				QMessageBox::critical(this, "Error", errorStr);
@@ -458,13 +458,13 @@ void MainWindow::on_actionSave_triggered()
 	}
 }
 
-void MainWindow::on_actionStop_game_triggered()
+void MainWindow::on_actionStop_game_triggered() const
 {
 	StopEngine(_whiteEngine);
 	StopEngine(_blackEngine);
 }
 
-void MainWindow::on_actionExit_triggered()
+void MainWindow::on_actionExit_triggered() const
 {
 	StopEngine(_whiteEngine);
 	StopEngine(_blackEngine);
@@ -488,7 +488,7 @@ void MainWindow::on_actionEngine_Manager_triggered()
 	}
 }
 
-void MainWindow::StartNewGame(GameVariant newGameVariant)
+void MainWindow::StartNewGame(GameVariant newGameVariant) const
 {
 	StopEngine(_whiteEngine);
 	StopEngine(_blackEngine);
@@ -501,7 +501,7 @@ void MainWindow::StartNewGame(GameVariant newGameVariant)
 	this->ui->vboard->repaint();
 }
 
-void MainWindow::LoadEngine(std::shared_ptr<Engine> engine, QString engineExe, PieceColour player)
+void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString& engineExe, PieceColour player)
 {
 	if (engine != nullptr)
 	{
@@ -551,9 +551,6 @@ void MainWindow::LoadEngine(std::shared_ptr<Engine> engine, QString engineExe, P
 					break;
 				case Chess:
 					engine->StartGame("normal");
-					break;
-				default:
-					engine->StartGame();
 					break;
 				}
 				if (engineExe.toLower().contains("hachu"))

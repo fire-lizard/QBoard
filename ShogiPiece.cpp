@@ -101,7 +101,7 @@ PieceType ShogiPiece::FromStringCode(const std::string& code)
 		{"+E", Prince}
 	};
 
-	auto it = codeToPieceType.find(code);
+	const auto it = codeToPieceType.find(code);
 	return it != codeToPieceType.end() ? it->second : None;
 }
 
@@ -126,7 +126,7 @@ std::string ShogiPiece::ToStringCode(PieceType piece)
 		{Prince, "+E"}
 	};
 
-	auto it = pieceTypeToCode.find(piece);
+	const auto it = pieceTypeToCode.find(piece);
 	return it != pieceTypeToCode.end() ? it->second : "";
 }
 

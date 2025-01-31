@@ -1,5 +1,7 @@
 #include "vboard.h"
 
+#include <utility>
+
 VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
 	setAttribute(Qt::WA_Hover, true);
@@ -220,15 +222,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			if (p != nullptr)
 			{
 				std::string imageFileName;
-				if (_pieceStyle == Asian && _gameVariant == TenjikuShogi)
-				{
-					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
-				}
-				else if (_gameVariant == TenjikuShogi)
-				{
-					imageFileName = p->GetImageFileName();
-				}
-				else if (_pieceStyle == Asian && (_gameVariant == Xiangqi || std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) != std::end(_shogiVariants)))
+				if (_pieceStyle == Asian && (_gameVariant == Xiangqi || std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) != std::end(_shogiVariants)))
 				{
 					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 				}
@@ -291,14 +285,14 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 {
 	if ((_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black) ||
 		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;
-	std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
+	const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
 	const int x = static_cast<int>(event->position().x()) / w;
 	const int y = static_cast<int>(event->position().y()) / h;
 	Piece* p = _board->GetData(x, y);
 	const PieceType ct = p != nullptr ? p->GetType() : None;
-	bool isLionPiece = _currentPiece != nullptr && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces);
+	const bool isLionPiece = _currentPiece != nullptr && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces);
 	// Castling check
 	if (_gameVariant == Chess && _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
 		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved())
@@ -583,7 +577,39 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				CalculateCheck(x, y, t.first, t.second);
 			});
+			std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+			{
+				CalculateCheck(x, y, t.first, t.second);
+			});
 		}
+		/*if (_moves.empty())
+		{
+			const auto location = EngineOutputHandler::GetPieceLocation(_board, King, _currentPlayer);
+			std::vector<std::pair<int, int>> attackers;
+			_board->GetAttackers(location.first, location.second, attackers);
+			if (attackers.empty())
+			{
+				if (_currentPlayer == White)
+				{
+					QMessageBox::information(this, "Game over", "Black wins by stalemate White King");
+				}
+				else
+				{
+					QMessageBox::information(this, "Game over", "White wins by stalemate Black King");
+				}
+			}
+			else
+			{
+				if (_currentPlayer == White)
+				{
+					QMessageBox::information(this, "Game over", "Black wins by checkmate White King");
+				}
+				else
+				{
+					QMessageBox::information(this, "Game over", "White wins by checkmate Black King");
+				}
+			}
+		}*/
 		this->repaint();
 	}
 }
@@ -592,7 +618,7 @@ bool VBoard::event(QEvent* event)
 {
 	if (event->type() == QEvent::HoverMove && std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) != std::end(_shogiVariants))
 	{
-		QHoverEvent* hoverEvent = static_cast<QHoverEvent*>(event);
+		const QHoverEvent* hoverEvent = dynamic_cast<QHoverEvent*>(event);
 		const int w = this->size().width() / _board->GetWidth();
 		const int h = this->size().height() / _board->GetHeight();
 		const int x = static_cast<int>(hoverEvent->position().x()) / w;
@@ -601,7 +627,7 @@ bool VBoard::event(QEvent* event)
 		{
 			_px = x;
 			_py = y;
-			Piece* p = _board->GetData(x, y);
+			const Piece* p = _board->GetData(x, y);
 			if (p != nullptr)
 			{
 				_board->GetAttackers(x, y, _attackers);
@@ -688,7 +714,7 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		_board = new MakrukBoard();
 		break;
 	}
-	int s = _gameVariant == TenjikuShogi ? 56 : _gameVariant == DaiShogi ? 60 : 66;
+	const int s = _gameVariant == TenjikuShogi ? 56 : _gameVariant == DaiShogi ? 60 : 66;
 	this->setFixedSize(_board->GetWidth() * s + 1, _board->GetHeight() * s + 1);
 	if (this->_window != nullptr)
 	{
@@ -758,10 +784,11 @@ void VBoard::RemoveMove(int x, int y)
 void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 {
 	Board *board = _board->Clone();
-	auto location = EngineOutputHandler::GetPieceLocation(board, King, _currentPlayer, { oldX, oldY, newX, newY });
-	int kx = location.first, ky = location.second;
 	board->GetMoves(board->GetData(oldX, oldY), oldX, oldY);
 	board->Move(oldX, oldY, newX, newY);
+	const auto location = EngineOutputHandler::GetPieceLocation(board, King, _currentPlayer);
+	const int kx = location.first;
+	const int ky = location.second;
 	auto opponentMoves = board->GetAllMoves(_currentPlayer == White ? Black : White);
 	for_each(opponentMoves.begin(), opponentMoves.end(), [=](std::tuple<int, int, int, int> t)
 	{
@@ -786,25 +813,25 @@ void VBoard::SetMainWindow(QMainWindow *window)
 
 void VBoard::SetWhiteEngine(std::shared_ptr<Engine> engine)
 {
-	_whiteEngine = engine;
+	_whiteEngine = std::move(engine);
 }
 
 void VBoard::SetBlackEngine(std::shared_ptr<Engine> engine)
 {
-	_blackEngine = engine;
+	_blackEngine = std::move(engine);
 }
 
 bool VBoard::CheckRepetition(int oldX, int oldY, int newX, int newY)
 {
-	// TODO: Repetition rule
+	// Repetition rule
 	Board *board = _board->Clone();
 	board->Move(oldX, oldY, newX, newY);
 	int repetitions = 0;
 	if (_currentPlayer == White)
 	{
-		for (size_t index = 0; index < _whiteMoves.size(); index++)
+		for (auto& _whiteMove : _whiteMoves)
 		{
-			if (*board == _whiteMoves[index])
+			if (*board == _whiteMove)
 			{
 				repetitions++;
 			}
@@ -812,9 +839,9 @@ bool VBoard::CheckRepetition(int oldX, int oldY, int newX, int newY)
 	}
 	else
 	{
-		for (size_t index = 0; index < _blackMoves.size(); index++)
+		for (auto& _blackMove : _blackMoves)
 		{
-			if (*board == _blackMoves[index])
+			if (*board == _blackMove)
 			{
 				repetitions++;
 			}
@@ -972,7 +999,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				mb.exec();
 				return;
 			}
-			Piece* kp = _currentPlayer == White ? _board->GetData(x, y - 1) : _board->GetData(x, y + 1);
+			const Piece* kp = _currentPlayer == White ? _board->GetData(x, y - 1) : _board->GetData(x, y + 1);
 			if (kp != nullptr && kp->GetType() == King && kp->GetColour() != _currentPlayer)
 			{
 				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot check king by the pawn drop",
@@ -982,7 +1009,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			}
 			for (int index = 0; index < _board->GetHeight(); index++)
 			{
-				Piece* p = _board->GetData(x, index);
+				const Piece* p = _board->GetData(x, index);
 				if (p != nullptr && p->GetType() == Pawn && p->GetColour() == _currentPlayer)
 				{
 					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place second pawn on the same column",
@@ -1015,7 +1042,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		dynamic_cast<ShogiVariantBoard*>(_board)->PlacePiece(newPiece, _currentPlayer, x, y);
 		Piece* p = _board->GetData(x, y);
 		const char sc = p->StringCode()[0];
-		std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
+		const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
 		if (engine != nullptr && engine->IsActive())
 		{
 			if (engine->GetType() == USI)

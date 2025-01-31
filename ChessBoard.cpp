@@ -1,5 +1,7 @@
 #include "ChessBoard.h"
 
+#include <utility>
+
 ChessBoard::ChessBoard()
 {
 	_width = 8;
@@ -56,14 +58,14 @@ Piece* ChessBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 	return new ChessPiece(pieceType, pieceColour);
 }
 
-std::string ChessBoard::GetCastling()
+std::string ChessBoard::GetCastling() const
 {
 	std::string str;
 	if (_wkc) str += "K";
 	if (_wqc) str += "Q";
 	if (_bkc) str += "k";
 	if (_bqc) str += "q";
-	if (str == "") str += "-";
+	if (str.empty()) str += "-";
 	return str;
 }
 
@@ -72,33 +74,33 @@ std::string ChessBoard::GetEnPassant()
 	return _ep;
 }
 
-void ChessBoard::SetCastling(std::string val)
+void ChessBoard::SetCastling(const std::string& val)
 {
 	_wkc = false;
 	_wqc = false;
 	_bkc = false;
 	_bqc = false;
-	for (size_t index = 0; index < val.size(); index++)
+	for (const char index : val)
 	{
-		if (val[index] == 'K') _wkc = true;
-		if (val[index] == 'Q') _wqc = true;
-		if (val[index] == 'k') _bkc = true;
-		if (val[index] == 'q') _bqc = true;
+		if (index == 'K') _wkc = true;
+		if (index == 'Q') _wqc = true;
+		if (index == 'k') _bkc = true;
+		if (index == 'q') _bqc = true;
 	}
 }
 
 void ChessBoard::SetEnPassant(std::string val)
 {
-	_ep = val;
+	_ep = std::move(val);
 }
 
-bool ChessBoard::EnemyPawnsAround(int x, int y)
+bool ChessBoard::EnemyPawnsAround(int x, int y) const
 {
-	Piece *fp = x > 0 ? _data[x - 1][y] : nullptr;
-	Piece *sp = x < _width - 1 ? _data[x + 1][y] : nullptr;
-	PieceColour pieceColour = y == 3 ? White : Black;
-	bool fpa = (fp != nullptr) && (fp->GetType() == Pawn) && (fp->GetColour() == pieceColour);
-	bool spa = (sp != nullptr) && (sp->GetType() == Pawn) && (sp->GetColour() == pieceColour);
+	const Piece *fp = x > 0 ? _data[x - 1][y] : nullptr;
+	const Piece *sp = x < _width - 1 ? _data[x + 1][y] : nullptr;
+	const PieceColour pieceColour = y == 3 ? White : Black;
+	const bool fpa = (fp != nullptr) && (fp->GetType() == Pawn) && (fp->GetColour() == pieceColour);
+	const bool spa = (sp != nullptr) && (sp->GetType() == Pawn) && (sp->GetColour() == pieceColour);
 	return fpa || spa;
 }
 
@@ -175,8 +177,8 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 			// En passant
 			if (_ep != "-")
 			{
-				int letter = _ep[0] - 97;
-				int number = _ep[1] - 48;
+				const int letter = _ep[0] - 97;
+				const int number = _ep[1] - 48;
 				if (abs(x - letter) == 1 && y == number + 1)
 				{
 					CheckMove(piece, letter, number + 2);
@@ -204,8 +206,8 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 			// En passant
 			if (_ep != "-")
 			{
-				int letter = _ep[0] - 97;
-				int number = _ep[1] - 48;
+				const int letter = _ep[0] - 97;
+				const int number = _ep[1] - 48;
 				if (abs(x - letter) == 1 && y == number)
 				{
 					CheckMove(piece, letter, number - 1);
@@ -221,9 +223,9 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 
 bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
-	PieceType pieceType = _data[oldX][oldY]->GetType();
-	PieceColour pieceColour = _data[oldX][oldY]->GetColour();
-	PieceType destPieceType = _data[newX][newY] != nullptr ? _data[newX][newY]->GetType() : None;
+	const PieceType pieceType = _data[oldX][oldY]->GetType();
+	const PieceColour pieceColour = _data[oldX][oldY]->GetColour();
+	const PieceType destPieceType = _data[newX][newY] != nullptr ? _data[newX][newY]->GetType() : None;
 	const bool result = Board::Move(oldX, oldY, newX, newY, cl);
 	if (result)
 	{
@@ -284,17 +286,17 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 		if (pieceType == Pawn && abs(oldY - newY) == 2 && EnemyPawnsAround(newX, newY))
 		{
 			_ep = "";
-			char letter = newX + 97;
+			const char letter = newX + 97;
 			_ep.push_back(letter);
 			_ep.append(oldY == 5 ? "6" : "3");
 		}
 		else if (pieceType == Pawn && _ep != "-")
 		{
-			char letter = newX + 97;
-			int number = _ep[1] - 48;
+			const char letter = newX + 97;
+			const int number = _ep[1] - 48;
 			if (letter == _ep[0] &&	((pieceColour == White && newY == number - 1) || (pieceColour == Black && newY == number + 2)))
 			{
-				Piece* p = pieceColour == White ? _data[newX][number] : _data[newX][number + 1];
+				const Piece* p = pieceColour == White ? _data[newX][number] : _data[newX][number + 1];
 				if (p != nullptr && p->GetType() == Pawn && p->GetColour() != pieceColour)
 				{
 					delete p;
@@ -326,7 +328,7 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	return result;
 }
 
-int ChessBoard::HalfMoveCount()
+int ChessBoard::HalfMoveCount() const
 {
 	return _halfMoveCount;
 }

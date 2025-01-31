@@ -17,7 +17,7 @@ public:
 	QByteArray AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion = ' ') override;
 	QByteArray AddMove(signed char x1, signed char y1, signed char x2, signed char y2, signed char x3, signed char y3);
 	void SetOption(const std::string& name, bool value);
-	bool GetOption(const std::string& name);
+	bool GetOption(const std::string& name) const;
 	void Edit(const Board* board);
 
 private:

@@ -1,30 +1,22 @@
 #include "EngineOutputHandler.h"
 
-std::pair<int, int> EngineOutputHandler::GetPieceLocation(Board* board, PieceType pieceType, PieceColour pieceColour, Move m)
+std::pair<int, int> EngineOutputHandler::GetPieceLocation(const Board* board, PieceType pieceType, PieceColour pieceColour)
 {
 	int kx = -1, ky = -1;
-	if (board->GetData(m.x1, m.y1)->GetBaseType() == pieceType)
+	for (int i = 0; i < board->GetWidth(); i++)
 	{
-		kx = m.x2;
-		ky = m.y2;
-	}
-	else
-	{
-		for (int i = 0; i < board->GetWidth(); i++)
+		for (int j = 0; j < board->GetHeight(); j++)
 		{
-			for (int j = 0; j < board->GetHeight(); j++)
+			const Piece* p = board->GetData(i, j);
+			if (p != nullptr && p->GetBaseType() == pieceType && p->GetColour() == pieceColour)
 			{
-				const Piece* p = board->GetData(i, j);
-				if (p != nullptr && p->GetBaseType() == pieceType && p->GetColour() == pieceColour)
-				{
-					kx = i;
-					ky = j;
-					break;
-				}
-			}
-			if (kx > -1 && ky > -1)
+				kx = i;
+				ky = j;
 				break;
+			}
 		}
+		if (kx > -1 && ky > -1)
+			break;
 	}
 	return { kx, ky };
 }
@@ -166,7 +158,7 @@ Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol e
 	return m;
 }
 
-void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, std::shared_ptr<Engine> engine, Board * board, QTextEdit * textEdit,
+void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::shared_ptr<Engine>& engine, Board * board, QTextEdit * textEdit,
 	GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer)
 {
 	if (engine->GetType() == XBoard)
@@ -182,7 +174,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, std::shared_
 	const QByteArray moveArray = ExtractMove(buf, engine->GetType(), gameVariant);
 	textEdit->setText(engineOutput == Verbose ? buf : moveArray);
 	if (moveArray.isEmpty()) return;
-	Move m = ByteArrayToMove(moveArray, engine->GetType(), gameVariant, board->GetWidth(), board->GetHeight());
+	const Move m = ByteArrayToMove(moveArray, engine->GetType(), gameVariant, board->GetWidth(), board->GetHeight());
 	int x1 = m.x1;
 	int y1 = m.y1;
 	int x2 = m.x2;
@@ -478,18 +470,18 @@ template <typename T> std::basic_string<T> lowercase(const std::basic_string<T>&
 	return s2;
 }
 
-QString EngineOutputHandler::SetFenToBoard(Board* board, QByteArray str, GameVariant gameVariant)
+QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant)
 {
 	QStringList parts = QString(str).trimmed().split(' ', Qt::SkipEmptyParts);
 	QString fen = parts[0];
 	board->Clear();
-	int w = board->GetWidth();
-	int h = board->GetHeight();
+	const int w = board->GetWidth();
+	const int h = board->GetHeight();
 	int i = 0, j = 0, k = 0;
 	std::string promo;
 	do
 	{
-		char c = fen[k].toLatin1();
+		const char c = fen[k].toLatin1();
 		if (c == '/')
 		{
 			k++;

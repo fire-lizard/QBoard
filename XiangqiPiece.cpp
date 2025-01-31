@@ -49,7 +49,7 @@ PieceType XiangqiPiece::FromStringCode(const std::string& code)
 		{"P", Pawn}
 	};
 
-	auto it = codeToPieceType.find(code);
+	const auto it = codeToPieceType.find(code);
 	return it != codeToPieceType.end() ? it->second : None;
 }
 

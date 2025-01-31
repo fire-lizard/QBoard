@@ -4,11 +4,6 @@
 #include <QTextEdit>
 #include "Common.h"
 
-constexpr signed char operator "" _c(unsigned long long arg) noexcept
-{
-	return static_cast<signed char>(arg);
-}
-
 class Engine
 {
 public:
@@ -18,10 +13,10 @@ public:
 	void Quit() const;
 	bool IsActive() const;
 	void SetActive(bool val);
-	QTextEdit* GetTextEdit();
+	QTextEdit* GetTextEdit() const;
 	void SetTextEdit(QTextEdit* textEdit);
-	QProcess* GetProcess();
-	void WriteToProcess(QByteArray buf);
+	QProcess* GetProcess() const;
+	void WriteToProcess(QByteArray buf) const;
 	virtual void SetFEN(std::string fen) = 0;
 	virtual EngineProtocol GetType() = 0;
 	virtual void StartGame(QString variant = "") = 0;

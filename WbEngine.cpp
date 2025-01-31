@@ -36,10 +36,10 @@ void WbEngine::Edit(const Board* board)
 			Piece* p = board->GetData(i, j);
 			if (p != nullptr)
 			{
-				char letter = i + 97;
-				int number = board->GetHeight() - j;
+				const char letter = i + 97;
+				const int number = board->GetHeight() - j;
+				const PieceColour newPieceColour = p->GetColour();
 				std::string str;
-				PieceColour newPieceColour = p->GetColour();
 				if (newPieceColour != pieceColour)
 				{
 					WriteToProcess("c\n");
@@ -186,7 +186,7 @@ void WbEngine::SetOption(const std::string& name, bool value)
 	if (name == "usermove") _usermove = value;
 }
 
-bool WbEngine::GetOption(const std::string& name)
+bool WbEngine::GetOption(const std::string& name) const
 {
 	if (name == "setboard") return _setboard;
 	if (name == "memory") return _memory;

@@ -36,7 +36,7 @@ void UciEngine::Move()
 	_textEdit->setText("");
 	QByteArray moveStr;
 	moveStr += "position fen " + _fen + " moves ";
-	for (auto& _move : _moves)
+	for (const auto& _move : _moves)
 	{
 		moveStr += _move;
 		moveStr += " ";
@@ -51,7 +51,7 @@ void UciEngine::Move(signed char x1, signed char y1, signed char x2, signed char
 	_textEdit->setText("");
 	QByteArray moveStr;
 	moveStr += "position fen " + _fen + " moves ";
-	for (auto& _move : _moves)
+	for (const auto& _move : _moves)
 	{
 		moveStr += _move;
 		moveStr += " ";

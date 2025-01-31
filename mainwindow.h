@@ -36,7 +36,7 @@ public:
 
 	void on_actionAbout_triggered();
 
-	void on_actionExit_triggered();
+	void on_actionExit_triggered() const;
 
     void on_actionNew_game_triggered();
 
@@ -44,18 +44,18 @@ public:
 
     void on_actionSave_triggered();
 
-    void on_actionStop_game_triggered();
+    void on_actionStop_game_triggered() const;
 
     void on_actionEngine_Manager_triggered();
 
 private:
 	void closeEvent(QCloseEvent *) override;
 
-	void LoadEngine(std::shared_ptr<Engine> engine, QString engineExe, PieceColour player);
+	void LoadEngine(const std::shared_ptr<Engine>& engine, const QString& engineExe, PieceColour player);
 
-	void StopEngine(std::shared_ptr<Engine> engine);
+	static void StopEngine(std::shared_ptr<Engine> engine);
 
-	void StartNewGame(GameVariant newGameVariant);
+	void StartNewGame(GameVariant newGameVariant) const;
 
 	static void readXmlUsingStream(const QString& fileName, QTableWidget* engineTable);
 

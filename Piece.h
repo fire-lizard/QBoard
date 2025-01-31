@@ -14,7 +14,7 @@ public:
 	PieceColour GetColour() const;
 	bool IsPromoted() const;
 	void SetPromoted(bool isPromoted);
-	std::string Description();
+	std::string Description() const;
 
 protected:
 	Piece(PieceType pieceType, PieceColour pieceColour);

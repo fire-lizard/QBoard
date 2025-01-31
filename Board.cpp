@@ -37,7 +37,7 @@ void Board::SetData(int x, int y, Piece *p)
 	_data[x][y] = p;
 }
 
-int Board::MoveCount()
+int Board::MoveCount() const
 {
 	return (_moveCount / 2) + 1;
 }
@@ -245,13 +245,12 @@ void Board::GetAttackers(int x, int y, std::vector<std::pair<int, int>>& vec)
 	{
 		return;
 	}
-	PieceColour pieceColour = _data[x][y]->GetColour();
+	const PieceColour pieceColour = _data[x][y]->GetColour();
 	Board* board = this->Clone();
 	board->SetData(x, y, nullptr);
-	auto opponentMoves = board->GetAllMoves(pieceColour == White ? Black : White);
-	for (size_t index = 0; index < opponentMoves.size(); index++)
+	const auto opponentMoves = board->GetAllMoves(pieceColour == White ? Black : White);
+	for (auto tpl : opponentMoves)
 	{
-		auto tpl = opponentMoves[index];
 		if (std::get<2>(tpl) == x && std::get<3>(tpl) == y)
 		{
 			vec.emplace_back(std::get<0>(tpl), std::get<1>(tpl));
@@ -267,13 +266,12 @@ void Board::GetDefenders(int x, int y, std::vector<std::pair<int, int>>& vec)
 	{
 		return;
 	}
-	PieceColour pieceColour = _data[x][y]->GetColour();
+	const PieceColour pieceColour = _data[x][y]->GetColour();
 	Board* board = this->Clone();
 	board->SetData(x, y, nullptr);
-	auto playerMoves = board->GetAllMoves(pieceColour);
-	for (size_t index = 0; index < playerMoves.size(); index++)
+	const auto playerMoves = board->GetAllMoves(pieceColour);
+	for (auto tpl : playerMoves)
 	{
-		auto tpl = playerMoves[index];
 		if (std::get<2>(tpl) == x && std::get<3>(tpl) == y)
 		{
 			vec.emplace_back(std::get<0>(tpl), std::get<1>(tpl));
@@ -297,7 +295,7 @@ bool Board::operator == (const PieceType other[16][16]) const
 	return true;
 }
 
-bool Board::operator == (const std::string fen) const
+bool Board::operator == (const std::string& fen) const
 {
 	return GetFEN() == fen;
 }

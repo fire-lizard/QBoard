@@ -14,5 +14,5 @@ public:
 	QByteArray AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion = ' ') override;
 
 protected:
-	void trimNewline(std::string& str);
+	static void trimNewline(std::string& str);
 };

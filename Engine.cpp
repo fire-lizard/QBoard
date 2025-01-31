@@ -40,7 +40,7 @@ void Engine::SetActive(bool val)
 	_isActive = val;
 }
 
-QTextEdit* Engine::GetTextEdit()
+QTextEdit* Engine::GetTextEdit() const
 {
 	return _textEdit;
 }
@@ -50,12 +50,12 @@ void Engine::SetTextEdit(QTextEdit* textEdit)
 	_textEdit = textEdit;
 }
 
-QProcess* Engine::GetProcess()
+QProcess* Engine::GetProcess() const
 {
 	return _process.get();
 }
 
-void Engine::WriteToProcess(QByteArray buf)
+void Engine::WriteToProcess(QByteArray buf) const
 {
 	if (std::any_of(buf.begin(), buf.end(), [=](char t) {return isprint(t);}))
 	{

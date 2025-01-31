@@ -63,15 +63,8 @@ void TenjikuShogiBoard::CheckJump(const Piece* piece, int x, int y, Direction di
 			beforeJump = false;
 			CheckMove(piece, x, y);
 			PieceType pieceType = _data[x][y]->GetType();
-			if (pieceType == King)
-			{
-				break;
-			}
-			else if (piece->GetType() == pieceType || pieceType == GreatGeneral)
-			{
-				break;
-			}
-			else if (std::find(std::begin(_jumpingPieces), std::end(_jumpingPieces), pieceType) != std::end(_jumpingPieces))
+			if (pieceType == King || piece->GetType() == pieceType || pieceType == GreatGeneral
+				|| std::find(std::begin(_jumpingPieces), std::end(_jumpingPieces), pieceType) != std::end(_jumpingPieces))
 			{
 				break;
 			}
@@ -119,7 +112,7 @@ bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 				return true;
 			}
 			// Fire Demon moves
-			else if (_data[oldX][oldY]->GetType() == FireDemon)
+			if (_data[oldX][oldY]->GetType() == FireDemon)
 			{
 				for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {delete _data[p.first][p.second]; _data[p.first][p.second] = nullptr;});
 			}
@@ -357,28 +350,20 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 std::vector<std::pair<int, int>> TenjikuShogiBoard::GetEnemyPiecesAround(int x, int y, PieceColour pieceColour) const
 {
 	std::vector<std::pair<int, int>> result;
-	const int directions[8][2] =
+	constexpr int directions[8][2] =
 	{
 		{0, 1}, {1, 0}, {0, -1}, {-1, 0}, // Right, Down, Left, Up
 		{-1, -1}, {-1, 1}, {1, -1}, {1, 1} // NW, NE, SW, SE
 	};
-	for (int index = 0; index < 8; index++)
+	for (const auto direction : directions)
 	{
-		int i = x + directions[index][0];
-		int j = y + directions[index][1];
-		if (i < 0 || i > _width - 1 || j < 0 || j > _height - 1)
+		int i = x + direction[0];
+		int j = y + direction[1];
+		if (i < 0 || i > _width - 1 || j < 0 || j > _height - 1 || _data[i][j] == nullptr || _data[i][j]->GetColour() == pieceColour)
 		{
 			continue;
 		}
-		else if (_data[i][j] == nullptr)
-		{
-			continue;
-		}
-		else if (_data[i][j]->GetColour() == pieceColour)
-		{
-			continue;
-		}
-		else if (_data[i][j]->GetColour() != pieceColour)
+		if (_data[i][j]->GetColour() != pieceColour)
 		{
 			result.emplace_back(i, j);
 		}
@@ -388,8 +373,8 @@ std::vector<std::pair<int, int>> TenjikuShogiBoard::GetEnemyPiecesAround(int x, 
 
 void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 {
-	const int BOARD_SIZE = 7;
-	const int MAX_MOVES = 3;
+	constexpr int BOARD_SIZE = 7;
+	constexpr int MAX_MOVES = 3;
 	char board[BOARD_SIZE][BOARD_SIZE];
 	for (int i = -MAX_MOVES; i <= MAX_MOVES; i++)
 	{
@@ -415,8 +400,8 @@ void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 	}
 
 	// Initial position.
-	const int startR = MAX_MOVES;
-	const int startC = MAX_MOVES;
+	constexpr int startR = MAX_MOVES;
+	constexpr int startC = MAX_MOVES;
 
 	// Directions: 8 neighbors (vertical, horizontal, diagonal).
 	static const std::vector<std::pair<int, int>> directions =
@@ -453,12 +438,12 @@ void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 
 	while (!q.empty())
 	{
-		State st = q.front();
+		const State st = q.front();
 		q.pop();
 
-		int r = st.r;
-		int c = st.c;
-		int s = st.steps; // steps used so far
+		const int r = st.r;
+		const int c = st.c;
+		const int s = st.steps; // steps used so far
 
 		// If we've already used all steps, we can't move further.
 		if (s == MAX_MOVES)
