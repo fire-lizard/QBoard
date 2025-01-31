@@ -1,5 +1,34 @@
 #include "EngineOutputHandler.h"
 
+std::pair<int, int> EngineOutputHandler::GetPieceLocation(Board* board, PieceType pieceType, PieceColour pieceColour, Move m)
+{
+	int kx = -1, ky = -1;
+	if (board->GetData(m.x1, m.y1)->GetBaseType() == pieceType)
+	{
+		kx = m.x2;
+		ky = m.y2;
+	}
+	else
+	{
+		for (int i = 0; i < board->GetWidth(); i++)
+		{
+			for (int j = 0; j < board->GetHeight(); j++)
+			{
+				const Piece* p = board->GetData(i, j);
+				if (p != nullptr && p->GetBaseType() == pieceType && p->GetColour() == pieceColour)
+				{
+					kx = i;
+					ky = j;
+					break;
+				}
+			}
+			if (kx > -1 && ky > -1)
+				break;
+		}
+	}
+	return { kx, ky };
+}
+
 QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant)
 {
 	const QRegularExpression _nlre = QRegularExpression("[\r\n]+");

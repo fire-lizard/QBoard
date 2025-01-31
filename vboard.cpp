@@ -263,10 +263,18 @@ void VBoard::FinishMove()
 	if (_currentPlayer == White)
 	{
 		_whiteMoves.push_back(_board->GetFEN());
+		if (!_board->HasPiece(King, Black) && !_board->HasPiece(Prince, Black))
+		{
+			QMessageBox::information(this, "Game over", "White wins by elminating Black King");
+		}
 	}
 	else
 	{
 		_blackMoves.push_back(_board->GetFEN());
+		if (!_board->HasPiece(King, White) && !_board->HasPiece(Prince, White))
+		{
+			QMessageBox::information(this, "Game over", "Black wins by elminating White King");
+		}
 	}
 	_currentPlayer = _currentPlayer == White ? Black : White;
 	_statusBar->setStyleSheet("QStatusBar { color : black; }");
@@ -749,31 +757,9 @@ void VBoard::RemoveMove(int x, int y)
 
 void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
 {
-	int kx = -1, ky = -1;
 	Board *board = _board->Clone();
-	if (board->GetData(oldX, oldY)->GetBaseType() == King)
-	{
-		kx = newX;
-		ky = newY;
-	}
-	else
-	{
-		for (int i = 0; i < board->GetWidth(); i++)
-		{
-			for (int j = 0; j < board->GetHeight(); j++)
-			{
-				const Piece *p = board->GetData(i, j);
-				if (p != nullptr && p->GetBaseType() == King && p->GetColour() == _currentPlayer)
-				{
-					kx = i;
-					ky = j;
-					break;
-				}
-			}
-			if (kx > -1 && ky > -1)
-				break;
-		}
-	}
+	auto location = EngineOutputHandler::GetPieceLocation(board, King, _currentPlayer, { oldX, oldY, newX, newY });
+	int kx = location.first, ky = location.second;
 	board->GetMoves(board->GetData(oldX, oldY), oldX, oldY);
 	board->Move(oldX, oldY, newX, newY);
 	auto opponentMoves = board->GetAllMoves(_currentPlayer == White ? Black : White);

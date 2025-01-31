@@ -18,7 +18,8 @@ struct Move
 class EngineOutputHandler
 {
 public:
-    static QByteArray ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant);
+	static std::pair<int, int> GetPieceLocation(Board* board, PieceType pieceType, PieceColour pieceColour, Move m);
+	static QByteArray ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant);
 	static Move ByteArrayToMove(QByteArray moveArray, EngineProtocol engineProtocol, GameVariant gameVariant, int width, int height);
 	static void ReadStandardOutput(const QByteArray& buf, std::shared_ptr<Engine> engine, Board* board, QTextEdit* textEdit,
 		GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer);
