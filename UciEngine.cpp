@@ -33,13 +33,16 @@ void UciEngine::StartGame(QString variant)
 
 void UciEngine::Move()
 {
-	WriteToProcess(QByteArray::fromStdString("position fen " + _fen + " moves "));
+	_textEdit->setText("");
+	QByteArray moveStr;
+	moveStr += "position fen " + _fen + " moves ";
 	for (auto& _move : _moves)
 	{
-		WriteToProcess(_move);
-		WriteToProcess(" ");
+		moveStr += _move;
+		moveStr += " ";
 	}
-	WriteToProcess("\n");
+	moveStr += "\n";
+	WriteToProcess(moveStr);
 	WriteToProcess("go depth 10\n");
 }
 

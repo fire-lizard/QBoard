@@ -41,6 +41,7 @@ void QianhongEngine::StartGame(QString variant)
 
 void QianhongEngine::Move()
 {
+	_textEdit->setText("");
 	WriteToProcess("ai\n");
 }
 

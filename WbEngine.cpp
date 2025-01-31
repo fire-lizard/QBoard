@@ -78,6 +78,7 @@ void WbEngine::SetMemory(int memorySize)
 
 void WbEngine::Move()
 {
+	_textEdit->setText("");
 	WriteToProcess("go\n");
 }
 

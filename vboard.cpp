@@ -319,20 +319,32 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	}
 	else if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer))
 	{
-		// TODO: Shogi repetition rule
-		/*if (_currentPlayer == White)
+		// TODO: Repetition rule
+		/*int repetitions = 0;
+		if (_currentPlayer == White)
 		{
-			if (std::any_of(_whiteMoves.begin(), _whiteMoves.end(), [=](const std::string t) {return *_board == t; }))
+			for (size_t index = 0; index < _whiteMoves.size(); index++)
 			{
-				//
+				if (*_board == _whiteMoves[index])
+				{
+					repetitions++;
+				}
 			}
 		}
 		else
 		{
-			if (std::any_of(_blackMoves.begin(), _blackMoves.end(), [=](const std::string t) {return *_board == t; }))
+			for (size_t index = 0; index < _blackMoves.size(); index++)
 			{
-				//
+				if (*_board == _blackMoves[index])
+				{
+					repetitions++;
+				}
 			}
+		}
+		if (repetitions >= 4)
+		{
+			QMessageBox::warning(this, "Warning", "Repetition rule violated.\nPlease make another move.");
+			return;
 		}*/
 		// Lion move
 		if (isLionPiece && !_lionMovedOnce)

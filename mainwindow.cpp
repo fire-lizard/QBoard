@@ -556,7 +556,7 @@ void MainWindow::LoadEngine(std::shared_ptr<Engine> engine, QString engineExe, P
 					engine->StartGame();
 					break;
 				}
-				if (engineExe.toLower().contains("hachu") || engineExe.toLower().contains("crazywa"))
+				if (engineExe.toLower().contains("hachu"))
 				{
 					std::dynamic_pointer_cast<WbEngine>(engine)->SetMemory(_engineMemorySize);
 				}

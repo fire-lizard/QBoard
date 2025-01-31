@@ -65,7 +65,6 @@ void AddEngineDialog::on_toolButton_clicked()
 void AddEngineDialog::on_gameVariant_currentIndexChanged(int index)
 {
     ui->engineProtocol->clear();
-    ui->engineProtocol->addItem("XBoard");
     GameVariant v = static_cast<GameVariant>(index);
     switch (v)
     {
@@ -82,5 +81,6 @@ void AddEngineDialog::on_gameVariant_currentIndexChanged(int index)
     default:
         break;
     }
+    ui->engineProtocol->addItem("XBoard");
 }
 
