@@ -579,18 +579,13 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		_lionMovedOnce = false;
 		if (std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) == std::end(_shogiVariants))
 		{
-			std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+			for (int index = 0; index < 3; index++)
 			{
-				CalculateCheck(x, y, t.first, t.second);
-			});
-			std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
-			{
-				CalculateCheck(x, y, t.first, t.second);
-			});
-			std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
-			{
-				CalculateCheck(x, y, t.first, t.second);
-			});
+				std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+				{
+					CalculateCheck(x, y, t.first, t.second);
+				});
+			}
 		}
 		/*if (_moves.empty())
 		{

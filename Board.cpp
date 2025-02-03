@@ -285,6 +285,11 @@ bool Board::IsMovePossible(int x, int y)
 	return std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x && t.second == y; });
 }
 
+bool Board::operator == (const Board *other) const
+{
+	return other != nullptr && this->GetFEN() == other->GetFEN();
+}
+
 bool Board::operator == (const PieceType other[16][16]) const
 {
 	for (int i = 0; i < _width; i++)
@@ -302,5 +307,5 @@ bool Board::operator == (const PieceType other[16][16]) const
 
 bool Board::operator == (const std::string& fen) const
 {
-	return GetFEN() == fen;
+	return this->GetFEN() == fen;
 }

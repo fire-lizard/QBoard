@@ -30,6 +30,7 @@ public:
 	void GetAttackers(int x, int y, std::vector<std::pair<int, int>>& vec);
 	void GetDefenders(int x, int y, std::vector<std::pair<int, int>>& vec);
 	bool IsMovePossible(int x, int y);
+	bool operator == (const Board *other) const;
 	bool operator == (const PieceType other[16][16]) const;
 	bool operator == (const std::string& fen) const;
 
