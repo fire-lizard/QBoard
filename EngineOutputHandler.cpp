@@ -1,5 +1,35 @@
 #include "EngineOutputHandler.h"
 
+void EngineOutputHandler::RemoveMove(std::vector<std::pair<int, int>>& moves, int x, int y)
+{
+	const long long cnt = static_cast<long long>(moves.size()) - 1;
+	for (long long index = cnt; index >= 0; index--)
+	{
+		if (moves[index].first == x && moves[index].second == y)
+			moves.erase(moves.begin() + index);
+	}
+}
+
+void EngineOutputHandler::CalculateCheck(Board* board, PieceColour pieceColour, std::vector<std::pair<int, int>>& moves, int oldX, int oldY, int newX, int newY)
+{
+	Board* brd = board->Clone();
+	brd->GetMoves(board->GetData(oldX, oldY), oldX, oldY);
+	brd->Move(oldX, oldY, newX, newY);
+	const auto location = GetPieceLocation(board, King, pieceColour);
+	const int kx = location.first;
+	const int ky = location.second;
+	auto opponentMoves = brd->GetAllMoves(pieceColour == White ? Black : White);
+	std::for_each(opponentMoves.begin(), opponentMoves.end(), [&](std::tuple<int, int, int, int> t)
+	{
+		if (get<2>(t) == kx && get<3>(t) == ky)
+		{
+			board->RemoveMove(newX, newY);
+			RemoveMove(moves, newX, newY);
+		}
+	});
+	delete brd;
+}
+
 std::pair<int, int> EngineOutputHandler::GetPieceLocation(const Board* board, PieceType pieceType, PieceColour pieceColour)
 {
 	int kx = -1, ky = -1;
@@ -158,17 +188,10 @@ Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol e
 	return {x1, y1, x2, y2};
 }
 
-QByteArray EngineOutputHandler::MoveToByteArray(Move m, EngineProtocol engineProtocol, GameVariant gameVariant, int width, int height)
+QByteArray EngineOutputHandler::MoveToByteArray(Move m, EngineProtocol engineProtocol, int width, int height)
 {
 	QByteArray result;
-	if (gameVariant == Xiangqi)
-	{
-		result.append(m.x1);
-		result.append(height - m.y1 - 1);
-		result.append(m.x2);
-		result.append(height - m.y2 - 1);
-	}
-	else if (engineProtocol == USI)
+	if (engineProtocol == USI)
 	{
 		result.append(width - m.x1);
 		result.append(m.y1);

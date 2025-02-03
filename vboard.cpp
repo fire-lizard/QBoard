@@ -318,7 +318,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	}
 	else if ((_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi) && _currentPiece != nullptr &&
 		(isLionPiece || _currentPiece->GetType() == ViceGeneral || _currentPiece->GetType() == FireDemon || _currentPiece->GetType() == HeavenlyTetrarch) &&
-		p != nullptr && p->GetColour() == _currentPlayer && x == _oldX && y == _oldY)
+		p != nullptr && p->GetColour() == _currentPlayer && x == _oldX && y == _oldY && !_lionMovedOnce)
 	{
 		if (_board->IsMovePossible(x, y) && !CheckRepetition(_oldX, _oldY, x, y))
 		{
@@ -583,7 +583,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
 				{
-					CalculateCheck(x, y, t.first, t.second);
+					EngineOutputHandler::CalculateCheck(_board, _currentPlayer, _moves, x, y, t.first, t.second);
 				});
 			}
 		}
@@ -596,22 +596,22 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				if (_currentPlayer == White)
 				{
-					QMessageBox::information(this, "Game over", "Black wins by stalemate White King");
+					QMessageBox::information(this, "Game over", "Black wins by stalemate");
 				}
 				else
 				{
-					QMessageBox::information(this, "Game over", "White wins by stalemate Black King");
+					QMessageBox::information(this, "Game over", "White wins by stalemate");
 				}
 			}
 			else
 			{
 				if (_currentPlayer == White)
 				{
-					QMessageBox::information(this, "Game over", "Black wins by checkmate White King");
+					QMessageBox::information(this, "Game over", "Black wins by checkmate");
 				}
 				else
 				{
-					QMessageBox::information(this, "Game over", "White wins by checkmate Black King");
+					QMessageBox::information(this, "Game over", "White wins by checkmate");
 				}
 			}
 		}*/
@@ -776,36 +776,6 @@ bool VBoard::PossibleMove(int x, int y) const
 	return std::any_of(_moves.begin(), _moves.end(), [x, y](const std::pair<int, int>& p) {return p.first == x && p.second == y;});
 }
 
-void VBoard::RemoveMove(int x, int y)
-{
-	const long long cnt = static_cast<long long>(_moves.size()) - 1;
-	for (long long index = cnt; index >= 0; index--)
-	{
-		if (_moves[index].first == x && _moves[index].second == y)
-			_moves.erase(_moves.begin() + index);
-	}
-}
-
-void VBoard::CalculateCheck(int oldX, int oldY, int newX, int newY)
-{
-	Board *board = _board->Clone();
-	board->GetMoves(board->GetData(oldX, oldY), oldX, oldY);
-	board->Move(oldX, oldY, newX, newY);
-	const auto location = EngineOutputHandler::GetPieceLocation(board, King, _currentPlayer);
-	const int kx = location.first;
-	const int ky = location.second;
-	auto opponentMoves = board->GetAllMoves(_currentPlayer == White ? Black : White);
-	for_each(opponentMoves.begin(), opponentMoves.end(), [=](std::tuple<int, int, int, int> t)
-	{
-		if (get<2>(t) == kx && get<3>(t) == ky)
-		{
-			_board->RemoveMove(newX, newY);
-			RemoveMove(newX, newY);
-		}
-	});
-	delete board;
-}
-
 void VBoard::SetStatusBar(QStatusBar *statusBar)
 {
 	_statusBar = statusBar;
@@ -869,6 +839,10 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	if (buf.contains("Illegal move"))
 	{
 		QMessageBox::critical(this, "Error", "Illegal move");
+		if (_blackEngine != nullptr && _blackEngine->IsActive() && !_blackEngine->Moves().empty())
+		{
+			Logger::writeToLog("Illegal move " + _blackEngine->Moves()[_blackEngine->Moves().size() - 1], LogLevel::Warning);
+		}
 		if (_blackMoves.size() > 1)
 		{
 			_blackMoves.pop_back();
@@ -882,11 +856,18 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, _currentPlayer);
 	if (_blackEngine != nullptr && _blackEngine->IsActive())
 	{
-		const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _blackEngine->GetType(), _gameVariant);
+		const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _whiteEngine->GetType(), _gameVariant);
 		if (moveArray.isEmpty()) return;
-		const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _blackEngine->GetType(), _gameVariant, _board->GetWidth(), _board->GetHeight());
-		QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _blackEngine->GetType(), _gameVariant, _board->GetWidth(), _board->GetHeight());
-		_blackEngine->Move(convertedMoveArray[0], convertedMoveArray[1], convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
+		if (moveArray.size() < 8)
+		{
+			const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _blackEngine->GetType(), _gameVariant, _board->GetWidth(), _board->GetHeight());
+			QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
+			_blackEngine->Move(convertedMoveArray[0], convertedMoveArray[1], convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
+		}
+		else
+		{
+			std::dynamic_pointer_cast<WbEngine>(_blackEngine)->Move(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
+		}
 	}
 	else 
 	{
@@ -916,6 +897,10 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	if (buf.contains("Illegal move"))
 	{
 		QMessageBox::critical(this, "Error", "Illegal move");
+		if (_whiteEngine != nullptr && _whiteEngine->IsActive() && !_whiteEngine->Moves().empty())
+		{
+			Logger::writeToLog("Illegal move " + _whiteEngine->Moves()[_whiteEngine->Moves().size() - 1], LogLevel::Warning);
+		}
 		if (_whiteMoves.size() > 1)
 		{
 			_whiteMoves.pop_back();
@@ -929,11 +914,18 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, _currentPlayer);
 	if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 	{
-		const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _whiteEngine->GetType(), _gameVariant);
+		const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _blackEngine->GetType(), _gameVariant);
 		if (moveArray.isEmpty()) return;
-		const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _whiteEngine->GetType(), _gameVariant, _board->GetWidth(), _board->GetHeight());
-		QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _whiteEngine->GetType(), _gameVariant, _board->GetWidth(), _board->GetHeight());
-		_whiteEngine->Move(convertedMoveArray[0], convertedMoveArray[1], convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
+		if (moveArray.size() < 8)
+		{
+			const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _whiteEngine->GetType(), _gameVariant, _board->GetWidth(), _board->GetHeight());
+			QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());
+			_whiteEngine->Move(convertedMoveArray[0], convertedMoveArray[1], convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
+		}
+		else
+		{
+			std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->Move(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
+		}
 	}
 	else
 	{

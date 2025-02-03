@@ -17,6 +17,7 @@ public:
 	void SetTextEdit(QTextEdit* textEdit);
 	QProcess* GetProcess() const;
 	void WriteToProcess(QByteArray buf) const;
+	std::vector<QByteArray> Moves() const;
 	virtual void SetFEN(std::string fen) = 0;
 	virtual EngineProtocol GetType() = 0;
 	virtual void StartGame(QString variant = "") = 0;

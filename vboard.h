@@ -58,8 +58,6 @@ private:
 
 	bool CheckRepetition(int oldX, int oldY, int newX, int newY);
 	bool PossibleMove(int x, int y) const;
-	void RemoveMove(int x, int y);
-	void CalculateCheck(int oldX, int oldY, int newX, int newY);
 	void FinishMove();
 
 	Board *_board;

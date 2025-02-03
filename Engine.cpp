@@ -63,3 +63,8 @@ void Engine::WriteToProcess(QByteArray buf) const
 	}
 	_process->write(buf);
 }
+
+std::vector<QByteArray> Engine::Moves() const
+{
+	return _moves;
+}
