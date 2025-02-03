@@ -158,6 +158,33 @@ Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol e
 	return {x1, y1, x2, y2};
 }
 
+QByteArray EngineOutputHandler::MoveToByteArray(Move m, EngineProtocol engineProtocol, GameVariant gameVariant, int width, int height)
+{
+	QByteArray result;
+	if (gameVariant == Xiangqi)
+	{
+		result.append(m.x1);
+		result.append(height - m.y1 - 1);
+		result.append(m.x2);
+		result.append(height - m.y2 - 1);
+	}
+	else if (engineProtocol == USI)
+	{
+		result.append(width - m.x1);
+		result.append(m.y1);
+		result.append(width - m.x2);
+		result.append(m.y2);
+	}
+	else
+	{
+		result.append(m.x1);
+		result.append(height - m.y1);
+		result.append(m.x2);
+		result.append(height - m.y2);
+	}
+	return result;
+}
+
 void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::shared_ptr<Engine>& engine, Board * board, QTextEdit * textEdit,
 	GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer)
 {

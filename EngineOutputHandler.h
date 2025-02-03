@@ -21,6 +21,7 @@ public:
 	static std::pair<int, int> GetPieceLocation(const Board* board, PieceType pieceType, PieceColour pieceColour);
 	static QByteArray ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant);
 	static Move ByteArrayToMove(QByteArray moveArray, EngineProtocol engineProtocol, GameVariant gameVariant, int width, int height);
+	static QByteArray MoveToByteArray(Move m, EngineProtocol engineProtocol, GameVariant gameVariant, int width, int height);
 	static void ReadStandardOutput(const QByteArray& buf, const std::shared_ptr<Engine>& engine, Board* board, QTextEdit* textEdit,
 		GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer);
 	static void ReadStandardError(const QByteArray& buf, QTextEdit* textEdit);

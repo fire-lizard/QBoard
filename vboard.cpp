@@ -122,6 +122,16 @@ void VBoard::paintEvent(QPaintEvent *)
 						}
 					}
 				}
+				if (_currentPiece != nullptr && _currentPiece->GetType() == HeavenlyTetrarch &&
+					abs(_oldX - i) + abs(_oldY - j) >= 1 && abs(_oldX - i) + abs(_oldY - j) <= 2)
+				{
+					if (_board->GetData(i, j) != nullptr)
+					{
+						painter.setBrush(QColorConstants::Svg::orange);
+						painter.drawRect(rect);
+						painter.setBrush(Qt::NoBrush);
+					}
+				}
 				else if (_board->GetData(i, j) != nullptr)
 				{
 					if (_board->GetData(i, j)->GetColour() != _currentPlayer)
@@ -877,7 +887,11 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, _currentPlayer);
 	if (_blackEngine != nullptr && _blackEngine->IsActive())
 	{
-		_blackEngine->Move();
+		const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _blackEngine->GetType(), _gameVariant);
+		if (moveArray.isEmpty()) return;
+		const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _blackEngine->GetType(), _gameVariant, _board->GetWidth(), _board->GetHeight());
+		QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _blackEngine->GetType(), _gameVariant, _board->GetWidth(), _board->GetHeight());
+		_blackEngine->Move(convertedMoveArray[0], convertedMoveArray[1], convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
 	}
 	else 
 	{
@@ -920,7 +934,11 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, _currentPlayer);
 	if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 	{
-		_whiteEngine->Move();
+		const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _whiteEngine->GetType(), _gameVariant);
+		if (moveArray.isEmpty()) return;
+		const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _whiteEngine->GetType(), _gameVariant, _board->GetWidth(), _board->GetHeight());
+		QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _whiteEngine->GetType(), _gameVariant, _board->GetWidth(), _board->GetHeight());
+		_whiteEngine->Move(convertedMoveArray[0], convertedMoveArray[1], convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
 	}
 	else
 	{
