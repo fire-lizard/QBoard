@@ -402,3 +402,36 @@ std::string WaShogiPiece::GetKanjiImageFileName()
 		return "";
 	}
 }
+
+std::string WaShogiPiece::Description() const
+{
+	switch (_pieceType)
+	{
+	case King: return "Crane King";
+	case Rook: return "Gliding Swallow";
+	case SideMover: return "Swallow's Wings";
+	case Lance: return "Ox Cart";
+	case Elephant: return "Roaming Boar";
+	case Gold: return "Violent Wolf";
+	case Silver: return "Violent Stag";
+	case Pawn: return "Sparrow Pawn";
+	case Tokin: return "Golden Bird";
+	case PloddingOx: return "Plodding Ox";
+	case LiberatedHorse: return "Liberated Horse";
+	case HeavenlyHorse: return "Heavenly Horse";
+	case SwoopingOwl: return "Swooping Owl";
+	case CloudEagle: return "Cloud Eagle";
+	case StruttingCrow: return "Strutting Crow";
+	case FlyingFalcon: return "Flying Falcon";
+	case FlyingCock: return "Flying Cock";
+	case RaidingFalcon: return "Raiding Falcon";
+	case FlyingGoose: return "Flying Goose";
+	case ClimbingMonkey: return "Climbing Monkey";
+	case Dog: return "Blind Dog";
+	case BearEyes: return "Bear Eyes";
+	case RunningRabbit: return "Running Rabbit";
+	case TreacherousFox: return "Treacherous Fox";
+	case TenaciousFalcon: return "Tenacious Falcon";
+	default: return Piece::Description();
+	}
+}

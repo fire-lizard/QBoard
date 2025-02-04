@@ -57,7 +57,7 @@ enum Direction
 
 inline PieceType WaShogiPieces[] = { Lance, Dog, StruttingCrow, FlyingGoose, Gold, King, Silver, FlyingCock, SwoopingOwl, ClimbingMonkey, LiberatedHorse,
 									 FlyingFalcon, SideMover, CloudEagle, TreacherousFox, RunningRabbit, Pawn, PloddingOx, HeavenlyHorse, RaidingFalcon,
-									 BearEyes, TenaciousFalcon };
+									 Rook, Elephant, BearEyes, TenaciousFalcon };
 
 inline PieceType ChuShogiPieces[] = { King, Lion, Queen, DragonKing, DragonHorse, Rook, Bishop, VerticalMover, SideMover, Cannon, Lance, Kylin, Phoenix,
 									  Elephant, Tiger, Leopard, Gold, Silver, Copper, GoBetween, Pawn, Tokin, Prince, Eagle, Unicorn, FlyingOx, FreeBoar,

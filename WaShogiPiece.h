@@ -13,6 +13,7 @@ public:
 	std::string KanjiStringCode() override;
 	std::string GetImageFileName() const override;
 	std::string GetKanjiImageFileName() override;
+	std::string Description() const override;
 	std::string LongStringCode() const;
 	static PieceType FromStringCode(const std::string& code);
 	static PieceType LongStringCode2PieceType(const std::string& longStringCode);

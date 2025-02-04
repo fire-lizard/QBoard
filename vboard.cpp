@@ -587,34 +587,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				});
 			}
 		}
-		/*if (_moves.empty())
-		{
-			const auto location = EngineOutputHandler::GetPieceLocation(_board, King, _currentPlayer);
-			std::vector<std::pair<int, int>> attackers;
-			_board->GetAttackers(location.first, location.second, attackers);
-			if (attackers.empty())
-			{
-				if (_currentPlayer == White)
-				{
-					QMessageBox::information(this, "Game over", "Black wins by stalemate");
-				}
-				else
-				{
-					QMessageBox::information(this, "Game over", "White wins by stalemate");
-				}
-			}
-			else
-			{
-				if (_currentPlayer == White)
-				{
-					QMessageBox::information(this, "Game over", "Black wins by checkmate");
-				}
-				else
-				{
-					QMessageBox::information(this, "Game over", "White wins by checkmate");
-				}
-			}
-		}*/
 		this->repaint();
 	}
 }
