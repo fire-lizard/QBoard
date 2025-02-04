@@ -77,6 +77,9 @@
    <addaction name="actionSave"/>
    <addaction name="actionStop_game"/>
    <addaction name="separator"/>
+   <addaction name="actionPlace"/>
+   <addaction name="actionClear"/>
+   <addaction name="separator"/>
    <addaction name="actionSettings"/>
    <addaction name="actionEngine_Manager"/>
    <addaction name="separator"/>
@@ -84,6 +87,24 @@
    <addaction name="actionExit"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionPlace">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/toolbar_icons/toolbar/Place.png</normaloff>:/toolbar_icons/toolbar/Place.png</iconset>
+   </property>
+   <property name="text">
+    <string>Place piece</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/toolbar_icons/toolbar/Clear.png</normaloff>:/toolbar_icons/toolbar/Clear.png</iconset>
+   </property>
+   <property name="text">
+    <string>Clear board</string>
+   </property>
+  </action>
   <action name="actionSettings">
    <property name="icon">
     <iconset resource="resources.qrc">

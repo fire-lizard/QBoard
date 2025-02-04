@@ -20,17 +20,9 @@ void VBoard::paintEvent(QPaintEvent *)
 	{
 		resourcePrefix = ":/pieces_chi/images_chi/";
 	}
-    else if (_pieceStyle == Asian && _gameVariant == ChuShogi)
-	{
-		resourcePrefix = ":/pieces_jap/images_jap/";
-	}
 	else if (_pieceStyle == Mnemonic && _gameVariant == ChuShogi)
 	{
 		resourcePrefix = ":/pieces_chu/images_chu/";
-	}
-	else if (_pieceStyle == Asian && _gameVariant == DaiShogi)
-	{
-		resourcePrefix = ":/pieces_dai/images_dai/";
 	}
 	else if (_pieceStyle == Asian && (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi))
     {
@@ -44,7 +36,7 @@ void VBoard::paintEvent(QPaintEvent *)
 	{
 		resourcePrefix = ":/pieces_wa/images_wa/";
 	}
-	else if (_pieceStyle == Asian && _gameVariant == TenjikuShogi)
+	else if (_pieceStyle == Asian && (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi))
 	{
 		resourcePrefix = ":/pieces_tnk/images_tnk/";
 	}
@@ -245,7 +237,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					imageFileName = p->GetImageFileName();
 				}
 				QPixmap pixmap(resourcePrefix + QString::fromStdString(imageFileName));
-				if (_pieceStyle == Asian && (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi || _gameVariant == ChuShogi || _gameVariant == DaiShogi))
+				if (_pieceStyle == Asian && (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi))
 				{
 					painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
 				}

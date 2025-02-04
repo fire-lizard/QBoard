@@ -2939,6 +2939,12 @@
     <Image Include="images_tnk\ViolentOxFlip.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="toolbar\Clear.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="toolbar\Place.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc">

@@ -98,6 +98,33 @@ void MainWindow::on_actionAbout_triggered()
 	QMessageBox::about(this, "About", aboutStr);
 }
 
+void MainWindow::on_actionPlace_triggered()
+{
+	QMessageBox::about(this, "TODO", "TODO");
+}
+
+void MainWindow::on_actionClear_triggered() const
+{
+	QMessageBox mb(QMessageBox::Question, "Warning", "Are you sure you want to clear the board?",
+		QMessageBox::Yes | QMessageBox::No);
+	const int response = mb.exec();
+	if (response == QMessageBox::Yes)
+	{
+		Board* board = ui->vboard->GetBoard();
+		const int width = board->GetWidth();
+		const int height = board->GetHeight();
+		for (int i = 0; i < width; i++)
+		{
+			for (int j = 0; j < height; j++)
+			{
+				const Piece* p = board->GetData(i, j);
+				delete p;
+				board->SetData(i, j, nullptr);
+			}
+		}
+	}
+}
+
 void MainWindow::on_actionNew_game_triggered()
 {
     NewGameDialog* newGameDialog = new NewGameDialog(this);

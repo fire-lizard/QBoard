@@ -104,34 +104,30 @@ std::string DaiShogiPiece::KanjiStringCode()
 
 std::string DaiShogiPiece::GetKanjiImageFileName()
 {
-	std::string imageFileName = ChuShogiPiece::GetKanjiImageFileName();
-	const std::string colour = _pieceColour == White ? "White" : "Black";
-	if (_isPromoted)
+	std::string colour = _pieceColour == White ? "" : "Flip";
+	if (_isPromoted && _pieceType != King)
 	{
-		if (_pieceType == Gold)
-		{
-			return colour + "PromoGold.png";
-		}
-		else if (_pieceType == WhiteHorse)
-		{
-			return colour + "WhiteHorse.png";
-		}
-		else if (_pieceType == Prince)
-		{
-			return colour + "PromoKing.png";
-		}
+		colour = "P" + colour;
 	}
-	else if (_pieceType == Stone)
+	switch (_pieceType)
 	{
-		return colour + "Stone.png";
+	case Knight:
+		return "Knight" + colour + ".png";
+	case ViolentOx:
+		return "ViolentOx" + colour + ".png";
+	case FlyingDragon:
+		return "FlyingDragon" + colour + ".png";
+	case AngryBoar:
+		return "AngryBoar" + colour + ".png";
+	case CatSword:
+		return "Cat" + colour + ".png";
+	case EvilWolf:
+		return "Wolf" + colour + ".png";
+	case Iron:
+		return "Iron" + colour + ".png";
+	case Stone:
+		return "Stone" + colour + ".png";
+	default:
+		return ChuShogiPiece::GetKanjiImageFileName();
 	}
-	else if (_pieceType == CatSword)
-	{
-		return colour + "CatSword.png";
-	}
-	else if (_pieceType == AngryBoar)
-	{
-		return colour + "AngryBoar.png";
-	}
-	return imageFileName;
 }

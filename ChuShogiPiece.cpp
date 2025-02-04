@@ -256,20 +256,75 @@ void ChuShogiPiece::replaceSubstring(std::string& str, const std::string& from, 
 
 std::string ChuShogiPiece::GetKanjiImageFileName()
 {
-	std::string imageFileName = GetImageFileName();
-	if (_isPromoted)
+	std::string colour = _pieceColour == White ? "" : "Flip";
+	if (_isPromoted && _pieceType != King)
 	{
-		const std::string colour = _pieceColour == White ? "White" : "Black";
-		if (_pieceType == Tokin)
-		{
-			return colour + "Tokin.png";
-		}
-		else if (_pieceType == Prince)
-		{
-			return colour + "Prince.png";
-		}
+		colour = "P" + colour;
 	}
-	return imageFileName;
+	switch (_pieceType)
+	{
+	case King:
+		return "King" + colour + ".png";
+	case Prince:
+		return "Prince" + colour + ".png";
+	case Lion:
+		return "Lion" + colour + ".png";
+	case Queen:
+		return "Queen" + colour + ".png";
+	case DragonKing:
+		return "DragonKing" + colour + ".png";
+	case DragonHorse:
+		return "DragonHorse" + colour + ".png";
+	case Rook:
+		return "Rook" + colour + ".png";
+	case Bishop:
+		return "Bishop" + colour + ".png";
+	case VerticalMover:
+		return "VerticalMover" + colour + ".png";
+	case SideMover:
+		return "SideMover" + colour + ".png";
+	case Cannon:
+		return "Chariot" + colour + ".png";
+	case Lance:
+		return "Lance" + colour + ".png";
+	case Kylin:
+		return "Kirin" + colour + ".png";
+	case Phoenix:
+		return "Phoenix" + colour + ".png";
+	case Elephant:
+		return "Elephant" + colour + ".png";
+	case Tiger:
+		return "Tiger" + colour + ".png";
+	case Gold:
+	case Tokin:
+		return "Gold" + colour + ".png";
+	case Silver:
+		return "Silver" + colour + ".png";
+	case Copper:
+		return "Copper" + colour + ".png";
+	case Leopard:
+		return "Leopard" + colour + ".png";
+	case GoBetween:
+		return "GoBetween" + colour + ".png";
+	case Pawn:
+		return "Pawn" + colour + ".png";
+	case Eagle:
+		return "Eagle" + colour + ".png";
+	case Unicorn:
+		return "Hawk" + colour + ".png";
+	case FlyingOx:
+		return "FlyingOx" + colour + ".png";
+	case FreeBoar:
+		return "FreeBoar" + colour + ".png";
+	case FlyingStag:
+		return "Stag" + colour + ".png";
+	case WhiteHorse:
+		return "White" + colour + ".png";
+	case Whale:
+		return "Whale" + colour + ".png";
+	default:
+		return "";
+	}
 }
 
 std::string ChuShogiPiece::GetMnemonicImageFileName() const

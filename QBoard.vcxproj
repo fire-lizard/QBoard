@@ -1188,6 +1188,8 @@
     <Image Include="images_wa\WTreacherousFox.png" />
     <Image Include="images_wa\WViolentStag.png" />
     <Image Include="images_wa\WViolentWolf.png" />
+    <Image Include="toolbar\Clear.png" />
+    <Image Include="toolbar\Place.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />

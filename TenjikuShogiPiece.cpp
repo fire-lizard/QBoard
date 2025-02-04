@@ -229,81 +229,6 @@ std::string TenjikuShogiPiece::GetKanjiImageFileName()
 	}
 	switch (_pieceType)
 	{
-	case King:
-		return "King" + colour + ".png";
-	case Prince:
-		return "Prince" + colour + ".png";
-	case Lion:
-		return "Lion" + colour + ".png";
-	case Queen:
-		return "Queen" + colour + ".png";
-	case DragonKing:
-		return "DragonKing" + colour + ".png";
-	case DragonHorse:
-		return "DragonHorse" + colour + ".png";
-	case Rook:
-		return "Rook" + colour + ".png";
-	case Bishop:
-		return "Bishop" + colour + ".png";
-	case Knight:
-		return "Knight" + colour + ".png";
-	case VerticalMover:
-		return "VerticalMover" + colour + ".png";
-	case SideMover:
-		return "SideMover" + colour + ".png";
-	case Cannon:
-		return "Chariot" + colour + ".png";
-	case Lance:
-		return "Lance" + colour + ".png";
-	case Kylin:
-		return "Kirin" + colour + ".png";
-	case Phoenix:
-		return "Phoenix" + colour + ".png";
-	case Elephant:
-		return "Elephant" + colour + ".png";
-	case Tiger:
-		return "Tiger" + colour + ".png";
-	case Gold:
-	case Tokin:
-		return "Gold" + colour + ".png";
-	case Silver:
-		return "Silver" + colour + ".png";
-	case Copper:
-		return "Copper" + colour + ".png";
-	case Leopard:
-		return "Leopard" + colour + ".png";
-	case GoBetween:
-		return "GoBetween" + colour + ".png";
-	case Pawn:
-		return "Pawn" + colour + ".png";
-	case Eagle:
-		return "Eagle" + colour + ".png";
-	case Unicorn:
-		return "Hawk" + colour + ".png";
-	case FlyingOx:
-		return "FlyingOx" + colour + ".png";
-	case FreeBoar:
-		return "FreeBoar" + colour + ".png";
-	case FlyingStag:
-		return "Stag" + colour + ".png";
-	case WhiteHorse:
-		return "White" + colour + ".png";
-	case Whale:
-		return "Whale" + colour + ".png";
-	case ViolentOx:
-		return "ViolentOx" + colour + ".png";
-	case FlyingDragon:
-		return "FlyingDragon" + colour + ".png";
-	case AngryBoar:
-		return "AngryBoar" + colour + ".png";
-	case CatSword:
-		return "CatSword" + colour + ".png";
-	case EvilWolf:
-		return "EvilWolf" + colour + ".png";
-	case Iron:
-		return "Iron" + colour + ".png";
-	case Stone:
-		return "Stone" + colour + ".png";
 	case ViceGeneral:
 		return "Vice" + colour + ".png";
 	case GreatGeneral:
@@ -333,6 +258,6 @@ std::string TenjikuShogiPiece::GetKanjiImageFileName()
 	case FireDemon:
 		return "FireDemon" + colour + ".png";
 	default:
-		return "";
+		return DaiShogiPiece::GetKanjiImageFileName();
 	}
 }

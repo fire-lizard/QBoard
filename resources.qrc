@@ -13,6 +13,8 @@
         <file>toolbar/Add.png</file>
         <file>toolbar/Edit.png</file>
         <file>toolbar/Remove.png</file>
+        <file>toolbar/Clear.png</file>
+        <file>toolbar/Place.png</file>
     </qresource>
     <qresource prefix="/pieces_eur">
         <file>images/BlackAdvisor.png</file>
