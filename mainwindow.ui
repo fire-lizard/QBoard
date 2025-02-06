@@ -93,7 +93,7 @@
      <normaloff>:/toolbar_icons/toolbar/Place.png</normaloff>:/toolbar_icons/toolbar/Place.png</iconset>
    </property>
    <property name="text">
-    <string>Place piece</string>
+    <string>Editor mode</string>
    </property>
   </action>
   <action name="actionClear">

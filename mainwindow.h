@@ -36,7 +36,7 @@ public:
 
 	void on_actionAbout_triggered();
 
-	void on_actionPlace_triggered();
+	void on_actionPlace_triggered() const;
 
 	void on_actionClear_triggered() const;
 

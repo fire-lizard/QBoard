@@ -40,6 +40,7 @@ Board* ChuShogiBoard::Clone()
 			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
 		}
 	}
+	cb->SetMoveCount(_moveCount);
 	return cb;
 }
 

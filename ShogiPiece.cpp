@@ -130,39 +130,9 @@ std::string ShogiPiece::ToStringCode(PieceType piece)
 	return it != pieceTypeToCode.end() ? it->second : "";
 }
 
-std::string ShogiPiece::LongStringCode() const
+std::string ShogiPiece::Description() const
 {
-	switch (_pieceType)
-	{
-	case Rook:
-		return "Rook";
-	case Bishop:
-		return "Bishop";
-	case Lance:
-		return "Lance";
-	case Silver:
-		return "Silver";
-	case Gold:
-		return "Gold";
-	case Knight:
-		return "Knight";
-	case Pawn:
-		return "Pawn";
-	default:
-		return "";
-	}
-}
-
-PieceType ShogiPiece::LongStringCode2PieceType(const std::string& longStringCode)
-{
-	if (longStringCode == "Rook") return Rook;
-	if (longStringCode == "Bishop") return Bishop;
-	if (longStringCode == "Lance") return Lance;
-	if (longStringCode == "Silver") return Silver;
-	if (longStringCode == "Gold") return Gold;
-	if (longStringCode == "Knight") return Knight;
-	if (longStringCode == "Pawn") return Pawn;
-	return None;
+	return PieceType2Description(_pieceType);
 }
 
 std::string ShogiPiece::KanjiStringCode()

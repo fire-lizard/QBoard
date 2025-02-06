@@ -56,16 +56,16 @@ enum Direction
 };
 
 inline PieceType WaShogiPieces[] = { Lance, Dog, StruttingCrow, FlyingGoose, Gold, King, Silver, FlyingCock, SwoopingOwl, ClimbingMonkey, LiberatedHorse,
-									 FlyingFalcon, SideMover, CloudEagle, TreacherousFox, RunningRabbit, Pawn, PloddingOx, HeavenlyHorse, RaidingFalcon,
-									 Rook, Elephant, BearEyes, TenaciousFalcon };
+									 FlyingFalcon, SideMover, CloudEagle, TreacherousFox, RunningRabbit, Pawn, Tokin, Rook, PloddingOx, HeavenlyHorse,
+									 RaidingFalcon, Elephant, BearEyes, TenaciousFalcon };
 
 inline PieceType ChuShogiPieces[] = { King, Lion, Queen, DragonKing, DragonHorse, Rook, Bishop, VerticalMover, SideMover, Cannon, Lance, Kylin, Phoenix,
 									  Elephant, Tiger, Leopard, Gold, Silver, Copper, GoBetween, Pawn, Tokin, Prince, Eagle, Unicorn, FlyingOx, FreeBoar,
 									  FlyingStag, WhiteHorse, Whale };
 
 inline PieceType DaiShogiPieces[] = { King, Lion, Queen, DragonKing, DragonHorse, Rook, Bishop, VerticalMover, SideMover, Cannon, Lance, Kylin, Phoenix,
-									  Elephant, Tiger, Leopard, Gold, Silver, Copper, GoBetween, Pawn, Tokin, Prince, Eagle, Unicorn, FlyingOx, FreeBoar,
-									  FlyingStag, WhiteHorse, Whale, Knight, ViolentOx, FlyingDragon, AngryBoar, CatSword, EvilWolf, Iron, Stone };
+									  Elephant, Tiger, Leopard, Gold, Silver, Copper, GoBetween, Pawn, CatSword, EvilWolf, Iron, Stone, Tokin, Prince,
+									  Eagle, Unicorn, FlyingOx, FreeBoar, FlyingStag, WhiteHorse, Whale, Knight, ViolentOx, FlyingDragon, AngryBoar };
 
 inline PieceType TenjikuShogiPieces[] = { King, Lion, Queen, DragonKing, DragonHorse, Rook, Bishop, VerticalMover, SideMover, Cannon, Lance, Kylin, Phoenix,
 										  Elephant, Tiger, Leopard, Gold, Silver, Copper, GoBetween, Pawn, Tokin, Prince, Eagle, Unicorn, FlyingOx, FreeBoar,
@@ -80,19 +80,23 @@ inline PieceType MakrukPieces[] = { King, Queen, Silver, Knight, Rook, Pawn };
 
 inline PieceType XiangqiPieces[] = { King, Silver, Elephant, Knight, Rook, Cannon, Pawn };
 
-inline PieceType ShogiPieces[] = { King, Gold, Silver, Knight, Lance, Rook, Bishop, Pawn, PromotedLance, PromotedKnight, PromotedSilver, Tokin };
+inline PieceType ShogiPieces[] = { King, Gold, Silver, Knight, Lance, Rook, Bishop, Pawn,
+								   PromotedLance, PromotedKnight, PromotedSilver, Tokin,
+								   DragonHorse, DragonKing };
 
-inline PieceType ShoShogiPieces[] = { King, Gold, Silver, Knight, Lance, Elephant, Rook, Bishop, Pawn, PromotedLance, PromotedKnight, PromotedSilver, Tokin, Prince };
+inline PieceType ShoShogiPieces[] = { King, Gold, Silver, Knight, Lance, Elephant, Rook, Bishop, Pawn,
+									  PromotedLance, PromotedKnight, PromotedSilver, Tokin, Prince,
+									  DragonHorse, DragonKing };
 
-inline PieceType MiniShogiPieces[] = { King, Gold, Silver, Rook, Bishop, Pawn, PromotedSilver, Tokin };
+inline PieceType MiniShogiPieces[] = { King, Gold, Silver, Rook, Bishop, Pawn, PromotedSilver, Tokin, DragonHorse, DragonKing };
 
-inline PieceType JudkinsShogiPieces[] = { King, Gold, Silver, Knight, Rook, Bishop, Pawn, PromotedKnight, PromotedSilver, Tokin };
+inline PieceType JudkinsShogiPieces[] = { King, Gold, Silver, Knight, Rook, Bishop, Pawn, PromotedKnight, PromotedSilver, Tokin, DragonHorse, DragonKing };
 
 inline char CHESSFEN[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 inline char XIANGQIFEN[] = "rheakaehr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RHEAKAEHR w - - 0 1";
 
-inline char SHOGIFEN[] = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1";
+inline char SHOGIFEN[] = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL W - 1";
 
 inline char MINISHOGIFEN[] = "rbsgk/4p/5/P4/KGSBR w";
 

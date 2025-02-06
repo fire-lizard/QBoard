@@ -7,7 +7,6 @@ class Piece
 public:
 	virtual ~Piece();
 	virtual std::string GetImageFileName() const;
-	virtual std::string Description() const;
 	virtual void Promote(PieceType pieceType = None) = 0;
 	virtual std::string StringCode() = 0;
 	PieceType GetBaseType() const;
@@ -15,6 +14,8 @@ public:
 	PieceColour GetColour() const;
 	bool IsPromoted() const;
 	void SetPromoted(bool isPromoted);
+	static std::string PieceType2Description(PieceType pieceType);
+	static PieceType Description2PieceType(const std::string& description);
 
 protected:
 	Piece(PieceType pieceType, PieceColour pieceColour);

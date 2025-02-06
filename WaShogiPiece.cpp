@@ -153,65 +153,71 @@ PieceType WaShogiPiece::FromStringCode(const std::string& code)
 	return it != codeToPieceType.end() ? it->second : None;
 }
 
-std::string WaShogiPiece::LongStringCode() const
+std::string WaShogiPiece::Description() const
 {
-	switch (_pieceType)
+	return PieceType2Description(_pieceType);
+}
+
+std::string WaShogiPiece::PieceType2Description(PieceType pieceType)
+{
+	switch (pieceType)
 	{
-	case Lance:
-		return "Oxcart";
-	case Pawn:
-		return "Sparrow Pawn";
-	case SideMover:
-		return "Swallow's Wings";
-	case CloudEagle:
-		return "Cloud Eagle";
-	case LiberatedHorse:
-		return "Liberated Horse";
-	case SwoopingOwl:
-		return "Swooping Owl";
-	case StruttingCrow:
-		return "Strutting Crow";
-	case FlyingFalcon:
-		return "Flying Falcon";
-	case FlyingCock:
-		return "Flying Cock";
-	case FlyingGoose:
-		return "Flying Goose";
-	case ClimbingMonkey:
-		return "Climbing Monkey";
-	case Silver:
-		return "Violent Stag";
-	case Gold:
-		return "Violent Wolf";
-	case Dog:
-		return "Blind Dog";
-	case RunningRabbit:
-		return "Running Rabbit";
-	case TreacherousFox:
-		return "Treacherous Fox";
-	default:
-		return "";
+	case King: return "Crane King";
+	case Rook: return "Gliding Swallow";
+	case SideMover: return "Swallow's Wings";
+	case Lance: return "Ox Cart";
+	case Elephant: return "Roaming Boar";
+	case Gold: return "Violent Wolf";
+	case Silver: return "Violent Stag";
+	case Pawn: return "Sparrow Pawn";
+	case Tokin: return "Golden Bird";
+	case PloddingOx: return "Plodding Ox";
+	case LiberatedHorse: return "Liberated Horse";
+	case HeavenlyHorse: return "Heavenly Horse";
+	case SwoopingOwl: return "Swooping Owl";
+	case CloudEagle: return "Cloud Eagle";
+	case StruttingCrow: return "Strutting Crow";
+	case FlyingFalcon: return "Flying Falcon";
+	case FlyingCock: return "Flying Cock";
+	case RaidingFalcon: return "Raiding Falcon";
+	case FlyingGoose: return "Flying Goose";
+	case ClimbingMonkey: return "Climbing Monkey";
+	case Dog: return "Blind Dog";
+	case BearEyes: return "Bear Eyes";
+	case RunningRabbit: return "Running Rabbit";
+	case TreacherousFox: return "Treacherous Fox";
+	case TenaciousFalcon: return "Tenacious Falcon";
+	default: return "";
 	}
 }
 
-PieceType WaShogiPiece::LongStringCode2PieceType(const std::string& longStringCode)
+PieceType WaShogiPiece::Description2PieceType(const std::string& description)
 {
-	if (longStringCode == "Oxcart") return Lance;
-	if (longStringCode == "Sparrow Pawn") return Pawn;
-	if (longStringCode == "Swallow's Wings") return SideMover;
-	if (longStringCode == "Cloud Eagle") return CloudEagle;
-	if (longStringCode == "Liberated Horse") return LiberatedHorse;
-	if (longStringCode == "Swooping Owl") return SwoopingOwl;
-	if (longStringCode == "Strutting Crow") return StruttingCrow;
-	if (longStringCode == "Flying Falcon") return FlyingFalcon;
-	if (longStringCode == "Flying Cock") return FlyingCock;
-	if (longStringCode == "Flying Goose") return FlyingGoose;
-	if (longStringCode == "Climbing Monkey") return ClimbingMonkey;
-	if (longStringCode == "Violent Stag") return Silver;
-	if (longStringCode == "Violent Wolf") return Gold;
-	if (longStringCode == "Blind Dog") return Dog;
-	if (longStringCode == "Running Rabbit") return RunningRabbit;
-	if (longStringCode == "Treacherous Fox") return TreacherousFox;
+	if (description == "Crane King")        return King;
+	if (description == "Gliding Swallow")   return Rook;
+	if (description == "Swallow's Wings")   return SideMover;
+	if (description == "Ox Cart")           return Lance;
+	if (description == "Roaming Boar")      return Elephant;
+	if (description == "Violent Wolf")      return Gold;
+	if (description == "Violent Stag")      return Silver;
+	if (description == "Sparrow Pawn")      return Pawn;
+	if (description == "Golden Bird")       return Tokin;
+	if (description == "Plodding Ox")       return PloddingOx;
+	if (description == "Liberated Horse")   return LiberatedHorse;
+	if (description == "Heavenly Horse")    return HeavenlyHorse;
+	if (description == "Swooping Owl")      return SwoopingOwl;
+	if (description == "Cloud Eagle")       return CloudEagle;
+	if (description == "Strutting Crow")    return StruttingCrow;
+	if (description == "Flying Falcon")     return FlyingFalcon;
+	if (description == "Flying Cock")       return FlyingCock;
+	if (description == "Raiding Falcon")    return RaidingFalcon;
+	if (description == "Flying Goose")      return FlyingGoose;
+	if (description == "Climbing Monkey")   return ClimbingMonkey;
+	if (description == "Blind Dog")         return Dog;
+	if (description == "Bear Eyes")         return BearEyes;
+	if (description == "Running Rabbit")    return RunningRabbit;
+	if (description == "Treacherous Fox")   return TreacherousFox;
+	if (description == "Tenacious Falcon")  return TenaciousFalcon;
 	return None;
 }
 
@@ -400,38 +406,5 @@ std::string WaShogiPiece::GetKanjiImageFileName()
 		return "TenaciousHawk" + colour + ".png";
 	default:
 		return "";
-	}
-}
-
-std::string WaShogiPiece::Description() const
-{
-	switch (_pieceType)
-	{
-	case King: return "Crane King";
-	case Rook: return "Gliding Swallow";
-	case SideMover: return "Swallow's Wings";
-	case Lance: return "Ox Cart";
-	case Elephant: return "Roaming Boar";
-	case Gold: return "Violent Wolf";
-	case Silver: return "Violent Stag";
-	case Pawn: return "Sparrow Pawn";
-	case Tokin: return "Golden Bird";
-	case PloddingOx: return "Plodding Ox";
-	case LiberatedHorse: return "Liberated Horse";
-	case HeavenlyHorse: return "Heavenly Horse";
-	case SwoopingOwl: return "Swooping Owl";
-	case CloudEagle: return "Cloud Eagle";
-	case StruttingCrow: return "Strutting Crow";
-	case FlyingFalcon: return "Flying Falcon";
-	case FlyingCock: return "Flying Cock";
-	case RaidingFalcon: return "Raiding Falcon";
-	case FlyingGoose: return "Flying Goose";
-	case ClimbingMonkey: return "Climbing Monkey";
-	case Dog: return "Blind Dog";
-	case BearEyes: return "Bear Eyes";
-	case RunningRabbit: return "Running Rabbit";
-	case TreacherousFox: return "Treacherous Fox";
-	case TenaciousFalcon: return "Tenacious Falcon";
-	default: return Piece::Description();
 	}
 }

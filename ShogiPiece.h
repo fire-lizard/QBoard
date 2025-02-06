@@ -11,10 +11,9 @@ public:
 	std::string StringCode() override;
 	std::string KanjiStringCode() override;
 	std::string GetKanjiImageFileName() override;
-	std::string LongStringCode() const;
+	std::string Description() const;
 	static PieceType FromStringCode(const std::string& code);
 	static std::string ToStringCode(PieceType piece);
-	static PieceType LongStringCode2PieceType(const std::string& longStringCode);
 
 protected:
 

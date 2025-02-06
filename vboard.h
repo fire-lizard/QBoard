@@ -45,6 +45,8 @@ public:
 	void SetMainWindow(QMainWindow *window);
 	void SetWhiteEngine(std::shared_ptr<Engine> engine);
 	void SetBlackEngine(std::shared_ptr<Engine> engine);
+	bool GetEditorMode() const;
+	void SetEditorMode(bool editorMode);
 
 protected:
 	void contextMenuEvent(QContextMenuEvent* event) override;
@@ -61,6 +63,7 @@ private:
 	void FinishMove();
 
 	Board *_board;
+	Board *_editorBoard = nullptr;
 	PieceColour _currentPlayer = White;
 	PieceStyle _pieceStyle = European;
 	EngineOutput _engineOutput = Concise;
@@ -84,6 +87,11 @@ private:
 	std::shared_ptr<Engine> _blackEngine = nullptr;
 	GameVariant _shogiVariants[9] = {Shogi, MiniShogi, JudkinShogi, ChuShogi, DaiShogi, ShoShogi, WaShogi, CrazyWa, TenjikuShogi};
 	PieceType _lionPieces[4] = { Lion, Eagle, Unicorn, LionHawk };
+	PieceType _promotedPieces[16] = { Tokin, Prince, PloddingOx, HeavenlyHorse, RaidingFalcon, BearEyes, TenaciousFalcon, HeavenlyTetrarch,
+									  WhiteHorse, Whale, MultiGeneral, FreeBoar, FlyingOx, Eagle, Unicorn, FlyingStag };
+	PieceColour _chosenColour = White;
+	PieceType _chosenPiece = None;
+	bool _editorMode = false;
 	bool _lionMovedOnce = false;
 	std::pair<int, int> _lionFirstMove;
 

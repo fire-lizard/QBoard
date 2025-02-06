@@ -25,14 +25,14 @@ public:
 	int GetWidth() const;
 	int GetHeight() const;
 	int MoveCount() const;
+	void SetMoveCount(int moveCount);
 	bool CheckPosition(int x, int y) const;
 	bool HasPiece(PieceType pieceType, PieceColour pieceColour) const;
 	void GetAttackers(int x, int y, std::vector<std::pair<int, int>>& vec);
 	void GetDefenders(int x, int y, std::vector<std::pair<int, int>>& vec);
 	bool IsMovePossible(int x, int y);
-	bool operator == (const Board *other) const;
-	bool operator == (const PieceType other[16][16]) const;
 	bool operator == (const std::string& fen) const;
+	bool operator != (const std::string& fen) const;
 
 protected:
 	void CheckMove(const Piece *piece, int x, int y);

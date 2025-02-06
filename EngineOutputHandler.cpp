@@ -296,7 +296,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			Piece* rook = board->GetData(x2 > 4 ? 7 : 0, y2);
 			board->SetData(x2 > 4 ? 7 : 0, y2, board->GetData(x1, y1));
 			board->SetData(4, y1, rook);
-			dynamic_cast<ChessBoard*>(board)->WriteMove(x1 == 7 ? "O-O" : "O-O-O");
+			dynamic_cast<ChessBoard*>(board)->WriteCastling(x1 == 7 ? "O-O" : "O-O-O");
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 		}
 		else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
@@ -568,13 +568,29 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			{
 				pieceType = ShogiPiece::FromStringCode(promo + uppercase(stringCode));
 			}
-			else if (gameVariant == WaShogi)
+			else if (gameVariant == WaShogi || gameVariant == CrazyWa)
 			{
 				pieceType = WaShogiPiece::FromStringCode(uppercase(stringCode));
 			}
 			else if (gameVariant == ChuShogi)
 			{
 				pieceType = ChuShogiPiece::FromStringCode(uppercase(stringCode));
+			}
+			else if (gameVariant == DaiShogi || gameVariant == TenjikuShogi)
+			{
+				if (k < fen.size() - 1 && (fen[k + 1] == '\'' || fen[k + 1] == '!'))
+				{
+					k++;
+					stringCode.push_back(fen[k].toLatin1());
+				}
+				if (gameVariant == DaiShogi)
+				{
+					pieceType = DaiShogiPiece::FromStringCode(uppercase(stringCode));
+				}
+				else if (gameVariant == TenjikuShogi)
+				{
+					pieceType = TenjikuShogiPiece::FromStringCode(uppercase(stringCode));
+				}
 			}
 			if (pieceType == None)
 			{

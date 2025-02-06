@@ -128,9 +128,9 @@ std::string Piece::GetImageFileName() const
 	}
 }
 
-std::string Piece::Description() const
+std::string Piece::PieceType2Description(PieceType pieceType)
 {
-	switch (_pieceType)
+	switch (pieceType)
 	{
 	case None: return "None";
 	case King: return "King";
@@ -190,4 +190,67 @@ std::string Piece::Description() const
 	case FireDemon: return "Fire Demon";
 	default: return "";
 	}
+}
+
+PieceType Piece::Description2PieceType(const std::string& description)
+{
+	if (description == "None")              return None;
+	if (description == "King")              return King;
+	if (description == "Lion")              return Lion;
+	if (description == "Queen")             return Queen;
+	if (description == "Dragon King")       return DragonKing;
+	if (description == "Dragon Horse")      return DragonHorse;
+	if (description == "Rook")              return Rook;
+	if (description == "Bishop")            return Bishop;
+	if (description == "Knight")            return Knight;
+	if (description == "Vertical Mover")    return VerticalMover;
+	if (description == "Side Mover")        return SideMover;
+	if (description == "Cannon")            return Cannon;
+	if (description == "Lance")             return Lance;
+	if (description == "Kylin")             return Kylin;
+	if (description == "Phoenix")           return Phoenix;
+	if (description == "Elephant")          return Elephant;
+	if (description == "Prince")            return Prince;
+	if (description == "Tiger")             return Tiger;
+	if (description == "Gold")              return Gold;
+	if (description == "Silver")            return Silver;
+	if (description == "Copper")            return Copper;
+	if (description == "Leopard")           return Leopard;
+	if (description == "Go Between")        return GoBetween;
+	if (description == "Pawn")              return Pawn;
+	if (description == "Eagle")             return Eagle;
+	if (description == "Unicorn")           return Unicorn;
+	if (description == "Flying Ox")         return FlyingOx;
+	if (description == "Free Boar")         return FreeBoar;
+	if (description == "Flying Stag")       return FlyingStag;
+	if (description == "White Horse")       return WhiteHorse;
+	if (description == "Whale")             return Whale;
+	if (description == "Promoted Lance")    return PromotedLance;
+	if (description == "Promoted Knight")   return PromotedKnight;
+	if (description == "Promoted Silver")   return PromotedSilver;
+	if (description == "Tokin")             return Tokin;
+	if (description == "Violent Ox")        return ViolentOx;
+	if (description == "Flying Dragon")     return FlyingDragon;
+	if (description == "Angry Boar")        return AngryBoar;
+	if (description == "Cat Sword")         return CatSword;
+	if (description == "Evil Wolf")         return EvilWolf;
+	if (description == "Iron")              return Iron;
+	if (description == "Stone")             return Stone;
+	if (description == "Dog")               return Dog;
+	if (description == "Vice General")      return ViceGeneral;
+	if (description == "Great General")     return GreatGeneral;
+	if (description == "Bishop General")    return BishopGeneral;
+	if (description == "Rook General")      return RookGeneral;
+	if (description == "Multi General")     return MultiGeneral;
+	if (description == "Free Eagle")        return FreeEagle;
+	if (description == "Lion Hawk")         return LionHawk;
+	if (description == "Side Soldier")      return SideSoldier;
+	if (description == "Vertical Soldier")  return VerticalSoldier;
+	if (description == "Chariot Soldier")   return ChariotSoldier;
+	if (description == "Water Buffalo")     return WaterBuffalo;
+	if (description == "Heavenly Tetrarch") return HeavenlyTetrarch;
+	if (description == "Fire Demon")        return FireDemon;
+
+	// Fallback for unrecognized description.
+	return None;
 }

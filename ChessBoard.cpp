@@ -24,6 +24,10 @@ Board* ChessBoard::Clone()
 			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
 		}
 	}
+	cb->SetMoveCount(_moveCount);
+	cb->SetHalfMoveCount(_halfMoveCount);
+	cb->SetCastling(GetCastling());
+	cb->SetEnPassant(_ep);
 	return cb;
 }
 
@@ -339,7 +343,12 @@ int ChessBoard::HalfMoveCount() const
 	return _halfMoveCount;
 }
 
-void ChessBoard::WriteMove(const std::string& moveStr)
+void ChessBoard::SetHalfMoveCount(int halfMoveCount)
+{
+	_halfMoveCount = halfMoveCount;
+}
+
+void ChessBoard::WriteCastling(const std::string& moveStr)
 {
 	if (moveStr == "O-O")
 	{

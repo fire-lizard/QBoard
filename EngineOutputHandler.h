@@ -8,7 +8,7 @@
 #include "MakrukBoard.h"
 #include "XiangqiPiece.h"
 #include "WaShogiPiece.h"
-#include "ChuShogiPiece.h"
+#include "TenjikuShogiPiece.h"
 
 struct Move
 {

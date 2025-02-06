@@ -46,6 +46,11 @@ Board* ShogiBoard::Clone()
 			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
 		}
 	}
+	for (const auto& capturedPiece: _capturedPieces)
+	{
+		cb->AddCapturedPiece(capturedPiece.second, capturedPiece.first);
+	}
+	cb->SetMoveCount(_moveCount);
 	return cb;
 }
 

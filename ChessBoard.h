@@ -13,10 +13,11 @@ public:
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
 	void GetMoves(Piece *piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
-	void WriteMove(const std::string& moveStr);
+	void WriteCastling(const std::string& moveStr);
 	std::string GetCastling() const;
 	std::string GetEnPassant();
 	int HalfMoveCount() const;
+	void SetHalfMoveCount(int halfMoveCount);
 	void SetCastling(const std::string& val);
 	void SetEnPassant(std::string val);
 

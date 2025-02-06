@@ -42,6 +42,11 @@ int Board::MoveCount() const
 	return (_moveCount / 2) + 1;
 }
 
+void Board::SetMoveCount(int moveCount)
+{
+	_moveCount = moveCount;
+}
+
 std::string Board::GetFEN() const
 {
 	std::string fen;
@@ -285,27 +290,12 @@ bool Board::IsMovePossible(int x, int y)
 	return std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x && t.second == y; });
 }
 
-bool Board::operator == (const Board *other) const
-{
-	return other != nullptr && this->GetFEN() == other->GetFEN();
-}
-
-bool Board::operator == (const PieceType other[16][16]) const
-{
-	for (int i = 0; i < _width; i++)
-	{
-		for (int j = 0; j < _height; j++)
-		{
-			if (_data[j][i] != nullptr && _data[j][i]->GetType() != other[i][j])
-			{
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
 bool Board::operator == (const std::string& fen) const
 {
 	return this->GetFEN() == fen;
+}
+
+bool Board::operator != (const std::string& fen) const
+{
+	return this->GetFEN() != fen;
 }

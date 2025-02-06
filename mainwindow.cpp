@@ -98,9 +98,10 @@ void MainWindow::on_actionAbout_triggered()
 	QMessageBox::about(this, "About", aboutStr);
 }
 
-void MainWindow::on_actionPlace_triggered()
+void MainWindow::on_actionPlace_triggered() const
 {
-	QMessageBox::about(this, "TODO", "TODO");
+	ui->vboard->SetEditorMode(!ui->vboard->GetEditorMode());
+	ui->vboard->repaint();
 }
 
 void MainWindow::on_actionClear_triggered() const
@@ -110,6 +111,8 @@ void MainWindow::on_actionClear_triggered() const
 	const int response = mb.exec();
 	if (response == QMessageBox::Yes)
 	{
+		StopEngine(_whiteEngine);
+		StopEngine(_blackEngine);
 		Board* board = ui->vboard->GetBoard();
 		const int width = board->GetWidth();
 		const int height = board->GetHeight();
@@ -122,6 +125,11 @@ void MainWindow::on_actionClear_triggered() const
 				board->SetData(i, j, nullptr);
 			}
 		}
+		if (!ui->vboard->GetEditorMode())
+		{
+			ui->vboard->SetEditorMode(true);
+		}
+		ui->vboard->repaint();
 	}
 }
 
@@ -273,47 +281,43 @@ void MainWindow::on_actionNew_game_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	const GameVariant gameVariant = this->ui->vboard->GetGameVariant();
-	if (gameVariant != DaiShogi && gameVariant != TenjikuShogi)
+	QFileDialog fileDialog(this);
+	fileDialog.setNameFilter("FEN Files (*.fen)");
+	fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+	fileDialog.setWindowTitle("Open file");
+	if (fileDialog.exec())
 	{
-		QFileDialog fileDialog(this);
-		fileDialog.setNameFilter("FEN Files (*.fen)");
-		fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-		fileDialog.setWindowTitle("Open file");
-		if (fileDialog.exec())
+		const QString fileName = fileDialog.selectedFiles()[0];
+		QFile file(fileName);
+		file.open(QIODevice::ReadOnly | QIODevice::Text);
+		const QByteArray str = file.readAll();
+		file.close();
+		Board* board = this->ui->vboard->GetBoard();
+		const QString errorStr = EngineOutputHandler::SetFenToBoard(board, str, ui->vboard->GetGameVariant());
+		if (!errorStr.isEmpty())
 		{
-			const QString fileName = fileDialog.selectedFiles()[0];
-			QFile file(fileName);
-			file.open(QIODevice::ReadOnly | QIODevice::Text);
-			const QByteArray str = file.readAll();
-			file.close();
-			Board* board = this->ui->vboard->GetBoard();
-			const QString errorStr = EngineOutputHandler::SetFenToBoard(board, str, ui->vboard->GetGameVariant());
-			if (!errorStr.isEmpty())
+			QMessageBox::critical(this, "Error", errorStr);
+		}
+		if (_blackEngine != nullptr && _blackEngine->IsActive())
+		{
+			if (_blackEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_blackEngine)->GetOption("setboard"))
 			{
-				QMessageBox::critical(this, "Error", errorStr);
+				std::dynamic_pointer_cast<WbEngine>(_blackEngine)->Edit(ui->vboard->GetBoard());
 			}
-			if (_blackEngine != nullptr && _blackEngine->IsActive())
+			else
 			{
-				if (_blackEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_blackEngine)->GetOption("setboard"))
-				{
-					std::dynamic_pointer_cast<WbEngine>(_blackEngine)->Edit(ui->vboard->GetBoard());
-				}
-				else
-				{
-					_blackEngine->SetFEN(str.toStdString());
-				}
+				_blackEngine->SetFEN(str.toStdString());
 			}
-			if (_whiteEngine != nullptr && _whiteEngine->IsActive())
+		}
+		if (_whiteEngine != nullptr && _whiteEngine->IsActive())
+		{
+			if (_whiteEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->GetOption("setboard"))
 			{
-				if (_whiteEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->GetOption("setboard"))
-				{
-					std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->Edit(ui->vboard->GetBoard());
-				}
-				else
-				{
-					_whiteEngine->SetFEN(str.toStdString());
-				}
+				std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->Edit(ui->vboard->GetBoard());
+			}
+			else
+			{
+				_whiteEngine->SetFEN(str.toStdString());
 			}
 		}
 	}
@@ -334,8 +338,8 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-				QString mcStr = QString::number((ui->vboard->GetBoard()->MoveCount()));
-				QString hmStr = QString::number((dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->HalfMoveCount()));
+				QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
+				QString hmStr = QString::number(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->HalfMoveCount());
 				QString clStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetCastling()) : "-";
 				QString epStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetEnPassant()) : "-";
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
@@ -373,7 +377,7 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-				QString mcStr = QString::number((ui->vboard->GetBoard()->MoveCount()));
+				QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b - - 0 " : " w - - 0 ";
 				str += mcStr.toLatin1();
@@ -410,7 +414,7 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-				QString mcStr = QString::number((ui->vboard->GetBoard()->MoveCount()));
+				QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
 				QString cpStr = QString::fromStdString(dynamic_cast<ShogiVariantBoard*>(ui->vboard->GetBoard())->CapturedPieceString());
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 				str += this->ui->vboard->GetCurrentPlayer() == Black ? " B " : " W ";
