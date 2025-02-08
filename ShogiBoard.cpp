@@ -18,6 +18,7 @@ void ShogiBoard::Initialize()
 	_psn = "";
 	_csa = "";
 	_kif = "";
+	_ki2 = "";
 	_capturedPieces.clear();
 	for (int i = 0; i < _width; i++)
 	{
@@ -260,6 +261,18 @@ void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 	}
 	_kif += y1 == '*' ? _dropStr : "(" + std::to_string(_width - x1) + std::to_string(y1 + 1) + ")";
 	_kif += "          (00:00 / 00:00:00)\n";
+	// KI2
+	_ki2 += (_moveCount + 1) % 2 == 0 ? _senteStr : _goteStr;
+	_ki2 += y1 == '*' ? _dropStr : std::to_string(_width - x1);
+	_ki2 += x2 == _oldX2 && y2 == _oldY2 ? _sameCoordStr : "";
+	_ki2 += x2 == _oldX2 && y2 == _oldY2 ? " " : _numberToKanji.at(y2 + 1);
+	_ki2 += _pieceToKIF.at(pieceType);
+	if (promotion == '+')
+	{
+		_ki2 += _promotionStr;
+	}
+	_ki2 += promotion == '+' ? "   " : "    ";
+	_ki2 += _moveCount % 6 == 0 ? "\n" : "";
 	_oldX2 = y1 != '*' ? x2 : _oldX2;
 	_oldY2 = y1 != '*' ? y2 : _oldX2;
 }
@@ -277,4 +290,9 @@ std::string ShogiBoard::GetCSA()
 std::string ShogiBoard::GetKIF()
 {
 	return _kif;
+}
+
+std::string ShogiBoard::GetKI2()
+{
+	return _ki2;
 }

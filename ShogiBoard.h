@@ -17,6 +17,7 @@ public:
 	std::string GetPSN();
 	std::string GetCSA();
 	std::string GetKIF();
+	std::string GetKI2();
 
 protected:
 	bool _hasDrops;
@@ -25,11 +26,14 @@ private:
 	std::string _psn;
 	std::string _csa;
 	std::string _kif;
-	std::string _promotionStr = "成";
-	std::string _dropStr = "打";
+	std::string _ki2;
 	int _oldX2 = -1;
 	int _oldY2 = -1;
-	std::string _sameCoordStr = "同";
+	const std::string _promotionStr = "成";
+	const std::string _dropStr = "打";
+	const std::string _sameCoordStr = "同";
+	const std::string _senteStr = "▲";
+	const std::string _goteStr = "△";
 
 	const std::map<PieceType, std::string> _pieceToPSN = {
 		{Pawn, "P"},
