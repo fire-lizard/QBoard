@@ -997,6 +997,11 @@ void VBoard::blackEngineReadyReadStandardError() const
 
 void VBoard::contextMenuEvent(QContextMenuEvent* event)
 {
+	const int w = this->size().width() / _board->GetWidth();
+	const int h = this->size().height() / _board->GetHeight();
+	const int x = event->x() / w;
+	const int y = event->y() / h;
+
 	if (_editorMode)
 	{
 		QMenu menu(this);
@@ -1174,8 +1179,25 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			{
 				_chosenPiece = Piece::Description2PieceType(selectedAction->text().toStdString());
 			}
+
+			const Piece* p = _board->GetData(x, y);
+			delete p;
+			if (_chosenPiece == None)
+			{
+				_board->SetData(x, y, nullptr);
+			}
+			else
+			{
+				Piece* newPiece = _board->CreatePiece(_chosenPiece, _chosenColour);
+				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), _chosenPiece) != std::end(_promotedPieces))
+				{
+					newPiece->Promote();
+				}
+				_board->SetData(x, y, newPiece);
+			}
 		}
 
+		repaint();
 		return;
 	}
 
@@ -1213,10 +1235,6 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		const PieceType newPiece = _gameVariant == CrazyWa ? 
 			WaShogiPiece::Description2PieceType(longStringCode) : ShogiPiece::Description2PieceType(longStringCode);
 
-		const int w = this->size().width() / _board->GetWidth();
-		const int h = this->size().height() / _board->GetHeight();
-		const int x = event->x() / w;
-		const int y = event->y() / h;
 		if (_board->GetData(x, y) != nullptr)
 		{
 			QMessageBox mb(QMessageBox::Warning, "Illegal drop", "Square is already occupied",
