@@ -1,6 +1,8 @@
 #pragma once
+#include "Common.h"
+#include "Piece.h"
 
-class KoShogiPiece
+class KoShogiPiece : public Piece
 {
 };
 

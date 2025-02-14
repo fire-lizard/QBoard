@@ -2981,6 +2981,2112 @@
     <Image Include="toolbar\Place.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_daidai\AngryBoar.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\AngryBoarFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\Bishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\BishopFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\BlindMonkey.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\BlindMonkeyFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\BlueDragon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\BlueDragonFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\CatSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\CatSword-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\CatSword-2Flip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\CatSwordFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\CopperGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\CopperGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\Dove.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\DoveFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\DoveP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\DovePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\DragonHorse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\DragonHorseFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\DragonHorseP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\DragonHorsePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\DragonKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\DragonKingFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\DragonKingP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\DragonKingPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\EasternBarbarian.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\EasternBarbarianFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\EnchantedBadger.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\EnchantedBadgerFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\EnchantedFox.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\EnchantedFoxFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\EvilWolf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\EvilWolfFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FerociousLeopard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FerociousLeopardFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FlyingDragon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FlyingDragonFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FlyingHorse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FlyingHorseFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FragrantElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FragrantElephantFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FragrantElephantP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FragrantElephantPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FreeDemon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FreeDemonFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FreeDemonP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FreeDemonPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FreeDreamEater.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FreeDreamEaterFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FreeDreamEaterP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FreeDreamEaterPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FuriousFiendP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\FuriousFiendPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\GoldenBird.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\GoldenBirdFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\GoldenBirdP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\GoldenBirdPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\GoldGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\GoldGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\GreatDragon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\GreatDragonFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\GreatDragonP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\GreatDragonPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\GreatElephantP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\GreatElephantPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\HookMover.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\HookMoverFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\HookMoverP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\HookMoverPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\HowlingDog.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\HowlingDogFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\IronGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\IronGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\King.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\KingFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\Kirin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\KirinFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\Lance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LanceFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LeftChariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LeftChariotFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LeftGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LeftGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\Lion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LionDog.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LionDogFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LionDogP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LionDogPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LionFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LionP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LionPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LongNosedGoblin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LongNosedGoblinFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LongNosedGoblinP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\LongNosedGoblinPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\MountainWitchP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\MountainWitchPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\NeighborKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\NeighborKingFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\NorthernBarbarian.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\NorthernBarbarianFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\OldKite.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\OldKiteFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\OldRat.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\OldRatFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\Pawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\PawnFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\Phoenix.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\PhoenixFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\PoisonousSnake.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\PoisonousSnakeFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\PrancingStag.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\PrancingStagFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\Queen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\QueenFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\QueenP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\QueenPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\ReverseChariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\ReverseChariotFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\RightChariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\RightChariotFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\RightGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\RightGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\Rook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\RookFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\RushingBird.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\RushingBirdFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SavageTiger.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SavageTigerFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SheDevil.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SheDevil-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SheDevil-2Flip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SheDevilFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SheDevilP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SheDevilPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SideChariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SideChariotFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SideMover.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SideMoverFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SilverGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SilverGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SouthernBarbarian.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SouthernBarbarianFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SquareMover.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SquareMoverFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SquareMoverP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\SquareMoverPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\StandardBearer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\StandardBearerFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\StandardBearerP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\StandardBearerPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\StoneGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\StoneGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\VerticalMover.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\VerticalMoverFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\ViolentBear.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\ViolentBearFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\ViolentOx.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\ViolentOxFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WaterBuffalo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WaterBuffaloFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WesternBarbarian.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WesternBarbarianFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WhiteElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WhiteElephantFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WhiteElephantP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WhiteElephantPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WhiteTiger.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WhiteTigerFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WizardStorkP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WizardStorkPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WoodGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_daidai\WoodGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\AngryBoar.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\AngryBoarFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\BatP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\BatPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\Bishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\BishopFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\BlindBear.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\BlindBearFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\BlindTiger.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\BlindTigerFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\BuddhistDevil.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\BuddhistDevilFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\BuddhistSpiritP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\BuddhistSpiritPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\Capricorn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\CapricornFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\CatSword.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\CatSword-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\CatSword-2Flip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\CatSwordFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\ChineseCock.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\ChineseCockFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\CoiledSerpent.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\CoiledSerpentFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\CopperGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\CopperGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\DarkSpirit.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\DarkSpiritFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\Deva.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\DevaFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\Donkey.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\DonkeyFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\DragonHorse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\DragonHorseFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\DragonKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\DragonKingFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\DrunkElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\DrunkElephantFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\EarthGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\EarthGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\EmperorP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\EmperorPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\EvilWolf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\EvilWolfFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FerociousLeopard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FerociousLeopardFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FlyingDragon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FlyingDragonFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeBearP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeBearPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeBoarP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeBoarPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeCatP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeCatPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeCopperP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeCopperPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeDragonP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeDragonPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeEarthP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeEarthPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeGoBetweenP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeGoBetweenPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeGoldP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeGoldPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeIronP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeIronPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeLeopardP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeLeopardPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeSilverP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeSilverPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeSnakeP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeSnakePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeStoneP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeStonePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeTigerP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeTigerPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeTileP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeTilePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeWolfP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FreeWolfPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FuriousFiendP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\FuriousFiendPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\GoBetween.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\GoBetweenFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\GoldenBirdP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\GoldenBirdPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\GoldGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\GoldGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\GoldGeneralP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\GoldGeneralPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\GreatDragonP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\GreatDragonPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\GuardianGod.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\GuardianGodFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\HookMover.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\HookMoverFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\IronGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\IronGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\King.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\KingFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\Kirin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\KirinFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\Knight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\KnightFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\Lance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\LanceFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\LeftChariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\LeftChariotFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\Lion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\LionDog.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\LionDogFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\LionFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\MountainWitchP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\MountainWitchPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\OldMonkey.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\OldMonkeyFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\OldRat.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\OldRatFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\Pawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\PawnFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\Phoenix.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\PhoenixFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\PrinceP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\PrincePFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\Queen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\QueenFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\RecliningDragon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\RecliningDragonFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\ReverseChariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\ReverseChariotFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\RightChariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\RightChariotFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\Rook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\RookFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\SheDevil.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\SheDevil-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\SheDevil-2Flip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\SheDevilFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\SideFlier.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\SideFlierFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\SideMover.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\SideMoverFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\SilverGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\SilverGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\StoneGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\StoneGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\TeachingKingP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\TeachingKingPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\TileGeneral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\TileGeneralFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\VerticalMover.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\VerticalMoverFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\ViolentOx.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\ViolentOxFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\WizardStorkP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\WizardStorkPFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\Wrestler.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_maka\WrestlerFlip.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\AdvanceGuard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\AdvanceGuardF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Aide.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\AideF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\BattalionCommanderP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\BattalionCommanderPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Cannon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\CannonCarriageP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\CannonCarriagePF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\CannonF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Centuria.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\CenturiaF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\CenturiaP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\CenturiaPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Chariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ChariotCaptain.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ChariotCaptainF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ChariotCaptainP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ChariotCaptainPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ChariotF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Chiliarch.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ChiliarchF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ChiliarchP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ChiliarchPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Clerk.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ClerkF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\CompanyCommanderP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\CompanyCommanderPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Crossbow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\CrossbowF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\CrossbowKnightP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\CrossbowKnightPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\DivineCarriageP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\DivineCarriagePF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Drum.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\DrumF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\EarthNetP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\EarthNetPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Elephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ElephantF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\EuropeanCannon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\EuropeanCannonF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ExtensiveFogP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ExtensiveFogPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Flag.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Flag-DrumP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Flag-DrumPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\FlagF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\FlyingHawkP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\FlyingHawkPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\General.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\GeneralF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Guard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\GuardF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\HolyLightP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\HolyLightPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ImperialBaseP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ImperialBasePF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Knight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\KnightCaptain.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\KnightCaptainF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\KnightCaptainP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\KnightCaptainPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\KnightF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Longbow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\LongbowF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\LongbowKnightP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\LongbowKnightPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\MarshalP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\MarshalPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\MiddleTroop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\MiddleTroopF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\MilitaryCommissionerP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\MilitaryCommissionerPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\MilitaryEngineer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\MilitaryEngineerF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\MilitaryOfficer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\MilitaryOfficerF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Optio.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\OptioF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\OptioP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\OptioPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Pawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\PawnCaptain.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\PawnCaptainF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\PawnCaptainP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\PawnCaptainPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\PawnF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\PoisonFlameP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\PoisonFlamePF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\RearGuard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\RearGuardF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\RisingDragonP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\RisingDragonPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\RoamingAssaultP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\RoamingAssaultPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Sentry.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\SentryF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Shield.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ShieldCaptain.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ShieldCaptainF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ShieldCaptainP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ShieldCaptainPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ShieldF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\SkyNetP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\SkyNetPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\SpiritualMonk.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\SpiritualMonkF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Staff.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\StaffF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\StaffOfficer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\StaffOfficerF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\StrategistP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\StrategistPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\TaoistPriest.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\TaoistPriestF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ThunderclapP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ThunderclapPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Vanguard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\VanguardF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ViceCommissionerP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\ViceCommissionerPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\WingedHorseP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\WingedHorsePF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\WingedTigerP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\WingedTigerPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\Wrestler.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_ko\WrestlerF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kba.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbaa.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbac.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbag.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbbd.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbca.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbcc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbcg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbch.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbcl.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbco.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbcr.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbcs.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbcu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbd.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbda.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbe.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kben.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbev.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbgc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbgo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbhh.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbhs.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbhv.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbib.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbil.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kblb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kblc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbma.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbmm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbmt.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbpf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbpp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbpu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbq.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbra.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbrg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbs.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbsb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbsc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbsh.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbsm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbsn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbso.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbss.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbsu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbtb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbtc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbtf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbtp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbtw.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbuu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbv.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbvb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbvc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbwg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbwh.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kbwr.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwa.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwaa.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwac.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwag.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwbd.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwca.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwcc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwcg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwch.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwcl.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwco.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwcr.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwcs.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwcu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwd.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwda.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwe.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwev.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwgc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwgo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwhh.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwhs.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwhv.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwib.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwil.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwlb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwlc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwma.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwmm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwmt.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwpf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwpp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwpu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwq.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwra.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwrg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kws.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwsb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwsc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwsh.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwsm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwsn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwso.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwss.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwsu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwtb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwtc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwtf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwtp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwtw.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwuu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwv.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwvb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwvc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwwg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwwh.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kok\kwwr.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\ba.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bac.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bag.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bbd.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bca.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bcg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bch.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bcl.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bco.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bcr.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bcs.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bcu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bd.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bda.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\be.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\ben.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bev.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bgc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bgo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bhs.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bhv.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bib.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bil.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\blb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\blc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bma.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bmt.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bpf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bpu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bq.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bra.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\brg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bs.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bsb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bsc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bsh.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bsm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bsn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bso.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bsu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\btb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\btc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\btf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\btp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\btw.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bv.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bvb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bvc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bwg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bwh.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\bwr.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wa.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wac.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wag.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wbd.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wca.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wcg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wch.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wcl.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wco.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wcr.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wcs.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wcu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wd.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wda.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\we.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wev.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wgc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wgo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\whs.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\whv.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wib.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wil.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wlb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wlc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wma.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wmt.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wpf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wpu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wq.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wra.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wrg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\ws.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wsb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wsc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wsh.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wsm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wsn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wso.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wsu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wtb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wtc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wtf.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wtp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wtw.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wv.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wvb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wvc.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wwg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wwh.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kow\wwr.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc">

@@ -1,8 +1,8 @@
 #pragma once
 #include "Common.h"
-#include "DaiShogiPiece.h"
+#include "MakaDaiDaiShogiPiece.h"
 
-class DaiDaiShogiPiece : public DaiShogiPiece
+class DaiDaiShogiPiece : public MakaDaiDaiShogiPiece
 {
 };
 

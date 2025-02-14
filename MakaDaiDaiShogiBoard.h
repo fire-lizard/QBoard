@@ -1,8 +1,8 @@
 #pragma once
 #include "Common.h"
-#include "DaiDaiShogiBoard.h"
+#include "DaiShogiBoard.h"
 
-class MakaDaiDaiShogiBoard : DaiDaiShogiBoard
+class MakaDaiDaiShogiBoard : DaiShogiBoard
 {
 };
 

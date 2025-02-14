@@ -53,14 +53,13 @@ std::pair<int, int> EngineOutputHandler::GetPieceLocation(const Board* board, Pi
 
 QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant)
 {
-	const QRegularExpression _nlre = QRegularExpression("[\r\n]+");
-	const QRegularExpression _csre = QRegularExpression(R"(([a-p])(1[0-6]|[0-9])([a-p])(1[0-6]|[0-9])([+nbrq])?)");
+	const QRegularExpression _csre = QRegularExpression(R"(([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrq])?)");
 	const QRegularExpression _cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])([+nbrq])?)");
 	const QRegularExpression _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
 	const QRegularExpression _sgxbre = QRegularExpression(R"(([RBGSNLPa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
 	const QRegularExpression _sgusre = QRegularExpression(R"(([RBGSNLP1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");
 	QByteArray result;
-	QStringList parts = QString(buf).trimmed().split(_nlre, Qt::SkipEmptyParts);
+	QStringList parts = QString(buf).trimmed().split(QRegularExpression("[\r\n]+"), Qt::SkipEmptyParts);
 	for (auto& part : parts)
 	{
 		if (engineProtocol == XBoard ? part.startsWith("move ") : part.startsWith("bestmove "))
