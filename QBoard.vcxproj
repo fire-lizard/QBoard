@@ -208,6 +208,8 @@
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="ChuShogiBoard.cpp" />
     <ClCompile Include="ChuShogiPiece.cpp" />
+    <ClCompile Include="DaiDaiShogiBoard.cpp" />
+    <ClCompile Include="DaiDaiShogiPiece.cpp" />
     <ClCompile Include="DaiShogiBoard.cpp" />
     <ClCompile Include="DaiShogiPiece.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -215,7 +217,11 @@
     <ClCompile Include="IniFile.cpp" />
     <ClCompile Include="JudkinShogiBoard.cpp" />
     <ClCompile Include="KanjiPiece.cpp" />
+    <ClCompile Include="KoShogiBoard.cpp" />
+    <ClCompile Include="KoShogiPiece.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="MakaDaiDaiShogiBoard.cpp" />
+    <ClCompile Include="MakaDaiDaiShogiPiece.cpp" />
     <ClCompile Include="MakrukBoard.cpp" />
     <ClCompile Include="MakrukPiece.cpp" />
     <ClCompile Include="MiniShogiBoard.cpp" />
@@ -253,6 +259,8 @@
     <ClInclude Include="ChuShogiBoard.h" />
     <ClInclude Include="ChuShogiPiece.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="DaiDaiShogiBoard.h" />
+    <ClInclude Include="DaiDaiShogiPiece.h" />
     <ClInclude Include="DaiShogiBoard.h" />
     <ClInclude Include="DaiShogiPiece.h" />
     <ClInclude Include="Engine.h" />
@@ -260,7 +268,11 @@
     <ClInclude Include="IniFile.h" />
     <ClInclude Include="JudkinShogiBoard.h" />
     <ClInclude Include="KanjiPiece.h" />
+    <ClInclude Include="KoShogiBoard.h" />
+    <ClInclude Include="KoShogiPiece.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="MakaDaiDaiShogiBoard.h" />
+    <ClInclude Include="MakaDaiDaiShogiPiece.h" />
     <ClInclude Include="MakrukBoard.h" />
     <ClInclude Include="MakrukPiece.h" />
     <ClInclude Include="MiniShogiBoard.h" />
