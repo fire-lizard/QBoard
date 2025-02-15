@@ -1,7 +1,5 @@
 #include "vboard.h"
 
-#include <utility>
-
 VBoard::VBoard(QWidget *parent) : QWidget(parent)
 {
 	setAttribute(Qt::WA_Hover, true);

@@ -174,7 +174,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, East);
 		CheckDirection(piece, x, y, West);
 		break;
-	case Cannon:
+	case ReverseChariot:
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, South);
 		break;

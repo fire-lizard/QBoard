@@ -31,7 +31,7 @@ void ChuShogiPiece::Promote(PieceType pieceType)
 	case SideMover:
 		_pieceType = FreeBoar;
 		break;
-	case Cannon:
+	case ReverseChariot:
 		_pieceType = Whale;
 		break;
 	case Lance:
@@ -95,7 +95,7 @@ std::string ChuShogiPiece::StringCode()
 		return "V";
 	case SideMover:
 		return "M";
-	case Cannon:
+	case ReverseChariot:
 		return "A";
 	case Lance:
 		return "L";
@@ -150,7 +150,7 @@ PieceType ChuShogiPiece::FromStringCode(const std::string& code)
 		{"B", Bishop},
 		{"V", VerticalMover},
 		{"M", SideMover},
-		{"A", Cannon},
+		{"A", ReverseChariot},
 		{"L", Lance},
 		{"O", Kylin},
 		{"X", Phoenix},
@@ -199,7 +199,7 @@ std::string ChuShogiPiece::KanjiStringCode()
 		return "竪";
 	case SideMover:
 		return "横";
-	case Cannon:
+	case ReverseChariot:
 		return "反";
 	case Lance:
 		return "香";
@@ -283,7 +283,7 @@ std::string ChuShogiPiece::GetKanjiImageFileName()
 		return "VerticalMover" + colour + ".png";
 	case SideMover:
 		return "SideMover" + colour + ".png";
-	case Cannon:
+	case ReverseChariot:
 		return "Chariot" + colour + ".png";
 	case Lance:
 		return "Lance" + colour + ".png";
@@ -353,7 +353,7 @@ std::string ChuShogiPiece::GetMnemonicImageFileName() const
 		return promo + "Vertical" + colour + ".png";
 	case SideMover:
 		return promo + "Side" + colour + ".png";
-	case Cannon:
+	case ReverseChariot:
 		return "Reverse" + colour + ".png";
 	case Lance:
 		return "Lance" + colour + ".png";
