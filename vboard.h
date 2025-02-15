@@ -9,6 +9,9 @@
 #include "mainwindow.h"
 #include "ChuShogiBoard.h"
 #include "DaiShogiBoard.h"
+#include "DaiDaiShogiBoard.h"
+#include "MakaDaiDaiShogiBoard.h"
+#include "KoShogiBoard.h"
 #include "ChessBoard.h"
 #include "XiangqiBoard.h"
 #include "ShogiVariantBoard.h"
@@ -85,7 +88,8 @@ private:
 	GameVariant _gameVariant = Chess;
 	std::shared_ptr<Engine> _whiteEngine = nullptr;
 	std::shared_ptr<Engine> _blackEngine = nullptr;
-	GameVariant _shogiVariants[9] = {Shogi, MiniShogi, JudkinShogi, ChuShogi, DaiShogi, ShoShogi, WaShogi, CrazyWa, TenjikuShogi};
+	GameVariant _shogiVariants[12] = { Shogi, MiniShogi, JudkinShogi, ChuShogi, DaiShogi, ShoShogi, WaShogi,
+									   CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi };
 	PieceType _lionPieces[4] = { Lion, Eagle, Unicorn, LionHawk };
 	PieceType _promotedPieces[16] = { Tokin, Prince, PloddingOx, HeavenlyHorse, RaidingFalcon, BearEyes, TenaciousFalcon, HeavenlyTetrarch,
 									  WhiteHorse, Whale, MultiGeneral, FreeBoar, FlyingOx, Eagle, Unicorn, FlyingStag };

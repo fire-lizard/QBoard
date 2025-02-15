@@ -42,6 +42,18 @@ void VBoard::paintEvent(QPaintEvent *)
 	{
 		resourcePrefix = ":/pieces_ten/images_ten/";
 	}
+	else if (_gameVariant == DaiDaiShogi)
+	{
+		resourcePrefix = ":/pieces_daidai/images_daidai/";
+	}
+	else if (_gameVariant == MakaDaiDaiShogi)
+	{
+		resourcePrefix = ":/pieces_maka/images_maka/";
+	}
+	else if (_gameVariant == KoShogi)
+	{
+		resourcePrefix = ":/pieces_ko/images_ko/";
+	}
 	else
 	{
 		resourcePrefix = ":/pieces_eur/images/";
@@ -659,6 +671,7 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	_attackers.clear();
 	_defenders.clear();
 	_gameVariant = gameVariant;
+	int s = 66;
 	switch (_gameVariant)
 	{
 	case Chess:
@@ -675,10 +688,24 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		_board = new ChuShogiBoard();
 		break;
 	case DaiShogi:
+		s = 60;
 		_board = new DaiShogiBoard();
 		break;
 	case TenjikuShogi:
+		s = 56;
 		_board = new TenjikuShogiBoard();
+		break;
+	case DaiDaiShogi:
+		s = 52;
+		_board = new DaiDaiShogiBoard();
+		break;
+	case MakaDaiDaiShogi:
+		s = 48;
+		_board = new MakaDaiDaiShogiBoard();
+		break;
+	case KoShogi:
+		s = 48;
+		_board = new KoShogiBoard();
 		break;
 	case MiniShogi:
 		_board = new MiniShogiBoard();
@@ -703,7 +730,6 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		_board = new MakrukBoard();
 		break;
 	}
-	const int s = _gameVariant == TenjikuShogi ? 56 : _gameVariant == DaiShogi ? 60 : 66;
 	this->setFixedSize(_board->GetWidth() * s + 1, _board->GetHeight() * s + 1);
 	if (this->_window != nullptr)
 	{
@@ -1019,7 +1045,8 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		blackRegular->addAction("None");
 		whiteRegular->addAction("None");
 
-		if (_gameVariant == CrazyWa || _gameVariant == WaShogi || _gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi)
+		if (_gameVariant == CrazyWa || _gameVariant == WaShogi || _gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||
+			_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi)
 		{
 			blackPromoted = blackMenu->addMenu("Promoted");
 			whitePromoted = whiteMenu->addMenu("Promoted");
@@ -1160,6 +1187,54 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				{
 					whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(TenjikuShogiPiece)));
 					blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(TenjikuShogiPiece)));
+				}
+			}
+		}
+		else if (_gameVariant == DaiDaiShogi)
+		{
+			for (auto& DaiDaiShogiPiece : DaiDaiShogiPieces)
+			{
+				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), DaiDaiShogiPiece) != std::end(_promotedPieces))
+				{
+					whitePromoted->addAction(QString::fromStdString(Piece::PieceType2Description(DaiDaiShogiPiece)));
+					blackPromoted->addAction(QString::fromStdString(Piece::PieceType2Description(DaiDaiShogiPiece)));
+				}
+				else
+				{
+					whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(DaiDaiShogiPiece)));
+					blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(DaiDaiShogiPiece)));
+				}
+			}
+		}
+		else if (_gameVariant == MakaDaiDaiShogi)
+		{
+			for (auto& MakaDaiDaiShogiPiece : MakaDaiDaiShogiPieces)
+			{
+				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), MakaDaiDaiShogiPiece) != std::end(_promotedPieces))
+				{
+					whitePromoted->addAction(QString::fromStdString(Piece::PieceType2Description(MakaDaiDaiShogiPiece)));
+					blackPromoted->addAction(QString::fromStdString(Piece::PieceType2Description(MakaDaiDaiShogiPiece)));
+				}
+				else
+				{
+					whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(MakaDaiDaiShogiPiece)));
+					blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(MakaDaiDaiShogiPiece)));
+				}
+			}
+			}
+		else if (_gameVariant == KoShogi)
+		{
+			for (auto& KoShogiPiece : KoShogiPieces)
+			{
+				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), KoShogiPiece) != std::end(_promotedPieces))
+				{
+					whitePromoted->addAction(QString::fromStdString(KoShogiPiece::PieceType2Description(KoShogiPiece)));
+					blackPromoted->addAction(QString::fromStdString(KoShogiPiece::PieceType2Description(KoShogiPiece)));
+				}
+				else
+				{
+					whiteRegular->addAction(QString::fromStdString(KoShogiPiece::PieceType2Description(KoShogiPiece)));
+					blackRegular->addAction(QString::fromStdString(KoShogiPiece::PieceType2Description(KoShogiPiece)));
 				}
 			}
 		}

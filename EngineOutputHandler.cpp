@@ -81,7 +81,8 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 					if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
 				}
 			}
-			else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == WaShogi || gameVariant == TenjikuShogi)
+			else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == WaShogi || gameVariant == TenjikuShogi ||
+					 gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
 			{
 				QRegularExpressionMatch match = _csre.match(part);
 				if (match.hasMatch())
@@ -170,7 +171,8 @@ Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol e
 		x2 = width - moveArray[2] + 48;
 		y2 = moveArray[3] - 97;
 	}
-	else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == WaShogi || gameVariant == CrazyWa || gameVariant == TenjikuShogi)
+	else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == WaShogi || gameVariant == CrazyWa || gameVariant == TenjikuShogi ||
+			 gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
 	{
 		x1 = moveArray[0] - 97;
 		y1 = width - moveArray[1];
@@ -228,7 +230,8 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	int y1 = m.y1;
 	int x2 = m.x2;
 	int y2 = m.y2;
-	if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi)
+	if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi ||
+		gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
 		{
