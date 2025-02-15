@@ -87,7 +87,7 @@ inline PieceType MakaDaiDaiShogiPieces[] = { King, Gold, Silver, Copper, Iron, T
 											 RecliningDragon, ChineseCock, OldMonkey, BlindBear, Wrestler, Guardian, BuddhistDevil, OldRat, Donkey,
 											 Capricorn, HookMover, SideFlier, LeftChariot, RightChariot, Emperor, TeachingKing, FreeGold, FreeSilver,
 											 FreeCopper, FreeIron, FreeTile, FreeStone, FreeEarth, FreeTiger, FreeLeopard, FreeSerpent, FreeDragon,
-											 FreeWolf, FreeCat, FreeBear, Bat, MountainWitch, WizardStork, LionDog, GreatDragon };
+											 FreeWolf, FreeCat, FreeBear, Bat, MountainWitch, WizardStork, LionDog, GreatDragon, GoBetween };
 
 inline PieceType DaiDaiShogiPieces[] = { King, Lion, WaterBuffalo, Queen, DragonHorse, DragonKing, CatSword, FlyingDragon, Phoenix, Kylin, Bishop, Rook,
 										 SideMover, VerticalMover, ReverseChariot, ViolentOx, Lance, AngryBoar, Gold, Silver, Leopard, Copper, Iron, Stone, EvilWolf,

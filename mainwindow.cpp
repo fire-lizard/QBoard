@@ -90,10 +90,10 @@ void MainWindow::on_actionAbout_triggered()
 	QString aboutStr;
 	aboutStr.append("<center>QBoard 0.9.6 beta<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
-	aboutStr.append("Anatoliy Sova<br/>");
+	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
-	aboutStr.append("Wa Shogi Kanji graphics by Shigeki Watanabe<br/>");
-	aboutStr.append("Tenjiku Shogi Kanji graphics by Shigeki Watanabe<br/>");
+	aboutStr.append("Shogi Variants Kanji graphics by Shigeki Watanabe<br/>");
+	aboutStr.append("Ko Shogi Kanji graphics by TKR101010 (from Deviantart)<br/>");
 	aboutStr.append("2025</center>");
 	QMessageBox::about(this, "About", aboutStr);
 }

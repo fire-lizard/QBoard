@@ -76,6 +76,32 @@ void DaiDaiShogiPiece::Promote(PieceType pieceType)
 	case Kylin:
 		_pieceType = GreatDragon;
 		break;
+	case LeftChariot:
+	case RightChariot:
+	case WhiteTiger:
+	case BlueDragon:
+	case SideMover:
+	case VerticalMover:
+	case HowlingDog:
+	case ReverseChariot:
+	case ViolentOx:
+	case ViolentBear:
+	case AngryBoar:
+	case Lance:
+	case LeftGeneral:
+	case RightGeneral:
+	case Leopard:
+	case EvilWolf:
+	case SavageTiger:
+	case Gold:
+	case Silver:
+	case Copper:
+	case Iron:
+	case Stone:
+	case Wood:
+	case Pawn:
+		_isPromoted = false;
+		break;
 	default:
 		MakaDaiDaiShogiPiece::Promote(pieceType);
 		break;

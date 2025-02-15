@@ -40,6 +40,7 @@ void MakaDaiDaiShogiPiece::Promote(PieceType pieceType)
 	case Stone:
 		_pieceType = FreeStone;
 		break;
+	case GoBetween:
 	case Earth:
 		_pieceType = FreeEarth;
 		break;
