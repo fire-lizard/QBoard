@@ -226,6 +226,21 @@
      <string>Tenjiku Shogi</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>Dai Dai Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Maka Dai Dai Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Ko Shogi</string>
+    </property>
+   </item>
   </widget>
  </widget>
  <tabstops>
