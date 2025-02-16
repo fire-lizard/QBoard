@@ -57,7 +57,7 @@ enum PieceType
 	ViolentBear = 100, WhiteElephant = 101, WhiteTiger = 102, Wood = 103, FlyingHorse = 104,
 	// Maka Dai Dai Shogi Pieces
 	GreatDragon = 105, MountainWitch = 106, WizardStork = 107, LionDog = 108, Deva = 109, DarkSpirit = 110, Tile = 111, Earth = 112, CoiledSerpent = 113,
-	RecliningDragon = 114, ChineseCock = 115, OldMonkey = 116, BlindBear = 117, Wrestler = 118, Guardian = 119, BuddhistDevil = 120,
+	RecliningDragon = 114, ChineseCock = 115, OldMonkey = 116, BlindBear = 117, Wrestler = 118, Guardian = 119, BuddhistSpirit = 120,
 	OldRat = 121, Donkey = 122, Capricorn = 123, HookMover = 124, SideFlier = 125, LeftChariot = 126, RightChariot = 127, Emperor = 128,
 	TeachingKing = 129, FreeGold = 130, FreeSilver = 131, FreeCopper = 132, FreeIron = 133, FreeTile = 134, FreeStone = 135, FreeEarth = 136,
 	FreeGo = 137, FreeTiger = 138, FreeLeopard = 139, FreeSerpent = 140, FreeDragon = 141, FreeWolf = 142, FreeCat = 143, FreeBear = 144, Bat = 145,
@@ -84,7 +84,7 @@ inline PieceType KoShogiPieces[] = { King, Prince, Queen, Rook, Bishop, Gold, Si
 inline PieceType MakaDaiDaiShogiPieces[] = { King, Gold, Silver, Copper, Iron, Tile, Stone, Earth, Elephant, Prince, Tiger, Leopard, CatSword, Lion,
 											 Phoenix, Kylin, EvilWolf, AngryBoar, Queen, DragonHorse, DragonKing, Lance, ReverseChariot, FlyingDragon, ViolentOx,
 											 Knight, Bishop, Rook, SideMover, VerticalMover, Pawn, Deva, DarkSpirit, CoiledSerpent,
-											 RecliningDragon, ChineseCock, OldMonkey, BlindBear, Wrestler, Guardian, BuddhistDevil, OldRat, Donkey,
+											 RecliningDragon, ChineseCock, OldMonkey, BlindBear, Wrestler, Guardian, BuddhistSpirit, OldRat, Donkey,
 											 Capricorn, HookMover, SideFlier, LeftChariot, RightChariot, Emperor, TeachingKing, FreeGold, FreeSilver,
 											 FreeCopper, FreeIron, FreeTile, FreeStone, FreeEarth, FreeTiger, FreeLeopard, FreeSerpent, FreeDragon,
 											 FreeWolf, FreeCat, FreeBear, Bat, MountainWitch, WizardStork, LionDog, GreatDragon, GoBetween };

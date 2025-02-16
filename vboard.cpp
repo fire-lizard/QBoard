@@ -44,11 +44,11 @@ void VBoard::paintEvent(QPaintEvent *)
 	}
 	else if (_gameVariant == DaiDaiShogi)
 	{
-		resourcePrefix = ":/pieces_daidai/images_daidai/";
+		resourcePrefix = ":/pieces_dd/images_daidai/";
 	}
 	else if (_gameVariant == MakaDaiDaiShogi)
 	{
-		resourcePrefix = ":/pieces_maka/images_maka/";
+		resourcePrefix = ":/pieces_mdd/images_maka/";
 	}
 	else if (_gameVariant == KoShogi)
 	{
@@ -245,6 +245,10 @@ void VBoard::paintEvent(QPaintEvent *)
 				{
 					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 				}
+				else if (_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi)
+				{
+					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
+				}
 				else if (_pieceStyle == Mnemonic && _gameVariant == ChuShogi)
 				{
 					imageFileName = dynamic_cast<ChuShogiPiece*>(p)->GetMnemonicImageFileName();
@@ -261,6 +265,10 @@ void VBoard::paintEvent(QPaintEvent *)
 				else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)
 				{
 					painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+				}
+				else if (_gameVariant == KoShogi)
+				{
+					painter.drawPixmap(i * w + w / 20, j * h + h / 20, pixmap.size().width(), pixmap.size().height(), pixmap);
 				}
 				else
 				{

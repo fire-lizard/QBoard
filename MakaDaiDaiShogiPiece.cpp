@@ -20,7 +20,7 @@ void MakaDaiDaiShogiPiece::Promote(PieceType pieceType)
 		_pieceType = TeachingKing;
 		break;
 	case DarkSpirit:
-		_pieceType = BuddhistDevil;
+		_pieceType = BuddhistSpirit;
 		break;
 	case Gold:
 		_pieceType = FreeGold;
@@ -98,7 +98,7 @@ void MakaDaiDaiShogiPiece::Promote(PieceType pieceType)
 	case LionDog:
 	case Wrestler:
 	case Guardian:
-	case BuddhistDevil:
+	case BuddhistSpirit:
 	case Yaksha:
 	case FlyingDragon:
 	case ViolentOx:
@@ -158,7 +158,33 @@ std::string MakaDaiDaiShogiPiece::GetKanjiImageFileName()
 	}
 	switch (_pieceType)
 	{
+	case Gold:
+	case Silver:
+	case Copper:
+	case Iron:
+	case Tile:
+	case Stone:
+	case Earth:
+		return PieceType2Description(_pieceType) + "General" + colour + ".png";
+	case Leopard:
+		return "FerociousLeopard" + colour + ".png";
+	case Tiger:
+		return "BlindTiger" + colour + ".png";
+	case Elephant:
+		return "DrunkElephant" + colour + ".png";
+	case Kylin:
+		return "Kirin" + colour + ".png";
+	case Guardian:
+		return "GuardianGod" + colour + ".png";
+	case Yaksha:
+		return "SheDevil" + colour + ".png";
+	case FreeSerpent:
+		return "FreeSnake" + colour + ".png";
+	case FreeGo:
+		return "FreeGoBetween" + colour + ".png";
 	default:
-		return DaiShogiPiece::GetKanjiImageFileName();
+		std::string desc = PieceType2Description(_pieceType);
+		replaceSubstring(desc, " ", "");
+		return desc + colour + ".png";
 	}
 }
