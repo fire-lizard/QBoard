@@ -22,7 +22,7 @@ private:
 	{ReverseChariot, None, CatSword, None, ChineseCock, None, CoiledSerpent, Leopard, Tiger, Elephant, Tiger, Leopard, CoiledSerpent, None, ChineseCock, None, CatSword, None, ReverseChariot},
 	{None, OldRat, None, AngryBoar, None, BlindBear, None, EvilWolf, Kylin, Lion, Phoenix, EvilWolf, None, BlindBear, None, AngryBoar, None, OldRat, None},
 	{Donkey, None, Knight, None, ViolentOx, None, FlyingDragon, BuddhistSpirit, Wrestler, LionDog, Guardian, Yaksha, FlyingDragon, None, ViolentOx, None, Knight, None, Donkey},
-	{Rook, LeftChariot, SideMover, SideFlier, VerticalMover, Bishop, DragonHorse, DragonKing, Capricorn, King, HookMover, DragonKing, DragonHorse, Bishop, VerticalMover, SideFlier, SideMover, RightChariot, Rook},
+	{Rook, RightChariot, SideMover, SideFlier, VerticalMover, Bishop, DragonHorse, DragonKing, Capricorn, King, HookMover, DragonKing, DragonHorse, Bishop, VerticalMover, SideFlier, SideMover, LeftChariot, Rook},
 	{Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn},
 	{None, None, None, None, None, GoBetween, None, None, None, None, None, None, None, GoBetween, None, None, None, None, None},
 	{None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None},
@@ -39,4 +39,3 @@ private:
 	{Lance, Earth, Stone, Tile, Iron, Copper, Silver, Gold, Deva, King, DarkSpirit, Gold, Silver, Copper, Iron, Tile, Stone, Earth, Lance}
 	};
 };
-

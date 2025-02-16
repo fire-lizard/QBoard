@@ -56,17 +56,18 @@ enum PieceType
 	PrancingStag = 93, RacingChariot = 94, RushingBird = 95, SavageTiger = 96, Yaksha = 97, SquareMover = 98, StandardBearer = 99,
 	ViolentBear = 100, WhiteElephant = 101, WhiteTiger = 102, Wood = 103, FlyingHorse = 104,
 	// Maka Dai Dai Shogi Pieces
-	GreatDragon = 105, MountainWitch = 106, WizardStork = 107, LionDog = 108, Deva = 109, DarkSpirit = 110, Tile = 111, Earth = 112, CoiledSerpent = 113,
-	RecliningDragon = 114, ChineseCock = 115, OldMonkey = 116, BlindBear = 117, Wrestler = 118, Guardian = 119, BuddhistSpirit = 120,
-	OldRat = 121, Donkey = 122, Capricorn = 123, HookMover = 124, SideFlier = 125, LeftChariot = 126, RightChariot = 127, Emperor = 128,
-	TeachingKing = 129, FreeGold = 130, FreeSilver = 131, FreeCopper = 132, FreeIron = 133, FreeTile = 134, FreeStone = 135, FreeEarth = 136,
-	FreeGo = 137, FreeTiger = 138, FreeLeopard = 139, FreeSerpent = 140, FreeDragon = 141, FreeWolf = 142, FreeCat = 143, FreeBear = 144, Bat = 145,
+	GreatDragon = 105, MountainWitch = 106, WizardStork = 107, LionDog = 108, Deva = 109, DarkSpirit = 110, Tile = 111, Earth = 112,
+	CoiledSerpent = 113, RecliningDragon = 114, ChineseCock = 115, OldMonkey = 116, BlindBear = 117, Wrestler = 118, Guardian = 119,
+	BuddhistSpirit = 120, OldRat = 121, Donkey = 122, Capricorn = 123, HookMover = 124, SideFlier = 125, LeftChariot = 126, RightChariot = 127,
+	Emperor = 128, TeachingKing = 129, FreeGold = 130, FreeSilver = 131, FreeCopper = 132, FreeIron = 133, FreeTile = 134, FreeStone = 135,
+	FreeEarth = 136, FreeGo = 137, FreeTiger = 138, FreeLeopard = 139, FreeSerpent = 140, FreeDragon = 141, FreeWolf = 142, FreeCat = 143,
+	FreeBear = 144, Bat = 145,
 	// Ko Shogi Pieces
 	MiddleTroop = 146, Drum = 147, Thunderclap = 148, Banner = 149, FlagWaver = 150, VillageBrigade = 151, ViceCommander = 152, PoisonFlame = 153,
-	SumoWrestler = 154, DoubleKylin = 155, DoublePhoenix = 156, TaoistPriest = 157, SpiritualMonk = 158, FiveLiFog = 159, ImmaculateLight = 160,
-	AdvanceGuard = 161, RearGuard = 162, SkywardNet = 163, EarthwardNet = 164, DragonAscending = 165, Quartermaster = 166, TigerWing = 167,
-	WarHawk = 168, Longbow = 169, LongbowCavalryman = 170, Crossbow = 171, CrossbowCavalryman = 172, Cannon = 173, GunCarriage = 174,
-	FrankishCannon = 175, ChariotOfTheGods = 176, Cavalry = 177, WingedHorse = 178, ShieldUnit = 179, Chariot = 180, Vanguard = 181
+	DoubleKylin = 154, DoublePhoenix = 155, TaoistPriest = 156, SpiritualMonk = 157, FiveLiFog = 158, ImmaculateLight = 159,
+	AdvanceGuard = 160, RearGuard = 161, SkywardNet = 162, EarthwardNet = 163, DragonAscending = 164, Quartermaster = 165, TigerWing = 166,
+	WarHawk = 167, Longbow = 168, LongbowCavalryman = 169, Crossbow = 170, CrossbowCavalryman = 171, Cannon = 172, GunCarriage = 173,
+	FrankishCannon = 174, ChariotOfTheGods = 175, Cavalry = 176, WingedHorse = 177, ShieldUnit = 178, Chariot = 179, Vanguard = 180
 };
 
 enum Direction
@@ -76,7 +77,7 @@ enum Direction
 
 inline PieceType KoShogiPieces[] = { King, Prince, Queen, Rook, Bishop, Gold, Silver, Copper, FlyingOx, FreeBoar, VerticalMover, DragonHorse, DragonKing,
 									 CatSword, Leopard, FlyingStag, Tiger, Elephant, Phoenix, Kylin, Knight, MiddleTroop, Drum, Thunderclap, Banner, FlagWaver,
-									 VillageBrigade, ViceCommander, PoisonFlame, SumoWrestler, DoubleKylin, DoublePhoenix, TaoistPriest, SpiritualMonk,
+									 VillageBrigade, ViceCommander, PoisonFlame, Wrestler, DoubleKylin, DoublePhoenix, TaoistPriest, SpiritualMonk,
 									 FiveLiFog, ImmaculateLight, AdvanceGuard, RearGuard, SkywardNet, EarthwardNet, DragonAscending, Quartermaster, TigerWing,
 									 WarHawk, Longbow, LongbowCavalryman, Crossbow, CrossbowCavalryman, Cannon, GunCarriage, FrankishCannon, ChariotOfTheGods,
 									 Cavalry, WingedHorse, ShieldUnit, Chariot, Vanguard };

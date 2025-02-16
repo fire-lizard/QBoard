@@ -93,6 +93,12 @@ void DaiDaiShogiPiece::Promote(PieceType pieceType)
 	case Leopard:
 	case EvilWolf:
 	case SavageTiger:
+	case Bishop:
+	case Rook:
+	case RacingChariot:
+	case Yaksha:
+	case HookMover:
+	case King:
 	case Gold:
 	case Silver:
 	case Copper:
@@ -144,6 +150,14 @@ std::string DaiDaiShogiPiece::GetKanjiImageFileName()
 	}
 	switch (_pieceType)
 	{
+	case Tengu:
+		return "LongNosedGoblin" + colour + ".png";
+	case RacingChariot:
+		return "SideChariot" + colour + ".png";
+	case NeighboringKing:
+		return "NeighborKing" + colour + ".png";
+	case Wood:
+		return "WoodGeneral" + colour + ".png";
 	default:
 		return MakaDaiDaiShogiPiece::GetKanjiImageFileName();
 	}
