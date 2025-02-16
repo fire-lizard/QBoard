@@ -93,6 +93,13 @@ void VBoard::paintEvent(QPaintEvent *)
 							painter.setBrush(Qt::NoBrush);
 						}
 					}
+					// Lion move highlighting
+					else if (_lionFirstMove.first == i && _lionFirstMove.second == j)
+					{
+						painter.setBrush(QColorConstants::Svg::lightyellow);
+						painter.drawRect(rect);
+						painter.setBrush(Qt::NoBrush);
+					}
 					else if (i == _oldX && j == _oldY)
 					{
 						if (_board->GetData(i, j) != nullptr)
@@ -124,7 +131,7 @@ void VBoard::paintEvent(QPaintEvent *)
 						}
 					}
 				}
-				if (_currentPiece != nullptr && _currentPiece->GetType() == HeavenlyTetrarch &&
+				else if (_currentPiece != nullptr && _currentPiece->GetType() == HeavenlyTetrarch &&
 					abs(_oldX - i) + abs(_oldY - j) >= 1 && abs(_oldX - i) + abs(_oldY - j) <= 2)
 				{
 					if (_board->GetData(i, j) != nullptr)
@@ -413,6 +420,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 				EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
 				_lionMovedOnce = false;
+				_lionFirstMove.first = -1;
+				_lionFirstMove.second = -1;
 				FinishMove();
 			}
 		}
@@ -575,6 +584,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				EngineOutputHandler::AddMove(_board, _gameVariant, promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None ? 'x' : ' ');
 			}
 			_lionMovedOnce = false;
+			_lionFirstMove.first = -1;
+			_lionFirstMove.second = -1;
 			FinishMove();
 		}
 	}
@@ -588,6 +599,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
 			_lionMovedOnce = false;
+			_lionFirstMove.first = -1;
+			_lionFirstMove.second = -1;
 			FinishMove();
 		}
 	}
@@ -599,6 +612,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		_board->GetMoves(p, x, y);
 		_moves = _board->Moves();
 		_lionMovedOnce = false;
+		_lionFirstMove.first = -1;
+		_lionFirstMove.second = -1;
 		if (std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) == std::end(_shogiVariants))
 		{
 			for (int index = 0; index < 4; index++)

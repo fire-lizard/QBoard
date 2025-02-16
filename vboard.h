@@ -97,7 +97,7 @@ private:
 	PieceType _chosenPiece = None;
 	bool _editorMode = false;
 	bool _lionMovedOnce = false;
-	std::pair<int, int> _lionFirstMove;
+	std::pair<int, int> _lionFirstMove = {-1, -1};
 
 signals:
 

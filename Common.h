@@ -60,14 +60,13 @@ enum PieceType
 	RecliningDragon = 114, ChineseCock = 115, OldMonkey = 116, BlindBear = 117, Wrestler = 118, Guardian = 119, BuddhistDevil = 120,
 	OldRat = 121, Donkey = 122, Capricorn = 123, HookMover = 124, SideFlier = 125, LeftChariot = 126, RightChariot = 127, Emperor = 128,
 	TeachingKing = 129, FreeGold = 130, FreeSilver = 131, FreeCopper = 132, FreeIron = 133, FreeTile = 134, FreeStone = 135, FreeEarth = 136,
-	FreeTiger = 137, FreeLeopard = 138, FreeSerpent = 139, FreeDragon = 140, FreeWolf = 141, FreeCat = 142, FreeBear = 143, Bat = 144,
+	FreeGo = 137, FreeTiger = 138, FreeLeopard = 139, FreeSerpent = 140, FreeDragon = 141, FreeWolf = 142, FreeCat = 143, FreeBear = 144, Bat = 145,
 	// Ko Shogi Pieces
-	MiddleTroop = 145, Drum = 146, Thunderclap = 147, Banner = 148, FlagWaver = 149, VillageBrigade = 150,
-	ViceCommander = 151, PoisonFlame = 152, SumoWrestler = 153, DoubleKylin = 154, DoublePhoenix = 155, TaoistPriest = 156, SpiritualMonk = 157,
-	FiveLiFog = 158, ImmaculateLight = 159, AdvanceGuard = 160, RearGuard = 161, SkywardNet = 162, EarthwardNet = 163, DragonAscending = 164,
-	Quartermaster = 165, TigerWing = 166, WarHawk = 167, Longbow = 168, LongbowCavalryman = 169, Crossbow = 170, CrossbowCavalryman = 171,
-	Cannon = 172, GunCarriage = 173, FrankishCannon = 174, ChariotOfTheGods = 175, Cavalry = 176, WingedHorse = 177, ShieldUnit = 178,
-	Chariot = 179, Vanguard = 180
+	MiddleTroop = 146, Drum = 147, Thunderclap = 148, Banner = 149, FlagWaver = 150, VillageBrigade = 151, ViceCommander = 152, PoisonFlame = 153,
+	SumoWrestler = 154, DoubleKylin = 155, DoublePhoenix = 156, TaoistPriest = 157, SpiritualMonk = 158, FiveLiFog = 159, ImmaculateLight = 160,
+	AdvanceGuard = 161, RearGuard = 162, SkywardNet = 163, EarthwardNet = 164, DragonAscending = 165, Quartermaster = 166, TigerWing = 167,
+	WarHawk = 168, Longbow = 169, LongbowCavalryman = 170, Crossbow = 171, CrossbowCavalryman = 172, Cannon = 173, GunCarriage = 174,
+	FrankishCannon = 175, ChariotOfTheGods = 176, Cavalry = 177, WingedHorse = 178, ShieldUnit = 179, Chariot = 180, Vanguard = 181
 };
 
 enum Direction
