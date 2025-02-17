@@ -63,11 +63,11 @@ enum PieceType
 	FreeEarth = 136, FreeGo = 137, FreeTiger = 138, FreeLeopard = 139, FreeSerpent = 140, FreeDragon = 141, FreeWolf = 142, FreeCat = 143,
 	FreeBear = 144, Bat = 145,
 	// Ko Shogi Pieces
-	MiddleTroop = 146, Drum = 147, Thunderclap = 148, Banner = 149, FlagWaver = 150, VillageBrigade = 151, ViceCommander = 152, PoisonFlame = 153,
-	DoubleKylin = 154, DoublePhoenix = 155, TaoistPriest = 156, SpiritualMonk = 157, FiveLiFog = 158, ImmaculateLight = 159,
-	AdvanceGuard = 160, RearGuard = 161, SkywardNet = 162, EarthwardNet = 163, DragonAscending = 164, Quartermaster = 165, TigerWing = 166,
-	WarHawk = 167, Longbow = 168, LongbowCavalryman = 169, Crossbow = 170, CrossbowCavalryman = 171, Cannon = 172, GunCarriage = 173,
-	FrankishCannon = 174, ChariotOfTheGods = 175, Cavalry = 176, WingedHorse = 177, ShieldUnit = 178, Chariot = 179, Vanguard = 180
+	MiddleTroop = 146, Drum = 147, Thunderclap = 148, Flag = 149, RoamingAssault = 150, CompanyCommander = 151, ViceCommissioner = 152, PoisonFlame = 153,
+	DoubleKylin = 154, DoublePhoenix = 155, TaoistPriest = 156, SpiritualMonk = 157, ExtensiveFog = 158, HolyLight = 159,
+	AdvanceGuard = 160, RearGuard = 161, SkywardNet = 162, EarthwardNet = 163, RisingDragon = 164, Quartermaster = 165, WingedTiger = 166,
+	FlyingHawk = 167, Longbow = 168, LongbowKnight = 169, Crossbow = 170, CrossbowKnight = 171, Cannon = 172, CannonCarriage = 173,
+	FrankishCannon = 174, DivineCarriage = 175, KnightCaptain = 176, WingedHorse = 177, ShieldCaptain = 178, Chariot = 179, Vanguard = 180
 };
 
 enum Direction
@@ -76,11 +76,11 @@ enum Direction
 };
 
 inline PieceType KoShogiPieces[] = { King, Prince, Queen, Rook, Bishop, Gold, Silver, Copper, FlyingOx, FreeBoar, VerticalMover, DragonHorse, DragonKing,
-									 CatSword, Leopard, FlyingStag, Tiger, Elephant, Phoenix, Kylin, Knight, MiddleTroop, Drum, Thunderclap, Banner, FlagWaver,
-									 VillageBrigade, ViceCommander, PoisonFlame, Wrestler, DoubleKylin, DoublePhoenix, TaoistPriest, SpiritualMonk,
-									 FiveLiFog, ImmaculateLight, AdvanceGuard, RearGuard, SkywardNet, EarthwardNet, DragonAscending, Quartermaster, TigerWing,
-									 WarHawk, Longbow, LongbowCavalryman, Crossbow, CrossbowCavalryman, Cannon, GunCarriage, FrankishCannon, ChariotOfTheGods,
-									 Cavalry, WingedHorse, ShieldUnit, Chariot, Vanguard };
+									 CatSword, Leopard, FlyingStag, Tiger, Elephant, Phoenix, Kylin, Knight, MiddleTroop, Drum, Thunderclap, Flag, RoamingAssault,
+									 CompanyCommander, ViceCommissioner, PoisonFlame, Wrestler, DoubleKylin, DoublePhoenix, TaoistPriest, SpiritualMonk,
+									 ExtensiveFog, HolyLight, AdvanceGuard, RearGuard, SkywardNet, EarthwardNet, RisingDragon, Quartermaster, WingedTiger,
+									 FlyingHawk, Longbow, LongbowKnight, Crossbow, CrossbowKnight, Cannon, CannonCarriage, FrankishCannon, DivineCarriage,
+									 KnightCaptain, WingedHorse, ShieldCaptain, Chariot, Vanguard };
 
 inline PieceType MakaDaiDaiShogiPieces[] = { King, Gold, Silver, Copper, Iron, Tile, Stone, Earth, Elephant, Prince, Tiger, Leopard, CatSword, Lion,
 											 Phoenix, Kylin, EvilWolf, AngryBoar, Queen, DragonHorse, DragonKing, Lance, ReverseChariot, FlyingDragon, ViolentOx,

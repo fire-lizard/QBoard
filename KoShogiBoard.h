@@ -19,11 +19,11 @@ private:
 
 	PieceType _initialSetup[19][19] = {
 	{AdvanceGuard, TaoistPriest, Copper, Leopard, Silver, Gold, Wrestler, Elephant, Phoenix, King, Kylin, Elephant, Wrestler, Gold, Silver, Leopard, Copper, SpiritualMonk, AdvanceGuard},
-	{RearGuard, DragonHorse, None, DragonKing, None, Queen, None, Tiger, Banner, MiddleTroop, Drum, Tiger, None, Queen, None, DragonKing, None, DragonHorse, RearGuard},
+	{RearGuard, DragonHorse, None, DragonKing, None, Queen, None, Tiger, Flag, MiddleTroop, Drum, Tiger, None, Queen, None, DragonKing, None, DragonHorse, RearGuard},
 	{Bishop, Cannon, Crossbow, Longbow, Bishop, Cannon, Crossbow, Longbow, Bishop, FrankishCannon, Bishop, Longbow, Crossbow, Cannon, Bishop, Longbow, Crossbow, Cannon, Bishop},
-	{Cavalry, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Cavalry},
+	{KnightCaptain, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, KnightCaptain},
 	{None, VerticalMover, None, Pawn, None, Pawn, None, Pawn, None, VerticalMover, None, Pawn, None, Pawn, None, Pawn, None, VerticalMover, None},
-	{Rook, ShieldUnit, Chariot, CatSword, Chariot, CatSword, Chariot, CatSword, Chariot, ShieldUnit, Chariot, CatSword, Chariot, CatSword, Chariot, CatSword, Chariot, ShieldUnit, Rook},
+	{Rook, ShieldCaptain, Chariot, CatSword, Chariot, CatSword, Chariot, CatSword, Chariot, ShieldCaptain, Chariot, CatSword, Chariot, CatSword, Chariot, CatSword, Chariot, ShieldCaptain, Rook},
 	{None, None, None, None, None, None, None, None, None, Vanguard, None, None, None, None, None, None, None, None, None},
 	{None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None},
 	{None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None},
@@ -31,11 +31,11 @@ private:
 	{None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None},
 	{None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None},
 	{None, None, None, None, None, None, None, None, None, Vanguard, None, None, None, None, None, None, None, None, None},
-	{Rook, ShieldUnit, Chariot, CatSword, Chariot, CatSword, Chariot, CatSword, Chariot, ShieldUnit, Chariot, CatSword, Chariot, CatSword, Chariot, CatSword, Chariot, ShieldUnit, Rook},
+	{Rook, ShieldCaptain, Chariot, CatSword, Chariot, CatSword, Chariot, CatSword, Chariot, ShieldCaptain, Chariot, CatSword, Chariot, CatSword, Chariot, CatSword, Chariot, ShieldCaptain, Rook},
 	{None, VerticalMover, None, Pawn, None, Pawn, None, Pawn, None, VerticalMover, None, Pawn, None, Pawn, None, Pawn, None, VerticalMover, None},
-	{Cavalry, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Cavalry},
+	{KnightCaptain, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, KnightCaptain},
 	{Bishop, Cannon, Crossbow, Longbow, Bishop, Cannon, Crossbow, Longbow, Bishop, FrankishCannon, Bishop, Longbow, Crossbow, Cannon, Bishop, Longbow, Crossbow, Cannon, Bishop},
-	{RearGuard, DragonHorse, None, DragonKing, None, Queen, None, Tiger, Drum, MiddleTroop, Banner, Tiger, None, Queen, None, DragonKing, None, DragonHorse, RearGuard},
+	{RearGuard, DragonHorse, None, DragonKing, None, Queen, None, Tiger, Drum, MiddleTroop, Flag, Tiger, None, Queen, None, DragonKing, None, DragonHorse, RearGuard},
 	{AdvanceGuard, SpiritualMonk, Copper, Leopard, Silver, Gold, Wrestler, Elephant, Kylin, King, Phoenix, Elephant, Wrestler, Gold, Silver, Leopard, Copper, TaoistPriest, AdvanceGuard},
 	};
 };

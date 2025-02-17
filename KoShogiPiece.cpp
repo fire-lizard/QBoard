@@ -26,19 +26,19 @@ void KoShogiPiece::Promote(PieceType pieceType)
 		_pieceType = FlyingStag;
 		break;
 	case Silver:
-		_pieceType = VillageBrigade;
+		_pieceType = CompanyCommander;
 		break;
 	case Leopard:
-		_pieceType = ViceCommander;
+		_pieceType = ViceCommissioner;
 		break;
 	case Copper:
 		_pieceType = PoisonFlame;
 		break;
 	case TaoistPriest:
-		_pieceType = FiveLiFog;
+		_pieceType = ExtensiveFog;
 		break;
 	case SpiritualMonk:
-		_pieceType = ImmaculateLight;
+		_pieceType = HolyLight;
 		break;
 	case AdvanceGuard:
 		_pieceType = SkywardNet;
@@ -49,46 +49,46 @@ void KoShogiPiece::Promote(PieceType pieceType)
 	case Drum:
 		_pieceType = Thunderclap;
 		break;
-	case Banner:
-		_pieceType = FlagWaver;
+	case Flag:
+		_pieceType = RoamingAssault;
 		break;
 	case Tiger:
 		_pieceType = DragonHorse;
 		break;
 	case Queen:
-		_pieceType = DragonAscending;
+		_pieceType = RisingDragon;
 		break;
 	case DragonKing:
-		_pieceType = TigerWing;
+		_pieceType = WingedTiger;
 		break;
 	case DragonHorse:
-		_pieceType = WarHawk;
+		_pieceType = FlyingHawk;
 		break;
 	case RearGuard:
 		_pieceType = EarthwardNet;
 		break;
 	case FrankishCannon:
-		_pieceType = ChariotOfTheGods;
+		_pieceType = DivineCarriage;
 		break;
 	case Longbow:
-		_pieceType = LongbowCavalryman;
+		_pieceType = LongbowKnight;
 		break;
 	case Crossbow:
-		_pieceType = CrossbowCavalryman;
+		_pieceType = CrossbowKnight;
 		break;
 	case Cannon:
-		_pieceType = GunCarriage;
+		_pieceType = CannonCarriage;
 		break;
 	case Knight:
-		_pieceType = Cavalry;
+		_pieceType = KnightCaptain;
 		break;
 	case Pawn:
 		_pieceType = VerticalMover;
 		break;
 	case CatSword:
-		_pieceType = ShieldUnit;
+		_pieceType = ShieldCaptain;
 		break;
-	case ShieldUnit:
+	case ShieldCaptain:
 		_pieceType = FreeBoar;
 		break;
 	case Chariot:
@@ -148,22 +148,16 @@ std::string KoShogiPiece::GetKanjiImageFileName()
 	{
 	case Rook:
 		return "ChariotCaptain" + colour + ".png";
-	case ShieldUnit:
-		return "ShieldCaptain" + colour + ".png";
 	case VerticalMover:
 		return "PawnCaptain" + colour + ".png";
 	case Knight:
 		return "Knight" + colour + ".png";
-	case Cavalry:
-		return "KnightCaptain" + colour + ".png";
 	case FrankishCannon:
 		return "EuropeanCannon" + colour + ".png";
 	case Copper:
 		return "MilitaryEngineer" + colour + ".png";
 	case Queen:
 		return "Chiliarch" + colour + ".png";
-	case Banner:
-		return "Flag" + colour + ".png";
 	case Leopard:
 		return "MilitaryOfficer" + colour + ".png";
 	case DragonKing:
@@ -174,14 +168,6 @@ std::string KoShogiPiece::GetKanjiImageFileName()
 		return "SkyNet" + colour + ".png";
 	case EarthwardNet:
 		return "EarthNet" + colour + ".png";
-	case ImmaculateLight:
-		return "HolyLight" + colour + ".png";
-	case FiveLiFog:
-		return "ExtensiveFog" + colour + ".png";
-	case ViceCommander:
-		return "ViceCommissioner" + colour + ".png";
-	case VillageBrigade:
-		return "CompanyCommander" + colour + ".png";
 	case FlyingStag:
 		return "BattalionCommander" + colour + ".png";
 	case DoubleKylin:
@@ -192,24 +178,8 @@ std::string KoShogiPiece::GetKanjiImageFileName()
 		return "MilitaryCommissioner" + colour + ".png";
 	case FreeBoar:
 		return "ImperialBase" + colour + ".png";
-	case WarHawk:
-		return "FlyingHawk" + colour + ".png";
-	case TigerWing:
-		return "WingedTiger" + colour + ".png";
-	case DragonAscending:
-		return "RisingDragon" + colour + ".png";
 	case Prince:
 		return "Marshal" + colour + ".png";
-	case FlagWaver:
-		return "RoamingAssault" + colour + ".png";
-	case GunCarriage:
-		return "CannonCarriage" + colour + ".png";
-	case CrossbowCavalryman:
-		return "CrossbowKnight" + colour + ".png";
-	case LongbowCavalryman:
-		return "LongbowKnight" + colour + ".png";
-	case ChariotOfTheGods:
-		return "DivineCarriage" + colour + ".png";
 	default:
 		std::string desc = PieceType2Description(_pieceType);
 		replaceSubstring(desc, " ", "");
@@ -246,37 +216,37 @@ std::string KoShogiPiece::PieceType2Description(PieceType pieceType)
 	case MiddleTroop:          return "Middle Troop";
 	case Drum:                 return "Drum";
 	case Thunderclap:          return "Thunderclap";
-	case Banner:               return "Banner";
-	case FlagWaver:            return "Flag Waver";
-	case VillageBrigade:       return "Village Brigade";
-	case ViceCommander:        return "Vice Commander";
+	case Flag:               return "Flag";
+	case RoamingAssault:            return "Roaming Assault";
+	case CompanyCommander:       return "Company Commander";
+	case ViceCommissioner:        return "Vice Commissioner";
 	case PoisonFlame:          return "Poison Flame";
 	case Wrestler:             return "Wrestler";
 	case DoubleKylin:          return "Master at Arms";
-	case DoublePhoenix:        return "Banner and Drum";
+	case DoublePhoenix:        return "Flag and Drum";
 	case TaoistPriest:         return "Taoist Priest";
 	case SpiritualMonk:        return "Spiritual Monk";
-	case FiveLiFog:            return "Five Li Fog";
-	case ImmaculateLight:      return "Immaculate Light";
+	case ExtensiveFog:            return "Extensive Fog";
+	case HolyLight:      return "Holy Light";
 	case AdvanceGuard:         return "Advance Guard";
 	case RearGuard:            return "Rear Guard";
 	case SkywardNet:           return "Skyward Net";
 	case EarthwardNet:         return "Earthward Net";
-	case DragonAscending:      return "Dragon Ascending";
+	case RisingDragon:      return "Rising Dragon";
 	case Quartermaster:        return "Quartermaster";
-	case TigerWing:            return "Tiger Wing";
-	case WarHawk:              return "War Hawk";
+	case WingedTiger:            return "Winged Tiger";
+	case FlyingHawk:              return "Flying Hawk";
 	case Longbow:              return "Longbow";
-	case LongbowCavalryman:    return "Longbow Cavalryman";
+	case LongbowKnight:    return "Longbow Knight";
 	case Crossbow:             return "Crossbow";
-	case CrossbowCavalryman:   return "Crossbow Cavalryman";
+	case CrossbowKnight:   return "Crossbow Knight";
 	case Cannon:               return "Cannon";
-	case GunCarriage:          return "Gun Carriage";
+	case CannonCarriage:          return "Cannon Carriage";
 	case FrankishCannon:       return "Frankish Cannon";
-	case ChariotOfTheGods:     return "Chariot of the Gods";
-	case Cavalry:              return "Cavalry";
+	case DivineCarriage:     return "Divine Carriage";
+	case KnightCaptain:              return "Knight Captain";
 	case WingedHorse:          return "Winged Horse";
-	case ShieldUnit:           return "Shield Unit";
+	case ShieldCaptain:           return "Shield Captain";
 	case Chariot:              return "Chariot";
 	case Vanguard:             return "Vanguard";
 	default: return "";
@@ -310,37 +280,37 @@ PieceType KoShogiPiece::Description2PieceType(const std::string& description)
 	if (description == "Middle Troop")        return MiddleTroop;
 	if (description == "Drum")               return Drum;
 	if (description == "Thunderclap")        return Thunderclap;
-	if (description == "Banner")             return Banner;
-	if (description == "Flag Waver")          return FlagWaver;
-	if (description == "Village Brigade")     return VillageBrigade;
-	if (description == "Vice Commander")      return ViceCommander;
+	if (description == "Flag")             return Flag;
+	if (description == "Roaming Assault")          return RoamingAssault;
+	if (description == "Company Commander")     return CompanyCommander;
+	if (description == "Vice Commissioner")      return ViceCommissioner;
 	if (description == "Poison Flame")        return PoisonFlame;
 	if (description == "Wrestler")			  return Wrestler;
 	if (description == "Master at Arms")        return DoubleKylin;
-	if (description == "Banner and Drum")      return DoublePhoenix;
+	if (description == "Flag and Drum")      return DoublePhoenix;
 	if (description == "Taoist Priest")       return TaoistPriest;
 	if (description == "Spiritual Monk")      return SpiritualMonk;
-	if (description == "Five Li Fog")          return FiveLiFog;
-	if (description == "Immaculate Light")    return ImmaculateLight;
+	if (description == "Extensive Fog")          return ExtensiveFog;
+	if (description == "Holy Light")    return HolyLight;
 	if (description == "Advance Guard")       return AdvanceGuard;
 	if (description == "Rear Guard")          return RearGuard;
 	if (description == "Skyward Net")         return SkywardNet;
 	if (description == "Earthward Net")       return EarthwardNet;
-	if (description == "Dragon Ascending")    return DragonAscending;
+	if (description == "Rising Dragon")    return RisingDragon;
 	if (description == "Quartermaster")      return Quartermaster;
-	if (description == "Tiger Wing")          return TigerWing;
-	if (description == "War Hawk")            return WarHawk;
+	if (description == "Winged Tiger")          return WingedTiger;
+	if (description == "Flying Hawk")            return FlyingHawk;
 	if (description == "Longbow")            return Longbow;
-	if (description == "Longbow Cavalryman")  return LongbowCavalryman;
+	if (description == "Longbow Knight")  return LongbowKnight;
 	if (description == "Crossbow")           return Crossbow;
-	if (description == "Crossbow Cavalryman") return CrossbowCavalryman;
+	if (description == "Crossbow Knight") return CrossbowKnight;
 	if (description == "Cannon")             return Cannon;
-	if (description == "Gun Carriage")        return GunCarriage;
+	if (description == "Cannon Carriage")        return CannonCarriage;
 	if (description == "Frankish Cannon")     return FrankishCannon;
-	if (description == "Chariot of the Gods")   return ChariotOfTheGods;
-	if (description == "Cavalry")            return Cavalry;
+	if (description == "Divine Carriage")   return DivineCarriage;
+	if (description == "Knight Captain")            return KnightCaptain;
 	if (description == "Winged Horse")        return WingedHorse;
-	if (description == "Shield Unit")         return ShieldUnit;
+	if (description == "Shield Captain")         return ShieldCaptain;
 	if (description == "Chariot")            return Chariot;
 	if (description == "Vanguard")           return Vanguard;
 
