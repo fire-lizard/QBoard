@@ -13,6 +13,97 @@ void KoShogiPiece::Promote(PieceType pieceType)
 	_isPromoted = true;
 	switch (_pieceType)
 	{
+	case Kylin:
+		_pieceType = DoubleKylin;
+		break;
+	case Phoenix:
+		_pieceType = DoublePhoenix;
+		break;
+	case Elephant:
+		_pieceType = DragonKing;
+		break;
+	case Gold:
+		_pieceType = FlyingStag;
+		break;
+	case Silver:
+		_pieceType = VillageBrigade;
+		break;
+	case Leopard:
+		_pieceType = ViceCommander;
+		break;
+	case Copper:
+		_pieceType = PoisonFlame;
+		break;
+	case TaoistPriest:
+		_pieceType = FiveLiFog;
+		break;
+	case SpiritualMonk:
+		_pieceType = ImmaculateLight;
+		break;
+	case AdvanceGuard:
+		_pieceType = SkywardNet;
+		break;
+	case MiddleTroop:
+		_pieceType = Prince;
+		break;
+	case Drum:
+		_pieceType = Thunderclap;
+		break;
+	case Banner:
+		_pieceType = FlagWaver;
+		break;
+	case Tiger:
+		_pieceType = DragonHorse;
+		break;
+	case Queen:
+		_pieceType = DragonAscending;
+		break;
+	case DragonKing:
+		_pieceType = TigerWing;
+		break;
+	case DragonHorse:
+		_pieceType = WarHawk;
+		break;
+	case RearGuard:
+		_pieceType = EarthwardNet;
+		break;
+	case FrankishCannon:
+		_pieceType = ChariotOfTheGods;
+		break;
+	case Longbow:
+		_pieceType = LongbowCavalryman;
+		break;
+	case Crossbow:
+		_pieceType = CrossbowCavalryman;
+		break;
+	case Cannon:
+		_pieceType = GunCarriage;
+		break;
+	case Knight:
+		_pieceType = Cavalry;
+		break;
+	case Pawn:
+		_pieceType = VerticalMover;
+		break;
+	case CatSword:
+		_pieceType = ShieldUnit;
+		break;
+	case ShieldUnit:
+		_pieceType = FreeBoar;
+		break;
+	case Chariot:
+		_pieceType = Rook;
+		break;
+	case Rook:
+		_pieceType = Queen;
+		break;
+	case VerticalMover:
+	case Vanguard:
+		_pieceType = FlyingOx;
+		break;
+	case Wrestler:
+		_isPromoted = false;
+		break;
 	default:
 		DaiShogiPiece::Promote(pieceType);
 		break;
@@ -79,6 +170,46 @@ std::string KoShogiPiece::GetKanjiImageFileName()
 		return "Optio" + colour + ".png";
 	case Elephant:
 		return "Guard" + colour + ".png";
+	case SkywardNet:
+		return "SkyNet" + colour + ".png";
+	case EarthwardNet:
+		return "EarthNet" + colour + ".png";
+	case ImmaculateLight:
+		return "HolyLight" + colour + ".png";
+	case FiveLiFog:
+		return "ExtensiveFog" + colour + ".png";
+	case ViceCommander:
+		return "ViceCommissioner" + colour + ".png";
+	case VillageBrigade:
+		return "CompanyCommander" + colour + ".png";
+	case FlyingStag:
+		return "BattalionCommander" + colour + ".png";
+	case DoubleKylin:
+		return "Strategist" + colour + ".png";
+	case DoublePhoenix:
+		return "Flag-Drum" + colour + ".png";
+	case FlyingOx:
+		return "MilitaryCommissioner" + colour + ".png";
+	case FreeBoar:
+		return "ImperialBase" + colour + ".png";
+	case WarHawk:
+		return "FlyingHawk" + colour + ".png";
+	case TigerWing:
+		return "WingedTiger" + colour + ".png";
+	case DragonAscending:
+		return "RisingDragon" + colour + ".png";
+	case Prince:
+		return "Marshal" + colour + ".png";
+	case FlagWaver:
+		return "RoamingAssault" + colour + ".png";
+	case GunCarriage:
+		return "CannonCarriage" + colour + ".png";
+	case CrossbowCavalryman:
+		return "CrossbowKnight" + colour + ".png";
+	case LongbowCavalryman:
+		return "LongbowKnight" + colour + ".png";
+	case ChariotOfTheGods:
+		return "DivineCarriage" + colour + ".png";
 	default:
 		std::string desc = PieceType2Description(_pieceType);
 		replaceSubstring(desc, " ", "");

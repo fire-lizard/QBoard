@@ -93,7 +93,6 @@ void MainWindow::on_actionAbout_triggered()
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
 	aboutStr.append("Shogi Variants Kanji graphics by Shigeki Watanabe<br/>");
-	aboutStr.append("Ko Shogi Kanji graphics by TKR101010 (from Deviantart)<br/>");
 	aboutStr.append("2025</center>");
 	QMessageBox::about(this, "About", aboutStr);
 }
