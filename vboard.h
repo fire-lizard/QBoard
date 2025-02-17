@@ -91,11 +91,11 @@ private:
 	GameVariant _shogiVariants[12] = { Shogi, MiniShogi, JudkinShogi, ChuShogi, DaiShogi, ShoShogi, WaShogi,
 									   CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi };
 	PieceType _lionPieces[4] = { Lion, Eagle, Unicorn, LionHawk };
-	PieceType _promotedPieces[61] = { Tokin, Prince, PloddingOx, HeavenlyHorse, RaidingFalcon, BearEyes, TenaciousFalcon, HeavenlyTetrarch,
+	PieceType _promotedPieces[60] = { Tokin, Prince, PloddingOx, HeavenlyHorse, RaidingFalcon, BearEyes, TenaciousFalcon, HeavenlyTetrarch,
 									  WhiteHorse, Whale, MultiGeneral, FreeBoar, FlyingOx, Eagle, Unicorn, FlyingStag, FuriousFiend, GreatElephant,
 									  MountainWitch, WizardStork, Emperor, TeachingKing, BuddhistSpirit, FreeGold, FreeSilver, FreeCopper, FreeIron,
 									  FreeTile, FreeStone, FreeEarth, FreeTiger, FreeLeopard, FreeSerpent, FreeDragon, FreeCat, GreatDragon, GoldenBird,
-									  FreeWolf, FreeBear, FreeBoar, Bat, FreeGo, DoubleKylin, DoublePhoenix, ViceCommissioner, CompanyCommander,
+									  FreeWolf, FreeBear, Bat, FreeGo, DoubleKylin, DoublePhoenix, ViceCommissioner, CompanyCommander,
 									  PoisonFlame, ExtensiveFog, HolyLight, SkywardNet, Thunderclap, RoamingAssault, RisingDragon, WingedTiger,
 									  FlyingHawk, EarthwardNet, DivineCarriage, LongbowKnight, CrossbowKnight, CannonCarriage, KnightCaptain };
 	PieceColour _chosenColour = White;

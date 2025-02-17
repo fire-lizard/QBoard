@@ -136,6 +136,72 @@ std::string DaiDaiShogiPiece::KanjiStringCode()
 {
 	switch (_pieceType)
 	{
+	case Tengu:
+		return "天";
+	case OldKite:
+		return "古";
+	case PoisonousSnake:
+		return "蛇";
+	case GreatElephant:
+		return "大象";
+	case FuriousFiend:
+		return "迅";
+	case WesternBarbarian:
+		return "西";
+	case EasternBarbarian:
+		return "東";
+	case SouthernBarbarian:
+		return "南";
+	case NorthernBarbarian:
+		return "北";
+	case FragrantElephant:
+		return "象";
+	case WhiteElephant:
+		return "白象";
+	case FreeDreamEater:
+		return "獏";
+	case FreeDemon:
+		return "鬼";
+	case WaterBuffalo:
+		return "水";
+	case RushingBird:
+		return "鳥	";
+	case StandardBearer:
+		return "前";
+	case FlyingHorse:
+		return "麟";
+	case NeighboringKing:
+		return "近	";
+	case BlindMonkey:
+		return "猿";
+	case Dove:
+		return "鳩	";
+	case EnchantedBadger:
+		return "狸";
+	case EnchantedFox:
+		return "狐	";
+	case RacingChariot:
+		return "走	";
+	case SquareMover:
+		return "方";
+	case PrancingStag:
+		return "鹿	";
+	case WhiteTiger:
+		return "白虎";
+	case BlueDragon:
+		return "青	";
+	case HowlingDog:
+		return "𠵇";
+	case ViolentBear:
+		return "熊	";
+	case LeftGeneral:
+		return "左将";
+	case RightGeneral:
+		return "右将";
+	case SavageTiger:
+		return "虎";
+	case Wood:
+		return "木";
 	default:
 		return MakaDaiDaiShogiPiece::KanjiStringCode();
 	}

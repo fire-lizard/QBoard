@@ -144,6 +144,88 @@ std::string MakaDaiDaiShogiPiece::KanjiStringCode()
 {
 	switch (_pieceType)
 	{
+	case Emperor:
+		return "天";
+	case Deva:
+		return "提	";
+	case DarkSpirit:
+		return "無";
+	case TeachingKing:
+		return "教";
+	case BuddhistSpirit:
+		return "性";
+	case FreeGold:
+		return "奔金";
+	case FreeSilver:
+		return "奔銀";
+	case FreeCopper:
+		return "奔銅";
+	case FreeIron:
+		return "奔鉄";
+	case FreeTile:
+		return "奔瓦";
+	case FreeStone:
+		return "奔石";
+	case FreeEarth:
+		return "奔土";
+	case FreeGo:
+		return "奔人";
+	case FreeTiger:
+		return "奔虎";
+	case FreeLeopard:
+		return "奔豹";
+	case CoiledSerpent:
+		return "蛇";
+	case RecliningDragon:
+		return "臥";
+	case FreeSerpent:
+		return "奔蛇";
+	case FreeDragon:
+		return "奔龍";
+	case OldMonkey:
+		return "猿";
+	case MountainWitch:
+		return "鶏";
+	case ChineseCock:
+		return "母";
+	case WizardStork:
+		return "仙";
+	case FreeCat:
+		return "奔猫";
+	case FuriousFiend:
+		return "迅";
+	case GoldenBird:
+		return "翅";
+	case GreatDragon:
+		return "大";
+	case FreeWolf:
+		return "奔狼";
+	case FreeBear:
+		return "奔熊 ";
+	case OldRat:
+		return "鼠";
+	case Bat:
+		return "蝠";
+	case LionDog:
+		return "狛 ";
+	case Wrestler:
+		return "力";
+	case Guardian:
+		return "剛";
+	case Yaksha:
+		return "叉";
+	case Donkey:
+		return "驢";
+	case Capricorn:
+		return "摩";
+	case HookMover:
+		return "行";
+	case LeftChariot:
+		return "左";
+	case RightChariot:
+		return "右";
+	case SideFlier:
+		return "横飛";
 	default:
 		return DaiShogiPiece::KanjiStringCode();
 	}
