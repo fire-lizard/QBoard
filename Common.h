@@ -75,7 +75,7 @@ enum Direction
 	NorthWest, North, NorthEast, East, SouthEast, South, SouthWest, West
 };
 
-inline PieceType KoShogiPieces[] = { King, Prince, Queen, Rook, Bishop, Gold, Silver, Copper, FlyingOx, FreeBoar, VerticalMover, DragonHorse, DragonKing,
+inline PieceType KoShogiPieces[] = { King, Prince, Queen, Rook, Bishop, Gold, Silver, Copper, FlyingOx, FreeBoar, VerticalMover, DragonHorse, DragonKing, Pawn,
 									 CatSword, Leopard, FlyingStag, Tiger, Elephant, Phoenix, Kylin, Knight, MiddleTroop, Drum, Thunderclap, Flag, RoamingAssault,
 									 CompanyCommander, ViceCommissioner, PoisonFlame, Wrestler, DoubleKylin, DoublePhoenix, TaoistPriest, SpiritualMonk,
 									 ExtensiveFog, HolyLight, AdvanceGuard, RearGuard, SkywardNet, EarthwardNet, RisingDragon, Quartermaster, WingedTiger,

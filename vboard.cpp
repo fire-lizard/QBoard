@@ -1271,6 +1271,10 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			{
 				_chosenPiece = WaShogiPiece::Description2PieceType(selectedAction->text().toStdString());
 			}
+			else if (_gameVariant == KoShogi)
+			{
+				_chosenPiece = KoShogiPiece::Description2PieceType(selectedAction->text().toStdString());
+			}
 			else
 			{
 				_chosenPiece = Piece::Description2PieceType(selectedAction->text().toStdString());
