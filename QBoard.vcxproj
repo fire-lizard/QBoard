@@ -225,6 +225,7 @@
     <ClCompile Include="MakrukBoard.cpp" />
     <ClCompile Include="MakrukPiece.cpp" />
     <ClCompile Include="MiniShogiBoard.cpp" />
+    <ClCompile Include="MoveHandler.cpp" />
     <ClCompile Include="newgamedialog.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="promotiondialog.cpp" />
@@ -277,6 +278,7 @@
     <ClInclude Include="MakrukPiece.h" />
     <ClInclude Include="MiniShogiBoard.h" />
     <QtMoc Include="newgamedialog.h" />
+    <ClInclude Include="MoveHandler.h" />
     <ClInclude Include="Piece.h" />
     <QtMoc Include="promotiondialog.h" />
     <ClInclude Include="QianhongEngine.h" />

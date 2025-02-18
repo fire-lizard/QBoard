@@ -64,6 +64,7 @@ private:
 	bool CheckRepetition(int oldX, int oldY, int newX, int newY);
 	bool PossibleMove(int x, int y) const;
 	void FinishMove();
+	void CancelLionMove();
 
 	Board *_board;
 	Board *_editorBoard = nullptr;
@@ -88,9 +89,6 @@ private:
 	GameVariant _gameVariant = Chess;
 	std::shared_ptr<Engine> _whiteEngine = nullptr;
 	std::shared_ptr<Engine> _blackEngine = nullptr;
-	GameVariant _shogiVariants[12] = { Shogi, MiniShogi, JudkinShogi, ChuShogi, DaiShogi, ShoShogi, WaShogi,
-									   CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi };
-	PieceType _lionPieces[4] = { Lion, Eagle, Unicorn, LionHawk };
 	PieceType _promotedPieces[60] = { Tokin, Prince, PloddingOx, HeavenlyHorse, RaidingFalcon, BearEyes, TenaciousFalcon, HeavenlyTetrarch,
 									  WhiteHorse, Whale, MultiGeneral, FreeBoar, FlyingOx, Eagle, Unicorn, FlyingStag, FuriousFiend, GreatElephant,
 									  MountainWitch, WizardStork, Emperor, TeachingKing, BuddhistSpirit, FreeGold, FreeSilver, FreeCopper, FreeIron,

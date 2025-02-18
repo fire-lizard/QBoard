@@ -61,19 +61,23 @@ enum PieceType
 	BuddhistSpirit = 120, OldRat = 121, Donkey = 122, Capricorn = 123, HookMover = 124, SideFlier = 125, LeftChariot = 126, RightChariot = 127,
 	Emperor = 128, TeachingKing = 129, FreeGold = 130, FreeSilver = 131, FreeCopper = 132, FreeIron = 133, FreeTile = 134, FreeStone = 135,
 	FreeEarth = 136, FreeGo = 137, FreeTiger = 138, FreeLeopard = 139, FreeSerpent = 140, FreeDragon = 141, FreeWolf = 142, FreeCat = 143,
-	FreeBear = 144, Bat = 145,
+	FreeBear = 144, Bat = 145, BuddhistDevil = 146,
 	// Ko Shogi Pieces
-	MiddleTroop = 146, Drum = 147, Thunderclap = 148, Flag = 149, RoamingAssault = 150, CompanyCommander = 151, ViceCommissioner = 152, PoisonFlame = 153,
-	DoubleKylin = 154, DoublePhoenix = 155, TaoistPriest = 156, SpiritualMonk = 157, ExtensiveFog = 158, HolyLight = 159,
-	AdvanceGuard = 160, RearGuard = 161, SkywardNet = 162, EarthwardNet = 163, RisingDragon = 164, Quartermaster = 165, WingedTiger = 166,
-	FlyingHawk = 167, Longbow = 168, LongbowKnight = 169, Crossbow = 170, CrossbowKnight = 171, Cannon = 172, CannonCarriage = 173,
-	FrankishCannon = 174, DivineCarriage = 175, KnightCaptain = 176, WingedHorse = 177, ShieldCaptain = 178, Chariot = 179, Vanguard = 180
+	MiddleTroop = 147, Drum = 148, Thunderclap = 149, Flag = 150, RoamingAssault = 151, CompanyCommander = 152, ViceCommissioner = 153,
+	PoisonFlame = 154, DoubleKylin = 155, DoublePhoenix = 156, TaoistPriest = 157, SpiritualMonk = 158, ExtensiveFog = 159, HolyLight = 160,
+	AdvanceGuard = 161, RearGuard = 162, SkywardNet = 163, EarthwardNet = 164, RisingDragon = 165, Quartermaster = 166, WingedTiger = 167,
+	FlyingHawk = 168, Longbow = 169, LongbowKnight = 170, Crossbow = 171, CrossbowKnight = 172, Cannon = 173, CannonCarriage = 174,
+	FrankishCannon = 175, DivineCarriage = 176, KnightCaptain = 177, WingedHorse = 178, ShieldCaptain = 179, Chariot = 180, Vanguard = 181
 };
 
 enum Direction
 {
 	NorthWest, North, NorthEast, East, SouthEast, South, SouthWest, West
 };
+
+inline GameVariant shogiVariants[] = { Shogi, MiniShogi, JudkinShogi, ChuShogi, DaiShogi, ShoShogi, WaShogi,
+								   CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi };
+inline PieceType lionPieces[] = { Lion, Eagle, Unicorn, LionHawk };
 
 inline PieceType KoShogiPieces[] = { King, Prince, Queen, Rook, Bishop, Gold, Silver, Copper, FlyingOx, FreeBoar, VerticalMover, DragonHorse, DragonKing, Pawn,
 									 CatSword, Leopard, FlyingStag, Tiger, Elephant, Phoenix, Kylin, Knight, MiddleTroop, Drum, Thunderclap, Flag, RoamingAssault,

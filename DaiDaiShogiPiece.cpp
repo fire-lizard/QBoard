@@ -137,69 +137,69 @@ std::string DaiDaiShogiPiece::KanjiStringCode()
 	switch (_pieceType)
 	{
 	case Tengu:
-		return "天";
+		return "天狗";
 	case OldKite:
-		return "古";
+		return "古鵄";
 	case PoisonousSnake:
-		return "蛇";
+		return "毒蛇";
 	case GreatElephant:
 		return "大象";
 	case FuriousFiend:
-		return "迅";
+		return "奮迅";
 	case WesternBarbarian:
-		return "西";
+		return "西戎";
 	case EasternBarbarian:
-		return "東";
+		return "東夷";
 	case SouthernBarbarian:
-		return "南";
+		return "南蛮";
 	case NorthernBarbarian:
-		return "北";
+		return "北狄";
 	case FragrantElephant:
-		return "象";
+		return "香象";
 	case WhiteElephant:
 		return "白象";
 	case FreeDreamEater:
-		return "獏";
+		return "奔獏";
 	case FreeDemon:
-		return "鬼";
+		return "奔鬼";
 	case WaterBuffalo:
-		return "水";
+		return "水牛";
 	case RushingBird:
-		return "鳥	";
+		return "行鳥";
 	case StandardBearer:
-		return "前";
+		return "前旗";
 	case FlyingHorse:
-		return "麟";
+		return "馬麟";
 	case NeighboringKing:
-		return "近	";
+		return "近王";
 	case BlindMonkey:
-		return "猿";
+		return "盲猿";
 	case Dove:
-		return "鳩	";
+		return "鳩槃";
 	case EnchantedBadger:
-		return "狸";
+		return "変狸";
 	case EnchantedFox:
-		return "狐	";
+		return "変狐";
 	case RacingChariot:
-		return "走	";
+		return "走車";
 	case SquareMover:
-		return "方";
+		return "方行";
 	case PrancingStag:
-		return "鹿	";
+		return "踊鹿";
 	case WhiteTiger:
 		return "白虎";
 	case BlueDragon:
-		return "青	";
+		return "青龍";
 	case HowlingDog:
-		return "𠵇";
+		return "𠵇犬";
 	case ViolentBear:
-		return "熊	";
+		return "猛熊";
 	case LeftGeneral:
 		return "左将";
 	case RightGeneral:
 		return "右将";
 	case SavageTiger:
-		return "虎";
+		return "猛虎";
 	case Wood:
 		return "木";
 	default:

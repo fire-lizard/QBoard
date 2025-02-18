@@ -54,10 +54,6 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 	_moves.clear();
 	switch (piece->GetType())
 	{
-	case Tile:
-		break;
-	case Earth:
-		break;
 	default:
 		DaiShogiBoard::GetMoves(piece, x, y);
 		break;

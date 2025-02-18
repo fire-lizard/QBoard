@@ -54,9 +54,35 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	_moves.clear();
 	switch (piece->GetType())
 	{
-	case Tile:
+	case Deva:
+		if (piece->GetColour() == White)
+		{
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y - 1);
+			CheckMove(piece, x + 1, y + 1);
+		}
+		else
+		{
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
+			CheckMove(piece, x + 1, y - 1);
+		}
+		CheckMove(piece, x - 1, y);
 		break;
-	case Earth:
+	case DarkSpirit:
+		if (piece->GetColour() == White)
+		{
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y - 1);
+			CheckMove(piece, x - 1, y + 1);
+		}
+		else
+		{
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
+			CheckMove(piece, x - 1, y - 1);
+		}
+		CheckMove(piece, x + 1, y);
 		break;
 	default:
 		DaiShogiBoard::GetMoves(piece, x, y);

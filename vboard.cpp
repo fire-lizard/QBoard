@@ -72,7 +72,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			QRect rect(i * w, j * h, w, h);
 			if (PossibleMove(i, j))
 			{
-				if (_currentPiece != nullptr && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces))
+				if (_currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->GetType()) != std::end(lionPieces))
 				{
 					if (((abs(_oldX - i) == 2 || abs(_oldY - j) == 2) && (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk)) ||
 						(abs(_oldX - i) == 2 && _oldY - j == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
@@ -241,7 +241,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			if (p != nullptr)
 			{
 				std::string imageFileName;
-				if (_pieceStyle == Asian && (_gameVariant == Xiangqi || std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) != std::end(_shogiVariants)))
+				if (_pieceStyle == Asian && (_gameVariant == Xiangqi || std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) != std::end(shogiVariants)))
 				{
 					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 				}
@@ -305,7 +305,17 @@ void VBoard::FinishMove()
 	_oldX = -1;
 	_oldY = -1;
 	_moves.clear();
+	_lionMovedOnce = false;
+	_lionFirstMove.first = -1;
+	_lionFirstMove.second = -1;
 	this->repaint();
+}
+
+void VBoard::CancelLionMove()
+{
+	_lionMovedOnce = false;
+	_lionFirstMove.first = -1;
+	_lionFirstMove.second = -1;
 }
 
 void VBoard::mousePressEvent(QMouseEvent* event)
@@ -339,7 +349,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;
 	const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
 	const PieceType ct = p != nullptr ? p->GetType() : None;
-	const bool isLionPiece = _currentPiece != nullptr && std::find(std::begin(_lionPieces), std::end(_lionPieces), _currentPiece->GetType()) != std::end(_lionPieces);
+	const bool isLionPiece = _currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->GetType()) != std::end(lionPieces);
 	// Castling check
 	if (_gameVariant == Chess && _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
 		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved() && _board->IsMovePossible(x, y))
@@ -412,9 +422,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			else if (_board->IsMovePossible(x, y))
 			{
-				_lionFirstMove.first = x;
-				_lionFirstMove.second = y;
-				_lionMovedOnce = true;
+				CancelLionMove();
 				this->repaint();
 			}
 		}
@@ -427,9 +435,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 				}
 				EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
-				_lionMovedOnce = false;
-				_lionFirstMove.first = -1;
-				_lionFirstMove.second = -1;
 				FinishMove();
 			}
 		}
@@ -484,7 +489,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					_currentPiece->Promote();
 				}
 			}
-			else if (std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) != std::end(_shogiVariants))
+			else if (std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) != std::end(shogiVariants))
 			{
 				if (_gameVariant == MiniShogi && !_currentPiece->IsPromoted() &&
 					_currentPiece->GetType() != King && _currentPiece->GetType() != Gold &&
@@ -591,9 +596,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				EngineOutputHandler::AddMove(_board, _gameVariant, promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None ? 'x' : ' ');
 			}
-			_lionMovedOnce = false;
-			_lionFirstMove.first = -1;
-			_lionFirstMove.second = -1;
 			FinishMove();
 		}
 	}
@@ -606,9 +608,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 			}
 			EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
-			_lionMovedOnce = false;
-			_lionFirstMove.first = -1;
-			_lionFirstMove.second = -1;
 			FinishMove();
 		}
 	}
@@ -619,10 +618,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		_oldY = y;
 		_board->GetMoves(p, x, y);
 		_moves = _board->Moves();
-		_lionMovedOnce = false;
-		_lionFirstMove.first = -1;
-		_lionFirstMove.second = -1;
-		if (std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) == std::end(_shogiVariants))
+		CancelLionMove();
+		if (std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) == std::end(shogiVariants))
 		{
 			for (int index = 0; index < 4; index++)
 			{
@@ -638,7 +635,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 
 bool VBoard::event(QEvent* event)
 {
-	if (event->type() == QEvent::HoverMove && std::find(std::begin(_shogiVariants), std::end(_shogiVariants), _gameVariant) != std::end(_shogiVariants))
+	if (event->type() == QEvent::HoverMove && std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) != std::end(shogiVariants))
 	{
 		const QHoverEvent* hoverEvent = dynamic_cast<QHoverEvent*>(event);
 		const int w = this->size().width() / _board->GetWidth();

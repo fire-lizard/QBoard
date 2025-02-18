@@ -226,55 +226,55 @@ std::string WaShogiPiece::KanjiStringCode()
 	switch (_pieceType)
 	{
 	case King:
-		return "靏";
+		return "靏玉";
 	case Rook:
-		return "行";
+		return "燕行";
 	case Lance:
-		return "車";
+		return "牛車";
 	case Tokin:
-		return "金";
+		return "金鳥";
 	case Pawn:
-		return "歩";
+		return "萑歩";
 	case SideMover:
-		return "燕";
+		return "燕羽";
 	case PloddingOx:
-		return "牛";
+		return "歬牛";
 	case LiberatedHorse:
-		return "風";
+		return "風馬";
 	case HeavenlyHorse:
-		return "天";
+		return "天馬";
 	case SwoopingOwl:
-		return "鴟";
+		return "鴟行";
 	case CloudEagle:
-		return "鷲";
+		return "雲鷲";
 	case StruttingCrow:
-		return "烏";
+		return "烏行";
 	case FlyingFalcon:
-		return "鷹";
+		return "飛鷹";
 	case FlyingCock:
-		return "鶏";
+		return "鶏飛";
 	case RaidingFalcon:
-		return "延";
+		return "延鷹";
 	case FlyingGoose:
-		return "鳫";
+		return "鳫飛";
 	case ClimbingMonkey:
-		return "猿";
+		return "登猿";
 	case Silver:
-		return "鹿";
+		return "猛鹿";
 	case Dog:
-		return "犬";
+		return "盲犬";
 	case Gold:
-		return "狼";
+		return "猛狼";
 	case Elephant:
-		return "猪";
+		return "行猪";
 	case BearEyes:
-		return "熊";
+		return "熊眼";
 	case RunningRabbit:
-		return "兎";
+		return "走兎";
 	case TreacherousFox:
-		return "狐";
+		return "隠狐";
 	case TenaciousFalcon:
-		return "鶏鷹";
+		return "奚力 鷹";
 	default:
 		return "";
 	}

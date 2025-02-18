@@ -145,15 +145,15 @@ std::string MakaDaiDaiShogiPiece::KanjiStringCode()
 	switch (_pieceType)
 	{
 	case Emperor:
-		return "天";
+		return "自在天王";
 	case Deva:
-		return "提	";
+		return "提婆";
 	case DarkSpirit:
-		return "無";
+		return "無明";
 	case TeachingKing:
-		return "教";
+		return "教王";
 	case BuddhistSpirit:
-		return "性";
+		return "法性";
 	case FreeGold:
 		return "奔金";
 	case FreeSilver:
@@ -175,57 +175,61 @@ std::string MakaDaiDaiShogiPiece::KanjiStringCode()
 	case FreeLeopard:
 		return "奔豹";
 	case CoiledSerpent:
-		return "蛇";
+		return "蟠蛇";
 	case RecliningDragon:
-		return "臥";
+		return "臥龍";
 	case FreeSerpent:
 		return "奔蛇";
 	case FreeDragon:
 		return "奔龍";
 	case OldMonkey:
-		return "猿";
+		return "古猿";
 	case MountainWitch:
-		return "鶏";
+		return "山母";
 	case ChineseCock:
-		return "母";
+		return "淮鶏";
 	case WizardStork:
-		return "仙";
+		return "仙鶴";
 	case FreeCat:
 		return "奔猫";
 	case FuriousFiend:
-		return "迅";
+		return "奮迅";
 	case GoldenBird:
-		return "翅";
+		return "金翅";
 	case GreatDragon:
-		return "大";
+		return "大龍";
 	case FreeWolf:
 		return "奔狼";
 	case FreeBear:
-		return "奔熊 ";
+		return "奔熊";
 	case OldRat:
-		return "鼠";
+		return "老鼠";
 	case Bat:
-		return "蝠";
+		return "蝙蝠";
 	case LionDog:
-		return "狛 ";
+		return "狛犬";
 	case Wrestler:
-		return "力";
+		return "力士";
 	case Guardian:
-		return "剛";
+		return "金剛";
 	case Yaksha:
-		return "叉";
+		return "夜叉";
 	case Donkey:
-		return "驢";
+		return "驢馬";
 	case Capricorn:
-		return "摩";
+		return "摩𩹄";
 	case HookMover:
-		return "行";
+		return "鉤行";
 	case LeftChariot:
-		return "左";
+		return "左車";
 	case RightChariot:
-		return "右";
+		return "右車";
 	case SideFlier:
 		return "横飛";
+	case Tile:
+		return "瓦";
+	case Earth:
+		return "土";
 	default:
 		return DaiShogiPiece::KanjiStringCode();
 	}
