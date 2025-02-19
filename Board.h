@@ -37,6 +37,7 @@ public:
 protected:
 	void CheckMove(const Piece *piece, int x, int y);
 	void CheckDirection(const Piece *piece, int x, int y, Direction direction);
+	void CheckDirection(const Piece* piece, int x, int y, Direction direction, int count);
 	bool CheckDirectionAux(int x, int y, Direction direction) const;
 	static void CheckDirectionInc(int &x, int &y, Direction direction);
 

@@ -67,24 +67,16 @@ void DaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case ViolentOx:
-		CheckMove(piece, x + 1, y);
-		CheckMove(piece, x, y + 1);
-		CheckMove(piece, x, y - 1);
-		CheckMove(piece, x - 1, y);
-		CheckMove(piece, x + 2, y);
-		CheckMove(piece, x, y + 2);
-		CheckMove(piece, x, y - 2);
-		CheckMove(piece, x - 2, y);
+		CheckDirection(piece, x, y, South, 2);
+		CheckDirection(piece, x, y, North, 2);
+		CheckDirection(piece, x, y, West, 2);
+		CheckDirection(piece, x, y, East, 2);
 		break;
 	case FlyingDragon:
-		CheckMove(piece, x + 1, y + 1);
-		CheckMove(piece, x + 1, y - 1);
-		CheckMove(piece, x - 1, y + 1);
-		CheckMove(piece, x - 1, y - 1);
-		CheckMove(piece, x + 2, y + 2);
-		CheckMove(piece, x + 2, y - 2);
-		CheckMove(piece, x - 2, y + 2);
-		CheckMove(piece, x - 2, y - 2);
+		CheckDirection(piece, x, y, SouthWest, 2);
+		CheckDirection(piece, x, y, NorthWest, 2);
+		CheckDirection(piece, x, y, SouthEast, 2);
+		CheckDirection(piece, x, y, NorthEast, 2);
 		break;
 	case AngryBoar:
 		CheckMove(piece, x + 1, y);

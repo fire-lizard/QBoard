@@ -232,29 +232,29 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case SideSoldier:
 		CheckDirection(piece, x, y, West);
 		CheckDirection(piece, x, y, East);
-		CheckMove(piece, x, y - 1);
-		CheckMove(piece, x, y + 1);
 		if (piece->GetColour() == Black)
 		{
-			CheckMove(piece, x, y - 2);
+			CheckMove(piece, x, y - 1);
+			CheckDirection(piece, x, y, North, 2);
 		}
 		else
 		{
-			CheckMove(piece, x, y + 2);
+			CheckMove(piece, x, y + 1);
+			CheckDirection(piece, x, y, South, 2);
 		}
 		break;
 	case VerticalSoldier:
-		CheckMove(piece, x, y - 1);
-		CheckMove(piece, x, y + 1);
+		CheckDirection(piece, x, y, East, 2);
+		CheckDirection(piece, x, y, West, 2);
 		if (piece->GetColour() == Black)
 		{
 			CheckDirection(piece, x, y, North);
-			CheckMove(piece, x, y + 1);
+			CheckMove(piece, x, y - 1);
 		}
 		else
 		{
 			CheckDirection(piece, x, y, South);
-			CheckMove(piece, x, y - 1);
+			CheckMove(piece, x, y + 1);
 		}
 		break;
 	case ChariotSoldier:
@@ -264,10 +264,8 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, NorthEast);
 		CheckDirection(piece, x, y, South);
 		CheckDirection(piece, x, y, North);
-		CheckMove(piece, x + 1, y);
-		CheckMove(piece, x + 2, y);
-		CheckMove(piece, x - 1, y);
-		CheckMove(piece, x - 2, y);
+		CheckDirection(piece, x, y, East, 2);
+		CheckDirection(piece, x, y, West, 2);
 		break;
 	case WaterBuffalo:
 		CheckDirection(piece, x, y, SouthWest);
@@ -276,10 +274,8 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, NorthEast);
 		CheckDirection(piece, x, y, West);
 		CheckDirection(piece, x, y, East);
-		CheckMove(piece, x, y + 1);
-		CheckMove(piece, x, y + 2);
-		CheckMove(piece, x, y - 1);
-		CheckMove(piece, x, y - 2);
+		CheckDirection(piece, x, y, North, 2);
+		CheckDirection(piece, x, y, South, 2);
 		break;
 	case LionHawk:
 		CheckMove(piece, x + 1, y + 1);

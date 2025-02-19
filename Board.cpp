@@ -157,6 +157,21 @@ void Board::CheckDirection(const Piece *piece, int x, int y, Direction direction
 	}
 }
 
+void Board::CheckDirection(const Piece* piece, int x, int y, Direction direction, int count)
+{
+	int i = 0;
+	while (CheckDirectionAux(x, y, direction) && i < count)
+	{
+		CheckDirectionInc(x, y, direction);
+		CheckMove(piece, x, y);
+		if (_data[x][y] != nullptr)
+		{
+			break;
+		}
+		i++;
+	}
+}
+
 bool Board::CheckDirectionAux(int x, int y, Direction direction) const
 {
 	switch (direction)
