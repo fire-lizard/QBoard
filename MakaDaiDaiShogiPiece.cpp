@@ -98,7 +98,7 @@ void MakaDaiDaiShogiPiece::Promote(PieceType pieceType)
 	case LionDog:
 	case Wrestler:
 	case Guardian:
-	case BuddhistSpirit:
+	case BuddhistDevil:
 	case Yaksha:
 	case FlyingDragon:
 	case ViolentOx:
@@ -212,6 +212,8 @@ std::string MakaDaiDaiShogiPiece::KanjiStringCode()
 		return "力士";
 	case Guardian:
 		return "金剛";
+	case BuddhistDevil:
+		return "羅刹";
 	case Yaksha:
 		return "夜叉";
 	case Donkey:

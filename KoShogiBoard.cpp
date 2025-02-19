@@ -54,6 +54,12 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 	_moves.clear();
 	switch (piece->GetType())
 	{
+	case Pawn:
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x - 1, y);
+		break;
 	default:
 		DaiShogiBoard::GetMoves(piece, x, y);
 		break;

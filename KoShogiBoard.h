@@ -13,12 +13,10 @@ public:
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
 	void GetMoves(Piece* piece, int x, int y) override;
 
-protected:
-
 private:
 
 	PieceType _initialSetup[19][19] = {
-	{AdvanceGuard, TaoistPriest, Copper, Leopard, Silver, Gold, Wrestler, Elephant, Phoenix, King, Kylin, Elephant, Wrestler, Gold, Silver, Leopard, Copper, SpiritualMonk, AdvanceGuard},
+	{AdvanceGuard, TaoistPriest, Copper, Leopard, Silver, Gold, Lion, Elephant, Phoenix, King, Kylin, Elephant, Lion, Gold, Silver, Leopard, Copper, SpiritualMonk, AdvanceGuard},
 	{RearGuard, DragonHorse, None, DragonKing, None, Queen, None, Tiger, Flag, MiddleTroop, Drum, Tiger, None, Queen, None, DragonKing, None, DragonHorse, RearGuard},
 	{Bishop, Cannon, Crossbow, Longbow, Bishop, Cannon, Crossbow, Longbow, Bishop, FrankishCannon, Bishop, Longbow, Crossbow, Cannon, Bishop, Longbow, Crossbow, Cannon, Bishop},
 	{KnightCaptain, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, KnightCaptain},
@@ -36,7 +34,7 @@ private:
 	{KnightCaptain, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, Knight, None, KnightCaptain},
 	{Bishop, Cannon, Crossbow, Longbow, Bishop, Cannon, Crossbow, Longbow, Bishop, FrankishCannon, Bishop, Longbow, Crossbow, Cannon, Bishop, Longbow, Crossbow, Cannon, Bishop},
 	{RearGuard, DragonHorse, None, DragonKing, None, Queen, None, Tiger, Drum, MiddleTroop, Flag, Tiger, None, Queen, None, DragonKing, None, DragonHorse, RearGuard},
-	{AdvanceGuard, SpiritualMonk, Copper, Leopard, Silver, Gold, Wrestler, Elephant, Kylin, King, Phoenix, Elephant, Wrestler, Gold, Silver, Leopard, Copper, TaoistPriest, AdvanceGuard},
+	{AdvanceGuard, SpiritualMonk, Copper, Leopard, Silver, Gold, Lion, Elephant, Kylin, King, Phoenix, Elephant, Lion, Gold, Silver, Leopard, Copper, TaoistPriest, AdvanceGuard},
 	};
 };
 

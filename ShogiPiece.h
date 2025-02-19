@@ -14,9 +14,5 @@ public:
 	std::string Description() const;
 	static PieceType FromStringCode(const std::string& code);
 	static std::string ToStringCode(PieceType piece);
-
-protected:
-
-private:
 };
 

@@ -55,14 +55,162 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	switch (piece->GetType())
 	{
 	case Emperor:
+		for (int i = 0; i < GetWidth(); i++)
+		{
+			for (int j = 0; j < GetHeight(); j++)
+			{
+				CheckMove(piece, x, y);
+			}
+		}
 		break;
 	case TeachingKing:
+		CheckDirection(piece, x, y, North);
+		CheckDirection(piece, x, y, NorthEast);
+		CheckDirection(piece, x, y, East);
+		CheckDirection(piece, x, y, SouthEast);
+		CheckDirection(piece, x, y, South);
+		CheckDirection(piece, x, y, SouthWest);
+		CheckDirection(piece, x, y, West);
+		CheckDirection(piece, x, y, NorthWest);
+
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x - 1, y - 1);
+
+		CheckNullMove(x, y);
+
+		CheckMove(piece, x + 2, y + 2);
+		CheckMove(piece, x + 2, y);
+		CheckMove(piece, x + 2, y - 2);
+		CheckMove(piece, x, y + 2);
+
+		CheckMove(piece, x, y - 2);
+		CheckMove(piece, x - 2, y + 2);
+		CheckMove(piece, x - 2, y);
+		CheckMove(piece, x - 2, y - 2);
+
+		CheckMove(piece, x - 3, y - 3);
+		CheckMove(piece, x + 3, y - 3);
+		CheckMove(piece, x - 3, y);
+		CheckMove(piece, x + 3, y);
+		CheckMove(piece, x, y - 3);
+		CheckMove(piece, x, y + 3);
+		CheckMove(piece, x - 3, y + 3);
+		CheckMove(piece, x + 3, y + 3);
 		break;
 	case BuddhistSpirit:
+		CheckDirection(piece, x, y, North);
+		CheckDirection(piece, x, y, NorthEast);
+		CheckDirection(piece, x, y, East);
+		CheckDirection(piece, x, y, SouthEast);
+		CheckDirection(piece, x, y, South);
+		CheckDirection(piece, x, y, SouthWest);
+		CheckDirection(piece, x, y, West);
+		CheckDirection(piece, x, y, NorthWest);
+
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x - 1, y - 1);
+
+		CheckNullMove(x, y);
+
+		CheckMove(piece, x + 2, y + 2);
+		CheckMove(piece, x + 2, y + 1);
+		CheckMove(piece, x + 2, y);
+		CheckMove(piece, x + 2, y - 1);
+		CheckMove(piece, x + 2, y - 2);
+		CheckMove(piece, x + 1, y + 2);
+		CheckMove(piece, x, y + 2);
+		CheckMove(piece, x - 1, y + 2);
+
+		CheckMove(piece, x - 1, y - 2);
+		CheckMove(piece, x, y - 2);
+		CheckMove(piece, x + 1, y - 2);
+		CheckMove(piece, x - 2, y + 2);
+		CheckMove(piece, x - 2, y + 1);
+		CheckMove(piece, x - 2, y);
+		CheckMove(piece, x - 2, y - 1);
+		CheckMove(piece, x - 2, y - 2);
 		break;
 	case FuriousFiend:
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x - 1, y - 1);
+
+		CheckNullMove(x, y);
+
+		CheckMove(piece, x + 2, y + 2);
+		CheckMove(piece, x + 2, y + 1);
+		CheckMove(piece, x + 2, y);
+		CheckMove(piece, x + 2, y - 1);
+		CheckMove(piece, x + 2, y - 2);
+		CheckMove(piece, x + 1, y + 2);
+		CheckMove(piece, x, y + 2);
+		CheckMove(piece, x - 1, y + 2);
+
+		CheckMove(piece, x - 1, y - 2);
+		CheckMove(piece, x, y - 2);
+		CheckMove(piece, x + 1, y - 2);
+		CheckMove(piece, x - 2, y + 2);
+		CheckMove(piece, x - 2, y + 1);
+		CheckMove(piece, x - 2, y);
+		CheckMove(piece, x - 2, y - 1);
+		CheckMove(piece, x - 2, y - 2);
+
+		CheckMove(piece, x - 3, y - 3);
+		CheckMove(piece, x + 3, y - 3);
+		CheckMove(piece, x - 3, y);
+		CheckMove(piece, x + 3, y);
+		CheckMove(piece, x, y - 3);
+		CheckMove(piece, x, y + 3);
+		CheckMove(piece, x - 3, y + 3);
+		CheckMove(piece, x + 3, y + 3);
 		break;
 	case LionDog:
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x - 1, y - 1);
+
+		CheckNullMove(x, y);
+
+		CheckMove(piece, x + 2, y + 2);
+		CheckMove(piece, x + 2, y);
+		CheckMove(piece, x + 2, y - 2);
+		CheckMove(piece, x, y + 2);
+
+		CheckMove(piece, x, y - 2);
+		CheckMove(piece, x - 2, y + 2);
+		CheckMove(piece, x - 2, y);
+		CheckMove(piece, x - 2, y - 2);
+
+		CheckMove(piece, x - 3, y - 3);
+		CheckMove(piece, x + 3, y - 3);
+		CheckMove(piece, x - 3, y);
+		CheckMove(piece, x + 3, y);
+		CheckMove(piece, x, y - 3);
+		CheckMove(piece, x, y + 3);
+		CheckMove(piece, x - 3, y + 3);
+		CheckMove(piece, x + 3, y + 3);
 		break;
 	case Capricorn:
 		break;
@@ -549,4 +697,36 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		DaiShogiBoard::GetMoves(piece, x, y);
 		break;
 	}
+}
+
+bool MakaDaiDaiShogiBoard::TripleMove(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
+{
+	if ((x1 == x4 && y1 == y4) || std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x4 && t.second == y4; }))
+	{
+		if (_data[x2][y2] != nullptr)
+		{
+			delete _data[x2][y2];
+			_data[x2][y2] = nullptr;
+		}
+		if (x1 != x3 || y1 != y3)
+		{
+			if (_data[x3][y3] != nullptr)
+			{
+				delete _data[x3][y3];
+			}
+			_data[x3][y3] = _data[x1][y1];
+			_data[x1][y1] = nullptr;
+		}
+		if (x1 != x4 || y1 != y4)
+		{
+			if (_data[x4][y4] != nullptr)
+			{
+				delete _data[x4][y4];
+			}
+			_data[x4][y4] = _data[x1][y1];
+			_data[x1][y1] = nullptr;
+		}
+		return true;
+	}
+	return false;
 }

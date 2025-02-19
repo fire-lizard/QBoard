@@ -9,8 +9,6 @@ public:
 	~MiniShogiBoard() override;
 	void Initialize() override;
 
-protected:
-
 private:
 
 	PieceType _initialSetup[5][5] = {

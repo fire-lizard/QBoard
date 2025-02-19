@@ -47,6 +47,4 @@ protected:
 	int _height = -1;
 	int _moveCount = 0;
 	Piece* _data[19][19];
-
-private:
 };

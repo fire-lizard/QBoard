@@ -12,9 +12,5 @@ public:
 	std::string KanjiStringCode() override;
 	std::string GetKanjiImageFileName() override;
 	static PieceType FromStringCode(const std::string& code);
-
-protected:
-
-private:
 };
 

@@ -101,7 +101,7 @@ void KoShogiPiece::Promote(PieceType pieceType)
 	case Vanguard:
 		_pieceType = FlyingOx;
 		break;
-	case Wrestler:
+	case Lion:
 		_isPromoted = false;
 		break;
 	default:
@@ -170,7 +170,7 @@ std::string KoShogiPiece::KanjiStringCode()
 		return "軍匠";
 	case PoisonFlame:
 		return "毒火";
-	case Wrestler:
+	case Lion:
 		return "力士";
 	case Kylin:
 		return "記室";
@@ -330,37 +330,37 @@ std::string KoShogiPiece::PieceType2Description(PieceType pieceType)
 	case MiddleTroop:          return "Middle Troop";
 	case Drum:                 return "Drum";
 	case Thunderclap:          return "Thunderclap";
-	case Flag:               return "Flag";
-	case RoamingAssault:            return "Roaming Assault";
-	case CompanyCommander:       return "Company Commander";
-	case ViceCommissioner:        return "Vice Commissioner";
+	case Flag:                 return "Flag";
+	case RoamingAssault:       return "Roaming Assault";
+	case CompanyCommander:     return "Company Commander";
+	case ViceCommissioner:     return "Vice Commissioner";
 	case PoisonFlame:          return "Poison Flame";
-	case Wrestler:             return "Wrestler";
+	case Lion:                 return "Wrestler";
 	case DoubleKylin:          return "Master at Arms";
 	case DoublePhoenix:        return "Flag and Drum";
 	case TaoistPriest:         return "Taoist Priest";
 	case SpiritualMonk:        return "Spiritual Monk";
-	case ExtensiveFog:            return "Extensive Fog";
-	case HolyLight:      return "Holy Light";
+	case ExtensiveFog:         return "Extensive Fog";
+	case HolyLight:			   return "Holy Light";
 	case AdvanceGuard:         return "Advance Guard";
 	case RearGuard:            return "Rear Guard";
 	case SkywardNet:           return "Skyward Net";
 	case EarthwardNet:         return "Earthward Net";
-	case RisingDragon:      return "Rising Dragon";
+	case RisingDragon:         return "Rising Dragon";
 	case Quartermaster:        return "Quartermaster";
-	case WingedTiger:            return "Winged Tiger";
-	case FlyingHawk:              return "Flying Hawk";
+	case WingedTiger:          return "Winged Tiger";
+	case FlyingHawk:           return "Flying Hawk";
 	case Longbow:              return "Longbow";
-	case LongbowKnight:    return "Longbow Knight";
+	case LongbowKnight:        return "Longbow Knight";
 	case Crossbow:             return "Crossbow";
-	case CrossbowKnight:   return "Crossbow Knight";
+	case CrossbowKnight:       return "Crossbow Knight";
 	case Cannon:               return "Cannon";
-	case CannonCarriage:          return "Cannon Carriage";
+	case CannonCarriage:       return "Cannon Carriage";
 	case FrankishCannon:       return "Frankish Cannon";
-	case DivineCarriage:     return "Divine Carriage";
-	case KnightCaptain:              return "Knight Captain";
+	case DivineCarriage:       return "Divine Carriage";
+	case KnightCaptain:        return "Knight Captain";
 	case WingedHorse:          return "Winged Horse";
-	case ShieldCaptain:           return "Shield Captain";
+	case ShieldCaptain:        return "Shield Captain";
 	case Chariot:              return "Chariot";
 	case Vanguard:             return "Vanguard";
 	default: return "";
@@ -399,7 +399,7 @@ PieceType KoShogiPiece::Description2PieceType(const std::string& description)
 	if (description == "Company Commander")     return CompanyCommander;
 	if (description == "Vice Commissioner")      return ViceCommissioner;
 	if (description == "Poison Flame")        return PoisonFlame;
-	if (description == "Wrestler")			  return Wrestler;
+	if (description == "Wrestler")			  return Lion;
 	if (description == "Master at Arms")        return DoubleKylin;
 	if (description == "Flag and Drum")      return DoublePhoenix;
 	if (description == "Taoist Priest")       return TaoistPriest;

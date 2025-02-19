@@ -31,6 +31,4 @@ protected:
 	bool _isActive = false;
 	std::vector<QByteArray> _moves;
 	std::string _fen;
-
-private:
 };

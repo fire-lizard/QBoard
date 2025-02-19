@@ -74,7 +74,10 @@ void VBoard::paintEvent(QPaintEvent *)
 			{
 				if (_currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->GetType()) != std::end(lionPieces))
 				{
-					if (((abs(_oldX - i) == 2 || abs(_oldY - j) == 2) && (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk)) ||
+					if (((abs(_oldX - i) == 1 || abs(_oldX - i) == 2 || abs(_oldY - j) == 1 || abs(_oldY - j) == 2 || abs(_oldX - i) == 3 || abs(_oldY - j) == 3) &&
+						(_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk || _currentPiece->GetType() == LionDog ||
+							_currentPiece->GetType() == FuriousFiend || _currentPiece->GetType() == BuddhistSpirit ||
+							_currentPiece->GetType() == TeachingKing)) ||
 						(abs(_oldX - i) == 2 && _oldY - j == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
 						(abs(_oldX - i) == 2 && _oldY - j == -2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == Black) ||
 						(_oldX == i && _oldY - j == 2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == White) ||
@@ -88,7 +91,7 @@ void VBoard::paintEvent(QPaintEvent *)
 						}
 						else if (_board->GetData(i, j) == nullptr)
 						{
-							painter.setBrush(QColorConstants::Svg::lightcyan);
+							painter.setBrush(QColorConstants::Svg::lightgreen);
 							painter.drawRect(rect);
 							painter.setBrush(Qt::NoBrush);
 						}
@@ -381,15 +384,12 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		// Lion move
 		if (isLionPiece && !_lionMovedOnce)
 		{
-			if (((abs(_oldX - x) >= 2 || abs(_oldY - y) >= 2) && (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk)) ||
-				(abs(_oldX - x) == 2 && _oldY - y == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
-				(abs(_oldX - x) == 2 && _oldY - y == -2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == Black) ||
-				(_oldX == x && _oldY - y == 2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == White) ||
-				(_oldX == x && _oldY - y == -2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == Black))
+			if ((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) && (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk))
 			{
 				// Lion capture rule #1
-				if ((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) && _currentPiece->GetType() == Lion &&
-					_board->GetData(x, y) != nullptr && _board->GetData(x, y)->GetType() == Lion)
+				if (_gameVariant == ChuShogi && _board->GetData(x, y) != nullptr &&
+					_currentPiece->GetType() == Lion && _board->GetData(x, y)->GetType() == Lion &&
+					(abs(_oldX - x) == 2 || abs(_oldY - y) == 2))
 				{
 					std::vector<std::pair<int, int>> lionDefenders;
 					_board->GetDefenders(x, y, lionDefenders);
@@ -398,6 +398,35 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						return;
 					}
 				}
+				if (_board->Move(_oldX, _oldY, x, y))
+				{
+					if (engine != nullptr && engine->IsActive())
+					{
+						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+					}
+					EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ', ' ');
+					FinishMove();
+				}
+			}
+			else if ((abs(_oldX - x) > 1 || abs(_oldY - y) > 1) &&
+				(_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
+					_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == TeachingKing))
+			{
+				if (_board->Move(_oldX, _oldY, x, y))
+				{
+					if (engine != nullptr && engine->IsActive())
+					{
+						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+					}
+					EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ', ' ');
+					FinishMove();
+				}
+			}
+			else if ((abs(_oldX - x) == 2 && _oldY - y == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
+				(abs(_oldX - x) == 2 && _oldY - y == -2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == Black) ||
+				(_oldX == x && _oldY - y == 2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == White) ||
+				(_oldX == x && _oldY - y == -2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == Black))
+			{
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
 					if (engine != nullptr && engine->IsActive())
@@ -422,20 +451,30 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			else if (_board->IsMovePossible(x, y))
 			{
-				CancelLionMove();
+				_lionFirstMove.first = x;
+				_lionFirstMove.second = y;
+				_lionMovedOnce = true;
 				this->repaint();
 			}
 		}
 		else if (isLionPiece && _lionMovedOnce)
 		{
-			if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
+			if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk || _currentPiece->GetType() == Unicorn || _currentPiece->GetType() == Eagle)
 			{
-				if (engine != nullptr && engine->IsActive())
+				if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 				{
-					std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
+					if (engine != nullptr && engine->IsActive())
+					{
+						std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
+					}
+					EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
+					FinishMove();
 				}
-				EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
-				FinishMove();
+			}
+			else if (_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
+				_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == TeachingKing)
+			{
+				//
 			}
 		}
 		else if (_board->Move(_oldX, _oldY, x, y))

@@ -13,8 +13,6 @@ public:
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
 	void GetMoves(Piece* piece, int x, int y) override;
 
-protected:
-
 private:
 
 	PieceType _initialSetup[15][15] = {

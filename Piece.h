@@ -23,6 +23,4 @@ protected:
 	PieceType _pieceType;
 	PieceColour _pieceColour;
 	bool _isPromoted;
-
-private:
 };

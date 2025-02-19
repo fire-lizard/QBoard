@@ -8,8 +8,6 @@ public:
 	~JudkinShogiBoard() override;
 	void Initialize() override;
 
-protected:
-
 private:
 
 	PieceType _initialSetup[6][6] = {

@@ -22,8 +22,6 @@ public:
 	void GetMoves(Piece* piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 
-protected:
-
 private:
 	void CheckJump(const Piece* piece, int x, int y, Direction direction);
 	void CheckIgui(const Piece* piece, int x, int y);

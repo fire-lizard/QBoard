@@ -24,7 +24,7 @@ void WbEngine::SetFEN(std::string fen)
 	_moves.clear();
 }
 
-void WbEngine::Edit(const Board* board)
+void WbEngine::Edit(const Board* board) const
 {
 	PieceColour pieceColour = White;
 	WriteToProcess("edit\n");
@@ -174,6 +174,64 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 		moveStr.push_back(y2);
 		moveStr.push_back(x3);
 		moveStr.push_back(y3);
+	}
+	_moves.push_back(moveStr);
+	return moveStr;
+}
+
+QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, signed char x3, signed char y3, signed char x4, signed char y4)
+{
+	QByteArray moveStr;
+	moveStr += "usermove ";
+	if (y1 <= 19 || y2 <= 19)
+	{
+		moveStr.push_back(static_cast<char>(x1 < 30 ? x1 + 97 : x1));
+		moveStr.push_back(QString::number(y1)[0].toLatin1());
+		if (y1 >= 10) moveStr.push_back(QString::number(y1)[1].toLatin1());
+		moveStr.push_back(static_cast<char>(x2 < 30 ? x2 + 97 : x2));
+		moveStr.push_back(QString::number(y2)[0].toLatin1());
+		if (y2 >= 10) moveStr.push_back(QString::number(y2)[1].toLatin1());
+	}
+	else
+	{
+		moveStr.push_back(x1);
+		moveStr.push_back(y1);
+		moveStr.push_back(x2);
+		moveStr.push_back(y2);
+	}
+	moveStr.push_back(',');
+	if (y2 <= 19 || y3 <= 19)
+	{
+		moveStr.push_back(static_cast<char>(x2 < 30 ? x2 + 97 : x2));
+		moveStr.push_back(QString::number(y2)[0].toLatin1());
+		if (y2 >= 10) moveStr.push_back(QString::number(y2)[1].toLatin1());
+		moveStr.push_back(static_cast<char>(x3 < 30 ? x3 + 97 : x3));
+		moveStr.push_back(QString::number(y3)[0].toLatin1());
+		if (y3 >= 10) moveStr.push_back(QString::number(y3)[1].toLatin1());
+	}
+	else
+	{
+		moveStr.push_back(x2);
+		moveStr.push_back(y2);
+		moveStr.push_back(x3);
+		moveStr.push_back(y3);
+	}
+	moveStr.push_back(',');
+	if (y3 <= 19 || y4 <= 19)
+	{
+		moveStr.push_back(static_cast<char>(x3 < 30 ? x3 + 97 : x3));
+		moveStr.push_back(QString::number(y3)[0].toLatin1());
+		if (y3 >= 10) moveStr.push_back(QString::number(y3)[1].toLatin1());
+		moveStr.push_back(static_cast<char>(x4 < 30 ? x4 + 97 : x4));
+		moveStr.push_back(QString::number(y4)[0].toLatin1());
+		if (y4 >= 10) moveStr.push_back(QString::number(y4)[1].toLatin1());
+	}
+	else
+	{
+		moveStr.push_back(x3);
+		moveStr.push_back(y3);
+		moveStr.push_back(x4);
+		moveStr.push_back(y4);
 	}
 	_moves.push_back(moveStr);
 	return moveStr;

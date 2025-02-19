@@ -10,8 +10,6 @@ public:
 	void Move();
 	bool HasMoved() const;
 
-protected:
-
 private:
 	bool _hasMoved;
 };
