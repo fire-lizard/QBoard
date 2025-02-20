@@ -119,7 +119,7 @@ bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 			}
 		}
 	}
-	return Board::Move(oldX, oldY, newX, newY, cl);
+	return ChuShogiBoard::Move(oldX, oldY, newX, newY, cl);
 }
 
 void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)

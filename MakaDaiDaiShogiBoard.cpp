@@ -59,7 +59,27 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		{
 			for (int j = 0; j < GetHeight(); j++)
 			{
-				CheckMove(piece, x, y);
+				const Piece* p = _data[i][j];
+				if (p == nullptr)
+				{
+					_moves.emplace_back(i, j);
+				}
+				else if (p->GetColour() != piece->GetColour())
+				{
+					if (p->GetType() == King || p->GetType() == Prince || p->GetType() == Emperor)
+					{
+						std::vector<std::pair<int, int>> royalDefenders;
+						GetDefenders(i, j, royalDefenders);
+						if (royalDefenders.empty())
+						{
+							_moves.emplace_back(i, j);
+						}
+					}
+					else
+					{
+						_moves.emplace_back(i, j);
+					}
+				}
 			}
 		}
 		break;
@@ -213,8 +233,10 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x + 3, y + 3);
 		break;
 	case Capricorn:
+		GetAllPossibleMoves(x, y, true);
 		break;
 	case HookMover:
+		GetAllPossibleMoves(x, y, false);
 		break;
 	case Deva:
 		if (piece->GetColour() == White)
@@ -729,4 +751,92 @@ bool MakaDaiDaiShogiBoard::TripleMove(int x1, int y1, int x2, int y2, int x3, in
 		return true;
 	}
 	return false;
+}
+
+std::vector<std::pair<int, int>> MakaDaiDaiShogiBoard::GetRay(int startR, int startC, int dr, int dc, int n, PieceColour pieceColour) const
+{
+	std::vector<std::pair<int, int>> result;
+	int r = startR;
+	int c = startC;
+
+	while (true) {
+		r += dr;
+		c += dc;
+		if (r < 0 || r >= n || c < 0 || c >= n) {
+			break;
+		}
+		const Piece* d = _data[r][c];
+		if (d != nullptr && d->GetColour() == pieceColour) {
+			break;
+		}
+
+		result.emplace_back(r, c);
+
+		if (d != nullptr && d->GetColour() != pieceColour) {
+			break;
+		}
+	}
+	return result;
+}
+
+void MakaDaiDaiShogiBoard::GetAllPossibleMoves(int startR, int startC, bool diagonal)
+{
+	std::vector<std::pair<int, int>> directions;
+	if (diagonal)
+	{
+		directions.emplace_back(-1, -1);
+		directions.emplace_back(-1, +1);
+		directions.emplace_back(+1, -1);
+		directions.emplace_back(+1, +1);
+	}
+	else
+	{
+		directions.emplace_back(+0, -1);
+		directions.emplace_back(+0, +1);
+		directions.emplace_back(-1, +0);
+		directions.emplace_back(+1, +0);
+	}
+
+	std::set<std::pair<int, int>> reachable;
+
+	// We consider up to two diagonal segments:
+	//   (Segment1) in direction d1
+	//   (Segment2) in direction d2 (which may be the same as d1 or different)
+
+	const PieceColour pieceColour = _data[startR][startC] != nullptr ? _data[startR][startC]->GetColour() : White;
+
+	for (const auto& d1 : directions) {
+		constexpr int BOARD_SIZE = 19;
+		// All squares we can reach in the first segment (in direction d1).
+		auto firstSegment = GetRay(startR, startC, d1.first, d1.second, BOARD_SIZE, pieceColour);
+
+		{
+			for (const auto& d2 : directions) {
+				auto secondSegment = GetRay(startR, startC, d2.first, d2.second, BOARD_SIZE, pieceColour);
+				for (auto& sq2 : secondSegment) {
+					reachable.insert(sq2);
+				}
+			}
+		}
+
+		for (const auto& sq1 : firstSegment) {
+			int r1 = sq1.first;
+			int c1 = sq1.second;
+
+			reachable.insert({ r1, c1 });
+
+			if (_data[r1][c1] != nullptr) {
+				continue;  // skip second segment
+			}
+
+			for (const auto& d2 : directions) {
+				auto secondSegment = GetRay(r1, c1, d2.first, d2.second, BOARD_SIZE, pieceColour);
+				for (auto& sq2 : secondSegment) {
+					reachable.insert(sq2);
+				}
+			}
+		}
+	}
+
+	_moves.insert(_moves.end(), reachable.begin(), reachable.end());
 }

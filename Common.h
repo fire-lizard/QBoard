@@ -33,41 +33,33 @@ enum EngineOutput
 
 enum PieceType
 {
-	None = 0, King = 1, Lion = 2, Queen = 3, DragonKing = 4, DragonHorse = 5, Rook = 6, Bishop = 7, Knight = 8,
-	VerticalMover = 9, SideMover = 10, ReverseChariot = 11, Lance = 12, Kylin = 13, Phoenix = 14, Elephant = 15, Prince = 16,
-	Tiger = 17, Gold = 18, Silver = 19, Copper = 20, Leopard = 21, GoBetween = 22, Pawn = 23,
-	Eagle = 24, Unicorn = 25, FlyingOx = 26, FreeBoar = 27, FlyingStag = 28, WhiteHorse = 29, Whale = 30,
+	None, King, Lion, Queen, DragonKing, DragonHorse, Rook, Bishop, Knight, VerticalMover, SideMover, ReverseChariot, Lance, Kylin, Phoenix,
+	Elephant, Prince, Tiger, Gold, Silver, Copper, Leopard, GoBetween, Pawn, Eagle, Unicorn, FlyingOx, FreeBoar, FlyingStag, WhiteHorse, Whale,
 	// Promoted Shogi pieces
-	PromotedLance = 31, PromotedKnight = 32, PromotedSilver = 33, Tokin = 34,
+	PromotedLance, PromotedKnight, PromotedSilver, Tokin,
 	// Dai Shogi pieces
-	ViolentOx = 35, FlyingDragon = 36, AngryBoar = 37, CatSword = 38, EvilWolf = 39, Iron = 40, Stone = 41,
+	ViolentOx, FlyingDragon, AngryBoar, CatSword, EvilWolf, Iron, Stone,
 	// Wa Shogi pieces
-	PloddingOx = 42, LiberatedHorse = 43, HeavenlyHorse = 44, SwoopingOwl = 45, CloudEagle = 46,
-	StruttingCrow = 47, FlyingFalcon = 48, FlyingCock = 49, RaidingFalcon = 50, FlyingGoose = 51,
-	ClimbingMonkey = 52, Dog = 53, BearEyes = 54, RunningRabbit = 55, TreacherousFox = 56, TenaciousFalcon = 57,
+	PloddingOx, LiberatedHorse, HeavenlyHorse, SwoopingOwl, CloudEagle, StruttingCrow, FlyingFalcon, FlyingCock, RaidingFalcon, FlyingGoose,
+	ClimbingMonkey, Dog, BearEyes, RunningRabbit, TreacherousFox, TenaciousFalcon,
 	// Tenjiku Shogi pieces
-	ViceGeneral = 58, GreatGeneral = 59, BishopGeneral = 60, RookGeneral = 61, MultiGeneral = 62,
-	FreeEagle = 63, LionHawk = 64, SideSoldier = 65, VerticalSoldier = 66, ChariotSoldier = 67, WaterBuffalo = 68,
-	HeavenlyTetrarch = 69, FireDemon = 70,
+	ViceGeneral, GreatGeneral, BishopGeneral, RookGeneral, MultiGeneral, FreeEagle, LionHawk, SideSoldier, VerticalSoldier, ChariotSoldier,
+	WaterBuffalo, HeavenlyTetrarch, FireDemon,
 	// Dai Dai Shogi Pieces
-	BlindMonkey = 71, BlueDragon = 72, Dove = 73, EasternBarbarian = 74, WesternBarbarian = 75, SouthernBarbarian = 76, NorthernBarbarian = 77,
-	EnchantedBadger = 78, EnchantedFox = 79, FragrantElephant = 80, FreeDemon = 81, FreeDreamEater = 82, FuriousFiend = 83, GoldenBird = 84,
-	GreatElephant = 85, HowlingDog = 86, LeftGeneral = 87, RightGeneral = 88, Tengu = 89, NeighboringKing = 90, OldKite = 91, PoisonousSnake = 92,
-	PrancingStag = 93, RacingChariot = 94, RushingBird = 95, SavageTiger = 96, Yaksha = 97, SquareMover = 98, StandardBearer = 99,
-	ViolentBear = 100, WhiteElephant = 101, WhiteTiger = 102, Wood = 103, FlyingHorse = 104,
+	BlindMonkey, BlueDragon, Dove, EasternBarbarian, WesternBarbarian, SouthernBarbarian, NorthernBarbarian, EnchantedBadger, EnchantedFox,
+	FragrantElephant, FreeDemon, FreeDreamEater, FuriousFiend, GoldenBird, GreatElephant, HowlingDog, LeftGeneral, RightGeneral, Tengu,
+	NeighboringKing, OldKite, PoisonousSnake, PrancingStag, RacingChariot, RushingBird, SavageTiger, Yaksha, SquareMover, StandardBearer,
+	ViolentBear, WhiteElephant, WhiteTiger, Wood, FlyingHorse,
 	// Maka Dai Dai Shogi Pieces
-	GreatDragon = 105, MountainWitch = 106, WizardStork = 107, LionDog = 108, Deva = 109, DarkSpirit = 110, Tile = 111, Earth = 112,
-	CoiledSerpent = 113, RecliningDragon = 114, ChineseCock = 115, OldMonkey = 116, BlindBear = 117, Wrestler = 118, Guardian = 119,
-	BuddhistSpirit = 120, OldRat = 121, Donkey = 122, Capricorn = 123, HookMover = 124, SideFlier = 125, LeftChariot = 126, RightChariot = 127,
-	Emperor = 128, TeachingKing = 129, FreeGold = 130, FreeSilver = 131, FreeCopper = 132, FreeIron = 133, FreeTile = 134, FreeStone = 135,
-	FreeEarth = 136, FreeGo = 137, FreeTiger = 138, FreeLeopard = 139, FreeSerpent = 140, FreeDragon = 141, FreeWolf = 142, FreeCat = 143,
-	FreeBear = 144, Bat = 145, BuddhistDevil = 146,
+	GreatDragon, MountainWitch, WizardStork, LionDog, Deva, DarkSpirit, Tile, Earth, CoiledSerpent, RecliningDragon, ChineseCock, BuddhistDevil,
+	OldMonkey, BlindBear, Wrestler, Guardian, BuddhistSpirit, OldRat, Donkey, Capricorn, HookMover, SideFlier, LeftChariot, RightChariot, Emperor,
+	TeachingKing, FreeGold, FreeSilver, FreeCopper, FreeIron, FreeTile, FreeStone, FreeEarth, FreeGo, FreeTiger, FreeLeopard, FreeSerpent,
+	FreeDragon, FreeWolf, FreeCat, FreeBear, Bat,
 	// Ko Shogi Pieces
-	MiddleTroop = 147, Drum = 148, Thunderclap = 149, Flag = 150, RoamingAssault = 151, CompanyCommander = 152, ViceCommissioner = 153,
-	PoisonFlame = 154, DoubleKylin = 155, DoublePhoenix = 156, TaoistPriest = 157, SpiritualMonk = 158, ExtensiveFog = 159, HolyLight = 160,
-	AdvanceGuard = 161, RearGuard = 162, SkywardNet = 163, EarthwardNet = 164, RisingDragon = 165, Quartermaster = 166, WingedTiger = 167,
-	FlyingHawk = 168, Longbow = 169, LongbowKnight = 170, Crossbow = 171, CrossbowKnight = 172, Cannon = 173, CannonCarriage = 174,
-	FrankishCannon = 175, DivineCarriage = 176, KnightCaptain = 177, WingedHorse = 178, ShieldCaptain = 179, Chariot = 180, Vanguard = 181
+	MiddleTroop, Drum, Thunderclap, Flag, RoamingAssault, CompanyCommander, ViceCommissioner, PoisonFlame, DoubleKylin, DoublePhoenix, TaoistPriest,
+	SpiritualMonk, ExtensiveFog, HolyLight, AdvanceGuard, RearGuard, SkywardNet, EarthwardNet, RisingDragon, Quartermaster, WingedTiger, FlyingHawk,
+	Longbow, LongbowKnight, Crossbow, CrossbowKnight, Cannon, CannonCarriage, FrankishCannon, DivineCarriage, KnightCaptain, WingedHorse, ShieldCaptain,
+	Chariot, Vanguard
 };
 
 enum Direction
