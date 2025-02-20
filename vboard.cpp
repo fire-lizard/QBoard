@@ -309,16 +309,22 @@ void VBoard::FinishMove()
 	_oldY = -1;
 	_moves.clear();
 	_lionMovedOnce = false;
+	_lionMovedTwice = false;
 	_lionFirstMove.first = -1;
 	_lionFirstMove.second = -1;
+	_lionSecondMove.first = -1;
+	_lionSecondMove.second = -1;
 	this->repaint();
 }
 
 void VBoard::CancelLionMove()
 {
 	_lionMovedOnce = false;
+	_lionMovedTwice = false;
 	_lionFirstMove.first = -1;
 	_lionFirstMove.second = -1;
+	_lionSecondMove.first = -1;
+	_lionSecondMove.second = -1;
 }
 
 void VBoard::mousePressEvent(QMouseEvent* event)

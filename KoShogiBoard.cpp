@@ -60,6 +60,83 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x - 1, y);
 		break;
+	case MiddleTroop:
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x - 1, y - 1);
+		break;
+	case Drum:
+	case Flag:
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x - 1, y - 1);
+		break;
+	case CompanyCommander:
+		CheckDirection(piece, x, y, West);
+		CheckDirection(piece, x, y, East);
+
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y - 1);
+		break;
+	case ViceCommissioner:
+		CheckDirection(piece, x, y, NorthEast);
+		CheckDirection(piece, x, y, NorthWest);
+		CheckDirection(piece, x, y, SouthEast);
+		CheckDirection(piece, x, y, SouthWest);
+		if (piece->GetColour() == White)
+		{
+			CheckDirection(piece, x, y, South);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, North);
+		}
+		break;
+	case AdvanceGuard:
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, North);
+			CheckMove(piece, x, y - 1);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, South);
+			CheckMove(piece, x, y + 1);
+		}
+		break;
+	case RearGuard:
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, South);
+			CheckMove(piece, x, y + 1);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, North);
+			CheckMove(piece, x, y - 1);
+		}
+		break;
+	case ShieldCaptain:
+		CheckDirection(piece, x, y, West);
+		CheckDirection(piece, x, y, East);
+
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y - 1);
+		break;
 	default:
 		DaiShogiBoard::GetMoves(piece, x, y);
 		break;

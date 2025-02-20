@@ -132,6 +132,16 @@ void DaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 			CheckMove(piece, x + 1, y - 1);
 		}
 		break;
+	case WaterBuffalo:
+		CheckDirection(piece, x, y, SouthWest);
+		CheckDirection(piece, x, y, SouthEast);
+		CheckDirection(piece, x, y, NorthWest);
+		CheckDirection(piece, x, y, NorthEast);
+		CheckDirection(piece, x, y, West);
+		CheckDirection(piece, x, y, East);
+		CheckDirection(piece, x, y, North, 2);
+		CheckDirection(piece, x, y, South, 2);
+		break;
 	default:
 		ChuShogiBoard::GetMoves(piece, x, y);
 		break;

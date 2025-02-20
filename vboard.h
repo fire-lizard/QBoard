@@ -100,7 +100,9 @@ private:
 	PieceType _chosenPiece = None;
 	bool _editorMode = false;
 	bool _lionMovedOnce = false;
-	std::pair<int, int> _lionFirstMove = {-1, -1};
+	bool _lionMovedTwice = false;
+	std::pair<int, int> _lionFirstMove = { -1, -1 };
+	std::pair<int, int> _lionSecondMove = { -1, -1 };
 
 signals:
 

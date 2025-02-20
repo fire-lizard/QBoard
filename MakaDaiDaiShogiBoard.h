@@ -15,8 +15,10 @@ public:
 	void GetMoves(Piece* piece, int x, int y) override;
 	bool TripleMove(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
 
-private:
+protected:
 	void GetAllPossibleMoves(int startR, int startC, bool diagonal);
+
+private:
 	std::vector<std::pair<int, int>> GetRay(int startR, int startC, int dr, int dc, int n, PieceColour pieceColour) const;
 
 	PieceType _initialSetup[19][19] = {

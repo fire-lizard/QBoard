@@ -267,16 +267,6 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, East, 2);
 		CheckDirection(piece, x, y, West, 2);
 		break;
-	case WaterBuffalo:
-		CheckDirection(piece, x, y, SouthWest);
-		CheckDirection(piece, x, y, SouthEast);
-		CheckDirection(piece, x, y, NorthWest);
-		CheckDirection(piece, x, y, NorthEast);
-		CheckDirection(piece, x, y, West);
-		CheckDirection(piece, x, y, East);
-		CheckDirection(piece, x, y, North, 2);
-		CheckDirection(piece, x, y, South, 2);
-		break;
 	case LionHawk:
 		CheckMove(piece, x + 1, y + 1);
 		CheckMove(piece, x + 1, y);
