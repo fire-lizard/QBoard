@@ -725,19 +725,21 @@ bool MakaDaiDaiShogiBoard::TripleMove(int x1, int y1, int x2, int y2, int x3, in
 {
 	if ((x1 == x4 && y1 == y4) || std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x4 && t.second == y4; }))
 	{
-		if (_data[x2][y2] != nullptr)
+		if (x1 != x2 || y1 != y2)
 		{
-			delete _data[x2][y2];
-			_data[x2][y2] = nullptr;
+			if (_data[x2][y2] != nullptr)
+			{
+				delete _data[x2][y2];
+				_data[x2][y2] = nullptr;
+			}
 		}
 		if (x1 != x3 || y1 != y3)
 		{
 			if (_data[x3][y3] != nullptr)
 			{
 				delete _data[x3][y3];
+				_data[x3][y3] = nullptr;
 			}
-			_data[x3][y3] = _data[x1][y1];
-			_data[x1][y1] = nullptr;
 		}
 		if (x1 != x4 || y1 != y4)
 		{

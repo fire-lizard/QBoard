@@ -87,20 +87,13 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 		if (piece->GetColour() == Black)
 		{
 			CheckDirection(piece, x, y, North);
+			CheckDirection(piece, x, y, South, 2);
 			CheckMove(piece, x, y - 1);
-			if (_data[x][y - 1] == nullptr)
-			{
-				CheckMove(piece, x, y - 2);
-			}
 		}
 		else
 		{
 			CheckDirection(piece, x, y, South);
-			CheckMove(piece, x, y + 1);
-			if (_data[x][y + 1] == nullptr)
-			{
-				CheckMove(piece, x, y + 2);
-			}
+			CheckDirection(piece, x, y, North, 2);
 		}
 		break;
 	case HeavenlyHorse:
@@ -135,41 +128,13 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x + 1, y + 1);
 		if (piece->GetColour() == Black)
 		{
-			if (_data[x - 1][y - 1] == nullptr)
-			{
-				CheckMove(piece, x - 2, y - 2);
-			}
-			if (_data[x + 1][y - 1] == nullptr)
-			{
-				CheckMove(piece, x + 2, y - 2);
-			}
-			if (_data[x - 1][y - 1] == nullptr && _data[x - 2][y - 2] == nullptr)
-			{
-				CheckMove(piece, x - 3, y - 3);
-			}
-			if (_data[x + 1][y - 1] == nullptr && _data[x + 2][y - 2] == nullptr)
-			{
-				CheckMove(piece, x + 3, y - 3);
-			}
+			CheckDirection(piece, x, y, NorthWest, 3);
+			CheckDirection(piece, x, y, NorthEast, 3);
 		}
 		else
 		{
-			if (_data[x - 1][y + 1] == nullptr)
-			{
-				CheckMove(piece, x - 2, y + 2);
-			}
-			if (_data[x + 1][y + 1] == nullptr)
-			{
-				CheckMove(piece, x + 2, y + 2);
-			}
-			if (_data[x - 1][y + 1] == nullptr && _data[x - 2][y + 2] == nullptr)
-			{
-				CheckMove(piece, x - 3, y + 3);
-			}
-			if (_data[x + 1][y + 1] == nullptr && _data[x + 2][y + 2] == nullptr)
-			{
-				CheckMove(piece, x + 3, y + 3);
-			}
+			CheckDirection(piece, x, y, SouthWest, 3);
+			CheckDirection(piece, x, y, SouthEast, 3);
 		}
 		break;
 	case FlyingFalcon:

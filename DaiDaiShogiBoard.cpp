@@ -62,43 +62,319 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x - 1, y);
 		break;
+	case GreatElephant:
+		CheckDirection(piece, x, y, North);
+		CheckDirection(piece, x, y, South);
+		CheckDirection(piece, x, y, West);
+		CheckDirection(piece, x, y, East);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, SouthWest);
+			CheckDirection(piece, x, y, SouthEast);
+			CheckDirection(piece, x, y, NorthWest, 3);
+			CheckDirection(piece, x, y, NorthEast, 3);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, SouthWest, 3);
+			CheckDirection(piece, x, y, SouthEast, 3);
+			CheckDirection(piece, x, y, NorthWest);
+			CheckDirection(piece, x, y, NorthEast);
+		}
+		break;
 	case OldKite:
+		CheckDirection(piece, x, y, North, 2);
+		CheckDirection(piece, x, y, South, 2);
+		CheckDirection(piece, x, y, West, 2);
+		CheckDirection(piece, x, y, East, 2);
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x + 1, y + 1);
+			CheckMove(piece, x - 1, y + 1);
+		}
+		else
+		{
+			CheckMove(piece, x + 1, y - 1);
+			CheckMove(piece, x - 1, y - 1);
+		}
 		break;
 	case PoisonousSnake:
-		break;
-	case GreatElephant:
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x - 1, y);
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x, y + 2);
+			CheckMove(piece, x + 2, y - 2);
+			CheckMove(piece, x - 2, y - 2);
+		}
+		else
+		{
+			CheckMove(piece, x, y - 2);
+			CheckMove(piece, x + 2, y + 2);
+			CheckMove(piece, x - 2, y + 2);
+		}
 		break;
 	case WesternBarbarian:
+		CheckDirection(piece, x, y, West, 2);
+		CheckDirection(piece, x, y, East, 2);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x, y + 1);
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
+		}
+		else
+		{
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y - 1);
+		}
 		break;
 	case EasternBarbarian:
+		CheckDirection(piece, x, y, North, 2);
+		CheckDirection(piece, x, y, South, 2);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x - 1, y);
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
+		}
+		else
+		{
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y - 1);
+		}
 		break;
 	case NorthernBarbarian:
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x - 1, y);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, NorthEast, 2);
+			CheckDirection(piece, x, y, NorthWest, 2);
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y - 1);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, SouthEast, 2);
+			CheckDirection(piece, x, y, SouthWest, 2);
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
+		}
 		break;
 	case SouthernBarbarian:
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x - 1, y);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, SouthEast, 2);
+			CheckDirection(piece, x, y, SouthWest, 2);
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, NorthEast, 2);
+			CheckDirection(piece, x, y, NorthWest, 2);
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y - 1);
+		}
 		break;
 	case FragrantElephant:
+		CheckDirection(piece, x, y, West, 2);
+		CheckDirection(piece, x, y, East, 2);
+		CheckDirection(piece, x, y, North, 2);
+		CheckDirection(piece, x, y, South, 2);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, NorthWest);
+			CheckDirection(piece, x, y, NorthEast);
+			CheckDirection(piece, x, y, SouthWest, 2);
+			CheckDirection(piece, x, y, SouthEast, 2);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, SouthWest);
+			CheckDirection(piece, x, y, SouthEast);
+			CheckDirection(piece, x, y, NorthWest, 2);
+			CheckDirection(piece, x, y, NorthEast, 2);
+		}
 		break;
 	case WhiteElephant:
+		CheckDirection(piece, x, y, West, 2);
+		CheckDirection(piece, x, y, East, 2);
+		CheckDirection(piece, x, y, North, 2);
+		CheckDirection(piece, x, y, South, 2);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, NorthWest, 2);
+			CheckDirection(piece, x, y, NorthEast, 2);
+			CheckDirection(piece, x, y, SouthWest);
+			CheckDirection(piece, x, y, SouthEast);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, SouthWest, 2);
+			CheckDirection(piece, x, y, SouthEast, 2);
+			CheckDirection(piece, x, y, NorthWest);
+			CheckDirection(piece, x, y, NorthEast);
+		}
 		break;
 	case StandardBearer:
+		CheckDirection(piece, x, y, West, 2);
+		CheckDirection(piece, x, y, East, 2);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, North);
+			CheckDirection(piece, x, y, NorthWest);
+			CheckDirection(piece, x, y, NorthEast);
+			CheckDirection(piece, x, y, South, 2);
+			CheckDirection(piece, x, y, SouthWest, 2);
+			CheckDirection(piece, x, y, SouthEast, 2);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, South);
+			CheckDirection(piece, x, y, SouthWest);
+			CheckDirection(piece, x, y, SouthEast);
+			CheckDirection(piece, x, y, North, 2);
+			CheckDirection(piece, x, y, NorthWest, 2);
+			CheckDirection(piece, x, y, NorthEast, 2);
+		}
 		break;
 	case FlyingHorse:
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x - 1, y);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, NorthWest, 2);
+			CheckDirection(piece, x, y, NorthEast, 2);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, SouthWest, 2);
+			CheckDirection(piece, x, y, SouthEast, 2);
+		}
 		break;
 	case EnchantedBadger:
+		CheckDirection(piece, x, y, West, 2);
+		CheckDirection(piece, x, y, East, 2);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, North, 2);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, South, 2);
+		}
 		break;
 	case EnchantedFox:
+		CheckDirection(piece, x, y, West, 2);
+		CheckDirection(piece, x, y, East, 2);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, South, 2);
+			CheckDirection(piece, x, y, NorthWest, 2);
+			CheckDirection(piece, x, y, NorthEast, 2);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, North, 2);
+			CheckDirection(piece, x, y, SouthWest, 2);
+			CheckDirection(piece, x, y, SouthEast, 2);
+		}
 		break;
 	case PrancingStag:
+		CheckDirection(piece, x, y, West, 2);
+		CheckDirection(piece, x, y, East, 2);
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y - 1);
+		if (piece->GetColour() == Black)
+		{
+			CheckMove(piece, x, y + 1);
+		}
+		else
+		{
+			CheckMove(piece, x, y - 1);
+		}
 		break;
 	case WhiteTiger:
+		CheckDirection(piece, x, y, West, 2);
+		CheckDirection(piece, x, y, East, 2);
+		CheckDirection(piece, x, y, North);
+		CheckDirection(piece, x, y, South);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, NorthEast);
+			CheckMove(piece, x - 1, y + 1);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, SouthWest);
+			CheckMove(piece, x + 1, y - 1);
+		}
 		break;
 	case BlueDragon:
+		CheckDirection(piece, x, y, West);
+		CheckDirection(piece, x, y, East);
+		CheckDirection(piece, x, y, North, 2);
+		CheckDirection(piece, x, y, South, 2);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, NorthWest);
+			CheckMove(piece, x + 1, y + 1);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, SouthEast);
+			CheckMove(piece, x - 1, y - 1);
+		}
 		break;
 	case ViolentBear:
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x - 1, y);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, NorthEast, 2);
+			CheckDirection(piece, x, y, NorthWest, 2);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, SouthEast, 2);
+			CheckDirection(piece, x, y, SouthWest, 2);
+		}
 		break;
 	case SavageTiger:
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x - 1, y);
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, South, 2);
+			CheckMove(piece, x, y + 1);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, North, 2);
+			CheckMove(piece, x, y - 1);
+		}
 		break;
 	case Wood:
+		if (piece->GetColour() == Black)
+		{
+			CheckDirection(piece, x, y, NorthWest, 2);
+			CheckDirection(piece, x, y, NorthEast, 2);
+		}
+		else
+		{
+			CheckDirection(piece, x, y, SouthWest, 2);
+			CheckDirection(piece, x, y, SouthEast, 2);
+		}
 		break;
 	case FreeDreamEater:
 		CheckDirection(piece, x, y, NorthWest);

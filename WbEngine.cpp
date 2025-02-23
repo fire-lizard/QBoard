@@ -96,6 +96,13 @@ void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char 
 	WriteToProcess("\n");
 }
 
+void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, signed char x3, signed char y3, signed char x4, signed char y4)
+{
+	_textEdit->setText("");
+	WriteToProcess(AddMove(x1, y1, x2, y2, x3, y3, x4, y4));
+	WriteToProcess("\n");
+}
+
 QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	QByteArray moveStr;

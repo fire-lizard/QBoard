@@ -74,14 +74,14 @@ void VBoard::paintEvent(QPaintEvent *)
 			{
 				if (_currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->GetType()) != std::end(lionPieces))
 				{
-					if (((abs(_oldX - i) == 1 || abs(_oldX - i) == 2 || abs(_oldY - j) == 1 || abs(_oldY - j) == 2 || abs(_oldX - i) == 3 || abs(_oldY - j) == 3) &&
-						(_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk || _currentPiece->GetType() == LionDog ||
-							_currentPiece->GetType() == FuriousFiend || _currentPiece->GetType() == BuddhistSpirit ||
-							_currentPiece->GetType() == TeachingKing)) ||
-						(abs(_oldX - i) == 2 && _oldY - j == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
-						(abs(_oldX - i) == 2 && _oldY - j == -2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == Black) ||
-						(_oldX == i && _oldY - j == 2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == White) ||
-						(_oldX == i && _oldY - j == -2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == Black))
+					// Lion move highlighting
+					if ((_lionFirstMove.first == i && _lionFirstMove.second == j) || (_lionSecondMove.first == i && _lionSecondMove.second == j))
+					{
+						painter.setBrush(QColorConstants::Svg::lightyellow);
+						painter.drawRect(rect);
+						painter.setBrush(Qt::NoBrush);
+					}
+					else if (IsLionMove(_currentPiece, i, j))
 					{
 						if (_board->GetData(i, j) != nullptr)
 						{
@@ -95,13 +95,6 @@ void VBoard::paintEvent(QPaintEvent *)
 							painter.drawRect(rect);
 							painter.setBrush(Qt::NoBrush);
 						}
-					}
-					// Lion move highlighting
-					else if (_lionFirstMove.first == i && _lionFirstMove.second == j)
-					{
-						painter.setBrush(QColorConstants::Svg::lightyellow);
-						painter.drawRect(rect);
-						painter.setBrush(Qt::NoBrush);
 					}
 					else if (i == _oldX && j == _oldY)
 					{
@@ -327,6 +320,56 @@ void VBoard::CancelLionMove()
 	_lionSecondMove.second = -1;
 }
 
+bool VBoard::IsLionMove(const Piece* piece, int x, int y) const
+{
+	if (piece != nullptr)
+	{
+		if (piece->GetType() == Unicorn)
+		{
+			if ((_oldX == x && _oldY - y == 1 || _oldX == x && _oldY - y == 2) && piece->GetColour() == White ||
+				(_oldX == x && _oldY - y == -1 || _oldX == x && _oldY - y == -2) && piece->GetColour() == Black)
+			{
+				return true;
+			}
+		}
+		else if (piece->GetType() == Eagle)
+		{
+			if ((abs(_oldX - x) == 1 && _oldY - y == 1 || abs(_oldX - x) == 2 && _oldY - y == 2) && piece->GetColour() == White ||
+				(abs(_oldX - x) == 1 && _oldY - y == -1 || abs(_oldX - x) == 2 && _oldY - y == -2) && piece->GetColour() == Black)
+			{
+				return true;
+			}
+		}
+		else if (piece->GetType() == FreeEagle)
+		{
+			if (abs(_oldX - x) == 1 && abs(_oldY - y) == 1 || abs(_oldX - x) == 2 && abs(_oldY - y) == 2 ||
+				abs(_oldX - x) == 3 && abs(_oldY - y) == 3 || abs(_oldX - x) == 2 && abs(_oldY - y) == 0 ||
+				abs(_oldX - x) == 3 && abs(_oldY - y) == 0 || abs(_oldX - x) == 0 && abs(_oldY - y) == 2 ||
+				abs(_oldX - x) == 0 && abs(_oldY - y) == 3)
+			{
+				return true;
+			}
+		}
+		else if (piece->GetType() == GreatElephant)
+		{
+			if (piece->GetColour() == White && !(abs(_oldX - x) == 1 && _oldY - y == 1 || abs(_oldX - x) == 2 && _oldY - y == 2) ||
+				piece->GetColour() == Black && !(abs(_oldX - x) == 1 && _oldY - y == -1 || abs(_oldX - x) == 2 && _oldY - y == -2))
+			{
+				return abs(_oldX - x) < 3 && abs(_oldY - y) < 3;
+			}
+		}
+		else if (piece->GetType() == Lion || piece->GetType() == LionDog || piece->GetType() == FuriousFiend)
+		{
+			return true;
+		}
+		else if (piece->GetType() == LionHawk || piece->GetType() == TeachingKing || piece->GetType() == BuddhistSpirit)
+		{
+			return abs(_oldX - x) < 3 && abs(_oldY - y) < 3;
+		}
+	}
+	return false;
+}
+
 void VBoard::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() != Qt::MouseButton::LeftButton) return;
@@ -372,9 +415,10 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		dynamic_cast<ChessBoard*>(_board)->WriteCastling(x == 7 ? "O-O" : "O-O-O");
 		FinishMove();
 	}
-	else if ((_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi) && _currentPiece != nullptr &&
-		(isLionPiece || _currentPiece->GetType() == ViceGeneral || _currentPiece->GetType() == FireDemon || _currentPiece->GetType() == HeavenlyTetrarch) &&
-		p != nullptr && p->GetColour() == _currentPlayer && x == _oldX && y == _oldY && !_lionMovedOnce)
+	else if ((_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||
+		_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi) &&
+		_currentPiece != nullptr && p != nullptr && p->GetColour() == _currentPlayer && x == _oldX && y == _oldY && !_lionMovedOnce &&
+		(isLionPiece || _currentPiece->GetType() == ViceGeneral || _currentPiece->GetType() == FireDemon || _currentPiece->GetType() == HeavenlyTetrarch))
 	{
 		if (_board->IsMovePossible(x, y) && !CheckRepetition(_oldX, _oldY, x, y))
 		{
@@ -414,7 +458,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove();
 				}
 			}
-			else if ((abs(_oldX - x) > 1 || abs(_oldY - y) > 1) &&
+			else if ((abs(_oldX - x) >= 3 || abs(_oldY - y) >= 3) &&
 				(_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
 					_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == TeachingKing))
 			{
@@ -460,6 +504,24 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				_lionFirstMove.first = x;
 				_lionFirstMove.second = y;
 				_lionMovedOnce = true;
+				for (int index = _moves.size() - 1; index >= 0; index--)
+				{
+					if (_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
+						_currentPiece->GetType() == TeachingKing || _currentPiece->GetType() == GreatElephant)
+					{
+						if (abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+					else if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk || _currentPiece->GetType() == BuddhistSpirit)
+					{
+						if (abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+				}
 				this->repaint();
 			}
 		}
@@ -480,7 +542,48 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			else if (_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
 				_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == TeachingKing)
 			{
-				//
+				if (_lionMovedTwice)
+				{
+					if (dynamic_cast<MakaDaiDaiShogiBoard*>(_board)->TripleMove(_oldX, _oldY,
+						_lionFirstMove.first, _lionFirstMove.second,
+						_lionSecondMove.first, _lionSecondMove.second, x, y))
+					{
+						if (engine != nullptr && engine->IsActive())
+						{
+							std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
+								_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second,
+								   _lionSecondMove.first, _board->GetHeight() - _lionSecondMove.second,
+								x, _board->GetHeight() - y);
+						}
+						FinishMove();
+					}
+				}
+				else if (abs(_oldX - x) == 2 || abs(_oldY - y) == 2)
+				{
+					if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
+					{
+						if (engine != nullptr && engine->IsActive())
+						{
+							std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
+						}
+						EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
+						FinishMove();
+					}
+				}
+				else
+				{
+					_lionMovedTwice = true;
+					_lionSecondMove.first = x;
+					_lionSecondMove.second = y;
+					for (int index = _moves.size() - 1; index >= 0; index--)
+					{
+						if (abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+					this->repaint();
+				}
 			}
 		}
 		else if (_board->Move(_oldX, _oldY, x, y))
@@ -640,6 +743,20 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			if (_board->GetData(x, y) != nullptr)
 			{
 				EngineOutputHandler::AddMove(_board, _gameVariant, promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None ? 'x' : ' ');
+			}
+			FinishMove();
+		}
+	}
+	else if (x == _oldX && y == _oldY && _lionMovedTwice)
+	{
+		if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
+		{
+			if (engine != nullptr && engine->IsActive())
+			{
+				std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
+					_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second,
+					_lionSecondMove.first, _board->GetHeight() - _lionSecondMove.second,
+					x, _board->GetHeight() - y);
 			}
 			FinishMove();
 		}

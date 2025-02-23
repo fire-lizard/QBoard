@@ -88,11 +88,6 @@ void MakaDaiDaiShogiPiece::Promote(PieceType pieceType)
 	case OldRat:
 		_pieceType = Bat;
 		break;
-	case Queen:
-	case DragonKing:
-	case DragonHorse:
-		_isPromoted = false;
-		break;
 	case Lance:
 	case ReverseChariot:
 	case LionDog:

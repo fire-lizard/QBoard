@@ -101,9 +101,6 @@ void KoShogiPiece::Promote(PieceType pieceType)
 	case Vanguard:
 		_pieceType = FlyingOx;
 		break;
-	case Lion:
-		_isPromoted = false;
-		break;
 	default:
 		DaiShogiPiece::Promote(pieceType);
 		break;

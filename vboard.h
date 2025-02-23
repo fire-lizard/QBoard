@@ -1,28 +1,21 @@
 #pragma once
-#include <QWidget>
 #include <QMenu>
-#include <QMessageBox>
 #include <QStatusBar>
 #include <QPainter>
 #include <QMouseEvent>
-#include <QTextEdit>
 #include "mainwindow.h"
 #include "ChuShogiBoard.h"
 #include "DaiShogiBoard.h"
 #include "DaiDaiShogiBoard.h"
-#include "MakaDaiDaiShogiBoard.h"
 #include "KoShogiBoard.h"
 #include "ChessBoard.h"
 #include "XiangqiBoard.h"
 #include "ShogiVariantBoard.h"
-#include "ShogiBoard.h"
 #include "MiniShogiBoard.h"
 #include "JudkinShogiBoard.h"
 #include "WaShogiBoard.h"
 #include "TenjikuShogiBoard.h"
-#include "ShatranjBoard.h"
 #include "MakrukBoard.h"
-#include "XiangqiPiece.h"
 #include "promotiondialog.h"
 #include "EngineOutputHandler.h"
 #include "Logger.h"
@@ -65,6 +58,7 @@ private:
 	bool PossibleMove(int x, int y) const;
 	void FinishMove();
 	void CancelLionMove();
+	bool IsLionMove(const Piece* piece, int x, int y) const;
 
 	Board *_board;
 	Board *_editorBoard = nullptr;
