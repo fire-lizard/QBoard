@@ -14,5 +14,6 @@ public:
 	static PieceType FromStringCode(const std::string& code);
 	static std::string PieceType2Description(PieceType pieceType);
 	static PieceType Description2PieceType(const std::string& description);
+	void Demote();
 };
 

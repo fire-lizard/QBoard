@@ -388,42 +388,51 @@ PieceType KoShogiPiece::Description2PieceType(const std::string& description)
 	if (description == "Clerk")         return Kylin;
 	if (description == "Cavalryman")    return Knight;
 	if (description == "Pawn")			return Pawn;
-	if (description == "Middle Troop")        return MiddleTroop;
-	if (description == "Drum")               return Drum;
-	if (description == "Thunderclap")        return Thunderclap;
-	if (description == "Flag")             return Flag;
-	if (description == "Roaming Assault")          return RoamingAssault;
-	if (description == "Company Commander")     return CompanyCommander;
-	if (description == "Vice Commissioner")      return ViceCommissioner;
+	if (description == "Middle Troop")  return MiddleTroop;
+	if (description == "Drum")          return Drum;
+	if (description == "Thunderclap")   return Thunderclap;
+	if (description == "Flag")          return Flag;
+	if (description == "Roaming Assault")     return RoamingAssault;
+	if (description == "Company Commander")   return CompanyCommander;
+	if (description == "Vice Commissioner")   return ViceCommissioner;
 	if (description == "Poison Flame")        return PoisonFlame;
 	if (description == "Wrestler")			  return Lion;
-	if (description == "Master at Arms")        return DoubleKylin;
-	if (description == "Flag and Drum")      return DoublePhoenix;
+	if (description == "Master at Arms")      return DoubleKylin;
+	if (description == "Flag and Drum")       return DoublePhoenix;
 	if (description == "Taoist Priest")       return TaoistPriest;
 	if (description == "Spiritual Monk")      return SpiritualMonk;
-	if (description == "Extensive Fog")          return ExtensiveFog;
-	if (description == "Holy Light")    return HolyLight;
+	if (description == "Extensive Fog")       return ExtensiveFog;
+	if (description == "Holy Light")		  return HolyLight;
 	if (description == "Advance Guard")       return AdvanceGuard;
 	if (description == "Rear Guard")          return RearGuard;
 	if (description == "Skyward Net")         return SkywardNet;
 	if (description == "Earthward Net")       return EarthwardNet;
-	if (description == "Rising Dragon")    return RisingDragon;
-	if (description == "Quartermaster")      return Quartermaster;
-	if (description == "Winged Tiger")          return WingedTiger;
-	if (description == "Flying Hawk")            return FlyingHawk;
-	if (description == "Longbow")            return Longbow;
-	if (description == "Longbow Knight")  return LongbowKnight;
-	if (description == "Crossbow")           return Crossbow;
-	if (description == "Crossbow Knight") return CrossbowKnight;
-	if (description == "Cannon")             return Cannon;
-	if (description == "Cannon Carriage")        return CannonCarriage;
+	if (description == "Rising Dragon")       return RisingDragon;
+	if (description == "Quartermaster")       return Quartermaster;
+	if (description == "Winged Tiger")        return WingedTiger;
+	if (description == "Flying Hawk")         return FlyingHawk;
+	if (description == "Longbow")             return Longbow;
+	if (description == "Longbow Knight")      return LongbowKnight;
+	if (description == "Crossbow")            return Crossbow;
+	if (description == "Crossbow Knight")     return CrossbowKnight;
+	if (description == "Cannon")              return Cannon;
+	if (description == "Cannon Carriage")     return CannonCarriage;
 	if (description == "Frankish Cannon")     return FrankishCannon;
-	if (description == "Divine Carriage")   return DivineCarriage;
-	if (description == "Knight Captain")            return KnightCaptain;
+	if (description == "Divine Carriage")     return DivineCarriage;
+	if (description == "Knight Captain")      return KnightCaptain;
 	if (description == "Winged Horse")        return WingedHorse;
-	if (description == "Shield Captain")         return ShieldCaptain;
-	if (description == "Chariot")            return Chariot;
-	if (description == "Vanguard")           return Vanguard;
+	if (description == "Shield Captain")      return ShieldCaptain;
+	if (description == "Chariot")             return Chariot;
+	if (description == "Vanguard")            return Vanguard;
 
 	return None;
+}
+
+void KoShogiPiece::Demote()
+{
+	if (_isPromoted)
+	{
+		_isPromoted = false;
+		_pieceType = _basePieceType;
+	}
 }

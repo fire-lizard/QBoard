@@ -275,6 +275,12 @@ void VBoard::paintEvent(QPaintEvent *)
 	}
 }
 
+bool VBoard::AskForPromotion()
+{
+	return QMessageBox(QMessageBox::Question, "Promotion", "Would you like to promote this piece?",
+		QMessageBox::Yes | QMessageBox::No, this).exec() == QMessageBox::Yes;
+}
+
 void VBoard::FinishMove()
 {
 	if (_currentPlayer == White)
@@ -637,92 +643,61 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					_currentPiece->Promote();
 				}
 			}
+			else if (_gameVariant == DaiDaiShogi)
+			{
+				if (!_currentPiece->IsPromoted() && ct != None &&
+					std::find(std::begin(_unpromotablePieces), 
+						std::end(_unpromotablePieces), 
+						_currentPiece->GetType()) != std::end(_unpromotablePieces))
+				{
+					promotion = '+';
+					_currentPiece->Promote();
+				}
+			}
+			else if (_gameVariant == MakaDaiDaiShogi)
+			{
+				if (_currentPiece->GetBaseType() != King && _currentPiece->GetBaseType() != MiddleTroop &&
+					!_currentPiece->IsPromoted() && p != nullptr)
+				{
+					if (p->GetBaseType() == Deva)
+					{
+						promotion = '+';
+						_currentPiece->Promote(TeachingKing);
+					}
+					else if (p->GetBaseType() == DarkSpirit)
+					{
+						promotion = '+';
+						_currentPiece->Promote(BuddhistSpirit);
+					}
+					else if (p->IsPromoted() || AskForPromotion())
+					{
+						promotion = '+';
+						_currentPiece->Promote();
+					}
+				}
+			}
 			else if (std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) != std::end(shogiVariants))
 			{
-				if (_gameVariant == MiniShogi && !_currentPiece->IsPromoted() &&
-					_currentPiece->GetType() != King && _currentPiece->GetType() != Gold &&
-					_currentPiece->GetType() != DragonKing && _currentPiece->GetType() != DragonHorse)
+				const PieceType pt = _currentPiece->GetType();
+				const bool pcond1 = EngineOutputHandler::CanBePromoted(_currentPiece, _gameVariant, _oldY, y);
+				const bool pcond2 = (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi) &&
+					EngineOutputHandler::IsInsidePromotionZone(_gameVariant, _currentPlayer, _oldY) &&
+					EngineOutputHandler::IsInsidePromotionZone(_gameVariant, _currentPlayer, y) && ct != None;
+				const bool pcond3 = _gameVariant == ChuShogi && pt == Pawn &&
+					((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White));
+				if (pcond1 || pcond2 || pcond3)
 				{
-					if ((y == 4 && _currentPiece->GetColour() == Black) ||
-						(y == 0 && _currentPiece->GetColour() == White))
-					{
-						promotion = '+';
-					}
-				}
-				if (_gameVariant == JudkinShogi && !_currentPiece->IsPromoted() &&
-					_currentPiece->GetType() != King && _currentPiece->GetType() != Gold &&
-					_currentPiece->GetType() != DragonKing && _currentPiece->GetType() != DragonHorse)
-				{
-					if ((y == 5 && _currentPiece->GetColour() == Black) ||
-						(y == 0 && _currentPiece->GetColour() == White))
-					{
-						promotion = '+';
-					}
-				}
-				if ((_gameVariant == Shogi || _gameVariant == ShoShogi) && !_currentPiece->IsPromoted() &&
-					_currentPiece->GetType() != King && _currentPiece->GetType() != Gold &&
-					_currentPiece->GetType() != DragonKing && _currentPiece->GetType() != DragonHorse)
-				{
-					if ((y >= 6 && _currentPiece->GetColour() == Black) ||
-						(y <= 2 && _currentPiece->GetColour() == White))
-					{
-						promotion = '+';
-					}
-				}
-				if ((_gameVariant == WaShogi || _gameVariant == CrazyWa) && !_currentPiece->IsPromoted() &&
-					_currentPiece->GetType() != King && _currentPiece->GetType() != CloudEagle && _currentPiece->GetType() != TreacherousFox)
-				{
-					if ((y >= 8 && _currentPiece->GetColour() == Black) ||
-						(y <= 2 && _currentPiece->GetColour() == White))
-					{
-						promotion = '+';
-					}
-				}
-				if (_gameVariant == ChuShogi && !_currentPiece->IsPromoted() && _currentPiece->GetType() != King &&
-					_currentPiece->GetType() != Queen && _currentPiece->GetType() != Lion)
-				{
-					if ((y >= 8 && _currentPiece->GetColour() == Black) ||
-						(y <= 3 && _currentPiece->GetColour() == White))
-					{
-						promotion = '+';
-					}
-				}
-				if (_gameVariant == DaiShogi &&	!_currentPiece->IsPromoted() && _currentPiece->GetType() != King &&
-					_currentPiece->GetType() != Queen && _currentPiece->GetType() != Lion)
-				{
-					if ((y >= 10 && _currentPiece->GetColour() == Black) ||
-						(y <= 4 && _currentPiece->GetColour() == White))
-					{
-						promotion = '+';
-					}
-				}
-				if (_gameVariant == TenjikuShogi &&	!_currentPiece->IsPromoted() && _currentPiece->GetType() != King &&
-					_currentPiece->GetType() != Queen && _currentPiece->GetType() != Lion && _currentPiece->GetType() != LionHawk &&
-					_currentPiece->GetType() != ViceGeneral && _currentPiece->GetType() != GreatGeneral &&
-					_currentPiece->GetType() != FireDemon && _currentPiece->GetType() != FreeEagle)
-				{
-					if ((y >= 11 && _currentPiece->GetColour() == Black) ||
-						(y <= 4 && _currentPiece->GetColour() == White))
-					{
-						promotion = '+';
-					}
-				}
-				if (promotion == '+')
-				{
-					const PieceType pt = _currentPiece->GetType();
-					if ((pt == Pawn || pt == Knight || pt == Lance) &&
-						((y == _board->GetHeight() -1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
+					if (((pt == Pawn && _gameVariant != ChuShogi) || pt == Knight || pt == Lance) &&
+						((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
 					{
 						_currentPiece->Promote();
 					}
-					else
+					else if (!_currentPiece->IsPromoted())
 					{
-						QMessageBox mb(QMessageBox::Question, "Promotion", "Would you like to promote this piece?",
-							QMessageBox::Yes | QMessageBox::No, this);
-						const int response = mb.exec();
-						if (response == QMessageBox::Yes)
+						if (AskForPromotion())
 						{
 							_currentPiece->Promote();
+							promotion = '+';
 						}
 						else
 						{

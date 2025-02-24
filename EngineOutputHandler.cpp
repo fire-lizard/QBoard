@@ -651,3 +651,125 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 	}
 	return "";
 }
+
+bool EngineOutputHandler::IsInsidePromotionZone(GameVariant gameVariant, PieceColour pieceColour, int y)
+{
+	if (gameVariant == MiniShogi)
+	{
+		if ((y == 4 && pieceColour == Black) ||
+			(y == 0 && pieceColour == White))
+		{
+			return true;
+		}
+	}
+	if (gameVariant == JudkinShogi)
+	{
+		if ((y == 5 && pieceColour == Black) ||
+			(y == 0 && pieceColour == White))
+		{
+			return true;
+		}
+	}
+	if (gameVariant == Shogi || gameVariant == ShoShogi)
+	{
+		if ((y >= 6 && pieceColour == Black) ||
+			(y <= 2 && pieceColour == White))
+		{
+			return true;
+		}
+	}
+	if (gameVariant == WaShogi || gameVariant == CrazyWa)
+	{
+		if ((y >= 8 && pieceColour == Black) ||
+			(y <= 2 && pieceColour == White))
+		{
+			return true;
+		}
+	}
+	if (gameVariant == ChuShogi)
+	{
+		if ((y >= 8 && pieceColour == Black) ||
+			(y <= 3 && pieceColour == White))
+		{
+			return true;
+		}
+	}
+	if (gameVariant == DaiShogi)
+	{
+		if ((y >= 10 && pieceColour == Black) ||
+			(y <= 4 && pieceColour == White))
+		{
+			return true;
+		}
+	}
+	if (gameVariant == TenjikuShogi)
+	{
+		if ((y >= 11 && pieceColour == Black) ||
+			(y <= 4 && pieceColour == White))
+		{
+			return true;
+		}
+	}
+	if (gameVariant == KoShogi)
+	{
+		if ((y >= 13 && pieceColour == Black) ||
+			(y <= 5 && pieceColour == White))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool EngineOutputHandler::CanBePromoted(const Piece* piece, GameVariant gameVariant, int oldY, int newY)
+{
+	if (piece != nullptr)
+	{
+		if (gameVariant == MiniShogi && !piece->IsPromoted() &&
+			piece->GetType() != King && piece->GetType() != Gold &&
+			piece->GetType() != DragonKing && piece->GetType() != DragonHorse)
+		{
+			return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+		}
+		if (gameVariant == JudkinShogi && !piece->IsPromoted() &&
+			piece->GetType() != King && piece->GetType() != Gold &&
+			piece->GetType() != DragonKing && piece->GetType() != DragonHorse)
+		{
+			return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+		}
+		if ((gameVariant == Shogi || gameVariant == ShoShogi) && !piece->IsPromoted() &&
+			piece->GetType() != King && piece->GetType() != Gold &&
+			piece->GetType() != DragonKing && piece->GetType() != DragonHorse)
+		{
+			return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+		}
+		if ((gameVariant == WaShogi || gameVariant == CrazyWa) && !piece->IsPromoted() &&
+			piece->GetType() != King && piece->GetType() != CloudEagle && piece->GetType() != TreacherousFox)
+		{
+			return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+		}
+		if (gameVariant == ChuShogi && !piece->IsPromoted() && piece->GetType() != King &&
+			piece->GetType() != Queen && piece->GetType() != Lion)
+		{
+			return !IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) && IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+		}
+		if (gameVariant == DaiShogi && !piece->IsPromoted() && piece->GetType() != King &&
+			piece->GetType() != Queen && piece->GetType() != Lion)
+		{
+			return !IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) && IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+		}
+		if (gameVariant == TenjikuShogi && !piece->IsPromoted() && piece->GetType() != King &&
+			piece->GetType() != Queen && piece->GetType() != Lion && piece->GetType() != LionHawk &&
+			piece->GetType() != ViceGeneral && piece->GetType() != GreatGeneral &&
+			piece->GetType() != FireDemon && piece->GetType() != FreeEagle)
+		{
+			return !IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) && IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+		}
+		if (gameVariant == KoShogi && !piece->IsPromoted() && piece->GetType() != King &&
+			piece->GetType() != Lion && piece->GetType() != Bishop)
+		{
+			return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+		}
+	}
+	return false;
+}

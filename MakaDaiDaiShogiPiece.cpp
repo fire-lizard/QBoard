@@ -11,6 +11,11 @@ MakaDaiDaiShogiPiece::~MakaDaiDaiShogiPiece()
 void MakaDaiDaiShogiPiece::Promote(PieceType pieceType)
 {
 	_isPromoted = true;
+	if (pieceType != None)
+	{
+		_pieceType = pieceType;
+		return;
+	}
 	switch (_pieceType)
 	{
 	case King:
