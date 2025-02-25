@@ -213,6 +213,11 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case WingedHorse:
 		break;
 	case RoamingAssault:
+		CheckLionDirection(piece, x, y, West, 5);
+		CheckLionDirection(piece, x, y, East, 5);
+		CheckLionDirection(piece, x, y, North, 5);
+		CheckLionDirection(piece, x, y, South, 5);
+		break;
 	case CannonCarriage:
 	case DivineCarriage:
 	case Chariot:
@@ -234,6 +239,21 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 	default:
 		DaiShogiBoard::GetMoves(piece, x, y);
 		break;
+	}
+}
+
+void KoShogiBoard::CheckLionDirection(const Piece* piece, int x, int y, Direction direction, int count)
+{
+	int i = 0;
+	while (CheckDirectionAux(x, y, direction) && i < count)
+	{
+		CheckDirectionInc(x, y, direction);
+		CheckMove(piece, x, y);
+		if (_data[x][y] != nullptr && _data[x][y]->GetColour() == piece->GetColour())
+		{
+			break;
+		}
+		i++;
 	}
 }
 

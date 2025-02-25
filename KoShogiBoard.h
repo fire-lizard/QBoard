@@ -12,6 +12,7 @@ public:
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
 	void GetMoves(Piece* piece, int x, int y) override;
+	void CheckLionDirection(const Piece* piece, int x, int y, Direction direction, int count);
 
 private:
 
