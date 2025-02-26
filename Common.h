@@ -23,7 +23,7 @@ enum PieceColour
 
 enum PieceStyle
 {
-	European, Asian, Mnemonic
+	European, Asian, Asian2, Mnemonic
 };
 
 enum EngineOutput

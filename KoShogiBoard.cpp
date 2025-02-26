@@ -245,7 +245,7 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 void KoShogiBoard::CheckLionDirection(const Piece* piece, int x, int y, Direction direction, int count)
 {
 	int i = 0;
-	while (CheckDirectionAux(x, y, direction) && i < count)
+	while (InBounds(x, y, direction) && i < count)
 	{
 		CheckDirectionInc(x, y, direction);
 		CheckMove(piece, x, y);
@@ -260,7 +260,7 @@ void KoShogiBoard::CheckLionDirection(const Piece* piece, int x, int y, Directio
 /**
  * A recursive DFS function that collects all 5-step paths.
  *
- *  - board: a 19x19 grid of SquareType (EMPTY or BLACK).
+ *  - board: a 19x19 grid
  *  - r, c: current position on the board.
  *  - step: how many moves have been taken so far (0..5).
  *  - currentPath: the partial path we have so far (list of positions).
@@ -268,7 +268,7 @@ void KoShogiBoard::CheckLionDirection(const Piece* piece, int x, int y, Directio
  *
  * Once step == 5, we record the currentPath (which has 6 positions).
  */
-void dfsFiveSteps(const std::vector<std::vector<int>>& board, int r, int c, int step,
+void dfsFiveSteps(const Board* board, int r, int c, int step, PieceColour pieceColour,
 	std::vector<std::pair<int, int>>& currentPath, std::vector<std::vector<std::pair<int, int>>>& allPaths)
 {
 	constexpr int N = 19;
@@ -295,15 +295,12 @@ void dfsFiveSteps(const std::vector<std::vector<int>>& board, int r, int c, int 
 		if (nr < 0 || nr >= N || nc < 0 || nc >= N) {
 			continue;
 		}
-		// Check if the square is black
-		if (board[nr][nc] == 1) {
+		if (board->GetData(nr, nc) != nullptr && board->GetData(nr, nc)->GetColour() == pieceColour) {
 			continue; // cannot step here
 		}
 
-		// If it's EMPTY, we can step there.
 		currentPath.emplace_back(nr, nc);           // add next step
-		dfsFiveSteps(board, nr, nc, step + 1,      // recurse
-			currentPath, allPaths);
+		dfsFiveSteps(board, nr, nc, step + 1, pieceColour, currentPath, allPaths);
 		currentPath.pop_back();                    // backtrack
 	}
 }
@@ -313,7 +310,7 @@ void dfsFiveSteps(const std::vector<std::vector<int>>& board, int r, int c, int 
  * Each path is a vector of length 6 (the start square plus 5 subsequent squares).
  * The player may change direction at any step and may not step onto BLACK squares.
  */
-std::vector<std::vector<std::pair<int, int>>> getAll5StepPaths(const std::vector<std::vector<int>>& board, int startR, int startC)
+std::vector<std::vector<std::pair<int, int>>> getAll5StepPaths(const Board* board, int startR, int startC, PieceColour pieceColour)
 {
 	std::vector<std::vector<std::pair<int, int>>> allPaths;
 	// We'll keep track of the current path in a DFS.
@@ -322,8 +319,7 @@ std::vector<std::vector<std::pair<int, int>>> getAll5StepPaths(const std::vector
 	currentPath.emplace_back(startR, startC);
 
 	// Depth-limited DFS for exactly 5 steps.
-	dfsFiveSteps(board, startR, startC, /* step = */ 0,
-		currentPath, allPaths);
+	dfsFiveSteps(board, startR, startC, /* step = */ 0, pieceColour, currentPath, allPaths);
 
 	return allPaths;
 }

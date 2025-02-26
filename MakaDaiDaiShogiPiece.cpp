@@ -228,6 +228,8 @@ std::string MakaDaiDaiShogiPiece::KanjiStringCode()
 		return "右車";
 	case SideFlier:
 		return "横飛";
+	case BlindBear:
+		return "盲熊";
 	case Tile:
 		return "瓦";
 	case Earth:
@@ -274,5 +276,106 @@ std::string MakaDaiDaiShogiPiece::GetKanjiImageFileName()
 		std::string desc = PieceType2Description(_pieceType);
 		replaceSubstring(desc, " ", "");
 		return desc + colour + ".png";
+	}
+}
+
+std::string MakaDaiDaiShogiPiece::GetKanjiImageFileName2()
+{
+	std::string colour = _pieceColour == White ? "_piece_B_" : "_piece_W_";
+	colour += _isPromoted ? "prom" : "norm";
+	switch (_pieceType)
+	{
+	case Tile:
+		return "Plitochnyj_general" + colour + ".png";
+	case Earth:
+		return "Zemljanoj_general" + colour + ".png";
+	case Guardian:
+		return "Almaz" + colour + ".png";
+	case Yaksha:
+		return "Djavolica" + colour + ".png";
+	case FreeSerpent:
+		return "Svobodnaja_zmeja" + colour + ".png";
+	case FreeGo:
+		return "Svobodnyj_hodok" + colour + ".png";
+	case Emperor:
+		return "Imperator" + colour + ".png";
+	case Deva:
+		return "Deva" + colour + ".png";
+	case DarkSpirit:
+		return "Duh_nevezhestva" + colour + ".png";
+	case TeachingKing:
+		return "Uchebnyj_korol" + colour + ".png";
+	case BuddhistSpirit:
+		return "Buddijskij_duh" + colour + ".png";
+	case FreeGold:
+		return "Svobodnoe_zoloto" + colour + ".png";
+	case FreeSilver:
+		return "Svobodnoe_serebro" + colour + ".png";
+	case FreeCopper:
+		return "Svobodnaja_med" + colour + ".png";
+	case FreeIron:
+		return "Svobodnoe_zhelezo" + colour + ".png";
+	case FreeTile:
+		return "Svobodnaja_plitka" + colour + ".png";
+	case FreeStone:
+		return "Svobodnyj_kamen" + colour + ".png";
+	case FreeEarth:
+		return "Svobodnaja_zemlja" + colour + ".png";
+	case FreeTiger:
+		return "Svobodnyj_tigr" + colour + ".png";
+	case FreeLeopard:
+		return "Svobodnyj_leopard" + colour + ".png";
+	case CoiledSerpent:
+		return "Svernuvshajasja_zmeja" + colour + ".png";
+	case RecliningDragon:
+		return "Lezhashij_drakon" + colour + ".png";
+	case FreeDragon:
+		return "Svobodnyj_drakon" + colour + ".png";
+	case OldMonkey:
+		return "Staraja_obezjana" + colour + ".png";
+	case MountainWitch:
+		return "Gornaja_vedma" + colour + ".png";
+	case ChineseCock:
+		return "Kitajskij_petuh" + colour + ".png";
+	case WizardStork:
+		return "Volshebnyj_aist" + colour + ".png";
+	case FreeCat:
+		return "Svobodnaja_koshka" + colour + ".png";
+	case FuriousFiend:
+		return "JArostnoe_porozhdenie" + colour + ".png";
+	case GoldenBird:
+		return "Zolotoe_krylo" + colour + ".png";
+	case GreatDragon:
+		return "Velikij_drakon" + colour + ".png";
+	case FreeWolf:
+		return "Svobodnyj_volk" + colour + ".png";
+	case FreeBear:
+		return "Svobodnyj_medved" + colour + ".png";
+	case OldRat:
+		return "Staraja_krysa" + colour + ".png";
+	case Bat:
+		return "Letuchaja_mysh" + colour + ".png";
+	case LionDog:
+		return "Lvinaja_sobaka" + colour + ".png";
+	case Wrestler:
+		return "Borec" + colour + ".png";
+	case BuddhistDevil:
+		return "Demon" + colour + ".png";
+	case Donkey:
+		return "Osjol" + colour + ".png";
+	case Capricorn:
+		return "Kozerog" + colour + ".png";
+	case HookMover:
+		return "Krjukovoj_hodok" + colour + ".png";
+	case LeftChariot:
+		return "Levaja_kolesnica" + colour + ".png";
+	case RightChariot:
+		return "Pravaja_kolesnica" + colour + ".png";
+	case SideFlier:
+		return "Gorizontalnyj_letun" + colour + ".png";
+	case BlindBear:
+		return "Slepoj_medved" + colour + ".png";
+	default:
+		return DaiShogiPiece::GetKanjiImageFileName2();
 	}
 }

@@ -186,14 +186,51 @@ std::string ShogiPiece::GetKanjiImageFileName()
 		{
 			return colour + "CrownedBishop.png";
 		}
-		else if (_pieceType == DragonKing)
+		if (_pieceType == DragonKing)
 		{
 			return colour + "CrownedRook.png";
 		}
-		else if (_pieceType == Prince)
+		if (_pieceType == Prince)
 		{
 			return colour + "King.png";
 		}
 	}
 	return imageFileName;
+}
+
+std::string ShogiPiece::GetKanjiImageFileName2()
+{
+	std::string colour = _pieceColour == White ? "_piece_B_" : "_piece_W_";
+	colour += _isPromoted ? "prom" : "norm";
+	switch (_pieceType)
+	{
+	case King:
+		return "Korol" + colour + ".png";
+	case Prince:
+		return "Kronprinc" + colour + ".png";
+	case DragonKing:
+		return "Car_Drakon" + colour + ".png";
+	case DragonHorse:
+		return "Loshad" + colour + ".png";
+	case Rook:
+		return "Ladja" + colour + ".png";
+	case Bishop:
+		return "Slon" + colour + ".png";
+	case Lance:
+		return "Strelka" + colour + ".png";
+	case Elephant:
+		return "Pjanyj_slon" + colour + ".png";
+	case Gold:
+		return "Zolotoj_general" + colour + ".png";
+	case Tokin:
+		return "Tokin" + colour + ".png";
+	case Silver:
+		return "Serebrjanyj_general" + colour + ".png";
+	case Pawn:
+		return "Peshka" + colour + ".png";
+	case Knight:
+		return "Kon" + colour + ".png";
+	default:
+		return "";
+	}
 }

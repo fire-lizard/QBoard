@@ -14,7 +14,7 @@ VBoard::~VBoard()
 void VBoard::paintEvent(QPaintEvent *)
 {
 	QString resourcePrefix;
-	if (_pieceStyle == Asian && _gameVariant == Xiangqi)
+	if ((_pieceStyle == Asian || _pieceStyle == Asian2) && _gameVariant == Xiangqi)
 	{
 		resourcePrefix = ":/pieces_chi/images_chi/";
 	}
@@ -37,6 +37,12 @@ void VBoard::paintEvent(QPaintEvent *)
 	else if (_pieceStyle == Asian && (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi))
 	{
 		resourcePrefix = ":/pieces_tnk/images_tnk/";
+	}
+	else if (_pieceStyle == Asian2 &&
+		(_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi ||
+			_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == MakaDaiDaiShogi))
+	{
+		resourcePrefix = ":/pieces_maka2/images_maka2/";
 	}
 	else if (_gameVariant == TenjikuShogi)
 	{
@@ -241,6 +247,12 @@ void VBoard::paintEvent(QPaintEvent *)
 				{
 					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 				}
+				else if (_pieceStyle == Asian2 &&
+					(_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi ||
+						_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == MakaDaiDaiShogi))
+				{
+					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
+				}
 				else if (_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi)
 				{
 					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
@@ -254,9 +266,18 @@ void VBoard::paintEvent(QPaintEvent *)
 					imageFileName = p->GetImageFileName();
 				}
 				QPixmap pixmap(resourcePrefix + QString::fromStdString(imageFileName));
-				if (_pieceStyle == Asian && (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi))
+				if ((_pieceStyle == Asian || _pieceStyle == Asian2) &&
+					(_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi))
 				{
 					painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
+				}
+				else if (_pieceStyle == Asian2 && (_gameVariant == ChuShogi || _gameVariant == DaiShogi))
+				{
+					painter.drawPixmap(i* w + w / 8, j* h + h / 8, 48, 48, pixmap);
+				}
+				else if (_pieceStyle == Asian2 && _gameVariant == MakaDaiDaiShogi)
+				{
+					painter.drawPixmap(i * w + w / 8, j * h + h / 8, 40, 40, pixmap);
 				}
 				else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)
 				{
@@ -439,7 +460,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	// Lion move
 	else if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer) && !CheckRepetition(_oldX, _oldY, x, y))
 	{
-		if (isLionPiece && !_lionMovedOnce)
+		if (isLionPiece && !_lionMovedOnce && IsLionMove(_currentPiece, x, y))
 		{
 			if ((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
 				(_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk ||
@@ -463,7 +484,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
-					EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ', ' ');
 					FinishMove();
 				}
 			}
@@ -476,7 +496,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				_lionMovedOnce = true;
 				for (int index = _moves.size() - 1; index >= 0; index--)
 				{
-					if (abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2)
+					if (!IsLionMove(_currentPiece, x, y) || abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2)
 					{
 						_moves.erase(_moves.begin() + index);
 					}
@@ -493,7 +513,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
-					EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ', ' ');
 					FinishMove();
 				}
 			}
@@ -508,7 +527,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
-					EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ', ' ');
 					FinishMove();
 				}
 			}
@@ -520,7 +538,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
-					EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, ' ', ' ');
 					FinishMove();
 				}
 			}
@@ -534,7 +551,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					if (_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
 						_currentPiece->GetType() == TeachingKing || _currentPiece->GetType() == GreatElephant)
 					{
-						if (abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2)
+						if (!IsLionMove(_currentPiece, x, y) || abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2)
 						{
 							_moves.erase(_moves.begin() + index);
 						}
@@ -542,7 +559,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					else if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk ||
 						_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == FreeEagle)
 					{
-						if (abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1)
+						if (!IsLionMove(_currentPiece, x, y) || abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1)
 						{
 							_moves.erase(_moves.begin() + index);
 						}
@@ -553,7 +570,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 		else if (isLionPiece && _lionMovedOnce)
 		{
-			if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk || _currentPiece->GetType() == Unicorn || _currentPiece->GetType() == Eagle)
+			if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk ||
+				_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == FreeEagle ||
+				_currentPiece->GetType() == Unicorn || _currentPiece->GetType() == Eagle)
 			{
 				if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 				{
@@ -561,7 +580,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 					}
-					EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
 					FinishMove();
 				}
 			}
@@ -591,7 +609,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					_lionMovedTwice = true;
 					for (int index = _moves.size() - 1; index >= 0; index--)
 					{
-						if (abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1)
+						if (!IsLionMove(_currentPiece, x, y) || abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1)
 						{
 							_moves.erase(_moves.begin() + index);
 						}
@@ -606,7 +624,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						{
 							std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 						}
-						EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
 						FinishMove();
 					}
 				}
@@ -617,7 +634,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					_lionSecondMove.second = y;
 					for (int index = _moves.size() - 1; index >= 0; index--)
 					{
-						if (abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1)
+						if (!IsLionMove(_currentPiece, x, y) || abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1)
 						{
 							_moves.erase(_moves.begin() + index);
 						}

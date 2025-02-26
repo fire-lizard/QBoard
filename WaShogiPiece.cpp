@@ -408,3 +408,8 @@ std::string WaShogiPiece::GetKanjiImageFileName()
 		return "";
 	}
 }
+
+std::string WaShogiPiece::GetKanjiImageFileName2()
+{
+	return GetKanjiImageFileName();
+}

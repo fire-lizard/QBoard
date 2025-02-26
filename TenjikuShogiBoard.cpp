@@ -52,7 +52,7 @@ Piece* TenjikuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColo
 void TenjikuShogiBoard::CheckJump(const Piece* piece, int x, int y, Direction direction)
 {
 	bool beforeJump = true;
-	while (CheckDirectionAux(x, y, direction))
+	while (InBounds(x, y, direction))
 	{
 		CheckDirectionInc(x, y, direction);
 		if (beforeJump)

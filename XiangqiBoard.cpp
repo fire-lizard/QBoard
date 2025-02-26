@@ -165,7 +165,7 @@ void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direct
 			{
 				CheckDirectionInc(x, y, direction);
 			} 
-			while (_data[x][y] == nullptr && CheckDirectionAux(x, y, direction));
+			while (_data[x][y] == nullptr && InBounds(x, y, direction));
 			if (CheckPosition(x, y) && _data[x][y] != nullptr && _data[x][y]->GetColour() != piece->GetColour())
 			{
 				CheckMove(piece, x, y);
@@ -173,7 +173,7 @@ void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direct
 			break;
 		}
 	}
-	while (CheckDirectionAux(x, y, direction));
+	while (InBounds(x, y, direction));
 }
 
 bool XiangqiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)

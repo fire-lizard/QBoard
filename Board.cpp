@@ -146,7 +146,7 @@ void Board::CheckMove(const Piece *piece, int x, int y)
 
 void Board::CheckDirection(const Piece *piece, int x, int y, Direction direction)
 {
-	while (CheckDirectionAux(x, y, direction))
+	while (InBounds(x, y, direction))
 	{
 		CheckDirectionInc(x, y, direction);
 		CheckMove(piece, x, y);
@@ -160,7 +160,7 @@ void Board::CheckDirection(const Piece *piece, int x, int y, Direction direction
 void Board::CheckDirection(const Piece* piece, int x, int y, Direction direction, int count)
 {
 	int i = 0;
-	while (CheckDirectionAux(x, y, direction) && i < count)
+	while (InBounds(x, y, direction) && i < count)
 	{
 		CheckDirectionInc(x, y, direction);
 		CheckMove(piece, x, y);
@@ -172,7 +172,7 @@ void Board::CheckDirection(const Piece* piece, int x, int y, Direction direction
 	}
 }
 
-bool Board::CheckDirectionAux(int x, int y, Direction direction) const
+bool Board::InBounds(int x, int y, Direction direction) const
 {
 	switch (direction)
 	{

@@ -99,3 +99,8 @@ std::string XiangqiPiece::GetKanjiImageFileName()
 		return "";
 	}
 }
+
+std::string XiangqiPiece::GetKanjiImageFileName2()
+{
+	return GetKanjiImageFileName();
+}

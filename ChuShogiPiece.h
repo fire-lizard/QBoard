@@ -12,6 +12,7 @@ public:
 	std::string StringCode() override;
 	std::string KanjiStringCode() override;
 	std::string GetKanjiImageFileName() override;
+	std::string GetKanjiImageFileName2() override;
 	std::string GetMnemonicImageFileName() const;
 	static PieceType FromStringCode(const std::string& code);
 

@@ -131,3 +131,30 @@ std::string DaiShogiPiece::GetKanjiImageFileName()
 		return ChuShogiPiece::GetKanjiImageFileName();
 	}
 }
+
+std::string DaiShogiPiece::GetKanjiImageFileName2()
+{
+	std::string colour = _pieceColour == White ? "_piece_B_" : "_piece_W_";
+	colour += _isPromoted ? "prom" : "norm";
+	switch (_pieceType)
+	{
+	case Knight:
+		return "Kon" + colour + ".png";
+	case ViolentOx:
+		return "Silnyj_byk" + colour + ".png";
+	case FlyingDragon:
+		return "Letajushij_drakon" + colour + ".png";
+	case AngryBoar:
+		return "Dikij_kaban" + colour + ".png";
+	case CatSword:
+		return "Koshachij_mech" + colour + ".png";
+	case EvilWolf:
+		return "Zloj_Volk" + colour + ".png";
+	case Iron:
+		return "ZHeleznyj_general" + colour + ".png";
+	case Stone:
+		return "Kamennyj_general" + colour + ".png";
+	default:
+		return ChuShogiPiece::GetKanjiImageFileName2();
+	}
+}

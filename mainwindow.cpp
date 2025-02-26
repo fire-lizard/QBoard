@@ -33,6 +33,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		{
 			pieceStyle = Asian;
 		}
+		else if (settings[2] == "Asian 2")
+		{
+			pieceStyle = Asian2;
+		}
 		else
 		{
 			pieceStyle = European;
@@ -88,10 +92,11 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-	aboutStr.append("<center>QBoard 0.9.6 beta<br/>");
+	aboutStr.append("<center>QBoard 0.9.7 beta<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
+	aboutStr.append("Maka Dai Dai Shogi Kanji graphics by Joe Henbethydd<br/>");
 	aboutStr.append("Shogi Variants Kanji graphics by Shigeki Watanabe<br/>");
 	aboutStr.append("2025</center>");
 	QMessageBox::about(this, "About", aboutStr);
@@ -555,8 +560,7 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 		{
 			if (engine->GetType() == XBoard)
 			{
-				GameVariant gameVariant = ui->vboard->GetGameVariant();
-				switch (gameVariant)
+				switch (ui->vboard->GetGameVariant())
 				{
 				case MiniShogi:
 					engine->StartGame("5x5+5_shogi");
@@ -596,6 +600,11 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 					break;
 				case Chess:
 					engine->StartGame("normal");
+					break;
+				case DaiDaiShogi:
+				case MakaDaiDaiShogi:
+				case KoShogi:
+					engine->StartGame();
 					break;
 				}
 				if (engineExe.toLower().contains("hachu"))

@@ -327,6 +327,77 @@ std::string ChuShogiPiece::GetKanjiImageFileName()
 	}
 }
 
+std::string ChuShogiPiece::GetKanjiImageFileName2()
+{
+	std::string colour = _pieceColour == White ? "_piece_B_" : "_piece_W_";
+	colour += _isPromoted ? "prom" : "norm";
+	switch (_pieceType)
+	{
+	case King:
+		return "Korol" + colour + ".png";
+	case Prince:
+		return "Kronprinc" + colour + ".png";
+	case Lion:
+		return "Lev" + colour + ".png";
+	case Queen:
+		return "Ferz" + colour + ".png";
+	case DragonKing:
+		return "Car_Drakon" + colour + ".png";
+	case DragonHorse:
+		return "Loshad" + colour + ".png";
+	case Rook:
+		return "Ladja" + colour + ".png";
+	case Bishop:
+		return "Slon" + colour + ".png";
+	case VerticalMover:
+		return "Vertikalnyj_hodok" + colour + ".png";
+	case SideMover:
+		return "Gorizontalnyj_hodok" + colour + ".png";
+	case ReverseChariot:
+		return "Kontrstrelka" + colour + ".png";
+	case Lance:
+		return "Strelka" + colour + ".png";
+	case Kylin:
+		return "Edinorog" + colour + ".png";
+	case Phoenix:
+		return "Feniks" + colour + ".png";
+	case Elephant:
+		return "Pjanyj_slon" + colour + ".png";
+	case Tiger:
+		return "Slepoj_tigr" + colour + ".png";
+	case Gold:
+		return "Zolotoj_general" + colour + ".png";
+	case Tokin:
+		return "Tokin" + colour + ".png";
+	case Silver:
+		return "Serebrjanyj_general" + colour + ".png";
+	case Copper:
+		return "Mednyj_general" + colour + ".png";
+	case Leopard:
+		return "JArostnyj_leopard" + colour + ".png";
+	case GoBetween:
+		return "Posrednik" + colour + ".png";
+	case Pawn:
+		return "Peshka" + colour + ".png";
+	case Eagle:
+		return "Parjashij_orjol" + colour + ".png";
+	case Unicorn:
+		return "Rogatyj_sokol" + colour + ".png";
+	case FlyingOx:
+		return "Letajushij_byk" + colour + ".png";
+	case FreeBoar:
+		return "Begajushij_vepr" + colour + ".png";
+	case FlyingStag:
+		return "Letajushij_olen" + colour + ".png";
+	case WhiteHorse:
+		return "Belyj_kon" + colour + ".png";
+	case Whale:
+		return "Kit" + colour + ".png";
+	default:
+		return "";
+	}
+}
+
 std::string ChuShogiPiece::GetMnemonicImageFileName() const
 {
 	const std::string colour = _pieceColour == White ? "_B" : "_W";
