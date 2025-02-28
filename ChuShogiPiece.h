@@ -13,7 +13,7 @@ public:
 	std::string KanjiStringCode() override;
 	std::string GetKanjiImageFileName() override;
 	std::string GetKanjiImageFileName2() override;
-	std::string GetMnemonicImageFileName() const;
+	virtual std::string GetMnemonicImageFileName() const;
 	static PieceType FromStringCode(const std::string& code);
 
 protected:

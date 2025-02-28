@@ -84,9 +84,6 @@ private:
 	GameVariant _gameVariant = Chess;
 	std::shared_ptr<Engine> _whiteEngine = nullptr;
 	std::shared_ptr<Engine> _blackEngine = nullptr;
-	PieceType _unpromotablePieces[30] = { LeftChariot,RightChariot,WhiteTiger,BlueDragon,SideMover,VerticalMover,HowlingDog,ReverseChariot,ViolentOx,
-										  ViolentBear,AngryBoar,Lance,LeftGeneral,RightGeneral,Leopard,EvilWolf,SavageTiger,Bishop,Rook,RacingChariot,
-										  Yaksha,HookMover,King,Gold,Silver,Copper,Iron,Stone,Wood,Pawn };
 	PieceType _promotedPieces[60] = { Tokin, Prince, PloddingOx, HeavenlyHorse, RaidingFalcon, BearEyes, TenaciousFalcon, HeavenlyTetrarch,
 									  WhiteHorse, Whale, MultiGeneral, FreeBoar, FlyingOx, Eagle, Unicorn, FlyingStag, FuriousFiend, GreatElephant,
 									  MountainWitch, WizardStork, Emperor, TeachingKing, BuddhistSpirit, FreeGold, FreeSilver, FreeCopper, FreeIron,

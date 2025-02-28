@@ -14,55 +14,47 @@ VBoard::~VBoard()
 void VBoard::paintEvent(QPaintEvent *)
 {
 	QString resourcePrefix;
-	if ((_pieceStyle == Asian || _pieceStyle == Asian2) && _gameVariant == Xiangqi)
+	switch (_gameVariant)
 	{
-		resourcePrefix = ":/pieces_chi/images_chi/";
-	}
-	else if (_pieceStyle == Mnemonic && _gameVariant == ChuShogi)
-	{
-		resourcePrefix = ":/pieces_chu/images_chu/";
-	}
-	else if (_pieceStyle == Asian && (_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi))
-    {
-        resourcePrefix = ":/pieces_sho/images_sho/";
-    }
-	else if (_pieceStyle == Asian && (_gameVariant == WaShogi || _gameVariant == CrazyWa))
-	{
-		resourcePrefix = ":/pieces_wa2/images_wa2/";
-	}
-	else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)
-	{
-		resourcePrefix = ":/pieces_wa/images_wa/";
-	}
-	else if (_pieceStyle == Asian && (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi))
-	{
-		resourcePrefix = ":/pieces_tnk/images_tnk/";
-	}
-	else if (_pieceStyle == Asian2 &&
-		(_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi ||
-			_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == MakaDaiDaiShogi))
-	{
-		resourcePrefix = ":/pieces_maka2/images_maka2/";
-	}
-	else if (_gameVariant == TenjikuShogi)
-	{
-		resourcePrefix = ":/pieces_ten/images_ten/";
-	}
-	else if (_gameVariant == DaiDaiShogi)
-	{
+	case Xiangqi:
+		resourcePrefix = _pieceStyle == Asian || _pieceStyle == Asian2 ? ":/pieces_chi/images_chi/" : ":/pieces_eur/images/";
+		break;
+	case Shogi:
+	case ShoShogi:
+	case MiniShogi:
+	case JudkinShogi:
+		resourcePrefix = _pieceStyle == Asian ? ":/pieces_sho/images_sho/" : _pieceStyle == Asian2 ? ":/pieces_maka2/images_maka2/" : ":/pieces_eur/images/";
+		break;
+	case ChuShogi:
+		if (_pieceStyle == Asian) resourcePrefix = ":/pieces_tnk/images_tnk/";
+		else if (_pieceStyle == Asian2) resourcePrefix = ":/pieces_maka2/images_maka2/";
+		else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_chu/images_chu/";
+		else resourcePrefix = ":/pieces_eur/images/";
+		break;
+	case DaiShogi:
+		resourcePrefix = _pieceStyle == Asian ? ":/pieces_tnk/images_tnk/" : _pieceStyle == Asian2 ? ":/pieces_maka2/images_maka2/" : ":/pieces_eur/images/";
+		break;
+	case TenjikuShogi:
+		resourcePrefix = _pieceStyle == Asian || _pieceStyle == Asian2 ? ":/pieces_tnk/images_tnk/" : ":/pieces_ten/images_ten/";
+		break;
+	case WaShogi:
+	case CrazyWa:
+		resourcePrefix = _pieceStyle == Asian || _pieceStyle == Asian2 ? ":/pieces_wa2/images_wa2/" : ":/pieces_wa/images_wa/";
+		break;
+	case DaiDaiShogi:
 		resourcePrefix = ":/pieces_dd/images_daidai/";
-	}
-	else if (_gameVariant == MakaDaiDaiShogi)
-	{
-		resourcePrefix = ":/pieces_mdd/images_maka/";
-	}
-	else if (_gameVariant == KoShogi)
-	{
-		resourcePrefix = ":/pieces_ko/images_ko/";
-	}
-	else
-	{
+		break;
+	case MakaDaiDaiShogi:
+		resourcePrefix = _pieceStyle == Asian ? ":/pieces_mdd/images_maka/" : ":/pieces_maka2/images_maka2/";
+		break;
+	case KoShogi:
+		resourcePrefix = _pieceStyle == Asian2 ? ":/pieces_kok/images_kok/" : _pieceStyle == Asian ? ":/pieces_ko/images_ko/" : ":/pieces_kow/images_kow/";
+		break;
+	case Chess:
+	case Shatranj:
+	case Makruk:
 		resourcePrefix = ":/pieces_eur/images/";
+		break;
 	}
 	QPainter painter(this);
 	painter.setPen(_editorMode ? Qt::magenta : Qt::black);
@@ -243,53 +235,103 @@ void VBoard::paintEvent(QPaintEvent *)
 			if (p != nullptr)
 			{
 				std::string imageFileName;
-				if (_pieceStyle == Asian && (_gameVariant == Xiangqi || std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) != std::end(shogiVariants)))
+				switch (_gameVariant)
 				{
+				case Xiangqi:
+					imageFileName = _pieceStyle == Asian || _pieceStyle == Asian2 ?
+						dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName() : p->GetImageFileName();
+					break;
+				case Shogi:
+				case ShoShogi:
+				case MiniShogi:
+				case JudkinShogi:
+				case DaiShogi:
+					imageFileName = _pieceStyle == Asian ?
+						dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName() :
+						_pieceStyle == Asian2 ? dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2() : p->GetImageFileName();
+					break;
+				case MakaDaiDaiShogi:
+					imageFileName = _pieceStyle == Asian ?
+						dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName() : dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
+					break;
+				case KoShogi:
+					imageFileName = _pieceStyle == Asian ?
+						dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName() :
+						_pieceStyle == Asian2 ? dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2() : dynamic_cast<ChuShogiPiece*>(p)->GetMnemonicImageFileName();
+					break;
+				case ChuShogi:
+					if (_pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
+					else if (_pieceStyle == Asian2) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
+					else if (_pieceStyle == Mnemonic) imageFileName = dynamic_cast<ChuShogiPiece*>(p)->GetMnemonicImageFileName();
+					else imageFileName = p->GetImageFileName();
+					break;
+				case TenjikuShogi:
+				case WaShogi:
+				case CrazyWa:
+					imageFileName = _pieceStyle == Asian || _pieceStyle == Asian2 ?
+						dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName() : p->GetImageFileName();
+					break;
+				case DaiDaiShogi:
 					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
-				}
-				else if (_pieceStyle == Asian2 &&
-					(_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi ||
-						_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == MakaDaiDaiShogi))
-				{
-					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
-				}
-				else if (_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi)
-				{
-					imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
-				}
-				else if (_pieceStyle == Mnemonic && _gameVariant == ChuShogi)
-				{
-					imageFileName = dynamic_cast<ChuShogiPiece*>(p)->GetMnemonicImageFileName();
-				}
-				else
-				{
+					break;
+				case Chess:
+				case Shatranj:
+				case Makruk:
 					imageFileName = p->GetImageFileName();
+					break;
 				}
 				QPixmap pixmap(resourcePrefix + QString::fromStdString(imageFileName));
-				if ((_pieceStyle == Asian || _pieceStyle == Asian2) &&
-					(_gameVariant == Shogi || _gameVariant == ShoShogi || _gameVariant == MiniShogi || _gameVariant == JudkinShogi))
+				switch (_gameVariant)
 				{
-					painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
-				}
-				else if (_pieceStyle == Asian2 && (_gameVariant == ChuShogi || _gameVariant == DaiShogi))
-				{
-					painter.drawPixmap(i* w + w / 8, j* h + h / 8, 48, 48, pixmap);
-				}
-				else if (_pieceStyle == Asian2 && _gameVariant == MakaDaiDaiShogi)
-				{
-					painter.drawPixmap(i * w + w / 8, j * h + h / 8, 40, 40, pixmap);
-				}
-				else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)
-				{
-					painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
-				}
-				else if (_gameVariant == KoShogi)
-				{
+				case Shogi:
+				case ShoShogi:
+				case MiniShogi:
+				case JudkinShogi:
+					if (_pieceStyle == Asian || _pieceStyle == Asian2)
+					{
+						painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
+					}
+					else
+					{
+						painter.drawPixmap(i* w + w / 4, j* h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+					}
+					break;
+				case MakaDaiDaiShogi:
+					if (_pieceStyle == Asian)
+					{
+						painter.drawPixmap(i* w + w / 4, j* h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+					}
+					else
+					{
+						painter.drawPixmap(i* w + w / 8, j* h + h / 8, 40, 40, pixmap);
+					}
+					break;
+				case KoShogi:
 					painter.drawPixmap(i * w + w / 20, j * h + h / 20, pixmap.size().width(), pixmap.size().height(), pixmap);
-				}
-				else
-				{
+					break;
+				case ChuShogi:
+				case DaiShogi:
+					if (_pieceStyle == Asian2 && (_gameVariant == ChuShogi || _gameVariant == DaiShogi))
+					{
+						painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
+					}
+					else
+					{
+						painter.drawPixmap(i* w + w / 4, j* h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+					}
+					break;
+				case WaShogi:
+				case CrazyWa:
+					painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+					break;
+				case TenjikuShogi:
+				case DaiDaiShogi:
+				case Chess:
+				case Shatranj:
+				case Makruk:
+				case Xiangqi:
 					painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+					break;
 				}
 			}
 		}
@@ -491,17 +533,28 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				(_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
 					_currentPiece->GetType() == GreatElephant || _currentPiece->GetType() == TeachingKing))
 			{
-				_lionFirstMove.first = x;
-				_lionFirstMove.second = y;
-				_lionMovedOnce = true;
-				for (int index = _moves.size() - 1; index >= 0; index--)
+				if (p != nullptr)
 				{
-					if (!IsLionMove(_currentPiece, x, y) || abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2)
+					_lionFirstMove.first = x;
+					_lionFirstMove.second = y;
+					_lionMovedOnce = true;
+					for (int index = _moves.size() - 1; index >= 0; index--)
 					{
-						_moves.erase(_moves.begin() + index);
+						if (!IsLionMove(_currentPiece, x, y) || abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
 					}
+					this->repaint();
 				}
-				this->repaint();
+				else if (_board->Move(_oldX, _oldY, x, y))
+				{
+					if (engine != nullptr && engine->IsActive())
+					{
+						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+					}
+					FinishMove();
+				}
 			}
 			else if ((abs(_oldX - x) >= 3 || abs(_oldY - y) >= 3) &&
 				(_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
@@ -697,9 +750,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			else if (_gameVariant == DaiDaiShogi)
 			{
 				if (!_currentPiece->IsPromoted() && ct != None &&
-					std::find(std::begin(_unpromotablePieces), 
-						std::end(_unpromotablePieces), 
-						_currentPiece->GetType()) != std::end(_unpromotablePieces))
+					std::find(std::begin(UnpromotablePieces), 
+						std::end(UnpromotablePieces),
+						_currentPiece->GetType()) != std::end(UnpromotablePieces))
 				{
 					promotion = '+';
 					_currentPiece->Promote();

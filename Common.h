@@ -57,9 +57,8 @@ enum PieceType
 	FreeDragon, FreeWolf, FreeCat, FreeBear, Bat,
 	// Ko Shogi Pieces
 	MiddleTroop, Drum, Thunderclap, Flag, RoamingAssault, CompanyCommander, ViceCommissioner, PoisonFlame, DoubleKylin, DoublePhoenix, TaoistPriest,
-	SpiritualMonk, ExtensiveFog, HolyLight, AdvanceGuard, RearGuard, SkywardNet, EarthwardNet, RisingDragon, Quartermaster, WingedTiger, FlyingHawk,
-	Longbow, LongbowKnight, Crossbow, CrossbowKnight, Cannon, CannonCarriage, FrankishCannon, DivineCarriage, KnightCaptain, WingedHorse, ShieldCaptain,
-	Chariot, Vanguard
+	SpiritualMonk, ExtensiveFog, HolyLight, AdvanceGuard, RearGuard, SkywardNet, EarthwardNet, RisingDragon, WingedTiger, FlyingHawk, Chariot, Vanguard,
+	Longbow, LongbowKnight, Crossbow, CrossbowKnight, Cannon, CannonCarriage, FrankishCannon, DivineCarriage, KnightCaptain, WingedHorse, ShieldCaptain
 };
 
 enum Direction
@@ -74,8 +73,8 @@ inline PieceType lionPieces[] = { Lion, Eagle, Unicorn, LionHawk, FreeEagle, Lio
 inline PieceType KoShogiPieces[] = { King, Prince, Queen, Rook, Bishop, Gold, Silver, Copper, FlyingOx, FreeBoar, VerticalMover, DragonHorse, DragonKing, Pawn,
 									 CatSword, Leopard, FlyingStag, Tiger, Elephant, Phoenix, Kylin, Knight, MiddleTroop, Drum, Thunderclap, Flag, RoamingAssault,
 									 CompanyCommander, ViceCommissioner, PoisonFlame, Lion, DoubleKylin, DoublePhoenix, TaoistPriest, SpiritualMonk,
-									 ExtensiveFog, HolyLight, AdvanceGuard, RearGuard, SkywardNet, EarthwardNet, RisingDragon, Quartermaster, WingedTiger,
-									 FlyingHawk, Longbow, LongbowKnight, Crossbow, CrossbowKnight, Cannon, CannonCarriage, FrankishCannon, DivineCarriage,
+									 ExtensiveFog, HolyLight, AdvanceGuard, RearGuard, SkywardNet, EarthwardNet, RisingDragon, WingedTiger, FlyingHawk,
+									 Longbow, LongbowKnight, Crossbow, CrossbowKnight, Cannon, CannonCarriage, FrankishCannon, DivineCarriage,
 									 KnightCaptain, WingedHorse, ShieldCaptain, Chariot, Vanguard };
 
 inline PieceType MakaDaiDaiShogiPieces[] = { King, Gold, Silver, Copper, Iron, Tile, Stone, Earth, Elephant, Prince, Tiger, Leopard, CatSword, Lion,

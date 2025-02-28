@@ -180,8 +180,6 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		break;
 	case RisingDragon:
 		break;
-	case Quartermaster:
-		break;
 	case WingedTiger:
 		break;
 	case FlyingHawk:

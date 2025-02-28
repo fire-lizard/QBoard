@@ -10,6 +10,10 @@ DaiDaiShogiPiece::~DaiDaiShogiPiece()
 
 void DaiDaiShogiPiece::Promote(PieceType pieceType)
 {
+	if (std::find(std::begin(UnpromotablePieces), std::end(UnpromotablePieces), pieceType) != std::end(UnpromotablePieces))
+	{
+		return;
+	}
 	_isPromoted = true;
 	switch (_pieceType)
 	{
@@ -77,7 +81,6 @@ void DaiDaiShogiPiece::Promote(PieceType pieceType)
 		_pieceType = GreatDragon;
 		break;
 	default:
-		MakaDaiDaiShogiPiece::Promote(pieceType);
 		break;
 	}
 }

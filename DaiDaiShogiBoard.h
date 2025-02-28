@@ -3,6 +3,10 @@
 #include "MakaDaiDaiShogiBoard.h"
 #include "DaiDaiShogiPiece.h"
 
+inline PieceType UnpromotablePieces[30] = { LeftChariot,RightChariot,WhiteTiger,BlueDragon,SideMover,VerticalMover,HowlingDog,ReverseChariot,ViolentOx,
+									  ViolentBear,AngryBoar,Lance,LeftGeneral,RightGeneral,Leopard,EvilWolf,SavageTiger,Bishop,Rook,RacingChariot,
+									  Yaksha,HookMover,King,Gold,Silver,Copper,Iron,Stone,Wood,Pawn };
+
 class DaiDaiShogiBoard : public MakaDaiDaiShogiBoard
 {
 public:

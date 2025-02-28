@@ -1,5 +1,6 @@
 #pragma once
 #include "Common.h"
+#include "DaiDaiShogiBoard.h"
 #include "MakaDaiDaiShogiPiece.h"
 
 class DaiDaiShogiPiece : public MakaDaiDaiShogiPiece

@@ -102,7 +102,6 @@ void KoShogiPiece::Promote(PieceType pieceType)
 		_pieceType = FlyingOx;
 		break;
 	default:
-		DaiShogiPiece::Promote(pieceType);
 		break;
 	}
 }
@@ -251,7 +250,7 @@ std::string KoShogiPiece::KanjiStringCode()
 std::string KoShogiPiece::GetKanjiImageFileName()
 {
 	std::string colour = _pieceColour == White ? "F" : "";
-	if (_isPromoted && _pieceType != King)
+	if (_isPromoted && _pieceType != King && _pieceType != Lion && _pieceType != Bishop)
 	{
 		colour = "P" + colour;
 	}
@@ -291,10 +290,144 @@ std::string KoShogiPiece::GetKanjiImageFileName()
 		return "ImperialBase" + colour + ".png";
 	case Prince:
 		return "Marshal" + colour + ".png";
+	case Lion:
+		return "Wrestler" + colour + ".png";
 	default:
 		std::string desc = PieceType2Description(_pieceType);
 		replaceSubstring(desc, " ", "");
 		return desc + colour + ".png";
+	}
+}
+
+std::string KoShogiPiece::GetKanjiImageFileName2()
+{
+	const std::string colour = _pieceColour == White ? "kw" : "kb";
+	switch (_pieceType)
+	{
+	case King:           return colour + "g" + ".png";
+	case Prince:         return colour + "go" + ".png";
+	case Queen:          return colour + "m" + ".png";
+	case Rook:           return colour + "cu" + ".png";
+	case Bishop:         return colour + "e" + ".png";
+	case Gold:           return colour + "a" + ".png";
+	case Silver:         return colour + "s" + ".png";
+	case Copper:         return colour + "en" + ".png";
+	case FlyingOx:       return colour + "co" + ".png";
+	case FreeBoar:       return colour + "ib" + ".png";
+	case VerticalMover:  return colour + "pu" + ".png";
+	case DragonHorse:    return colour + "cr" + ".png";
+	case DragonKing:     return colour + "q" + ".png";
+	case CatSword:       return colour + "sh" + ".png";
+	case Leopard:        return colour + "cs" + ".png";
+	case FlyingStag:     return colour + "tb" + ".png";
+	case Tiger:          return colour + "sn" + ".png";
+	case Elephant:       return colour + "ac" + ".png";
+	case Phoenix:        return colour + "so" + ".png";
+	case Kylin:          return colour + "cl" + ".png";
+	case Knight:         return colour + "hs" + ".png";
+	case Pawn:           return colour + "p" + ".png";
+	case MiddleTroop:          return colour + "mt" + ".png";
+	case Drum:                 return colour + "d" + ".png";
+	case Thunderclap:          return colour + "tc" + ".png";
+	case Flag:                 return colour + "b" + ".png";
+	case RoamingAssault:       return colour + "ra" + ".png";
+	case CompanyCommander:     return colour + "vb" + ".png";
+	case ViceCommissioner:     return colour + "vc" + ".png";
+	case PoisonFlame:          return colour + "pf" + ".png";
+	case Lion:                 return colour + "wr" + ".png";
+	case DoubleKylin:          return colour + "ma" + ".png";
+	case DoublePhoenix:        return colour + "bd" + ".png";
+	case TaoistPriest:         return colour + "tp" + ".png";
+	case SpiritualMonk:        return colour + "sm" + ".png";
+	case ExtensiveFog:         return colour + "tf" + ".png";
+	case HolyLight:			   return colour + "il" + ".png";
+	case AdvanceGuard:         return colour + "ag" + ".png";
+	case RearGuard:            return colour + "rg" + ".png";
+	case SkywardNet:           return colour + "hv" + ".png";
+	case EarthwardNet:         return colour + "ev" + ".png";
+	case RisingDragon:         return colour + "da" + ".png";
+	case WingedTiger:          return colour + "tw" + ".png";
+	case FlyingHawk:           return colour + "wh" + ".png";
+	case Longbow:              return colour + "lb" + ".png";
+	case LongbowKnight:        return colour + "lc" + ".png";
+	case Crossbow:             return colour + "sb" + ".png";
+	case CrossbowKnight:       return colour + "sc" + ".png";
+	case Cannon:               return colour + "c" + ".png";
+	case CannonCarriage:       return colour + "gc" + ".png";
+	case FrankishCannon:       return colour + "ec" + ".png";
+	case DivineCarriage:       return colour + "cg" + ".png";
+	case KnightCaptain:        return colour + "ca" + ".png";
+	case WingedHorse:          return colour + "wg" + ".png";
+	case ShieldCaptain:        return colour + "su" + ".png";
+	case Chariot:              return colour + "ch" + ".png";
+	case Vanguard:             return colour + "v" + ".png";
+	default: return "";
+	}
+}
+
+std::string KoShogiPiece::GetMnemonicImageFileName() const
+{
+	const std::string colour = _pieceColour == White ? "w" : "b";
+	switch (_pieceType)
+	{
+	case King:           return colour + "g" + ".png";
+	case Prince:         return colour + "go" + ".png";
+	case Queen:          return colour + "m" + ".png";
+	case Rook:           return colour + "cu" + ".png";
+	case Bishop:         return colour + "e" + ".png";
+	case Gold:           return colour + "a" + ".png";
+	case Silver:         return colour + "s" + ".png";
+	case Copper:         return colour + "en" + ".png";
+	case FlyingOx:       return colour + "co" + ".png";
+	case FreeBoar:       return colour + "ib" + ".png";
+	case VerticalMover:  return colour + "pu" + ".png";
+	case DragonHorse:    return colour + "cr" + ".png";
+	case DragonKing:     return colour + "q" + ".png";
+	case CatSword:       return colour + "sh" + ".png";
+	case Leopard:        return colour + "cs" + ".png";
+	case FlyingStag:     return colour + "tb" + ".png";
+	case Tiger:          return colour + "sn" + ".png";
+	case Elephant:       return colour + "ac" + ".png";
+	case Phoenix:        return colour + "so" + ".png";
+	case Kylin:          return colour + "cl" + ".png";
+	case Knight:         return colour + "hs" + ".png";
+	case Pawn:           return colour + "p" + ".png";
+	case MiddleTroop:          return colour + "mt" + ".png";
+	case Drum:                 return colour + "d" + ".png";
+	case Thunderclap:          return colour + "tc" + ".png";
+	case Flag:                 return colour + "b" + ".png";
+	case RoamingAssault:       return colour + "ra" + ".png";
+	case CompanyCommander:     return colour + "vb" + ".png";
+	case ViceCommissioner:     return colour + "vc" + ".png";
+	case PoisonFlame:          return colour + "pf" + ".png";
+	case Lion:                 return colour + "wr" + ".png";
+	case DoubleKylin:          return colour + "ma" + ".png";
+	case DoublePhoenix:        return colour + "bd" + ".png";
+	case TaoistPriest:         return colour + "tp" + ".png";
+	case SpiritualMonk:        return colour + "sm" + ".png";
+	case ExtensiveFog:         return colour + "tf" + ".png";
+	case HolyLight:			   return colour + "il" + ".png";
+	case AdvanceGuard:         return colour + "ag" + ".png";
+	case RearGuard:            return colour + "rg" + ".png";
+	case SkywardNet:           return colour + "hv" + ".png";
+	case EarthwardNet:         return colour + "ev" + ".png";
+	case RisingDragon:         return colour + "da" + ".png";
+	case WingedTiger:          return colour + "tw" + ".png";
+	case FlyingHawk:           return colour + "wh" + ".png";
+	case Longbow:              return colour + "lb" + ".png";
+	case LongbowKnight:        return colour + "lc" + ".png";
+	case Crossbow:             return colour + "sb" + ".png";
+	case CrossbowKnight:       return colour + "sc" + ".png";
+	case Cannon:               return colour + "c" + ".png";
+	case CannonCarriage:       return colour + "gc" + ".png";
+	case FrankishCannon:       return colour + "ec" + ".png";
+	case DivineCarriage:       return colour + "cg" + ".png";
+	case KnightCaptain:        return colour + "ca" + ".png";
+	case WingedHorse:          return colour + "wg" + ".png";
+	case ShieldCaptain:        return colour + "su" + ".png";
+	case Chariot:              return colour + "ch" + ".png";
+	case Vanguard:             return colour + "v" + ".png";
+	default: return "";
 	}
 }
 
@@ -344,7 +477,6 @@ std::string KoShogiPiece::PieceType2Description(PieceType pieceType)
 	case SkywardNet:           return "Skyward Net";
 	case EarthwardNet:         return "Earthward Net";
 	case RisingDragon:         return "Rising Dragon";
-	case Quartermaster:        return "Quartermaster";
 	case WingedTiger:          return "Winged Tiger";
 	case FlyingHawk:           return "Flying Hawk";
 	case Longbow:              return "Longbow";
@@ -408,7 +540,6 @@ PieceType KoShogiPiece::Description2PieceType(const std::string& description)
 	if (description == "Skyward Net")         return SkywardNet;
 	if (description == "Earthward Net")       return EarthwardNet;
 	if (description == "Rising Dragon")       return RisingDragon;
-	if (description == "Quartermaster")       return Quartermaster;
 	if (description == "Winged Tiger")        return WingedTiger;
 	if (description == "Flying Hawk")         return FlyingHawk;
 	if (description == "Longbow")             return Longbow;

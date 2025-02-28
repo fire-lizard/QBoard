@@ -21,6 +21,9 @@ void MakaDaiDaiShogiPiece::Promote(PieceType pieceType)
 	case King:
 		_pieceType = Emperor;
 		break;
+	case Elephant:
+		_pieceType = King;
+		break;
 	case Deva:
 		_pieceType = TeachingKing;
 		break;
@@ -117,7 +120,6 @@ void MakaDaiDaiShogiPiece::Promote(PieceType pieceType)
 		_pieceType = Gold;
 		break;
 	default:
-		DaiShogiPiece::Promote(pieceType);
 		break;
 	}
 }
@@ -242,7 +244,7 @@ std::string MakaDaiDaiShogiPiece::KanjiStringCode()
 std::string MakaDaiDaiShogiPiece::GetKanjiImageFileName()
 {
 	std::string colour = _pieceColour == White ? "" : "Flip";
-	if (_isPromoted && _pieceType != King)
+	if (_isPromoted && _pieceType != King && _pieceType != Queen && _pieceType != DragonKing && _pieceType != DragonHorse)
 	{
 		colour = "P" + colour;
 	}
@@ -282,9 +284,17 @@ std::string MakaDaiDaiShogiPiece::GetKanjiImageFileName()
 std::string MakaDaiDaiShogiPiece::GetKanjiImageFileName2()
 {
 	std::string colour = _pieceColour == White ? "_piece_B_" : "_piece_W_";
-	colour += _isPromoted ? "prom" : "norm";
+	colour += _isPromoted && _pieceType != King && _pieceType != Queen && _pieceType != DragonKing && _pieceType != DragonHorse ? "prom" : "norm";
 	switch (_pieceType)
 	{
+	case King:
+		return "Korol" + colour + ".png";
+	case Queen:
+		return "Ferz" + colour + ".png";
+	case DragonKing:
+		return "Car_Drakon" + colour + ".png";
+	case DragonHorse:
+		return "Loshad" + colour + ".png";
 	case Tile:
 		return "Plitochnyj_general" + colour + ".png";
 	case Earth:

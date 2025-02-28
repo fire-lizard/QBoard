@@ -230,6 +230,12 @@ std::string ShogiPiece::GetKanjiImageFileName2()
 		return "Peshka" + colour + ".png";
 	case Knight:
 		return "Kon" + colour + ".png";
+	case PromotedLance:
+		return "Perevernutaja_strelka" + colour + ".png";
+	case PromotedKnight:
+		return "Perevernutyj_vsadnik" + colour + ".png";
+	case PromotedSilver:
+		return "Perevernutyj_serebrjanyj_general" + colour + ".png";
 	default:
 		return "";
 	}
