@@ -148,15 +148,15 @@ inline char CHUSHOGIFEN[] = "lfcsgekgscfl/a1b1txot1b1a/mvrhdqndhrvm/pppppppppppp
 "/12/12/"
 "3I4I3/PPPPPPPPPPPP/MVRHDNQDHRVM/A1B1TOXT1B1A/LFCSGKEGSCFL";
 
-inline char DAISHOGIFEN[] = "lnuicsgkgsciunl/a1c'1f1tet1f1c'1a/1x'1a'1wxl!ow1a'1x'1/rf'mvbhdqdhbvmf'r/"
-"ppppppppppppppp/4p'5p'4/15/15/15/4P'5P'4/PPPPPPPPPPPPPPP/"
-"RF'MVBHDQDHBVMF'R/1X'1A'1WOL!XW1A'1X'1/A1C'1F1TET1F1C'1A/LNUICSGKGSCIUNL";
+inline char DAISHOGIFEN[] = "lyujcsgkgscjuyl/a1z1f1tet1f1z1a/1v1a'1wxnow1a'1v1/rf'mvbhdqdhbvmf'r/"
+"ppppppppppppppp/4i5i4/15/15/15/4I5I4/PPPPPPPPPPPPPPP/"
+"RF'MVBHDQDHBVMF'R/1V1A'1WONXW1A'1V1/A1Z1F1TET1F1Z1A/LYUJCSGKGSCJUYL";
 
-inline char TENJIKUSHOGIFEN[] = "lnficsgekgscifnl/a1c!c!1txql!ot1c!c!1a/s'v'bhdw!d!q'h!d!w!dhbv's'/"
-"mvrf!e!b!r!v!q!r!b!e!f!rvm/pppppppppppppppp/4d6d4/"
+inline char TENJIKUSHOGIFEN[] = "lyfjcsgekgscjfyl/a1c!c!1txqnot1c!c!1a/s'v'bhdw!d!q'h!d!w!dhbv's'/"
+"mvrf!e!b!r!v!q!r!b!e!f!rvm/pppppppppppppppp/4d'6d'4/"
 "16/16/16/16/"
-"4D6D4/PPPPPPPPPPPPPPPP/MVRF!E!B!R!Q!V!R!B!E!F!RVM/"
-"S'V'BHDW!D!H!Q'D!W!DHBV'S'/A1C!C!1TOL!QXT1C!C!1A/LNFICSGKEGSCIFNL";
+"4D'6D'4/PPPPPPPPPPPPPPPP/MVRF!E!B!R!Q!V!R!B!E!F!RVM/"
+"S'V'BHDW!D!H!Q'D!W!DHBV'S'/A1C!C!1TONQXT1C!C!1A/LYFJCSGKEGSCJFYL";
 
 inline char SHOSHOGIFEN[] = "lnsgkgsnl/1r2e2b1/ppppppppp/9/9/9/PPPPPPPPP/1B2E2R1/LNSGKGSNL";
 

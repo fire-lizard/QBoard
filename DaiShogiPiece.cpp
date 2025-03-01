@@ -34,25 +34,21 @@ std::string DaiShogiPiece::StringCode()
 	switch (_pieceType)
 	{
 	case Iron:
-		return "I";
+		return "J";
 	case Stone:
 		return "U";
 	case AngryBoar:
 		return "A'";
 	case ViolentOx:
-		return "X'";
+		return "V";
 	case FlyingDragon:
 		return "F'";
 	case EvilWolf:
 		return "W";
 	case CatSword:
-		return "C'";
+		return "Z";
 	case Knight:
-		return "N";
-	case GoBetween:
-		return "P'";
-	case Lion:
-		return "L!";
+		return "Y";
 	default:
 		return ChuShogiPiece::StringCode();
 	}
@@ -61,16 +57,14 @@ std::string DaiShogiPiece::StringCode()
 PieceType DaiShogiPiece::FromStringCode(const std::string& code)
 {
 	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-		{"I", Iron},
+		{"J", Iron},
 		{"U", Stone},
 		{"A'", AngryBoar},
-		{"X'", ViolentOx},
+		{"V", ViolentOx},
 		{"F'", FlyingDragon},
 		{"W", EvilWolf},
-		{"C'", CatSword},
-		{"N", Knight},
-		{"P'", GoBetween},
-		{"L!", Lion}
+		{"Z", CatSword},
+		{"Y", Knight}
 	};
 
 	const auto it = codeToPieceType.find(code);

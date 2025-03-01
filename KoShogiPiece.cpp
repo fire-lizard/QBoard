@@ -306,17 +306,17 @@ std::string KoShogiPiece::GetKanjiImageFileName2()
 	{
 	case King:           return colour + "g" + ".png";
 	case Prince:         return colour + "go" + ".png";
-	case Queen:          return colour + "m" + ".png";
-	case Rook:           return colour + "cu" + ".png";
+	case Queen:          return colour + (_isPromoted ? "mm" : "m") + ".png";
+	case Rook:           return colour + (_isPromoted ? "cc" : "cu") + ".png";
 	case Bishop:         return colour + "e" + ".png";
 	case Gold:           return colour + "a" + ".png";
 	case Silver:         return colour + "s" + ".png";
 	case Copper:         return colour + "en" + ".png";
 	case FlyingOx:       return colour + "co" + ".png";
 	case FreeBoar:       return colour + "ib" + ".png";
-	case VerticalMover:  return colour + "pu" + ".png";
-	case DragonHorse:    return colour + "cr" + ".png";
-	case DragonKing:     return colour + "q" + ".png";
+	case VerticalMover:  return colour + (_isPromoted ? "pp" : "pu") + ".png";
+	case DragonHorse:    return colour + (_isPromoted ? "ss" : "cr") + ".png";
+	case DragonKing:     return colour + (_isPromoted ? "aa" : "q") + ".png";
 	case CatSword:       return colour + "sh" + ".png";
 	case Leopard:        return colour + "cs" + ".png";
 	case FlyingStag:     return colour + "tb" + ".png";
@@ -356,9 +356,9 @@ std::string KoShogiPiece::GetKanjiImageFileName2()
 	case CannonCarriage:       return colour + "gc" + ".png";
 	case FrankishCannon:       return colour + "ec" + ".png";
 	case DivineCarriage:       return colour + "cg" + ".png";
-	case KnightCaptain:        return colour + "ca" + ".png";
+	case KnightCaptain:        return colour + (_isPromoted ? "hh" : "ca") + ".png";
 	case WingedHorse:          return colour + "wg" + ".png";
-	case ShieldCaptain:        return colour + "su" + ".png";
+	case ShieldCaptain:        return colour + (_isPromoted ? "uu" : "su") + ".png";
 	case Chariot:              return colour + "ch" + ".png";
 	case Vanguard:             return colour + "v" + ".png";
 	default: return "";

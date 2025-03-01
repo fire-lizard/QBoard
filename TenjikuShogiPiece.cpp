@@ -63,9 +63,9 @@ std::string TenjikuShogiPiece::StringCode()
 	switch (_pieceType)
 	{
 	case Dog:
-		return "D";
+		return "D'";
 	case MultiGeneral:
-		return "+D";
+		return "+D'";
 	case ViceGeneral:
 		return "V!";
 	case GreatGeneral:
@@ -102,8 +102,8 @@ std::string TenjikuShogiPiece::StringCode()
 PieceType TenjikuShogiPiece::FromStringCode(const std::string& code)
 {
 	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-		{"D", Dog},
-		{"+D", MultiGeneral},
+		{"D'", Dog},
+		{"+D'", MultiGeneral},
 		{"V!", ViceGeneral},
 		{"Q!", GreatGeneral},
 		{"B!", BishopGeneral},

@@ -603,7 +603,10 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 				return "Invalid FEN string for this game";
 			}
 			Piece* piece = board->CreatePiece(pieceType, c >= 'a' && c <= 'z' ? Black : White);
-			piece->SetPromoted(promo == "+");
+			if (promo == "+")
+			{
+				piece->Promote();
+			}
 			board->SetData(i, j, piece);
 			promo = "";
 			k++;

@@ -286,7 +286,7 @@ void MainWindow::on_actionNew_game_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	if (ui->vboard->GetGameVariant() == DaiDaiShogi || ui->vboard->GetGameVariant() == MakaDaiDaiShogi || ui->vboard->GetGameVariant() == KoShogi) return;
+	if (ui->vboard->GetGameVariant() == DaiDaiShogi || ui->vboard->GetGameVariant() == KoShogi) return;
 	QFileDialog fileDialog(this);
 	fileDialog.setNameFilter("FEN Files (*.fen)");
 	fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
@@ -332,7 +332,7 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionSave_triggered()
 {
 	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
-	if (gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi) return;
+	if (gameVariant == DaiDaiShogi || gameVariant == KoShogi) return;
 	if (gameVariant == Chess || gameVariant == Shatranj)
 	{
 		QFileDialog fileDialog(this);
@@ -345,13 +345,21 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-				QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
-				QString hmStr = QString::number(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->HalfMoveCount());
-				QString clStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetCastling()) : "-";
-				QString epStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetEnPassant()) : "-";
-				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
-				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
-				str += (clStr + " " + epStr + " " + hmStr + " " + mcStr).toLatin1();
+				if (gameVariant == Chess)
+				{
+					QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
+					QString hmStr = QString::number(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->HalfMoveCount());
+					QString clStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetCastling()) : "-";
+					QString epStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetEnPassant()) : "-";
+					str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
+					str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
+					str += (clStr + " " + epStr + " " + hmStr + " " + mcStr).toLatin1();
+				}
+				else
+				{
+					str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
+					str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
+				}
 			}
 			else if (fileDialog.selectedNameFilter() == "PGN Files (*.pgn)")
 			{

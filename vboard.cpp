@@ -412,9 +412,7 @@ bool VBoard::IsLionMove(const Piece* piece, int x, int y) const
 		else if (piece->GetType() == FreeEagle)
 		{
 			if (abs(_oldX - x) == 1 && abs(_oldY - y) == 1 || abs(_oldX - x) == 2 && abs(_oldY - y) == 2 ||
-				abs(_oldX - x) == 3 && abs(_oldY - y) == 3 || abs(_oldX - x) == 2 && abs(_oldY - y) == 0 ||
-				abs(_oldX - x) == 3 && abs(_oldY - y) == 0 || abs(_oldX - x) == 0 && abs(_oldY - y) == 2 ||
-				abs(_oldX - x) == 0 && abs(_oldY - y) == 3)
+				abs(_oldX - x) == 2 && abs(_oldY - y) == 0 || abs(_oldX - x) == 0 && abs(_oldY - y) == 2)
 			{
 				return true;
 			}
@@ -434,6 +432,10 @@ bool VBoard::IsLionMove(const Piece* piece, int x, int y) const
 		else if (piece->GetType() == LionHawk || piece->GetType() == TeachingKing || piece->GetType() == BuddhistSpirit)
 		{
 			return abs(_oldX - x) < 3 && abs(_oldY - y) < 3;
+		}
+		else if (piece->GetType() == RoamingAssault)
+		{
+			return _oldX != x && _oldY == y || _oldX == x && _oldY != y;
 		}
 	}
 	return false;

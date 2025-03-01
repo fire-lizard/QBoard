@@ -198,7 +198,7 @@ bool Board::InBounds(int x, int y, Direction direction) const
 
 bool Board::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
-	if (std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY; }) || !cl)
+	if (std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}) || !cl)
 	{
 		if (_data[newX][newY] != nullptr)
 		{
@@ -302,7 +302,7 @@ void Board::GetDefenders(int x, int y, std::vector<std::pair<int, int>>& vec)
 
 bool Board::IsMovePossible(int x, int y)
 {
-	return std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x && t.second == y; });
+	return std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x && t.second == y;});
 }
 
 bool Board::operator == (const std::string& fen) const
