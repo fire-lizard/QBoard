@@ -89,6 +89,74 @@ std::string DaiDaiShogiPiece::StringCode()
 {
 	switch (_pieceType)
 	{
+	case Tengu:
+		return "J'";
+	case OldKite:
+		return "K'";
+	case PoisonousSnake:
+		return "S~";
+	case GreatElephant:
+		return "M'";
+	case WesternBarbarian:
+		return "B'";
+	case EasternBarbarian:
+		return "C'";
+	case SouthernBarbarian:
+		return "G'";
+	case NorthernBarbarian:
+		return "H'";
+	case FragrantElephant:
+		return "N'";
+	case WhiteElephant:
+		return "O'";
+	case FreeDreamEater:
+		return "P'";
+	case FreeDemon:
+		return "U'";
+	case WaterBuffalo:
+		return "X'";
+	case RushingBird:
+		return "Y'";
+	case StandardBearer:
+		return "Z'";
+	case FlyingHorse:
+		return "A~";
+	case NeighboringKing:
+		return "B~";
+	case BlindMonkey:
+		return "C~";
+	case Dove:
+		return "D~";
+	case EnchantedBadger:
+		return "E~";
+	case EnchantedFox:
+		return "F~";
+	case RacingChariot:
+		return "G~";
+	case SquareMover:
+		return "H~";
+	case PrancingStag:
+		return "I~";
+	case WhiteTiger:
+		return "J~";
+	case BlueDragon:
+		return "K~";
+	case HowlingDog:
+		return "M~";
+	case ViolentBear:
+		return "N~";
+	case LeftGeneral:
+		return "L~";
+	case RightGeneral:
+		return "R~";
+	case SavageTiger:
+		return "O~";
+	case Wood:
+		return "W'";
+	case GoldenBird:
+		return "P~";
+	case GreatDragon:
+		return "Q~";
 	default:
 		return MakaDaiDaiShogiPiece::StringCode();
 	}
@@ -96,11 +164,44 @@ std::string DaiDaiShogiPiece::StringCode()
 
 PieceType DaiDaiShogiPiece::FromStringCode(const std::string& code)
 {
-	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-	};
+	if (code == "J'")  return Tengu;
+	if (code == "K'")  return OldKite;
+	if (code == "S~")  return PoisonousSnake;
+	if (code == "M'")  return GreatElephant;
+	if (code == "B'")  return WesternBarbarian;
+	if (code == "C'")  return EasternBarbarian;
+	if (code == "G'")  return SouthernBarbarian;
+	if (code == "H'")  return NorthernBarbarian;
+	if (code == "N'")  return FragrantElephant;
+	if (code == "O'")  return WhiteElephant;
+	if (code == "P'")  return FreeDreamEater;
+	if (code == "U'")  return FreeDemon;
+	if (code == "X'")  return WaterBuffalo;
+	if (code == "Y'")  return RushingBird;
+	if (code == "Z'")  return StandardBearer;
 
-	const auto it = codeToPieceType.find(code);
-	return it != codeToPieceType.end() ? it->second : MakaDaiDaiShogiPiece::FromStringCode(code);
+	if (code == "A~")  return FlyingHorse;
+	if (code == "B~")  return NeighboringKing;
+	if (code == "C~")  return BlindMonkey;
+	if (code == "D~")  return Dove;
+	if (code == "E~")  return EnchantedBadger;
+	if (code == "F~")  return EnchantedFox;
+	if (code == "G~")  return RacingChariot;
+	if (code == "H~")  return SquareMover;
+	if (code == "I~")  return PrancingStag;
+	if (code == "J~")  return WhiteTiger;
+	if (code == "K~")  return BlueDragon;
+	if (code == "M~")  return HowlingDog;
+	if (code == "N~")  return ViolentBear;
+	if (code == "L~")  return LeftGeneral;
+	if (code == "R~")  return RightGeneral;
+	if (code == "O~")  return SavageTiger;
+	if (code == "P~")  return GoldenBird;
+	if (code == "Q~")  return GreatDragon;
+
+	if (code == "W'")  return Wood;
+
+	return MakaDaiDaiShogiPiece::FromStringCode(code);
 }
 
 std::string DaiDaiShogiPiece::KanjiStringCode()
@@ -115,8 +216,6 @@ std::string DaiDaiShogiPiece::KanjiStringCode()
 		return "毒蛇";
 	case GreatElephant:
 		return "大象";
-	case FuriousFiend:
-		return "奮迅";
 	case WesternBarbarian:
 		return "西戎";
 	case EasternBarbarian:

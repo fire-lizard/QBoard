@@ -9,6 +9,7 @@
 #include "XiangqiPiece.h"
 #include "WaShogiPiece.h"
 #include "TenjikuShogiPiece.h"
+#include "DaiDaiShogiPiece.h"
 
 struct Move
 {

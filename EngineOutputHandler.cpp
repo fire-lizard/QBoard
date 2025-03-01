@@ -578,9 +578,9 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			{
 				pieceType = ChuShogiPiece::FromStringCode(uppercase(stringCode));
 			}
-			else if (gameVariant == DaiShogi || gameVariant == TenjikuShogi)
+			else if (gameVariant == DaiShogi || gameVariant == TenjikuShogi || gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi)
 			{
-				if (k < fen.size() - 1 && (fen[k + 1] == '\'' || fen[k + 1] == '!'))
+				if (k < fen.size() - 1 && (fen[k + 1] == '\'' || fen[k + 1] == '!' || fen[k + 1] == '~'))
 				{
 					k++;
 					stringCode.push_back(fen[k].toLatin1());
@@ -592,6 +592,14 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 				else if (gameVariant == TenjikuShogi)
 				{
 					pieceType = TenjikuShogiPiece::FromStringCode(uppercase(stringCode));
+				}
+				else if (gameVariant == DaiDaiShogi)
+				{
+					pieceType = DaiDaiShogiPiece::FromStringCode(uppercase(stringCode));
+				}
+				else if (gameVariant == MakaDaiDaiShogi)
+				{
+					pieceType = MakaDaiDaiShogiPiece::FromStringCode(uppercase(stringCode));
 				}
 			}
 			if (pieceType == None)

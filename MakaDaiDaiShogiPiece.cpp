@@ -128,6 +128,96 @@ std::string MakaDaiDaiShogiPiece::StringCode()
 {
 	switch (_pieceType)
 	{
+	case Emperor:
+		return "+K";
+	case Deva:
+		return "A!";
+	case DarkSpirit:
+		return "G!";
+	case TeachingKing:
+		return "+A!";
+	case BuddhistSpirit:
+		return "+G!";
+	case FreeGold:
+		return "+G";
+	case FreeSilver:
+		return "+S";
+	case FreeCopper:
+		return "+C";
+	case FreeIron:
+		return "+J";
+	case FreeTile:
+		return "+T'";
+	case FreeStone:
+		return "+U";
+	case FreeEarth:
+		return "+E'";
+	case FreeGo:
+		return "+I";
+	case FreeTiger:
+		return "+T";
+	case FreeLeopard:
+		return "+F";
+	case CoiledSerpent:
+		return "I!";
+	case RecliningDragon:
+		return "J!";
+	case FreeSerpent:
+		return "+I!";
+	case FreeDragon:
+		return "+J!";
+	case OldMonkey:
+		return "M!";
+	case MountainWitch:
+		return "+M!";
+	case ChineseCock:
+		return "K!";
+	case WizardStork:
+		return "+K!";
+	case FreeCat:
+		return "+Z";
+	case FuriousFiend:
+		return "+N";
+	case GoldenBird:
+		return "+X";
+	case GreatDragon:
+		return "+O";
+	case FreeWolf:
+		return "+W";
+	case BlindBear:
+		return "L!";
+	case FreeBear:
+		return "+L!";
+	case OldRat:
+		return "O!";
+	case Bat:
+		return "+O!";
+	case LionDog:
+		return "N!";
+	case Wrestler:
+		return "P!";
+	case Guardian:
+		return "R!";
+	case BuddhistDevil:
+		return "S!";
+	case Yaksha:
+		return "T!";
+	case Donkey:
+		return "U!";
+	case Capricorn:
+		return "X!";
+	case HookMover:
+		return "Y!";
+	case LeftChariot:
+		return "L'";
+	case RightChariot:
+		return "R'";
+	case SideFlier:
+		return "Z!";
+	case Tile:
+		return "T'";
+	case Earth:
+		return "E'";
 	default:
 		return DaiShogiPiece::StringCode();
 	}
@@ -135,11 +225,53 @@ std::string MakaDaiDaiShogiPiece::StringCode()
 
 PieceType MakaDaiDaiShogiPiece::FromStringCode(const std::string& code)
 {
-	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-	};
+	if (code == "+K")    return Emperor;
+	if (code == "A!")    return Deva;
+	if (code == "G!")    return DarkSpirit;
+	if (code == "+A!")   return TeachingKing;
+	if (code == "+G!")   return BuddhistSpirit;
+	if (code == "+G")    return FreeGold;
+	if (code == "+S")    return FreeSilver;
+	if (code == "+C")    return FreeCopper;
+	if (code == "+J")    return FreeIron;
+	if (code == "+T'")   return FreeTile;
+	if (code == "+U")    return FreeStone;
+	if (code == "+E'")   return FreeEarth;
+	if (code == "+I")    return FreeGo;
+	if (code == "+T")    return FreeTiger;
+	if (code == "+F")    return FreeLeopard;
+	if (code == "I!")    return CoiledSerpent;
+	if (code == "J!")    return RecliningDragon;
+	if (code == "+I!")   return FreeSerpent;
+	if (code == "+J!")   return FreeDragon;
+	if (code == "M!")    return OldMonkey;
+	if (code == "+M!")   return MountainWitch;
+	if (code == "K!")    return ChineseCock;
+	if (code == "+K!")   return WizardStork;
+	if (code == "+Z")    return FreeCat;
+	if (code == "+N")    return FuriousFiend;
+	if (code == "+X")    return GoldenBird;
+	if (code == "+O")    return GreatDragon;
+	if (code == "+W")    return FreeWolf;
+	if (code == "L!")    return BlindBear;
+	if (code == "+L!")   return FreeBear;
+	if (code == "O!")    return OldRat;
+	if (code == "+O!")   return Bat;
+	if (code == "N!")    return LionDog;
+	if (code == "P!")    return Wrestler;
+	if (code == "R!")    return Guardian;
+	if (code == "S!")    return BuddhistDevil;
+	if (code == "T!")    return Yaksha;
+	if (code == "U!")    return Donkey;
+	if (code == "X!")    return Capricorn;
+	if (code == "Y!")    return HookMover;
+	if (code == "L'")    return LeftChariot;
+	if (code == "R'")    return RightChariot;
+	if (code == "Z!")    return SideFlier;
+	if (code == "T'")    return Tile;
+	if (code == "E'")    return Earth;
 
-	const auto it = codeToPieceType.find(code);
-	return it != codeToPieceType.end() ? it->second : DaiShogiPiece::FromStringCode(code);
+	return DaiShogiPiece::FromStringCode(code);
 }
 
 std::string MakaDaiDaiShogiPiece::KanjiStringCode()

@@ -40,7 +40,7 @@ std::string DaiShogiPiece::StringCode()
 	case AngryBoar:
 		return "A'";
 	case ViolentOx:
-		return "V";
+		return "V'";
 	case FlyingDragon:
 		return "F'";
 	case EvilWolf:
@@ -60,7 +60,7 @@ PieceType DaiShogiPiece::FromStringCode(const std::string& code)
 		{"J", Iron},
 		{"U", Stone},
 		{"A'", AngryBoar},
-		{"V", ViolentOx},
+		{"V'", ViolentOx},
 		{"F'", FlyingDragon},
 		{"W", EvilWolf},
 		{"Z", CatSword},

@@ -77,8 +77,9 @@ std::string ChuShogiPiece::StringCode()
 	switch (_pieceType)
 	{
 	case King:
-	case Prince:
 		return "K";
+	case Prince:
+		return "+E";
 	case Lion:
 		return "N";
 	case Queen:

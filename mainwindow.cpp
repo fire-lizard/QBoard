@@ -286,7 +286,7 @@ void MainWindow::on_actionNew_game_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	if (ui->vboard->GetGameVariant() == DaiDaiShogi || ui->vboard->GetGameVariant() == KoShogi) return;
+	if (ui->vboard->GetGameVariant() == KoShogi) return;
 	QFileDialog fileDialog(this);
 	fileDialog.setNameFilter("FEN Files (*.fen)");
 	fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
@@ -332,8 +332,8 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionSave_triggered()
 {
 	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
-	if (gameVariant == DaiDaiShogi || gameVariant == KoShogi) return;
-	if (gameVariant == Chess || gameVariant == Shatranj)
+	if (gameVariant == KoShogi) return;
+	if (gameVariant == Chess || gameVariant == Shatranj || gameVariant == Makruk)
 	{
 		QFileDialog fileDialog(this);
 		fileDialog.setNameFilter("FEN Files (*.fen);;PGN Files (*.pgn)");
@@ -370,7 +370,7 @@ void MainWindow::on_actionSave_triggered()
 				const QString whiteName = "[White \"" + _whiteEngineName + "\"]\n";
 				const QString blackName = "[Black \"" + _blackEngineName + "\"]\n";
 				const QString result = "[Result \"*\"]\n\n";
-				const QString pgn = QString::fromStdString(dynamic_cast<ChessBoard*>(this->ui->vboard->GetBoard())->GetPGN());
+				const QString pgn = QString::fromStdString(dynamic_cast<ShatranjBoard*>(this->ui->vboard->GetBoard())->GetPGN());
 				str = (evt + site + currentDate + currentRound + whiteName + blackName + result + pgn).toLatin1();
 			}
 			str += "\n\n";
