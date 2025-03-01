@@ -15,6 +15,9 @@ public:
 	void GetMoves(Piece* piece, int x, int y) override;
 	void SetDrops(bool hasDrops) override;
 
+protected:
+	std::string formatEnumCounts(const std::vector<PieceType>& enumList) override;
+
 private:
 
 	PieceType _initialSetup[11][11] = {

@@ -20,8 +20,6 @@ public:
 	std::string CapturedPieceString();
 
 protected:
+	virtual std::string formatEnumCounts(const std::vector<PieceType>& enumList);
 	std::vector<std::pair<PieceColour, PieceType>> _capturedPieces;
-
-private:
-	static std::string formatEnumCounts(const std::vector<PieceType>& enumList);
 };

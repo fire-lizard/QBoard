@@ -421,10 +421,18 @@ void MainWindow::on_actionSave_triggered()
 			file.close();
 		}
 	}
-	else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
+	else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
+			 gameVariant == JudkinShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
 	{
 		QFileDialog fileDialog(this);
-		fileDialog.setNameFilter("FEN Files (*.fen);;PSN Files (*.psn);;CSA Files (*.csa);;KIF Files (*.kif);;KI2 Files (*.ki2)");
+		if (gameVariant == CrazyWa || gameVariant == WaShogi)
+		{
+			fileDialog.setNameFilter("FEN Files (*.fen)");
+		}
+		else
+		{
+			fileDialog.setNameFilter("FEN Files (*.fen);;PSN Files (*.psn);;CSA Files (*.csa);;KIF Files (*.kif);;KI2 Files (*.ki2)");
+		}
 		fileDialog.setAcceptMode(QFileDialog::AcceptSave);
 		fileDialog.setWindowTitle("Save file");
 		if (fileDialog.exec())
@@ -436,9 +444,12 @@ void MainWindow::on_actionSave_triggered()
 				QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
 				QString cpStr = QString::fromStdString(dynamic_cast<ShogiVariantBoard*>(ui->vboard->GetBoard())->CapturedPieceString());
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
-				str += this->ui->vboard->GetCurrentPlayer() == Black ? " B " : " W ";
-				str += cpStr.toLatin1();
-				str += " ";
+				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
+				if (gameVariant != ShoShogi && gameVariant != WaShogi)
+				{
+					str += cpStr.toLatin1();
+					str += " ";
+				}
 				str += mcStr.toLatin1();
 			}
 			else if (fileDialog.selectedNameFilter() == "KIF Files (*.kif)" || fileDialog.selectedNameFilter() == "KI2 Files (*.ki2)")
@@ -465,15 +476,47 @@ void MainWindow::on_actionSave_triggered()
 				csaStr += "V2.2\n";
 				csaStr += "N+" + _whiteEngineName + "\n";
 				csaStr += "N-" + _blackEngineName + "\n";
-				csaStr += "P1-KY-KE-GI-KI-OU-KI-GI-KE-KY\n";
-				csaStr += "P2 * -HI *  *  *  *  * -KA *\n";
-				csaStr += "P3-FU-FU-FU-FU-FU-FU-FU-FU-FU\n";
-				csaStr += "P4 *  *  *  *  *  *  *  *  *\n";
-				csaStr += "P5 *  *  *  *  *  *  *  *  *\n";
-				csaStr += "P6 *  *  *  *  *  *  *  *  *\n";
-				csaStr += "P7+FU+FU+FU+FU+FU+FU+FU+FU+FU\n";
-				csaStr += "P8 * +KA *  *  *  *  * +HI *\n";
-				csaStr += "P9+KY+KE+GI+KI+OU+KI+GI+KE+KY\n";
+				if (gameVariant == Shogi)
+				{
+					csaStr += "P1-KY-KE-GI-KI-OU-KI-GI-KE-KY\n";
+					csaStr += "P2 * -HI *  *  *  *  * -KA *\n";
+					csaStr += "P3-FU-FU-FU-FU-FU-FU-FU-FU-FU\n";
+					csaStr += "P4 *  *  *  *  *  *  *  *  *\n";
+					csaStr += "P5 *  *  *  *  *  *  *  *  *\n";
+					csaStr += "P6 *  *  *  *  *  *  *  *  *\n";
+					csaStr += "P7+FU+FU+FU+FU+FU+FU+FU+FU+FU\n";
+					csaStr += "P8 * +KA *  *  *  *  * +HI *\n";
+					csaStr += "P9+KY+KE+GI+KI+OU+KI+GI+KE+KY\n";
+				}
+				else if (gameVariant == ShoShogi)
+				{
+					csaStr += "P1-KY-KE-GI-KI-OU-KI-GI-KE-KY\n";
+					csaStr += "P2 * -HI *  *  SZ *  * -KA *\n";
+					csaStr += "P3-FU-FU-FU-FU-FU-FU-FU-FU-FU\n";
+					csaStr += "P4 *  *  *  *  *  *  *  *  *\n";
+					csaStr += "P5 *  *  *  *  *  *  *  *  *\n";
+					csaStr += "P6 *  *  *  *  *  *  *  *  *\n";
+					csaStr += "P7+FU+FU+FU+FU+FU+FU+FU+FU+FU\n";
+					csaStr += "P8 * +KA *  *  SZ *  * +HI *\n";
+					csaStr += "P9+KY+KE+GI+KI+OU+KI+GI+KE+KY\n";
+				}
+				else if (gameVariant == MiniShogi)
+				{
+					csaStr += "P1-HI-KA-GI-KI-OU\n";
+					csaStr += "P2 *  *  *  * -FU\n";
+					csaStr += "P3 *  *  *  *  *\n";
+					csaStr += "P4+FU *  *  *  *\n";
+					csaStr += "P5+OU+KI+GI+KA+HI\n";
+				}
+				else if (gameVariant == JudkinShogi)
+				{
+					csaStr += "P1-HI-KA-KE-GI-KI-OU\n";
+					csaStr += "P2 *  *  *  *  * -FU\n";
+					csaStr += "P3 *  *  *  *  *  *\n";
+					csaStr += "P4 *  *  *  *  *  *\n";
+					csaStr += "P5+FU *  *  *  *  *\n";
+					csaStr += "P6+OU+KI+GI+KE+KA+HI\n";
+				}
 				csaStr += "P+\n";
 				csaStr += "P-\n";
 				csaStr += "+\n";

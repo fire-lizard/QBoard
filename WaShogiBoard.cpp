@@ -61,6 +61,32 @@ void WaShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int 
 	_data[x][y] = new WaShogiPiece(pieceType, pieceColour);
 }
 
+std::string WaShogiBoard::formatEnumCounts(const std::vector<PieceType>& enumList)
+{
+	const std::vector order = { Rook, SideMover, Gold, Silver, LiberatedHorse, Lance, Pawn, SwoopingOwl, CloudEagle, StruttingCrow, FlyingFalcon,
+								FlyingCock, FlyingGoose, ClimbingMonkey, Dog, RunningRabbit, TreacherousFox };
+
+	// Count occurrences of each piece
+	std::unordered_map<PieceType, int> counts;
+	for (const auto& piece : enumList)
+	{
+		counts[piece]++;
+	}
+
+	std::ostringstream result;
+
+	for (const auto& piece : order) {
+		if (counts[piece] > 1) {
+			result << counts[piece] << WaShogiPiece::ToStringCode(piece); // Add count + first letter
+		}
+		else if (counts[piece] == 1) {
+			result << WaShogiPiece::ToStringCode(piece); // Add just the first letter
+		}
+	}
+
+	return result.str();
+}
+
 void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();

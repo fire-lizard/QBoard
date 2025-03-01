@@ -16,6 +16,7 @@ public:
 	std::string GetKanjiImageFileName2() override;
 	std::string Description() const;
 	static PieceType FromStringCode(const std::string& code);
+	static std::string ToStringCode(PieceType piece);
 	static std::string PieceType2Description(PieceType pieceType);
 	static PieceType Description2PieceType(const std::string& description);
 };
