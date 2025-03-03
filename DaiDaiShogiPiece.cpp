@@ -94,9 +94,9 @@ std::string DaiDaiShogiPiece::StringCode()
 	case OldKite:
 		return "K'";
 	case PoisonousSnake:
-		return "S~";
-	case GreatElephant:
 		return "M'";
+	case GreatElephant:
+		return "+N!";
 	case WesternBarbarian:
 		return "B'";
 	case EasternBarbarian:
@@ -166,8 +166,8 @@ PieceType DaiDaiShogiPiece::FromStringCode(const std::string& code)
 {
 	if (code == "J'")  return Tengu;
 	if (code == "K'")  return OldKite;
-	if (code == "S~")  return PoisonousSnake;
-	if (code == "M'")  return GreatElephant;
+	if (code == "M'")  return PoisonousSnake;
+	if (code == "+N!")  return GreatElephant;
 	if (code == "B'")  return WesternBarbarian;
 	if (code == "C'")  return EasternBarbarian;
 	if (code == "G'")  return SouthernBarbarian;

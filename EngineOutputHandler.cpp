@@ -10,6 +10,62 @@ void EngineOutputHandler::RemoveMove(std::vector<std::pair<int, int>>& moves, in
 	}
 }
 
+bool EngineOutputHandler::IsLionMove(const Piece* piece, int x1, int y1, int x2, int y2)
+{
+	if (piece != nullptr)
+	{
+		if (piece->GetType() == Unicorn)
+		{
+			if ((x1 == x2 && y1 - y2 == +1 || x1 == x2 && y1 - y2 == +2) && piece->GetColour() == White ||
+				(x1 == x2 && y1 - y2 == -1 || x1 == x2 && y1 - y2 == -2) && piece->GetColour() == Black)
+			{
+				return true;
+			}
+		}
+		else if (piece->GetType() == Eagle)
+		{
+			if ((abs(x1 - x2) == 1 && y1 - y2 == +1 || abs(x1 - x2) == 2 && y1 - y2 == +2) && piece->GetColour() == White ||
+				(abs(x1 - x2) == 1 && y1 - y2 == -1 || abs(x1 - x2) == 2 && y1 - y2 == -2) && piece->GetColour() == Black)
+			{
+				return true;
+			}
+		}
+		else if (piece->GetType() == FreeEagle)
+		{
+			if (abs(x1 - x2) == 1 && abs(y1 - y2) == 1 || abs(x1 - x2) == 2 && abs(y1 - y2) == 2 ||
+				abs(x1 - x2) == 2 && abs(y1 - y2) == 0 || abs(x1 - x2) == 0 && abs(y1 - y2) == 2)
+			{
+				return true;
+			}
+		}
+		else if (piece->GetType() == GreatElephant)
+		{
+			if (piece->GetColour() == White && !(abs(x1 - x2) == 1 && y1 - y2 == +1 || abs(x1 - x2) == 2 && y1 - y2 == +2) ||
+				piece->GetColour() == Black && !(abs(x1 - x2) == 1 && y1 - y2 == -1 || abs(x1 - x2) == 2 && y1 - y2 == -2))
+			{
+				return abs(x1 - x2) < 4 && abs(y1 - y2) < 4;
+			}
+		}
+		else if (piece->GetType() == Lion || piece->GetType() == LionDog || piece->GetType() == FuriousFiend)
+		{
+			return true;
+		}
+		else if (piece->GetType() == LionHawk || piece->GetType() == BuddhistSpirit)
+		{
+			return abs(x1 - x2) < 3 && abs(y1 - y2) < 3;
+		}
+		else if (piece->GetType() == TeachingKing)
+		{
+			return abs(x1 - x2) < 4 && abs(y1 - y2) < 4;
+		}
+		else if (piece->GetType() == RoamingAssault)
+		{
+			return x1 != x2 && y1 == y2 || x1 == x2 && y1 != y2;
+		}
+	}
+	return false;
+}
+
 void EngineOutputHandler::CalculateCheck(Board* board, PieceColour pieceColour, std::vector<std::pair<int, int>>& moves, int oldX, int oldY, int newX, int newY)
 {
 	Board* brd = board->Clone();
@@ -578,7 +634,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			{
 				pieceType = ChuShogiPiece::FromStringCode(uppercase(stringCode));
 			}
-			else if (gameVariant == DaiShogi || gameVariant == TenjikuShogi || gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi)
+			else if (gameVariant == DaiShogi || gameVariant == TenjikuShogi ||
+				gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
 			{
 				if (k < fen.size() - 1 && (fen[k + 1] == '\'' || fen[k + 1] == '!' || fen[k + 1] == '~'))
 				{
@@ -600,6 +657,10 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 				else if (gameVariant == MakaDaiDaiShogi)
 				{
 					pieceType = MakaDaiDaiShogiPiece::FromStringCode(uppercase(stringCode));
+				}
+				else if (gameVariant == KoShogi)
+				{
+					pieceType = KoShogiPiece::FromStringCode(uppercase(stringCode));
 				}
 			}
 			if (pieceType == None)

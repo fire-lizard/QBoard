@@ -63,21 +63,29 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x - 1, y);
 		break;
 	case GreatElephant:
+		CheckLionDirection(piece, x, y, North, 3);
+		CheckLionDirection(piece, x, y, South, 3);
+		CheckLionDirection(piece, x, y, West, 3);
+		CheckLionDirection(piece, x, y, East, 3);
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, South);
 		CheckDirection(piece, x, y, West);
 		CheckDirection(piece, x, y, East);
 		if (piece->GetColour() == Black)
 		{
+			CheckLionDirection(piece, x, y, SouthWest, 3);
+			CheckLionDirection(piece, x, y, SouthEast, 3);
 			CheckDirection(piece, x, y, SouthWest);
 			CheckDirection(piece, x, y, SouthEast);
-			CheckDirection(piece, x, y, NorthWest, 3);
-			CheckDirection(piece, x, y, NorthEast, 3);
+			CheckDirection(piece, x, y, NorthWest, 2);
+			CheckDirection(piece, x, y, NorthEast, 2);
 		}
 		else
 		{
-			CheckDirection(piece, x, y, SouthWest, 3);
-			CheckDirection(piece, x, y, SouthEast, 3);
+			CheckDirection(piece, x, y, SouthWest, 2);
+			CheckDirection(piece, x, y, SouthEast, 2);
+			CheckLionDirection(piece, x, y, NorthWest, 3);
+			CheckLionDirection(piece, x, y, NorthEast, 3);
 			CheckDirection(piece, x, y, NorthWest);
 			CheckDirection(piece, x, y, NorthEast);
 		}

@@ -240,21 +240,6 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 	}
 }
 
-void KoShogiBoard::CheckLionDirection(const Piece* piece, int x, int y, Direction direction, int count)
-{
-	int i = 0;
-	while (InBounds(x, y, direction) && i < count)
-	{
-		CheckDirectionInc(x, y, direction);
-		CheckMove(piece, x, y);
-		if (_data[x][y] != nullptr && _data[x][y]->GetColour() == piece->GetColour())
-		{
-			break;
-		}
-		i++;
-	}
-}
-
 /**
  * A recursive DFS function that collects all 5-step paths.
  *

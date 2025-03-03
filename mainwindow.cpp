@@ -286,7 +286,6 @@ void MainWindow::on_actionNew_game_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-	if (ui->vboard->GetGameVariant() == KoShogi) return;
 	QFileDialog fileDialog(this);
 	fileDialog.setNameFilter("FEN Files (*.fen)");
 	fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
@@ -332,7 +331,6 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionSave_triggered()
 {
 	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
-	if (gameVariant == KoShogi) return;
 	if (gameVariant == Chess || gameVariant == Shatranj || gameVariant == Makruk)
 	{
 		QFileDialog fileDialog(this);

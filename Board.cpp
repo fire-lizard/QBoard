@@ -213,12 +213,8 @@ bool Board::Move(int oldX, int oldY, int newX, int newY, bool cl)
 
 void Board::RemoveMove(int x, int y)
 {
-	const long long cnt = static_cast<long long>(_moves.size()) - 1;
-	for (long long index = cnt; index >= 0; index--)
-	{
-		if (_moves[index].first == x && _moves[index].second == y)
-			_moves.erase(_moves.begin() + index);
-	}
+	const auto it = std::remove_if(_moves.begin(), _moves.end(), [=](const auto& p) { return p.first == x && p.second == y; });
+	_moves.erase(it, _moves.end());
 }
 
 std::vector<std::tuple<int, int, int, int>> Board::GetAllMoves(PieceColour pieceColour)

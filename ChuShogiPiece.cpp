@@ -120,6 +120,8 @@ std::string ChuShogiPiece::StringCode()
 		return "I";
 	case Pawn:
 		return "P";
+	case Tokin:
+		return "+P";
 	case Eagle:
 		return "+D";
 	case Unicorn:
@@ -163,6 +165,7 @@ PieceType ChuShogiPiece::FromStringCode(const std::string& code)
 		{"F", Leopard},
 		{"I", GoBetween},
 		{"P", Pawn},
+		{"+P", Tokin},
 		{"+D", Eagle},
 		{"+H", Unicorn},
 		{"+V", FlyingOx},
@@ -242,16 +245,6 @@ std::string ChuShogiPiece::KanjiStringCode()
 		return "鯨";
 	default:
 		return "";
-	}
-}
-
-void ChuShogiPiece::replaceSubstring(std::string& str, const std::string& from, const std::string& to)
-{
-	size_t startPos = 0;
-	while ((startPos = str.find(from, startPos)) != std::string::npos)
-	{
-		str.replace(startPos, from.length(), to);
-		startPos += to.length(); // Move past the replacement
 	}
 }
 

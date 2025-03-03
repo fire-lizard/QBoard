@@ -59,7 +59,6 @@ private:
 	bool AskForPromotion();
 	void FinishMove();
 	void CancelLionMove();
-	bool IsLionMove(const Piece* piece, int x, int y) const;
 
 	Board *_board;
 	Board *_editorBoard = nullptr;
