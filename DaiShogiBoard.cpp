@@ -162,3 +162,27 @@ void DaiShogiBoard::CheckLionDirection(const Piece* piece, int x, int y, Directi
 		i++;
 	}
 }
+
+std::vector<std::pair<int, int>> DaiShogiBoard::GetEnemyPiecesAround(int x, int y, PieceColour pieceColour) const
+{
+	std::vector<std::pair<int, int>> result;
+	constexpr int directions[8][2] =
+	{
+		{0, 1}, {1, 0}, {0, -1}, {-1, 0}, // Right, Down, Left, Up
+		{-1, -1}, {-1, 1}, {1, -1}, {1, 1} // NW, NE, SW, SE
+	};
+	for (const auto direction : directions)
+	{
+		int i = x + direction[0];
+		int j = y + direction[1];
+		if (i < 0 || i > _width - 1 || j < 0 || j > _height - 1 || _data[i][j] == nullptr || _data[i][j]->GetColour() == pieceColour)
+		{
+			continue;
+		}
+		if (_data[i][j]->GetColour() != pieceColour)
+		{
+			result.emplace_back(i, j);
+		}
+	}
+	return result;
+}

@@ -1,6 +1,8 @@
 #pragma once
+#include <queue>
+#include <set>
 #include "Common.h"
-#include "DaiShogiBoard.h"
+#include "TenjikuShogiBoard.h"
 #include "KoShogiPiece.h"
 
 class KoShogiBoard : public DaiShogiBoard
@@ -12,8 +14,13 @@ public:
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
 	void GetMoves(Piece* piece, int x, int y) override;
+	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 
 private:
+	void GetPossibleMoves(int x, int y);
+	std::vector<std::vector<std::pair<int, int>>> getAll5StepPaths(int startR, int startC, PieceColour pieceColour);
+	void dfsFiveSteps(int r, int c, int step, PieceColour pieceColour, std::vector<std::pair<int, int>>& currentPath,
+		std::vector<std::vector<std::pair<int, int>>>& allPaths);
 
 	PieceType _initialSetup[19][19] = {
 	{AdvanceGuard, TaoistPriest, Copper, Leopard, Silver, Gold, Lion, Elephant, Phoenix, King, Kylin, Elephant, Lion, Gold, Silver, Leopard, Copper, SpiritualMonk, AdvanceGuard},

@@ -26,7 +26,6 @@ private:
 	void CheckJump(const Piece* piece, int x, int y, Direction direction);
 	void CheckIgui(const Piece* piece, int x, int y);
 	void GetPossibleMoves(int x, int y);
-	std::vector<std::pair<int, int>> GetEnemyPiecesAround(int x, int y, PieceColour pieceColour) const;
 
 	PieceType _jumpingPieces[4] = { GreatGeneral, ViceGeneral, BishopGeneral, RookGeneral };
 

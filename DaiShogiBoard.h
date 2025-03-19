@@ -14,6 +14,9 @@ public:
 	void GetMoves(Piece* piece, int x, int y) override;
 	void CheckLionDirection(const Piece* piece, int x, int y, Direction direction, int count);
 
+protected:
+	std::vector<std::pair<int, int>> GetEnemyPiecesAround(int x, int y, PieceColour pieceColour) const;
+
 private:
 
 	PieceType _initialSetup[15][15] = {
