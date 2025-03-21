@@ -598,8 +598,7 @@ void KoShogiBoard::GetPossibleMoves(int x, int y)
  *
  * Once step == 5, we record the currentPath (which has 6 positions).
  */
-void KoShogiBoard::dfsFiveSteps(int r, int c, int step, PieceColour pieceColour,
-	std::vector<std::pair<int, int>>& currentPath, std::vector<std::vector<std::pair<int, int>>>& allPaths)
+void KoShogiBoard::dfsFiveSteps(int r, int c, int step, PieceColour pieceColour, std::vector<std::pair<int, int>>& currentPath)
 {
 	constexpr int N = 19;
 	const std::vector<std::pair<int, int>> directions =
@@ -612,7 +611,10 @@ void KoShogiBoard::dfsFiveSteps(int r, int c, int step, PieceColour pieceColour,
 
 	// If we've taken 5 steps already, store this path and return.
 	if (step == 5) {
-		allPaths.push_back(currentPath);
+		for (const auto& point : currentPath)
+		{
+			_moves.emplace_back(point);
+		}
 		return;
 	}
 
@@ -630,7 +632,7 @@ void KoShogiBoard::dfsFiveSteps(int r, int c, int step, PieceColour pieceColour,
 		}
 
 		currentPath.emplace_back(nr, nc);           // add next step
-		dfsFiveSteps(nr, nc, step + 1, pieceColour, currentPath, allPaths);
+		dfsFiveSteps(nr, nc, step + 1, pieceColour, currentPath);
 		currentPath.pop_back();                    // backtrack
 	}
 }
@@ -640,23 +642,13 @@ void KoShogiBoard::dfsFiveSteps(int r, int c, int step, PieceColour pieceColour,
  * Each path is a vector of length 6 (the start square plus 5 subsequent squares).
  * The player may change direction at any step and may not step onto BLACK squares.
  */
-std::vector<std::vector<std::pair<int, int>>> KoShogiBoard::getAll5StepPaths(int startR, int startC, PieceColour pieceColour)
+void KoShogiBoard::getAll5StepPaths(int startR, int startC, PieceColour pieceColour)
 {
-	std::vector<std::vector<std::pair<int, int>>> allPaths;
 	// We'll keep track of the current path in a DFS.
 	// Initialize it with the starting position.
 	std::vector<std::pair<int, int>> currentPath;
 	currentPath.emplace_back(startR, startC);
 
 	// Depth-limited DFS for exactly 5 steps.
-	dfsFiveSteps(startR, startC, /* step = */ 0, pieceColour, currentPath, allPaths);
-
-	for (const auto & path : allPaths)
-	{
-		for (const auto & point : path)
-		{
-			_moves.emplace_back(point);
-		}
-	}
-	return allPaths;
+	dfsFiveSteps(startR, startC, /* step = */ 0, pieceColour, currentPath);
 }

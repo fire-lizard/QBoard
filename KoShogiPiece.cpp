@@ -82,6 +82,9 @@ void KoShogiPiece::Promote(PieceType pieceType)
 	case Knight:
 		_pieceType = KnightCaptain;
 		break;
+	case KnightCaptain:
+		_pieceType = WingedHorse;
+		break;
 	case Pawn:
 		_pieceType = VerticalMover;
 		break;
@@ -127,11 +130,11 @@ std::string KoShogiPiece::StringCode()
 	case Tiger:
 		return "T";
 	case DragonHorse:
-		return "H";
+		return _basePieceType == Tiger ? "+T" : "H";
 	case Elephant:
 		return "E";
 	case DragonKing:
-		return "D";
+		return _basePieceType == Elephant ? "+E" : "D";
 	case Gold:
 		return "G";
 	case FlyingStag:
@@ -175,7 +178,7 @@ std::string KoShogiPiece::StringCode()
 	case EarthwardNet:
 		return "+R'";
 	case Queen:
-		return "Q";
+		return _basePieceType == Rook ? "+R" : "Q";
 	case RisingDragon:
 		return "+Q";
 	case WingedTiger:
@@ -203,25 +206,25 @@ std::string KoShogiPiece::StringCode()
 	case Knight:
 		return "Y";
 	case KnightCaptain:
-		return "W";
+		return _basePieceType == Knight ? "+Y" : "W";
 	case WingedHorse:
 		return "+W";
 	case Pawn:
 		return "P";
 	case VerticalMover:
-		return "V";
+		return _basePieceType == Pawn ? "+P" : "V";
 	case FlyingOx:
 		return "+V";
 	case CatSword:
 		return "Z";
 	case ShieldCaptain:
-		return "U'";
+		return _basePieceType == CatSword ? "+Z": "U'";
 	case FreeBoar:
 		return "F'";
 	case Chariot:
 		return "A";
 	case Rook:
-		return "R";
+		return _basePieceType == Chariot ? "+A" : "R";
 	case Vanguard:
 		return "V'";
 	default:
@@ -240,8 +243,10 @@ PieceType KoShogiPiece::FromStringCode(const std::string& code)
 		{"L",   Flag},
 		{"+L",  RoamingAssault},
 		{"T",   Tiger},
+		{"+T",   Tiger},
 		{"H",   DragonHorse},
 		{"E",   Elephant},
+		{"+E",   Elephant},
 		{"D",   DragonKing},
 		{"G",   Gold},
 		{"+G",  FlyingStag},
@@ -278,16 +283,21 @@ PieceType KoShogiPiece::FromStringCode(const std::string& code)
 		{"J",   FrankishCannon},
 		{"+J",  DivineCarriage},
 		{"Y",   Knight},
+		{"+Y",   Knight},
 		{"W",   KnightCaptain},
 		{"+W",  WingedHorse},
 		{"P",   Pawn},
+		{"+P",   Pawn},
 		{"V",   VerticalMover},
 		{"+V",  FlyingOx},
 		{"Z",   CatSword},
+		{"+Z",   CatSword},
 		{"U'",  ShieldCaptain},
 		{"F'",  FreeBoar},
 		{"A",   Chariot},
+		{"+A",   Chariot},
 		{"R",   Rook},
+		{"+R",   Rook},
 		{"V'",  Vanguard}
 	};
 

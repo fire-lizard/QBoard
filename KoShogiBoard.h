@@ -24,9 +24,8 @@ private:
 	void CheckShootingDirection(const Piece* piece, int x, int y, Direction direction, int count, bool shootOver);
 	void GetPossibleMoves(int x, int y);
 	std::pair<int, int> LocatePiece(PieceType pieceType, PieceColour pieceColour) const;
-	std::vector<std::vector<std::pair<int, int>>> getAll5StepPaths(int startR, int startC, PieceColour pieceColour);
-	void dfsFiveSteps(int r, int c, int step, PieceColour pieceColour, std::vector<std::pair<int, int>>& currentPath,
-		std::vector<std::vector<std::pair<int, int>>>& allPaths);
+	void getAll5StepPaths(int startR, int startC, PieceColour pieceColour);
+	void dfsFiveSteps(int r, int c, int step, PieceColour pieceColour, std::vector<std::pair<int, int>>& currentPath);
 
 	std::vector<std::pair<int, int>> _shoots;
 
