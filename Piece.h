@@ -13,7 +13,6 @@ public:
 	PieceType GetType() const;
 	PieceColour GetColour() const;
 	bool IsPromoted() const;
-	void SetPromoted(bool isPromoted);
 	static std::string PieceType2Description(PieceType pieceType);
 	static PieceType Description2PieceType(const std::string& description);
 

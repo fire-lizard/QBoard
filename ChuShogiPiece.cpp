@@ -81,21 +81,21 @@ std::string ChuShogiPiece::StringCode()
 	case Prince:
 		return "+E";
 	case Lion:
-		return "N";
+		return _basePieceType == Kylin ? "+O" : "N";
 	case Queen:
-		return "Q";
+		return _basePieceType == Phoenix ? "+X" : "Q";
 	case DragonKing:
-		return "D";
+		return _basePieceType == Rook ? "+R" : "D";
 	case DragonHorse:
-		return "H";
+		return _basePieceType == Bishop ? "+B" : "H";
 	case Rook:
-		return "R";
+		return _basePieceType == Gold ? "+G": "R";
 	case Bishop:
-		return "B";
+		return _basePieceType == Leopard ? "+F" : "B";
 	case VerticalMover:
-		return "V";
+		return _basePieceType == Silver ? "+S" : "V";
 	case SideMover:
-		return "M";
+		return _basePieceType == Copper ? "+C" : "M";
 	case ReverseChariot:
 		return "A";
 	case Lance:
@@ -105,7 +105,7 @@ std::string ChuShogiPiece::StringCode()
 	case Phoenix:
 		return "X";
 	case Elephant:
-		return "E";
+		return _basePieceType == GoBetween ? "+I" : "E";
 	case Tiger:
 		return "T";
 	case Gold:
@@ -150,20 +150,29 @@ PieceType ChuShogiPiece::FromStringCode(const std::string& code)
 		{"D", DragonKing},
 		{"H", DragonHorse},
 		{"R", Rook},
+		{"+R", Rook},
 		{"B", Bishop},
+		{"+B", Bishop},
 		{"V", VerticalMover},
 		{"M", SideMover},
 		{"A", ReverseChariot},
 		{"L", Lance},
 		{"O", Kylin},
+		{"+O", Kylin},
 		{"X", Phoenix},
+		{"+X", Phoenix},
 		{"E", Elephant},
 		{"T", Tiger},
 		{"G", Gold},
+		{"+G", Gold},
 		{"S", Silver},
+		{"+S", Silver},
 		{"C", Copper},
+		{"+C", Copper},
 		{"F", Leopard},
+		{"+F", Leopard},
 		{"I", GoBetween},
+		{"+I", GoBetween},
 		{"P", Pawn},
 		{"+P", Tokin},
 		{"+D", Eagle},
@@ -172,7 +181,8 @@ PieceType ChuShogiPiece::FromStringCode(const std::string& code)
 		{"+M", FreeBoar},
 		{"+T", FlyingStag},
 		{"+L", WhiteHorse},
-		{"+A", Whale}
+		{"+A", Whale},
+		{"+E", Prince}
 	};
 
 	const auto it = codeToPieceType.find(code);

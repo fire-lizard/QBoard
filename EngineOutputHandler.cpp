@@ -632,11 +632,11 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			}
 			else if (gameVariant == WaShogi || gameVariant == CrazyWa)
 			{
-				pieceType = WaShogiPiece::FromStringCode(uppercase(stringCode));
+				pieceType = WaShogiPiece::FromStringCode(promo + uppercase(stringCode));
 			}
 			else if (gameVariant == ChuShogi)
 			{
-				pieceType = ChuShogiPiece::FromStringCode(uppercase(stringCode));
+				pieceType = ChuShogiPiece::FromStringCode(promo + uppercase(stringCode));
 			}
 			else if (gameVariant == DaiShogi || gameVariant == TenjikuShogi ||
 				gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
@@ -648,23 +648,23 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 				}
 				if (gameVariant == DaiShogi)
 				{
-					pieceType = DaiShogiPiece::FromStringCode(uppercase(stringCode));
+					pieceType = DaiShogiPiece::FromStringCode(promo + uppercase(stringCode));
 				}
 				else if (gameVariant == TenjikuShogi)
 				{
-					pieceType = TenjikuShogiPiece::FromStringCode(uppercase(stringCode));
+					pieceType = TenjikuShogiPiece::FromStringCode(promo + uppercase(stringCode));
 				}
 				else if (gameVariant == DaiDaiShogi)
 				{
-					pieceType = DaiDaiShogiPiece::FromStringCode(uppercase(stringCode));
+					pieceType = DaiDaiShogiPiece::FromStringCode(promo + uppercase(stringCode));
 				}
 				else if (gameVariant == MakaDaiDaiShogi)
 				{
-					pieceType = MakaDaiDaiShogiPiece::FromStringCode(uppercase(stringCode));
+					pieceType = MakaDaiDaiShogiPiece::FromStringCode(promo + uppercase(stringCode));
 				}
 				else if (gameVariant == KoShogi)
 				{
-					pieceType = KoShogiPiece::FromStringCode(uppercase(stringCode));
+					pieceType = KoShogiPiece::FromStringCode(promo + uppercase(stringCode));
 				}
 			}
 			if (pieceType == None)

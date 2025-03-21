@@ -338,6 +338,131 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 	}
 }
 
+std::vector<std::pair<int, int>> KoShogiBoard::Shoots() const
+{
+	return _shoots;
+}
+
+void KoShogiBoard::GetShoots(const Piece* piece, int x, int y)
+{
+	_shoots.clear();
+	switch (piece->GetType())
+	{
+	case TaoistPriest:
+	case SpiritualMonk:
+	case ExtensiveFog:
+	case HolyLight:
+		CheckShoot(piece, x + 1, y + 1);
+		CheckShoot(piece, x + 1, y);
+		CheckShoot(piece, x + 1, y - 1);
+		CheckShoot(piece, x, y + 1);
+		CheckShoot(piece, x, y - 1);
+		CheckShoot(piece, x - 1, y + 1);
+		CheckShoot(piece, x - 1, y);
+		CheckShoot(piece, x - 1, y - 1);
+		break;
+	case Longbow:
+	case LongbowKnight:
+		CheckShootingDirection(piece, x, y, North, 3, false);
+		CheckShootingDirection(piece, x, y, NorthEast, 3, false);
+		CheckShootingDirection(piece, x, y, East, 3, false);
+		CheckShootingDirection(piece, x, y, SouthEast, 3, false);
+		CheckShootingDirection(piece, x, y, South, 3, false);
+		CheckShootingDirection(piece, x, y, SouthWest, 3, false);
+		CheckShootingDirection(piece, x, y, West, 3, false);
+		CheckShootingDirection(piece, x, y, NorthWest, 3, false);
+		break;
+	case Crossbow:
+	case CrossbowKnight:
+		CheckShootingDirection(piece, x, y, North, 5, false);
+		CheckShootingDirection(piece, x, y, NorthEast, 5, false);
+		CheckShootingDirection(piece, x, y, East, 5, false);
+		CheckShootingDirection(piece, x, y, SouthEast, 5, false);
+		CheckShootingDirection(piece, x, y, South, 5, false);
+		CheckShootingDirection(piece, x, y, SouthWest, 5, false);
+		CheckShootingDirection(piece, x, y, West, 5, false);
+		CheckShootingDirection(piece, x, y, NorthWest, 5, false);
+		break;
+	case Cannon:
+	case CannonCarriage:
+		CheckShootingDirection(piece, x, y, North, 5, true);
+		CheckShootingDirection(piece, x, y, NorthEast, 5, true);
+		CheckShootingDirection(piece, x, y, East, 5, true);
+		CheckShootingDirection(piece, x, y, SouthEast, 5, true);
+		CheckShootingDirection(piece, x, y, South, 5, true);
+		CheckShootingDirection(piece, x, y, SouthWest, 5, true);
+		CheckShootingDirection(piece, x, y, West, 5, true);
+		CheckShootingDirection(piece, x, y, NorthWest, 5, true);
+		break;
+	case FrankishCannon:
+	case DivineCarriage:
+		CheckShootingDirection(piece, x, y, North, 5, false);
+		CheckShootingDirection(piece, x, y, NorthEast, 5, false);
+		CheckShootingDirection(piece, x, y, East, 5, false);
+		CheckShootingDirection(piece, x, y, SouthEast, 5, false);
+		CheckShootingDirection(piece, x, y, South, 5, false);
+		CheckShootingDirection(piece, x, y, SouthWest, 5, false);
+		CheckShootingDirection(piece, x, y, West, 5, false);
+		CheckShootingDirection(piece, x, y, NorthWest, 5, false);
+		break;
+	default:
+		break;
+	}
+}
+
+void KoShogiBoard::Shoot(int x, int y)
+{
+	if (_data[x][y] != nullptr)
+	{
+		delete _data[x][y];
+		_data[x][y] = nullptr;
+	}
+}
+
+void KoShogiBoard::CheckShoot(const Piece* piece, int x, int y)
+{
+	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
+	{
+		if (_data[x][y]->GetColour() != piece->GetColour())
+		{
+			_shoots.emplace_back(x, y);
+		}
+	}
+}
+
+void KoShogiBoard::CheckShootingDirection(const Piece* piece, int x, int y, Direction direction, int count, bool shootOver)
+{
+	int i = 0;
+	while (InBounds(x, y, direction) && i < count)
+	{
+		CheckDirectionInc(x, y, direction);
+		if (_data[x][y] != nullptr)
+		{
+			CheckShoot(piece, x, y);
+			if (!shootOver)
+			{
+				break;
+			}
+		}
+		i++;
+	}
+}
+
+std::pair<int, int> KoShogiBoard::LocatePiece(PieceType pieceType, PieceColour pieceColour) const
+{
+	for (int i = 0; i < _width; i++)
+	{
+		for (int j = 0; j < _height; j++)
+		{
+			if (_data[i][j] != nullptr && _data[i][j]->GetType() == pieceType && _data[i][j]->GetColour() == pieceColour)
+			{
+				return {i, j};
+			}
+		}
+	}
+	return {-1, -1};
+}
+
 void KoShogiBoard::GetPossibleMoves(int x, int y)
 {
 	constexpr int BOARD_SIZE = 5;

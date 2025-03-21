@@ -176,7 +176,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
-			else if (std::any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](std::tuple<int, int, int, int> t) {return get<2>(t) == i && get<3>(t) == j; }))
+			else if (std::any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](std::tuple<int, int, int, int> t) {return get<2>(t) == i && get<3>(t) == j;}))
 			{
 				if (_board->GetData(i, j) != nullptr && _board->GetData(i, j)->GetType() == King)
 				{
@@ -351,7 +351,7 @@ void VBoard::FinishMove()
 		_whiteMoves.push_back(_board->GetFEN());
 		if (!_board->HasPiece(King, Black) && !_board->HasPiece(Prince, Black))
 		{
-			QMessageBox::information(this, "Game over", "White wins by elminating Black King");
+			QMessageBox::information(this, "Game over", "White wins by eliminating Black King");
 		}
 	}
 	else
@@ -359,7 +359,7 @@ void VBoard::FinishMove()
 		_blackMoves.push_back(_board->GetFEN());
 		if (!_board->HasPiece(King, White) && !_board->HasPiece(Prince, White))
 		{
-			QMessageBox::information(this, "Game over", "Black wins by elminating White King");
+			QMessageBox::information(this, "Game over", "Black wins by eliminating White King");
 		}
 	}
 	_currentPlayer = _currentPlayer == White ? Black : White;

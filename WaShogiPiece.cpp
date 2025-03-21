@@ -75,7 +75,7 @@ std::string WaShogiPiece::StringCode()
 	case Pawn:
 		return "P";
 	case SideMover:
-		return "S";
+		return _basePieceType == FlyingGoose ? "+G" : "S";
 	case PloddingOx:
 		return "+O";
 	case LiberatedHorse:
@@ -85,11 +85,11 @@ std::string WaShogiPiece::StringCode()
 	case SwoopingOwl:
 		return "L";
 	case CloudEagle:
-		return "E";
+		return _basePieceType == SwoopingOwl ? "+L" : "E";
 	case StruttingCrow:
 		return "U";
 	case FlyingFalcon:
-		return "F";
+		return _basePieceType == StruttingCrow ? "+U" : "F";
 	case FlyingCock:
 		return "C";
 	case RaidingFalcon:
@@ -99,11 +99,11 @@ std::string WaShogiPiece::StringCode()
 	case ClimbingMonkey:
 		return "M";
 	case Silver:
-		return "V";
+		return _basePieceType == ClimbingMonkey ? "+M" : "V";
 	case Dog:
 		return "D";
 	case Gold:
-		return "W";
+		return _basePieceType == Dog ? "+D" : "W";
 	case Elephant:
 		return "+V";
 	case BearEyes:
@@ -111,7 +111,7 @@ std::string WaShogiPiece::StringCode()
 	case RunningRabbit:
 		return "R";
 	case TreacherousFox:
-		return "X";
+		return _basePieceType == RunningRabbit ? "+R" : "X";
 	case TenaciousFalcon:
 		return "+F";
 	default:
@@ -132,19 +132,25 @@ PieceType WaShogiPiece::FromStringCode(const std::string& code)
 		{"H", LiberatedHorse},
 		{"+H", HeavenlyHorse},
 		{"L", SwoopingOwl},
+		{"+L", SwoopingOwl},
 		{"E", CloudEagle},
 		{"U", StruttingCrow},
+		{"+U", StruttingCrow},
 		{"F", FlyingFalcon},
 		{"C", FlyingCock},
 		{"+C", RaidingFalcon},
 		{"G", FlyingGoose},
+		{"+G", FlyingGoose},
 		{"M", ClimbingMonkey},
+		{"+M", ClimbingMonkey},
 		{"V", Silver},
 		{"D", Dog},
+		{"+D", Dog},
 		{"W", Gold},
 		{"+V", Elephant},
 		{"+W", BearEyes},
 		{"R", RunningRabbit},
+		{"+R", RunningRabbit},
 		{"X", TreacherousFox},
 		{"+F", TenaciousFalcon}
 	};
@@ -382,7 +388,7 @@ std::string WaShogiPiece::GetImageFileName() const
 std::string WaShogiPiece::GetKanjiImageFileName()
 {
 	std::string colour = _pieceColour == White ? "" : "Flip";
-	if (_isPromoted)
+	if (_isPromoted && _pieceType != King)
 	{
 		colour = "P" + colour;
 	}
