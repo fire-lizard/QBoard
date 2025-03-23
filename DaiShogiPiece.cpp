@@ -49,6 +49,8 @@ std::string DaiShogiPiece::StringCode()
 		return "Z";
 	case Knight:
 		return "Y";
+	case WaterBuffalo:
+		return "W!";
 	case Gold:
 		switch (_basePieceType)
 		{
@@ -87,6 +89,7 @@ PieceType DaiShogiPiece::FromStringCode(const std::string& code)
 		{"W", EvilWolf},
 		{"Z", CatSword},
 		{"Y", Knight},
+		{"W!", WaterBuffalo},
 		{"+J", Iron},
 		{"+U", Stone},
 		{"+A'", AngryBoar},
@@ -94,7 +97,8 @@ PieceType DaiShogiPiece::FromStringCode(const std::string& code)
 		{"+F'", FlyingDragon},
 		{"+W", EvilWolf},
 		{"+Z", CatSword},
-		{"+Y", Knight}
+		{"+Y", Knight},
+		{"+W!", WaterBuffalo}
 	};
 
 	const auto it = codeToPieceType.find(code);

@@ -218,6 +218,56 @@ std::string MakaDaiDaiShogiPiece::StringCode()
 		return "T'";
 	case Earth:
 		return "E'";
+	case FreeBoar:
+		return "+A'";
+	case Gold:
+		switch (_basePieceType)
+		{
+		case Lance:
+			return "+L";
+		case ReverseChariot:
+			return "+A";
+		case LionDog:
+			return "+N!";
+		case Wrestler:
+			return "+P!";
+		case Guardian:
+			return "+R!";
+		case BuddhistDevil:
+			return "+S!";
+		case Yaksha:
+			return "+T!";
+		case FlyingDragon:
+			return "+F'";
+		case ViolentOx:
+			return "+V'";
+		case Knight:
+			return "+Y";
+		case Donkey:
+			return "+U!";
+		case Capricorn:
+			return "+X!";
+		case HookMover:
+			return "+Y!";
+		case Bishop:
+			return "+B";
+		case Rook:
+			return "+R";
+		case VerticalMover:
+			return "+V";
+		case SideMover:
+			return "+M";
+		case LeftChariot:
+			return "+L'";
+		case RightChariot:
+			return "+R'";
+		case SideFlier:
+			return "+Z!";
+		case Pawn:
+			return "+P";
+		default:
+			return "G";
+		}
 	default:
 		return DaiShogiPiece::StringCode();
 	}
@@ -225,6 +275,23 @@ std::string MakaDaiDaiShogiPiece::StringCode()
 
 PieceType MakaDaiDaiShogiPiece::FromStringCode(const std::string& code)
 {
+	if (code == "+P")    return Pawn;
+	if (code == "+Z!")   return SideFlier;
+	if (code == "+R'")   return RightChariot;
+	if (code == "+L'")   return LeftChariot;
+	if (code == "+Y!")   return HookMover;
+	if (code == "+X!")   return Capricorn;
+	if (code == "+U!")   return Donkey;
+	if (code == "+T!")   return Yaksha;
+	if (code == "+S!")   return BuddhistDevil;
+	if (code == "+R!")   return Guardian;
+	if (code == "+P!")   return Wrestler;
+	if (code == "+N!")   return LionDog;
+	if (code == "+A")    return ReverseChariot;
+	if (code == "+L")    return Lance;
+	if (code == "+M")    return SideMover;
+	if (code == "+V")    return VerticalMover;
+
 	if (code == "+K")    return Emperor;
 	if (code == "A!")    return Deva;
 	if (code == "G!")    return DarkSpirit;

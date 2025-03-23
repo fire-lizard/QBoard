@@ -67,29 +67,29 @@ std::string TenjikuShogiPiece::StringCode()
 	case MultiGeneral:
 		return "+D'";
 	case ViceGeneral:
-		return "V!";
+		return _basePieceType == BishopGeneral ? "+B!" : "V!";
 	case GreatGeneral:
-		return "Q!";
+		return _basePieceType == RookGeneral ? "+R!" : "Q!";
 	case BishopGeneral:
-		return "B!";
+		return _basePieceType == Unicorn ? "+F!" : "B!";
 	case RookGeneral:
-		return "R!";
+		return _basePieceType == Eagle ? "+E!" : "R!";
 	case FreeEagle:
-		return "Q'";
+		return _basePieceType == Queen ? "+Q" : "Q'";
 	case LionHawk:
-		return "H!";
+		return _basePieceType == Lion ? "+N" : "H!";
 	case SideSoldier:
-		return "S'";
+		return _basePieceType == Knight ? "+Y" : "S'";
 	case VerticalSoldier:
-		return "V'";
+		return _basePieceType == Iron ? "+J" : "V'";
 	case ChariotSoldier:
-		return "C!";
+		return _basePieceType == VerticalSoldier ? "+V'" : "C!";
 	case HeavenlyTetrarch:
 		return "+C!";
 	case WaterBuffalo:
-		return "W!";
+		return _basePieceType == SideSoldier ? "+S'" : "W!";
 	case FireDemon:
-		return "D!";
+		return _basePieceType == WaterBuffalo ? "+W!" : "D!";
 	case Unicorn:
 		return "F!";
 	case Eagle:
@@ -107,17 +107,24 @@ PieceType TenjikuShogiPiece::FromStringCode(const std::string& code)
 		{"V!", ViceGeneral},
 		{"Q!", GreatGeneral},
 		{"B!", BishopGeneral},
+		{"+B!", BishopGeneral},
 		{"R!", RookGeneral},
+		{"+R!", RookGeneral},
 		{"Q'", FreeEagle},
 		{"H!", LionHawk},
 		{"S'", SideSoldier},
+		{"+S'", SideSoldier},
 		{"V'", VerticalSoldier},
+		{"+V'", VerticalSoldier},
 		{"C!", ChariotSoldier},
 		{"+C!", HeavenlyTetrarch},
-		{"W!", WaterBuffalo},
 		{"D!", FireDemon},
 		{"F!", Unicorn},
-		{"E!", Eagle}
+		{"+F!", Unicorn},
+		{"E!", Eagle},
+		{"+E!", Eagle},
+		{"+Q", Queen},
+		{"+N", Lion}
 	};
 
 	const auto it = codeToPieceType.find(code);

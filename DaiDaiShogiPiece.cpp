@@ -90,13 +90,27 @@ std::string DaiDaiShogiPiece::StringCode()
 	switch (_pieceType)
 	{
 	case Tengu:
-		return "J'";
+		return _basePieceType == OldKite ? "+K'" : "J'";
+	case Yaksha:
+		return _basePieceType == EnchantedFox ? "+F~" : "T!";
+	case Queen:
+		return _basePieceType == FlyingHorse ? "+A~" : "Q";
+	case DragonKing:
+		return _basePieceType == FlyingDragon ? "+F'" : "D";
+	case DragonHorse:
+		return _basePieceType == CatSword ? "+Z" : "H";
+	case HookMover:
+		return _basePieceType == PoisonousSnake ? "+M'" : "Y!";
 	case OldKite:
 		return "K'";
 	case PoisonousSnake:
 		return "M'";
 	case GreatElephant:
 		return "+N!";
+	case LionDog:
+		return _basePieceType == WesternBarbarian ? "+B'" : "N!'";
+	case Lion:
+		return _basePieceType == EasternBarbarian ? "+C'" : "N";
 	case WesternBarbarian:
 		return "B'";
 	case EasternBarbarian:
@@ -106,19 +120,17 @@ std::string DaiDaiShogiPiece::StringCode()
 	case NorthernBarbarian:
 		return "H'";
 	case FragrantElephant:
-		return "N'";
+		return _basePieceType == NorthernBarbarian ? "+H'" : "N'";
 	case WhiteElephant:
-		return "O'";
+		return _basePieceType == SouthernBarbarian ? "+G'" : "O'";
 	case FreeDreamEater:
-		return "P'";
+		return _basePieceType == WaterBuffalo ? "+W!": "P'";
 	case FreeDemon:
-		return "U'";
-	case WaterBuffalo:
-		return "X'";
+		return _basePieceType == RushingBird ? "+X'" : "U'";
 	case RushingBird:
-		return "Y'";
+		return "X'";
 	case StandardBearer:
-		return "Z'";
+		return _basePieceType == NeighboringKing ? "+B~" : "Y'";
 	case FlyingHorse:
 		return "A~";
 	case NeighboringKing:
@@ -126,7 +138,7 @@ std::string DaiDaiShogiPiece::StringCode()
 	case BlindMonkey:
 		return "C~";
 	case Dove:
-		return "D~";
+		return _basePieceType == EnchantedBadger ? "+E~" : "D~";
 	case EnchantedBadger:
 		return "E~";
 	case EnchantedFox:
@@ -134,7 +146,7 @@ std::string DaiDaiShogiPiece::StringCode()
 	case RacingChariot:
 		return "G~";
 	case SquareMover:
-		return "H~";
+		return _basePieceType == PrancingStag ? "+I~" : "H~";
 	case PrancingStag:
 		return "I~";
 	case WhiteTiger:
@@ -154,9 +166,9 @@ std::string DaiDaiShogiPiece::StringCode()
 	case Wood:
 		return "W'";
 	case GoldenBird:
-		return "P~";
+		return _basePieceType == Phoenix ? "+X" : "P~";
 	case GreatDragon:
-		return "Q~";
+		return _basePieceType == Kylin ? "+O" : "Q~";
 	default:
 		return MakaDaiDaiShogiPiece::StringCode();
 	}
@@ -166,29 +178,40 @@ PieceType DaiDaiShogiPiece::FromStringCode(const std::string& code)
 {
 	if (code == "J'")  return Tengu;
 	if (code == "K'")  return OldKite;
+	if (code == "+K'") return OldKite;
 	if (code == "M'")  return PoisonousSnake;
-	if (code == "+N!")  return GreatElephant;
+	if (code == "+M'") return PoisonousSnake;
+	if (code == "+N!") return GreatElephant;
 	if (code == "B'")  return WesternBarbarian;
+	if (code == "+B'") return WesternBarbarian;
 	if (code == "C'")  return EasternBarbarian;
+	if (code == "+C'") return EasternBarbarian;
 	if (code == "G'")  return SouthernBarbarian;
+	if (code == "+G'") return SouthernBarbarian;
 	if (code == "H'")  return NorthernBarbarian;
+	if (code == "+H'") return NorthernBarbarian;
 	if (code == "N'")  return FragrantElephant;
 	if (code == "O'")  return WhiteElephant;
 	if (code == "P'")  return FreeDreamEater;
 	if (code == "U'")  return FreeDemon;
-	if (code == "X'")  return WaterBuffalo;
-	if (code == "Y'")  return RushingBird;
-	if (code == "Z'")  return StandardBearer;
+	if (code == "X'")  return RushingBird;
+	if (code == "+X'") return RushingBird;
+	if (code == "Y'")  return StandardBearer;
 
 	if (code == "A~")  return FlyingHorse;
+	if (code == "+A~") return FlyingHorse;
 	if (code == "B~")  return NeighboringKing;
+	if (code == "+B~") return NeighboringKing;
 	if (code == "C~")  return BlindMonkey;
 	if (code == "D~")  return Dove;
 	if (code == "E~")  return EnchantedBadger;
+	if (code == "+E~") return EnchantedBadger;
 	if (code == "F~")  return EnchantedFox;
+	if (code == "+F~") return EnchantedFox;
 	if (code == "G~")  return RacingChariot;
 	if (code == "H~")  return SquareMover;
 	if (code == "I~")  return PrancingStag;
+	if (code == "+I~") return PrancingStag;
 	if (code == "J~")  return WhiteTiger;
 	if (code == "K~")  return BlueDragon;
 	if (code == "M~")  return HowlingDog;
