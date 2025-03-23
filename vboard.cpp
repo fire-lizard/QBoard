@@ -1317,6 +1317,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		if (_gameVariant == CrazyWa || _gameVariant == WaShogi || _gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||
 			_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi)
 		{
+			menu.addAction("Promote");
 			blackPromoted = blackMenu->addMenu("Promoted");
 			whitePromoted = whiteMenu->addMenu("Promoted");
 			blackPromoted->addAction("None");
@@ -1512,6 +1513,14 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 
 		if (selectedAction != nullptr)
 		{
+			if (selectedAction->text() == "Promote")
+			{
+				if (_board->GetData(x, y) != nullptr && !_board->GetData(x, y)->IsPromoted())
+				{
+					_board->GetData(x, y)->Promote();
+				}
+				return;
+			}
 			_chosenColour = qobject_cast<QMenu*>(selectedAction->parent()->parent())->title() == "White" ? White : Black;
 			if (_gameVariant == CrazyWa || _gameVariant == WaShogi)
 			{
