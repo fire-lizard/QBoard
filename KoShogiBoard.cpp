@@ -448,21 +448,6 @@ void KoShogiBoard::CheckShootingDirection(const Piece* piece, int x, int y, Dire
 	}
 }
 
-std::pair<int, int> KoShogiBoard::LocatePiece(PieceType pieceType, PieceColour pieceColour) const
-{
-	for (int i = 0; i < _width; i++)
-	{
-		for (int j = 0; j < _height; j++)
-		{
-			if (_data[i][j] != nullptr && _data[i][j]->GetType() == pieceType && _data[i][j]->GetColour() == pieceColour)
-			{
-				return {i, j};
-			}
-		}
-	}
-	return {-1, -1};
-}
-
 void KoShogiBoard::GetPossibleMoves(int x, int y)
 {
 	constexpr int BOARD_SIZE = 5;

@@ -46,7 +46,8 @@ bool EngineOutputHandler::IsLionMove(const Piece* piece, int x1, int y1, int x2,
 				return abs(x1 - x2) < 4 && abs(y1 - y2) < 4;
 			}
 		}
-		else if (piece->GetType() == Lion || piece->GetType() == LionDog || piece->GetType() == FuriousFiend || piece->GetType() == Thunderclap)
+		else if (piece->GetType() == Lion || piece->GetType() == LionDog || piece->GetType() == FuriousFiend || piece->GetType() == Thunderclap ||
+			piece->GetType() == RoamingAssault)
 		{
 			return true;
 		}
@@ -57,10 +58,6 @@ bool EngineOutputHandler::IsLionMove(const Piece* piece, int x1, int y1, int x2,
 		else if (piece->GetType() == TeachingKing)
 		{
 			return abs(x1 - x2) < 4 && abs(y1 - y2) < 4;
-		}
-		else if (piece->GetType() == RoamingAssault)
-		{
-			return x1 != x2 && y1 == y2 || x1 == x2 && y1 != y2;
 		}
 		else if (piece->GetType() == FlyingHawk)
 		{

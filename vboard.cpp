@@ -456,7 +456,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		{
 			if ((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
 				(_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk ||
-					_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == FreeEagle))
+					_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == FreeEagle ||
+					_currentPiece->GetType() == WingedTiger || _currentPiece->GetType() == FlyingHawk ||
+					_currentPiece->GetType() == RisingDragon))
 			{
 				// Lion capture rule #1
 				if (_gameVariant == ChuShogi && _board->GetData(x, y) != nullptr &&
@@ -573,7 +575,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						}
 					}
 					else if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk ||
-						_currentPiece->GetType() == BuddhistSpirit)
+						_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == RisingDragon)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
 							abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1)
@@ -581,7 +583,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == FreeEagle || _currentPiece->GetType() == Eagle)
+					else if (_currentPiece->GetType() == FreeEagle || _currentPiece->GetType() == Eagle || _currentPiece->GetType() == WingedTiger)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
 							abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1 ||
@@ -600,6 +602,14 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
+					else if (_currentPiece->GetType() == FlyingHawk)
+					{
+						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
+							abs(_moves[index].first - x) + abs(_moves[index].second - y) > 2)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
 				}
 				this->repaint();
 			}
@@ -608,7 +618,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		{
 			if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk ||
 				_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == FreeEagle ||
-				_currentPiece->GetType() == Unicorn || _currentPiece->GetType() == Eagle)
+				_currentPiece->GetType() == Unicorn || _currentPiece->GetType() == Eagle ||
+				_currentPiece->GetType() == WingedTiger || _currentPiece->GetType() == FlyingHawk ||
+				_currentPiece->GetType() == RisingDragon)
 			{
 				if (PossibleMove(x, y))
 				{
