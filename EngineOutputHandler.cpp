@@ -47,6 +47,8 @@ bool EngineOutputHandler::IsLionMove(const Piece* piece, int x1, int y1, int x2,
 			}
 		}
 		else if (piece->GetType() == Lion || piece->GetType() == LionDog || piece->GetType() == FuriousFiend || piece->GetType() == Thunderclap ||
+			piece->GetType() == KnightCaptain || piece->GetType() == ExtensiveFog || piece->GetType() == HolyLight ||
+			piece->GetType() == WingedHorse || piece->GetType() == DoubleKylin || piece->GetType() == DoublePhoenix ||
 			piece->GetType() == RoamingAssault)
 		{
 			return true;

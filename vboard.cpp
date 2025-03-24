@@ -545,6 +545,18 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove();
 				}
 			}
+			else if ((abs(_oldX - x) == 4 || abs(_oldY - y) == 4) && (_currentPiece->GetType() == KnightCaptain ||
+				_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
+			{
+				if (_board->Move(_oldX, _oldY, x, y))
+				{
+					if (engine != nullptr && engine->IsActive())
+					{
+						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+					}
+					FinishMove();
+				}
+			}
 			else if (_board->GetData(x, y) == nullptr)
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
@@ -614,6 +626,21 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
 							abs(_moves[index].first - x) + abs(_moves[index].second - y) > 2)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+					else if (_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight)
+					{
+						if (abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+					else if (_currentPiece->GetType() == KnightCaptain)
+					{
+						if (abs(_moves[index].first - x) >= 3 || abs(_moves[index].second - y) >= 3 ||
+							abs(_moves[index].first - x) == 1 || abs(_moves[index].second - y) == 1)
 						{
 							_moves.erase(_moves.begin() + index);
 						}
@@ -709,6 +736,17 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						}
 						this->repaint();
 					}
+				}
+			}
+			else if (_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight)
+			{
+				if (_board->Move(_oldX, _oldY, x, y))
+				{
+					if (engine != nullptr && engine->IsActive())
+					{
+						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+					}
+					FinishMove();
 				}
 			}
 		}

@@ -69,7 +69,8 @@ enum Direction
 inline GameVariant shogiVariants[] = { Shogi, MiniShogi, JudkinShogi, ChuShogi, DaiShogi, ShoShogi, WaShogi,
 									   CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi };
 inline PieceType lionPieces[] = { Lion, Eagle, Unicorn, LionHawk, FreeEagle, LionDog, TeachingKing, BuddhistSpirit,
-								  FuriousFiend, GreatElephant, RoamingAssault, RisingDragon, WingedTiger, FlyingHawk};
+								  FuriousFiend, GreatElephant, RoamingAssault, RisingDragon, WingedTiger, FlyingHawk,
+								  Thunderclap, KnightCaptain, WingedHorse, ExtensiveFog, HolyLight, DoubleKylin, DoublePhoenix };
 
 inline PieceType KoShogiPieces[] = { King, Prince, Queen, Rook, Bishop, Gold, Silver, Copper, FlyingOx, FreeBoar, VerticalMover, DragonHorse, DragonKing, Pawn,
 									 CatSword, Leopard, FlyingStag, Tiger, Elephant, Phoenix, Kylin, Knight, MiddleTroop, Drum, Thunderclap, Flag, RoamingAssault,
