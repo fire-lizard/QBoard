@@ -4,6 +4,11 @@
 #include "Common.h"
 #include "TenjikuShogiBoard.h"
 #include "KoShogiPiece.h"
+#include "EngineOutputHandler.h"
+
+inline PieceType StepMovers[15] = { King,Gold,Elephant,Silver,Leopard,Copper,MiddleTroop,Drum,Flag,Tiger,FrankishCannon,Longbow,Crossbow,CatSword,Pawn };
+inline PieceType ShootingPieces[12] = { FrankishCannon,DivineCarriage,Longbow,LongbowKnight,Crossbow,CrossbowKnight,
+									   Cannon,CannonCarriage,TaoistPriest,SpiritualMonk,ExtensiveFog,HolyLight};
 
 class KoShogiBoard : public DaiShogiBoard
 {
@@ -17,6 +22,7 @@ public:
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 	void GetShoots(const Piece* piece, int x, int y);
 	std::vector<std::pair<int, int>> Shoots() const;
+	bool IsShootPossible(int x, int y);
 	void Shoot(int x, int y);
 
 private:
@@ -25,6 +31,8 @@ private:
 	void GetPossibleMoves(int x, int y);
 	void getAll5StepPaths(int startR, int startC, PieceColour pieceColour);
 	void dfsFiveSteps(int r, int c, int step, PieceColour pieceColour, std::vector<std::pair<int, int>>& currentPath);
+	std::vector<std::pair<int, int>> getSingleKnightMoves(int r, int c, PieceColour pieceColour) const;
+	void getAllKnight2MoveDestinations(int startR, int startC, PieceColour pieceColour);
 
 	std::vector<std::pair<int, int>> _shoots;
 

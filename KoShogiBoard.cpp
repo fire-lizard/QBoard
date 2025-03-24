@@ -51,6 +51,13 @@ Piece* KoShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 
 bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
+	// Gun carriage and Chariot of the Gods cannot capture a heavenly fortress by displacement.
+	const Piece* sp = _data[oldX][oldY];
+	const Piece* dp = _data[newX][newY];
+	if (sp != nullptr && (sp->GetType() == CannonCarriage || sp->GetType() == DivineCarriage) && dp != nullptr && dp->GetType() == FreeBoar)
+	{
+		return false;
+	}
 	if (IsMovePossible(newX, newY))
 	{
 		auto pieces = GetEnemyPiecesAround(newX, newY, _data[oldX][oldY]->GetColour());
@@ -71,6 +78,10 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 			for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {delete _data[p.first][p.second]; _data[p.first][p.second] = nullptr;});
 		}
 	}
+	// TODO If the Taoist priest is captured, the drum and banner can no longer promote, and if either or both have already promoted
+	// (to flag waver or thunderclap), then they immediately revert to drum or banner.
+	// TODO Whenever the immaculate light is within 5 intersections of the five-li fog, the fog reverts to a Taoist priest.
+	// TODO If the drum is killed, the pawns may no longer move forward.
 	return ChuShogiBoard::Move(oldX, oldY, newX, newY, cl);
 }
 
@@ -197,9 +208,34 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x, y + 2);
 		CheckMove(piece, x, y - 2);
 		break;
-	case ExtensiveFog://TODO
-		break;
-	case HolyLight://TODO
+	case ExtensiveFog:
+	case HolyLight:
+		CheckMove(piece, x + 2, y + 2);
+		CheckMove(piece, x - 2, y + 2);
+		CheckMove(piece, x + 2, y - 2);
+		CheckMove(piece, x - 2, y - 2);
+		CheckMove(piece, x + 2, y);
+		CheckMove(piece, x - 2, y);
+		CheckMove(piece, x, y + 2);
+		CheckMove(piece, x, y - 2);
+
+		CheckMove(piece, x + 4, y + 2);
+		CheckMove(piece, x - 4, y + 2);
+		CheckMove(piece, x + 4, y - 2);
+		CheckMove(piece, x - 4, y - 2);
+		CheckMove(piece, x + 4, y);
+		CheckMove(piece, x - 4, y);
+		CheckMove(piece, x, y + 4);
+		CheckMove(piece, x, y - 4);
+
+		CheckMove(piece, x + 4, y + 4);
+		CheckMove(piece, x - 4, y + 4);
+		CheckMove(piece, x + 4, y - 4);
+		CheckMove(piece, x - 4, y - 4);
+		CheckMove(piece, x + 2, y + 4);
+		CheckMove(piece, x - 2, y + 4);
+		CheckMove(piece, x + 2, y - 4);
+		CheckMove(piece, x - 2, y - 4);
 		break;
 	case SkywardNet:
 		CheckDirection(piece, x, y, West);
@@ -291,22 +327,43 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y - 1);
 		break;
+	case Knight:
 	case LongbowKnight:
 	case CrossbowKnight:
-		if (piece->GetColour() == Black)
-		{
-			CheckMove(piece, x - 1, y + 2);
-			CheckMove(piece, x + 1, y + 2);
-		}
-		else
-		{
-			CheckMove(piece, x - 1, y - 2);
-			CheckMove(piece, x + 1, y - 2);
-		}
+		CheckMove(piece, x + 1, y + 2);
+		CheckMove(piece, x - 1, y + 2);
+		CheckMove(piece, x + 2, y + 1);
+		CheckMove(piece, x + 2, y - 1);
+		CheckMove(piece, x - 2, y + 1);
+		CheckMove(piece, x - 2, y - 1);
+		CheckMove(piece, x + 1, y - 2);
+		CheckMove(piece, x - 1, y - 2);
 		break;
-	case KnightCaptain://TODO
+	case KnightCaptain:
+		CheckMove(piece, x + 1, y + 2);
+		CheckMove(piece, x - 1, y + 2);
+		CheckMove(piece, x + 2, y + 1);
+		CheckMove(piece, x + 2, y - 1);
+		CheckMove(piece, x - 2, y + 1);
+		CheckMove(piece, x - 2, y - 1);
+		CheckMove(piece, x + 1, y - 2);
+		CheckMove(piece, x - 1, y - 2);
+
+		CheckMove(piece, x + 2, y + 4);
+		CheckMove(piece, x + 2, y - 4);
+		CheckMove(piece, x - 2, y + 4);
+		CheckMove(piece, x - 2, y - 4);
+		CheckMove(piece, x, y + 4);
+		CheckMove(piece, x, y - 4);
+		CheckMove(piece, x + 4, y);
+		CheckMove(piece, x - 4, y);
+		CheckMove(piece, x + 4, y + 2);
+		CheckMove(piece, x - 4, y + 2);
+		CheckMove(piece, x + 4, y - 2);
+		CheckMove(piece, x - 4, y - 2);
 		break;
-	case WingedHorse://TODO
+	case WingedHorse:
+		getAllKnight2MoveDestinations(x, y, piece->GetColour());
 		break;
 	case RoamingAssault:
 		CheckLionDirection(piece, x, y, West, 5);
@@ -421,10 +478,38 @@ void KoShogiBoard::Shoot(int x, int y)
 
 void KoShogiBoard::CheckShoot(const Piece* piece, int x, int y)
 {
+	const PieceType pt = piece->GetType();
+	// Except for the Taoist priest, spiritual monk, five-li fog or immaculate light, any shooting pieces
+	// are disabled from shooting if they are within five intersections of an enemy five-li fog.
+	if (pt != TaoistPriest && pt != SpiritualMonk && pt != ExtensiveFog && pt != HolyLight)
+	{
+		const auto fogLocation = EngineOutputHandler::GetPieceLocation(this, ExtensiveFog, piece->GetColour() == White ? Black : White);
+		if (fogLocation.first != -1 && fogLocation.second != -1 && (abs(fogLocation.first - x) <= 5 || abs(fogLocation.second - y) <= 5))
+		{
+			return;
+		}
+	}
 	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
 	{
-		if (_data[x][y]->GetColour() != piece->GetColour())
+		if (_data[x][y] != nullptr && _data[x][y]->GetColour() != piece->GetColour())
 		{
+			const auto dt = _data[x][y]->GetType();
+			// Longbow and Crossbow cannot shoot a shield, shield unit, chariot, chariot unit, Gun carriage, Chariot of the Gods and heavenly fortress.
+			if (pt == Longbow || pt == LongbowKnight || pt == Crossbow || pt == CrossbowKnight)
+			{
+				if (dt == CatSword || dt == ShieldCaptain || dt == Chariot || dt == Rook || dt == CannonCarriage || dt == DivineCarriage || dt == FreeBoar)
+				{
+					return;
+				}
+			}
+			// Cannon, Gun carriage, Frankish cannon and Chariot of the Gods cannot shoot a shield unit and heavenly fortress.
+			if (pt == Cannon || pt == CannonCarriage || pt == FrankishCannon || pt == DivineCarriage)
+			{
+				if (dt == ShieldCaptain || dt == FreeBoar)
+				{
+					return;
+				}
+			}
 			_shoots.emplace_back(x, y);
 		}
 	}
@@ -636,4 +721,67 @@ void KoShogiBoard::getAll5StepPaths(int startR, int startC, PieceColour pieceCol
 
 	// Depth-limited DFS for exactly 5 steps.
 	dfsFiveSteps(startR, startC, /* step = */ 0, pieceColour, currentPath);
+}
+
+/**
+ * Return all squares a knight can move to in exactly 1 knight-move from (r, c).
+ * We skip squares with occupant=FRIENDLY (the knight's own color).
+ */
+std::vector<std::pair<int, int>> KoShogiBoard::getSingleKnightMoves(int r, int c, PieceColour pieceColour) const
+{
+	constexpr int N = 19;
+	const std::vector<std::pair<int, int>> knightOffsets =
+	{
+		{+2, +1}, {+2, -1}, {-2, +1}, {-2, -1},
+		{+1, +2}, {+1, -2}, {-1, +2}, {-1, -2}
+	};
+
+	std::vector<std::pair<int, int>> result;
+	for (auto& offset : knightOffsets) {
+		int rr = r + offset.first;
+		int cc = c + offset.second;
+		if (rr < 0 || rr >= N || cc < 0 || cc >= N) {
+			continue;
+		}
+		// The knight can land on this square if it's EMPTY or ENEMY
+		if (_data[rr][cc] != nullptr && _data[rr][cc]->GetColour() == pieceColour) {
+			continue;
+		}
+
+		result.emplace_back(rr, cc);
+	}
+	return result;
+}
+
+/**
+ * Return all possible distinct destination squares after EXACTLY 2 knight moves
+ * from the starting position (startR, startC).
+ */
+void KoShogiBoard::getAllKnight2MoveDestinations(int startR, int startC, PieceColour pieceColour)
+{
+	std::set<std::pair<int, int>> destinations;  // use a set to avoid duplicates
+
+	// First-move candidates
+	const auto firstMoves = getSingleKnightMoves(startR, startC, pieceColour);
+	for (auto& square2 : firstMoves) {
+		destinations.insert(square2);
+	}
+
+	// For each square reachable in one knight move:
+	for (const auto& square1 : firstMoves) {
+		const int r1 = square1.first;
+		const int c1 = square1.second;
+		// Now get second-move candidates from (r1, c1)
+		auto secondMoves = getSingleKnightMoves(r1, c1, pieceColour);
+		for (auto& square2 : secondMoves) {
+			destinations.insert(square2);
+		}
+	}
+
+	_moves.insert(_moves.end(), destinations.begin(), destinations.end());
+}
+
+bool KoShogiBoard::IsShootPossible(int x, int y)
+{
+	return std::any_of(_shoots.begin(), _shoots.end(), [=](std::pair<int, int> t) {return t.first == x && t.second == y;});
 }

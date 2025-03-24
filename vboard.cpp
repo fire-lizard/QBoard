@@ -155,6 +155,12 @@ void VBoard::paintEvent(QPaintEvent *)
 					painter.setBrush(Qt::NoBrush);
 				}
 			}
+			else if (std::any_of(_shoots.begin(), _shoots.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}))
+			{
+				painter.setBrush(QColorConstants::Svg::violet);
+				painter.drawRect(rect);
+				painter.setBrush(Qt::NoBrush);
+			}
 			else if (std::any_of(_attackers.begin(), _attackers.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}))
 			{
 				painter.setBrush(QColorConstants::Svg::salmon);
@@ -370,6 +376,7 @@ void VBoard::FinishMove()
 	_oldX = -1;
 	_oldY = -1;
 	_moves.clear();
+	_shoots.clear();
 	_lionMovedOnce = false;
 	_lionMovedTwice = false;
 	_lionFirstMove.first = -1;
@@ -421,6 +428,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
 	const PieceType ct = p != nullptr ? p->GetType() : None;
 	const bool isLionPiece = _currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->GetType()) != std::end(lionPieces);
+	const bool isShootingPiece = _currentPiece != nullptr && std::find(std::begin(ShootingPieces), std::end(ShootingPieces), _currentPiece->GetType()) != std::end(ShootingPieces);
 	// Castling check
 	if (_gameVariant == Chess && _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
 		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved() && _board->IsMovePossible(x, y))
@@ -704,6 +712,11 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 			}
 		}
+		else if (isShootingPiece && dynamic_cast<KoShogiBoard*>(_board)->IsShootPossible(x, y))
+		{
+			dynamic_cast<KoShogiBoard*>(_board)->Shoot(x, y);
+			FinishMove();
+		}
 		else if (_board->Move(_oldX, _oldY, x, y))
 		{
 			char promotion = ' ';
@@ -768,8 +781,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			else if (_gameVariant == MakaDaiDaiShogi)
 			{
-				if (_currentPiece->GetBaseType() != King && _currentPiece->GetBaseType() != MiddleTroop &&
-					!_currentPiece->IsPromoted() && p != nullptr)
+				if (_currentPiece->GetType() != Queen && _currentPiece->GetType() != DragonKing &&
+					_currentPiece->GetType() != DragonHorse && !_currentPiece->IsPromoted() && p != nullptr)
 				{
 					if (p->GetBaseType() == Deva)
 					{
@@ -780,6 +793,40 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						promotion = '+';
 						_currentPiece->Promote(BuddhistSpirit);
+					}
+					else if (p->IsPromoted() || AskForPromotion())
+					{
+						promotion = '+';
+						_currentPiece->Promote();
+					}
+				}
+			}
+			else if (_gameVariant == KoShogi)
+			{
+				// TODO When the clerk promotes to master at arms, all the allied advance and rear guards promote as well, while any enemy poison flame dies.
+				if (_currentPiece->GetType() != King && _currentPiece->GetType() != Lion &&
+					_currentPiece->GetType() != Bishop && !_currentPiece->IsPromoted() && p != nullptr)
+				{
+					if (p->GetType() == King || p->GetType() == Prince || p->GetType() == MiddleTroop || p->GetType() == Flag || p->GetType() == Drum)
+					{
+						promotion = '+';
+						_currentPiece->Promote();
+					}
+					else if (std::find(std::begin(StepMovers), std::end(StepMovers), _currentPiece->GetType()) != std::end(StepMovers))
+					{
+						if (p->GetType() == Lion || p->GetType() == RisingDragon || p->GetType() == RoamingAssault || p->GetType() == Thunderclap)
+						{
+							promotion = '+';
+							_currentPiece->Promote();
+						}
+					}
+					else if (_currentPiece->GetType() == Knight)
+					{
+						if (p->GetType() == FrankishCannon)
+						{
+							promotion = '+';
+							_currentPiece->Promote();
+						}
 					}
 					else if (p->IsPromoted() || AskForPromotion())
 					{
@@ -867,6 +914,12 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		_oldY = y;
 		_board->GetMoves(p, x, y);
 		_moves = _board->Moves();
+		if (_gameVariant == KoShogi)
+		{
+			KoShogiBoard* ksboard = dynamic_cast<KoShogiBoard*>(_board);
+			ksboard->GetShoots(p, x, y);
+			_shoots = ksboard->Shoots();
+		}
 		CancelLionMove();
 		if (std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) == std::end(shogiVariants))
 		{
