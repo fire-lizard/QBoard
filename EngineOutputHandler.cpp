@@ -108,6 +108,26 @@ std::pair<int, int> EngineOutputHandler::GetPieceLocation(const Board* board, Pi
 	return { kx, ky };
 }
 
+std::vector<std::pair<int, int>> EngineOutputHandler::GetPieceLocations(const Board* board, PieceType pieceType, PieceColour pieceColour)
+{
+	int kx = -1, ky = -1;
+	std::vector<std::pair<int, int>> result;
+	for (int i = 0; i < board->GetWidth(); i++)
+	{
+		for (int j = 0; j < board->GetHeight(); j++)
+		{
+			const Piece* p = board->GetData(i, j);
+			if (p != nullptr && p->GetBaseType() == pieceType && p->GetColour() == pieceColour)
+			{
+				kx = i;
+				ky = j;
+				result.emplace_back(kx, ky);
+			}
+		}
+	}
+	return result;
+}
+
 QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant)
 {
 	const QRegularExpression _csre = QRegularExpression(R"(([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrq])?)");

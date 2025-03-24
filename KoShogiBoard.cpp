@@ -13,6 +13,7 @@ KoShogiBoard::~KoShogiBoard()
 
 void KoShogiBoard::Initialize()
 {
+	_taoistPriestCaptured = false;
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)
@@ -52,9 +53,8 @@ Piece* KoShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	// Gun carriage and Chariot of the Gods cannot capture a heavenly fortress by displacement.
-	const Piece* sp = _data[oldX][oldY];
-	const Piece* dp = _data[newX][newY];
-	if (sp != nullptr && (sp->GetType() == CannonCarriage || sp->GetType() == DivineCarriage) && dp != nullptr && dp->GetType() == FreeBoar)
+	Piece* sp = _data[oldX][oldY];
+	if (sp != nullptr && (sp->GetType() == CannonCarriage || sp->GetType() == DivineCarriage) && _data[newX][newY] != nullptr && _data[newX][newY]->GetType() == FreeBoar)
 	{
 		return false;
 	}
@@ -78,11 +78,40 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 			for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {delete _data[p.first][p.second]; _data[p.first][p.second] = nullptr;});
 		}
 	}
-	// TODO If the Taoist priest is captured, the drum and banner can no longer promote, and if either or both have already promoted
-	// (to flag waver or thunderclap), then they immediately revert to drum or banner.
-	// TODO Whenever the immaculate light is within 5 intersections of the five-li fog, the fog reverts to a Taoist priest.
-	// TODO If the drum is killed, the pawns may no longer move forward.
-	return ChuShogiBoard::Move(oldX, oldY, newX, newY, cl);
+	const bool result = DaiShogiBoard::Move(oldX, oldY, newX, newY, cl);
+	// If the Taoist priest is captured, the drum and banner can no longer promote, and if either or both have already promoted, then they immediately revert.
+	if (result == true && _data[newX][newY] != nullptr && _data[newX][newY]->GetType() == TaoistPriest)
+	{
+		_taoistPriestCaptured = true;
+		const auto raLocation = EngineOutputHandler::GetPieceLocation(this, RoamingAssault, sp->GetColour() == White ? Black : White);
+		if (raLocation.first != -1 && raLocation.second != -1)
+		{
+			dynamic_cast<KoShogiPiece*>(_data[raLocation.first][raLocation.second])->Demote();
+		}
+		const auto tcLocation = EngineOutputHandler::GetPieceLocation(this, Thunderclap, sp->GetColour() == White ? Black : White);
+		if (tcLocation.first != -1 && tcLocation.second != -1)
+		{
+			dynamic_cast<KoShogiPiece*>(_data[tcLocation.first][tcLocation.second])->Demote();
+		}
+	}
+	// Whenever the immaculate light is within 5 intersections of the five-li fog, the fog reverts to a Taoist priest.
+	if (result == true && sp != nullptr && sp->GetType() == ExtensiveFog)
+	{
+		const auto hlLocation = EngineOutputHandler::GetPieceLocation(this, HolyLight, sp->GetColour() == White ? Black : White);
+		if (hlLocation.first != -1 && hlLocation.second != -1 && abs(hlLocation.first - newX) <= 5 && abs(hlLocation.second - newY) <= 5)
+		{
+			dynamic_cast<KoShogiPiece*>(sp)->Demote();
+		}
+	}
+	else if (result == true && sp != nullptr && sp->GetType() == HolyLight)
+	{
+		const auto efLocation = EngineOutputHandler::GetPieceLocation(this, ExtensiveFog, sp->GetColour() == White ? Black : White);
+		if (efLocation.first != -1 && efLocation.second != -1 && abs(efLocation.first - newX) <= 5 && abs(efLocation.second - newY) <= 5)
+		{
+			dynamic_cast<KoShogiPiece*>(_data[efLocation.first][efLocation.second])->Demote();
+		}
+	}
+	return result;
 }
 
 void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
@@ -91,9 +120,24 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 	switch (piece->GetType())
 	{
 	case Pawn:
+		// If the drum is killed, the pawns may no longer move forward.
+		if (piece->GetColour() == Black)
+		{
+			if (EngineOutputHandler::GetPieceLocation(this, Drum, piece->GetColour()).first != -1)
+			{
+				CheckMove(piece, x, y + 1);
+			}
+			CheckMove(piece, x, y - 1);
+		}
+		else
+		{
+			if (EngineOutputHandler::GetPieceLocation(this, Drum, piece->GetColour()).first != -1)
+			{
+				CheckMove(piece, x, y - 1);
+			}
+			CheckMove(piece, x, y + 1);
+		}
 		CheckMove(piece, x + 1, y);
-		CheckMove(piece, x, y + 1);
-		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x - 1, y);
 		break;
 	case MiddleTroop:
@@ -193,9 +237,11 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 			CheckMove(piece, x + 1, y - 1);
 		}
 		break;
-	case DoubleKylin://TODO
+	case DoubleKylin:
+		getAllPiece2MoveDestinations(x, y, _kylynOffsets, piece->GetColour());
 		break;
-	case DoublePhoenix://TODO
+	case DoublePhoenix:
+		getAllPiece2MoveDestinations(x, y, _phoenixOffsets, piece->GetColour());
 		break;
 	case TaoistPriest:
 	case SpiritualMonk:
@@ -363,7 +409,7 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x - 4, y - 2);
 		break;
 	case WingedHorse:
-		getAllKnight2MoveDestinations(x, y, piece->GetColour());
+		getAllPiece2MoveDestinations(x, y, _knightOffsets, piece->GetColour());
 		break;
 	case RoamingAssault:
 		CheckLionDirection(piece, x, y, West, 5);
@@ -727,17 +773,11 @@ void KoShogiBoard::getAll5StepPaths(int startR, int startC, PieceColour pieceCol
  * Return all squares a knight can move to in exactly 1 knight-move from (r, c).
  * We skip squares with occupant=FRIENDLY (the knight's own color).
  */
-std::vector<std::pair<int, int>> KoShogiBoard::getSingleKnightMoves(int r, int c, PieceColour pieceColour) const
+std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c, const std::vector<std::pair<int, int>>& offsets, PieceColour pieceColour) const
 {
 	constexpr int N = 19;
-	const std::vector<std::pair<int, int>> knightOffsets =
-	{
-		{+2, +1}, {+2, -1}, {-2, +1}, {-2, -1},
-		{+1, +2}, {+1, -2}, {-1, +2}, {-1, -2}
-	};
-
 	std::vector<std::pair<int, int>> result;
-	for (auto& offset : knightOffsets) {
+	for (auto& offset : offsets) {
 		int rr = r + offset.first;
 		int cc = c + offset.second;
 		if (rr < 0 || rr >= N || cc < 0 || cc >= N) {
@@ -757,12 +797,12 @@ std::vector<std::pair<int, int>> KoShogiBoard::getSingleKnightMoves(int r, int c
  * Return all possible distinct destination squares after EXACTLY 2 knight moves
  * from the starting position (startR, startC).
  */
-void KoShogiBoard::getAllKnight2MoveDestinations(int startR, int startC, PieceColour pieceColour)
+void KoShogiBoard::getAllPiece2MoveDestinations(int startR, int startC, const std::vector<std::pair<int, int>>& offsets, PieceColour pieceColour)
 {
 	std::set<std::pair<int, int>> destinations;  // use a set to avoid duplicates
 
 	// First-move candidates
-	const auto firstMoves = getSingleKnightMoves(startR, startC, pieceColour);
+	const auto firstMoves = getSinglePieceMoves(startR, startC, offsets, pieceColour);
 	for (auto& square2 : firstMoves) {
 		destinations.insert(square2);
 	}
@@ -772,7 +812,7 @@ void KoShogiBoard::getAllKnight2MoveDestinations(int startR, int startC, PieceCo
 		const int r1 = square1.first;
 		const int c1 = square1.second;
 		// Now get second-move candidates from (r1, c1)
-		auto secondMoves = getSingleKnightMoves(r1, c1, pieceColour);
+		auto secondMoves = getSinglePieceMoves(r1, c1, offsets, pieceColour);
 		for (auto& square2 : secondMoves) {
 			destinations.insert(square2);
 		}
@@ -784,4 +824,9 @@ void KoShogiBoard::getAllKnight2MoveDestinations(int startR, int startC, PieceCo
 bool KoShogiBoard::IsShootPossible(int x, int y)
 {
 	return std::any_of(_shoots.begin(), _shoots.end(), [=](std::pair<int, int> t) {return t.first == x && t.second == y;});
+}
+
+bool KoShogiBoard::IsTaoistPlayerCaptured() const
+{
+	return _taoistPriestCaptured;
 }

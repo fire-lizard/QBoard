@@ -24,6 +24,7 @@ public:
 	std::vector<std::pair<int, int>> Shoots() const;
 	bool IsShootPossible(int x, int y);
 	void Shoot(int x, int y);
+	bool IsTaoistPlayerCaptured() const;
 
 private:
 	void CheckShoot(const Piece* piece, int x, int y);
@@ -31,10 +32,29 @@ private:
 	void GetPossibleMoves(int x, int y);
 	void getAll5StepPaths(int startR, int startC, PieceColour pieceColour);
 	void dfsFiveSteps(int r, int c, int step, PieceColour pieceColour, std::vector<std::pair<int, int>>& currentPath);
-	std::vector<std::pair<int, int>> getSingleKnightMoves(int r, int c, PieceColour pieceColour) const;
-	void getAllKnight2MoveDestinations(int startR, int startC, PieceColour pieceColour);
+	std::vector<std::pair<int, int>> getSinglePieceMoves(int r, int c, const std::vector<std::pair<int, int>>& offsets, PieceColour pieceColour) const;
+	void getAllPiece2MoveDestinations(int startR, int startC, const std::vector<std::pair<int, int>>& offsets, PieceColour pieceColour);
 
 	std::vector<std::pair<int, int>> _shoots;
+	bool _taoistPriestCaptured = false;
+
+	inline static const std::vector<std::pair<int, int>> _knightOffsets =
+	{
+		{+2, +1}, {+2, -1}, {-2, +1}, {-2, -1},
+		{+1, +2}, {+1, -2}, {-1, +2}, {-1, -2}
+	};
+
+	inline static const std::vector<std::pair<int, int>> _kylynOffsets =
+	{
+		{-1, -1}, {-1, +1}, {+1, -1}, {+1, +1},
+		{+0, +2}, {+0, -2}, {-2, +0}, {+2, +0}
+	};
+
+	inline static const std::vector<std::pair<int, int>> _phoenixOffsets =
+	{
+		{-1, +0}, {+1, +0}, {+0, -1}, {+0, +1},
+		{+2, +2}, {+2, -2}, {-2, +2}, {-2, -2}
+	};
 
 	PieceType _initialSetup[19][19] = {
 	{AdvanceGuard, TaoistPriest, Copper, Leopard, Silver, Gold, Lion, Elephant, Phoenix, King, Kylin, Elephant, Lion, Gold, Silver, Leopard, Copper, SpiritualMonk, AdvanceGuard},

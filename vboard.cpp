@@ -803,8 +803,11 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			else if (_gameVariant == KoShogi)
 			{
-				// TODO When the clerk promotes to master at arms, all the allied advance and rear guards promote as well, while any enemy poison flame dies.
-				if (_currentPiece->GetType() != King && _currentPiece->GetType() != Lion &&
+				// If the Taoist priest is captured, the drum and banner can no longer promote.
+				if (dynamic_cast<KoShogiBoard*>(_board)->IsTaoistPlayerCaptured() && (_currentPiece->GetType() == Flag || _currentPiece->GetType() == Drum))
+				{
+				}
+				else if (_currentPiece->GetType() != King && _currentPiece->GetType() != Lion &&
 					_currentPiece->GetType() != Bishop && !_currentPiece->IsPromoted() && p != nullptr)
 				{
 					if (p->GetType() == King || p->GetType() == Prince || p->GetType() == MiddleTroop || p->GetType() == Flag || p->GetType() == Drum)
@@ -832,6 +835,26 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						promotion = '+';
 						_currentPiece->Promote();
+					}
+					// When the clerk promotes to master at arms, all the allied advance and rear guards promote as well, while any enemy poison flame dies.
+					if (promotion == '+' && _currentPiece->GetBaseType() == Kylin && _currentPiece->GetType() == DoubleKylin)
+					{
+						const auto aguards = EngineOutputHandler::GetPieceLocations(_board, AdvanceGuard, _currentPlayer);
+						for (const auto& aguard : aguards)
+						{
+							_board->GetData(aguard.first, aguard.second)->Promote();
+						}
+						const auto rguards = EngineOutputHandler::GetPieceLocations(_board, RearGuard, _currentPlayer);
+						for (const auto& rguard : rguards)
+						{
+							_board->GetData(rguard.first, rguard.second)->Promote();
+						}
+						const auto pfLocations = EngineOutputHandler::GetPieceLocations(_board, PoisonFlame, _currentPlayer == White ? Black : White);
+						for (const auto& pfLocation : pfLocations)
+						{
+							delete _board->GetData(pfLocation.first, pfLocation.second);
+							_board->SetData(pfLocation.first, pfLocation.second, nullptr);
+						}
 					}
 				}
 			}
