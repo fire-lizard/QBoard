@@ -530,7 +530,7 @@ void KoShogiBoard::CheckShoot(const Piece* piece, int x, int y)
 	if (pt != TaoistPriest && pt != SpiritualMonk && pt != ExtensiveFog && pt != HolyLight)
 	{
 		const auto fogLocation = EngineOutputHandler::GetPieceLocation(this, ExtensiveFog, piece->GetColour() == White ? Black : White);
-		if (fogLocation.first != -1 && fogLocation.second != -1 && (abs(fogLocation.first - x) <= 5 || abs(fogLocation.second - y) <= 5))
+		if (fogLocation.first != -1 && fogLocation.second != -1 && (abs(fogLocation.first - x) <= 5 && abs(fogLocation.second - y) <= 5))
 		{
 			return;
 		}

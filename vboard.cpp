@@ -640,7 +640,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					else if (_currentPiece->GetType() == KnightCaptain)
 					{
 						if (abs(_moves[index].first - x) >= 3 || abs(_moves[index].second - y) >= 3 ||
-							abs(_moves[index].first - x) == 1 || abs(_moves[index].second - y) == 1)
+							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) == 1)
 						{
 							_moves.erase(_moves.begin() + index);
 						}

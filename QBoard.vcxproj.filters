@@ -191,9 +191,6 @@
     <ClCompile Include="DaiDaiShogiBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MoveHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -332,9 +329,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="KoShogiPiece.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
