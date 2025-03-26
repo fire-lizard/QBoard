@@ -75,7 +75,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					// Lion move highlighting
 					if ((_lionFirstMove.first == i && _lionFirstMove.second == j) || (_lionSecondMove.first == i && _lionSecondMove.second == j))
 					{
-						painter.setBrush(QColorConstants::Svg::lightyellow);
+						painter.setBrush(QColorConstants::Svg::yellow);
 						painter.drawRect(rect);
 						painter.setBrush(Qt::NoBrush);
 					}
@@ -179,34 +179,6 @@ void VBoard::paintEvent(QPaintEvent *)
 				(_currentPlayer == White && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 48 == j || _currentPlayer == Black && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 47 == j))
 			{
 				painter.setBrush(Qt::blue);
-				painter.drawRect(rect);
-				painter.setBrush(Qt::NoBrush);
-			}
-			else if (std::any_of(_opponentMoves.begin(), _opponentMoves.end(), [=](std::tuple<int, int, int, int> t) {return get<2>(t) == i && get<3>(t) == j;}))
-			{
-				if (_board->GetData(i, j) != nullptr && _board->GetData(i, j)->GetType() == King)
-				{
-					painter.setBrush(Qt::yellow);
-				}
-				else
-				{
-					if (_gameVariant == Chess || _gameVariant == Shatranj || _gameVariant == Makruk)
-					{
-						if ((i + j) % 2 != 0)
-							painter.setBrush(Qt::gray);
-					}
-					else if (_gameVariant == Xiangqi)
-					{
-						if ((i > 2 && i < 6 && j < 3) || (i > 2 && i < 6 && j > 6))
-						{
-							painter.setBrush(Qt::green);
-						}
-						else if (j < 5)
-						{
-							painter.setBrush(Qt::lightGray);
-						}
-					}
-				}
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
@@ -371,7 +343,6 @@ void VBoard::FinishMove()
 	_currentPlayer = _currentPlayer == White ? Black : White;
 	_statusBar->setStyleSheet("QStatusBar { color : black; }");
 	_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");
-	_opponentMoves = _board->GetAllMoves(_currentPlayer == White ? Black : White);
 	_currentPiece = nullptr;
 	_oldX = -1;
 	_oldY = -1;
@@ -379,10 +350,10 @@ void VBoard::FinishMove()
 	_shoots.clear();
 	_lionMovedOnce = false;
 	_lionMovedTwice = false;
-	_lionFirstMove.first = -1;
-	_lionFirstMove.second = -1;
-	_lionSecondMove.first = -1;
-	_lionSecondMove.second = -1;
+	_pieceShotOnce = false;
+	_lionFirstMove = { -1, -1 };
+	_lionSecondMove = { -1, -1 };
+	_firstShoot = { -1, -1 };
 	this->repaint();
 }
 
@@ -390,10 +361,8 @@ void VBoard::CancelLionMove()
 {
 	_lionMovedOnce = false;
 	_lionMovedTwice = false;
-	_lionFirstMove.first = -1;
-	_lionFirstMove.second = -1;
-	_lionSecondMove.first = -1;
-	_lionSecondMove.second = -1;
+	_lionFirstMove = { -1, -1 };
+	_lionSecondMove = { -1, -1 };
 }
 
 void VBoard::mousePressEvent(QMouseEvent* event)
@@ -495,8 +464,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				if (p != nullptr)
 				{
-					_lionFirstMove.first = x;
-					_lionFirstMove.second = y;
+					_lionFirstMove = { x, y };
 					_lionMovedOnce = true;
 					_lionMovedTwice = true;
 					for (int index = _moves.size() - 1; index >= 0; index--)
@@ -545,8 +513,37 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove();
 				}
 			}
+			else if (isShootingPiece && dynamic_cast<KoShogiBoard*>(_board)->IsShootPossible(x, y) && !_pieceShotOnce)
+			{
+				KoShogiBoard* ksBoard = dynamic_cast<KoShogiBoard*>(_board);
+				ksBoard->Shoot(x, y);
+				ksBoard->RemoveShoot(x, y);
+				const auto it = std::remove_if(_shoots.begin(), _shoots.end(), [=](const auto& t) { return t.first == x && t.second == y; });
+				_shoots.erase(it, _shoots.end());
+				_pieceShotOnce = true;
+				_lionMovedOnce = true;
+				for (int index = _moves.size() - 1; index >= 0; index--)
+				{
+					if (abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2)
+					{
+						_moves.erase(_moves.begin() + index);
+					}
+				}
+				this->repaint();
+			}
 			else if ((abs(_oldX - x) == 4 || abs(_oldY - y) == 4) && (_currentPiece->GetType() == KnightCaptain ||
 				_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
+			{
+				if (_board->Move(_oldX, _oldY, x, y))
+				{
+					if (engine != nullptr && engine->IsActive())
+					{
+						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+					}
+					FinishMove();
+				}
+			}
+			else if (abs(_oldX - x) + abs(_oldY - y) > 2 && _currentPiece->GetType() == DoubleKylin)
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
@@ -570,8 +567,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			else if (_board->IsMovePossible(x, y))
 			{
-				_lionFirstMove.first = x;
-				_lionFirstMove.second = y;
+				_lionFirstMove = { x, y };
 				_lionMovedOnce = true;
 				for (int index = _moves.size() - 1; index >= 0; index--)
 				{
@@ -641,6 +637,13 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						if (abs(_moves[index].first - x) >= 3 || abs(_moves[index].second - y) >= 3 ||
 							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) == 1)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+					else if (_currentPiece->GetType() == DoubleKylin)
+					{
+						if (abs(_moves[index].first - x) + abs(_moves[index].second - y) > 2)
 						{
 							_moves.erase(_moves.begin() + index);
 						}
@@ -723,8 +726,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				{
 					if (PossibleMove(x, y))
 					{
-						_lionSecondMove.first = x;
-						_lionSecondMove.second = y;
+						_lionSecondMove = { x, y };
 						_lionMovedTwice = true;
 						for (int index = _moves.size() - 1; index >= 0; index--)
 						{
@@ -738,13 +740,33 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					}
 				}
 			}
-			else if (_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight)
+			else if (isShootingPiece && dynamic_cast<KoShogiBoard*>(_board)->IsShootPossible(x, y))
 			{
-				if (_board->Move(_oldX, _oldY, x, y))
+				KoShogiBoard* ksBoard = dynamic_cast<KoShogiBoard*>(_board);
+				ksBoard->Shoot(x, y);
+				FinishMove();
+			}
+			else if (_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight ||
+				_currentPiece->GetType() == DoubleKylin)
+			{
+				if (_lionFirstMove.first == -1 || _lionFirstMove.second == -1)
+				{
+					if (_board->Move(_oldX, _oldY, x, y))
+					{
+						if (engine != nullptr && engine->IsActive())
+						{
+							engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+						}
+						_moves.clear();
+						repaint();
+					}
+				}
+				else if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 				{
 					if (engine != nullptr && engine->IsActive())
 					{
-						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+						std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
+							_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 					}
 					FinishMove();
 				}
@@ -752,8 +774,28 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 		else if (isShootingPiece && dynamic_cast<KoShogiBoard*>(_board)->IsShootPossible(x, y))
 		{
-			dynamic_cast<KoShogiBoard*>(_board)->Shoot(x, y);
-			FinishMove();
+			KoShogiBoard* ksBoard = dynamic_cast<KoShogiBoard*>(_board);
+			ksBoard->Shoot(x, y);
+			if (!_pieceShotOnce && (_currentPiece->GetType() == FrankishCannon || _currentPiece->GetType() == DivineCarriage))
+			{
+				_moves.clear();
+				ksBoard->RemoveShoot(x, y);
+				const auto it = std::remove_if(_shoots.begin(), _shoots.end(), [=](const auto& t) { return t.first == x && t.second == y; });
+				_shoots.erase(it, _shoots.end());
+				if (_shoots.empty())
+				{
+					FinishMove();
+				}
+				else
+				{
+					_pieceShotOnce = true;
+					repaint();
+				}
+			}
+			else
+			{
+				FinishMove();
+			}
 		}
 		else if (_board->Move(_oldX, _oldY, x, y))
 		{
@@ -939,7 +981,24 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				EngineOutputHandler::AddMove(_board, _gameVariant, promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None ? 'x' : ' ');
 			}
-			FinishMove();
+			if (isShootingPiece)
+			{
+				KoShogiBoard* ksBoard = dynamic_cast<KoShogiBoard*>(_board);
+				_shoots = ksBoard->GetShoots(_currentPiece, x, y);
+				if (_shoots.empty())
+				{
+					FinishMove();
+				}
+				else
+				{
+					_moves.clear();
+					repaint();
+				}
+			}
+			else
+			{
+				FinishMove();
+			}
 		}
 	}
 	else if (x == _oldX && y == _oldY && _lionMovedTwice && abs(_lionSecondMove.first - x) < 2 && abs(_lionSecondMove.second - y) < 2)
@@ -968,19 +1027,31 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			FinishMove();
 		}
 	}
+	else if (x == _oldX && y == _oldY && _lionMovedOnce && (_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == DoubleKylin) &&
+		abs(_lionFirstMove.first - x) <= 2 && abs(_lionFirstMove.second - y) <= 2)
+	{
+		if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
+		{
+			if (engine != nullptr && engine->IsActive())
+			{
+				std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
+			}
+			EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
+			FinishMove();
+		}
+	}
 	else if (p != nullptr && p->GetColour() == _currentPlayer)
 	{
 		_currentPiece = _board->GetData(x, y);
 		_oldX = x;
 		_oldY = y;
 		_board->GetMoves(p, x, y);
-		_moves = _board->Moves();
 		if (_gameVariant == KoShogi)
 		{
 			KoShogiBoard* ksboard = dynamic_cast<KoShogiBoard*>(_board);
-			ksboard->GetShoots(p, x, y);
-			_shoots = ksboard->Shoots();
+			_shoots = ksboard->GetShoots(p, x, y);
 		}
+		_moves = _board->Moves();
 		CancelLionMove();
 		if (std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) == std::end(shogiVariants))
 		{
@@ -1050,7 +1121,6 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	}
 	_currentPiece = nullptr;
 	_moves.clear();
-	_opponentMoves.clear();
 	_attackers.clear();
 	_defenders.clear();
 	_gameVariant = gameVariant;
@@ -1150,7 +1220,6 @@ PieceColour VBoard::GetCurrentPlayer() const
 void VBoard::SetCurrentPlayer(PieceColour currentPlayer)
 {
 	_moves.clear();
-	_opponentMoves.clear();
 	_currentPlayer = currentPlayer;
 }
 

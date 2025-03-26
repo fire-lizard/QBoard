@@ -50,6 +50,12 @@ Piece* KoShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 	return new KoShogiPiece(pieceType, pieceColour);
 }
 
+void KoShogiBoard::RemoveShoot(int x, int y)
+{
+	const auto it = std::remove_if(_shoots.begin(), _shoots.end(), [=](const auto& p) { return p.first == x && p.second == y; });
+	_shoots.erase(it, _shoots.end());
+}
+
 bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	// Gun carriage and Chariot of the Gods cannot capture a heavenly fortress by displacement.
@@ -123,7 +129,8 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		// If the drum is killed, the pawns may no longer move forward.
 		if (piece->GetColour() == Black)
 		{
-			if (EngineOutputHandler::GetPieceLocation(this, Drum, piece->GetColour()).first != -1)
+			if (EngineOutputHandler::GetPieceLocation(this, Drum, piece->GetColour()).first != -1 ||
+				EngineOutputHandler::GetPieceLocation(this, Thunderclap, piece->GetColour()).first != -1)
 			{
 				CheckMove(piece, x, y + 1);
 			}
@@ -131,7 +138,8 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		else
 		{
-			if (EngineOutputHandler::GetPieceLocation(this, Drum, piece->GetColour()).first != -1)
+			if (EngineOutputHandler::GetPieceLocation(this, Drum, piece->GetColour()).first != -1 ||
+				EngineOutputHandler::GetPieceLocation(this, Thunderclap, piece->GetColour()).first != -1)
 			{
 				CheckMove(piece, x, y - 1);
 			}
@@ -441,12 +449,7 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 	}
 }
 
-std::vector<std::pair<int, int>> KoShogiBoard::Shoots() const
-{
-	return _shoots;
-}
-
-void KoShogiBoard::GetShoots(const Piece* piece, int x, int y)
+std::vector<std::pair<int, int>> KoShogiBoard::GetShoots(const Piece* piece, int x, int y)
 {
 	_shoots.clear();
 	switch (piece->GetType())
@@ -511,6 +514,7 @@ void KoShogiBoard::GetShoots(const Piece* piece, int x, int y)
 	default:
 		break;
 	}
+	return _shoots;
 }
 
 void KoShogiBoard::Shoot(int x, int y)
@@ -557,6 +561,7 @@ void KoShogiBoard::CheckShoot(const Piece* piece, int x, int y)
 				}
 			}
 			_shoots.emplace_back(x, y);
+			RemoveMove(x, y);
 		}
 	}
 }

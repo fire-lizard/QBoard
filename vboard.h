@@ -74,7 +74,6 @@ private:
 	std::vector<std::pair<int, int>> _shoots;
 	std::vector<std::pair<int, int>> _attackers;
 	std::vector<std::pair<int, int>> _defenders;
-	std::vector<std::tuple<int, int, int, int>> _opponentMoves;
 	std::vector<std::string> _whiteMoves;
 	std::vector<std::string> _blackMoves;
 	QStatusBar *_statusBar;
@@ -96,7 +95,8 @@ private:
 	bool _editorMode = false;
 	bool _lionMovedOnce = false;
 	bool _lionMovedTwice = false;
-	bool _preparedToShoot = false;
+	bool _pieceShotOnce = false;
+	std::pair<int, int> _firstShoot = { -1, -1 };
 	std::pair<int, int> _lionFirstMove = { -1, -1 };
 	std::pair<int, int> _lionSecondMove = { -1, -1 };
 
