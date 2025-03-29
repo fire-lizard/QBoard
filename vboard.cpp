@@ -1015,20 +1015,20 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			FinishMove();
 		}
 	}
-	else if (x == _oldX && y == _oldY && _lionMovedOnce && abs(_lionFirstMove.first - x) < 2 && abs(_lionFirstMove.second - y) < 2)
-	{
-		if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
-		{
-			if (engine != nullptr && engine->IsActive())
-			{
-				std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
-			}
-			EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
-			FinishMove();
-		}
-	}
 	else if (x == _oldX && y == _oldY && _lionMovedOnce && (_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == DoubleKylin) &&
 		abs(_lionFirstMove.first - x) <= 2 && abs(_lionFirstMove.second - y) <= 2)
+		{
+			if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
+			{
+				if (engine != nullptr && engine->IsActive())
+				{
+					std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
+				}
+				EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
+				FinishMove();
+			}
+	}
+	else if (x == _oldX && y == _oldY && _lionMovedOnce && abs(_lionFirstMove.first - x) < 2 && abs(_lionFirstMove.second - y) < 2)
 	{
 		if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 		{

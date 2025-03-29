@@ -226,7 +226,7 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x - 1, y - 1);
 		break;
 	case Lion:
-		GetPossibleMoves(x, y);
+		getAllPiece2MoveDestinations(x, y, _lionOffsets, piece->GetColour());
 		break;
 	case Thunderclap:
 		getAll5StepPaths(x, y, piece->GetColour());
@@ -264,32 +264,7 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		break;
 	case ExtensiveFog:
 	case HolyLight:
-		CheckMove(piece, x + 2, y + 2);
-		CheckMove(piece, x - 2, y + 2);
-		CheckMove(piece, x + 2, y - 2);
-		CheckMove(piece, x - 2, y - 2);
-		CheckMove(piece, x + 2, y);
-		CheckMove(piece, x - 2, y);
-		CheckMove(piece, x, y + 2);
-		CheckMove(piece, x, y - 2);
-
-		CheckMove(piece, x + 4, y + 2);
-		CheckMove(piece, x - 4, y + 2);
-		CheckMove(piece, x + 4, y - 2);
-		CheckMove(piece, x - 4, y - 2);
-		CheckMove(piece, x + 4, y);
-		CheckMove(piece, x - 4, y);
-		CheckMove(piece, x, y + 4);
-		CheckMove(piece, x, y - 4);
-
-		CheckMove(piece, x + 4, y + 4);
-		CheckMove(piece, x - 4, y + 4);
-		CheckMove(piece, x + 4, y - 4);
-		CheckMove(piece, x - 4, y - 4);
-		CheckMove(piece, x + 2, y + 4);
-		CheckMove(piece, x - 2, y + 4);
-		CheckMove(piece, x + 2, y - 4);
-		CheckMove(piece, x - 2, y - 4);
+		getAllPiece2MoveDestinations(x, y, _priestOffsets, piece->GetColour());
 		break;
 	case SkywardNet:
 		CheckDirection(piece, x, y, West);
@@ -333,23 +308,10 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, West);
 		CheckDirection(piece, x, y, NorthWest);
 
-		GetPossibleMoves(x, y);
+		getAllPiece2MoveDestinations(x, y, _lionOffsets, piece->GetColour());
 		break;
 	case WingedTiger:
-		CheckMove(piece, x + 1, y + 1);
-		CheckMove(piece, x + 1, y - 1);
-		CheckMove(piece, x - 1, y + 1);
-		CheckMove(piece, x - 1, y - 1);
-
-		if (IsMovePossible(x + 1, y + 1)) CheckMove(piece, x + 2, y + 2);
-		if (IsMovePossible(x + 1, y + 1) || IsMovePossible(x + 1, y - 1)) CheckMove(piece, x + 2, y);
-		if (IsMovePossible(x + 1, y - 1)) CheckMove(piece, x + 2, y - 2);
-		if (IsMovePossible(x + 1, y + 1) || IsMovePossible(x - 1, y + 1)) CheckMove(piece, x, y + 2);
-
-		if (IsMovePossible(x + 1, y - 1) || IsMovePossible(x - 1, y - 1)) CheckMove(piece, x, y - 2);
-		if (IsMovePossible(x - 1, y + 1)) CheckMove(piece, x - 2, y + 2);
-		if (IsMovePossible(x - 1, y + 1) || IsMovePossible(x - 1, y - 1)) CheckMove(piece, x - 2, y);
-		if (IsMovePossible(x - 1, y - 1)) CheckMove(piece, x - 2, y - 2);
+		getAllPiece2MoveDestinations(x, y, _tigerOffsets, piece->GetColour());
 
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, East);
@@ -362,15 +324,7 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, SouthWest);
 		CheckDirection(piece, x, y, NorthWest);
 
-		CheckMove(piece, x + 1, y);
-		CheckMove(piece, x, y + 1);
-		CheckMove(piece, x, y - 1);
-		CheckMove(piece, x - 1, y);
-
-		if (IsMovePossible(x + 1, y)) CheckMove(piece, x + 2, y);
-		if (IsMovePossible(x, y + 1)) CheckMove(piece, x, y + 2);
-		if (IsMovePossible(x, y - 1)) CheckMove(piece, x, y - 2);
-		if (IsMovePossible(x - 1, y)) CheckMove(piece, x - 2, y);
+		getAllPiece2MoveDestinations(x, y, _hawkOffsets, piece->GetColour());
 		break;
 	case Longbow:
 	case Crossbow:
@@ -584,131 +538,6 @@ void KoShogiBoard::CheckShootingDirection(const Piece* piece, int x, int y, Dire
 	}
 }
 
-void KoShogiBoard::GetPossibleMoves(int x, int y)
-{
-	constexpr int BOARD_SIZE = 5;
-	constexpr int MAX_MOVES = 2;
-	char board[BOARD_SIZE][BOARD_SIZE];
-	for (int i = -MAX_MOVES; i <= MAX_MOVES; i++)
-	{
-		for (int j = -MAX_MOVES; j <= MAX_MOVES; j++)
-		{
-			if (x + i < 0 || x + i > _width - 1 || y + j < 0 || y + j > _height - 1)
-			{
-				board[i + MAX_MOVES][j + MAX_MOVES] = 'W';
-			}
-			else if (_data[x + i][y + j] != nullptr && _data[x + i][y + j]->GetColour() != _data[x][y]->GetColour())
-			{
-				board[i + MAX_MOVES][j + MAX_MOVES] = 'W';
-			}
-			else if (_data[x + i][y + j] != nullptr && _data[x + i][y + j]->GetColour() == _data[x][y]->GetColour())
-			{
-				board[i + MAX_MOVES][j + MAX_MOVES] = 'B';
-			}
-			else
-			{
-				board[i + MAX_MOVES][j + MAX_MOVES] = '.';
-			}
-		}
-	}
-
-	// Initial position.
-	constexpr int startR = MAX_MOVES;
-	constexpr int startC = MAX_MOVES;
-
-	// Directions: 8 neighbors (vertical, horizontal, diagonal).
-	static const std::vector<std::pair<int, int>> directions =
-	{
-		{-1,  0}, {1,  0},  // up, down
-		{0, -1},  {0,  1},  // left, right
-		{-1, -1}, {-1,  1}, // diag up-left, up-right
-		{ 1, -1}, { 1,  1}  // diag down-left, down-right
-	};
-
-	// We will do a BFS.
-	// visited[r][c][stepsUsed] = true if that state has been visited.
-	bool visited[BOARD_SIZE][BOARD_SIZE][4];
-	for (int r = 0; r < BOARD_SIZE; r++)
-	{
-		for (int c = 0; c < BOARD_SIZE; c++)
-		{
-			for (int s = 0; s < 4; s++)
-			{
-				visited[r][c][s] = false;
-			}
-		}
-	}
-
-	// A queue for BFS states (r, c, stepsUsed so far).
-	std::queue<State> q;
-	// Start from the initial position with 0 steps used.
-	q.push({ startR, startC, 0 });
-	visited[startR][startC][0] = true;
-
-	// We'll keep track of all reachable squares in a set to avoid duplicates.
-	std::set<std::pair<int, int>> reachablePositions;
-	reachablePositions.insert({ startR, startC });
-
-	while (!q.empty())
-	{
-		const State st = q.front();
-		q.pop();
-
-		const int r = st.r;
-		const int c = st.c;
-		const int s = st.steps; // steps used so far
-
-		// If we've already used all steps, we can't move further.
-		if (s == MAX_MOVES)
-		{
-			continue;
-		}
-
-		// Try all 8 directions for the next step.
-		for (auto& dir : directions)
-		{
-			int rr = r + dir.first;
-			int cc = c + dir.second;
-
-			// Check boundaries
-			if (rr < 0 || rr >= BOARD_SIZE || cc < 0 || cc >= BOARD_SIZE)
-			{
-				continue;
-			}
-
-			// Check if black flag => cannot pass at all.
-			if (board[rr][cc] == 'B')
-			{
-				continue;
-			}
-
-			// We can move onto white or empty squares if not visited with steps+1
-			if (!visited[rr][cc][s + 1])
-			{
-				visited[rr][cc][s + 1] = true;
-				reachablePositions.insert({ rr, cc });
-
-				// If it's a white flag, we can land but not continue from there.
-				if (board[rr][cc] == 'W')
-				{
-					// Do not add it back to queue for further steps.
-					// Because we cannot pass through a white flag.
-				}
-				else
-				{
-					// It's empty: we can continue from there if we haven't used up all the steps.
-					q.push({ rr, cc, s + 1 });
-				}
-			}
-		}
-	}
-
-	for (const auto& reachablePosition : reachablePositions)
-	{
-		_moves.emplace_back(x + reachablePosition.first - MAX_MOVES, y + reachablePosition.second - MAX_MOVES);
-	}
-}
-
 /**
  * A recursive DFS function that collects all 5-step paths.
  *
@@ -775,8 +604,8 @@ void KoShogiBoard::getAll5StepPaths(int startR, int startC, PieceColour pieceCol
 }
 
 /**
- * Return all squares a knight can move to in exactly 1 knight-move from (r, c).
- * We skip squares with occupant=FRIENDLY (the knight's own color).
+ * Return all squares a piece can move to in exactly 1 piece move from (r, c).
+ * We skip squares with occupant=FRIENDLY (the piece's own color).
  */
 std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c, const std::vector<std::pair<int, int>>& offsets, PieceColour pieceColour) const
 {
@@ -788,7 +617,7 @@ std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c,
 		if (rr < 0 || rr >= N || cc < 0 || cc >= N) {
 			continue;
 		}
-		// The knight can land on this square if it's EMPTY or ENEMY
+		// The piece can land on this square if it's EMPTY or ENEMY
 		if (_data[rr][cc] != nullptr && _data[rr][cc]->GetColour() == pieceColour) {
 			continue;
 		}
@@ -799,7 +628,7 @@ std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c,
 }
 
 /**
- * Return all possible distinct destination squares after EXACTLY 2 knight moves
+ * Return all possible distinct destination squares after EXACTLY 2 piece moves
  * from the starting position (startR, startC).
  */
 void KoShogiBoard::getAllPiece2MoveDestinations(int startR, int startC, const std::vector<std::pair<int, int>>& offsets, PieceColour pieceColour)
@@ -824,6 +653,11 @@ void KoShogiBoard::getAllPiece2MoveDestinations(int startR, int startC, const st
 	}
 
 	_moves.insert(_moves.end(), destinations.begin(), destinations.end());
+}
+
+std::vector<std::pair<int, int>> KoShogiBoard::SecondMoves()
+{
+	return _secondMoves;
 }
 
 bool KoShogiBoard::IsShootPossible(int x, int y)
