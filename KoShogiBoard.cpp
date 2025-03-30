@@ -64,7 +64,7 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	{
 		return false;
 	}
-	if (IsMovePossible(newX, newY))
+	if (_data[oldX][oldY] != nullptr && IsMovePossible(newX, newY))
 	{
 		auto pieces = GetEnemyPiecesAround(newX, newY, _data[oldX][oldY]->GetColour());
 		if (std::any_of(pieces.begin(), pieces.end(), [=](std::pair<int, int> t) {return _data[t.first][t.second]->GetType() == PoisonFlame;}))

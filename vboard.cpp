@@ -589,6 +589,11 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			else if (abs(_oldX - x) + abs(_oldY - y) > 2 && _currentPiece->GetType() == DoubleKylin)
 			{
 			}
+			else if ((abs(_oldX - x) > 2 || abs(_oldY - y) > 2 || abs(_oldX - x) + abs(_oldY - y) > 1 && abs(_oldX - x) != abs(_oldY - y) ||
+				abs(_oldX - x) == 1 && abs(_oldY - y) == 1) &&
+				_currentPiece->GetType() == DoublePhoenix)
+			{
+			}
 			else if (_gameVariant == KoShogi && _board->GetData(x, y) == nullptr)
 			{
 				_lionFirstMove = { x, y };
@@ -641,6 +646,16 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					else if (_currentPiece->GetType() == DoubleKylin)
 					{
 						if (abs(_moves[index].first - x) + abs(_moves[index].second - y) > 2)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+					else if (_currentPiece->GetType() == DoublePhoenix)
+					{
+						if (abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2 ||
+							abs(_moves[index].first - x) + abs(_moves[index].second - y) > 1 &&
+							abs(_moves[index].first - x) != abs(_moves[index].second - y) ||
+							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) == 1)
 						{
 							_moves.erase(_moves.begin() + index);
 						}
@@ -744,6 +759,16 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
+					else if (_currentPiece->GetType() == DoublePhoenix)
+					{
+						if (abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2 ||
+							abs(_moves[index].first - x) + abs(_moves[index].second - y) > 1 &&
+							abs(_moves[index].first - x) != abs(_moves[index].second - y) ||
+							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) == 1)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
 				}
 				this->repaint();
 			}
@@ -843,7 +868,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				FinishMove();
 			}
 			else if (_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight ||
-				_currentPiece->GetType() == DoubleKylin)
+				_currentPiece->GetType() == DoubleKylin || _currentPiece->GetType() == DoublePhoenix)
 			{
 				if (_lionFirstMove.first == -1 || _lionFirstMove.second == -1)
 				{
@@ -1108,6 +1133,19 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					_lionSecondMove.first, _board->GetHeight() - _lionSecondMove.second,
 					x, _board->GetHeight() - y);
 			}
+			FinishMove();
+		}
+	}
+	else if (x == _oldX && y == _oldY && _lionMovedOnce && abs(_lionFirstMove.first - x) <= 2 && abs(_lionFirstMove.second - y) <= 2 &&
+		(_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == DoubleKylin || _currentPiece->GetType() == DoublePhoenix))
+	{
+		if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
+		{
+			if (engine != nullptr && engine->IsActive())
+			{
+				std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
+			}
+			EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
 			FinishMove();
 		}
 	}
