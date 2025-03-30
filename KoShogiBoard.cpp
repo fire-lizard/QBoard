@@ -655,11 +655,6 @@ void KoShogiBoard::getAllPiece2MoveDestinations(int startR, int startC, const st
 	_moves.insert(_moves.end(), destinations.begin(), destinations.end());
 }
 
-std::vector<std::pair<int, int>> KoShogiBoard::SecondMoves()
-{
-	return _secondMoves;
-}
-
 bool KoShogiBoard::IsShootPossible(int x, int y)
 {
 	return std::any_of(_shoots.begin(), _shoots.end(), [=](std::pair<int, int> t) {return t.first == x && t.second == y;});
