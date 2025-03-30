@@ -93,7 +93,7 @@ void VBoard::paintEvent(QPaintEvent *)
 							abs(_oldX - i) == 1 && abs(_oldY - j) == 1) && _currentPiece->GetType() == DoublePhoenix;
 						if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5) && _board->GetData(i, j) != nullptr)
 						{
-							painter.setBrush(QColorConstants::Svg::yellowgreen);
+							painter.setBrush(QColorConstants::Svg::lightpink);
 							painter.drawRect(rect);
 							painter.setBrush(Qt::NoBrush);
 						}
@@ -105,7 +105,7 @@ void VBoard::paintEvent(QPaintEvent *)
 						}
 						else if (_board->GetData(i, j) != nullptr)
 						{
-							painter.setBrush(QColorConstants::Svg::lightpink);
+							painter.setBrush(QColorConstants::Svg::hotpink);
 							painter.drawRect(rect);
 							painter.setBrush(Qt::NoBrush);
 						}
@@ -120,7 +120,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					{
 						if (_board->GetData(i, j) != nullptr)
 						{
-							painter.setBrush(QColorConstants::Svg::lightpink);
+							painter.setBrush(QColorConstants::Svg::hotpink);
 							painter.drawRect(rect);
 							painter.setBrush(Qt::NoBrush);
 						}
@@ -953,9 +953,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			if (!_pieceShotOnce && (_currentPiece->GetType() == FrankishCannon || _currentPiece->GetType() == DivineCarriage))
 			{
 				_moves.clear();
-				ksBoard->RemoveShoot(x, y);
-				const auto it = std::remove_if(_shoots.begin(), _shoots.end(), [=](const auto& t) { return t.first == x && t.second == y; });
-				_shoots.erase(it, _shoots.end());
+				_shoots = ksBoard->GetShoots(_currentPiece, _oldX, _oldY);
 				if (_shoots.empty())
 				{
 					FinishMove();
@@ -1395,6 +1393,7 @@ PieceColour VBoard::GetCurrentPlayer() const
 void VBoard::SetCurrentPlayer(PieceColour currentPlayer)
 {
 	_moves.clear();
+	_shoots.clear();
 	_currentPlayer = currentPlayer;
 }
 
