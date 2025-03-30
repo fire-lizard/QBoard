@@ -431,11 +431,62 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	{
 		if (isLionPiece && !_lionMovedOnce && EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y))
 		{
-			if ((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
+			if (_gameVariant == KoShogi && ((abs(_oldX - x) == 0 && abs(_oldY - y) == 2) ||
+				(abs(_oldX - x) == 2 && abs(_oldY - y) == 0) || (abs(_oldX - x) == 2 && abs(_oldY - y) == 2)) &&
+				(_currentPiece->GetType() == WingedTiger || _currentPiece->GetType() == RisingDragon))
+			{
+				if (_board->Move(_oldX, _oldY, x, y))
+				{
+					if (engine != nullptr && engine->IsActive())
+					{
+						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+					}
+					FinishMove();
+				}
+			}
+			else if (_gameVariant == KoShogi && (abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
+				(_currentPiece->GetType() == Lion || _currentPiece->GetType() == WingedTiger ||
+					_currentPiece->GetType() == FlyingHawk || _currentPiece->GetType() == RisingDragon))
+			{
+			}
+			else if (_gameVariant == KoShogi && abs(_oldX - x) == 2 + abs(_oldY - y) > 1 && _currentPiece->GetType() == FlyingHawk)
+			{
+			}
+			else if (_currentPiece->GetType() == RoamingAssault)
+			{
+				if (x < _oldX)
+				{
+					for (int index = _oldX - 1; index >= x; index--)
+					{
+						_board->Move(index + 1, _oldY, index, y);
+					}
+				}
+				else if (x > _oldX)
+				{
+					for (int index = _oldX + 1; index <= x; index++)
+					{
+						_board->Move(index - 1, _oldY, index, y);
+					}
+				}
+				else if (y < _oldY)
+				{
+					for (int index = _oldY - 1; index >= y; index--)
+					{
+						_board->Move(_oldX, index + 1, x, index);
+					}
+				}
+				else if (y > _oldY)
+				{
+					for (int index = _oldY + 1; index <= y; index++)
+					{
+						_board->Move(_oldX, index - 1, x, index);
+					}
+				}
+				FinishMove();
+			}
+			else if ((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
 				(_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk ||
-					_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == FreeEagle ||
-					_currentPiece->GetType() == WingedTiger || _currentPiece->GetType() == FlyingHawk ||
-					_currentPiece->GetType() == RisingDragon))
+					_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == FreeEagle))
 			{
 				// Lion capture rule #1
 				if (_gameVariant == ChuShogi && _board->GetData(x, y) != nullptr &&
@@ -534,25 +585,66 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			else if ((abs(_oldX - x) == 4 || abs(_oldY - y) == 4) && (_currentPiece->GetType() == KnightCaptain ||
 				_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
 			{
-				if (_board->Move(_oldX, _oldY, x, y))
-				{
-					if (engine != nullptr && engine->IsActive())
-					{
-						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
-					}
-					FinishMove();
-				}
 			}
 			else if (abs(_oldX - x) + abs(_oldY - y) > 2 && _currentPiece->GetType() == DoubleKylin)
 			{
-				if (_board->Move(_oldX, _oldY, x, y))
+			}
+			else if (_gameVariant == KoShogi && _board->GetData(x, y) == nullptr)
+			{
+				_lionFirstMove = { x, y };
+				_lionMovedOnce = true;
+				for (int index = _moves.size() - 1; index >= 0; index--)
 				{
-					if (engine != nullptr && engine->IsActive())
+					if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == RisingDragon)
 					{
-						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
+							abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
 					}
-					FinishMove();
+					else if (_currentPiece->GetType() == WingedTiger)
+					{
+						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
+							abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1 ||
+							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) != 1 ||
+							abs(_moves[index].first - x) != 1 && abs(_moves[index].second - y) == 1)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+					else if (_currentPiece->GetType() == FlyingHawk)
+					{
+						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
+							abs(_moves[index].first - x) + abs(_moves[index].second - y) > 1)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+					else if (_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight)
+					{
+						if (abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+					else if (_currentPiece->GetType() == KnightCaptain)
+					{
+						if (abs(_moves[index].first - x) >= 3 || abs(_moves[index].second - y) >= 3 ||
+							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) == 1)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+					else if (_currentPiece->GetType() == DoubleKylin)
+					{
+						if (abs(_moves[index].first - x) + abs(_moves[index].second - y) > 2)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
 				}
+				this->repaint();
 			}
 			else if (_board->GetData(x, y) == nullptr)
 			{
@@ -621,7 +713,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					else if (_currentPiece->GetType() == FlyingHawk)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
-							abs(_moves[index].first - x) + abs(_moves[index].second - y) > 2)
+							abs(_moves[index].first - x) + abs(_moves[index].second - y) > 1)
 						{
 							_moves.erase(_moves.begin() + index);
 						}

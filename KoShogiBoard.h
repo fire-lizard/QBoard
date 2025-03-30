@@ -1,5 +1,4 @@
 #pragma once
-#include <set>
 #include "Common.h"
 #include "KoShogiPiece.h"
 #include "EngineOutputHandler.h"

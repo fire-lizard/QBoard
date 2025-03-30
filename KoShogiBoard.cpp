@@ -641,7 +641,7 @@ void KoShogiBoard::getAllPiece2MoveDestinations(int startR, int startC, const st
 		destinations.insert(square2);
 	}
 
-	// For each square reachable in one knight move:
+	// For each square reachable in one piece move:
 	for (const auto& square1 : firstMoves) {
 		const int r1 = square1.first;
 		const int c1 = square1.second;
