@@ -91,13 +91,15 @@ void VBoard::paintEvent(QPaintEvent *)
 						const bool lcond5 = (abs(_oldX - i) > 2 || abs(_oldY - j) > 2 ||
 							abs(_oldX - i) + abs(_oldY - j) > 1 && abs(_oldX - i) != abs(_oldY - j) ||
 							abs(_oldX - i) == 1 && abs(_oldY - j) == 1) && _currentPiece->GetType() == DoublePhoenix;
-						if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5) && _board->GetData(i, j) != nullptr)
+						const bool lcond6 = !(abs(_oldX - i) == 2 && abs(_oldY - j) == 1 || abs(_oldX - i) == 1 && abs(_oldY - j) == 2) &&
+							_currentPiece->GetType() == WingedHorse;
+						if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6) && _board->GetData(i, j) != nullptr)
 						{
 							painter.setBrush(QColorConstants::Svg::lightpink);
 							painter.drawRect(rect);
 							painter.setBrush(Qt::NoBrush);
 						}
-						else if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5) && _board->GetData(i, j) == nullptr)
+						else if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6) && _board->GetData(i, j) == nullptr)
 						{
 							painter.setBrush(QColorConstants::Svg::greenyellow);
 							painter.drawRect(rect);
@@ -639,6 +641,10 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
 			{
 			}
+			else if (!(abs(_oldX - x) == 2 && abs(_oldY - y) == 1 || abs(_oldX - x) == 1 && abs(_oldY - y) == 2) && 
+				_currentPiece->GetType() == WingedHorse)
+			{
+			}
 			else if (abs(_oldX - x) + abs(_oldY - y) > 2 && _currentPiece->GetType() == DoubleKylin)
 			{
 			}
@@ -692,6 +698,14 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) == 1 ||
 							abs(_moves[index].first - x) == 2 && abs(_moves[index].second - y) == 0 ||
 							abs(_moves[index].first - x) == 0 && abs(_moves[index].second - y) == 2)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+					else if (_currentPiece->GetType() == WingedHorse)
+					{
+						if (!(abs(_moves[index].first - x) == 2 && abs(_moves[index].second - y) == 1 ||
+							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) == 2))
 						{
 							_moves.erase(_moves.begin() + index);
 						}
@@ -801,6 +815,14 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) == 1 ||
 							abs(_moves[index].first - x) == 2 && abs(_moves[index].second - y) == 0 ||
 							abs(_moves[index].first - x) == 0 && abs(_moves[index].second - y) == 2)
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+					else if (_currentPiece->GetType() == WingedHorse)
+					{
+						if (!(abs(_moves[index].first - x) == 2 && abs(_moves[index].second - y) == 1 ||
+							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) == 2))
 						{
 							_moves.erase(_moves.begin() + index);
 						}
@@ -921,7 +943,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				FinishMove();
 			}
 			else if (_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight ||
-				_currentPiece->GetType() == DoubleKylin || _currentPiece->GetType() == DoublePhoenix)
+				_currentPiece->GetType() == DoubleKylin || _currentPiece->GetType() == DoublePhoenix || _currentPiece->GetType() == WingedHorse)
 			{
 				if (_lionFirstMove.first == -1 || _lionFirstMove.second == -1)
 				{
@@ -1189,7 +1211,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	}
 	else if (x == _oldX && y == _oldY && _lionMovedOnce && abs(_lionFirstMove.first - x) <= 2 && abs(_lionFirstMove.second - y) <= 2 &&
 		(_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight ||
-		_currentPiece->GetType() == DoubleKylin || _currentPiece->GetType() == DoublePhoenix))
+		_currentPiece->GetType() == DoubleKylin || _currentPiece->GetType() == DoublePhoenix || _currentPiece->GetType() == WingedHorse))
 	{
 		if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 		{
