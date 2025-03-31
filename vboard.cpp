@@ -79,6 +79,12 @@ void VBoard::paintEvent(QPaintEvent *)
 						painter.drawRect(rect);
 						painter.setBrush(Qt::NoBrush);
 					}
+					else if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair(i, j)) != std::end(_tcMoves))
+					{
+						painter.setBrush(QColorConstants::Svg::yellow);
+						painter.drawRect(rect);
+						painter.setBrush(Qt::NoBrush);
+					}
 					else if (_gameVariant == KoShogi && !_lionMovedOnce && EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, i, j))
 					{
 						const bool lcond1 = (abs(_oldX - i) == 2 || abs(_oldY - j) == 2) &&
@@ -387,6 +393,7 @@ void VBoard::FinishMove()
 	_oldY = -1;
 	_moves.clear();
 	_shoots.clear();
+	_tcMoves.clear();
 	_lionMovedOnce = false;
 	_lionMovedTwice = false;
 	_pieceShotOnce = false;
@@ -402,6 +409,7 @@ void VBoard::CancelLionMove()
 	_lionMovedTwice = false;
 	_lionFirstMove = { -1, -1 };
 	_lionSecondMove = { -1, -1 };
+	_tcMoves.clear();
 }
 
 void VBoard::mousePressEvent(QMouseEvent* event)
@@ -470,8 +478,48 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	{
 		if (isLionPiece && !_lionMovedOnce && EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y))
 		{
-			if ((abs(_oldX - x) == 0 && abs(_oldY - y) == 2 || abs(_oldX - x) == 2 && abs(_oldY - y) == 0 || abs(_oldX - x) == 2 && abs(_oldY - y) == 2) &&
-				_currentPiece->GetType() == RisingDragon)
+			if (_tcMoves.empty() && (abs(_oldX - x) > 1 || abs(_oldY - y) > 1) && _currentPiece->GetType() == Thunderclap)
+			{
+			}
+			else if (!_tcMoves.empty() && (abs(_tcMoves[_tcMoves.size() - 1].first - x) > 1 ||
+				abs(_tcMoves[_tcMoves.size() - 1].second - y) > 1) && _currentPiece->GetType() == Thunderclap)
+			{
+			}
+			else if (_currentPiece->GetType() == Thunderclap && PossibleMove(x, y))
+			{
+				if (_tcMoves.size() < 4)
+				{
+					_tcMoves.emplace_back(x, y);
+					for (int index = _moves.size() - 1; index >= 0; index--)
+					{
+						if (abs(_tcMoves[_tcMoves.size() - 1].first - _moves[index].first) > 5 - _tcMoves.size() ||
+							abs(_tcMoves[_tcMoves.size() - 1].second - _moves[index].second) > 5 - _tcMoves.size())
+						{
+							_moves.erase(_moves.begin() + index);
+						}
+					}
+					this->repaint();
+				}
+				else
+				{
+					_tcMoves.emplace_back(x, y);
+					_tcMoves.insert(_tcMoves.begin(), EngineOutputHandler::GetPieceLocation(_board, Thunderclap, _currentPlayer));
+					for (int index = 0; index < _tcMoves.size() - 1; index++)
+					{
+						if (_board->Move(_tcMoves[index].first, _tcMoves[index].second, _tcMoves[index + 1].first, _tcMoves[index + 1].second))
+						{
+							if (engine != nullptr && engine->IsActive())
+							{
+								engine->Move(_tcMoves[index].first, _board->GetHeight() - _tcMoves[index].second, 
+									_tcMoves[index + 1].first, _board->GetHeight() - _tcMoves[index + 1].second);
+							}
+						}
+					}
+					FinishMove();
+				}
+			}
+			else if ((abs(_oldX - x) == 0 && abs(_oldY - y) == 2 || abs(_oldX - x) == 2 && abs(_oldY - y) == 0 ||
+				abs(_oldX - x) == 2 && abs(_oldY - y) == 2) && _currentPiece->GetType() == RisingDragon)
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
@@ -649,8 +697,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 			}
 			else if ((abs(_oldX - x) > 2 || abs(_oldY - y) > 2 || abs(_oldX - x) + abs(_oldY - y) > 1 && abs(_oldX - x) != abs(_oldY - y) ||
-				abs(_oldX - x) == 1 && abs(_oldY - y) == 1) &&
-				_currentPiece->GetType() == DoublePhoenix)
+				abs(_oldX - x) == 1 && abs(_oldY - y) == 1) && _currentPiece->GetType() == DoublePhoenix)
 			{
 			}
 			else if (_gameVariant == KoShogi && _board->GetData(x, y) == nullptr)

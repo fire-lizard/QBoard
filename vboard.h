@@ -99,6 +99,7 @@ private:
 	std::pair<int, int> _firstShoot = { -1, -1 };
 	std::pair<int, int> _lionFirstMove = { -1, -1 };
 	std::pair<int, int> _lionSecondMove = { -1, -1 };
+	std::vector<std::pair<int, int>> _tcMoves;
 
 signals:
 
