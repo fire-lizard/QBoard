@@ -68,18 +68,18 @@ void VBoard::paintEvent(QPaintEvent *)
 		for (int j = 0; j < _board->GetHeight(); j++)
 		{
 			QRect rect(i * w, j * h, w, h);
-			if (PossibleMove(i, j))
+			if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair(i, j)) != std::end(_tcMoves))
+			{
+				painter.setBrush(QColorConstants::Svg::yellow);
+				painter.drawRect(rect);
+				painter.setBrush(Qt::NoBrush);
+			}
+			else if (PossibleMove(i, j))
 			{
 				if (_currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->GetType()) != std::end(lionPieces))
 				{
 					// Lion move highlighting
 					if ((_lionFirstMove.first == i && _lionFirstMove.second == j) || (_lionSecondMove.first == i && _lionSecondMove.second == j))
-					{
-						painter.setBrush(QColorConstants::Svg::yellow);
-						painter.drawRect(rect);
-						painter.setBrush(Qt::NoBrush);
-					}
-					else if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair(i, j)) != std::end(_tcMoves))
 					{
 						painter.setBrush(QColorConstants::Svg::yellow);
 						painter.drawRect(rect);
@@ -99,13 +99,18 @@ void VBoard::paintEvent(QPaintEvent *)
 							abs(_oldX - i) == 1 && abs(_oldY - j) == 1) && _currentPiece->GetType() == DoublePhoenix;
 						const bool lcond6 = !(abs(_oldX - i) == 2 && abs(_oldY - j) == 1 || abs(_oldX - i) == 1 && abs(_oldY - j) == 2) &&
 							_currentPiece->GetType() == WingedHorse;
-						if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6) && _board->GetData(i, j) != nullptr)
+						const bool lcond7 = _tcMoves.empty() && (abs(_oldX - i) > 1 || abs(_oldY - j) > 1) &&
+							_currentPiece->GetType() == Thunderclap;
+						const bool lcond8 = !_tcMoves.empty() && 
+							(abs(_tcMoves[_tcMoves.size() - 1].first - i) > 1 || abs(_tcMoves[_tcMoves.size() - 1].second - j) > 1) &&
+							_currentPiece->GetType() == Thunderclap;
+						if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) != nullptr)
 						{
 							painter.setBrush(QColorConstants::Svg::lightpink);
 							painter.drawRect(rect);
 							painter.setBrush(Qt::NoBrush);
 						}
-						else if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6) && _board->GetData(i, j) == nullptr)
+						else if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) == nullptr)
 						{
 							painter.setBrush(QColorConstants::Svg::greenyellow);
 							painter.drawRect(rect);
@@ -372,7 +377,9 @@ void VBoard::FinishMove()
 	if (_currentPlayer == White)
 	{
 		_whiteMoves.push_back(_board->GetFEN());
-		if (!_board->HasPiece(King, Black) && !_board->HasPiece(Prince, Black))
+		if (!_board->HasPiece(King, Black) &&
+			!_board->HasPiece(MiddleTroop, Black) &&
+			!_board->HasPiece(Prince, Black))
 		{
 			QMessageBox::information(this, "Game over", "White wins by eliminating Black King");
 		}
@@ -380,7 +387,9 @@ void VBoard::FinishMove()
 	else
 	{
 		_blackMoves.push_back(_board->GetFEN());
-		if (!_board->HasPiece(King, White) && !_board->HasPiece(Prince, White))
+		if (!_board->HasPiece(King, White) &&
+			!_board->HasPiece(MiddleTroop, White) &&
+			!_board->HasPiece(Prince, White))
 		{
 			QMessageBox::information(this, "Game over", "Black wins by eliminating White King");
 		}
