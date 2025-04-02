@@ -95,6 +95,7 @@ private:
 	bool _editorMode = false;
 	bool _lionMovedOnce = false;
 	bool _lionMovedTwice = false;
+	bool _preparedToShoot = false;
 	bool _pieceShotOnce = false;
 	std::pair<int, int> _firstShoot = { -1, -1 };
 	std::pair<int, int> _lionFirstMove = { -1, -1 };
