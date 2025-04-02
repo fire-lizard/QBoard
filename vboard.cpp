@@ -613,6 +613,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
+					CheckPromotion(p, y);
 					FinishMove();
 				}
 			}
@@ -641,6 +642,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
+					CheckPromotion(p, y);
 					FinishMove();
 				}
 			}
@@ -654,6 +656,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
+					CheckPromotion(p, y);
 					FinishMove();
 				}
 			}
@@ -668,6 +671,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
+					CheckPromotion(p, y);
 					FinishMove();
 				}
 			}
@@ -771,6 +775,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
+					CheckPromotion(p, y);
 					FinishMove();
 				}
 			}
@@ -898,6 +903,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
 								_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 						}
+						CheckPromotion(p, y);
 						FinishMove();
 					}
 				}
@@ -920,6 +926,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 									_lionSecondMove.first, _board->GetHeight() - _lionSecondMove.second,
 									x, _board->GetHeight() - y);
 							}
+							CheckPromotion(p, y);
 							FinishMove();
 						}
 					}
@@ -932,6 +939,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 								std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
 									_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 							}
+							CheckPromotion(p, y);
 							FinishMove();
 						}
 					}
@@ -947,6 +955,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 								std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
 									_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 							}
+							CheckPromotion(p, y);
 							FinishMove();
 						}
 					}
@@ -991,6 +1000,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
 							_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 					}
+					CheckPromotion(p, y);
 					FinishMove();
 				}
 			}
@@ -1011,6 +1021,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				EngineOutputHandler::AddMove(_board, _gameVariant, promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, p != nullptr ? 'x' : ' ');
 			}
+			FinishMove();
 		}
 	}
 	else if (x == _oldX && y == _oldY && _lionMovedTwice && abs(_lionSecondMove.first - x) < 2 && abs(_lionSecondMove.second - y) < 2)
@@ -1059,7 +1070,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		_oldX = x;
 		_oldY = y;
 		_board->GetMoves(p, x, y);
-		if (isShootingPiece)
+		if (_gameVariant == KoShogi)
 		{
 			KoShogiBoard* ksboard = dynamic_cast<KoShogiBoard*>(_board);
 			_shoots = ksboard->GetShoots(p, x, y);
