@@ -55,6 +55,7 @@ private:
 	void mousePressEvent(QMouseEvent *event) override;
 
 	bool CheckRepetition(int oldX, int oldY, int newX, int newY);
+	char CheckPromotion(const Piece* p, int y);
 	bool PossibleMove(int x, int y) const;
 	bool AskForPromotion();
 	void FinishMove();

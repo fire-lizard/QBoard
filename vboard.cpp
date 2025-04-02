@@ -447,7 +447,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	if ((_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black) ||
 		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;
 	const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
-	const PieceType ct = p != nullptr ? p->GetType() : None;
 	const bool isLionPiece = _currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->GetType()) != std::end(lionPieces);
 	const bool isShootingPiece = _currentPiece != nullptr && std::find(std::begin(ShootingPieces), std::end(ShootingPieces), _currentPiece->GetType()) != std::end(ShootingPieces);
 	// Castling check
@@ -998,175 +997,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 		else if (_board->Move(_oldX, _oldY, x, y))
 		{
-			char promotion = ' ';
-			if (_gameVariant == Chess)
-			{
-				if (_currentPiece->GetType() == Pawn &&
-					((y == 7 && _currentPiece->GetColour() == Black) ||
-						(y == 0 && _currentPiece->GetColour() == White)))
-				{
-					PromotionDialog* pd = new PromotionDialog(this);
-					pd->exec();
-					const PieceType pt = pd->GetChosenPiece();
-					if (pt == Bishop)
-					{
-						promotion = 'b';
-					}
-					else if (pt == Knight)
-					{
-						promotion = 'n';
-					}
-					else if (pt == Rook)
-					{
-						promotion = 'r';
-					}
-					else
-					{
-						promotion = 'q';
-					}
-					_currentPiece->Promote(pt);
-				}
-			}
-			else if (_gameVariant == Shatranj)
-			{
-				if (_currentPiece->GetType() == Pawn &&
-					((y == 7 && _currentPiece->GetColour() == Black) ||
-						(y == 0 && _currentPiece->GetColour() == White)))
-				{
-					promotion = 'q';
-					_currentPiece->Promote();
-				}
-			}
-			else if (_gameVariant == Makruk)
-			{
-				if (_currentPiece->GetType() == Pawn &&
-					((y >= 5 && _currentPiece->GetColour() == Black) ||
-						(y <= 2 && _currentPiece->GetColour() == White)))
-				{
-					promotion = 'q';
-					_currentPiece->Promote();
-				}
-			}
-			else if (_gameVariant == DaiDaiShogi)
-			{
-				if (!_currentPiece->IsPromoted() && ct != None &&
-					std::find(std::begin(UnpromotablePieces), 
-						std::end(UnpromotablePieces),
-						_currentPiece->GetType()) == std::end(UnpromotablePieces))
-				{
-					promotion = '+';
-					_currentPiece->Promote();
-				}
-			}
-			else if (_gameVariant == MakaDaiDaiShogi)
-			{
-				if (_currentPiece->GetType() != Queen && _currentPiece->GetType() != DragonKing &&
-					_currentPiece->GetType() != DragonHorse && !_currentPiece->IsPromoted() && p != nullptr)
-				{
-					if (p->GetBaseType() == Deva)
-					{
-						promotion = '+';
-						_currentPiece->Promote(TeachingKing);
-					}
-					else if (p->GetBaseType() == DarkSpirit)
-					{
-						promotion = '+';
-						_currentPiece->Promote(BuddhistSpirit);
-					}
-					else if (p->IsPromoted() || AskForPromotion())
-					{
-						promotion = '+';
-						_currentPiece->Promote();
-					}
-				}
-			}
-			else if (_gameVariant == KoShogi)
-			{
-				// If the Taoist priest is captured, the drum and banner can no longer promote.
-				if (dynamic_cast<KoShogiBoard*>(_board)->IsTaoistPlayerCaptured() && (_currentPiece->GetType() == Flag || _currentPiece->GetType() == Drum))
-				{
-				}
-				else if (_currentPiece->GetType() != King && _currentPiece->GetType() != Lion &&
-					_currentPiece->GetType() != Bishop && !_currentPiece->IsPromoted() && p != nullptr)
-				{
-					if (p->GetType() == King || p->GetType() == Prince || p->GetType() == MiddleTroop || p->GetType() == Flag || p->GetType() == Drum)
-					{
-						promotion = '+';
-						_currentPiece->Promote();
-					}
-					else if (std::find(std::begin(StepMovers), std::end(StepMovers), _currentPiece->GetType()) != std::end(StepMovers))
-					{
-						if (p->GetType() == Lion || p->GetType() == RisingDragon || p->GetType() == RoamingAssault || p->GetType() == Thunderclap)
-						{
-							promotion = '+';
-							_currentPiece->Promote();
-						}
-					}
-					else if (_currentPiece->GetType() == Knight)
-					{
-						if (p->GetType() == FrankishCannon)
-						{
-							promotion = '+';
-							_currentPiece->Promote();
-						}
-					}
-					else if (p->IsPromoted() || AskForPromotion())
-					{
-						promotion = '+';
-						_currentPiece->Promote();
-					}
-					// When the clerk promotes to master at arms, all the allied advance and rear guards promote as well, while any enemy poison flame dies.
-					if (promotion == '+' && _currentPiece->GetBaseType() == Kylin && _currentPiece->GetType() == DoubleKylin)
-					{
-						const auto aguards = EngineOutputHandler::GetPieceLocations(_board, AdvanceGuard, _currentPlayer);
-						for (const auto& aguard : aguards)
-						{
-							_board->GetData(aguard.first, aguard.second)->Promote();
-						}
-						const auto rguards = EngineOutputHandler::GetPieceLocations(_board, RearGuard, _currentPlayer);
-						for (const auto& rguard : rguards)
-						{
-							_board->GetData(rguard.first, rguard.second)->Promote();
-						}
-						const auto pfLocations = EngineOutputHandler::GetPieceLocations(_board, PoisonFlame, _currentPlayer == White ? Black : White);
-						for (const auto& pfLocation : pfLocations)
-						{
-							delete _board->GetData(pfLocation.first, pfLocation.second);
-							_board->SetData(pfLocation.first, pfLocation.second, nullptr);
-						}
-					}
-				}
-			}
-			else if (std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) != std::end(shogiVariants))
-			{
-				const PieceType pt = _currentPiece->GetType();
-				const bool pcond1 = EngineOutputHandler::CanBePromoted(_currentPiece, _gameVariant, _oldY, y);
-				const bool pcond2 = (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi) &&
-					EngineOutputHandler::IsInsidePromotionZone(_gameVariant, _currentPlayer, _oldY) &&
-					EngineOutputHandler::IsInsidePromotionZone(_gameVariant, _currentPlayer, y) && ct != None;
-				const bool pcond3 = _gameVariant == ChuShogi && pt == Pawn &&
-					((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White));
-				if (pcond1 || pcond2 || pcond3)
-				{
-					if (((pt == Pawn && _gameVariant != ChuShogi) || pt == Knight || pt == Lance) &&
-						((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
-					{
-						_currentPiece->Promote();
-					}
-					else if (!_currentPiece->IsPromoted())
-					{
-						if (AskForPromotion())
-						{
-							_currentPiece->Promote();
-							promotion = '+';
-						}
-						else
-						{
-							promotion = ' ';
-						}
-					}
-				}
-			}
+			const char promotion = CheckPromotion(p, y);
 			if (engine != nullptr && engine->IsActive())
 			{
 				if (_gameVariant == Xiangqi)
@@ -1178,7 +1009,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			if (_board->GetData(x, y) != nullptr)
 			{
-				EngineOutputHandler::AddMove(_board, _gameVariant, promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, ct != None ? 'x' : ' ');
+				EngineOutputHandler::AddMove(_board, _gameVariant, promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, p != nullptr ? 'x' : ' ');
 			}
 		}
 	}
@@ -1247,6 +1078,180 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 		this->repaint();
 	}
+}
+
+char VBoard::CheckPromotion(const Piece *p, int y)
+{
+	char promotion = ' ';
+	if (_gameVariant == Chess)
+	{
+		if (_currentPiece->GetType() == Pawn &&
+			((y == 7 && _currentPiece->GetColour() == Black) ||
+				(y == 0 && _currentPiece->GetColour() == White)))
+		{
+			PromotionDialog* pd = new PromotionDialog(this);
+			pd->exec();
+			const PieceType pt = pd->GetChosenPiece();
+			if (pt == Bishop)
+			{
+				promotion = 'b';
+			}
+			else if (pt == Knight)
+			{
+				promotion = 'n';
+			}
+			else if (pt == Rook)
+			{
+				promotion = 'r';
+			}
+			else
+			{
+				promotion = 'q';
+			}
+			_currentPiece->Promote(pt);
+		}
+	}
+	else if (_gameVariant == Shatranj)
+	{
+		if (_currentPiece->GetType() == Pawn &&
+			((y == 7 && _currentPiece->GetColour() == Black) ||
+				(y == 0 && _currentPiece->GetColour() == White)))
+		{
+			promotion = 'q';
+			_currentPiece->Promote();
+		}
+	}
+	else if (_gameVariant == Makruk)
+	{
+		if (_currentPiece->GetType() == Pawn &&
+			((y >= 5 && _currentPiece->GetColour() == Black) ||
+				(y <= 2 && _currentPiece->GetColour() == White)))
+		{
+			promotion = 'q';
+			_currentPiece->Promote();
+		}
+	}
+	else if (_gameVariant == DaiDaiShogi)
+	{
+		if (!_currentPiece->IsPromoted() && p != nullptr &&
+			std::find(std::begin(UnpromotablePieces),
+				std::end(UnpromotablePieces),
+				_currentPiece->GetType()) == std::end(UnpromotablePieces))
+		{
+			promotion = '+';
+			_currentPiece->Promote();
+		}
+	}
+	else if (_gameVariant == MakaDaiDaiShogi)
+	{
+		if (_currentPiece->GetType() != Queen && _currentPiece->GetType() != DragonKing &&
+			_currentPiece->GetType() != DragonHorse && !_currentPiece->IsPromoted() && p != nullptr)
+		{
+			if (p->GetBaseType() == Deva)
+			{
+				promotion = '+';
+				_currentPiece->Promote(TeachingKing);
+			}
+			else if (p->GetBaseType() == DarkSpirit)
+			{
+				promotion = '+';
+				_currentPiece->Promote(BuddhistSpirit);
+			}
+			else if (p->IsPromoted() || AskForPromotion())
+			{
+				promotion = '+';
+				_currentPiece->Promote();
+			}
+		}
+	}
+	else if (_gameVariant == KoShogi)
+	{
+		// If the Taoist priest is captured, the drum and banner can no longer promote.
+		if (dynamic_cast<KoShogiBoard*>(_board)->IsTaoistPlayerCaptured() && (_currentPiece->GetType() == Flag || _currentPiece->GetType() == Drum))
+		{
+		}
+		else if (_currentPiece->GetType() != King && _currentPiece->GetType() != Lion &&
+			_currentPiece->GetType() != Bishop && !_currentPiece->IsPromoted() && p != nullptr)
+		{
+			if (p->GetType() == King || p->GetType() == Prince || p->GetType() == MiddleTroop || p->GetType() == Flag || p->GetType() == Drum)
+			{
+				promotion = '+';
+				_currentPiece->Promote();
+			}
+			else if (std::find(std::begin(StepMovers), std::end(StepMovers), _currentPiece->GetType()) != std::end(StepMovers))
+			{
+				if (p->GetType() == Lion || p->GetType() == RisingDragon || p->GetType() == RoamingAssault || p->GetType() == Thunderclap)
+				{
+					promotion = '+';
+					_currentPiece->Promote();
+				}
+			}
+			else if (_currentPiece->GetType() == Knight)
+			{
+				if (p->GetType() == FrankishCannon)
+				{
+					promotion = '+';
+					_currentPiece->Promote();
+				}
+			}
+			else if (p->IsPromoted() || AskForPromotion())
+			{
+				promotion = '+';
+				_currentPiece->Promote();
+			}
+			// When the clerk promotes to master at arms, all the allied advance and rear guards promote as well, while any enemy poison flame dies.
+			if (promotion == '+' && _currentPiece->GetBaseType() == Kylin && _currentPiece->GetType() == DoubleKylin)
+			{
+				const auto aguards = EngineOutputHandler::GetPieceLocations(_board, AdvanceGuard, _currentPlayer);
+				for (const auto& aguard : aguards)
+				{
+					_board->GetData(aguard.first, aguard.second)->Promote();
+				}
+				const auto rguards = EngineOutputHandler::GetPieceLocations(_board, RearGuard, _currentPlayer);
+				for (const auto& rguard : rguards)
+				{
+					_board->GetData(rguard.first, rguard.second)->Promote();
+				}
+				const auto pfLocations = EngineOutputHandler::GetPieceLocations(_board, PoisonFlame, _currentPlayer == White ? Black : White);
+				for (const auto& pfLocation : pfLocations)
+				{
+					delete _board->GetData(pfLocation.first, pfLocation.second);
+					_board->SetData(pfLocation.first, pfLocation.second, nullptr);
+				}
+			}
+		}
+	}
+	else if (std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) != std::end(shogiVariants))
+	{
+		const PieceType pt = _currentPiece->GetType();
+		const bool pcond1 = EngineOutputHandler::CanBePromoted(_currentPiece, _gameVariant, _oldY, y);
+		const bool pcond2 = (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi) &&
+			EngineOutputHandler::IsInsidePromotionZone(_gameVariant, _currentPlayer, _oldY) &&
+			EngineOutputHandler::IsInsidePromotionZone(_gameVariant, _currentPlayer, y) && p != nullptr;
+		const bool pcond3 = _gameVariant == ChuShogi && pt == Pawn &&
+			((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White));
+		if (pcond1 || pcond2 || pcond3)
+		{
+			if (((pt == Pawn && _gameVariant != ChuShogi) || pt == Knight || pt == Lance) &&
+				((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
+			{
+				_currentPiece->Promote();
+			}
+			else if (!_currentPiece->IsPromoted())
+			{
+				if (AskForPromotion())
+				{
+					_currentPiece->Promote();
+					promotion = '+';
+				}
+				else
+				{
+					promotion = ' ';
+				}
+			}
+		}
+	}
+	return promotion;
 }
 
 bool VBoard::event(QEvent* event)
