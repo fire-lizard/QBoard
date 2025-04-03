@@ -16,6 +16,7 @@ public:
 	virtual bool Move(int oldX, int oldY, int newX, int newY, bool cl = true);
 	void Clear();
 	void RemoveMove(int x, int y);
+	void RemoveMoves();
 	std::vector<std::tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
 	std::vector<std::pair<int, int>> Moves() const;
 	Piece* GetData(int x, int y) const;

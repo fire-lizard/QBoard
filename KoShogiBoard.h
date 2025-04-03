@@ -18,7 +18,6 @@ public:
 	void GetMoves(Piece* piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 	std::vector<std::pair<int, int>> GetShoots(const Piece* piece, int x, int y);
-	bool IsShootPossible(int x, int y);
 	void Shoot(int x, int y);
 	void RemoveShoot(int x, int y);
 	bool IsTaoistPlayerCaptured() const;

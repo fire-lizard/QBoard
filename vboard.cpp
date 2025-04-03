@@ -69,7 +69,8 @@ void VBoard::paintEvent(QPaintEvent *)
 		{
 			QRect rect(i * w, j * h, w, h);
 			if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair(i, j)) != std::end(_tcMoves) ||
-				_lionFirstMove.first == i && _lionFirstMove.second == j || _lionSecondMove.first == i && _lionSecondMove.second == j)
+				_lionFirstMove.first == i && _lionFirstMove.second == j || _lionSecondMove.first == i && _lionSecondMove.second == j ||
+				_firstShoot.first == i && _firstShoot.second == j)
 			{
 				painter.setBrush(QColorConstants::Svg::yellow);
 				painter.drawRect(rect);
@@ -522,7 +523,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove();
 				}
 			}
-			else if ((abs(_oldX - x) == 0 && abs(_oldY - y) == 2 || abs(_oldX - x) == 2 && abs(_oldY - y) == 0 ||
+			else if (PossibleMove(x, y) && (abs(_oldX - x) == 0 && abs(_oldY - y) == 2 || abs(_oldX - x) == 2 && abs(_oldY - y) == 0 ||
 				abs(_oldX - x) == 2 && abs(_oldY - y) == 2) && _currentPiece->GetType() == RisingDragon)
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
@@ -534,7 +535,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove();
 				}
 			}
-			else if ((abs(_oldX - x) == 0 && abs(_oldY - y) == 2 || abs(_oldX - x) == 2 && abs(_oldY - y) == 0) &&
+			else if (PossibleMove(x, y) && (abs(_oldX - x) == 0 && abs(_oldY - y) == 2 || abs(_oldX - x) == 2 && abs(_oldY - y) == 0) &&
 				_currentPiece->GetType() == WingedTiger)
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
@@ -559,7 +560,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			else if (abs(_oldX - x) + abs(_oldY - y) > 1 && _currentPiece->GetType() == FlyingHawk)
 			{
 			}
-			else if (_currentPiece->GetType() == RoamingAssault)
+			else if (PossibleMove(x, y) && _currentPiece->GetType() == RoamingAssault)
 			{
 				if (x < _oldX)
 				{
@@ -591,7 +592,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 				FinishMove();
 			}
-			else if ((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
+			else if (PossibleMove(x, y) && (abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
 				(_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk ||
 					_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == FreeEagle))
 			{
@@ -617,7 +618,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove();
 				}
 			}
-			else if ((abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
+			else if (PossibleMove(x, y) && (abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
 				(_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
 					_currentPiece->GetType() == GreatElephant || _currentPiece->GetType() == TeachingKing))
 			{
@@ -646,7 +647,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove();
 				}
 			}
-			else if ((abs(_oldX - x) >= 3 || abs(_oldY - y) >= 3) &&
+			else if (PossibleMove(x, y) && (abs(_oldX - x) >= 3 || abs(_oldY - y) >= 3) &&
 				(_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
 					_currentPiece->GetType() == GreatElephant || _currentPiece->GetType() == TeachingKing))
 			{
@@ -660,7 +661,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove();
 				}
 			}
-			else if ((abs(_oldX - x) == 2 && _oldY - y == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
+			else if (PossibleMove(x, y) && (abs(_oldX - x) == 2 && _oldY - y == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
 				(abs(_oldX - x) == 2 && _oldY - y == -2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == Black) ||
 				(_oldX == x && _oldY - y == 2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == White) ||
 				(_oldX == x && _oldY - y == -2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == Black))
@@ -767,7 +768,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 				this->repaint();
 			}
-			else if (_board->GetData(x, y) == nullptr)
+			else if (PossibleMove(x, y) && _board->GetData(x, y) == nullptr)
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
@@ -779,7 +780,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove();
 				}
 			}
-			else if (_board->IsMovePossible(x, y))
+			else if (PossibleMove(x, y))
 			{
 				_lionFirstMove = { x, y };
 				_lionMovedOnce = true;
@@ -978,22 +979,12 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					}
 				}
 			}
-			else if (_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight ||
-				_currentPiece->GetType() == DoubleKylin || _currentPiece->GetType() == DoublePhoenix || _currentPiece->GetType() == WingedHorse)
+			else if (PossibleMove(x, y) && (_currentPiece->GetType() == KnightCaptain ||
+				_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight ||
+				_currentPiece->GetType() == DoubleKylin || _currentPiece->GetType() == DoublePhoenix ||
+				_currentPiece->GetType() == WingedHorse))
 			{
-				if (_lionFirstMove.first == -1 || _lionFirstMove.second == -1)
-				{
-					if (_board->Move(_oldX, _oldY, x, y))
-					{
-						if (engine != nullptr && engine->IsActive())
-						{
-							engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
-						}
-						_moves.clear();
-						repaint();
-					}
-				}
-				else if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
+				if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 				{
 					if (engine != nullptr && engine->IsActive())
 					{
@@ -1004,6 +995,40 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove();
 				}
 			}
+		}
+		else if (isShootingPiece && !_preparedToShoot && PossibleMove(x, y))
+		{
+			_preparedToShoot = true;
+			_lionFirstMove = { x, y };
+			_moves.clear();
+			_board->RemoveMoves();
+			_shoots = dynamic_cast<KoShogiBoard*>(_board)->GetShoots(_currentPiece, x, y);
+			repaint();
+		}
+		else if (isShootingPiece && _preparedToShoot && PossibleShoot(x, y))
+		{
+			KoShogiBoard* ksBoard = dynamic_cast<KoShogiBoard*>(_board);
+			if (_currentPiece->GetBaseType() == FrankishCannon && !_pieceShotOnce)
+			{
+				_pieceShotOnce = true;
+				_firstShoot = { x, y };
+				repaint();
+			}
+			else
+			{
+				ksBoard->Move(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, false);
+				if (_currentPiece->GetBaseType() == FrankishCannon && _pieceShotOnce)
+				{
+					ksBoard->Shoot(_firstShoot.first, _firstShoot.second);
+				}
+				ksBoard->Shoot(x, y);
+				FinishMove();
+			}
+		}
+		else if (x == _lionFirstMove.first && y == _lionFirstMove.second && _preparedToShoot)
+		{
+			_board->Move(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, false);
+			FinishMove();
 		}
 		else if (_board->Move(_oldX, _oldY, x, y))
 		{
@@ -1070,11 +1095,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		_oldX = x;
 		_oldY = y;
 		_board->GetMoves(p, x, y);
-		if (_gameVariant == KoShogi)
-		{
-			KoShogiBoard* ksboard = dynamic_cast<KoShogiBoard*>(_board);
-			_shoots = ksboard->GetShoots(p, x, y);
-		}
+		_preparedToShoot = false;
+		_shoots.clear();
 		_moves = _board->Moves();
 		CancelLionMove();
 		if (std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) == std::end(shogiVariants))
@@ -1319,6 +1341,7 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	}
 	_currentPiece = nullptr;
 	_moves.clear();
+	_shoots.clear();
 	_attackers.clear();
 	_defenders.clear();
 	_gameVariant = gameVariant;
@@ -1435,6 +1458,11 @@ void VBoard::SetTextEdit2(QTextEdit* textEdit)
 bool VBoard::PossibleMove(int x, int y) const
 {
 	return std::any_of(_moves.begin(), _moves.end(), [x, y](const std::pair<int, int>& p) {return p.first == x && p.second == y;});
+}
+
+bool VBoard::PossibleShoot(int x, int y) const
+{
+	return std::any_of(_shoots.begin(), _shoots.end(), [x, y](const std::pair<int, int> t) {return t.first == x && t.second == y;});
 }
 
 void VBoard::SetStatusBar(QStatusBar *statusBar)

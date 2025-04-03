@@ -217,6 +217,11 @@ void Board::RemoveMove(int x, int y)
 	_moves.erase(it, _moves.end());
 }
 
+void Board::RemoveMoves()
+{
+	_moves.clear();
+}
+
 std::vector<std::tuple<int, int, int, int>> Board::GetAllMoves(PieceColour pieceColour)
 {
 	std::vector<std::tuple<int, int, int, int>> result;
