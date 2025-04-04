@@ -226,7 +226,7 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x - 1, y - 1);
 		break;
 	case Lion:
-		getAllPiece2MoveDestinations(x, y, _lionOffsets, piece->GetColour());
+		getAllPiece2MoveDestinations(x, y, _lionOffsets, piece);
 		break;
 	case Thunderclap:
 		getAll5StepPaths(x, y, piece->GetColour());
@@ -246,25 +246,25 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case DoubleKylin:
-		getAllPiece2MoveDestinations(x, y, _kylynOffsets, piece->GetColour());
+		getAllPiece2MoveDestinations(x, y, _kylynOffsets, piece);
 		break;
 	case DoublePhoenix:
-		getAllPiece2MoveDestinations(x, y, _phoenixOffsets, piece->GetColour());
+		getAllPiece2MoveDestinations(x, y, _phoenixOffsets, piece);
 		break;
 	case TaoistPriest:
 	case SpiritualMonk:
-		CheckMove(piece, x + 2, y + 2);
-		CheckMove(piece, x - 2, y + 2);
-		CheckMove(piece, x + 2, y - 2);
-		CheckMove(piece, x - 2, y - 2);
-		CheckMove(piece, x + 2, y);
-		CheckMove(piece, x - 2, y);
-		CheckMove(piece, x, y + 2);
-		CheckMove(piece, x, y - 2);
+		CheckPriestMove(piece, x + 2, y + 2);
+		CheckPriestMove(piece, x - 2, y + 2);
+		CheckPriestMove(piece, x + 2, y - 2);
+		CheckPriestMove(piece, x - 2, y - 2);
+		CheckPriestMove(piece, x + 2, y);
+		CheckPriestMove(piece, x - 2, y);
+		CheckPriestMove(piece, x, y + 2);
+		CheckPriestMove(piece, x, y - 2);
 		break;
 	case ExtensiveFog:
 	case HolyLight:
-		getAllPiece2MoveDestinations(x, y, _priestOffsets, piece->GetColour());
+		getAllPiece2MoveDestinations(x, y, _priestOffsets, piece);
 		break;
 	case SkywardNet:
 		CheckDirection(piece, x, y, West);
@@ -308,10 +308,10 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, West);
 		CheckDirection(piece, x, y, NorthWest);
 
-		getAllPiece2MoveDestinations(x, y, _lionOffsets, piece->GetColour());
+		getAllPiece2MoveDestinations(x, y, _lionOffsets, piece);
 		break;
 	case WingedTiger:
-		getAllPiece2MoveDestinations(x, y, _tigerOffsets, piece->GetColour());
+		getAllPiece2MoveDestinations(x, y, _tigerOffsets, piece);
 
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, East);
@@ -324,7 +324,7 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, SouthWest);
 		CheckDirection(piece, x, y, NorthWest);
 
-		getAllPiece2MoveDestinations(x, y, _hawkOffsets, piece->GetColour());
+		getAllPiece2MoveDestinations(x, y, _hawkOffsets, piece);
 		break;
 	case Longbow:
 	case Crossbow:
@@ -371,7 +371,7 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x - 4, y - 2);
 		break;
 	case WingedHorse:
-		getAllPiece2MoveDestinations(x, y, _knightOffsets, piece->GetColour());
+		getAllPiece2MoveDestinations(x, y, _knightOffsets, piece);
 		break;
 	case RoamingAssault:
 		CheckLionDirection(piece, x, y, West, 5);
@@ -469,6 +469,21 @@ std::vector<std::pair<int, int>> KoShogiBoard::GetShoots(const Piece* piece, int
 		break;
 	}
 	return _shoots;
+}
+
+void KoShogiBoard::CheckPriestMove(const Piece* piece, int x, int y)
+{
+	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
+	{
+		if (_data[x][y] != nullptr && _data[x][y]->GetType() != TaoistPriest && _data[x][y]->GetType() != SpiritualMonk &&
+			_data[x][y]->GetType() != ExtensiveFog && _data[x][y]->GetType() != HolyLight)
+		{
+		}
+		else if (_data[x][y] == nullptr || _data[x][y]->GetColour() != piece->GetColour())
+		{
+			_moves.emplace_back(x, y);
+		}
+	}
 }
 
 void KoShogiBoard::Shoot(int x, int y)
@@ -607,7 +622,7 @@ void KoShogiBoard::getAll5StepPaths(int startR, int startC, PieceColour pieceCol
  * Return all squares a piece can move to in exactly 1 piece move from (r, c).
  * We skip squares with occupant=FRIENDLY (the piece's own color).
  */
-std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c, const std::vector<std::pair<int, int>>& offsets, PieceColour pieceColour) const
+std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c, const std::vector<std::pair<int, int>>& offsets, const Piece *piece) const
 {
 	constexpr int N = 19;
 	std::vector<std::pair<int, int>> result;
@@ -617,8 +632,17 @@ std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c,
 		if (rr < 0 || rr >= N || cc < 0 || cc >= N) {
 			continue;
 		}
+
+		if (piece->GetType() == ExtensiveFog || piece->GetType() == HolyLight)
+		{
+			if (_data[rr][cc] != nullptr && _data[rr][cc]->GetType() != TaoistPriest && _data[rr][cc]->GetType() != SpiritualMonk &&
+				_data[rr][cc]->GetType() != ExtensiveFog && _data[rr][cc]->GetType() != HolyLight) {
+				continue;
+			}
+		}
+
 		// The piece can land on this square if it's EMPTY or ENEMY
-		if (_data[rr][cc] != nullptr && _data[rr][cc]->GetColour() == pieceColour) {
+		if (_data[rr][cc] != nullptr && _data[rr][cc]->GetColour() == piece->GetColour()) {
 			continue;
 		}
 
@@ -631,12 +655,12 @@ std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c,
  * Return all possible distinct destination squares after EXACTLY 2 piece moves
  * from the starting position (startR, startC).
  */
-void KoShogiBoard::getAllPiece2MoveDestinations(int startR, int startC, const std::vector<std::pair<int, int>>& offsets, PieceColour pieceColour)
+void KoShogiBoard::getAllPiece2MoveDestinations(int startR, int startC, const std::vector<std::pair<int, int>>& offsets, const Piece* piece)
 {
 	std::set<std::pair<int, int>> destinations;  // use a set to avoid duplicates
 
 	// First-move candidates
-	const auto firstMoves = getSinglePieceMoves(startR, startC, offsets, pieceColour);
+	const auto firstMoves = getSinglePieceMoves(startR, startC, offsets, piece);
 	for (auto& square2 : firstMoves) {
 		destinations.insert(square2);
 	}
@@ -646,7 +670,7 @@ void KoShogiBoard::getAllPiece2MoveDestinations(int startR, int startC, const st
 		const int r1 = square1.first;
 		const int c1 = square1.second;
 		// Now get second-move candidates from (r1, c1)
-		auto secondMoves = getSinglePieceMoves(r1, c1, offsets, pieceColour);
+		auto secondMoves = getSinglePieceMoves(r1, c1, offsets, piece);
 		for (auto& square2 : secondMoves) {
 			destinations.insert(square2);
 		}

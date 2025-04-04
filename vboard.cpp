@@ -547,6 +547,17 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove();
 				}
 			}
+			else if (PossibleMove(x, y) && (abs(_oldX - x) == 1 && abs(_oldY - y) == 1) && _currentPiece->GetType() == FlyingHawk)
+			{
+				if (_board->Move(_oldX, _oldY, x, y))
+				{
+					if (engine != nullptr && engine->IsActive())
+					{
+						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+					}
+					FinishMove();
+				}
+			}
 			else if (_gameVariant == KoShogi && (abs(_oldX - x) == 2 || abs(_oldY - y) == 2) && _currentPiece->GetType() == Lion)
 			{
 			}

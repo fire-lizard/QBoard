@@ -24,11 +24,12 @@ public:
 
 private:
 	void CheckShoot(const Piece* piece, int x, int y);
+	void CheckPriestMove(const Piece* piece, int x, int y);
 	void CheckShootingDirection(const Piece* piece, int x, int y, Direction direction, int count, bool shootOver);
 	void getAll5StepPaths(int startR, int startC, PieceColour pieceColour);
 	void dfsFiveSteps(int r, int c, int step, PieceColour pieceColour, std::vector<std::pair<int, int>>& currentPath);
-	std::vector<std::pair<int, int>> getSinglePieceMoves(int r, int c, const std::vector<std::pair<int, int>>& offsets, PieceColour pieceColour) const;
-	void getAllPiece2MoveDestinations(int startR, int startC, const std::vector<std::pair<int, int>>& offsets, PieceColour pieceColour);
+	std::vector<std::pair<int, int>> getSinglePieceMoves(int r, int c, const std::vector<std::pair<int, int>>& offsets, const Piece* piece) const;
+	void getAllPiece2MoveDestinations(int startR, int startC, const std::vector<std::pair<int, int>>& offsets, const Piece* piece);
 
 	std::vector<std::pair<int, int>> _shoots;
 	bool _taoistPriestCaptured = false;
