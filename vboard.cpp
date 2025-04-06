@@ -466,7 +466,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	// Null move
 	else if ((_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||
 		_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi) &&
-		_currentPiece != nullptr && p != nullptr && p->GetColour() == _currentPlayer && x == _oldX && y == _oldY && !_lionMovedOnce &&
+		_currentPiece != nullptr && p != nullptr && p->GetColour() == _currentPlayer &&
+		x == _oldX && y == _oldY && !_lionMovedOnce && _currentPiece->GetType() != Thunderclap &&
 		(isLionPiece || _currentPiece->GetType() == ViceGeneral || _currentPiece->GetType() == FireDemon || _currentPiece->GetType() == HeavenlyTetrarch))
 	{
 		if (_board->IsMovePossible(x, y) && !CheckRepetition(_oldX, _oldY, x, y))
@@ -488,6 +489,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			else if (!_tcMoves.empty() && (abs(_tcMoves[_tcMoves.size() - 1].first - x) > 1 ||
 				abs(_tcMoves[_tcMoves.size() - 1].second - y) > 1) && _currentPiece->GetType() == Thunderclap)
+			{
+			}
+			else if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair(x, y)) != std::end(_tcMoves))
 			{
 			}
 			else if (_currentPiece->GetType() == Thunderclap && PossibleMove(x, y))
@@ -740,6 +744,11 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						{
 							_moves.erase(_moves.begin() + index);
 						}
+						_shoots = dynamic_cast<KoShogiBoard*>(_board)->GetShoots(_currentPiece, x, y);
+						if (!_shoots.empty())
+						{
+							_preparedToShoot = true;
+						}
 					}
 					else if (_currentPiece->GetType() == KnightCaptain)
 					{
@@ -858,6 +867,12 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						{
 							_moves.erase(_moves.begin() + index);
 						}
+						_shoots = dynamic_cast<KoShogiBoard*>(_board)->GetShoots(_currentPiece, x, y);
+						if (!_shoots.empty())
+						{
+							_preparedToShoot = true;
+						}
+						repaint();
 					}
 					else if (_currentPiece->GetType() == KnightCaptain)
 					{
@@ -990,10 +1005,59 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					}
 				}
 			}
-			else if (PossibleMove(x, y) && (_currentPiece->GetType() == KnightCaptain ||
-				_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight ||
-				_currentPiece->GetType() == DoubleKylin || _currentPiece->GetType() == DoublePhoenix ||
-				_currentPiece->GetType() == WingedHorse))
+			else if (_preparedToShoot && !_pieceShotOnce && PossibleShoot(x, y) &&
+				(_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
+			{
+				_firstShoot = { x, y };
+				_preparedToShoot = false;
+				_pieceShotOnce = true;
+				_shoots.clear();
+				repaint();
+			}
+			else if (PossibleMove(x, y) &&
+				(_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
+			{
+				KoShogiBoard* ksBoard = dynamic_cast<KoShogiBoard*>(_board);
+				_lionSecondMove = { x, y };
+				_shoots = ksBoard->GetShoots(_currentPiece, x, y);
+				if (!_shoots.empty())
+				{
+					_preparedToShoot = true;
+					_moves.clear();
+					repaint();
+				}
+				else
+				{
+					ksBoard->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, _lionSecondMove.first, _lionSecondMove.second);
+					if (_pieceShotOnce)
+					{
+						ksBoard->Shoot(_firstShoot.first, _firstShoot.second);
+					}
+					FinishMove();
+				}
+			}
+			else if (_moves.empty() && PossibleShoot(x, y) &&
+				(_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
+			{
+				KoShogiBoard *ksBoard = dynamic_cast<KoShogiBoard*>(_board);
+				ksBoard->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, _lionSecondMove.first, _lionSecondMove.second);
+				ksBoard->Shoot(_firstShoot.first, _firstShoot.second);
+				ksBoard->Shoot(x, y);
+				FinishMove();
+			}
+			else if (x == _lionFirstMove.first && y == _lionFirstMove.second)
+			{
+				if (_board->Move(_oldX, _oldY, x, y))
+				{
+					if (engine != nullptr && engine->IsActive())
+					{
+						std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
+					}
+					FinishMove();
+				}
+			}
+			else if (PossibleMove(x, y) && (_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == WingedHorse ||
+				_currentPiece->GetType() == DoubleKylin || _currentPiece->GetType() == DoublePhoenix))
 			{
 				if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 				{
@@ -1009,21 +1073,37 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 		else if (isShootingPiece && !_preparedToShoot && PossibleMove(x, y))
 		{
-			_preparedToShoot = true;
-			_lionFirstMove = { x, y };
-			_moves.clear();
-			_board->RemoveMoves();
 			_shoots = dynamic_cast<KoShogiBoard*>(_board)->GetShoots(_currentPiece, x, y);
-			repaint();
+			if (!_shoots.empty())
+			{
+				_lionFirstMove = { x, y };
+				_preparedToShoot = true;
+				_moves.clear();
+				_board->RemoveMoves();
+				repaint();
+			}
+			else
+			{
+				FinishMove();
+			}
 		}
 		else if (isShootingPiece && _preparedToShoot && PossibleShoot(x, y))
 		{
 			KoShogiBoard* ksBoard = dynamic_cast<KoShogiBoard*>(_board);
 			if (_currentPiece->GetBaseType() == FrankishCannon && !_pieceShotOnce)
 			{
-				_pieceShotOnce = true;
-				_firstShoot = { x, y };
-				repaint();
+				if (_shoots.size() > 1)
+				{
+					_pieceShotOnce = true;
+					_firstShoot = { x, y };
+					repaint();
+				}
+				else
+				{
+					ksBoard->Move(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, false);
+					ksBoard->Shoot(x, y);
+					FinishMove();
+				}
 			}
 			else
 			{
