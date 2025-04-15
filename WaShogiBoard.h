@@ -14,11 +14,14 @@ public:
 	void PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y) override;
 	void GetMoves(Piece* piece, int x, int y) override;
 	void SetDrops(bool hasDrops) override;
+	virtual void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture);
+	std::string GetPGN();
 
 protected:
 	std::string formatEnumCounts(const std::vector<PieceType>& enumList) override;
 
 private:
+	std::string _pgn;
 
 	PieceType _initialSetup[11][11] = {
 		{ LiberatedHorse, ClimbingMonkey, SwoopingOwl, FlyingCock, Silver, King, Gold, FlyingGoose, StruttingCrow, Dog, Lance },

@@ -29,8 +29,8 @@ public:
 	void SetMoveCount(int moveCount);
 	bool CheckPosition(int x, int y) const;
 	bool HasPiece(PieceType pieceType, PieceColour pieceColour) const;
-	void GetAttackers(int x, int y, std::vector<std::pair<int, int>>& vec);
-	void GetDefenders(int x, int y, std::vector<std::pair<int, int>>& vec);
+	std::vector<std::pair<int, int>> GetAttackers(int x, int y);
+	std::vector<std::pair<int, int>> GetDefenders(int x, int y);
 	bool IsMovePossible(int x, int y);
 	bool operator == (const std::string& fen) const;
 	bool operator != (const std::string& fen) const;

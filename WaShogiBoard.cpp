@@ -288,3 +288,35 @@ void WaShogiBoard::SetDrops(bool hasDrops)
 {
 	_hasDrops = hasDrops;
 }
+
+void WaShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture)
+{
+	if (_moveCount % 2 == 0)
+	{
+		_pgn += std::to_string((_moveCount / 2) + 1) + ". "; // Add move number for white
+	}
+	if (pieceType != Pawn)
+	{
+		//_pgn += _pieceToPGN.at(pieceType);
+	}
+	_pgn.push_back(static_cast<char>(x1 + 97));
+	_pgn += std::to_string(_height - y1);
+	if (capture)
+	{
+		_pgn += "x";
+	}
+	_pgn.push_back(static_cast<char>(x2 + 97));
+	_pgn += std::to_string(y2);
+	if (promotion != ' ')
+	{
+		_pgn += "=";
+		_pgn += static_cast<char>(std::toupper(promotion));
+	}
+	_pgn += " ";
+	_moveCount++;
+}
+
+std::string WaShogiBoard::GetPGN()
+{
+	return _pgn;
+}

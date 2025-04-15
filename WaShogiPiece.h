@@ -19,5 +19,6 @@ public:
 	static std::string ToStringCode(PieceType piece);
 	static std::string PieceType2Description(PieceType pieceType);
 	static PieceType Description2PieceType(const std::string& description);
+	std::string GHCode() const;
 };
 

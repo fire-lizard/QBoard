@@ -453,3 +453,62 @@ std::string WaShogiPiece::GetKanjiImageFileName2()
 {
 	return GetKanjiImageFileName();
 }
+
+std::string WaShogiPiece::GHCode() const
+{
+	switch (_pieceType)
+	{
+	case King:
+		return "CK";
+	case Rook:
+		return "+SW";
+	case Lance:
+		return "OC";
+	case Tokin:
+		return "+SP";
+	case Pawn:
+		return "SP";
+	case SideMover:
+		return _basePieceType == FlyingGoose ? "+FG" : "SW";
+	case PloddingOx:
+		return "+OC";
+	case LiberatedHorse:
+		return "LH";
+	case HeavenlyHorse:
+		return "+LH";
+	case SwoopingOwl:
+		return "SO";
+	case CloudEagle:
+		return _basePieceType == SwoopingOwl ? "+SO" : "CE";
+	case StruttingCrow:
+		return "SC";
+	case FlyingFalcon:
+		return _basePieceType == StruttingCrow ? "+SC" : "FF";
+	case FlyingCock:
+		return "FC";
+	case RaidingFalcon:
+		return "+FC";
+	case FlyingGoose:
+		return "FG";
+	case ClimbingMonkey:
+		return "CM";
+	case Silver:
+		return _basePieceType == ClimbingMonkey ? "+CM" : "VS";
+	case Dog:
+		return "BD";
+	case Gold:
+		return _basePieceType == Dog ? "+BD" : "VW";
+	case Elephant:
+		return "+VS";
+	case BearEyes:
+		return "+VW";
+	case RunningRabbit:
+		return "RR";
+	case TreacherousFox:
+		return _basePieceType == RunningRabbit ? "+RR" : "TF";
+	case TenaciousFalcon:
+		return "+FF";
+	default:
+		return "";
+	}
+}

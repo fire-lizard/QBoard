@@ -68,8 +68,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 				{
 					if (p->GetType() == King || p->GetType() == Prince || p->GetType() == Emperor)
 					{
-						std::vector<std::pair<int, int>> royalDefenders;
-						GetDefenders(i, j, royalDefenders);
+						const std::vector<std::pair<int, int>> royalDefenders = GetDefenders(i, j);
 						if (royalDefenders.empty())
 						{
 							_moves.emplace_back(i, j);
@@ -723,7 +722,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 
 bool MakaDaiDaiShogiBoard::TripleMove(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
 {
-	if ((x1 == x4 && y1 == y4) || std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x4 && t.second == y4; }))
+	if (x1 == x4 && y1 == y4 || std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x4 && t.second == y4;}))
 	{
 		if (x1 != x2 || y1 != y2)
 		{

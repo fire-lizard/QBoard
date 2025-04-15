@@ -445,8 +445,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		repaint();
 		return;
 	}
-	if ((_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black) ||
-		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;
+	if (_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black ||
+		_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White) return;
 	const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
 	const bool isLionPiece = _currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->GetType()) != std::end(lionPieces);
 	const bool isShootingPiece = _currentPiece != nullptr && std::find(std::begin(ShootingPieces), std::end(ShootingPieces), _currentPiece->GetType()) != std::end(ShootingPieces);
@@ -616,8 +616,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					_currentPiece->GetType() == Lion && _board->GetData(x, y)->GetType() == Lion &&
 					(abs(_oldX - x) == 2 || abs(_oldY - y) == 2))
 				{
-					std::vector<std::pair<int, int>> lionDefenders;
-					_board->GetDefenders(x, y, lionDefenders);
+					const std::vector<std::pair<int, int>> lionDefenders = _board->GetDefenders(x, y);
 					if (!lionDefenders.empty())
 					{
 						return;
@@ -1394,8 +1393,8 @@ bool VBoard::event(QEvent* event)
 			const Piece* p = _board->GetData(x, y);
 			if (p != nullptr)
 			{
-				_board->GetAttackers(x, y, _attackers);
-				_board->GetDefenders(x, y, _defenders);
+				_attackers = _board->GetAttackers(x, y);
+				_defenders = _board->GetDefenders(x, y);
 			}
 			else
 			{

@@ -259,46 +259,46 @@ bool Board::HasPiece(PieceType pieceType, PieceColour pieceColour) const
 	return false;
 }
 
-void Board::GetAttackers(int x, int y, std::vector<std::pair<int, int>>& vec)
+std::vector<std::pair<int, int>> Board::GetAttackers(int x, int y)
 {
-	vec.clear();
-	if (_data[x][y] == nullptr)
+	std::vector<std::pair<int, int>> vec;
+	if (_data[x][y] != nullptr)
 	{
-		return;
-	}
-	const PieceColour pieceColour = _data[x][y]->GetColour();
-	Board* board = this->Clone();
-	board->SetData(x, y, nullptr);
-	const auto opponentMoves = board->GetAllMoves(pieceColour == White ? Black : White);
-	for (auto tpl : opponentMoves)
-	{
-		if (std::get<2>(tpl) == x && std::get<3>(tpl) == y)
+		const PieceColour pieceColour = _data[x][y]->GetColour();
+		Board* board = this->Clone();
+		board->SetData(x, y, nullptr);
+		const auto opponentMoves = board->GetAllMoves(pieceColour == White ? Black : White);
+		for (auto tpl : opponentMoves)
 		{
-			vec.emplace_back(std::get<0>(tpl), std::get<1>(tpl));
+			if (std::get<2>(tpl) == x && std::get<3>(tpl) == y)
+			{
+				vec.emplace_back(std::get<0>(tpl), std::get<1>(tpl));
+			}
 		}
+		delete board;
 	}
-	delete board;
+	return vec;
 }
 
-void Board::GetDefenders(int x, int y, std::vector<std::pair<int, int>>& vec)
+std::vector<std::pair<int, int>> Board::GetDefenders(int x, int y)
 {
-	vec.clear();
-	if (_data[x][y] == nullptr)
+	std::vector<std::pair<int, int>> vec;
+	if (_data[x][y] != nullptr)
 	{
-		return;
-	}
-	const PieceColour pieceColour = _data[x][y]->GetColour();
-	Board* board = this->Clone();
-	board->SetData(x, y, nullptr);
-	const auto playerMoves = board->GetAllMoves(pieceColour);
-	for (auto tpl : playerMoves)
-	{
-		if (std::get<2>(tpl) == x && std::get<3>(tpl) == y)
+		const PieceColour pieceColour = _data[x][y]->GetColour();
+		Board* board = this->Clone();
+		board->SetData(x, y, nullptr);
+		const auto playerMoves = board->GetAllMoves(pieceColour);
+		for (auto tpl : playerMoves)
 		{
-			vec.emplace_back(std::get<0>(tpl), std::get<1>(tpl));
+			if (std::get<2>(tpl) == x && std::get<3>(tpl) == y)
+			{
+				vec.emplace_back(std::get<0>(tpl), std::get<1>(tpl));
+			}
 		}
+		delete board;
 	}
-	delete board;
+	return vec;
 }
 
 bool Board::IsMovePossible(int x, int y)
