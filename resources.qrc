@@ -2031,5 +2031,19 @@
         <file>images_kom/VanguardF.png</file>
         <file>images_kom/Wrestler.png</file>
         <file>images_kom/WrestlerF.png</file>
+        <file>images_kom/CenturiaP.png</file>
+        <file>images_kom/CenturiaPF.png</file>
+        <file>images_kom/ChiliarchP.png</file>
+        <file>images_kom/ChiliarchPF.png</file>
+        <file>images_kom/KnightCaptainP.png</file>
+        <file>images_kom/KnightCaptainPF.png</file>
+        <file>images_kom/OptioP.png</file>
+        <file>images_kom/OptioPF.png</file>
+        <file>images_kom/PawnCaptainP.png</file>
+        <file>images_kom/PawnCaptainPF.png</file>
+        <file>images_kom/ShieldCaptainP.png</file>
+        <file>images_kom/ShieldCaptainPF.png</file>
+        <file>images_kom/ChariotCaptainP.png</file>
+        <file>images_kom/ChariotCaptainPF.png</file>
     </qresource>
 </RCC>

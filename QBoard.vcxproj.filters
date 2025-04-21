@@ -6335,6 +6335,48 @@
     <Image Include="images_kom\WrestlerF.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_kom\CenturiaP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\CenturiaPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ChiliarchP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ChiliarchPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\KnightCaptainP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\KnightCaptainPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\OptioP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\OptioPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\PawnCaptainP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\PawnCaptainPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ShieldCaptainP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ShieldCaptainPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ChariotCaptainP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ChariotCaptainPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc">
