@@ -6131,6 +6131,210 @@
     <Image Include="images_maka2\Zolotoj_general_piece_W_prom.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_kom\AdvanceGuard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\AdvanceGuardF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Aide.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\AideF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Cannon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\CannonF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Centuria.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\CenturiaF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Chariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ChariotCaptain.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ChariotCaptainF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ChariotF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Chiliarch.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ChiliarchF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Clerk.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ClerkF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Crossbow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\CrossbowF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Drum.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\DrumF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Elephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ElephantF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\EuropeanCannon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\EuropeanCannonF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Flag.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\FlagF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\General.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\GeneralF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Guard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\GuardF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Knight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\KnightCaptain.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\KnightCaptainF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\KnightF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Longbow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\LongbowF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\MiddleTroop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\MiddleTroopF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\MilitaryEngineer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\MilitaryEngineerF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\MilitaryOfficer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\MilitaryOfficerF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Optio.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\OptioF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Pawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\PawnCaptain.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\PawnCaptainF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\PawnF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\RearGuard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\RearGuardF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Sentry.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\SentryF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Shield.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ShieldCaptain.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ShieldCaptainF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ShieldF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\SpiritualMonk.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\SpiritualMonkF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Staff.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\StaffF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\StaffOfficer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\StaffOfficerF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\TaoistPriest.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\TaoistPriestF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Vanguard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\VanguardF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Wrestler.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\WrestlerF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc">

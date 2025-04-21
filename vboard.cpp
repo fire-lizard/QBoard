@@ -48,7 +48,10 @@ void VBoard::paintEvent(QPaintEvent *)
 		resourcePrefix = _pieceStyle == Asian ? ":/pieces_mdd/images_maka/" : ":/pieces_maka2/images_maka2/";
 		break;
 	case KoShogi:
-		resourcePrefix = _pieceStyle == Asian2 ? ":/pieces_kok/images_kok/" : _pieceStyle == Asian ? ":/pieces_ko/images_ko/" : ":/pieces_kow/images_kow/";
+		if (_pieceStyle == Asian) resourcePrefix = ":/pieces_ko/images_ko/";
+		else if (_pieceStyle == Asian2) resourcePrefix = ":/pieces_kok/images_kok/";
+		else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_km/images_kom/";
+		else resourcePrefix = ":/pieces_kow/images_kow/";
 		break;
 	case Chess:
 	case Shatranj:
@@ -279,7 +282,7 @@ void VBoard::paintEvent(QPaintEvent *)
 						dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName() : dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
 					break;
 				case KoShogi:
-					imageFileName = _pieceStyle == Asian ?
+					imageFileName = _pieceStyle == Asian || _pieceStyle == Mnemonic ?
 						dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName() :
 						_pieceStyle == Asian2 ? dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2() : dynamic_cast<ChuShogiPiece*>(p)->GetMnemonicImageFileName();
 					break;
@@ -449,7 +452,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White) return;
 	const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
 	const bool isLionPiece = _currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->GetType()) != std::end(lionPieces);
-	const bool isShootingPiece = _currentPiece != nullptr && std::find(std::begin(ShootingPieces), std::end(ShootingPieces), _currentPiece->GetType()) != std::end(ShootingPieces);
+	const bool isShootingPiece = _gameVariant == KoShogi && _currentPiece != nullptr &&
+		std::find(std::begin(ShootingPieces), std::end(ShootingPieces), _currentPiece->GetType()) != std::end(ShootingPieces);
 	// Castling check
 	if (_gameVariant == Chess && _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
 		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved() && _board->IsMovePossible(x, y))
