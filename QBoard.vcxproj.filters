@@ -6377,6 +6377,144 @@
     <Image Include="images_kom\ChariotCaptainPF.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_kom\BattalionCommanderP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\BattalionCommanderPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\CannonCarriageP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\CannonCarriagePF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\CompanyCommanderP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\CompanyCommanderPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\CrossbowKnightP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\CrossbowKnightPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\DivineCarriageP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\DivineCarriagePF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\EarthNetP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\EarthNetPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ExtensiveFogP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ExtensiveFogPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Flag-DrumP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\Flag-DrumPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\FlyingHawkP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\FlyingHawkPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\HolyLightP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\HolyLightPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ImperialBaseP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ImperialBasePF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\LongbowKnightP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\LongbowKnightPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\MarshalP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\MarshalPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\MilitaryCommissionerP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\MilitaryCommissionerPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\PoisonFlameP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\PoisonFlamePF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\RisingDragonP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\RisingDragonPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\RoamingAssaultP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\RoamingAssaultPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\SkyNetP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\SkyNetPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\StrategistP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\StrategistPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ThunderclapP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ThunderclapPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ViceCommissionerP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\ViceCommissionerPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\WingedHorseP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\WingedHorsePF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\WingedTigerP.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_kom\WingedTigerPF.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc">

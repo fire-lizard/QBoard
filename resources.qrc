@@ -2045,5 +2045,51 @@
         <file>images_kom/ShieldCaptainPF.png</file>
         <file>images_kom/ChariotCaptainP.png</file>
         <file>images_kom/ChariotCaptainPF.png</file>
+        <file>images_kom/BattalionCommanderP.png</file>
+        <file>images_kom/BattalionCommanderPF.png</file>
+        <file>images_kom/CannonCarriageP.png</file>
+        <file>images_kom/CannonCarriagePF.png</file>
+        <file>images_kom/CompanyCommanderP.png</file>
+        <file>images_kom/CompanyCommanderPF.png</file>
+        <file>images_kom/CrossbowKnightP.png</file>
+        <file>images_kom/CrossbowKnightPF.png</file>
+        <file>images_kom/DivineCarriageP.png</file>
+        <file>images_kom/DivineCarriagePF.png</file>
+        <file>images_kom/EarthNetP.png</file>
+        <file>images_kom/EarthNetPF.png</file>
+        <file>images_kom/ExtensiveFogP.png</file>
+        <file>images_kom/ExtensiveFogPF.png</file>
+        <file>images_kom/Flag-DrumP.png</file>
+        <file>images_kom/Flag-DrumPF.png</file>
+        <file>images_kom/FlyingHawkP.png</file>
+        <file>images_kom/FlyingHawkPF.png</file>
+        <file>images_kom/HolyLightP.png</file>
+        <file>images_kom/HolyLightPF.png</file>
+        <file>images_kom/ImperialBaseP.png</file>
+        <file>images_kom/ImperialBasePF.png</file>
+        <file>images_kom/LongbowKnightP.png</file>
+        <file>images_kom/LongbowKnightPF.png</file>
+        <file>images_kom/MarshalP.png</file>
+        <file>images_kom/MarshalPF.png</file>
+        <file>images_kom/MilitaryCommissionerP.png</file>
+        <file>images_kom/MilitaryCommissionerPF.png</file>
+        <file>images_kom/PoisonFlameP.png</file>
+        <file>images_kom/PoisonFlamePF.png</file>
+        <file>images_kom/RisingDragonP.png</file>
+        <file>images_kom/RisingDragonPF.png</file>
+        <file>images_kom/RoamingAssaultP.png</file>
+        <file>images_kom/RoamingAssaultPF.png</file>
+        <file>images_kom/SkyNetP.png</file>
+        <file>images_kom/SkyNetPF.png</file>
+        <file>images_kom/StrategistP.png</file>
+        <file>images_kom/StrategistPF.png</file>
+        <file>images_kom/ThunderclapP.png</file>
+        <file>images_kom/ThunderclapPF.png</file>
+        <file>images_kom/ViceCommissionerP.png</file>
+        <file>images_kom/ViceCommissionerPF.png</file>
+        <file>images_kom/WingedHorseP.png</file>
+        <file>images_kom/WingedHorsePF.png</file>
+        <file>images_kom/WingedTigerP.png</file>
+        <file>images_kom/WingedTigerPF.png</file>
     </qresource>
 </RCC>
