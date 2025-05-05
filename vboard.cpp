@@ -1289,6 +1289,10 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 				promotion = '+';
 				_currentPiece->Promote();
 			}
+			else
+			{
+				promotion = '=';
+			}
 		}
 	}
 	else if (_gameVariant == KoShogi)
@@ -1325,6 +1329,10 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 			{
 				promotion = '+';
 				_currentPiece->Promote();
+			}
+			else
+			{
+				promotion = '=';
 			}
 			// When the clerk promotes to master at arms, all the allied advance and rear guards promote as well, while any enemy poison flame dies.
 			if (promotion == '+' && _currentPiece->GetBaseType() == Kylin && _currentPiece->GetType() == DoubleKylin)
@@ -1373,7 +1381,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 				}
 				else
 				{
-					promotion = ' ';
+					promotion = '=';
 				}
 			}
 		}

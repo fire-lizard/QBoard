@@ -425,7 +425,7 @@ void MainWindow::on_actionSave_triggered()
 		QFileDialog fileDialog(this);
 		if (gameVariant == CrazyWa || gameVariant == WaShogi)
 		{
-			fileDialog.setNameFilter("FEN Files (*.fen)");
+			fileDialog.setNameFilter("FEN Files (*.fen);;PGN Files (*.pgn)");
 		}
 		else
 		{
@@ -449,6 +449,13 @@ void MainWindow::on_actionSave_triggered()
 					str += " ";
 				}
 				str += mcStr.toLatin1();
+			}
+			else if (fileDialog.selectedNameFilter() == "PGN Files (*.pgn)")
+			{
+				const QString senteName = "[Sente \"" + _whiteEngineName + "\"]\n";
+				const QString goteName = "[Gote \"" + _blackEngineName + "\"]\n\n";
+				const QString psn = QString::fromStdString(dynamic_cast<WaShogiBoard*>(this->ui->vboard->GetBoard())->GetPGN());
+				str = (senteName + goteName + psn).toLatin1();
 			}
 			else if (fileDialog.selectedNameFilter() == "KIF Files (*.kif)" || fileDialog.selectedNameFilter() == "KI2 Files (*.ki2)")
 			{
