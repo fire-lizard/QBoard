@@ -35,7 +35,10 @@ void VBoard::paintEvent(QPaintEvent *)
 		else resourcePrefix = ":/pieces_eur/images/";
 		break;
 	case DaiShogi:
-		resourcePrefix = _pieceStyle == Asian ? ":/pieces_tnk/images_tnk/" : isAsianStyle ? ":/pieces_maka2/images_maka2/" : ":/pieces_eur/images/";
+		if (_pieceStyle == Asian) resourcePrefix = ":/pieces_tnk/images_tnk/";
+		else if (_pieceStyle == Asian2 || _pieceStyle == Asian4) resourcePrefix = ":/pieces_maka2/images_maka2/";
+		else if (_pieceStyle == Asian3) resourcePrefix = ":/pieces_dai/images_dai/";
+		else resourcePrefix = ":/pieces_eur/images/";
 		break;
 	case TenjikuShogi:
 		resourcePrefix = isAsianStyle ? ":/pieces_tnk/images_tnk/" : ":/pieces_ten/images_ten/";
@@ -276,9 +279,9 @@ void VBoard::paintEvent(QPaintEvent *)
 				case MiniShogi:
 				case JudkinShogi:
 				case DaiShogi:
-					imageFileName = _pieceStyle == Asian ?
-						dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName() :
-						isAsianStyle ? dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2() : p->GetImageFileName();
+					if (_pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
+					else if (_pieceStyle == Asian2 || _pieceStyle == Asian4) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
+					else imageFileName = p->GetImageFileName();
 					break;
 				case MakaDaiDaiShogi:
 					imageFileName = _pieceStyle == Asian ?
@@ -342,9 +345,13 @@ void VBoard::paintEvent(QPaintEvent *)
 					break;
 				case ChuShogi:
 				case DaiShogi:
-					if (_pieceStyle == Asian2 || _pieceStyle == Asian3 && _gameVariant == DaiShogi || _pieceStyle == Asian4)
+					if (_pieceStyle == Asian2 || _pieceStyle == Asian4)
 					{
 						painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
+					}
+					else if (_pieceStyle == Asian3 && _gameVariant == DaiShogi)
+					{
+						painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
 					}
 					else
 					{

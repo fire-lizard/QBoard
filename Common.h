@@ -12,8 +12,8 @@ enum GameFormat
 
 enum GameVariant
 {
-	Chess, Xiangqi, Shatranj, Makruk, Shogi, MiniShogi, JudkinShogi, ShoShogi, ChuShogi,
-	DaiShogi, WaShogi, CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
+	Chess, Xiangqi, Shatranj, Makruk, Shogi, MiniShogi, JudkinShogi, ShoShogi, WaShogi,
+	CrazyWa, ChuShogi, DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
 };
 
 enum PieceColour
