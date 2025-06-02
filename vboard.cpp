@@ -351,7 +351,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					}
 					else if (_pieceStyle == Asian3 && _gameVariant == DaiShogi)
 					{
-						painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+						painter.drawPixmap(i * w + w / 6, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
 					}
 					else
 					{
