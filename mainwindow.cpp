@@ -37,6 +37,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		{
 			pieceStyle = Asian2;
 		}
+		else if (settings[2] == "Asian 3")
+		{
+			pieceStyle = Asian3;
+		}
+		else if (settings[2] == "Asian 4")
+		{
+			pieceStyle = Asian4;
+		}
 		else
 		{
 			pieceStyle = European;
@@ -92,7 +100,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-	aboutStr.append("<center>QBoard 0.9.9.1 beta<br/>");
+	aboutStr.append("<center>QBoard 0.9.9.2 beta<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
