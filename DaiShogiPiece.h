@@ -8,7 +8,6 @@ class DaiShogiPiece : public ChuShogiPiece
 public:
 	DaiShogiPiece(PieceType pieceType, PieceColour pieceColour);
 	~DaiShogiPiece() override;
-	std::string GetImageFileName() const override;
 	void Promote(PieceType pieceType = None) override;
 	std::string StringCode() override;
 	std::string KanjiStringCode() override;

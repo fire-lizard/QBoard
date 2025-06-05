@@ -86,27 +86,27 @@
         <file>images/BlackIron.png</file>
         <file>images/BlackPromoHSword.png</file>
         <file>images/BlackPromoSword.png</file>
-        <file>images/BlackCommoner.png</file>
+        <file>images/BlackStone.png</file>
         <file>images/BlackWolf.png</file>
         <file>images/WhiteDragon.png</file>
         <file>images/WhiteGnu.png</file>
         <file>images/WhiteIron.png</file>
         <file>images/WhitePromoHSword.png</file>
         <file>images/WhitePromoSword.png</file>
-        <file>images/WhiteCommoner.png</file>
+        <file>images/WhiteStone.png</file>
         <file>images/WhiteWolf.png</file>
-        <file>images/BlackLShield.png</file>
+        <file>images/BlackAngryBoar.png</file>
         <file>images/BlackPromoBishop.png</file>
         <file>images/BlackPromoCrownedRook.png</file>
         <file>images/BlackPromoCrownedBishop.png</file>
         <file>images/BlackPromoRook.png</file>
-        <file>images/BlackRShield.png</file>
-        <file>images/WhiteLShield.png</file>
+        <file>images/BlackCatSword.png</file>
+        <file>images/WhiteAngryBoar.png</file>
         <file>images/WhitePromoBishop.png</file>
         <file>images/WhitePromoCrownedRook.png</file>
         <file>images/WhitePromoCrownedBishop.png</file>
         <file>images/WhitePromoRook.png</file>
-        <file>images/WhiteRShield.png</file>
+        <file>images/WhiteCatSword.png</file>
     </qresource>
     <qresource prefix="/pieces_jap">
         <file>images_jap/BlackAdvisor.png</file>
@@ -137,7 +137,7 @@
         <file>images_jap/BlackQueen.png</file>
         <file>images_jap/BlackRook.png</file>
         <file>images_jap/BlackSword.png</file>
-        <file>images_jap/BlackTokin.png</file>
+        <file>images_jap/BlackGoldPawn.png</file>
         <file>images_jap/BlackUnicorn.png</file>
         <file>images_jap/WhiteAdvisor.png</file>
         <file>images_jap/WhiteArchbishop.png</file>
@@ -167,7 +167,7 @@
         <file>images_jap/WhiteQueen.png</file>
         <file>images_jap/WhiteRook.png</file>
         <file>images_jap/WhiteSword.png</file>
-        <file>images_jap/WhiteTokin.png</file>
+        <file>images_jap/WhiteGoldPawn.png</file>
         <file>images_jap/WhiteUnicorn.png</file>
         <file>images_jap/BlackPromoBishop.png</file>
         <file>images_jap/BlackPromoCrownedBishop.png</file>
@@ -347,7 +347,7 @@
         <file>images_dai/BlackRook.png</file>
         <file>images_dai/BlackStone.png</file>
         <file>images_dai/BlackSword.png</file>
-        <file>images_dai/BlackTokin.png</file>
+        <file>images_dai/BlackGoldPawn.png</file>
         <file>images_dai/BlackUnicorn.png</file>
         <file>images_dai/BlackWhiteHorse.png</file>
         <file>images_dai/BlackWolf.png</file>
@@ -395,7 +395,7 @@
         <file>images_dai/WhiteRook.png</file>
         <file>images_dai/WhiteStone.png</file>
         <file>images_dai/WhiteSword.png</file>
-        <file>images_dai/WhiteTokin.png</file>
+        <file>images_dai/WhiteGoldPawn.png</file>
         <file>images_dai/WhiteUnicorn.png</file>
         <file>images_dai/WhiteWhiteHorse.png</file>
         <file>images_dai/WhiteWolf.png</file>

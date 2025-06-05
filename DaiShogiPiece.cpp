@@ -140,24 +140,6 @@ void DaiShogiPiece::replaceSubstring(std::string& str, const std::string& from, 
 	}
 }
 
-std::string DaiShogiPiece::GetImageFileName() const
-{
-	const std::string colour = _pieceColour == White ? "White" : "Black";
-	switch (_pieceType)
-	{
-	case AngryBoar:
-		return colour + "AngryBoar" + ".png";
-	case CatSword:
-		return colour + "CatSword" + ".png";
-	case Stone:
-		return colour + "Stone" + ".png";
-	case Tokin:
-		return colour + "Tokin" + ".png";
-	default:
-		return Piece::GetImageFileName();
-	}
-}
-
 std::string DaiShogiPiece::GetKanjiImageFileName()
 {
 	std::string colour = _pieceColour == White ? "" : "Flip";
