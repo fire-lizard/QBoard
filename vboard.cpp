@@ -24,7 +24,7 @@ void VBoard::paintEvent(QPaintEvent *)
 	case ShoShogi:
 	case MiniShogi:
 	case JudkinShogi:
-		resourcePrefix = _pieceStyle == Asian ? ":/pieces_sho/images_sho/" : isAsianStyle ? ":/pieces_maka2/images_maka2/" : ":/pieces_eur/images/";
+		resourcePrefix = _pieceStyle == Asian || _pieceStyle == Asian3 ? ":/pieces_sho/images_sho/" : isAsianStyle ? ":/pieces_maka2/images_maka2/" : ":/pieces_eur/images/";
 		break;
 	case ChuShogi:
 		if (_pieceStyle == Asian) resourcePrefix = ":/pieces_tnk/images_tnk/";
@@ -1717,7 +1717,7 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 		_currentPlayer = Black;
 		return;
 	}
-	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, _currentPlayer);
+	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, White);
 	if (_blackEngine != nullptr && _blackEngine->IsActive())
 	{
 		const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _whiteEngine->GetType(), _gameVariant);
@@ -1775,7 +1775,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 		_currentPlayer = White;
 		return;
 	}
-	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, _currentPlayer);
+	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, Black);
 	if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 	{
 		const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _blackEngine->GetType(), _gameVariant);
