@@ -35,7 +35,7 @@ void UsiEngine::Move()
 {
 	_textEdit->setText("");
 	QByteArray moveStr;
-	moveStr += "position sfen " + _fen + " moves ";
+	moveStr += "position sfen " + _fen.substr(0, _fen.size() - 5) + " moves ";
 	for (const auto& _move : _moves)
 	{
 		moveStr += _move;
@@ -50,7 +50,7 @@ void UsiEngine::Move(signed char x1, signed char y1, signed char x2, signed char
 {
 	_textEdit->setText("");
 	QByteArray moveStr;
-	moveStr += "position sfen " + _fen + " moves ";
+	moveStr += "position sfen " + _fen.substr(0, _fen.size() - 5) + " moves ";
 	for (const auto& _move : _moves)
 	{
 		moveStr += _move;
