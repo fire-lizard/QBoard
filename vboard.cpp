@@ -18,7 +18,10 @@ void VBoard::paintEvent(QPaintEvent *)
 	switch (_gameVariant)
 	{
 	case Xiangqi:
-		resourcePrefix = isAsianStyle ? ":/pieces_chi/images_chi/" : ":/pieces_eur/images/";
+		if (_pieceStyle == European) resourcePrefix = ":/pieces_eur/images/";
+		else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_xia/images_xia/";
+		else if (_pieceStyle == Asian) resourcePrefix = ":/pieces_chi/images_chi/";
+		else resourcePrefix = ":/pieces_chi2/images_chi2/";
 		break;
 	case Shogi:
 	case ShoShogi:
@@ -61,6 +64,9 @@ void VBoard::paintEvent(QPaintEvent *)
 		break;
 	case Chess:
 	case Shatranj:
+		if (_pieceStyle == European) resourcePrefix = ":/pieces_eur/images/";
+		else resourcePrefix = ":/pieces_eur/images_eur/";
+		break;
 	case Makruk:
 		resourcePrefix = ":/pieces_eur/images/";
 		break;
@@ -271,8 +277,8 @@ void VBoard::paintEvent(QPaintEvent *)
 				switch (_gameVariant)
 				{
 				case Xiangqi:
-					imageFileName = isAsianStyle ?
-						dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName() : p->GetImageFileName();
+					imageFileName = _pieceStyle == European ?
+						p->GetImageFileName() : dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 					break;
 				case Shogi:
 				case ShoShogi:
@@ -364,11 +370,20 @@ void VBoard::paintEvent(QPaintEvent *)
 					break;
 				case TenjikuShogi:
 				case DaiDaiShogi:
+				case Makruk:
+					painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+					break;
 				case Chess:
 				case Shatranj:
-				case Makruk:
 				case Xiangqi:
-					painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+					if (_pieceStyle == European)
+					{
+						painter.drawPixmap(i* w + w / 4, j* h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+					}
+					else
+					{
+						painter.drawPixmap(i* w + w / 8, j* h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+					}
 					break;
 				}
 			}

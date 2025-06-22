@@ -2112,13 +2112,13 @@
         <file>images_chi2/bhorse.png</file>
         <file>images_chi2/bking.png</file>
         <file>images_chi2/bpawn.png</file>
-        <file>images_chi2/wadvisor.png</file>
-        <file>images_chi2/wcannon.png</file>
-        <file>images_chi2/wchariot.png</file>
-        <file>images_chi2/welephant.png</file>
-        <file>images_chi2/whorse.png</file>
-        <file>images_chi2/wking.png</file>
-        <file>images_chi2/wpawn.png</file>
+        <file>images_chi2/radvisor.png</file>
+        <file>images_chi2/rcannon.png</file>
+        <file>images_chi2/rchariot.png</file>
+        <file>images_chi2/relephant.png</file>
+        <file>images_chi2/rhorse.png</file>
+        <file>images_chi2/rking.png</file>
+        <file>images_chi2/rpawn.png</file>
     </qresource>
     <qresource prefix="/pieces_xia">
         <file>images_xia/badvisor.png</file>
