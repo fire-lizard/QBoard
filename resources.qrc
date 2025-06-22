@@ -107,6 +107,18 @@
         <file>images/WhitePromoCrownedBishop.png</file>
         <file>images/WhitePromoRook.png</file>
         <file>images/WhiteCatSword.png</file>
+        <file>images_eur/BlackBishop.png</file>
+        <file>images_eur/BlackKing.png</file>
+        <file>images_eur/BlackKnight.png</file>
+        <file>images_eur/BlackPawn.png</file>
+        <file>images_eur/BlackQueen.png</file>
+        <file>images_eur/BlackRook.png</file>
+        <file>images_eur/WhiteBishop.png</file>
+        <file>images_eur/WhiteKing.png</file>
+        <file>images_eur/WhiteKnight.png</file>
+        <file>images_eur/WhitePawn.png</file>
+        <file>images_eur/WhiteQueen.png</file>
+        <file>images_eur/WhiteRook.png</file>
     </qresource>
     <qresource prefix="/pieces_jap">
         <file>images_jap/BlackAdvisor.png</file>
@@ -2091,5 +2103,37 @@
         <file>images_kom/WingedHorsePF.png</file>
         <file>images_kom/WingedTigerP.png</file>
         <file>images_kom/WingedTigerPF.png</file>
+    </qresource>
+    <qresource prefix="/pieces_chi2">
+        <file>images_chi2/badvisor.png</file>
+        <file>images_chi2/bcannon.png</file>
+        <file>images_chi2/bchariot.png</file>
+        <file>images_chi2/belephant.png</file>
+        <file>images_chi2/bhorse.png</file>
+        <file>images_chi2/bking.png</file>
+        <file>images_chi2/bpawn.png</file>
+        <file>images_chi2/wadvisor.png</file>
+        <file>images_chi2/wcannon.png</file>
+        <file>images_chi2/wchariot.png</file>
+        <file>images_chi2/welephant.png</file>
+        <file>images_chi2/whorse.png</file>
+        <file>images_chi2/wking.png</file>
+        <file>images_chi2/wpawn.png</file>
+    </qresource>
+    <qresource prefix="/pieces_xia">
+        <file>images_xia/badvisor.png</file>
+        <file>images_xia/bcannon.png</file>
+        <file>images_xia/bchariot.png</file>
+        <file>images_xia/belephant.png</file>
+        <file>images_xia/bhorse.png</file>
+        <file>images_xia/bking.png</file>
+        <file>images_xia/bpawn.png</file>
+        <file>images_xia/radvisor.png</file>
+        <file>images_xia/rcannon.png</file>
+        <file>images_xia/rchariot.png</file>
+        <file>images_xia/relephant.png</file>
+        <file>images_xia/rhorse.png</file>
+        <file>images_xia/rking.png</file>
+        <file>images_xia/rpawn.png</file>
     </qresource>
 </RCC>

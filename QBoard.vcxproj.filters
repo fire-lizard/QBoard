@@ -6515,6 +6515,126 @@
     <Image Include="images_kom\WingedTigerPF.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_chi2\badvisor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chi2\bcannon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chi2\bchariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chi2\belephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chi2\bhorse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chi2\bking.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chi2\bpawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chi2\wadvisor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chi2\wcannon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chi2\wchariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chi2\welephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chi2\whorse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chi2\wking.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_chi2\wpawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur\BlackBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur\BlackKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur\BlackKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur\BlackPawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur\BlackQueen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur\BlackRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur\WhiteBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur\WhiteKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur\WhiteKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur\WhitePawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur\WhiteQueen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur\WhiteRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\badvisor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\bcannon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\bchariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\belephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\bhorse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\bking.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\bpawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\radvisor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\rcannon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\rchariot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\relephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\rhorse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\rking.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_xia\rpawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc">
