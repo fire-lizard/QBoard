@@ -80,7 +80,7 @@ void EngineOutputHandler::CalculateCheck(Board* board, PieceColour pieceColour, 
 	auto opponentMoves = brd->GetAllMoves(pieceColour == White ? Black : White);
 	std::for_each(opponentMoves.begin(), opponentMoves.end(), [&](std::tuple<int, int, int, int> t)
 	{
-		if (get<2>(t) == kx && get<3>(t) == ky)
+        if (std::get<2>(t) == kx && std::get<3>(t) == ky)
 		{
 			board->RemoveMove(newX, newY);
 			RemoveMove(moves, newX, newY);

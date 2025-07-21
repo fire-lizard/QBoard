@@ -38,7 +38,7 @@ void ShogiVariantBoard::RemoveCapturedPiece(PieceType p, PieceColour pieceColour
 std::string ShogiVariantBoard::formatEnumCounts(const std::vector<PieceType>& enumList) 
 {
 	// Define the required order of pieces
-	const std::vector order = { Rook, Bishop, Gold, Silver, Knight, Lance, Pawn };
+    const std::vector<PieceType> order = { Rook, Bishop, Gold, Silver, Knight, Lance, Pawn };
 
 	// Count occurrences of each piece
 	std::unordered_map<PieceType, int> counts;

@@ -63,7 +63,7 @@ void WaShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int 
 
 std::string WaShogiBoard::formatEnumCounts(const std::vector<PieceType>& enumList)
 {
-	const std::vector order = { Rook, SideMover, Gold, Silver, LiberatedHorse, Lance, Pawn, SwoopingOwl, CloudEagle, StruttingCrow, FlyingFalcon,
+    const std::vector<PieceType> order = { Rook, SideMover, Gold, Silver, LiberatedHorse, Lance, Pawn, SwoopingOwl, CloudEagle, StruttingCrow, FlyingFalcon,
 								FlyingCock, FlyingGoose, ClimbingMonkey, Dog, RunningRabbit, TreacherousFox };
 
 	// Count occurrences of each piece

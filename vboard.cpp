@@ -83,7 +83,7 @@ void VBoard::paintEvent(QPaintEvent *)
 		for (int j = 0; j < _board->GetHeight(); j++)
 		{
 			QRect rect(i * w, j * h, w, h);
-			if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair(i, j)) != std::end(_tcMoves) ||
+            if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair<int, int>(i, j)) != std::end(_tcMoves) ||
 				_lionFirstMove.first == i && _lionFirstMove.second == j || _lionSecondMove.first == i && _lionSecondMove.second == j ||
 				_firstShoot.first == i && _firstShoot.second == j)
 			{
@@ -452,8 +452,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	if (event->button() != Qt::MouseButton::LeftButton) return;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
-	const int x = static_cast<int>(event->position().x()) / w;
-	const int y = static_cast<int>(event->position().y()) / h;
+    const int x = static_cast<int>(event->x()) / w;
+    const int y = static_cast<int>(event->y()) / h;
 	Piece* p = _board->GetData(x, y);
 	if (_editorMode)
 	{
@@ -521,7 +521,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				abs(_tcMoves[_tcMoves.size() - 1].second - y) > 1) && _currentPiece->GetType() == Thunderclap)
 			{
 			}
-			else if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair(x, y)) != std::end(_tcMoves))
+            else if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair<int, int>(x, y)) != std::end(_tcMoves))
 			{
 			}
 			else if (_currentPiece->GetType() == Thunderclap && PossibleMove(x, y))
@@ -1422,8 +1422,8 @@ bool VBoard::event(QEvent* event)
 		const QHoverEvent* hoverEvent = dynamic_cast<QHoverEvent*>(event);
 		const int w = this->size().width() / _board->GetWidth();
 		const int h = this->size().height() / _board->GetHeight();
-		const int x = static_cast<int>(hoverEvent->position().x()) / w;
-		const int y = static_cast<int>(hoverEvent->position().y()) / h;
+        const int x = static_cast<int>(hoverEvent->pos().x()) / w;
+        const int y = static_cast<int>(hoverEvent->pos().y()) / h;
 		if (x < _board->GetWidth() && y < _board->GetHeight() && (x != _px || y != _py))
 		{
 			_px = x;
