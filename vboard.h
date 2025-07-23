@@ -4,13 +4,10 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include "mainwindow.h"
-#include "ChuShogiBoard.h"
-#include "DaiShogiBoard.h"
 #include "DaiDaiShogiBoard.h"
 #include "KoShogiBoard.h"
 #include "ChessBoard.h"
 #include "XiangqiBoard.h"
-#include "ShogiVariantBoard.h"
 #include "MiniShogiBoard.h"
 #include "JudkinShogiBoard.h"
 #include "WaShogiBoard.h"
@@ -59,7 +56,7 @@ private:
 	bool PossibleMove(int x, int y) const;
 	bool PossibleShoot(int x, int y) const;
 	bool AskForPromotion();
-	void FinishMove();
+	void FinishMove(int x, int y);
 	void CancelLionMove();
 
 	Board *_board;
@@ -103,6 +100,10 @@ private:
 	std::pair<int, int> _lionFirstMove = { -1, -1 };
 	std::pair<int, int> _lionSecondMove = { -1, -1 };
 	std::vector<std::pair<int, int>> _tcMoves;
+	std::pair<int, int> _lastWhiteMoveFrom = { -1, -1 };
+	std::pair<int, int> _lastWhiteMoveTo = { -1, -1 };
+	std::pair<int, int> _lastBlackMoveFrom = { -1, -1 };
+	std::pair<int, int> _lastBlackMoveTo = { -1, -1 };
 
 signals:
 

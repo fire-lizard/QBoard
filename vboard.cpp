@@ -83,7 +83,7 @@ void VBoard::paintEvent(QPaintEvent *)
 		for (int j = 0; j < _board->GetHeight(); j++)
 		{
 			QRect rect(i * w, j * h, w, h);
-            if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair<int, int>(i, j)) != std::end(_tcMoves) ||
+			if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair<int, int>(i, j)) != std::end(_tcMoves) ||
 				_lionFirstMove.first == i && _lionFirstMove.second == j || _lionSecondMove.first == i && _lionSecondMove.second == j ||
 				_firstShoot.first == i && _firstShoot.second == j)
 			{
@@ -231,6 +231,18 @@ void VBoard::paintEvent(QPaintEvent *)
 			else if (std::any_of(_defenders.begin(), _defenders.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}))
 			{
 				painter.setBrush(QColorConstants::Svg::aquamarine);
+				painter.drawRect(rect);
+				painter.setBrush(Qt::NoBrush);
+			}
+			else if (_lastWhiteMoveFrom.first == i && _lastWhiteMoveFrom.second == j || _lastWhiteMoveTo.first == i && _lastWhiteMoveTo.second == j)
+			{
+				painter.setBrush(QColorConstants::Svg::beige);
+				painter.drawRect(rect);
+				painter.setBrush(Qt::NoBrush);
+			}
+			else if (_lastBlackMoveFrom.first == i && _lastBlackMoveFrom.second == j || _lastBlackMoveTo.first == i && _lastBlackMoveTo.second == j)
+			{
+				painter.setBrush(QColorConstants::Svg::bisque);
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
@@ -397,10 +409,14 @@ bool VBoard::AskForPromotion()
 		QMessageBox::Yes | QMessageBox::No, this).exec() == QMessageBox::Yes;
 }
 
-void VBoard::FinishMove()
+void VBoard::FinishMove(int x, int y)
 {
 	if (_currentPlayer == White)
 	{
+		_lastWhiteMoveFrom = { _oldX, _oldY };
+		_lastWhiteMoveTo = { x, y };
+		_lastBlackMoveFrom = { -1, -1 };
+		_lastBlackMoveTo = { -1, -1 };
 		_whiteMoves.push_back(_board->GetFEN());
 		if (!_board->HasPiece(King, Black) &&
 			(!_board->HasPiece(MiddleTroop, Black) || !_board->HasPiece(Flag, White)) &&
@@ -411,6 +427,10 @@ void VBoard::FinishMove()
 	}
 	else
 	{
+		_lastWhiteMoveFrom = { -1, -1 };
+		_lastWhiteMoveTo = { -1, -1 };
+		_lastBlackMoveFrom = { _oldX, _oldY };
+		_lastBlackMoveTo = { x, y };
 		_blackMoves.push_back(_board->GetFEN());
 		if (!_board->HasPiece(King, White) &&
 			(!_board->HasPiece(MiddleTroop, White) || !_board->HasPiece(Flag, White)) &&
@@ -491,7 +511,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			engine->Move(_oldX, _board->GetHeight() - _oldY, x == 7 ? 6 : 2, _board->GetHeight() - y, ' ');
 		}
 		dynamic_cast<ChessBoard*>(_board)->WriteCastling(x == 7 ? "O-O" : "O-O-O");
-		FinishMove();
+		FinishMove(x, y);
 	}
 	// Null move
 	else if ((_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||
@@ -506,7 +526,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, ' ');
 			}
-			FinishMove();
+			FinishMove(x, y);
 		}
 	}
 	// Lion move
@@ -554,7 +574,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							}
 						}
 					}
-					FinishMove();
+					FinishMove(x, y);
 				}
 			}
 			else if (PossibleMove(x, y) && (abs(_oldX - x) == 0 && abs(_oldY - y) == 2 || abs(_oldX - x) == 2 && abs(_oldY - y) == 0 ||
@@ -566,7 +586,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
-					FinishMove();
+					FinishMove(x, y);
 				}
 			}
 			else if (PossibleMove(x, y) && (abs(_oldX - x) == 0 && abs(_oldY - y) == 2 || abs(_oldX - x) == 2 && abs(_oldY - y) == 0) &&
@@ -578,7 +598,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
-					FinishMove();
+					FinishMove(x, y);
 				}
 			}
 			else if (PossibleMove(x, y) && (abs(_oldX - x) == 1 && abs(_oldY - y) == 1) && _currentPiece->GetType() == FlyingHawk)
@@ -589,7 +609,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
-					FinishMove();
+					FinishMove(x, y);
 				}
 			}
 			else if (_gameVariant == KoShogi && (abs(_oldX - x) == 2 || abs(_oldY - y) == 2) && _currentPiece->GetType() == Lion)
@@ -635,7 +655,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						_board->Move(_oldX, index - 1, x, index);
 					}
 				}
-				FinishMove();
+				FinishMove(x, y);
 			}
 			else if (PossibleMove(x, y) && (abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
 				(_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk ||
@@ -659,7 +679,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
 					CheckPromotion(p, y);
-					FinishMove();
+					FinishMove(x, y);
 				}
 			}
 			else if (PossibleMove(x, y) && (abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
@@ -688,7 +708,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
 					CheckPromotion(p, y);
-					FinishMove();
+					FinishMove(x, y);
 				}
 			}
 			else if (PossibleMove(x, y) && (abs(_oldX - x) >= 3 || abs(_oldY - y) >= 3) &&
@@ -702,7 +722,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
 					CheckPromotion(p, y);
-					FinishMove();
+					FinishMove(x, y);
 				}
 			}
 			else if (PossibleMove(x, y) && (abs(_oldX - x) == 2 && _oldY - y == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
@@ -717,7 +737,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
 					CheckPromotion(p, y);
-					FinishMove();
+					FinishMove(x, y);
 				}
 			}
 			else if ((abs(_oldX - x) == 4 || abs(_oldY - y) == 4) && (_currentPiece->GetType() == KnightCaptain ||
@@ -826,7 +846,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
 					CheckPromotion(p, y);
-					FinishMove();
+					FinishMove(x, y);
 				}
 			}
 			else if (PossibleMove(x, y))
@@ -960,7 +980,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 								_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 						}
 						CheckPromotion(p, y);
-						FinishMove();
+						FinishMove(x, y);
 					}
 				}
 			}
@@ -983,7 +1003,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 									x, _board->GetHeight() - y);
 							}
 							CheckPromotion(p, y);
-							FinishMove();
+							FinishMove(x, y);
 						}
 					}
 					else
@@ -996,7 +1016,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 									_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 							}
 							CheckPromotion(p, y);
-							FinishMove();
+							FinishMove(x, y);
 						}
 					}
 				}
@@ -1012,7 +1032,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 									_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 							}
 							CheckPromotion(p, y);
-							FinishMove();
+							FinishMove(x, y);
 						}
 					}
 				}
@@ -1062,7 +1082,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						ksBoard->Shoot(_firstShoot.first, _firstShoot.second);
 					}
-					FinishMove();
+					FinishMove(x, y);
 				}
 			}
 			else if (_moves.empty() && PossibleShoot(x, y) &&
@@ -1072,7 +1092,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				ksBoard->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, _lionSecondMove.first, _lionSecondMove.second);
 				ksBoard->Shoot(_firstShoot.first, _firstShoot.second);
 				ksBoard->Shoot(x, y);
-				FinishMove();
+				FinishMove(x, y);
 			}
 			else if (x == _lionFirstMove.first && y == _lionFirstMove.second)
 			{
@@ -1082,7 +1102,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
-					FinishMove();
+					FinishMove(x, y);
 				}
 			}
 			else if (PossibleMove(x, y) && (_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == WingedHorse ||
@@ -1096,7 +1116,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 					}
 					CheckPromotion(p, y);
-					FinishMove();
+					FinishMove(x, y);
 				}
 			}
 		}
@@ -1113,7 +1133,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			else
 			{
-				FinishMove();
+				FinishMove(x, y);
 			}
 		}
 		else if (isShootingPiece && _preparedToShoot && PossibleShoot(x, y))
@@ -1131,7 +1151,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				{
 					ksBoard->Move(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, false);
 					ksBoard->Shoot(x, y);
-					FinishMove();
+					FinishMove(x, y);
 				}
 			}
 			else
@@ -1142,13 +1162,13 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					ksBoard->Shoot(_firstShoot.first, _firstShoot.second);
 				}
 				ksBoard->Shoot(x, y);
-				FinishMove();
+				FinishMove(x, y);
 			}
 		}
 		else if (x == _lionFirstMove.first && y == _lionFirstMove.second && _preparedToShoot)
 		{
 			_board->Move(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, false);
-			FinishMove();
+			FinishMove(x, y);
 		}
 		else if (_board->Move(_oldX, _oldY, x, y))
 		{
@@ -1166,7 +1186,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				EngineOutputHandler::AddMove(_board, _gameVariant, promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, p != nullptr ? 'x' : ' ');
 			}
-			FinishMove();
+			FinishMove(x, y);
 		}
 	}
 	else if (x == _oldX && y == _oldY && _lionMovedTwice && abs(_lionSecondMove.first - x) < 2 && abs(_lionSecondMove.second - y) < 2)
@@ -1180,7 +1200,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					_lionSecondMove.first, _board->GetHeight() - _lionSecondMove.second,
 					x, _board->GetHeight() - y);
 			}
-			FinishMove();
+			FinishMove(x, y);
 		}
 	}
 	else if (x == _oldX && y == _oldY && _lionMovedOnce && abs(_lionFirstMove.first - x) <= 2 && abs(_lionFirstMove.second - y) <= 2 &&
@@ -1194,7 +1214,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 			}
 			EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
-			FinishMove();
+			FinishMove(x, y);
 		}
 	}
 	else if (x == _oldX && y == _oldY && _lionMovedOnce && abs(_lionFirstMove.first - x) < 2 && abs(_lionFirstMove.second - y) < 2)
@@ -1206,7 +1226,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 			}
 			EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
-			FinishMove();
+			FinishMove(x, y);
 		}
 	}
 	else if (p != nullptr && p->GetColour() == _currentPlayer)
@@ -1457,6 +1477,10 @@ GameVariant VBoard::GetGameVariant() const
 
 void VBoard::SetGameVariant(GameVariant gameVariant)
 {
+	_lastWhiteMoveFrom = { -1, -1 };
+	_lastWhiteMoveTo = { -1, -1 };
+	_lastBlackMoveFrom = { -1, -1 };
+	_lastBlackMoveTo = { -1, -1 };
 	_whiteMoves.clear();
 	_blackMoves.clear();
 	if (_whiteEngine != nullptr)
@@ -2197,6 +2221,6 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		}
 		EngineOutputHandler::AddMove(_board, _gameVariant, newPiece, sc, '*', x, y, ' ', ' ');
 		dynamic_cast<ShogiVariantBoard*>(_board)->RemoveCapturedPiece(newPiece, _currentPlayer);
-		FinishMove();
+		FinishMove(x, y);
 	}
 }
