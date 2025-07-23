@@ -6635,6 +6635,42 @@
     <Image Include="images_xia\rpawn.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_eur2\BlackBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur2\BlackKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur2\BlackKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur2\BlackPawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur2\BlackQueen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur2\BlackRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur2\WhiteBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur2\WhiteKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur2\WhiteKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur2\WhitePawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur2\WhiteQueen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_eur2\WhiteRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc">

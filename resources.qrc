@@ -2136,4 +2136,18 @@
         <file>images_xia/rking.png</file>
         <file>images_xia/rpawn.png</file>
     </qresource>
+    <qresource prefix="/pieces_eur2">
+        <file>images_eur2/BlackBishop.png</file>
+        <file>images_eur2/BlackKing.png</file>
+        <file>images_eur2/BlackKnight.png</file>
+        <file>images_eur2/BlackPawn.png</file>
+        <file>images_eur2/BlackQueen.png</file>
+        <file>images_eur2/BlackRook.png</file>
+        <file>images_eur2/WhiteBishop.png</file>
+        <file>images_eur2/WhiteKing.png</file>
+        <file>images_eur2/WhiteKnight.png</file>
+        <file>images_eur2/WhitePawn.png</file>
+        <file>images_eur2/WhiteQueen.png</file>
+        <file>images_eur2/WhiteRook.png</file>
+    </qresource>
 </RCC>

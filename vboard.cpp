@@ -65,7 +65,8 @@ void VBoard::paintEvent(QPaintEvent *)
 	case Chess:
 	case Shatranj:
 		if (_pieceStyle == European) resourcePrefix = ":/pieces_eur/images/";
-		else resourcePrefix = ":/pieces_eur/images_eur/";
+		else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_eur/images_eur/";
+		else resourcePrefix = ":/pieces_eur2/images_eur2/";
 		break;
 	case Makruk:
 		resourcePrefix = ":/pieces_eur/images/";
@@ -392,9 +393,17 @@ void VBoard::paintEvent(QPaintEvent *)
 					{
 						painter.drawPixmap(i* w + w / 4, j* h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
 					}
-					else
+					else if (_pieceStyle == Mnemonic)
 					{
 						painter.drawPixmap(i* w + w / 8, j* h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+					}
+					else if (_gameVariant != Xiangqi)
+					{
+						painter.drawPixmap(i * w + w / 12, j * h + h / 12, pixmap.size().width(), pixmap.size().height(), pixmap);
+					}
+					else
+					{
+						painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
 					}
 					break;
 				}
