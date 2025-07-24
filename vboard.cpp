@@ -237,13 +237,13 @@ void VBoard::paintEvent(QPaintEvent *)
 			}
 			else if (_lastWhiteMoveFrom.first == i && _lastWhiteMoveFrom.second == j || _lastWhiteMoveTo.first == i && _lastWhiteMoveTo.second == j)
 			{
-				painter.setBrush(QColorConstants::Svg::beige);
+				painter.setBrush(QColor(245, 245, 220, 127));
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
 			else if (_lastBlackMoveFrom.first == i && _lastBlackMoveFrom.second == j || _lastBlackMoveTo.first == i && _lastBlackMoveTo.second == j)
 			{
-				painter.setBrush(QColorConstants::Svg::bisque);
+				painter.setBrush(QColor(255, 228, 196, 127));
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
@@ -1601,6 +1601,10 @@ PieceColour VBoard::GetCurrentPlayer() const
 
 void VBoard::SetCurrentPlayer(PieceColour currentPlayer)
 {
+	_lastWhiteMoveFrom = { -1, -1 };
+	_lastWhiteMoveTo = { -1, -1 };
+	_lastBlackMoveFrom = { -1, -1 };
+	_lastBlackMoveTo = { -1, -1 };
 	_moves.clear();
 	_shoots.clear();
 	_currentPlayer = currentPlayer;
@@ -1706,6 +1710,56 @@ void VBoard::SetEditorMode(bool editorMode)
 		}
 	}
 	_editorMode = editorMode;
+}
+
+bool VBoard::GetHighlightMoves() const
+{
+	return _highlightMoves;
+}
+
+void VBoard::SetHighlightMoves(bool highlightMoves)
+{
+	_highlightMoves = highlightMoves;
+}
+
+bool VBoard::GetHighlightShoots() const
+{
+	return _highlightShoots;
+}
+
+void VBoard::SetHighlightShoots(bool highlightShoots)
+{
+	_highlightShoots = highlightShoots;
+}
+
+bool VBoard::GetHighlightAttackers() const
+{
+	return _highlightAttackers;
+}
+
+void VBoard::SetHighlightAttackers(bool highlightAttackers)
+{
+	_highlightAttackers = highlightAttackers;
+}
+
+bool VBoard::GetHighlightDefenders() const
+{
+	return _highlightDefenders;
+}
+
+void VBoard::SetHighlightDefenders(bool highlightDefenders)
+{
+	_highlightDefenders = highlightDefenders;
+}
+
+bool VBoard::GetHighlightLastMoves() const
+{
+	return _highlightLastMoves;
+}
+
+void VBoard::SetHighlightLastMoves(bool highlightLastMoves)
+{
+	_highlightLastMoves = highlightLastMoves;
 }
 
 bool VBoard::CheckRepetition(int oldX, int oldY, int newX, int newY)

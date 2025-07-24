@@ -40,6 +40,16 @@ public:
 	void SetBlackEngine(std::shared_ptr<Engine> engine);
 	bool GetEditorMode() const;
 	void SetEditorMode(bool editorMode);
+	bool GetHighlightMoves() const;
+	void SetHighlightMoves(bool highlightMoves);
+	bool GetHighlightShoots() const;
+	void SetHighlightShoots(bool highlightShoots);
+	bool GetHighlightAttackers() const;
+	void SetHighlightAttackers(bool highlightAttackers);
+	bool GetHighlightDefenders() const;
+	void SetHighlightDefenders(bool highlightDefenders);
+	bool GetHighlightLastMoves() const;
+	void SetHighlightLastMoves(bool highlightLastMoves);
 
 protected:
 	void contextMenuEvent(QContextMenuEvent* event) override;
@@ -104,6 +114,11 @@ private:
 	std::pair<int, int> _lastWhiteMoveTo = { -1, -1 };
 	std::pair<int, int> _lastBlackMoveFrom = { -1, -1 };
 	std::pair<int, int> _lastBlackMoveTo = { -1, -1 };
+	bool _highlightMoves = true;
+	bool _highlightShoots = true;
+	bool _highlightAttackers = true;
+	bool _highlightDefenders = true;
+	bool _highlightLastMoves = true;
 
 signals:
 
