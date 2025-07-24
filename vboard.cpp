@@ -27,7 +27,11 @@ void VBoard::paintEvent(QPaintEvent *)
 	case ShoShogi:
 	case MiniShogi:
 	case JudkinShogi:
-		resourcePrefix = _pieceStyle == Asian || _pieceStyle == Asian3 ? ":/pieces_sho/images_sho/" : isAsianStyle ? ":/pieces_maka2/images_maka2/" : ":/pieces_eur/images/";
+		if (_pieceStyle == European) resourcePrefix = ":/pieces_eur/images/";
+		else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_sho2/images_sho2/";
+		else if (_pieceStyle == Asian) resourcePrefix = ":/pieces_sho/images_sho/";
+		else if (_pieceStyle == Asian2) resourcePrefix = ":/pieces_sho3/images_sho3/";
+		else resourcePrefix = ":/pieces_maka2/images_maka2/";
 		break;
 	case ChuShogi:
 		if (_pieceStyle == Asian) resourcePrefix = ":/pieces_tnk/images_tnk/";
@@ -297,6 +301,10 @@ void VBoard::paintEvent(QPaintEvent *)
 				case ShoShogi:
 				case MiniShogi:
 				case JudkinShogi:
+					if (_pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
+					else if (_pieceStyle == Asian3 || _pieceStyle == Asian4) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
+					else imageFileName = p->GetImageFileName();
+					break;
 				case DaiShogi:
 					if (_pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 					else if (_pieceStyle == Asian2 || _pieceStyle == Asian4) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();

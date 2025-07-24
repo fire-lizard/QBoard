@@ -2150,4 +2150,68 @@
         <file>images_eur2/WhiteQueen.png</file>
         <file>images_eur2/WhiteRook.png</file>
     </qresource>
+    <qresource prefix="/pieces_sho2">
+        <file>images_sho2/BlackAdvisor.png</file>
+        <file>images_sho2/BlackBishop.png</file>
+        <file>images_sho2/BlackCrownedBishop.png</file>
+        <file>images_sho2/BlackCrownedRook.png</file>
+        <file>images_sho2/BlackElephant.png</file>
+        <file>images_sho2/BlackGold.png</file>
+        <file>images_sho2/BlackGoldKnight.png</file>
+        <file>images_sho2/BlackGoldLance.png</file>
+        <file>images_sho2/BlackGoldPawn.png</file>
+        <file>images_sho2/BlackGoldSilver.png</file>
+        <file>images_sho2/BlackKing.png</file>
+        <file>images_sho2/BlackKnight.png</file>
+        <file>images_sho2/BlackLance.png</file>
+        <file>images_sho2/BlackPawn.png</file>
+        <file>images_sho2/BlackRook.png</file>
+        <file>images_sho2/WhiteAdvisor.png</file>
+        <file>images_sho2/WhiteBishop.png</file>
+        <file>images_sho2/WhiteCrownedBishop.png</file>
+        <file>images_sho2/WhiteCrownedRook.png</file>
+        <file>images_sho2/WhiteElephant.png</file>
+        <file>images_sho2/WhiteGold.png</file>
+        <file>images_sho2/WhiteGoldKnight.png</file>
+        <file>images_sho2/WhiteGoldLance.png</file>
+        <file>images_sho2/WhiteGoldPawn.png</file>
+        <file>images_sho2/WhiteGoldSilver.png</file>
+        <file>images_sho2/WhiteKing.png</file>
+        <file>images_sho2/WhiteKnight.png</file>
+        <file>images_sho2/WhiteLance.png</file>
+        <file>images_sho2/WhitePawn.png</file>
+        <file>images_sho2/WhiteRook.png</file>
+    </qresource>
+    <qresource prefix="/pieces_sho3">
+        <file>images_sho3/BlackAdvisor.png</file>
+        <file>images_sho3/BlackBishop.png</file>
+        <file>images_sho3/BlackCrownedBishop.png</file>
+        <file>images_sho3/BlackCrownedRook.png</file>
+        <file>images_sho3/BlackElephant.png</file>
+        <file>images_sho3/BlackGold.png</file>
+        <file>images_sho3/BlackGoldKnight.png</file>
+        <file>images_sho3/BlackGoldLance.png</file>
+        <file>images_sho3/BlackGoldPawn.png</file>
+        <file>images_sho3/BlackGoldSilver.png</file>
+        <file>images_sho3/BlackKing.png</file>
+        <file>images_sho3/BlackKnight.png</file>
+        <file>images_sho3/BlackLance.png</file>
+        <file>images_sho3/BlackPawn.png</file>
+        <file>images_sho3/BlackRook.png</file>
+        <file>images_sho3/WhiteAdvisor.png</file>
+        <file>images_sho3/WhiteBishop.png</file>
+        <file>images_sho3/WhiteCrownedBishop.png</file>
+        <file>images_sho3/WhiteCrownedRook.png</file>
+        <file>images_sho3/WhiteElephant.png</file>
+        <file>images_sho3/WhiteGold.png</file>
+        <file>images_sho3/WhiteGoldKnight.png</file>
+        <file>images_sho3/WhiteGoldLance.png</file>
+        <file>images_sho3/WhiteGoldPawn.png</file>
+        <file>images_sho3/WhiteGoldSilver.png</file>
+        <file>images_sho3/WhiteKing.png</file>
+        <file>images_sho3/WhiteKnight.png</file>
+        <file>images_sho3/WhiteLance.png</file>
+        <file>images_sho3/WhitePawn.png</file>
+        <file>images_sho3/WhiteRook.png</file>
+    </qresource>
 </RCC>

@@ -6671,6 +6671,186 @@
     <Image Include="images_eur2\WhiteRook.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="images_sho2\BlackAdvisor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackCrownedBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackCrownedRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackGold.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackGoldKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackGoldLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackGoldPawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackGoldSilver.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackPawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\BlackRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteAdvisor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteCrownedBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteCrownedRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteGold.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteGoldKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteGoldLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteGoldPawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteGoldSilver.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhitePawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho2\WhiteRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackAdvisor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackCrownedBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackCrownedRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackGold.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackGoldKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackGoldLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackGoldPawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackGoldSilver.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackPawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\BlackRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteAdvisor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteCrownedBishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteCrownedRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteElephant.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteGold.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteGoldKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteGoldLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteGoldPawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteGoldSilver.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteKing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteKnight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteLance.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhitePawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images_sho3\WhiteRook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc">
