@@ -225,6 +225,7 @@
     <ClCompile Include="MakrukBoard.cpp" />
     <ClCompile Include="MakrukPiece.cpp" />
     <ClCompile Include="MiniShogiBoard.cpp" />
+    <ClCompile Include="networkmanager.cpp" />
     <ClCompile Include="newgamedialog.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="promotiondialog.cpp" />
@@ -277,6 +278,7 @@
     <ClInclude Include="MakrukPiece.h" />
     <ClInclude Include="MiniShogiBoard.h" />
     <QtMoc Include="newgamedialog.h" />
+    <QtMoc Include="networkmanager.h" />
     <ClInclude Include="Piece.h" />
     <QtMoc Include="promotiondialog.h" />
     <ClInclude Include="QianhongEngine.h" />
@@ -322,6 +324,7 @@
     <QtUic Include="addenginedialog.ui" />
     <QtUic Include="enginemanager.ui" />
     <QtUic Include="mainwindow.ui" />
+    <QtUic Include="networkmanager.ui" />
     <QtUic Include="newgamedialog.ui" />
     <QtUic Include="promotiondialog.ui" />
     <QtUic Include="settingsdialog.ui" />

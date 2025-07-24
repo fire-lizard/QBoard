@@ -191,6 +191,9 @@
     <ClCompile Include="DaiDaiShogiBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="networkmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -357,6 +360,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="promotiondialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="networkmanager.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -799,6 +805,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="promotiondialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="networkmanager.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

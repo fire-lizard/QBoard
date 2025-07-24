@@ -61,6 +61,7 @@ SOURCES += main.cpp\
     KoShogiPiece.cpp \
     EngineOutputHandler.cpp \
     enginemanager.cpp \
+    networkmanager.cpp \
     comboboxitemdelegate.cpp \
     newgamedialog.cpp \
     addenginedialog.cpp
@@ -110,6 +111,7 @@ HEADERS  += mainwindow.h \
     KoShogiPiece.h \
     EngineOutputHandler.h \
     enginemanager.h \
+    networkmanager.h \
     comboboxitemdelegate.h \
     newgamedialog.h \
     addenginedialog.h
@@ -118,6 +120,7 @@ FORMS    += mainwindow.ui \
     promotiondialog.ui \
     settingsdialog.ui \
     enginemanager.ui \
+    networkmanager.ui \
     newgamedialog.ui \
     addenginedialog.ui
 
