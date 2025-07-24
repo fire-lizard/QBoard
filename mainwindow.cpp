@@ -603,6 +603,15 @@ void MainWindow::on_actionEngine_Manager_triggered()
 	}
 }
 
+void MainWindow::on_actionNetwork_Manager_triggered()
+{
+	NetworkManager* networkManager = new NetworkManager(this);
+	networkManager->exec();
+	if (networkManager->result() == QDialog::Accepted)
+	{
+	}
+}
+
 void MainWindow::StartNewGame(GameVariant newGameVariant) const
 {
 	StopEngine(_whiteEngine);

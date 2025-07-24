@@ -15,6 +15,7 @@
         <file>toolbar/Remove.png</file>
         <file>toolbar/Clear.png</file>
         <file>toolbar/Place.png</file>
+        <file>toolbar/Network.png</file>
     </qresource>
     <qresource prefix="/pieces_eur">
         <file>images/BlackAdvisor.png</file>

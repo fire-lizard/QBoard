@@ -2494,6 +2494,7 @@
     <Image Include="images_xia\rking.png" />
     <Image Include="images_xia\rpawn.png" />
     <Image Include="toolbar\Clear.png" />
+    <Image Include="toolbar\Network.png" />
     <Image Include="toolbar\Place.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

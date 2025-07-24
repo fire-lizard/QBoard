@@ -16,6 +16,7 @@
 #include "UsiEngine.h"
 #include "QianhongEngine.h"
 #include "enginemanager.h"
+#include "networkmanager.h"
 #include "newgamedialog.h"
 #include "IniFile.h"
 
@@ -51,6 +52,8 @@ public:
     void on_actionStop_game_triggered() const;
 
     void on_actionEngine_Manager_triggered();
+
+	void on_actionNetwork_Manager_triggered();
 
 private:
 	void closeEvent(QCloseEvent *) override;

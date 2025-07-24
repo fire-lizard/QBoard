@@ -82,6 +82,7 @@
    <addaction name="separator"/>
    <addaction name="actionSettings"/>
    <addaction name="actionEngine_Manager"/>
+   <addaction name="actionNetwork_Manager"/>
    <addaction name="separator"/>
    <addaction name="actionAbout"/>
    <addaction name="actionExit"/>
@@ -181,6 +182,18 @@
    </property>
    <property name="toolTip">
     <string>Engine Manager</string>
+   </property>
+  </action>
+  <action name="actionNetwork_Manager">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/toolbar_icons/toolbar/Network.png</normaloff>:/toolbar_icons/toolbar/Network.png</iconset>
+   </property>
+   <property name="text">
+    <string>Network Manager</string>
+   </property>
+   <property name="toolTip">
+    <string>Network Manager</string>
    </property>
   </action>
  </widget>

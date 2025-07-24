@@ -6860,6 +6860,9 @@
     <Image Include="images_sho3\WhiteRook.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="toolbar\Network.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc">
