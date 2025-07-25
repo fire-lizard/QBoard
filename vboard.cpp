@@ -96,7 +96,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
-			else if (PossibleMove(i, j))
+			else if (PossibleMove(i, j) && _highlightMoves)
 			{
 				if (_currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->GetType()) != std::end(lionPieces))
 				{
@@ -221,31 +221,31 @@ void VBoard::paintEvent(QPaintEvent *)
 					painter.setBrush(Qt::NoBrush);
 				}
 			}
-			else if (std::any_of(_shoots.begin(), _shoots.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}))
+			else if (std::any_of(_shoots.begin(), _shoots.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}) && _highlightShoots)
 			{
 				painter.setBrush(QColorConstants::Svg::violet);
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
-			else if (std::any_of(_attackers.begin(), _attackers.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}))
+			else if (std::any_of(_attackers.begin(), _attackers.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}) && _highlightAttackers)
 			{
 				painter.setBrush(QColorConstants::Svg::salmon);
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
-			else if (std::any_of(_defenders.begin(), _defenders.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}))
+			else if (std::any_of(_defenders.begin(), _defenders.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}) && _highlightDefenders)
 			{
 				painter.setBrush(QColorConstants::Svg::aquamarine);
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
-			else if (_lastWhiteMoveFrom.first == i && _lastWhiteMoveFrom.second == j || _lastWhiteMoveTo.first == i && _lastWhiteMoveTo.second == j)
+			else if ((_lastWhiteMoveFrom.first == i && _lastWhiteMoveFrom.second == j || _lastWhiteMoveTo.first == i && _lastWhiteMoveTo.second == j) && _highlightLastMoves)
 			{
 				painter.setBrush(QColor(245, 245, 220, 127));
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
-			else if (_lastBlackMoveFrom.first == i && _lastBlackMoveFrom.second == j || _lastBlackMoveTo.first == i && _lastBlackMoveTo.second == j)
+			else if ((_lastBlackMoveFrom.first == i && _lastBlackMoveFrom.second == j || _lastBlackMoveTo.first == i && _lastBlackMoveTo.second == j) && _highlightLastMoves)
 			{
 				painter.setBrush(QColor(255, 228, 196, 127));
 				painter.drawRect(rect);

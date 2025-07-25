@@ -34,3 +34,28 @@ QComboBox* SettingsDialog::GetEngineOutput() const
 {
 	return ui->engineOutputComboBox;
 }
+
+QCheckBox* SettingsDialog::GetHighlightMoves() const
+{
+	return ui->highlightMovesCheckBox;
+}
+
+QCheckBox* SettingsDialog::GetHighlightShoots() const
+{
+	return ui->highlightShootsCheckBox;
+}
+
+QCheckBox* SettingsDialog::GetHighlightAttackers() const
+{
+	return ui->highlightAttackersCheckBox;
+}
+
+QCheckBox* SettingsDialog::GetHighlightDefenders() const
+{
+	return ui->highlightDefendersCheckBox;
+}
+
+QCheckBox* SettingsDialog::GetHighlightLastMoves() const
+{
+	return ui->highlightLastMovesCheckBox;
+}

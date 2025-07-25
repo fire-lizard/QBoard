@@ -1,4 +1,7 @@
 ﻿#include "mainwindow.h"
+
+#include <QCheckBox>
+
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -51,6 +54,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		}
 		this->ui->vboard->SetPieceStyle(pieceStyle);
 		this->ui->vboard->SetEngineOutput(settings[3] == "Verbose" ? Verbose : Concise);
+		this->ui->vboard->SetHighlightMoves(QVariant(settings[4]).toBool());
+		this->ui->vboard->SetHighlightShoots(QVariant(settings[5]).toBool());
+		this->ui->vboard->SetHighlightAttackers(QVariant(settings[6]).toBool());
+		this->ui->vboard->SetHighlightDefenders(QVariant(settings[7]).toBool());
+		this->ui->vboard->SetHighlightLastMoves(QVariant(settings[8]).toBool());
 		this->ui->vboard->GetBoard()->Initialize();
 		this->ui->statusBar->showMessage(settings[1] == "Xiangqi" ? "Red move" : "White move");
 		this->ui->vboard->repaint();
@@ -69,6 +77,11 @@ void MainWindow::on_actionSettings_triggered()
 	settingsDialog->GetGamePieces()->setCurrentIndex(this->ui->vboard->GetPieceStyle());
 	settingsDialog->GetEngineOutput()->setCurrentIndex(this->ui->vboard->GetEngineOutput());
 	settingsDialog->GetStyles()->setCurrentText(_currentStyle);
+	settingsDialog->GetHighlightMoves()->setChecked(this->ui->vboard->GetHighlightMoves());
+	settingsDialog->GetHighlightShoots()->setChecked(this->ui->vboard->GetHighlightShoots());
+	settingsDialog->GetHighlightAttackers()->setChecked(this->ui->vboard->GetHighlightAttackers());
+	settingsDialog->GetHighlightDefenders()->setChecked(this->ui->vboard->GetHighlightDefenders());
+	settingsDialog->GetHighlightLastMoves()->setChecked(this->ui->vboard->GetHighlightLastMoves());
 	settingsDialog->exec();
 	if (settingsDialog->result() == QDialog::Accepted)
 	{
@@ -77,6 +90,11 @@ void MainWindow::on_actionSettings_triggered()
 		const GameVariant newGameVariant = static_cast<GameVariant>(settingsDialog->GetGameVariants()->currentIndex());
 		const PieceStyle pieceStyle = static_cast<PieceStyle>(settingsDialog->GetGamePieces()->currentIndex());
 		const EngineOutput engineOutput = static_cast<EngineOutput>(settingsDialog->GetEngineOutput()->currentIndex());
+		const bool highlightMoves = settingsDialog->GetHighlightMoves()->checkState() == Qt::Checked;
+		const bool highlightShoots = settingsDialog->GetHighlightShoots()->checkState() == Qt::Checked;
+		const bool highlightAttackers = settingsDialog->GetHighlightAttackers()->checkState() == Qt::Checked;
+		const bool highlightDefenders = settingsDialog->GetHighlightDefenders()->checkState() == Qt::Checked;
+		const bool highlightLastMoves = settingsDialog->GetHighlightLastMoves()->checkState() == Qt::Checked;
 		if (pieceStyle != this->ui->vboard->GetPieceStyle())
 		{
 			this->ui->vboard->SetPieceStyle(pieceStyle);
@@ -90,10 +108,15 @@ void MainWindow::on_actionSettings_triggered()
 		{
 			StartNewGame(newGameVariant);
 		}
-		IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, _currentStyle, 
-			settingsDialog->GetGameVariants()->currentText(), 
-			settingsDialog->GetGamePieces()->currentText(),
-			settingsDialog->GetEngineOutput()->currentText());
+		this->ui->vboard->SetHighlightMoves(highlightMoves);
+		this->ui->vboard->SetHighlightShoots(highlightShoots);
+		this->ui->vboard->SetHighlightAttackers(highlightAttackers);
+		this->ui->vboard->SetHighlightDefenders(highlightDefenders);
+		this->ui->vboard->SetHighlightLastMoves(highlightLastMoves);
+		IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, _currentStyle,
+			settingsDialog->GetGameVariants()->currentText(), settingsDialog->GetGamePieces()->currentText(),
+			settingsDialog->GetEngineOutput()->currentText(), highlightMoves, highlightShoots,
+			highlightAttackers, highlightDefenders, highlightLastMoves);
 	}
 }
 

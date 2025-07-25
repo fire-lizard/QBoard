@@ -19,6 +19,11 @@ public:
 	QComboBox* GetGameVariants() const;
 	QComboBox* GetGamePieces() const;
 	QComboBox* GetEngineOutput() const;
+	QCheckBox* GetHighlightMoves() const;
+	QCheckBox* GetHighlightShoots() const;
+	QCheckBox* GetHighlightAttackers() const;
+	QCheckBox* GetHighlightDefenders() const;
+	QCheckBox* GetHighlightLastMoves() const;
 
 	private slots:
 
