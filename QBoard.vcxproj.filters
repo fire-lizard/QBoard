@@ -194,6 +194,9 @@
     <ClCompile Include="networkmanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Communications.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -808,6 +811,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="networkmanager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Communications.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
