@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -60,6 +60,7 @@ SOURCES += main.cpp\
     KoShogiBoard.cpp \
     KoShogiPiece.cpp \
     EngineOutputHandler.cpp \
+    Communications.cpp \
     enginemanager.cpp \
     networkmanager.cpp \
     comboboxitemdelegate.cpp \
@@ -110,6 +111,7 @@ HEADERS  += mainwindow.h \
     KoShogiBoard.h \
     KoShogiPiece.h \
     EngineOutputHandler.h \
+    Communications.h \
     enginemanager.h \
     networkmanager.h \
     comboboxitemdelegate.h \

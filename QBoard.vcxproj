@@ -41,11 +41,11 @@
   <Import Project="$(QtMsBuild)\qt_defaults.props" Condition="Exists('$(QtMsBuild)\qt_defaults.props')" />
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>6.7.2_msvc2019_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;network</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>6.7.2_msvc2019_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;network</QtModules>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') OR !Exists('$(QtMsBuild)\Qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -208,6 +208,7 @@
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="ChuShogiBoard.cpp" />
     <ClCompile Include="ChuShogiPiece.cpp" />
+    <ClCompile Include="Communications.cpp" />
     <ClCompile Include="DaiDaiShogiBoard.cpp" />
     <ClCompile Include="DaiDaiShogiPiece.cpp" />
     <ClCompile Include="DaiShogiBoard.cpp" />
@@ -260,6 +261,7 @@
     <ClInclude Include="ChuShogiBoard.h" />
     <ClInclude Include="ChuShogiPiece.h" />
     <ClInclude Include="Common.h" />
+    <QtMoc Include="Communications.h" />
     <ClInclude Include="DaiDaiShogiBoard.h" />
     <ClInclude Include="DaiDaiShogiPiece.h" />
     <ClInclude Include="DaiShogiBoard.h" />
