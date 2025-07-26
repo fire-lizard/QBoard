@@ -1,7 +1,5 @@
 #include "Board.h"
 
-#include <utility>
-
 Board::~Board()
 {
 	Clear();

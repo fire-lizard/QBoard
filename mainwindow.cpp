@@ -1,13 +1,12 @@
 ﻿#include "mainwindow.h"
 
-#include <QCheckBox>
-
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
 
+	_comm = std::make_shared<Communications>();
 	_userName = qgetenv("USER");
 	if (_userName.isEmpty())
 		_userName = qgetenv("USERNAME");
@@ -171,7 +170,25 @@ void MainWindow::on_actionClear_triggered() const
 
 void MainWindow::on_actionNew_game_triggered()
 {
-    NewGameDialog* newGameDialog = new NewGameDialog(this);
+	if (_comm)
+	{
+		if (_comm->is_connected_remotely())
+		{
+			QMessageBox mb(this);
+
+			mb.setIcon(QMessageBox::Question);
+			mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+			mb.setText(tr("Are you sure that you wish to initiate a new game? "
+				"Your board and your opponent's board will be reset."));
+			mb.setWindowModality(Qt::ApplicationModal);
+			mb.setWindowTitle(tr("QBoard: Confirmation"));
+
+			if (mb.exec() != QMessageBox::Yes)
+				return;
+		}
+	}
+
+	NewGameDialog* newGameDialog = new NewGameDialog(this);
     newGameDialog->GetWhitePlayer()->addItem(_userName);
     newGameDialog->GetBlackPlayer()->addItem(_userName);
 	if (this->ui->vboard->GetGameVariant() == Xiangqi)
@@ -598,12 +615,38 @@ void MainWindow::on_actionSave_triggered()
 
 void MainWindow::on_actionStop_game_triggered() const
 {
+	if (_comm && _comm->is_connected_remotely())
+	{
+		QMessageBox mb(nullptr);
+
+		mb.setIcon(QMessageBox::Question);
+		mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+		mb.setText(tr("A game is in progress. Are you sure that you wish to quit?"));
+		mb.setWindowModality(Qt::ApplicationModal);
+		mb.setWindowTitle(tr("QBoard: Confirmation"));
+
+		if (mb.exec() != QMessageBox::Yes)
+			return;
+	}
 	StopEngine(_whiteEngine);
 	StopEngine(_blackEngine);
 }
 
 void MainWindow::on_actionExit_triggered() const
 {
+	if (_comm && _comm->is_connected_remotely())
+	{
+		QMessageBox mb(nullptr);
+
+		mb.setIcon(QMessageBox::Question);
+		mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+		mb.setText(tr("A game is in progress. Are you sure that you wish to quit?"));
+		mb.setWindowModality(Qt::ApplicationModal);
+		mb.setWindowTitle(tr("QBoard: Confirmation"));
+
+		if (mb.exec() != QMessageBox::Yes)
+			return;
+	}
 	StopEngine(_whiteEngine);
 	StopEngine(_blackEngine);
 	QApplication::quit();
@@ -611,6 +654,19 @@ void MainWindow::on_actionExit_triggered() const
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	if (_comm && _comm->is_connected_remotely())
+	{
+		QMessageBox mb(nullptr);
+
+		mb.setIcon(QMessageBox::Question);
+		mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+		mb.setText(tr("A game is in progress. Are you sure that you wish to quit?"));
+		mb.setWindowModality(Qt::ApplicationModal);
+		mb.setWindowTitle(tr("QBoard: Confirmation"));
+
+		if (mb.exec() != QMessageBox::Yes)
+			return;
+	}
 	StopEngine(_whiteEngine);
 	StopEngine(_blackEngine);
 }
@@ -629,6 +685,7 @@ void MainWindow::on_actionEngine_Manager_triggered()
 void MainWindow::on_actionNetwork_Manager_triggered()
 {
 	NetworkManager* networkManager = new NetworkManager(this);
+	networkManager->SetCommunications(_comm);
 	networkManager->exec();
 	if (networkManager->result() == QDialog::Accepted)
 	{

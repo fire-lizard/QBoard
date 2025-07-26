@@ -1,7 +1,5 @@
 #include "ChessBoard.h"
 
-#include <utility>
-
 ChessBoard::ChessBoard()
 {
 	_width = 8;

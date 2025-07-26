@@ -4,21 +4,18 @@
 NetworkManager::NetworkManager(QWidget* parent) : QDialog(parent), ui(new Ui::NetworkManager)
 {
 	ui->setupUi(this);
-	comm = nullptr;
-	ui->local_host->setText
-	(Communications::
-		preferred_host_address(QAbstractSocket::IPv4Protocol).toString());
+	ui->local_host->setText(Communications::preferred_host_address(QAbstractSocket::IPv4Protocol).toString());
 	ui->local_scope_id->setEnabled(false);
 	ui->remote_host->setText(QHostAddress(QHostAddress::LocalHost).toString());
 	ui->remote_scope_id->setEnabled(false);
 
-	if (comm)
+	if (_comm)
 	{
-		connect(comm,
+		connect(_comm.get(),
 			SIGNAL(connected_to_client()),
 			this,
 			SLOT(slot_connected_to_client()));
-		connect(comm,
+		connect(_comm.get(),
 			SIGNAL(disconnected_from_client()),
 			this,
 			SLOT(slot_disconnected_from_client()));
@@ -68,6 +65,11 @@ NetworkManager::~NetworkManager()
 	delete ui;
 }
 
+void NetworkManager::SetCommunications(std::shared_ptr<Communications> _communications)
+{
+	_comm = _communications;
+}
+
 QHostAddress NetworkManager::get_listening_address() const
 {
 	QHostAddress address;
@@ -115,16 +117,14 @@ QSpinBox* NetworkManager::get_remote_port_field() const
 
 void NetworkManager::reset() const
 {
-	comm ? comm->disconnect_remotely(), comm->stop_listening() : (void)0;
+	_comm ? _comm->disconnect_remotely(), _comm->stop_listening() : (void)0;
 	ui->allowed_host->clear();
 	ui->color->setCurrentIndex(0);
 	ui->connect->setText(tr("&Connect"));
 	ui->listen->setText(tr("&Listen"));
 	ui->local->setChecked(true);
 	ui->local_host->setReadOnly(false);
-	ui->local_host->setText
-	(Communications::
-		preferred_host_address(QAbstractSocket::IPv4Protocol).toString());
+	ui->local_host->setText(Communications::preferred_host_address(QAbstractSocket::IPv4Protocol).toString());
 	ui->local_ipv4->setChecked(true);
 	ui->local_ipv4->setEnabled(true);
 	ui->local_ipv6->setEnabled(true);
@@ -147,12 +147,12 @@ void NetworkManager::reset() const
 
 void NetworkManager::slot_connect() const
 {
-	if (comm)
+	if (_comm)
 	{
-		if (comm->is_connected_remotely())
-			comm->disconnect_remotely();
+		if (_comm->is_connected_remotely())
+			_comm->disconnect_remotely();
 		else
-			comm->connect_remotely();
+			_comm->connect_remotely();
 	}
 }
 
@@ -168,8 +168,8 @@ void NetworkManager::slot_connected_to_client() const
 
 void NetworkManager::slot_disconnect() const
 {
-	if (comm)
-		comm->disconnect_remotely();
+	if (_comm)
+		_comm->disconnect_remotely();
 }
 
 void NetworkManager::slot_disconnected_from_client() const
@@ -186,14 +186,14 @@ void NetworkManager::slot_listen() const
 {
 	auto state = false;
 
-	if (comm && ui->listen == sender())
+	if (_comm && ui->listen == sender())
 	{
-		if (comm->is_listening())
-			comm->stop_listening();
+		if (_comm->is_listening())
+			_comm->stop_listening();
 		else
-			comm->set_listen();
+			_comm->set_listen();
 
-		state = comm->is_listening();
+		state = _comm->is_listening();
 	}
 
 	ui->local_host->setReadOnly(state);
@@ -214,8 +214,8 @@ void NetworkManager::slot_local(bool state) const
 {
 	if (state)
 	{
-		if (comm)
-			comm->disconnect_remotely();
+		if (_comm)
+			_comm->disconnect_remotely();
 
 		slot_disconnected_from_client();
 		ui->local_gb->setEnabled(true);
@@ -236,9 +236,7 @@ void NetworkManager::slot_protocol_changed() const
 {
 	if (sender() == ui->local_ipv4)
 	{
-		const auto preferred_host_address
-		(Communications::
-			preferred_host_address(QAbstractSocket::IPv4Protocol));
+		const auto preferred_host_address(Communications::preferred_host_address(QAbstractSocket::IPv4Protocol));
 
 		ui->allowed_host->clear();
 		ui->local_host->setText(preferred_host_address.toString());
@@ -247,9 +245,7 @@ void NetworkManager::slot_protocol_changed() const
 	}
 	else if (sender() == ui->local_ipv6)
 	{
-		auto const preferred_host_address
-		(Communications::
-			preferred_host_address(QAbstractSocket::IPv6Protocol));
+		auto const preferred_host_address(Communications::preferred_host_address(QAbstractSocket::IPv6Protocol));
 
 		ui->allowed_host->clear();
 		ui->local_host->setText(preferred_host_address.toString());
@@ -277,10 +273,10 @@ void NetworkManager::slot_remote(bool state) const
 {
 	if (state)
 	{
-		if (comm)
+		if (_comm)
 		{
-			comm->disconnect_remotely();
-			comm->stop_listening();
+			_comm->disconnect_remotely();
+			_comm->stop_listening();
 		}
 
 		slot_disconnected_from_client();

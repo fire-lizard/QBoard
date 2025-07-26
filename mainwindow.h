@@ -1,5 +1,6 @@
 #pragma once
 #include <QMainWindow>
+#include <QCheckBox>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QXmlStreamWriter>
@@ -18,6 +19,7 @@
 #include "enginemanager.h"
 #include "networkmanager.h"
 #include "newgamedialog.h"
+#include "Communications.h"
 #include "IniFile.h"
 
 namespace Ui {
@@ -69,6 +71,7 @@ private:
 	static void createXmlFromTable(const QString& fileName, const QTableWidget* engineTable);
 
 	Ui::MainWindow *ui;
+	std::shared_ptr<Communications> _comm;
 	QString _currentStyle = "";
 	int _engineMemorySize = 80;
 	std::shared_ptr<Engine> _whiteEngine = nullptr;
