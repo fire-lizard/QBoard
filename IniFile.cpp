@@ -28,7 +28,7 @@ QStringList IniFile::readFromIniFile(const QString& filePath) {
 
     // Read values from the "General" group
     settings.beginGroup("General");
-    const QString styleName = settings.value("StyleName", "Fusion").toString();
+    const QString styleName = settings.value("StyleName", "").toString();
     const QString gameVariant = settings.value("GameVariant", "Chess").toString();
     const QString pieceStyle = settings.value("PieceStyle", "European").toString();
     const QString engineOutput = settings.value("EngineOutput", "Concise").toString();

@@ -37,6 +37,7 @@ public:
 	void SetMainWindow(QMainWindow *window);
 	void SetWhiteEngine(std::shared_ptr<Engine> engine);
 	void SetBlackEngine(std::shared_ptr<Engine> engine);
+	void SetCommunications(Communications* communications);
 	QStatusBar* GetStatusBar() const;
 	void SetStatusBar(QStatusBar* statusBar);
 	bool GetEditorMode() const;
@@ -120,6 +121,7 @@ private:
 	bool _highlightAttackers = true;
 	bool _highlightDefenders = true;
 	bool _highlightLastMoves = true;
+	Communications* _comm = nullptr;
 
 signals:
 

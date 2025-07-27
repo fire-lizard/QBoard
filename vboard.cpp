@@ -456,6 +456,10 @@ void VBoard::FinishMove(int x, int y)
 			QMessageBox::information(this, "Game over", "Black wins by eliminating White King");
 		}
 	}
+	if (_comm && _comm->is_connected_remotely())
+	{
+		_comm->send_move(_board->GetFEN());
+	}
 	_currentPlayer = _currentPlayer == White ? Black : White;
 	_statusBar->setStyleSheet("QStatusBar { color : black; }");
 	_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");
@@ -1651,6 +1655,11 @@ void VBoard::SetWhiteEngine(std::shared_ptr<Engine> engine)
 void VBoard::SetBlackEngine(std::shared_ptr<Engine> engine)
 {
 	_blackEngine = std::move(engine);
+}
+
+void VBoard::SetCommunications(Communications* _communications)
+{
+	_comm = _communications;
 }
 
 QStatusBar* VBoard::GetStatusBar() const

@@ -65,6 +65,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 MainWindow::~MainWindow()
 {
+	_comm->quit();
 	delete _comm;
 	delete ui;
 }
@@ -685,9 +686,15 @@ void MainWindow::on_actionNetwork_Manager_triggered()
 	networkManager->SetCommunications(_comm);
 	Communications::SetGui(networkManager);
 	Communications::SetVBoard(ui->vboard);
+	_comm->initialize();
 	networkManager->exec();
 	if (networkManager->result() == QDialog::Accepted)
 	{
+		ui->vboard->SetCommunications(_comm);
+	}
+	else
+	{
+		ui->vboard->SetCommunications(nullptr);
 	}
 }
 
