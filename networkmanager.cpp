@@ -300,3 +300,13 @@ void NetworkManager::stop() const
 	ui->connect->setText(tr("&Connect"));
 	ui->listen->setText(tr("&Listen"));
 }
+
+void NetworkManager::on_buttonBox_accepted()
+{
+	accept();
+}
+
+void NetworkManager::on_buttonBox_rejected()
+{
+	reject();
+}

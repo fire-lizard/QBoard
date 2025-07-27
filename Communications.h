@@ -56,6 +56,8 @@ class Communications : public QObject
 
 public:
     Communications();
+    static void SetGui(QDialog* gui);
+    static void SetVBoard(QWidget* vboard);
     bool is_connected_remotely() const;
     bool is_listening() const;
     bool is_ready() const;

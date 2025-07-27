@@ -1,7 +1,9 @@
 #include "Communications.h"
+#include "networkmanager.h"
+#include "vboard.h"
 
-//extern QPointer<qtchess> chess;
-static QByteArray s_eof = "\n";
+NetworkManager* m_gui = nullptr;
+VBoard* m_vboard = nullptr;
 
 Communications::Communications() :QObject()
 {
@@ -10,6 +12,16 @@ Communications::Communications() :QObject()
         SIGNAL(newConnection()),
         this,
         SLOT(slot_accept_connection()));
+}
+
+void Communications::SetGui(QDialog* gui)
+{
+    m_gui = dynamic_cast<NetworkManager*>(gui);
+}
+
+void Communications::SetVBoard(QWidget* vboard)
+{
+    m_vboard = dynamic_cast<VBoard*>(vboard);
 }
 
 QByteArray Communications::hmac(const QByteArray& data, const QByteArray& k)
@@ -69,9 +81,9 @@ QHostAddress Communications::preferred_host_address
             }
 
     if (protocol == QAbstractSocket::IPv4Protocol)
-        return QHostAddress(QHostAddress::LocalHost);
+        return {QHostAddress::LocalHost};
     else
-        return QHostAddress(QHostAddress::LocalHostIPv6);
+        return {QHostAddress::LocalHostIPv6};
 }
 
 bool Communications::is_connected_remotely() const
@@ -111,23 +123,17 @@ void Communications::connect_remotely()
     QString str2("");
     quint16 remote_port = 0;
 
-    /*if (gui)
+    if (m_gui)
     {
-        if (gui->get_setup_dialog() &&
-            gui->get_setup_dialog()->get_remote_host_field())
-            str1 = gui->get_setup_dialog()->get_remote_host_field()->
-            text().trimmed();
+        if (m_gui->get_remote_host_field())
+            str1 = m_gui->get_remote_host_field()->text().trimmed();
 
-        if (gui->get_setup_dialog() &&
-            gui->get_setup_dialog()->get_remote_port_field())
-            str2 = gui->get_setup_dialog()->get_remote_port_field()->
-            text().trimmed();
+        if (m_gui->get_remote_port_field())
+            str2 = m_gui->get_remote_port_field()->text().trimmed();
 
-        if (gui->get_setup_dialog() &&
-            gui->get_setup_dialog()->get_remote_scope_id_field())
-            scope_id = gui->get_setup_dialog()->get_remote_scope_id_field()->
-            text().trimmed();
-    }*/
+        if (m_gui->get_remote_scope_id_field())
+            scope_id = m_gui->get_remote_scope_id_field()->text().trimmed();
+    }
 
     remote_port = static_cast<quint16> (str2.toInt());
 
@@ -202,16 +208,13 @@ void Communications::disconnect_remotely()
 
 void Communications::initialize()
 {
-    /*if (gui &&
-        gui->get_setup_dialog() &&
-        gui->get_setup_dialog()->get_allowed_host_field())
-        gui->get_setup_dialog()->get_allowed_host_field()->clear();
+    if (m_gui &&
+        m_gui->get_allowed_host_field())
+        m_gui->get_allowed_host_field()->clear();
 
-    if (gui &&
-        gui->get_setup_dialog() &&
-        gui->get_setup_dialog()->get_local_host_field())
-        gui->get_setup_dialog()->get_local_host_field()->setText
-        (preferred_host_address(QAbstractSocket::IPv4Protocol).toString());*/
+    if (m_gui &&
+        m_gui->get_local_host_field())
+        m_gui->get_local_host_field()->setText(preferred_host_address(QAbstractSocket::IPv4Protocol).toString());
 
     m_listening_socket.close();
     prepare_connection_status();
@@ -301,7 +304,7 @@ void Communications::send_move(const struct move_s& current_move)
         }
     }
 
-    buffer.append(s_eof);
+    buffer.append("\n");
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
 
@@ -336,13 +339,12 @@ void Communications::set_listen()
     QHostAddress address(QHostAddress::Any);
     quint16 port = 0;
 
-    /*if (gui &&
-        gui->get_setup_dialog() &&
-        gui->get_setup_dialog()->get_local_port_field())
+    if (m_gui &&
+        m_gui->get_local_port_field())
     {
-        address = gui->get_setup_dialog()->get_listening_address();
-        port = gui->get_setup_dialog()->get_local_port_field()->text().toUShort();
-    }*/
+        address = m_gui->get_listening_address();
+        port = m_gui->get_local_port_field()->text().toUShort();
+    }
 
     m_listening_socket.listen(address, port);
 
@@ -350,12 +352,10 @@ void Communications::set_listen()
     ** Save the port number.
     */
 
-    /*if (gui &&
-        gui->get_setup_dialog() &&
-        gui->get_setup_dialog()->get_local_port_field() &&
+    if (m_gui &&
+        m_gui->get_local_port_field() &&
         m_listening_socket.isListening())
-        gui->get_setup_dialog()->get_local_port_field()->setValue
-        (static_cast<int> (m_listening_socket.serverPort()));*/
+        m_gui->get_local_port_field()->setValue(static_cast<int> (m_listening_socket.serverPort()));
 
     prepare_connection_status();
 }
@@ -381,14 +381,11 @@ void Communications::slot_accept_connection()
     ** Acceptable peer?
     */
 
-    /*if (gui &&
-        gui->get_setup_dialog() &&
-        gui->get_setup_dialog()->get_allowed_host_field() &&
-        gui->get_setup_dialog()->get_allowed_host_field()->text().
-        trimmed().isEmpty() == false)
+    if (m_gui &&
+        m_gui->get_allowed_host_field() &&
+        m_gui->get_allowed_host_field()->text().trimmed().isEmpty() == false)
     {
-        auto const str
-        (gui->get_setup_dialog()->get_allowed_host_field()->text().trimmed());
+        auto const str(m_gui->get_allowed_host_field()->text().trimmed());
 
         if (QHostAddress(str) != m_client_connection->peerAddress())
         {
@@ -396,7 +393,7 @@ void Communications::slot_accept_connection()
             m_client_connection->deleteLater();
             return;
         }
-    }*/
+    }
 
     emit connected_to_client();
     connect(m_client_connection,
@@ -433,13 +430,13 @@ void Communications::slot_accept_connection()
 
 void Communications::slot_client_connected()
 {
-    /*if (!gui)
+    if (!m_gui)
     {
         slot_client_disconnected();
         return;
     }
 
-    if (chess && chess->get_first() == -1)
+    /*if (chess && chess->get_first() == -1)
     {
         chess->set_first(I_AM_FIRST);
         chess->set_turn(MY_TURN);

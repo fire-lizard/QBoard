@@ -42,4 +42,6 @@ private slots:
     void slot_local(bool state) const;
     void slot_protocol_changed() const;
     void slot_remote(bool state) const;
+    void on_buttonBox_accepted();
+    void on_buttonBox_rejected();
 };
