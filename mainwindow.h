@@ -71,7 +71,7 @@ private:
 	static void createXmlFromTable(const QString& fileName, const QTableWidget* engineTable);
 
 	Ui::MainWindow *ui;
-	std::shared_ptr<Communications> _comm;
+	Communications *_comm = nullptr;
 	QString _currentStyle = "";
 	int _engineMemorySize = 80;
 	std::shared_ptr<Engine> _whiteEngine = nullptr;

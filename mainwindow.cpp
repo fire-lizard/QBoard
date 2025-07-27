@@ -1,13 +1,12 @@
 ﻿#include "mainwindow.h"
-
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
 
-	_comm = std::make_shared<Communications>();
 	_userName = qgetenv("USER");
+	_comm = new Communications();
 	if (_userName.isEmpty())
 		_userName = qgetenv("USERNAME");
 	setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
@@ -66,6 +65,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 MainWindow::~MainWindow()
 {
+	delete _comm;
 	delete ui;
 }
 
@@ -170,22 +170,19 @@ void MainWindow::on_actionClear_triggered() const
 
 void MainWindow::on_actionNew_game_triggered()
 {
-	if (_comm)
+	if (_comm && _comm->is_connected_remotely())
 	{
-		if (_comm->is_connected_remotely())
-		{
-			QMessageBox mb(this);
+		QMessageBox mb(this);
 
-			mb.setIcon(QMessageBox::Question);
-			mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
-			mb.setText(tr("Are you sure that you wish to initiate a new game? "
-				"Your board and your opponent's board will be reset."));
-			mb.setWindowModality(Qt::ApplicationModal);
-			mb.setWindowTitle(tr("QBoard: Confirmation"));
+		mb.setIcon(QMessageBox::Question);
+		mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+		mb.setText(tr("Are you sure that you wish to initiate a new game? "
+			"Your board and your opponent's board will be reset."));
+		mb.setWindowModality(Qt::ApplicationModal);
+		mb.setWindowTitle(tr("Confirmation"));
 
-			if (mb.exec() != QMessageBox::Yes)
-				return;
-		}
+		if (mb.exec() != QMessageBox::Yes)
+			return;
 	}
 
 	NewGameDialog* newGameDialog = new NewGameDialog(this);
@@ -623,7 +620,7 @@ void MainWindow::on_actionStop_game_triggered() const
 		mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
 		mb.setText(tr("A game is in progress. Are you sure that you wish to quit?"));
 		mb.setWindowModality(Qt::ApplicationModal);
-		mb.setWindowTitle(tr("QBoard: Confirmation"));
+		mb.setWindowTitle(tr("Confirmation"));
 
 		if (mb.exec() != QMessageBox::Yes)
 			return;
@@ -642,7 +639,7 @@ void MainWindow::on_actionExit_triggered() const
 		mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
 		mb.setText(tr("A game is in progress. Are you sure that you wish to quit?"));
 		mb.setWindowModality(Qt::ApplicationModal);
-		mb.setWindowTitle(tr("QBoard: Confirmation"));
+		mb.setWindowTitle(tr("Confirmation"));
 
 		if (mb.exec() != QMessageBox::Yes)
 			return;
@@ -662,7 +659,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		mb.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
 		mb.setText(tr("A game is in progress. Are you sure that you wish to quit?"));
 		mb.setWindowModality(Qt::ApplicationModal);
-		mb.setWindowTitle(tr("QBoard: Confirmation"));
+		mb.setWindowTitle(tr("Confirmation"));
 
 		if (mb.exec() != QMessageBox::Yes)
 			return;

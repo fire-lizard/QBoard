@@ -1,8 +1,6 @@
 #include "Communications.h"
 
 //extern QPointer<qtchess> chess;
-extern QPointer<Communications> comm;
-//extern QPointer<qtchess_gui> gui;
 static QByteArray s_eof = "\n";
 
 Communications::Communications() :QObject()

@@ -9,18 +9,6 @@ NetworkManager::NetworkManager(QWidget* parent) : QDialog(parent), ui(new Ui::Ne
 	ui->remote_host->setText(QHostAddress(QHostAddress::LocalHost).toString());
 	ui->remote_scope_id->setEnabled(false);
 
-	if (_comm)
-	{
-		connect(_comm.get(),
-			SIGNAL(connected_to_client()),
-			this,
-			SLOT(slot_connected_to_client()));
-		connect(_comm.get(),
-			SIGNAL(disconnected_from_client()),
-			this,
-			SLOT(slot_disconnected_from_client()));
-	}
-
 	connect(ui->connect,
 		SIGNAL(clicked()),
 		this,
@@ -65,9 +53,21 @@ NetworkManager::~NetworkManager()
 	delete ui;
 }
 
-void NetworkManager::SetCommunications(std::shared_ptr<Communications> _communications)
+void NetworkManager::SetCommunications(Communications* _communications)
 {
 	_comm = _communications;
+
+	if (_comm)
+	{
+		connect(_comm,
+			SIGNAL(connected_to_client()),
+			this,
+			SLOT(slot_connected_to_client()));
+		connect(_comm,
+			SIGNAL(disconnected_from_client()),
+			this,
+			SLOT(slot_disconnected_from_client()));
+	}
 }
 
 QHostAddress NetworkManager::get_listening_address() const

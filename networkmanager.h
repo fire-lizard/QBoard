@@ -18,7 +18,7 @@ class NetworkManager : public QDialog
 public:
     explicit NetworkManager(QWidget* parent = nullptr);
     ~NetworkManager() override;
-    void SetCommunications(std::shared_ptr<Communications> communications);
+    void SetCommunications(Communications* communications);
 	QHostAddress get_listening_address() const;
     QLineEdit* get_allowed_host_field() const;
     QLineEdit* get_local_host_field() const;
@@ -31,7 +31,7 @@ public:
 
 private:
     Ui::NetworkManager* ui;
-    std::shared_ptr<Communications> _comm;
+    Communications* _comm;
 
 private slots:
     void slot_connect() const;
