@@ -187,7 +187,7 @@ void Communications::connect_remotely()
     m_client_connection->connectToHost(address, remote_port);
 }
 
-void Communications::disconnect_remotely()
+void Communications::disconnect_remotely() const
 {
     if (m_client_connection)
     {
@@ -195,15 +195,10 @@ void Communications::disconnect_remotely()
         m_client_connection->deleteLater();
     }
 
-    /*if (chess)
+    if (m_vboard)
     {
-        chess->set_first(-1);
-        chess->set_my_color(-1);
-        chess->set_turn(-1);
+        m_vboard->GetBoard()->Initialize();
     }
-
-    if (gui)
-        gui->show_disconnect();*/
 }
 
 void Communications::initialize()
@@ -313,8 +308,7 @@ void Communications::send_move(const struct move_s& current_move)
     {
         QApplication::restoreOverrideCursor();
 
-        /*if (gui)
-            gui->show_error_message("Move could not be delivered.");*/
+        QMessageBox::critical(nullptr, "", "Move could not be delivered.", QMessageBox::Ok, QMessageBox::Default);
     }
     else
     {
@@ -472,23 +466,73 @@ void Communications::slot_client_disconnected()
         socket->deleteLater();
     }
 
-    /*if (chess)
+    if (m_vboard)
     {
-        chess->set_first(-1);
-        chess->set_my_color(-1);
-        chess->set_turn(-1);
+        m_vboard->GetBoard()->Initialize();
     }
-
-    if (gui)
-        gui->show_disconnect();*/
 
     emit disconnected_from_client();
     prepare_connection_status();
 }
 
-void Communications::slot_disconnected(QAbstractSocket::SocketError error)
+QString Communications::SocketErrorToString(QAbstractSocket::SocketError error)
 {
-    Q_UNUSED(error)
+    switch (error) {
+    case QAbstractSocket::ConnectionRefusedError:
+        return "Connection Refused";
+    case QAbstractSocket::RemoteHostClosedError:
+        return "Remote Host Closed";
+    case QAbstractSocket::HostNotFoundError:
+        return "Host Not Found";
+    case QAbstractSocket::SocketAccessError:
+        return "Socket Access Error";
+    case QAbstractSocket::SocketResourceError:
+        return "Socket Resource Error";
+    case QAbstractSocket::SocketTimeoutError:
+        return "Socket Timeout";
+    case QAbstractSocket::DatagramTooLargeError:
+        return "Datagram Too Large";
+    case QAbstractSocket::NetworkError:
+        return "Network Error";
+    case QAbstractSocket::AddressInUseError:
+        return "Address In Use";
+    case QAbstractSocket::SocketAddressNotAvailableError:
+        return "Socket Address Not Available";
+    case QAbstractSocket::UnsupportedSocketOperationError:
+        return "Unsupported Socket Operation";
+    case QAbstractSocket::UnfinishedSocketOperationError:
+        return "Unfinished Socket Operation";
+    case QAbstractSocket::ProxyAuthenticationRequiredError:
+        return "Proxy Authentication Required";
+    case QAbstractSocket::SslHandshakeFailedError:
+        return "Ssl Handshake Failed";
+    case QAbstractSocket::ProxyConnectionRefusedError:
+        return "Proxy Connection Refused";
+    case QAbstractSocket::ProxyConnectionClosedError:
+        return "Proxy Connection Closed";
+    case QAbstractSocket::ProxyConnectionTimeoutError:
+        return "Proxy Connection Timeout";
+    case QAbstractSocket::ProxyNotFoundError:
+        return "Proxy Not Found";
+    case QAbstractSocket::ProxyProtocolError:
+        return "Proxy Protocol Error";
+    case QAbstractSocket::OperationError:
+        return "Operation Error";
+    case QAbstractSocket::SslInternalError:
+        return "Ssl Internal Error";
+    case QAbstractSocket::SslInvalidUserDataError:
+        return "Ssl Invalid User Data";
+    case QAbstractSocket::TemporaryError:
+        return "Temporary Error";
+    case QAbstractSocket::UnknownSocketError:
+    default:
+        return "Unknown Socket Error";
+    }
+}
+
+void Communications::slot_disconnected(QAbstractSocket::SocketError error) const
+{
+    QMessageBox::critical(nullptr, "", SocketErrorToString(error), QMessageBox::Ok, QMessageBox::Default);
 }
 
 void Communications::slot_update_board()

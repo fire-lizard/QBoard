@@ -63,7 +63,7 @@ public:
     bool is_ready() const;
     static QHostAddress preferred_host_address(const QAbstractSocket::NetworkLayerProtocol protocol);
     void connect_remotely();
-    void disconnect_remotely();
+    void disconnect_remotely() const;
     void initialize();
     void quit();
     void send_move(const struct move_s& current_move);
@@ -74,6 +74,7 @@ private:
     QPointer<QTcpSocket> m_client_connection;
     QTcpServer m_listening_socket;
     static constexpr int s_buffer_size = 1024;
+    static QString SocketErrorToString(QAbstractSocket::SocketError error);
     QByteArray xor_arrays(const QByteArray& a, const QByteArray& b) const;
     bool memcmp(const QByteArray& a, const QByteArray& b) const;
     static QByteArray hmac(const QByteArray& data, const QByteArray& k);
@@ -84,7 +85,7 @@ private slots:
     void slot_accept_connection();
     void slot_client_connected();
     void slot_client_disconnected();
-    void slot_disconnected(QAbstractSocket::SocketError error);
+    void slot_disconnected(QAbstractSocket::SocketError error) const;
     void slot_update_board();
 
 signals:
