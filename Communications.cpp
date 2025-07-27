@@ -118,26 +118,21 @@ bool Communications::memcmp(const QByteArray& a, const QByteArray& b) const
 
 void Communications::connect_remotely()
 {
-    QString scope_id("");
-    QString str1("");
-    QString str2("");
+    QHostAddress address("");
     quint16 remote_port = 0;
+    QString scope_id("");
 
     if (m_gui)
     {
         if (m_gui->get_remote_host_field())
-            str1 = m_gui->get_remote_host_field()->text().trimmed();
+            address = QHostAddress(m_gui->get_remote_host_field()->text().trimmed());
 
         if (m_gui->get_remote_port_field())
-            str2 = m_gui->get_remote_port_field()->text().trimmed();
+            remote_port = static_cast<quint16>(m_gui->get_remote_port_field()->text().trimmed().toInt());
 
         if (m_gui->get_remote_scope_id_field())
             scope_id = m_gui->get_remote_scope_id_field()->text().trimmed();
     }
-
-    remote_port = static_cast<quint16> (str2.toInt());
-
-    QHostAddress address(str1);
 
     if (!scope_id.isEmpty())
         address.setScopeId(scope_id);
@@ -215,23 +210,20 @@ void Communications::initialize()
     prepare_connection_status();
 }
 
-void Communications::prepare_connection_status()
+void Communications::prepare_connection_status() const
 {
-    /*if (gui)
+    if (m_vboard)
     {
         if (m_client_connection &&
             m_client_connection->state() == QAbstractSocket::ConnectedState)
-            gui->notify_connection
-            (m_client_connection->peerAddress().toString(),
-                m_client_connection->peerPort());
+            m_vboard->GetStatusBar()->showMessage(tr("Status: Peer %1:%2 Connected").arg(m_client_connection->peerAddress().toString()).arg(m_client_connection->peerPort()));
         else if (m_listening_socket.isListening())
-            gui->set_status_text
-            (tr("Status: %1:%2 Listening").
+            m_vboard->GetStatusBar()->showMessage(tr("Status: %1:%2 Listening").
                 arg(m_listening_socket.serverAddress().toString()).
                 arg(m_listening_socket.serverPort()));
         else
-            gui->set_status_text(tr("Status: Peer Disconnected"));
-    }*/
+            m_vboard->GetStatusBar()->showMessage(tr("Status: Peer Disconnected"));
+    }
 }
 
 void Communications::quit()
@@ -240,9 +232,11 @@ void Communications::quit()
     ** Terminate all communications.
     */
 
-    m_client_connection ?
-        m_client_connection->abort(), m_client_connection->deleteLater() :
-        (void)0;
+    if (m_client_connection)
+    {
+        m_client_connection->abort();
+    	m_client_connection->deleteLater();
+    }
     m_listening_socket.close();
 }
 
@@ -314,8 +308,17 @@ void Communications::send_move(const struct move_s& current_move)
     {
         QApplication::restoreOverrideCursor();
 
-        /*if (chess)
-            chess->set_turn(THEIR_TURN);*/
+        if (m_vboard)
+        {
+            if (m_vboard->GetCurrentPlayer() == White)
+            {
+                m_vboard->SetCurrentPlayer(Black);
+            }
+            else
+            {
+                m_vboard->SetCurrentPlayer(White);
+            }
+        }
     }
 }
 
@@ -410,16 +413,8 @@ void Communications::slot_accept_connection()
         this,
         SLOT(slot_update_board()));
 
-    /*if (gui)
-        gui->notify_connection(m_client_connection->peerAddress().toString(),
-            m_client_connection->peerPort());
-
-    if (chess && chess->get_first() == -1)
-    {
-        chess->set_first(THEY_ARE_FIRST);
-        chess->set_my_color(BLACK);
-        chess->set_turn(THEIR_TURN);
-    }*/
+    if (m_vboard)
+        m_vboard->GetStatusBar()->showMessage(tr("Status: Peer %1:%2 Connected").arg(m_client_connection->peerAddress().toString()).arg(m_client_connection->peerPort()));
 }
 
 void Communications::slot_client_connected()
@@ -430,25 +425,21 @@ void Communications::slot_client_connected()
         return;
     }
 
-    /*if (chess && chess->get_first() == -1)
+    if (m_gui && m_vboard)
     {
-        chess->set_first(I_AM_FIRST);
-        chess->set_turn(MY_TURN);
-
-        if (gui->color() == tr("Beige"))
-            chess->set_my_color(WHITE);
-        else if (gui->color() == tr("Crimson"))
-            chess->set_my_color(BLACK);
+        if (m_gui->get_color() == tr("Beige"))
+            m_vboard->SetCurrentPlayer(White);
+        else if (m_gui->get_color() == tr("Crimson"))
+            m_vboard->SetCurrentPlayer(Black);
         else
         {
             slot_client_disconnected();
             return;
         }
-    }
 
-    if (m_client_connection)
-        gui->notify_connection(m_client_connection->peerAddress().toString(),
-            m_client_connection->peerPort());*/
+        if (m_client_connection)
+            m_vboard->GetStatusBar()->showMessage(tr("Status: Peer %1:%2 Connected").arg(m_client_connection->peerAddress().toString()).arg(m_client_connection->peerPort()));
+    }
 }
 
 void Communications::slot_client_disconnected()

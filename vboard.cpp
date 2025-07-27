@@ -1638,11 +1638,6 @@ bool VBoard::PossibleShoot(int x, int y) const
 	return std::any_of(_shoots.begin(), _shoots.end(), [x, y](const std::pair<int, int> t) {return t.first == x && t.second == y;});
 }
 
-void VBoard::SetStatusBar(QStatusBar *statusBar)
-{
-	_statusBar = statusBar;
-}
-
 void VBoard::SetMainWindow(QMainWindow *window)
 {
 	_window = window;
@@ -1656,6 +1651,16 @@ void VBoard::SetWhiteEngine(std::shared_ptr<Engine> engine)
 void VBoard::SetBlackEngine(std::shared_ptr<Engine> engine)
 {
 	_blackEngine = std::move(engine);
+}
+
+QStatusBar* VBoard::GetStatusBar() const
+{
+	return _statusBar;
+}
+
+void VBoard::SetStatusBar(QStatusBar* statusBar)
+{
+	_statusBar = statusBar;
 }
 
 bool VBoard::GetEditorMode() const

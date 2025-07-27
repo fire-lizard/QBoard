@@ -26,6 +26,7 @@ public:
     QLineEdit* get_remote_scope_id_field() const;
     QSpinBox* get_local_port_field() const;
     QSpinBox* get_remote_port_field() const;
+    QString get_color() const;
     void reset() const;
     void stop() const;
 

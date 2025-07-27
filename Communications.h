@@ -79,7 +79,7 @@ private:
     bool memcmp(const QByteArray& a, const QByteArray& b) const;
     static QByteArray hmac(const QByteArray& data, const QByteArray& k);
     static QByteArray shax(const QByteArray& data);
-    void prepare_connection_status();
+    void prepare_connection_status() const;
 
 private slots:
     void slot_accept_connection();

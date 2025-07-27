@@ -115,6 +115,11 @@ QSpinBox* NetworkManager::get_remote_port_field() const
 	return ui->remote_port;
 }
 
+QString NetworkManager::get_color() const
+{
+	return ui->color->currentText();
+}
+
 void NetworkManager::reset() const
 {
 	_comm ? _comm->disconnect_remotely(), _comm->stop_listening() : (void)0;

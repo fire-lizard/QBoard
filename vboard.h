@@ -34,10 +34,11 @@ public:
 	void SetCurrentPlayer(PieceColour currentPlayer);
 	void SetTextEdit(QTextEdit *textEdit);
 	void SetTextEdit2(QTextEdit* textEdit);
-	void SetStatusBar(QStatusBar *statusBar);
 	void SetMainWindow(QMainWindow *window);
 	void SetWhiteEngine(std::shared_ptr<Engine> engine);
 	void SetBlackEngine(std::shared_ptr<Engine> engine);
+	QStatusBar* GetStatusBar() const;
+	void SetStatusBar(QStatusBar* statusBar);
 	bool GetEditorMode() const;
 	void SetEditorMode(bool editorMode);
 	bool GetHighlightMoves() const;
