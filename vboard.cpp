@@ -459,6 +459,7 @@ void VBoard::FinishMove(int x, int y)
 	if (_comm && _comm->is_connected_remotely())
 	{
 		_comm->send_move(_board->GetFEN());
+		_waitForOtherPlayer = true;
 	}
 	_currentPlayer = _currentPlayer == White ? Black : White;
 	_statusBar->setStyleSheet("QStatusBar { color : black; }");
@@ -515,6 +516,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		repaint();
 		return;
 	}
+	if (_comm != nullptr && _comm->is_connected_remotely() && _waitForOtherPlayer) return;
 	if (_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black ||
 		_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White) return;
 	const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
@@ -1659,7 +1661,13 @@ void VBoard::SetBlackEngine(std::shared_ptr<Engine> engine)
 
 void VBoard::SetCommunications(Communications* _communications)
 {
+	_waitForOtherPlayer = _comm != nullptr && _comm->is_listening();
 	_comm = _communications;
+}
+
+void VBoard::SetWaitForOtherPlayer(bool waitForOtherPlayer)
+{
+	_waitForOtherPlayer = waitForOtherPlayer;
 }
 
 QStatusBar* VBoard::GetStatusBar() const

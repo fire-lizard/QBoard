@@ -38,6 +38,7 @@ public:
 	void SetWhiteEngine(std::shared_ptr<Engine> engine);
 	void SetBlackEngine(std::shared_ptr<Engine> engine);
 	void SetCommunications(Communications* communications);
+	void SetWaitForOtherPlayer(bool waitForOtherPlayer);
 	QStatusBar* GetStatusBar() const;
 	void SetStatusBar(QStatusBar* statusBar);
 	bool GetEditorMode() const;
@@ -122,6 +123,7 @@ private:
 	bool _highlightDefenders = true;
 	bool _highlightLastMoves = true;
 	Communications* _comm = nullptr;
+	bool _waitForOtherPlayer = false;
 
 signals:
 

@@ -190,26 +190,9 @@ void Communications::send_move(const std::string& fen) const
 
     if (m_client_connection->write(buffer.constData(), buffer.length()) != static_cast<qint64>(buffer.length()))
     {
-        QApplication::restoreOverrideCursor();
-
         QMessageBox::critical(nullptr, "", "Move could not be delivered.", QMessageBox::Ok, QMessageBox::Default);
     }
-    else
-    {
-        QApplication::restoreOverrideCursor();
-
-        if (m_vboard)
-        {
-            if (m_vboard->GetCurrentPlayer() == White)
-            {
-                m_vboard->SetCurrentPlayer(Black);
-            }
-            else
-            {
-                m_vboard->SetCurrentPlayer(White);
-            }
-        }
-    }
+    QApplication::restoreOverrideCursor();
 }
 
 void Communications::set_listen()
@@ -433,6 +416,7 @@ void Communications::slot_update_board() const
             if (m_vboard)
             {
                 EngineOutputHandler::SetFenToBoard(m_vboard->GetBoard(), buffer, m_vboard->GetGameVariant());
+                m_vboard->repaint();
             }
 
             break;
@@ -445,6 +429,19 @@ void Communications::slot_update_board() const
 
     if (m_client_connection)
         m_client_connection->readAll();
+
+    if (m_vboard)
+    {
+        if (m_vboard->GetCurrentPlayer() == White)
+        {
+            m_vboard->SetCurrentPlayer(Black);
+        }
+        else
+        {
+            m_vboard->SetCurrentPlayer(White);
+        }
+        m_vboard->SetWaitForOtherPlayer(false);
+    }
 }
 
 void Communications::stop_listening()
