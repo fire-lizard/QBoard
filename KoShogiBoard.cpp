@@ -679,7 +679,7 @@ void KoShogiBoard::getAllPiece2MoveDestinations(int startR, int startC, const st
 	_moves.insert(_moves.end(), destinations.begin(), destinations.end());
 }
 
-bool KoShogiBoard::IsTaoistPlayerCaptured() const
+bool KoShogiBoard::IsTaoistPriestCaptured() const
 {
 	return _taoistPriestCaptured;
 }

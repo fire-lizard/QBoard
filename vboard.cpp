@@ -1367,7 +1367,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 	else if (_gameVariant == KoShogi)
 	{
 		// If the Taoist priest is captured, the drum and banner can no longer promote.
-		if (dynamic_cast<KoShogiBoard*>(_board)->IsTaoistPlayerCaptured() && (_currentPiece->GetType() == Flag || _currentPiece->GetType() == Drum))
+		if (dynamic_cast<KoShogiBoard*>(_board)->IsTaoistPriestCaptured() && (_currentPiece->GetType() == Flag || _currentPiece->GetType() == Drum))
 		{
 		}
 		else if (_currentPiece->GetType() != King && _currentPiece->GetType() != Lion &&

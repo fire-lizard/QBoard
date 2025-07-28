@@ -20,7 +20,7 @@ public:
 	std::vector<std::pair<int, int>> GetShoots(const Piece* piece, int x, int y);
 	void Shoot(int x, int y);
 	void RemoveShoot(int x, int y);
-	bool IsTaoistPlayerCaptured() const;
+	bool IsTaoistPriestCaptured() const;
 
 private:
 	void CheckShoot(const Piece* piece, int x, int y);

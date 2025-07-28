@@ -6,7 +6,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	ui->setupUi(this);
 
 	_userName = qgetenv("USER");
-	_comm = new Communications();
 	if (_userName.isEmpty())
 		_userName = qgetenv("USERNAME");
 	setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
@@ -65,8 +64,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 MainWindow::~MainWindow()
 {
-	_comm->quit();
-	delete _comm;
+	delete _nm;
+	if (_comm)
+	{
+		_comm->quit();
+		delete _comm;
+	}
 	delete ui;
 }
 
@@ -123,7 +126,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-	aboutStr.append("<center>QBoard 0.9.9.6 beta<br/>");
+	aboutStr.append("<center>QBoard 0.9.9.7 beta<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
@@ -682,19 +685,22 @@ void MainWindow::on_actionEngine_Manager_triggered()
 
 void MainWindow::on_actionNetwork_Manager_triggered()
 {
-	NetworkManager* networkManager = new NetworkManager(this);
-	networkManager->SetCommunications(_comm);
-	Communications::SetGui(networkManager);
+	if (!_comm)
+	{
+		_comm = new Communications();
+	}
+	if (!_nm)
+	{
+		_nm = new NetworkManager(this);
+		_nm->SetCommunications(_comm);
+	}
+	Communications::SetGui(_nm);
 	Communications::SetVBoard(ui->vboard);
 	_comm->initialize();
-	networkManager->exec();
-	if (networkManager->result() == QDialog::Accepted)
+	_nm->exec();
+	if (_nm->result() == QDialog::Accepted)
 	{
 		ui->vboard->SetCommunications(_comm);
-	}
-	else
-	{
-		ui->vboard->SetCommunications(nullptr);
 	}
 }
 
