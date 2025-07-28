@@ -1156,6 +1156,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			else
 			{
+				_board->Move(_oldX, _oldY, x, y);
 				FinishMove(x, y);
 			}
 		}
