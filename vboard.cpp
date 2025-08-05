@@ -763,6 +763,14 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove(x, y);
 				}
 			}
+			else if (!(abs(_oldX - x) == 2 && abs(_oldY - y) == 1 || abs(_oldX - x) == 1 && abs(_oldY - y) == 2) &&
+				_currentPiece->GetType() == KnightCaptain)
+			{
+			}
+			else if (!(abs(_oldX - x) == 2 && abs(_oldY - y) == 0 || abs(_oldX - x) == 0 && abs(_oldY - y) == 2 ||
+				abs(_oldX - x) == 2 && abs(_oldY - y) == 2) && (_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
+			{
+			}
 			else if ((abs(_oldX - x) == 4 || abs(_oldY - y) == 4) && (_currentPiece->GetType() == KnightCaptain ||
 				_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
 			{
@@ -1080,22 +1088,33 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			else if (_preparedToShoot && !_pieceShotOnce && PossibleShoot(x, y) &&
 				(_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
 			{
-				_firstShoot = { x, y };
-				_preparedToShoot = false;
-				_pieceShotOnce = true;
-				_shoots.clear();
-				repaint();
+				if (_lionMovedTwice)
+				{
+					KoShogiBoard* ksBoard = dynamic_cast<KoShogiBoard*>(_board);
+					ksBoard->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, _lionSecondMove.first, _lionSecondMove.second);
+					ksBoard->Shoot(x, y);
+					FinishMove(x, y);
+				}
+				else
+				{
+					_firstShoot = { x, y };
+					_preparedToShoot = false;
+					_pieceShotOnce = true;
+					_shoots.clear();
+					repaint();
+				}
 			}
 			else if (PossibleMove(x, y) &&
 				(_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
 			{
 				KoShogiBoard* ksBoard = dynamic_cast<KoShogiBoard*>(_board);
-				_lionSecondMove = { x, y };
 				_shoots = ksBoard->GetShoots(_currentPiece, x, y);
-				if (!_shoots.empty())
+				if (!_lionMovedTwice && !_shoots.empty())
 				{
+					_lionSecondMove = { x, y };
+					_lionMovedTwice = true;
 					_preparedToShoot = true;
-					_moves.clear();
+					_board->RemoveMove(_lionFirstMove.first, _lionFirstMove.second);
 					repaint();
 				}
 				else
@@ -1108,7 +1127,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove(x, y);
 				}
 			}
-			else if (_moves.empty() && PossibleShoot(x, y) &&
+			else if ((_moves.empty() || _lionMovedTwice) && PossibleShoot(x, y) &&
 				(_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
 			{
 				KoShogiBoard *ksBoard = dynamic_cast<KoShogiBoard*>(_board);
