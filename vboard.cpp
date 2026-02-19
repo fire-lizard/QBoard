@@ -1603,8 +1603,9 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	if (this->_window != nullptr)
 	{
 		this->_window->setFixedSize(width() + 280, height() + 100);
-		this->_textEdit->setGeometry(x() + width() + 10, y(), 250, height() / 2);
-		this->_textEdit2->setGeometry(x() + width() + 10, y() + 2 + height() / 2, 250, height() / 2);
+        this->_groupBox->setGeometry(x() + width() + 10, y() + 2, 250, 0.2 * height());
+        this->_textEdit->setGeometry(x() + width() + 10, y() + 2 + 0.2 * height(), 250, 0.4 * height());
+        this->_textEdit2->setGeometry(x() + width() + 10, y() + 2 + 0.6 * height(), 250, 0.4 * height());
 	}
 }
 
@@ -1652,6 +1653,11 @@ void VBoard::SetTextEdit(QTextEdit* textEdit)
 void VBoard::SetTextEdit2(QTextEdit* textEdit)
 {
 	_textEdit2 = textEdit;
+}
+
+void VBoard::SetGroupBox(QGroupBox* groupBox)
+{
+    _groupBox = groupBox;
 }
 
 bool VBoard::PossibleMove(int x, int y) const

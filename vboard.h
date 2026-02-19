@@ -3,6 +3,7 @@
 #include <QStatusBar>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QGroupBox>
 #include "mainwindow.h"
 #include "DaiDaiShogiBoard.h"
 #include "KoShogiBoard.h"
@@ -33,7 +34,8 @@ public:
 	PieceColour GetCurrentPlayer() const;
 	void SetCurrentPlayer(PieceColour currentPlayer);
 	void SetTextEdit(QTextEdit *textEdit);
-	void SetTextEdit2(QTextEdit* textEdit);
+    void SetTextEdit2(QTextEdit *textEdit);
+    void SetGroupBox(QGroupBox *groupBox);
 	void SetMainWindow(QMainWindow *window);
 	void SetWhiteEngine(std::shared_ptr<Engine> engine);
 	void SetBlackEngine(std::shared_ptr<Engine> engine);
@@ -91,6 +93,7 @@ private:
 	QStatusBar *_statusBar;
 	QTextEdit *_textEdit;
 	QTextEdit *_textEdit2;
+    QGroupBox *_groupBox;
 	QMainWindow *_window = nullptr;
 	GameVariant _gameVariant = Chess;
 	std::shared_ptr<Engine> _whiteEngine = nullptr;

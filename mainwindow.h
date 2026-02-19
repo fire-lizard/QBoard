@@ -8,6 +8,7 @@
 #include <QStandardPaths>
 #include <QSysInfo>
 #include <QDate>
+#include <QTimer>
 #include <tuple>
 #include <vector>
 #include "settingsdialog.h"
@@ -57,6 +58,10 @@ public:
 
 	void on_actionNetwork_Manager_triggered();
 
+	void slot_update_white_player_time();
+
+	void slot_update_black_player_time();
+
 private:
 	void closeEvent(QCloseEvent *) override;
 
@@ -83,7 +88,11 @@ private:
 	QString _blackEngineExe = "";
 	QString _blackEngineName = "";
 	EngineProtocol _blackEngineProtocol = XBoard;
-	QString _userName;
+	QTimer* _whiteTimer = nullptr;
+	QTimer* _blackTimer = nullptr;
+    QString _player_stylesheet;
+    QString _opponent_stylesheet;
+    QString _userName;
 	QString _settingsDir;
 	QString _settingsFileName = "QBoard.ini";
 	QString _enginesListFileName = "QBoardEngines.xml";

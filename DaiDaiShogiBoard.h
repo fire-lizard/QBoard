@@ -1,7 +1,6 @@
 #pragma once
 #include "Common.h"
 #include "MakaDaiDaiShogiBoard.h"
-#include "DaiDaiShogiPiece.h"
 
 inline PieceType UnpromotablePieces[30] = { LeftChariot,RightChariot,WhiteTiger,BlueDragon,SideMover,VerticalMover,HowlingDog,ReverseChariot,ViolentOx,
 									  ViolentBear,AngryBoar,Lance,LeftGeneral,RightGeneral,Leopard,EvilWolf,SavageTiger,Bishop,Rook,RacingChariot,

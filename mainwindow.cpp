@@ -12,8 +12,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	this->ui->vboard->SetMainWindow(this);
 	this->ui->vboard->SetTextEdit(this->ui->textEdit);
 	this->ui->vboard->SetTextEdit2(this->ui->textEdit_2);
+    this->ui->vboard->SetGroupBox(this->ui->groupBox);
 	this->ui->vboard->SetStatusBar(this->ui->statusBar);
-	QFont font = this->ui->statusBar->font();
+    _whiteTimer = new QTimer(this);
+    _blackTimer = new QTimer(this);
+    _player_stylesheet = ui->player_clock->styleSheet();
+    _opponent_stylesheet = ui->opponent_clock->styleSheet();
+    connect(_whiteTimer, SIGNAL(timeout(void)), this, SLOT(slot_update_white_player_time(void)));
+    connect(_blackTimer, SIGNAL(timeout(void)), this, SLOT(slot_update_black_player_time(void)));
+    QFont font = this->ui->statusBar->font();
 	font.setBold(true);
 	this->ui->statusBar->setFont(font);
 	this->ui->statusBar->showMessage(this->ui->vboard->GetGameVariant() == Xiangqi ? "Red move" : "White move");
@@ -126,14 +133,14 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-	aboutStr.append("<center>QBoard 0.9.9.7 beta<br/>");
+    aboutStr.append("<center>QBoard 0.9.9.8 beta<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
 	aboutStr.append("Ko Shogi graphics by TKR101010 (from Deviantart)<br/>");
 	aboutStr.append("Maka Dai Dai Shogi Kanji graphics by Joe Henbethydd<br/>");
 	aboutStr.append("Shogi Variants Kanji graphics by Shigeki Watanabe<br/>");
-	aboutStr.append("2025</center>");
+    aboutStr.append("2026</center>");
 	QMessageBox::about(this, "About", aboutStr);
 }
 
@@ -330,7 +337,20 @@ void MainWindow::on_actionNew_game_triggered()
 		this->ui->vboard->GetBoard()->Initialize();
 		this->ui->vboard->SetCurrentPlayer(White);
 		this->ui->vboard->repaint();
-	}
+
+        if (_whiteTimer != nullptr)
+        {
+            ui->player_clock->setStyleSheet(_player_stylesheet);
+            ui->player_clock->setTime(QTime(0, 0, 0));
+            _whiteTimer->start(1000);
+        }
+        if (_blackTimer != nullptr)
+        {
+            ui->opponent_clock->setStyleSheet(_opponent_stylesheet);
+            ui->opponent_clock->setTime(QTime(0, 0, 0));
+            _blackTimer->start(1000);
+        }
+    }
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -631,6 +651,14 @@ void MainWindow::on_actionStop_game_triggered() const
 	}
 	StopEngine(_whiteEngine);
 	StopEngine(_blackEngine);
+    if (_whiteTimer != nullptr)
+    {
+        _whiteTimer->stop();
+    }
+    if (_blackTimer != nullptr)
+    {
+        _blackTimer->stop();
+    }
 }
 
 void MainWindow::on_actionExit_triggered() const
@@ -653,7 +681,7 @@ void MainWindow::on_actionExit_triggered() const
 	QApplication::quit();
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
+void MainWindow::closeEvent(QCloseEvent*)
 {
 	if (_comm && _comm->is_connected_remotely())
 	{
@@ -715,6 +743,41 @@ void MainWindow::StartNewGame(GameVariant newGameVariant) const
 	this->ui->textEdit_2->setText("");
 	this->ui->statusBar->showMessage(newGameVariant == Xiangqi ? "Red move" : "White move");
 	this->ui->vboard->repaint();
+
+    if (_whiteTimer != nullptr)
+    {
+        ui->player_clock->setStyleSheet(_player_stylesheet);
+        ui->player_clock->setTime(QTime(0, 0, 0));
+        _whiteTimer->start(1000);
+    }
+    if (_blackTimer != nullptr)
+    {
+        ui->opponent_clock->setStyleSheet(_opponent_stylesheet);
+        ui->opponent_clock->setTime(QTime(0, 0, 0));
+        _blackTimer->start(1000);
+    }
+}
+
+void MainWindow::slot_update_white_player_time()
+{
+    if (this->ui->vboard->GetCurrentPlayer() == White)
+	{
+        ui->player_clock->setStyleSheet("QWidget {background: rgb(144, 238, 144);}");
+        ui->player_clock->setTime(ui->player_clock->time().addSecs(1));
+	}
+	else
+        ui->player_clock->setStyleSheet(_player_stylesheet);
+}
+
+void MainWindow::slot_update_black_player_time()
+{
+    if (this->ui->vboard->GetCurrentPlayer() == Black)
+	{
+        ui->opponent_clock->setStyleSheet("QWidget {background: rgb(144, 238, 144);}");
+        ui->opponent_clock->setTime(ui->opponent_clock->time().addSecs(1));
+	}
+	else
+        ui->opponent_clock->setStyleSheet(_opponent_stylesheet);
 }
 
 void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString& engineExe, PieceColour player)

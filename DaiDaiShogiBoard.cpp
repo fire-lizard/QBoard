@@ -1,4 +1,5 @@
 #include "DaiDaiShogiBoard.h"
+#include "DaiDaiShogiPiece.h"
 
 DaiDaiShogiBoard::DaiDaiShogiBoard()
 {

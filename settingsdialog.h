@@ -2,7 +2,7 @@
 #include <QDialog>
 #include <QStyleFactory>
 #include <QComboBox>
-#include "mainwindow.h"
+#include <QCheckBox>
 
 namespace Ui {
 	class SettingsDialog;

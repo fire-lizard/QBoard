@@ -32,9 +32,9 @@
     <property name="geometry">
      <rect>
       <x>793</x>
-      <y>6</y>
+      <y>120</y>
       <width>201</width>
-      <height>261</height>
+      <height>201</height>
      </rect>
     </property>
     <property name="readOnly">
@@ -45,14 +45,75 @@
     <property name="geometry">
      <rect>
       <x>793</x>
-      <y>270</y>
+      <y>330</y>
       <width>201</width>
-      <height>261</height>
+      <height>201</height>
      </rect>
     </property>
     <property name="readOnly">
      <bool>true</bool>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>793</x>
+      <y>20</y>
+      <width>211</width>
+      <height>79</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Clocks</string>
+    </property>
+    <layout class="QGridLayout" name="_4">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Player</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QTimeEdit" name="player_clock">
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="buttonSymbols">
+        <enum>QAbstractSpinBox::NoButtons</enum>
+       </property>
+       <property name="displayFormat">
+        <string>hh:mm:ss</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Opponent</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QTimeEdit" name="opponent_clock">
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="buttonSymbols">
+        <enum>QAbstractSpinBox::NoButtons</enum>
+       </property>
+       <property name="displayFormat">
+        <string>hh:mm:ss</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -61,7 +122,7 @@
      <x>0</x>
      <y>0</y>
      <width>1008</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
