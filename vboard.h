@@ -55,6 +55,8 @@ public:
 	void SetHighlightDefenders(bool highlightDefenders);
 	bool GetHighlightLastMoves() const;
 	void SetHighlightLastMoves(bool highlightLastMoves);
+    bool GetTimerState() const;
+    void SetTimerState(bool timerState);
 
 protected:
 	void contextMenuEvent(QContextMenuEvent* event) override;
@@ -125,6 +127,7 @@ private:
 	bool _highlightAttackers = true;
 	bool _highlightDefenders = true;
 	bool _highlightLastMoves = true;
+    bool _timerState = false;
 	Communications* _comm = nullptr;
 	bool _waitForOtherPlayer = false;
 

@@ -24,6 +24,7 @@ public:
 	QCheckBox* GetHighlightAttackers() const;
 	QCheckBox* GetHighlightDefenders() const;
 	QCheckBox* GetHighlightLastMoves() const;
+    QCheckBox* GetTimerState() const;
 
 	private slots:
 

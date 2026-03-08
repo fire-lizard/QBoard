@@ -1,7 +1,7 @@
 #include "IniFile.h"
 
 void IniFile::writeToIniFile(const QString& filePath, const QString& styleName, const QString& gameVariant, const QString& pieceStyle, 
-    const QString& engineOutput, bool highlightMoves, bool highlightShoots, bool highlightAttackers, bool highlightDefenders, bool highlightLastMoves) {
+    const QString& engineOutput, bool highlightMoves, bool highlightShoots, bool highlightAttackers, bool highlightDefenders, bool highlightLastMoves, bool timerState) {
 	// Create a QSettings object for the INI file
 	QSettings settings(filePath, QSettings::IniFormat);
 
@@ -16,6 +16,7 @@ void IniFile::writeToIniFile(const QString& filePath, const QString& styleName, 
     settings.setValue("HighlightAttackers", highlightAttackers);
     settings.setValue("HighlightDefenders", highlightDefenders);
     settings.setValue("HighlightLastMoves", highlightLastMoves);
+    settings.setValue("TimerState", timerState);
     settings.endGroup();
 
 	// Sync the changes explicitly (optional)
@@ -37,6 +38,7 @@ QStringList IniFile::readFromIniFile(const QString& filePath) {
     const bool highlightAttackers = settings.value("HighlightAttackers", true).toBool();
     const bool highlightDefenders = settings.value("HighlightDefenders", true).toBool();
     const bool highlightLastMoves = settings.value("HighlightLastMoves", true).toBool();
+    const bool timerState = settings.value("TimerState", true).toBool();
     settings.endGroup();
 
     // Return values
@@ -44,5 +46,6 @@ QStringList IniFile::readFromIniFile(const QString& filePath) {
     result << styleName << gameVariant << pieceStyle << engineOutput << QVariant(highlightMoves).toString();
     result << QVariant(highlightShoots).toString() << QVariant(highlightAttackers).toString();
 	result << QVariant(highlightDefenders).toString() << QVariant(highlightLastMoves).toString();
+    result << QVariant(timerState).toString();
     return result;
 }

@@ -92,7 +92,8 @@ void MainWindow::on_actionSettings_triggered()
 	settingsDialog->GetHighlightAttackers()->setChecked(this->ui->vboard->GetHighlightAttackers());
 	settingsDialog->GetHighlightDefenders()->setChecked(this->ui->vboard->GetHighlightDefenders());
 	settingsDialog->GetHighlightLastMoves()->setChecked(this->ui->vboard->GetHighlightLastMoves());
-	settingsDialog->exec();
+    settingsDialog->GetTimerState()->setChecked(this->ui->vboard->GetTimerState());
+    settingsDialog->exec();
 	if (settingsDialog->result() == QDialog::Accepted)
 	{
 		QApplication::setStyle(settingsDialog->GetStyles()->itemText(settingsDialog->GetStyles()->currentIndex()));
@@ -105,7 +106,8 @@ void MainWindow::on_actionSettings_triggered()
 		const bool highlightAttackers = settingsDialog->GetHighlightAttackers()->checkState() == Qt::Checked;
 		const bool highlightDefenders = settingsDialog->GetHighlightDefenders()->checkState() == Qt::Checked;
 		const bool highlightLastMoves = settingsDialog->GetHighlightLastMoves()->checkState() == Qt::Checked;
-		if (pieceStyle != this->ui->vboard->GetPieceStyle())
+        const bool timerState = settingsDialog->GetTimerState()->checkState() == Qt::Checked;
+        if (pieceStyle != this->ui->vboard->GetPieceStyle())
 		{
 			this->ui->vboard->SetPieceStyle(pieceStyle);
 			this->ui->vboard->repaint();
@@ -123,10 +125,11 @@ void MainWindow::on_actionSettings_triggered()
 		this->ui->vboard->SetHighlightAttackers(highlightAttackers);
 		this->ui->vboard->SetHighlightDefenders(highlightDefenders);
 		this->ui->vboard->SetHighlightLastMoves(highlightLastMoves);
-		IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, _currentStyle,
+        this->ui->vboard->SetTimerState(timerState);
+        IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, _currentStyle,
 			settingsDialog->GetGameVariants()->currentText(), settingsDialog->GetGamePieces()->currentText(),
 			settingsDialog->GetEngineOutput()->currentText(), highlightMoves, highlightShoots,
-			highlightAttackers, highlightDefenders, highlightLastMoves);
+            highlightAttackers, highlightDefenders, highlightLastMoves, timerState);
 	}
 }
 
@@ -760,7 +763,7 @@ void MainWindow::StartNewGame(GameVariant newGameVariant) const
 
 void MainWindow::slot_update_white_player_time()
 {
-    if (this->ui->vboard->GetCurrentPlayer() == White)
+    if (this->ui->vboard->GetTimerState() == true && this->ui->vboard->GetCurrentPlayer() == White)
 	{
         ui->player_clock->setStyleSheet("QWidget {background: rgb(144, 238, 144);}");
         ui->player_clock->setTime(ui->player_clock->time().addSecs(1));
@@ -771,7 +774,7 @@ void MainWindow::slot_update_white_player_time()
 
 void MainWindow::slot_update_black_player_time()
 {
-    if (this->ui->vboard->GetCurrentPlayer() == Black)
+    if (this->ui->vboard->GetTimerState() == true && this->ui->vboard->GetCurrentPlayer() == Black)
 	{
         ui->opponent_clock->setStyleSheet("QWidget {background: rgb(144, 238, 144);}");
         ui->opponent_clock->setTime(ui->opponent_clock->time().addSecs(1));

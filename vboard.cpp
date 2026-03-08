@@ -1818,6 +1818,16 @@ void VBoard::SetHighlightLastMoves(bool highlightLastMoves)
 	_highlightLastMoves = highlightLastMoves;
 }
 
+bool VBoard::GetTimerState() const
+{
+    return _timerState;
+}
+
+void VBoard::SetTimerState(bool timerState)
+{
+    _timerState = timerState;
+}
+
 bool VBoard::CheckRepetition(int oldX, int oldY, int newX, int newY)
 {
 	// Repetition rule

@@ -59,3 +59,8 @@ QCheckBox* SettingsDialog::GetHighlightLastMoves() const
 {
 	return ui->highlightLastMovesCheckBox;
 }
+
+QCheckBox* SettingsDialog::GetTimerState() const
+{
+    return ui->timerCheckBox;
+}
