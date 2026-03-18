@@ -6,7 +6,7 @@ class QianhongEngine : public Engine
 public:
 	QianhongEngine();
 	~QianhongEngine() override;
-	QProcess* RunProcess(QObject* parentObject, const QString& engineExe) override;
+    QProcess* RunProcess(QObject* parentObject, const QString& engineExe, const QString& engineOptions) override;
 	void SetFEN(std::string fen) override;
 	EngineProtocol GetType() override;
 	void StartGame(QString variant = "") override;

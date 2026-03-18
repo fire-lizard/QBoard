@@ -10,7 +10,7 @@ QianhongEngine::~QianhongEngine()
 	Quit();
 }
 
-QProcess* QianhongEngine::RunProcess(QObject* parentObject, const QString& engineExe)
+QProcess* QianhongEngine::RunProcess(QObject* parentObject, const QString& engineExe, const QString& engineOptions)
 {
 	_process = std::make_unique<QProcess>(parentObject);
 	_process->setWorkingDirectory(QFileInfo(engineExe).absolutePath());

@@ -29,7 +29,8 @@ void EngineManager::on_toolButton_clicked()
 		const QString gameName = addEngineDialog->GetGameVariant()->currentText();
 		const QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
 		const QString enginePath = addEngineDialog->GetEnginePath()->text();
-		if (engineName != "" && enginePath != "")
+        const QString engineOptions = addEngineDialog->GetEngineOptions()->text();
+        if (engineName != "" && enginePath != "")
 		{
 			ui->engineTable->insertRow(ui->engineTable->rowCount());
 			const int currentRow = ui->engineTable->rowCount() - 1;
@@ -37,7 +38,8 @@ void EngineManager::on_toolButton_clicked()
 			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(gameName));
 			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
 			ui->engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
-		}
+            ui->engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineOptions));
+        }
 	}
 }
 
@@ -98,20 +100,23 @@ void EngineManager::on_toolButton_2_clicked()
     addEngineDialog->SetGameVariant(ui->engineTable->item(currentRow, 1)->text());
     addEngineDialog->SetEngineProtocol(ui->engineTable->item(currentRow, 2)->text());
 	addEngineDialog->SetEnginePath(ui->engineTable->item(currentRow, 3)->text());
-	addEngineDialog->exec();
+    addEngineDialog->SetEngineOptions(ui->engineTable->item(currentRow, 4)->text());
+    addEngineDialog->exec();
 	if (addEngineDialog->result() == QDialog::Accepted)
 	{
 		const QString engineName = addEngineDialog->GetEngineName()->text();
 		const QString gameName = addEngineDialog->GetGameVariant()->currentText();
 		const QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
 		const QString enginePath = addEngineDialog->GetEnginePath()->text();
-		if (engineName != "" && enginePath != "")
+        const QString engineOptions = addEngineDialog->GetEngineOptions()->text();
+        if (engineName != "" && enginePath != "")
 		{
 			ui->engineTable->setItem(currentRow, 0, new QTableWidgetItem(engineName));
 			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(gameName));
 			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
 			ui->engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
-		}
+            ui->engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineOptions));
+        }
 	}
 }
 

@@ -65,7 +65,7 @@ public:
 private:
 	void closeEvent(QCloseEvent *) override;
 
-	void LoadEngine(const std::shared_ptr<Engine>& engine, const QString& engineExe, PieceColour player);
+    void LoadEngine(const std::shared_ptr<Engine>& engine, const QString& engineExe, const QString& engineOptions, PieceColour player);
 
 	static void StopEngine(std::shared_ptr<Engine> engine);
 
@@ -82,11 +82,13 @@ private:
 	int _engineMemorySize = 80;
 	std::shared_ptr<Engine> _whiteEngine = nullptr;
 	QString _whiteEngineExe = "";
-	QString _whiteEngineName = "";
+    QString _whiteEngineOptions = "";
+    QString _whiteEngineName = "";
 	EngineProtocol _whiteEngineProtocol = XBoard;
 	std::shared_ptr<Engine> _blackEngine = nullptr;
 	QString _blackEngineExe = "";
-	QString _blackEngineName = "";
+    QString _blackEngineOptions = "";
+    QString _blackEngineName = "";
 	EngineProtocol _blackEngineProtocol = XBoard;
 	QTimer* _whiteTimer = nullptr;
 	QTimer* _blackTimer = nullptr;
@@ -96,5 +98,5 @@ private:
 	QString _settingsDir;
 	QString _settingsFileName = "QBoard.ini";
 	QString _enginesListFileName = "QBoardEngines.xml";
-	std::vector<std::tuple<QString, GameVariant, EngineProtocol, QString>> _engines;
+    std::vector<std::tuple<QString, GameVariant, EngineProtocol, QString, QString>> _engines;
 };

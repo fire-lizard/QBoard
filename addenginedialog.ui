@@ -242,6 +242,29 @@
     </property>
    </item>
   </widget>
+  <widget class="QLabel" name="labelEngineOptions">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>170</y>
+     <width>110</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Engine options</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="engineOptions">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>170</y>
+     <width>231</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <tabstops>
   <tabstop>engineName</tabstop>

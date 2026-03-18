@@ -9,7 +9,7 @@ class Engine
 public:
 	Engine();
 	virtual ~Engine();
-	virtual QProcess* RunProcess(QObject *parentObject, const QString& engineExe);
+    virtual QProcess* RunProcess(QObject *parentObject, const QString& engineExe, const QString& engineOptions);
 	void Quit() const;
 	bool IsActive() const;
 	void SetActive(bool val);

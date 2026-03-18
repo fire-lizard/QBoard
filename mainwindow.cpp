@@ -230,15 +230,17 @@ void MainWindow::on_actionNew_game_triggered()
             GameVariant gameVariant = Chess;
             EngineProtocol engineProtocol;
 			QString enginePath;
-			foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
+            QString engineOptions;
+            foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
 				if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
                 if (attr.name().toString() == "GameVariant") gameVariant = EngineManager::StringToGameVariant(attr.value().toString());
                 if (attr.name().toString() == "EngineProtocol") engineProtocol = EngineManager::StringToEngineProtocol(attr.value().toString());
 				if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
-			}
+                if (attr.name().toString() == "EngineOptions") engineOptions = attr.value().toString();
+            }
             if (engineName != "" && enginePath != "" && gameVariant == this->ui->vboard->GetGameVariant())
 			{
-                _engines.emplace_back(engineName, gameVariant, engineProtocol, enginePath);
+                _engines.emplace_back(engineName, gameVariant, engineProtocol, enginePath, engineOptions);
 			}
 		}
 	}
@@ -265,21 +267,23 @@ void MainWindow::on_actionNew_game_triggered()
 
 		if (bpSelectedIndex > 0)
         {
-	        const std::tuple<QString, GameVariant, EngineProtocol, QString> tpl = _engines[bpSelectedIndex - 1];
+            const std::tuple<QString, GameVariant, EngineProtocol, QString, QString> tpl = _engines[bpSelectedIndex - 1];
 			_blackEngineName = std::get<0>(tpl);
 			_blackEngineProtocol = std::get<2>(tpl);
 			_blackEngineExe = std::get<3>(tpl);
+            _blackEngineOptions = std::get<4>(tpl);
         }
         else
 			_blackEngineExe = "";
 
 		if (wpSelectedIndex > 0)
 		{
-			const std::tuple<QString, GameVariant, EngineProtocol, QString> tpl = _engines[wpSelectedIndex - 1];
+            const std::tuple<QString, GameVariant, EngineProtocol, QString, QString> tpl = _engines[wpSelectedIndex - 1];
 			_whiteEngineName = std::get<0>(tpl);
 			_whiteEngineProtocol = std::get<2>(tpl);
 			_whiteEngineExe = std::get<3>(tpl);
-		}
+            _whiteEngineOptions = std::get<4>(tpl);
+        }
 		else
 			_whiteEngineExe = "";
 
@@ -305,7 +309,7 @@ void MainWindow::on_actionNew_game_triggered()
 			}
 			_blackEngine->SetTextEdit(ui->textEdit_2);
 			_blackEngine->SetActive(true);
-			LoadEngine(_blackEngine, _blackEngineExe, Black);
+            LoadEngine(_blackEngine, _blackEngineExe, _blackEngineOptions, Black);
 		}
 		else
 			StopEngine(_blackEngine);
@@ -332,7 +336,7 @@ void MainWindow::on_actionNew_game_triggered()
 			}
 			_whiteEngine->SetTextEdit(ui->textEdit);
 			_whiteEngine->SetActive(true);
-			LoadEngine(_whiteEngine, _whiteEngineExe, White);
+            LoadEngine(_whiteEngine, _whiteEngineExe, _whiteEngineOptions, White);
 		}
 		else
 			StopEngine(_whiteEngine);
@@ -783,11 +787,11 @@ void MainWindow::slot_update_black_player_time()
         ui->opponent_clock->setStyleSheet(_opponent_stylesheet);
 }
 
-void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString& engineExe, PieceColour player)
+void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString& engineExe, const QString& engineOptions, PieceColour player)
 {
 	if (engine != nullptr)
 	{
-		const QProcess* process = engine->RunProcess(this, engineExe);
+        const QProcess* process = engine->RunProcess(this, engineExe, engineOptions);
 		if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
 		{
 			if (engine->GetType() == XBoard)
@@ -900,12 +904,14 @@ void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engin
 			QString gameVariant;
 			QString engineProtocol;
 			QString enginePath;
+            QString engineOptions;
 			foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
 				if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
 				if (attr.name().toString() == "GameVariant") gameVariant = attr.value().toString();
 				if (attr.name().toString() == "EngineProtocol") engineProtocol = attr.value().toString();
 				if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
-			}
+                if (attr.name().toString() == "EngineOptions") engineOptions = attr.value().toString();
+            }
 			if (engineName != "" && enginePath != "")
 			{
 				engineTable->insertRow(engineTable->rowCount());
@@ -914,7 +920,8 @@ void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engin
 				engineTable->setItem(currentRow, 1, new QTableWidgetItem(gameVariant));
 				engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
 				engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
-			}
+                engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineOptions));
+            }
 		}
 		else if (token == QXmlStreamReader::Characters && !xml.isWhitespace()) {
 			qDebug() << "Element text:" << xml.text().toString();
@@ -953,7 +960,8 @@ void MainWindow::createXmlFromTable(const QString& fileName, const QTableWidget*
 		writer.writeAttribute("GameVariant", engineTable->item(index, 1)->text());
 		writer.writeAttribute("EngineProtocol", engineTable->item(index, 2)->text());
 		writer.writeAttribute("EnginePath", engineTable->item(index, 3)->text());
-		writer.writeEndElement();
+        writer.writeAttribute("EngineOptions", engineTable->item(index, 4)->text());
+        writer.writeEndElement();
 	}
 
 	writer.writeEndDocument();
