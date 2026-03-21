@@ -14,9 +14,12 @@ QProcess* Engine::RunProcess(QObject *parentObject, const QString& engineExe, co
 	_process = std::make_unique<QProcess>(parentObject);
 	_process->setWorkingDirectory(QFileInfo(engineExe).absolutePath());
 	_process->setProgram(engineExe);
-    QStringList engineArguments;
-    engineArguments << engineOptions;
-    _process->setArguments(engineArguments);
+    if (!engineOptions.trimmed().isEmpty())
+    {
+        QStringList engineArguments;
+        engineArguments << engineOptions;
+        _process->setArguments(engineArguments);
+    }
     _process->start();
 	return _process.get();
 }

@@ -34,8 +34,7 @@ protected:
 		{ Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook }
 	};
 
-private:
-	bool _wkc = true;
+    bool _wkc = true;
 	bool _wqc = true;
 	bool _bkc = true;
 	bool _bqc = true;

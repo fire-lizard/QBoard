@@ -119,7 +119,11 @@ std::string Piece::GetImageFileName() const
 		return colour + "Wolf.png";
 	case CatSword:
 		return colour + "CatSword.png";
-	default:
+    case Archbishop:
+        return colour + "Archbishop.png";
+    case Chancellor:
+        return colour + "Chancellor.png";
+    default:
 		return "";
 	}
 }
@@ -261,7 +265,9 @@ std::string Piece::PieceType2Description(PieceType pieceType)
 	case FreeCat:              return "Free Cat";
 	case FreeBear:             return "Free Bear";
 	case Bat:                  return "Bat";
-	default: return "";
+    case Archbishop:           return "Archbishop";
+    case Chancellor:           return "Chancellor";
+    default: return "";
 	}
 }
 
@@ -400,6 +406,8 @@ PieceType Piece::Description2PieceType(const std::string& description)
 	if (description == "Free Cat")           return FreeCat;
 	if (description == "Free Bear")          return FreeBear;
 	if (description == "Bat")                return Bat;
+    if (description == "Archbishop")         return Archbishop;
+    if (description == "Chancellor")         return Chancellor;
 
 	// Fallback for unrecognized description.
 	return None;

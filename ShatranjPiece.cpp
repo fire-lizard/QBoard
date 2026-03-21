@@ -28,7 +28,11 @@ std::string ShatranjPiece::StringCode()
 		return "B";
 	case Knight:
 		return "N";
-	case Pawn:
+    case Archbishop:
+        return "A";
+    case Chancellor:
+        return "C";
+    case Pawn:
 		return "P";
 	default:
 		return "";
@@ -43,7 +47,9 @@ PieceType ShatranjPiece::FromStringCode(const std::string& code)
 		{"R", Rook},
 		{"B", Bishop},
 		{"N", Knight},
-		{"P", Pawn}
+        {"A", Archbishop},
+        {"C", Chancellor},
+        {"P", Pawn}
 	};
 
 	const auto it = codeToPieceType.find(code);

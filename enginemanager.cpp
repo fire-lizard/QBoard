@@ -58,7 +58,11 @@ EngineProtocol EngineManager::StringToEngineProtocol(const QString& str)
 
 GameVariant EngineManager::StringToGameVariant(const QString& str)
 {
-	if (str == "Xiangqi")
+    if (str == "Capablanca Chess")
+        return CapablancaChess;
+    if (str == "Gothic Chess")
+        return GothicChess;
+    if (str == "Xiangqi")
 		return Xiangqi;
 	if (str == "Shogi")
 		return Shogi;

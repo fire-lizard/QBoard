@@ -7,7 +7,7 @@
 #include "mainwindow.h"
 #include "DaiDaiShogiBoard.h"
 #include "KoShogiBoard.h"
-#include "ChessBoard.h"
+#include "GothicChessBoard.h"
 #include "XiangqiBoard.h"
 #include "MiniShogiBoard.h"
 #include "JudkinShogiBoard.h"

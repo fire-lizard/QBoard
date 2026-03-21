@@ -1,6 +1,4 @@
-#ifndef PROMOTIONDIALOG_H
-#define PROMOTIONDIALOG_H
-
+#pragma once
 #include <QDialog>
 #include "Common.h"
 
@@ -32,5 +30,3 @@ private:
 
     PieceType _chosenPiece;
 };
-
-#endif // PROMOTIONDIALOG_H

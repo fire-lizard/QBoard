@@ -366,11 +366,13 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 		}
 	}
-	else if (gameVariant == Chess)
+    else if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess)
 	{
 		// Castling check
-		if ((moveArray == "e8g8" || moveArray == "e8h8" || moveArray == "e8c8" || moveArray == "e8b8" || moveArray == "e8a8" ||
-			moveArray == "e1g1" || moveArray == "e1h1" || moveArray == "e1c1" || moveArray == "e1b1" || moveArray == "e1a1") &&
+        if ((moveArray == "e8g8" || moveArray == "e8h8" || moveArray == "e8c8" || moveArray == "e8b8" || moveArray == "e8a8" ||
+             moveArray == "e1g1" || moveArray == "e1h1" || moveArray == "e1c1" || moveArray == "e1b1" || moveArray == "e1a1" ||
+             moveArray == "f8i8" || moveArray == "f8j8" || moveArray == "f8c8" || moveArray == "f8b8" || moveArray == "f8a8" ||
+             moveArray == "f1i1" || moveArray == "f1j1" || moveArray == "f1c1" || moveArray == "f1b1" || moveArray == "f1a1") &&
 			board->GetData(x1, y1) != nullptr && board->GetData(x1, y1)->GetType() == King &&
 			board->GetData(x2 > 4 ? 7 : 0, y2) != nullptr && board->GetData(x2 > 4 ? 7 : 0, y2)->GetType() == Rook)
 		{
@@ -567,7 +569,7 @@ void EngineOutputHandler::ReadStandardError(const QByteArray& buf, QTextEdit* te
 
 void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3)
 {
-	if (gameVariant == Chess || gameVariant == Shatranj)
+    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == Shatranj)
 	{
 		dynamic_cast<ShatranjBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
@@ -633,7 +635,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 		{
 			std::string stringCode(1, c);
 			PieceType pieceType = None;
-			if (gameVariant == Chess || gameVariant == Shatranj)
+            if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == Shatranj)
 			{
 				pieceType = ShatranjPiece::FromStringCode(uppercase(stringCode));
 			}
@@ -705,7 +707,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			i++;
 		}
 	} while ((i < w || j < h - 1) && k < fen.size());
-	if (gameVariant == Chess)
+    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess)
 	{
 		ChessBoard* cb = dynamic_cast<ChessBoard*>(board);
 		if (parts.size() >= 3)

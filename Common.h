@@ -12,8 +12,9 @@ enum GameFormat
 
 enum GameVariant
 {
-	Chess, Xiangqi, Shatranj, Makruk, Shogi, MiniShogi, JudkinShogi, ShoShogi, WaShogi,
-	CrazyWa, ChuShogi, DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
+    Chess, CapablancaChess, GothicChess, Xiangqi, Shatranj, Makruk, Shogi, MiniShogi,
+    JudkinShogi, ShoShogi, WaShogi, CrazyWa, ChuShogi, DaiShogi, TenjikuShogi, DaiDaiShogi,
+    MakaDaiDaiShogi, KoShogi
 };
 
 enum PieceColour
@@ -58,7 +59,9 @@ enum PieceType
 	// Ko Shogi Pieces
 	MiddleTroop, Drum, Thunderclap, Flag, RoamingAssault, CompanyCommander, ViceCommissioner, PoisonFlame, DoubleKylin, DoublePhoenix, TaoistPriest,
 	SpiritualMonk, ExtensiveFog, HolyLight, AdvanceGuard, RearGuard, SkywardNet, EarthwardNet, RisingDragon, WingedTiger, FlyingHawk, Chariot, Vanguard,
-	Longbow, LongbowKnight, Crossbow, CrossbowKnight, Cannon, CannonCarriage, FrankishCannon, DivineCarriage, KnightCaptain, WingedHorse, ShieldCaptain
+    Longbow, LongbowKnight, Crossbow, CrossbowKnight, Cannon, CannonCarriage, FrankishCannon, DivineCarriage, KnightCaptain, WingedHorse, ShieldCaptain,
+    // Gothic Chess Pieces
+    Chancellor, Archbishop
 };
 
 enum Direction
@@ -116,6 +119,8 @@ inline PieceType TenjikuShogiPieces[] = { King, Lion, Queen, DragonKing, DragonH
 
 inline PieceType ChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn };
 
+inline PieceType GothicChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn, Chancellor, Archbishop };
+
 inline PieceType ShatranjPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn };
 
 inline PieceType MakrukPieces[] = { King, Queen, Silver, Knight, Rook, Pawn };
@@ -135,6 +140,10 @@ inline PieceType MiniShogiPieces[] = { King, Gold, Silver, Rook, Bishop, Pawn, P
 inline PieceType JudkinsShogiPieces[] = { King, Gold, Silver, Knight, Rook, Bishop, Pawn, PromotedKnight, PromotedSilver, Tokin, DragonHorse, DragonKing };
 
 inline char CHESSFEN[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
+inline char CAPABLANCAFEN[] = "rnabqkbcnr/pppppppppp/10/10/10/10/PPPPPPPPPP/RNABQKBCNR w KQkq - 0 1";
+
+inline char GOTHICFEN[] = "rnbqckabnr/pppppppppp/10/10/10/10/PPPPPPPPPP/RNBQCKABNR w KQkq - 0 1";
 
 inline char XIANGQIFEN[] = "rheakaehr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RHEAKAEHR w - - 0 1";
 

@@ -36,7 +36,9 @@ private:
 		{Rook, 'R'},
 		{Knight, 'N'},
 		{Bishop, 'B'},
-		{Queen, 'Q'},
+        {Archbishop, 'A'},
+        {Chancellor, 'C'},
+        {Queen, 'Q'},
 		{King, 'K'}
 	};
 };

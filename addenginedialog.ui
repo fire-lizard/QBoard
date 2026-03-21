@@ -168,6 +168,16 @@
    </item>
    <item>
     <property name="text">
+     <string>Capablanca Chess</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Gothic Chess</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>Xiangqi</string>
     </property>
    </item>

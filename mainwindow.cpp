@@ -136,7 +136,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-    aboutStr.append("<center>QBoard 0.9.9.8 beta<br/>");
+    aboutStr.append("<center>QBoard 0.9.9.9 beta<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
@@ -407,7 +407,7 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionSave_triggered()
 {
 	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
-	if (gameVariant == Chess || gameVariant == Shatranj || gameVariant == Makruk)
+    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == Shatranj || gameVariant == Makruk)
 	{
 		QFileDialog fileDialog(this);
 		fileDialog.setNameFilter("FEN Files (*.fen);;PGN Files (*.pgn)");
@@ -419,12 +419,14 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-				if (gameVariant == Chess)
+                if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess)
 				{
 					QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
 					QString hmStr = QString::number(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->HalfMoveCount());
-					QString clStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetCastling()) : "-";
-					QString epStr = gameVariant == Chess ? QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetEnPassant()) : "-";
+                    QString clStr = gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess ?
+                                QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetCastling()) : "-";
+                    QString epStr = gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess ?
+                                QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetEnPassant()) : "-";
 					str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 					str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
 					str += (clStr + " " + epStr + " " + hmStr + " " + mcStr).toLatin1();
@@ -443,9 +445,14 @@ void MainWindow::on_actionSave_triggered()
 				const QString currentRound = "[Round 1]\n";
 				const QString whiteName = "[White \"" + _whiteEngineName + "\"]\n";
 				const QString blackName = "[Black \"" + _blackEngineName + "\"]\n";
-				const QString result = "[Result \"*\"]\n\n";
+                QString chessVariant = "\n";
+                if (gameVariant == CapablancaChess)
+                    chessVariant = "[Variant \"capablanca\"]\n\n";
+                if (gameVariant == GothicChess)
+                    chessVariant = "[Variant \"gothic\"]\n\n";
+                const QString result = "[Result \"*\"]\n";
 				const QString pgn = QString::fromStdString(dynamic_cast<ShatranjBoard*>(this->ui->vboard->GetBoard())->GetPGN());
-				str = (evt + site + currentDate + currentRound + whiteName + blackName + result + pgn).toLatin1();
+                str = (evt + site + currentDate + currentRound + whiteName + blackName + result + chessVariant + pgn).toLatin1();
 			}
 			str += "\n\n";
 			QFile file(fileName);
@@ -837,7 +844,13 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 				case Chess:
 					engine->StartGame("normal");
 					break;
-				case DaiDaiShogi:
+                case CapablancaChess:
+                    engine->StartGame("capablanca");
+                    break;
+                case GothicChess:
+                    engine->StartGame("gothic");
+                    break;
+                case DaiDaiShogi:
 				case MakaDaiDaiShogi:
 				case KoShogi:
 					engine->StartGame();
