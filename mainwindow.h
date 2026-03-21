@@ -67,7 +67,7 @@ private:
 
     void LoadEngine(const std::shared_ptr<Engine>& engine, const QString& engineExe, const QString& engineOptions, PieceColour player);
 
-	static void StopEngine(std::shared_ptr<Engine> engine);
+    void StopEngine(std::shared_ptr<Engine> engine) const;
 
 	void StartNewGame(GameVariant newGameVariant) const;
 

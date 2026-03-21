@@ -886,7 +886,7 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 	}
 }
 
-void MainWindow::StopEngine(std::shared_ptr<Engine> engine)
+void MainWindow::StopEngine(std::shared_ptr<Engine> engine) const
 {
 	if (engine)
 	{
@@ -894,6 +894,8 @@ void MainWindow::StopEngine(std::shared_ptr<Engine> engine)
 		engine->Quit();
 		engine.reset();
 	}
+    this->ui->textEdit->setText("");
+    this->ui->textEdit_2->setText("");
 }
 
 void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engineTable)
