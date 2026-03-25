@@ -11,6 +11,8 @@
 #include "XiangqiBoard.h"
 #include "MiniShogiBoard.h"
 #include "JudkinShogiBoard.h"
+#include "ToriShogiBoard.h"
+#include "EuroShogiBoard.h"
 #include "WaShogiBoard.h"
 #include "TenjikuShogiBoard.h"
 #include "MakrukBoard.h"

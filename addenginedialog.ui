@@ -198,21 +198,6 @@
    </item>
    <item>
     <property name="text">
-     <string>Sho Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Chu Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Dai Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
      <string>Mini Shogi</string>
     </property>
    </item>
@@ -223,12 +208,37 @@
    </item>
    <item>
     <property name="text">
+     <string>Tori Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Euro Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Sho Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>Wa Shogi</string>
     </property>
    </item>
    <item>
     <property name="text">
      <string>CrazyWa</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Chu Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Dai Shogi</string>
     </property>
    </item>
    <item>

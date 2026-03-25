@@ -8,6 +8,7 @@ public:
 	MiniShogiBoard();
 	~MiniShogiBoard() override;
 	void Initialize() override;
+    Board* Clone() override;
 
 private:
 

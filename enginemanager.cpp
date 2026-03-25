@@ -84,7 +84,11 @@ GameVariant EngineManager::StringToGameVariant(const QString& str)
 		return MiniShogi;
 	if (str == "Judkins Shogi")
 		return JudkinShogi;
-	if (str == "Shatranj")
+    if (str == "Tori Shogi")
+        return ToriShogi;
+    if (str == "Euro Shogi")
+        return EuroShogi;
+    if (str == "Shatranj")
 		return Shatranj;
 	if (str == "Makruk")
 		return Makruk;

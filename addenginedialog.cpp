@@ -86,6 +86,8 @@ void AddEngineDialog::on_gameVariant_currentIndexChanged(int index)
         ui->engineProtocol->addItem("Qianhong");
         break;
     case Shogi:
+    case MiniShogi:
+    case JudkinShogi:
         ui->engineProtocol->addItem("USI");
         break;
     default:

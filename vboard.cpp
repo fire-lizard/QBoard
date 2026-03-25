@@ -27,13 +27,19 @@ void VBoard::paintEvent(QPaintEvent *)
 	case ShoShogi:
 	case MiniShogi:
 	case JudkinShogi:
+    case EuroShogi:
 		if (_pieceStyle == European) resourcePrefix = ":/pieces_eur/images/";
 		else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_sho2/images_sho2/";
 		else if (_pieceStyle == Asian) resourcePrefix = ":/pieces_sho/images_sho/";
 		else if (_pieceStyle == Asian2) resourcePrefix = ":/pieces_sho3/images_sho3/";
 		else resourcePrefix = ":/pieces_maka2/images_maka2/";
 		break;
-	case ChuShogi:
+    case ToriShogi:
+        if (_pieceStyle == European || _pieceStyle == Asian) resourcePrefix = ":/pieces_tori/images_tori/";
+        else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_torim/images_torim/";
+        else resourcePrefix = ":/pieces_torik/images_torik/";
+        break;
+    case ChuShogi:
 		if (_pieceStyle == Asian) resourcePrefix = ":/pieces_tnk/images_tnk/";
 		else if (_pieceStyle == Asian2) resourcePrefix = ":/pieces_maka2/images_maka2/";
 		else if (_pieceStyle == Asian3) resourcePrefix = ":/pieces_knj/images_knj/";
@@ -147,7 +153,7 @@ void VBoard::paintEvent(QPaintEvent *)
 							painter.setBrush(Qt::NoBrush);
 						}
 					}
-					else if (EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, i, j))
+                    else if (_gameVariant != ToriShogi && EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, i, j))
 					{
 						if (_board->GetData(i, j) != nullptr)
 						{
@@ -303,11 +309,17 @@ void VBoard::paintEvent(QPaintEvent *)
 				case ShoShogi:
 				case MiniShogi:
 				case JudkinShogi:
-					if (_pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
+                case EuroShogi:
+                    if (_pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 					else if (_pieceStyle == Asian3 || _pieceStyle == Asian4) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
 					else imageFileName = p->GetImageFileName();
 					break;
-				case DaiShogi:
+                case ToriShogi:
+                    if (_pieceStyle == European) imageFileName = p->GetImageFileName();
+                    else if (_pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
+                    else imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
+                    break;
+                case DaiShogi:
 					if (_pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 					else if (_pieceStyle == Asian2 || _pieceStyle == Asian4) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
 					else imageFileName = p->GetImageFileName();
@@ -352,23 +364,34 @@ void VBoard::paintEvent(QPaintEvent *)
 				case ShoShogi:
 				case MiniShogi:
 				case JudkinShogi:
-					if (isAsianStyle)
+                case EuroShogi:
+                    if (isAsianStyle)
 					{
-						painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
+                        painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
 					}
 					else
 					{
-						painter.drawPixmap(i* w + w / 4, j* h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+                        painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
 					}
 					break;
-				case MakaDaiDaiShogi:
+                case ToriShogi:
+                    if (_pieceStyle == European || _pieceStyle == Asian)
+                    {
+                        painter.drawPixmap(i * w + w / 12, j * h + h / 12, pixmap.size().width(), pixmap.size().height(), pixmap);
+                    }
+                    else
+                    {
+                        painter.drawPixmap(i * w + w / 6, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
+                    }
+                    break;
+                case MakaDaiDaiShogi:
 					if (_pieceStyle == Asian)
 					{
-						painter.drawPixmap(i* w + w / 4, j* h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+                        painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
 					}
 					else
 					{
-						painter.drawPixmap(i* w + w / 8, j* h + h / 8, 40, 40, pixmap);
+                        painter.drawPixmap(i * w + w / 8, j * h + h / 8, 40, 40, pixmap);
 					}
 					break;
 				case KoShogi:
@@ -386,7 +409,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					}
 					else
 					{
-						painter.drawPixmap(i* w + w / 4, j* h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+                        painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
 					}
 					break;
 				case WaShogi:
@@ -405,11 +428,11 @@ void VBoard::paintEvent(QPaintEvent *)
 				case Xiangqi:
 					if (_pieceStyle == European)
 					{
-						painter.drawPixmap(i* w + w / 4, j* h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+                        painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
 					}
 					else if (_pieceStyle == Mnemonic)
 					{
-						painter.drawPixmap(i* w + w / 8, j* h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+                        painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
 					}
 					else if (_gameVariant != Xiangqi)
 					{
@@ -1479,7 +1502,11 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 			((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White));
 		if (pcond1 || pcond2 || pcond3)
 		{
-			if (((pt == Pawn && _gameVariant != ChuShogi) || pt == Knight || pt == Lance) &&
+            if (_gameVariant == ToriShogi)
+            {
+                _currentPiece->Promote();
+            }
+            else if (((pt == Pawn && _gameVariant != ChuShogi) || pt == Knight || pt == Lance) &&
 				((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
 			{
 				_currentPiece->Promote();
@@ -1611,7 +1638,13 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	case JudkinShogi:
 		_board = new JudkinShogiBoard();
 		break;
-	case WaShogi:
+    case ToriShogi:
+        _board = new ToriShogiBoard();
+        break;
+    case EuroShogi:
+        _board = new EuroShogiBoard();
+        break;
+    case WaShogi:
 		_board = new WaShogiBoard();
 		dynamic_cast<ShogiBoard*>(_board)->SetDrops(false);
 		break;
@@ -2124,7 +2157,23 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ShogiPiece)));
 			}
 		}
-		else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)
+        else if (_gameVariant == ToriShogi)
+        {
+            for (auto& ToriShogiPiece : ToriShogiPieces)
+            {
+                whiteRegular->addAction(QString::fromStdString(ToriShogiPiece::PieceType2Description(ToriShogiPiece)));
+                blackRegular->addAction(QString::fromStdString(ToriShogiPiece::PieceType2Description(ToriShogiPiece)));
+            }
+        }
+        else if (_gameVariant == EuroShogi)
+        {
+            for (auto& ShogiPiece : EuroShogiPieces)
+            {
+                whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ShogiPiece)));
+                blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ShogiPiece)));
+            }
+        }
+        else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)
 		{
 			for (auto& WaShogiPiece : WaShogiPieces)
 			{
@@ -2250,7 +2299,11 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				return;
 			}
 			_chosenColour = qobject_cast<QMenu*>(selectedAction->parent()->parent())->title() == "White" ? White : Black;
-			if (_gameVariant == CrazyWa || _gameVariant == WaShogi)
+            if (_gameVariant == ToriShogi)
+            {
+                _chosenPiece = ToriShogiPiece::Description2PieceType(selectedAction->text().toStdString());
+            }
+            else if (_gameVariant == CrazyWa || _gameVariant == WaShogi)
 			{
 				_chosenPiece = WaShogiPiece::Description2PieceType(selectedAction->text().toStdString());
 			}
@@ -2284,7 +2337,8 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		return;
 	}
 
-	if (_gameVariant != Shogi && _gameVariant != MiniShogi && _gameVariant != JudkinShogi && _gameVariant != CrazyWa) return;
+    if (_gameVariant != Shogi && _gameVariant != MiniShogi && _gameVariant != JudkinShogi &&
+            _gameVariant != ToriShogi && _gameVariant != EuroShogi && _gameVariant != CrazyWa) return;
 	if ((_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black) ||
 		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;
 
@@ -2294,7 +2348,12 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 	for (const auto cp : cps)
 	{
 		std::string str;
-		if (_gameVariant == CrazyWa)
+        if (_gameVariant == ToriShogi)
+        {
+            ToriShogiPiece p(cp, _currentPlayer);
+            str = p.Description() + " (" + p.KanjiStringCode() + ")";
+        }
+        else if (_gameVariant == CrazyWa)
 		{
 			WaShogiPiece p(cp, _currentPlayer);
 			str = p.Description() + " (" + p.KanjiStringCode() + ")";
@@ -2315,8 +2374,13 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 	{
 		QStringList parts = selectedAction->text().split(' ', Qt::SkipEmptyParts);
 		const std::string longStringCode = _gameVariant == CrazyWa ? (parts[0] + " " + parts[1]).toStdString() : parts[0].toStdString();
-		const PieceType newPiece = _gameVariant == CrazyWa ? 
-			WaShogiPiece::Description2PieceType(longStringCode) : ShogiPiece::Description2PieceType(longStringCode);
+        PieceType newPiece;
+        if (_gameVariant == ToriShogi)
+            newPiece = ToriShogiPiece::Description2PieceType(longStringCode);
+        else if (_gameVariant == CrazyWa)
+            newPiece = WaShogiPiece::Description2PieceType(longStringCode);
+        else
+            newPiece = ShogiPiece::Description2PieceType(longStringCode);
 
 		if (_board->GetData(x, y) != nullptr)
 		{

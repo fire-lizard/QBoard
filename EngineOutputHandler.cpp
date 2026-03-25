@@ -135,8 +135,8 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 	const QRegularExpression _csre = QRegularExpression(R"(([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrq])?)");
 	const QRegularExpression _cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])([+nbrq])?)");
 	const QRegularExpression _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
-	const QRegularExpression _sgxbre = QRegularExpression(R"(([RBGSNLPa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
-	const QRegularExpression _sgusre = QRegularExpression(R"(([RBGSNLP1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");
+    const QRegularExpression _sgxbre = QRegularExpression(R"(([RBGSNLPFCa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
+    const QRegularExpression _sgusre = QRegularExpression(R"(([RBGSNLPFC1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");
 	QByteArray result;
 	QStringList parts = QString(buf).trimmed().split(QRegularExpression("[\r\n]+"), Qt::SkipEmptyParts);
 	for (auto& part : parts)
@@ -197,7 +197,8 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 			}
 			else
 			{
-				QRegularExpressionMatch match = gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi
+                QRegularExpressionMatch match = gameVariant == Shogi || gameVariant == MiniShogi ||
+                        gameVariant == JudkinShogi || gameVariant == ToriShogi || gameVariant == EuroShogi
 					? _sgxbre.match(part) : _csre.match(part);
 				if (match.hasMatch())
 				{
@@ -447,98 +448,127 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			}
 		}
 	}
-	else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
+    else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
+             gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
 	{
-		if ((gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == CrazyWa) && (moveArray[1] == '@' || moveArray[1] == '*'))
+        if ((gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
+             gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == CrazyWa) && (moveArray[1] == '@' || moveArray[1] == '*'))
 		{
 			PieceType newPiece;
-			if (gameVariant != CrazyWa)
+            if (gameVariant == ToriShogi)
+            {
+                switch (moveArray[0])
+                {
+                case 'F':
+                    newPiece = Falcon;
+                    break;
+                case 'C':
+                    newPiece = Crane;
+                    break;
+                case 'P':
+                    newPiece = Pheasant;
+                    break;
+                case 'L':
+                    newPiece = LeftQuail;
+                    break;
+                case 'R':
+                    newPiece = RightQuail;
+                    break;
+                case 'S':
+                    newPiece = Swallow;
+                    break;
+                default:
+                    newPiece = None;
+                    break;
+                }
+            }
+            else if (gameVariant == CrazyWa)
 			{
-				switch (moveArray[0])
-				{
-				case 'R':
-					newPiece = Rook;
-					break;
-				case 'B':
-					newPiece = Bishop;
-					break;
-				case 'G':
-					newPiece = Gold;
-					break;
-				case 'S':
-					newPiece = Silver;
-					break;
-				case 'N':
-					newPiece = Knight;
-					break;
-				case 'L':
-					newPiece = Lance;
-					break;
-				case 'P':
-					newPiece = Pawn;
-					break;
-				default:
-					newPiece = None;
-					break;
-				}
+                switch (moveArray[0])
+                {
+                case 'D':
+                    newPiece = Dog;
+                    break;
+                case 'R':
+                    newPiece = RunningRabbit;
+                    break;
+                case 'W':
+                    newPiece = Gold;
+                    break;
+                case 'V':
+                    newPiece = Silver;
+                    break;
+                case 'X':
+                    newPiece = TreacherousFox;
+                    break;
+                case 'M':
+                    newPiece = ClimbingMonkey;
+                    break;
+                case 'G':
+                    newPiece = FlyingGoose;
+                    break;
+                case 'C':
+                    newPiece = FlyingCock;
+                    break;
+                case 'F':
+                    newPiece = FlyingFalcon;
+                    break;
+                case 'U':
+                    newPiece = StruttingCrow;
+                    break;
+                case 'E':
+                    newPiece = CloudEagle;
+                    break;
+                case 'L':
+                    newPiece = SwoopingOwl;
+                    break;
+                case 'H':
+                    newPiece = LiberatedHorse;
+                    break;
+                case 'S':
+                    newPiece = SideMover;
+                    break;
+                case 'O':
+                    newPiece = Lance;
+                    break;
+                case 'P':
+                    newPiece = Pawn;
+                    break;
+                default:
+                    newPiece = None;
+                    break;
+                }
 			}
 			else
 			{
-				switch (moveArray[0])
-				{
-				case 'D':
-					newPiece = Dog;
-					break;
-				case 'R':
-					newPiece = RunningRabbit;
-					break;
-				case 'W':
-					newPiece = Gold;
-					break;
-				case 'V':
-					newPiece = Silver;
-					break;
-				case 'X':
-					newPiece = TreacherousFox;
-					break;
-				case 'M':
-					newPiece = ClimbingMonkey;
-					break;
-				case 'G':
-					newPiece = FlyingGoose;
-					break;
-				case 'C':
-					newPiece = FlyingCock;
-					break;
-				case 'F':
-					newPiece = FlyingFalcon;
-					break;
-				case 'U':
-					newPiece = StruttingCrow;
-					break;
-				case 'E':
-					newPiece = CloudEagle;
-					break;
-				case 'L':
-					newPiece = SwoopingOwl;
-					break;
-				case 'H':
-					newPiece = LiberatedHorse;
-					break;
-				case 'S':
-					newPiece = SideMover;
-					break;
-				case 'O':
-					newPiece = Lance;
-					break;
-				case 'P':
-					newPiece = Pawn;
-					break;
-				default:
-					newPiece = None;
-					break;
-				}
-			}
+                switch (moveArray[0])
+                {
+                case 'R':
+                    newPiece = Rook;
+                    break;
+                case 'B':
+                    newPiece = Bishop;
+                    break;
+                case 'G':
+                    newPiece = Gold;
+                    break;
+                case 'S':
+                    newPiece = Silver;
+                    break;
+                case 'N':
+                    newPiece = Knight;
+                    break;
+                case 'L':
+                    newPiece = Lance;
+                    break;
+                case 'P':
+                    newPiece = Pawn;
+                    break;
+                default:
+                    newPiece = None;
+                    break;
+                }
+            }
 			dynamic_cast<ShogiVariantBoard*>(board)->PlacePiece(newPiece, currentPlayer, x2, y2);
 			AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), moveArray[0], moveArray[1], x2, y2, ' ', ' ');
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
@@ -548,7 +578,9 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			const bool isPromoted = moveArray.size() == 5 &&
 				((gameVariant == MiniShogi && (y2 == 0 || y2 == 4) && moveArray[4] == '+')
 					|| (gameVariant == JudkinShogi && (y2 == 0 || y2 == 5) && moveArray[4] == '+')
-					|| ((gameVariant == Shogi || gameVariant == ShoShogi) && (y2 <= 2 || y2 >= 6) && moveArray[4] == '+')
+                    || (gameVariant == ToriShogi && (y2 <= 1 || y2 >= 5) && moveArray[4] == '+')
+                    || (gameVariant == EuroShogi && (y2 <= 2 || y2 >= 5) && moveArray[4] == '+')
+                    || ((gameVariant == Shogi || gameVariant == ShoShogi) && (y2 <= 2 || y2 >= 6) && moveArray[4] == '+')
 					|| ((gameVariant == WaShogi || gameVariant == CrazyWa) && (y2 <= 2 || y2 >= 8) && moveArray[4] == '+'));
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
 			board->Move(x1, y1, x2, y2, false);
@@ -577,7 +609,8 @@ void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceTy
 	{
 		dynamic_cast<MakrukBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
-	else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
+    else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
+             gameVariant == JudkinShogi || gameVariant == EuroShogi)
 	{
 		dynamic_cast<ShogiBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
@@ -647,7 +680,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			{
 				pieceType = MakrukPiece::FromStringCode(uppercase(stringCode));
 			}
-			else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
+            else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
+                     gameVariant == JudkinShogi || gameVariant == ToriShogi || gameVariant == EuroShogi)
 			{
 				pieceType = ShogiPiece::FromStringCode(promo + uppercase(stringCode));
 			}
@@ -726,7 +760,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			}
 		}
 	}
-	if (gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi)
+    if (gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == ToriShogi || gameVariant == EuroShogi)
 	{
 		if (parts.size() >= 3)
 		{
@@ -767,7 +801,23 @@ bool EngineOutputHandler::IsInsidePromotionZone(GameVariant gameVariant, PieceCo
 			return true;
 		}
 	}
-	if (gameVariant == Shogi || gameVariant == ShoShogi)
+    if (gameVariant == ToriShogi)
+    {
+        if ((y >= 5 && pieceColour == Black) ||
+            (y <= 1 && pieceColour == White))
+        {
+            return true;
+        }
+    }
+    if (gameVariant == EuroShogi)
+    {
+        if ((y >= 5 && pieceColour == Black) ||
+            (y <= 2 && pieceColour == White))
+        {
+            return true;
+        }
+    }
+    if (gameVariant == Shogi || gameVariant == ShoShogi)
 	{
 		if ((y >= 6 && pieceColour == Black) ||
 			(y <= 2 && pieceColour == White))
@@ -834,7 +884,18 @@ bool EngineOutputHandler::CanBePromoted(const Piece* piece, GameVariant gameVari
 		{
 			return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
 		}
-		if ((gameVariant == Shogi || gameVariant == ShoShogi) && !piece->IsPromoted() &&
+        if (gameVariant == ToriShogi && !piece->IsPromoted() &&
+            (piece->GetType() == Falcon || piece->GetType() == Swallow))
+        {
+            return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+        }
+        if (gameVariant == EuroShogi && !piece->IsPromoted() &&
+            piece->GetType() != King && piece->GetType() != Gold &&
+            piece->GetType() != DragonKing && piece->GetType() != DragonHorse)
+        {
+            return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+        }
+        if ((gameVariant == Shogi || gameVariant == ShoShogi) && !piece->IsPromoted() &&
 			piece->GetType() != King && piece->GetType() != Gold &&
 			piece->GetType() != DragonKing && piece->GetType() != DragonHorse)
 		{

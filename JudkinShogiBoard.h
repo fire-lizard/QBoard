@@ -7,6 +7,7 @@ public:
 	JudkinShogiBoard();
 	~JudkinShogiBoard() override;
 	void Initialize() override;
+    Board* Clone() override;
 
 private:
 
