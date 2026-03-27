@@ -13,8 +13,8 @@ enum GameFormat
 enum GameVariant
 {
     Chess, CapablancaChess, GothicChess, Xiangqi, Shatranj, Makruk, Shogi, MiniShogi,
-    JudkinShogi, ToriShogi, EuroShogi, ShoShogi, WaShogi, CrazyWa, ChuShogi, DaiShogi,
-    TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
+    JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, ShoShogi, WaShogi, CrazyWa, ChuShogi,
+    DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
 };
 
 enum PieceColour
@@ -63,7 +63,9 @@ enum PieceType
     // Gothic Chess Pieces
     Chancellor, Archbishop,
     // Tori Shogi Pieces
-    Falcon, Crane, Pheasant, LeftQuail, RightQuail, Swallow, Goose
+    Falcon, Crane, Pheasant, LeftQuail, RightQuail, Goose,
+    // Whale Shogi Pieces
+    GreyWhale, Porpoise, Narwhal, Humpback, BlueWhale
 };
 
 enum Direction
@@ -141,7 +143,9 @@ inline PieceType MiniShogiPieces[] = { King, Gold, Silver, Rook, Bishop, Pawn, P
 
 inline PieceType JudkinsShogiPieces[] = { King, Gold, Silver, Knight, Rook, Bishop, Pawn, PromotedKnight, PromotedSilver, Tokin, DragonHorse, DragonKing };
 
-inline PieceType ToriShogiPieces[] = { King, Falcon, Crane, Pheasant, LeftQuail, RightQuail, Swallow, Eagle, Goose };
+inline PieceType WhaleShogiPieces[] = { King, DragonKing, GreyWhale, Porpoise, Narwhal, Humpback, BlueWhale, Pawn };
+
+inline PieceType ToriShogiPieces[] = { King, Falcon, Crane, Pheasant, LeftQuail, RightQuail, Pawn, Eagle, Goose };
 
 inline PieceType EuroShogiPieces[] = { King, Gold, Bishop, Knight, Rook, Pawn };
 
@@ -158,6 +162,8 @@ inline char SHOGIFEN[] = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKG
 inline char MINISHOGIFEN[] = "rbsgk/4p/5/P4/KGSBR w - 1";
 
 inline char JUDKINSHOGIFEN[] = "rbnsgk/5p/6/6/P5/KGSNBR w - 1";
+
+inline char WHALESHOGIFEN[] = "bnpwgh/dddddd/6/6/DDDDDD/HGWPNB w";
 
 inline char TORISHOGIFEN[] = "rpckcpl/3f3/sssssss/2s1S2/SSSSSSS/3F3/LPCKCPR w";
 

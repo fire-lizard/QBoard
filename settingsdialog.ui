@@ -111,6 +111,11 @@
    </item>
    <item>
     <property name="text">
+     <string>Whale Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>Tori Shogi</string>
     </property>
    </item>

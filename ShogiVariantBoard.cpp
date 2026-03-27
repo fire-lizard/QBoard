@@ -82,11 +82,15 @@ bool ShogiVariantBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 		PieceColour pieceColour = _data[oldX][oldY]->GetColour();
 		PieceType pt = _data[newX][newY] != nullptr && _data[newX][newY]->GetColour() != _data[oldX][oldY]->GetColour() ? _data[newX][newY]->GetBaseType() : None;
 		const bool result = Board::Move(oldX, oldY, newX, newY, cl);
-		if (result && pt != None)
+        if (result && pt != None && pt != Porpoise)
 		{
 			_capturedPieces.emplace_back(pieceColour, pt);
 		}
-		return result;
+        else if (result && pt == Porpoise)
+        {
+            _capturedPieces.emplace_back(pieceColour, DragonKing);
+        }
+        return result;
 	}
 	return false;
 }

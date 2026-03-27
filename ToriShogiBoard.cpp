@@ -68,16 +68,6 @@ void ToriShogiBoard::GetMoves(Piece* piece, int x, int y)
     _moves.clear();
     switch (piece->GetType())
     {
-    case King:
-        CheckMove(piece, x + 1, y + 1);
-        CheckMove(piece, x + 1, y);
-        CheckMove(piece, x + 1, y - 1);
-        CheckMove(piece, x, y + 1);
-        CheckMove(piece, x, y - 1);
-        CheckMove(piece, x - 1, y + 1);
-        CheckMove(piece, x - 1, y);
-        CheckMove(piece, x - 1, y - 1);
-        break;
     case Falcon:
         CheckMove(piece, x + 1, y + 1);
         CheckMove(piece, x + 1, y);
@@ -142,16 +132,6 @@ void ToriShogiBoard::GetMoves(Piece* piece, int x, int y)
             CheckDirection(piece, x, y, North);
             CheckDirection(piece, x, y, SouthWest);
             CheckMove(piece, x + 1, y - 1);
-        }
-        break;
-    case Swallow:
-        if (piece->GetColour() == Black)
-        {
-            CheckMove(piece, x, y + 1);
-        }
-        else
-        {
-            CheckMove(piece, x, y - 1);
         }
         break;
     case Eagle:

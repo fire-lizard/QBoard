@@ -7,6 +7,8 @@
 #include "ShogiBoard.h"
 #include "MakrukBoard.h"
 #include "XiangqiPiece.h"
+#include "WhaleShogiPiece.h"
+#include "ToriShogiPiece.h"
 #include "WaShogiPiece.h"
 #include "TenjikuShogiPiece.h"
 #include "DaiDaiShogiPiece.h"

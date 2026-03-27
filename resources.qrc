@@ -17,6 +17,48 @@
     <file>toolbar/Place.png</file>
     <file>toolbar/Network.png</file>
   </qresource>
+  <qresource prefix="/pieces_wha">
+    <file>images_wha/BBeluga.png</file>
+    <file>images_wha/BBWhale.png</file>
+    <file>images_wha/BDolphin.png</file>
+    <file>images_wha/BGrWhale.png</file>
+    <file>images_wha/BHBwhale.png</file>
+    <file>images_wha/BKWhale.png</file>
+    <file>images_wha/BNarwhal.png</file>
+    <file>images_wha/BPNRWhale.png</file>
+    <file>images_wha/BPorpoise.png</file>
+    <file>images_wha/BWhWhale.png</file>
+    <file>images_wha/LBBeluga.png</file>
+    <file>images_wha/LBBWhale.png</file>
+    <file>images_wha/LBDolphin.png</file>
+    <file>images_wha/LBGrWhale.png</file>
+    <file>images_wha/LBHBwhale.png</file>
+    <file>images_wha/LBKWhale.png</file>
+    <file>images_wha/LBNarwhal.png</file>
+    <file>images_wha/LBPNRWhale.png</file>
+    <file>images_wha/LBPorpoise.png</file>
+    <file>images_wha/LBWhWhale.png</file>
+    <file>images_wha/LWBeluga.png</file>
+    <file>images_wha/LWBWhale.png</file>
+    <file>images_wha/LWDolphin.png</file>
+    <file>images_wha/LWGrWhale.png</file>
+    <file>images_wha/LWHBwhale.png</file>
+    <file>images_wha/LWKWhale.png</file>
+    <file>images_wha/LWNarwhal.png</file>
+    <file>images_wha/LWPNRWhale.png</file>
+    <file>images_wha/LWPorpoise.png</file>
+    <file>images_wha/LWWhWhale.png</file>
+    <file>images_wha/WBeluga.png</file>
+    <file>images_wha/WBWhale.png</file>
+    <file>images_wha/WDolphin.png</file>
+    <file>images_wha/WGrWhale.png</file>
+    <file>images_wha/WHBwhale.png</file>
+    <file>images_wha/WKWhale.png</file>
+    <file>images_wha/WNarwhal.png</file>
+    <file>images_wha/WPNRWhale.png</file>
+    <file>images_wha/WPorpoise.png</file>
+    <file>images_wha/WWhWhale.png</file>
+  </qresource>
   <qresource prefix="/pieces_tori">
     <file>images_tori/BCrane.png</file>
     <file>images_tori/BCraneJ.png</file>

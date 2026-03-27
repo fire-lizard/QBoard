@@ -16,7 +16,7 @@ void ToriShogiPiece::Promote(PieceType pieceType)
     case Falcon:
         _pieceType = Eagle;
         break;
-    case Swallow:
+    case Pawn:
         _pieceType = Goose;
         break;
     default:
@@ -42,7 +42,7 @@ std::string ToriShogiPiece::StringCode()
         return "L";
     case RightQuail:
         return "R";
-    case Swallow:
+    case Pawn:
         return "S";
     case Goose:
         return "+S";
@@ -61,7 +61,7 @@ PieceType ToriShogiPiece::FromStringCode(const std::string& code)
         {"P", Pheasant},
         {"L", LeftQuail},
         {"R", RightQuail},
-        {"S", Swallow},
+        {"S", Pawn},
         {"+S", Goose}
     };
 
@@ -79,7 +79,7 @@ std::string ToriShogiPiece::ToStringCode(PieceType piece)
     { Pheasant,       "P"  },
     { LeftQuail,      "L"  },
     { RightQuail,     "R"  },
-    { Swallow,        "S"  },
+    { Pawn,           "S"  },
     { Goose,          "+S" }
     };
 
@@ -103,7 +103,7 @@ std::string ToriShogiPiece::PieceType2Description(PieceType pieceType)
     case Pheasant: return "Pheasant";
     case LeftQuail: return "Left Quail";
     case RightQuail: return "Right Quail";
-    case Swallow: return "Swallow";
+    case Pawn: return "Swallow";
     case Goose: return "Goose";
     default: return "";
     }
@@ -118,7 +118,7 @@ PieceType ToriShogiPiece::Description2PieceType(const std::string& description)
     if (description == "Pheasant")    return Pheasant;
     if (description == "Left Quail")  return LeftQuail;
     if (description == "Right Quail") return RightQuail;
-    if (description == "Swallow")     return Swallow;
+    if (description == "Swallow")     return Pawn;
     if (description == "Goose")       return Goose;
     return None;
 }
@@ -140,7 +140,7 @@ std::string ToriShogiPiece::KanjiStringCode()
     case LeftQuail:
     case RightQuail:
         return "鶉";
-    case Swallow:
+    case Pawn:
         return "燕";
     case Goose:
         return "鴈";
@@ -168,7 +168,7 @@ std::string ToriShogiPiece::GetImageFileName() const
         return colour + "LQuail.png";
     case RightQuail:
         return colour + "RQuail.png";
-    case Swallow:
+    case Pawn:
         return colour + "Swallow.png";
     case Goose:
         return colour + "Goose.png";
@@ -196,7 +196,7 @@ std::string ToriShogiPiece::GetKanjiImageFileName()
         return colour + "LQuailJ.png";
     case RightQuail:
         return colour + "RQuailJ.png";
-    case Swallow:
+    case Pawn:
         return colour + "SwallowJ.png";
     case Goose:
         return colour + "GooseJ.png";
@@ -224,7 +224,7 @@ std::string ToriShogiPiece::GetKanjiImageFileName2()
         return "L-Quail" + colour + ".png";
     case RightQuail:
         return "R-Quail" + colour + ".png";
-    case Swallow:
+    case Pawn:
         return "Swallow" + colour + ".png";
     case Goose:
         return "WildGooseP" + colour + ".png";

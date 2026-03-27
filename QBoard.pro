@@ -23,6 +23,8 @@ SOURCES += main.cpp\
     ToriShogiPiece.cpp \
     ToriShogiBoard.cpp \
     EuroShogiBoard.cpp \
+    WhaleShogiBoard.cpp \
+    WhaleShogiPiece.cpp \
         mainwindow.cpp \
     Board.cpp \
     ChessBoard.cpp \
@@ -89,6 +91,8 @@ HEADERS  += mainwindow.h \
     ToriShogiPiece.h \
     ToriShogiBoard.h \
     EuroShogiBoard.h \
+    WhaleShogiBoard.h \
+    WhaleShogiPiece.h \
     promotiondialog.h \
     settingsdialog.h \
     vboard.h \

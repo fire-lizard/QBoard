@@ -144,7 +144,7 @@ std::string Piece::PieceType2Description(PieceType pieceType)
 	case VerticalMover: return "Vertical Mover";
 	case SideMover: return "Side Mover";
 	case Cannon: return "Cannon";
-	case ReverseChariot: return "ReverseChariot";
+    case ReverseChariot: return "Reverse Chariot";
 	case Lance: return "Lance";
 	case Kylin: return "Kylin";
 	case Phoenix: return "Phoenix";
@@ -285,7 +285,7 @@ PieceType Piece::Description2PieceType(const std::string& description)
 	if (description == "Vertical Mover")    return VerticalMover;
 	if (description == "Side Mover")        return SideMover;
 	if (description == "Cannon")            return Cannon;
-	if (description == "ReverseChariot")    return ReverseChariot;
+    if (description == "Reverse Chariot")    return ReverseChariot;
 	if (description == "Lance")             return Lance;
 	if (description == "Kylin")             return Kylin;
 	if (description == "Phoenix")           return Phoenix;

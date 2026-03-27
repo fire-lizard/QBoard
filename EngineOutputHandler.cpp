@@ -135,8 +135,8 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 	const QRegularExpression _csre = QRegularExpression(R"(([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrq])?)");
 	const QRegularExpression _cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])([+nbrq])?)");
 	const QRegularExpression _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
-    const QRegularExpression _sgxbre = QRegularExpression(R"(([RBGSNLPFCa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
-    const QRegularExpression _sgusre = QRegularExpression(R"(([RBGSNLPFC1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");
+    const QRegularExpression _sgxbre = QRegularExpression(R"(([RBGSNLPFCWKHDa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
+    const QRegularExpression _sgusre = QRegularExpression(R"(([RBGSNLPFCWKHD1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");
 	QByteArray result;
 	QStringList parts = QString(buf).trimmed().split(QRegularExpression("[\r\n]+"), Qt::SkipEmptyParts);
 	for (auto& part : parts)
@@ -197,8 +197,8 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 			}
 			else
 			{
-                QRegularExpressionMatch match = gameVariant == Shogi || gameVariant == MiniShogi ||
-                        gameVariant == JudkinShogi || gameVariant == ToriShogi || gameVariant == EuroShogi
+                QRegularExpressionMatch match = gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
+                        gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi
 					? _sgxbre.match(part) : _csre.match(part);
 				if (match.hasMatch())
 				{
@@ -449,13 +449,40 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		}
 	}
     else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
-             gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
+             gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
 	{
-        if ((gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
+        if ((gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi ||
              gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == CrazyWa) && (moveArray[1] == '@' || moveArray[1] == '*'))
 		{
 			PieceType newPiece;
-            if (gameVariant == ToriShogi)
+            if (gameVariant == WhaleShogi)
+            {
+                switch (moveArray[0])
+                {
+                case 'B':
+                    newPiece = BlueWhale;
+                    break;
+                case 'N':
+                    newPiece = Narwhal;
+                    break;
+                case 'K':
+                    newPiece = DragonKing;
+                    break;
+                case 'G':
+                    newPiece = GreyWhale;
+                    break;
+                case 'H':
+                    newPiece = Humpback;
+                    break;
+                case 'D':
+                    newPiece = Pawn;
+                    break;
+                default:
+                    newPiece = None;
+                    break;
+                }
+            }
+            else if (gameVariant == ToriShogi)
             {
                 switch (moveArray[0])
                 {
@@ -475,7 +502,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                     newPiece = RightQuail;
                     break;
                 case 'S':
-                    newPiece = Swallow;
+                    newPiece = Pawn;
                     break;
                 default:
                     newPiece = None;
@@ -681,11 +708,19 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 				pieceType = MakrukPiece::FromStringCode(uppercase(stringCode));
 			}
             else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
-                     gameVariant == JudkinShogi || gameVariant == ToriShogi || gameVariant == EuroShogi)
-			{
-				pieceType = ShogiPiece::FromStringCode(promo + uppercase(stringCode));
-			}
-			else if (gameVariant == WaShogi || gameVariant == CrazyWa)
+                     gameVariant == JudkinShogi || gameVariant == EuroShogi)
+            {
+                pieceType = ShogiPiece::FromStringCode(promo + uppercase(stringCode));
+            }
+            else if (gameVariant == WhaleShogi)
+            {
+                pieceType = WhaleShogiPiece::FromStringCode(uppercase(stringCode));
+            }
+            else if (gameVariant == ToriShogi)
+            {
+                pieceType = ToriShogiPiece::FromStringCode(promo + uppercase(stringCode));
+            }
+            else if (gameVariant == WaShogi || gameVariant == CrazyWa)
 			{
 				pieceType = WaShogiPiece::FromStringCode(promo + uppercase(stringCode));
 			}
@@ -760,7 +795,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			}
 		}
 	}
-    if (gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == ToriShogi || gameVariant == EuroShogi)
+    if (gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
+            gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi)
 	{
 		if (parts.size() >= 3)
 		{
@@ -885,7 +921,7 @@ bool EngineOutputHandler::CanBePromoted(const Piece* piece, GameVariant gameVari
 			return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
 		}
         if (gameVariant == ToriShogi && !piece->IsPromoted() &&
-            (piece->GetType() == Falcon || piece->GetType() == Swallow))
+            (piece->GetType() == Falcon || piece->GetType() == Pawn))
         {
             return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
         }

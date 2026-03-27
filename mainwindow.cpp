@@ -136,7 +136,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-    aboutStr.append("<center>QBoard 1.0<br/>");
+    aboutStr.append("<center>QBoard 1.0.1<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
@@ -503,8 +503,8 @@ void MainWindow::on_actionSave_triggered()
 		}
 	}
 	else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
-             gameVariant == JudkinShogi || gameVariant == ToriShogi || gameVariant == EuroShogi ||
-             gameVariant == WaShogi || gameVariant == CrazyWa)
+             gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi ||
+             gameVariant == EuroShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
 	{
 		QFileDialog fileDialog(this);
 		if (gameVariant == CrazyWa || gameVariant == WaShogi)
@@ -812,6 +812,9 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 				case JudkinShogi:
 					engine->StartGame("6x6+6_shogi");
 					break;
+                case WhaleShogi:
+                    engine->StartGame("whale-shogi");
+                    break;
                 case ToriShogi:
                     engine->StartGame("7x7+6_shogi");
                     break;
