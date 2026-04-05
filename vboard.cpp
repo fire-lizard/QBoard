@@ -286,8 +286,10 @@ void VBoard::paintEvent(QPaintEvent *)
 					{
 						painter.setBrush(Qt::magenta);
 					}
-                    if (_gameVariant != KoShogi)
+                    if (_gameVariant != KoShogi && _gameVariant != Xiangqi)
+                    {
                         painter.drawRect(rect);
+                    }
                     else
                     {
                         painter.setPen(Qt::NoPen);
@@ -299,7 +301,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				else if (_board->GetData(i, j) == nullptr)
 				{
 					painter.setBrush(Qt::cyan);
-                    if (_gameVariant != KoShogi)
+                    if (_gameVariant != KoShogi && _gameVariant != Xiangqi)
                     {
                         painter.drawRect(rect);
                     }
@@ -353,7 +355,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			else if ((_lastWhiteMoveFrom.first == i && _lastWhiteMoveFrom.second == j || _lastWhiteMoveTo.first == i && _lastWhiteMoveTo.second == j) && _highlightLastMoves)
 			{
 				painter.setBrush(QColor(245, 245, 220, 127));
-                if (_gameVariant != KoShogi)
+                if (_gameVariant != KoShogi && _gameVariant != Xiangqi)
                 {
                     painter.drawRect(rect);
                 }
@@ -368,7 +370,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			else if ((_lastBlackMoveFrom.first == i && _lastBlackMoveFrom.second == j || _lastBlackMoveTo.first == i && _lastBlackMoveTo.second == j) && _highlightLastMoves)
 			{
 				painter.setBrush(QColor(255, 228, 196, 127));
-                if (_gameVariant != KoShogi)
+                if (_gameVariant != KoShogi && _gameVariant != Xiangqi)
                 {
                     painter.drawRect(rect);
                 }
@@ -396,34 +398,41 @@ void VBoard::paintEvent(QPaintEvent *)
 					if ((i + j) % 2 != 0)
 						painter.setBrush(Qt::gray);
 				}
-				else if (_gameVariant == Xiangqi)
-				{
-					if ((i > 2 && i < 6 && j < 3) || (i > 2 && i < 6 && j > 6))
-					{
-						painter.setBrush(Qt::green);
-					}
-					else if (j < 5)
-					{
-						painter.setBrush(Qt::lightGray);
-					}
-				}
-                if (_gameVariant != KoShogi) painter.drawRect(rect);
+                if (_gameVariant != KoShogi && _gameVariant != Xiangqi)
+                {
+                    painter.drawRect(rect);
+                }
 				painter.setBrush(Qt::NoBrush);
 			}
 		}
 	}
-    if (_gameVariant == KoShogi)
+    if (_gameVariant == KoShogi || _gameVariant == Xiangqi)
     {
         for (int i = 0; i < _board->GetWidth() - 1; i++)
         {
             for (int j = 0; j < _board->GetHeight() - 1; j++)
             {
                 QRect rect(i * w + w / 2, j * h + h / 2, w, h);
-                painter.drawRect(rect);
-                if ((i == 3 || i == 9 || i == 15) && (j == 3 || j == 9 || j == 15))
+                if (_gameVariant == KoShogi || j != 4)
+                {
+                    painter.drawRect(rect);
+                }
+                if (_gameVariant == KoShogi && (i == 3 || i == 9 || i == 15) && (j == 3 || j == 9 || j == 15))
                 {
                     painter.setBrush(Qt::black);
                     painter.drawEllipse(i * w + w / 2 - 5, j * h + h / 2 - 5, 10, 10);
+                    painter.setBrush(Qt::NoBrush);
+                }
+                else if (_gameVariant == Xiangqi && (i == 3 && j == 0 || i == 4 && j == 1 || i == 3 && j == 7 || i == 4 && j == 8))
+                {
+                    painter.setBrush(Qt::black);
+                    painter.drawLine(i * w + w / 2, j * h + h / 2, (i + 1) * w + w / 2, (j + 1) * h + h / 2);
+                    painter.setBrush(Qt::NoBrush);
+                }
+                else if (_gameVariant == Xiangqi && (i == 4 && j == 0 || i == 3 && j == 1 || i == 4 && j == 7 || i == 3 && j == 8))
+                {
+                    painter.setBrush(Qt::black);
+                    painter.drawLine((i + 1) * w + w / 2, j * h + h / 2, i * w + w / 2, (j + 1) * h + h / 2);
                     painter.setBrush(Qt::NoBrush);
                 }
             }
@@ -577,24 +586,29 @@ void VBoard::paintEvent(QPaintEvent *)
 					break;
 				case Chess:
 				case Shatranj:
-				case Xiangqi:
-					if (_pieceStyle == European)
+                    if (_pieceStyle == European)
+                    {
+                        painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+                    }
+                    else if (_pieceStyle == Mnemonic)
+                    {
+                        painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+                    }
+                    else
+                    {
+                        painter.drawPixmap(i * w + w / 12, j * h + h / 12, pixmap.size().width(), pixmap.size().height(), pixmap);
+                    }
+                    break;
+                case Xiangqi:
+                    if (_pieceStyle == European || _pieceStyle == Asian)
 					{
                         painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
-					}
-					else if (_pieceStyle == Mnemonic)
+                    }
+                    else
 					{
-                        painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+                        painter.drawPixmap(i * w + w / 6, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
 					}
-					else if (_gameVariant != Xiangqi)
-					{
-						painter.drawPixmap(i * w + w / 12, j * h + h / 12, pixmap.size().width(), pixmap.size().height(), pixmap);
-					}
-					else
-					{
-						painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
-					}
-					break;
+                    break;
 				}
 			}
 		}
