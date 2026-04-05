@@ -104,7 +104,9 @@ void VBoard::paintEvent(QPaintEvent *)
 				_firstShoot.first == i && _firstShoot.second == j)
 			{
 				painter.setBrush(QColorConstants::Svg::yellow);
-				painter.drawRect(rect);
+                painter.setPen(Qt::NoPen);
+                painter.drawEllipse(rect);
+                painter.setPen(_editorMode ? Qt::magenta : Qt::black);
 				painter.setBrush(Qt::NoBrush);
 			}
 			else if (PossibleMove(i, j) && _highlightMoves)
@@ -134,26 +136,34 @@ void VBoard::paintEvent(QPaintEvent *)
 						if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) != nullptr)
 						{
 							painter.setBrush(QColorConstants::Svg::lightpink);
-							painter.drawRect(rect);
-							painter.setBrush(Qt::NoBrush);
+                            painter.setPen(Qt::NoPen);
+                            painter.drawEllipse(rect);
+                            painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                            painter.setBrush(Qt::NoBrush);
 						}
 						else if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) == nullptr)
 						{
 							painter.setBrush(QColorConstants::Svg::greenyellow);
-							painter.drawRect(rect);
-							painter.setBrush(Qt::NoBrush);
+                            painter.setPen(Qt::NoPen);
+                            painter.drawEllipse(rect);
+                            painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                            painter.setBrush(Qt::NoBrush);
 						}
 						else if (_board->GetData(i, j) != nullptr)
 						{
 							painter.setBrush(QColorConstants::Svg::hotpink);
-							painter.drawRect(rect);
-							painter.setBrush(Qt::NoBrush);
+                            painter.setPen(Qt::NoPen);
+                            painter.drawEllipse(rect);
+                            painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                            painter.setBrush(Qt::NoBrush);
 						}
 						else if (_board->GetData(i, j) == nullptr)
 						{
 							painter.setBrush(QColorConstants::Svg::lightgreen);
-							painter.drawRect(rect);
-							painter.setBrush(Qt::NoBrush);
+                            painter.setPen(Qt::NoPen);
+                            painter.drawEllipse(rect);
+                            painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                            painter.setBrush(Qt::NoBrush);
 						}
 					}
                     else if (_gameVariant != ToriShogi && EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, i, j))
@@ -161,14 +171,32 @@ void VBoard::paintEvent(QPaintEvent *)
 						if (_board->GetData(i, j) != nullptr)
 						{
 							painter.setBrush(QColorConstants::Svg::hotpink);
-							painter.drawRect(rect);
-							painter.setBrush(Qt::NoBrush);
+                            if (_gameVariant != KoShogi)
+                            {
+                                painter.drawRect(rect);
+                            }
+                            else
+                            {
+                                painter.setPen(Qt::NoPen);
+                                painter.drawEllipse(rect);
+                                painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                            }
+                            painter.setBrush(Qt::NoBrush);
 						}
 						else if (_board->GetData(i, j) == nullptr)
 						{
 							painter.setBrush(QColorConstants::Svg::lightgreen);
-							painter.drawRect(rect);
-							painter.setBrush(Qt::NoBrush);
+                            if (_gameVariant != KoShogi)
+                            {
+                                painter.drawRect(rect);
+                            }
+                            else
+                            {
+                                painter.setPen(Qt::NoPen);
+                                painter.drawEllipse(rect);
+                                painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                            }
+                            painter.setBrush(Qt::NoBrush);
 						}
 					}
 					else if (i == _oldX && j == _oldY)
@@ -176,14 +204,32 @@ void VBoard::paintEvent(QPaintEvent *)
 						if (_board->GetData(i, j) != nullptr)
 						{
 							painter.setBrush(Qt::blue);
-							painter.drawRect(rect);
-							painter.setBrush(Qt::NoBrush);
+                            if (_gameVariant != KoShogi)
+                            {
+                                painter.drawRect(rect);
+                            }
+                            else
+                            {
+                                painter.setPen(Qt::NoPen);
+                                painter.drawEllipse(rect);
+                                painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                            }
+                            painter.setBrush(Qt::NoBrush);
 						}
 						else if (_board->GetData(i, j) == nullptr)
 						{
 							painter.setBrush(Qt::cyan);
-							painter.drawRect(rect);
-							painter.setBrush(Qt::NoBrush);
+                            if (_gameVariant != KoShogi)
+                            {
+                                painter.drawRect(rect);
+                            }
+                            else
+                            {
+                                painter.setPen(Qt::NoPen);
+                                painter.drawEllipse(rect);
+                                painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                            }
+                            painter.setBrush(Qt::NoBrush);
 						}
 					}
 					else
@@ -191,14 +237,32 @@ void VBoard::paintEvent(QPaintEvent *)
 						if (_board->GetData(i, j) != nullptr)
 						{
 							painter.setBrush(Qt::red);
-							painter.drawRect(rect);
-							painter.setBrush(Qt::NoBrush);
+                            if (_gameVariant != KoShogi)
+                            {
+                                painter.drawRect(rect);
+                            }
+                            else
+                            {
+                                painter.setPen(Qt::NoPen);
+                                painter.drawEllipse(rect);
+                                painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                            }
+                            painter.setBrush(Qt::NoBrush);
 						}
 						else if (_board->GetData(i, j) == nullptr)
 						{
 							painter.setBrush(Qt::cyan);
-							painter.drawRect(rect);
-							painter.setBrush(Qt::NoBrush);
+                            if (_gameVariant != KoShogi)
+                            {
+                                painter.drawRect(rect);
+                            }
+                            else
+                            {
+                                painter.setPen(Qt::NoPen);
+                                painter.drawEllipse(rect);
+                                painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                            }
+                            painter.setBrush(Qt::NoBrush);
 						}
 					}
 				}
@@ -222,45 +286,99 @@ void VBoard::paintEvent(QPaintEvent *)
 					{
 						painter.setBrush(Qt::magenta);
 					}
-					painter.drawRect(rect);
-					painter.setBrush(Qt::NoBrush);
+                    if (_gameVariant != KoShogi)
+                        painter.drawRect(rect);
+                    else
+                    {
+                        painter.setPen(Qt::NoPen);
+                        painter.drawEllipse(rect);
+                        painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                    }
+                    painter.setBrush(Qt::NoBrush);
 				}
 				else if (_board->GetData(i, j) == nullptr)
 				{
 					painter.setBrush(Qt::cyan);
-					painter.drawRect(rect);
-					painter.setBrush(Qt::NoBrush);
+                    if (_gameVariant != KoShogi)
+                    {
+                        painter.drawRect(rect);
+                    }
+                    else
+                    {
+                        painter.setPen(Qt::NoPen);
+                        painter.drawEllipse(rect);
+                        painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                    }
+                    painter.setBrush(Qt::NoBrush);
 				}
 			}
 			else if (std::any_of(_shoots.begin(), _shoots.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}) && _highlightShoots)
 			{
 				painter.setBrush(QColorConstants::Svg::violet);
-				painter.drawRect(rect);
-				painter.setBrush(Qt::NoBrush);
+                painter.setPen(Qt::NoPen);
+                painter.drawEllipse(rect);
+                painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                painter.setBrush(Qt::NoBrush);
 			}
 			else if (std::any_of(_attackers.begin(), _attackers.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}) && _highlightAttackers)
 			{
 				painter.setBrush(QColorConstants::Svg::salmon);
-				painter.drawRect(rect);
-				painter.setBrush(Qt::NoBrush);
+                if (_gameVariant != KoShogi)
+                {
+                    painter.drawRect(rect);
+                }
+                else
+                {
+                    painter.setPen(Qt::NoPen);
+                    painter.drawEllipse(rect);
+                    painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                }
+                painter.setBrush(Qt::NoBrush);
 			}
 			else if (std::any_of(_defenders.begin(), _defenders.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}) && _highlightDefenders)
 			{
 				painter.setBrush(QColorConstants::Svg::aquamarine);
-				painter.drawRect(rect);
-				painter.setBrush(Qt::NoBrush);
+                if (_gameVariant != KoShogi)
+                {
+                    painter.drawRect(rect);
+                }
+                else
+                {
+                    painter.setPen(Qt::NoPen);
+                    painter.drawEllipse(rect);
+                    painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                }
+                painter.setBrush(Qt::NoBrush);
 			}
 			else if ((_lastWhiteMoveFrom.first == i && _lastWhiteMoveFrom.second == j || _lastWhiteMoveTo.first == i && _lastWhiteMoveTo.second == j) && _highlightLastMoves)
 			{
 				painter.setBrush(QColor(245, 245, 220, 127));
-				painter.drawRect(rect);
-				painter.setBrush(Qt::NoBrush);
+                if (_gameVariant != KoShogi)
+                {
+                    painter.drawRect(rect);
+                }
+                else
+                {
+                    painter.setPen(Qt::NoPen);
+                    painter.drawEllipse(rect);
+                    painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                }
+                painter.setBrush(Qt::NoBrush);
 			}
 			else if ((_lastBlackMoveFrom.first == i && _lastBlackMoveFrom.second == j || _lastBlackMoveTo.first == i && _lastBlackMoveTo.second == j) && _highlightLastMoves)
 			{
 				painter.setBrush(QColor(255, 228, 196, 127));
-				painter.drawRect(rect);
-				painter.setBrush(Qt::NoBrush);
+                if (_gameVariant != KoShogi)
+                {
+                    painter.drawRect(rect);
+                }
+                else
+                {
+                    painter.setPen(Qt::NoPen);
+                    painter.drawEllipse(rect);
+                    painter.setPen(_editorMode ? Qt::magenta : Qt::black);
+                }
+                painter.setBrush(Qt::NoBrush);
 			}
 			// En Passant square highlighting
             else if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess) && dynamic_cast<ChessBoard*>(_board)->GetEnPassant() != "-" &&
@@ -289,12 +407,29 @@ void VBoard::paintEvent(QPaintEvent *)
 						painter.setBrush(Qt::lightGray);
 					}
 				}
-				painter.drawRect(rect);
+                if (_gameVariant != KoShogi) painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
 		}
 	}
-	for (int i = 0; i < _board->GetWidth(); i++)
+    if (_gameVariant == KoShogi)
+    {
+        for (int i = 0; i < _board->GetWidth() - 1; i++)
+        {
+            for (int j = 0; j < _board->GetHeight() - 1; j++)
+            {
+                QRect rect(i * w + w / 2, j * h + h / 2, w, h);
+                painter.drawRect(rect);
+                if ((i == 3 || i == 9 || i == 15) && (j == 3 || j == 9 || j == 15))
+                {
+                    painter.setBrush(Qt::black);
+                    painter.drawEllipse(i * w + w / 2 - 5, j * h + h / 2 - 5, 10, 10);
+                    painter.setBrush(Qt::NoBrush);
+                }
+            }
+        }
+    }
+    for (int i = 0; i < _board->GetWidth(); i++)
 	{
 		for (int j = 0; j < _board->GetHeight(); j++)
 		{
@@ -405,7 +540,14 @@ void VBoard::paintEvent(QPaintEvent *)
 					}
 					break;
 				case KoShogi:
-					painter.drawPixmap(i * w + w / 20, j * h + h / 20, pixmap.size().width(), pixmap.size().height(), pixmap);
+                    if (_pieceStyle != Mnemonic)
+                    {
+                        painter.drawPixmap(i * w + w / 12, j * h + h / 12, pixmap.size().width(), pixmap.size().height(), pixmap);
+                    }
+                    else
+                    {
+                        painter.drawPixmap(i * w + w / 20, j * h + h / 20, pixmap.size().width(), pixmap.size().height(), pixmap);
+                    }
 					break;
 				case ChuShogi:
 				case DaiShogi:
