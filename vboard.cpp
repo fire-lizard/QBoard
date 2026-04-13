@@ -592,11 +592,11 @@ void VBoard::paintEvent(QPaintEvent *)
                     }
                     else if (_pieceStyle == Mnemonic)
                     {
-                        painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+                        painter.drawPixmap(i * w + w / 10, j * h + h / 10, pixmap.size().width(), pixmap.size().height(), pixmap);
                     }
                     else
                     {
-                        painter.drawPixmap(i * w + w / 12, j * h + h / 12, pixmap.size().width(), pixmap.size().height(), pixmap);
+                        painter.drawPixmap(i * w + w / 20, j * h, pixmap.size().width(), pixmap.size().height(), pixmap);
                     }
                     break;
                 case Xiangqi:
