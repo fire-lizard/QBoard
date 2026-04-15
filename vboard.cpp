@@ -506,10 +506,13 @@ void VBoard::paintEvent(QPaintEvent *)
                 case CapablancaChess:
                 case GothicChess:
                 case Shatranj:
-				case Makruk:
 					imageFileName = p->GetImageFileName();
 					break;
-				}
+                case Makruk:
+                    if (_pieceStyle == European) imageFileName = p->GetImageFileName();
+                    else imageFileName = dynamic_cast<MakrukPiece*>(p)->GetImageFileName2();
+                    break;
+                }
 				QPixmap pixmap(resourcePrefix + QString::fromStdString(imageFileName));
 				switch (_gameVariant)
 				{
@@ -586,7 +589,7 @@ void VBoard::paintEvent(QPaintEvent *)
                     painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
 					break;
                 case Makruk:
-                    if (European)
+                    if (_pieceStyle == European)
                     {
                         painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
                     }
