@@ -82,11 +82,13 @@ void VBoard::paintEvent(QPaintEvent *)
 		else resourcePrefix = ":/pieces_eur2/images_eur2/";
 		break;
     case Makruk:
+        if (_pieceStyle == European) resourcePrefix = ":/pieces_eur/images/";
+        else resourcePrefix = ":/pieces_mak/images_mak/";
+		break;
     case CapablancaChess:
     case GothicChess:
         resourcePrefix = ":/pieces_eur/images/";
-		break;
-	}
+    }
 	QPainter painter(this);
 	painter.setPen(_editorMode ? Qt::magenta : Qt::black);
 	painter.setBrush(Qt::NoBrush);
@@ -579,12 +581,21 @@ void VBoard::paintEvent(QPaintEvent *)
 					break;
 				case TenjikuShogi:
 				case DaiDaiShogi:
-				case Makruk:
                 case CapablancaChess:
                 case GothicChess:
                     painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
 					break;
-				case Chess:
+                case Makruk:
+                    if (European)
+                    {
+                        painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+                    }
+                    else
+                    {
+                        painter.drawPixmap(i * w + w / 10, j * h + h / 10, pixmap.size().width(), pixmap.size().height(), pixmap);
+                    }
+                    break;
+                case Chess:
 				case Shatranj:
                     if (_pieceStyle == European)
                     {

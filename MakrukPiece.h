@@ -8,7 +8,8 @@ class MakrukPiece : public ShatranjPiece
 public:
 	MakrukPiece(PieceType pieceType, PieceColour pieceColour);
 	~MakrukPiece() override;
-	std::string StringCode() override;
+    std::string GetImageFileName() const override;
+    std::string StringCode() override;
 	static PieceType FromStringCode(const std::string& code);
 };
 

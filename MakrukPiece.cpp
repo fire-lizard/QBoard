@@ -8,6 +8,19 @@ MakrukPiece::~MakrukPiece()
 {
 }
 
+std::string MakrukPiece::GetImageFileName() const
+{
+    const std::string colour = _pieceColour == White ? "White" : "Black";
+    if (_pieceType == Queen && _isPromoted)
+    {
+        return colour + "PawnP.png";
+    }
+    else
+    {
+        return ShatranjPiece::GetImageFileName();
+    }
+}
+
 std::string MakrukPiece::StringCode()
 {
 	switch (_pieceType)
