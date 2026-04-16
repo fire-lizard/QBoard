@@ -1529,7 +1529,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 char VBoard::CheckPromotion(const Piece *p, int y)
 {
 	char promotion = ' ';
-    if (_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == JanusChess)
+    if (_gameVariant == Chess)
 	{
 		if (_currentPiece->GetType() == Pawn &&
 			((y == 7 && _currentPiece->GetColour() == Black) ||
@@ -1557,7 +1557,75 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 			_currentPiece->Promote(pt);
 		}
 	}
-	else if (_gameVariant == Shatranj)
+    else if (_gameVariant == JanusChess)
+    {
+        if (_currentPiece->GetType() == Pawn &&
+            ((y == 7 && _currentPiece->GetColour() == Black) ||
+                (y == 0 && _currentPiece->GetColour() == White)))
+        {
+            JanusPromotionDialog* pd = new JanusPromotionDialog(this);
+            pd->exec();
+            const PieceType pt = pd->GetChosenPiece();
+            if (pt == Bishop)
+            {
+                promotion = 'b';
+            }
+            else if (pt == Knight)
+            {
+                promotion = 'n';
+            }
+            else if (pt == Rook)
+            {
+                promotion = 'r';
+            }
+            else if (pt == Archbishop)
+            {
+                promotion = 'a';
+            }
+            else
+            {
+                promotion = 'q';
+            }
+            _currentPiece->Promote(pt);
+        }
+    }
+    else if (_gameVariant == CapablancaChess || _gameVariant == GothicChess)
+    {
+        if (_currentPiece->GetType() == Pawn &&
+            ((y == 7 && _currentPiece->GetColour() == Black) ||
+                (y == 0 && _currentPiece->GetColour() == White)))
+        {
+            GothicPromotionDialog* pd = new GothicPromotionDialog(this);
+            pd->exec();
+            const PieceType pt = pd->GetChosenPiece();
+            if (pt == Bishop)
+            {
+                promotion = 'b';
+            }
+            else if (pt == Knight)
+            {
+                promotion = 'n';
+            }
+            else if (pt == Rook)
+            {
+                promotion = 'r';
+            }
+            else if (pt == Archbishop)
+            {
+                promotion = 'a';
+            }
+            else if (pt == Chancellor)
+            {
+                promotion = 'c';
+            }
+            else
+            {
+                promotion = 'q';
+            }
+            _currentPiece->Promote(pt);
+        }
+    }
+    else if (_gameVariant == Shatranj)
 	{
 		if (_currentPiece->GetType() == Pawn &&
 			((y == 7 && _currentPiece->GetColour() == Black) ||

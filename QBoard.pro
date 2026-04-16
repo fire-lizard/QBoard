@@ -26,7 +26,7 @@ SOURCES += main.cpp\
     EuroShogiBoard.cpp \
     WhaleShogiBoard.cpp \
     WhaleShogiPiece.cpp \
-        mainwindow.cpp \
+    mainwindow.cpp \
     Board.cpp \
     ChessBoard.cpp \
     ChessPiece.cpp \
@@ -36,6 +36,8 @@ SOURCES += main.cpp\
     KanjiPiece.cpp \
     Logger.cpp \
     promotiondialog.cpp \
+    gothicpromotiondialog.cpp \
+    januspromotiondialog.cpp \
     settingsdialog.cpp \
     vboard.cpp \
     IniFile.cpp \
@@ -96,6 +98,8 @@ HEADERS  += mainwindow.h \
     WhaleShogiBoard.h \
     WhaleShogiPiece.h \
     promotiondialog.h \
+    gothicpromotiondialog.h \
+    januspromotiondialog.h \
     settingsdialog.h \
     vboard.h \
     IniFile.h \
@@ -138,6 +142,8 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     promotiondialog.ui \
+    gothicpromotiondialog.ui \
+    januspromotiondialog.ui \
     settingsdialog.ui \
     enginemanager.ui \
     networkmanager.ui \

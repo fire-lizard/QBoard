@@ -132,8 +132,8 @@ std::vector<std::pair<int, int>> EngineOutputHandler::GetPieceLocations(const Bo
 
 QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant)
 {
-	const QRegularExpression _csre = QRegularExpression(R"(([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrq])?)");
-	const QRegularExpression _cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])([+nbrq])?)");
+    const QRegularExpression _csre = QRegularExpression(R"(([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrqac])?)");
+    const QRegularExpression _cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])(\+)?)");
 	const QRegularExpression _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
     const QRegularExpression _sgxbre = QRegularExpression(R"(([RBGSNLPFCWKHDa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
     const QRegularExpression _sgusre = QRegularExpression(R"(([RBGSNLPFCWKHD1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");

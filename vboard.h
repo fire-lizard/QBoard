@@ -19,6 +19,8 @@
 #include "TenjikuShogiBoard.h"
 #include "MakrukBoard.h"
 #include "promotiondialog.h"
+#include "gothicpromotiondialog.h"
+#include "januspromotiondialog.h"
 #include "EngineOutputHandler.h"
 #include "Logger.h"
 
