@@ -178,6 +178,11 @@
    </item>
    <item>
     <property name="text">
+     <string>Janus Chess</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
      <string>Xiangqi</string>
     </property>
    </item>

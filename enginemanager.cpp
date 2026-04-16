@@ -62,6 +62,8 @@ GameVariant EngineManager::StringToGameVariant(const QString& str)
         return CapablancaChess;
     if (str == "Gothic Chess")
         return GothicChess;
+    if (str == "Janus Chess")
+        return JanusChess;
     if (str == "Xiangqi")
 		return Xiangqi;
 	if (str == "Shogi")

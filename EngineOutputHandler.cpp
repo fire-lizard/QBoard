@@ -367,7 +367,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 		}
 	}
-    else if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess)
+    else if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess)
 	{
 		// Castling check
         if ((moveArray == "e8g8" || moveArray == "e8h8" || moveArray == "e8c8" || moveArray == "e8b8" || moveArray == "e8a8" ||
@@ -628,7 +628,7 @@ void EngineOutputHandler::ReadStandardError(const QByteArray& buf, QTextEdit* te
 
 void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3)
 {
-    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == Shatranj)
+    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == Shatranj)
 	{
 		dynamic_cast<ShatranjBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
@@ -695,7 +695,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 		{
 			std::string stringCode(1, c);
 			PieceType pieceType = None;
-            if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == Shatranj)
+            if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == Shatranj)
 			{
 				pieceType = ShatranjPiece::FromStringCode(uppercase(stringCode));
 			}
@@ -776,7 +776,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			i++;
 		}
 	} while ((i < w || j < h - 1) && k < fen.size());
-    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess)
+    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess)
 	{
 		ChessBoard* cb = dynamic_cast<ChessBoard*>(board);
 		if (parts.size() >= 3)

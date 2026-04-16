@@ -87,6 +87,7 @@ void VBoard::paintEvent(QPaintEvent *)
 		break;
     case CapablancaChess:
     case GothicChess:
+    case JanusChess:
         resourcePrefix = ":/pieces_eur/images/";
     }
 	QPainter painter(this);
@@ -385,8 +386,8 @@ void VBoard::paintEvent(QPaintEvent *)
                 painter.setBrush(Qt::NoBrush);
 			}
 			// En Passant square highlighting
-            else if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess) && dynamic_cast<ChessBoard*>(_board)->GetEnPassant() != "-" &&
-				dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[0] - 97 == i &&
+            else if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == JanusChess) &&
+                dynamic_cast<ChessBoard*>(_board)->GetEnPassant() != "-" &&	dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[0] - 97 == i &&
 				(_currentPlayer == White && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 48 == j || _currentPlayer == Black && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 47 == j))
 			{
 				painter.setBrush(Qt::blue);
@@ -395,7 +396,8 @@ void VBoard::paintEvent(QPaintEvent *)
 			}
 			else
 			{
-                if (_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == Shatranj || _gameVariant == Makruk)
+                if (_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess ||
+                        _gameVariant == JanusChess || _gameVariant == Shatranj || _gameVariant == Makruk)
 				{
 					if ((i + j) % 2 != 0)
 						painter.setBrush(Qt::gray);
@@ -505,6 +507,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				case Chess:
                 case CapablancaChess:
                 case GothicChess:
+                case JanusChess:
                 case Shatranj:
 					imageFileName = p->GetImageFileName();
 					break;
@@ -586,6 +589,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				case DaiDaiShogi:
                 case CapablancaChess:
                 case GothicChess:
+                case JanusChess:
                     painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
 					break;
                 case Makruk:
@@ -733,7 +737,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	const bool isShootingPiece = _gameVariant == KoShogi && _currentPiece != nullptr &&
 		std::find(std::begin(ShootingPieces), std::end(ShootingPieces), _currentPiece->GetType()) != std::end(ShootingPieces);
 	// Castling check
-    if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess) &&
+    if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == JanusChess) &&
         _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
 		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved() && _board->IsMovePossible(x, y))
 	{
@@ -1525,7 +1529,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 char VBoard::CheckPromotion(const Piece *p, int y)
 {
 	char promotion = ' ';
-    if (_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess)
+    if (_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == JanusChess)
 	{
 		if (_currentPiece->GetType() == Pawn &&
 			((y == 7 && _currentPiece->GetColour() == Black) ||
@@ -1782,6 +1786,9 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
     case GothicChess:
         _board = new GothicChessBoard();
         break;
+    case JanusChess:
+        _board = new JanusChessBoard();
+        break;
     case Shogi:
 		_board = new ShogiBoard();
 		break;
@@ -1960,7 +1967,7 @@ void VBoard::SetEditorMode(bool editorMode)
 {
 	if (editorMode)
 	{
-        if (_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess)
+        if (_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == JanusChess)
 		{
 			dynamic_cast<ChessBoard*>(_board)->SetCastling("-");
 			dynamic_cast<ChessBoard*>(_board)->SetEnPassant("-");
@@ -2271,6 +2278,14 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
         else if (_gameVariant == CapablancaChess || _gameVariant == GothicChess)
         {
             for (auto& ChessPiece : GothicChessPieces)
+            {
+                whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
+                blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
+            }
+        }
+        else if (_gameVariant == JanusChess)
+        {
+            for (auto& ChessPiece : JanusChessPieces)
             {
                 whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
                 blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));

@@ -12,9 +12,9 @@ enum GameFormat
 
 enum GameVariant
 {
-    Chess, CapablancaChess, GothicChess, Xiangqi, Shatranj, Makruk, Shogi, MiniShogi,
-    JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, ShoShogi, WaShogi, CrazyWa, ChuShogi,
-    DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
+    Chess, CapablancaChess, GothicChess, JanusChess, Xiangqi, Shatranj, Makruk, Shogi,
+    MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, ShoShogi, WaShogi, CrazyWa,
+    ChuShogi, DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
 };
 
 enum PieceColour
@@ -125,6 +125,8 @@ inline PieceType ChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn };
 
 inline PieceType GothicChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn, Chancellor, Archbishop };
 
+inline PieceType JanusChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn, Archbishop };
+
 inline PieceType ShatranjPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn };
 
 inline PieceType MakrukPieces[] = { King, Queen, Silver, Knight, Rook, Pawn };
@@ -154,6 +156,8 @@ inline char CHESSFEN[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0
 inline char CAPABLANCAFEN[] = "rnabqkbcnr/pppppppppp/10/10/10/10/PPPPPPPPPP/RNABQKBCNR w KQkq - 0 1";
 
 inline char GOTHICFEN[] = "rnbqckabnr/pppppppppp/10/10/10/10/PPPPPPPPPP/RNBQCKABNR w KQkq - 0 1";
+
+inline char JANUSFEN[] = "ranbqkbnar/pppppppppp/10/10/10/10/PPPPPPPPPP/RANBQKBNAR w KQkq - 0 1";
 
 inline char XIANGQIFEN[] = "rheakaehr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RHEAKAEHR w - - 0 1";
 
