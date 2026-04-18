@@ -3,6 +3,7 @@
 #include <QStyleFactory>
 #include <QComboBox>
 #include <QCheckBox>
+#include "variantdialog.h"
 
 namespace Ui {
 	class SettingsDialog;
@@ -16,7 +17,7 @@ public:
 	explicit SettingsDialog(QWidget *parent = nullptr);
 	~SettingsDialog() override;
 	QComboBox* GetStyles() const;
-	QComboBox* GetGameVariants() const;
+    QLineEdit* GetGameVariant() const;
 	QComboBox* GetGamePieces() const;
 	QComboBox* GetEngineOutput() const;
 	QCheckBox* GetHighlightMoves() const;
@@ -27,6 +28,8 @@ public:
     QCheckBox* GetTimerState() const;
 
 	private slots:
+
+    void on_toolButton_clicked();
 
 private:
 	Ui::SettingsDialog *ui;

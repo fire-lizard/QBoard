@@ -55,126 +55,6 @@
     <string>Style</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="variantsComboBox">
-   <property name="geometry">
-    <rect>
-     <x>230</x>
-     <y>50</y>
-     <width>150</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <item>
-    <property name="text">
-     <string>Chess</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Capablanca Chess</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Gothic Chess</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Janus Chess</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Xiangqi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Shatranj</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Makruk</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Mini Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Judkins Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Whale Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Tori Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Euro Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Sho Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Wa Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>CrazyWa</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Chu Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Dai Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Tenjiku Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Dai Dai Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Maka Dai Dai Shogi</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Ko Shogi</string>
-    </property>
-   </item>
-  </widget>
   <widget class="QLabel" name="variantsLabel">
    <property name="geometry">
     <rect>
@@ -365,6 +245,32 @@
    </property>
    <property name="text">
     <string>Timer ON/OFF</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="variantsLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>50</y>
+     <width>120</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton">
+   <property name="geometry">
+    <rect>
+     <x>355</x>
+     <y>50</y>
+     <width>25</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>...</string>
    </property>
   </widget>
  </widget>

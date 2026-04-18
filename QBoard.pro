@@ -39,6 +39,7 @@ SOURCES += main.cpp\
     gothicpromotiondialog.cpp \
     januspromotiondialog.cpp \
     settingsdialog.cpp \
+    variantdialog.cpp \
     vboard.cpp \
     IniFile.cpp \
     ShogiVariantBoard.cpp \
@@ -101,6 +102,7 @@ HEADERS  += mainwindow.h \
     gothicpromotiondialog.h \
     januspromotiondialog.h \
     settingsdialog.h \
+    variantdialog.h \
     vboard.h \
     IniFile.h \
     ShogiVariantBoard.h \
@@ -148,7 +150,8 @@ FORMS    += mainwindow.ui \
     enginemanager.ui \
     networkmanager.ui \
     newgamedialog.ui \
-    addenginedialog.ui
+    addenginedialog.ui \
+    variantdialog.ui
 
 RESOURCES += \
     resources.qrc

@@ -58,49 +58,22 @@ EngineProtocol EngineManager::StringToEngineProtocol(const QString& str)
 
 GameVariant EngineManager::StringToGameVariant(const QString& str)
 {
-    if (str == "Capablanca Chess")
-        return CapablancaChess;
-    if (str == "Gothic Chess")
-        return GothicChess;
-    if (str == "Janus Chess")
-        return JanusChess;
-    if (str == "Xiangqi")
-		return Xiangqi;
-	if (str == "Shogi")
-		return Shogi;
-	if (str == "Sho Shogi")
-		return ShoShogi;
-	if (str == "Chu Shogi")
-		return ChuShogi;
-	if (str == "Dai Shogi")
-		return DaiShogi;
-	if (str == "Tenjiku Shogi")
-		return TenjikuShogi;
-	if (str == "Dai Dai Shogi")
-		return DaiDaiShogi;
-	if (str == "Maka Dai Dai Shogi")
-		return MakaDaiDaiShogi;
-	if (str == "Ko Shogi")
-		return KoShogi;
-	if (str == "Mini Shogi")
-		return MiniShogi;
-	if (str == "Judkins Shogi")
-		return JudkinShogi;
-    if (str == "Whale Shogi")
-        return WhaleShogi;
-    if (str == "Tori Shogi")
-        return ToriShogi;
-    if (str == "Euro Shogi")
-        return EuroShogi;
-    if (str == "Shatranj")
-		return Shatranj;
-	if (str == "Makruk")
-		return Makruk;
-	if (str == "Wa Shogi")
-		return WaShogi;
-	if (str == "CrazyWa")
-		return CrazyWa;
-	return Chess;
+    for (const auto& p : variantMap())
+    {
+        if (p.second == str)
+            return p.first;
+    }
+    return Chess;
+}
+
+QString EngineManager::GameVariantToString(GameVariant variant)
+{
+    for (const auto& p : variantMap())
+    {
+        if (p.first == variant)
+            return p.second;
+    }
+    return "Chess";
 }
 
 void EngineManager::on_toolButton_2_clicked()

@@ -20,9 +20,9 @@ QComboBox* SettingsDialog::GetStyles() const
 	return ui->stylesComboBox;
 }
 
-QComboBox* SettingsDialog::GetGameVariants() const
+QLineEdit* SettingsDialog::GetGameVariant() const
 {
-	return ui->variantsComboBox;
+    return ui->variantsLineEdit;
 }
 
 QComboBox* SettingsDialog::GetGamePieces() const
@@ -63,4 +63,14 @@ QCheckBox* SettingsDialog::GetHighlightLastMoves() const
 QCheckBox* SettingsDialog::GetTimerState() const
 {
     return ui->timerCheckBox;
+}
+
+void SettingsDialog::on_toolButton_clicked()
+{
+    VariantDialog* vd = new VariantDialog(this);
+    vd->exec();
+    if (vd->result() == QDialog::Accepted)
+    {
+        ui->variantsLineEdit->setText(vd->GetVariant());
+    }
 }

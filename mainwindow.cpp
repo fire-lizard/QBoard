@@ -83,8 +83,9 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionSettings_triggered()
 {
 	SettingsDialog *settingsDialog = new SettingsDialog(this);
-	settingsDialog->GetGameVariants()->setCurrentIndex(this->ui->vboard->GetGameVariant());
-	settingsDialog->GetGamePieces()->setCurrentIndex(this->ui->vboard->GetPieceStyle());
+    settingsDialog->GetGameVariant()->setStyleSheet("QLineEdit { background: rgb(0, 223, 223); selection-background-color: rgb(223, 99, 0); }");
+    settingsDialog->GetGameVariant()->setText(EngineManager::GameVariantToString(this->ui->vboard->GetGameVariant()));
+    settingsDialog->GetGamePieces()->setCurrentIndex(this->ui->vboard->GetPieceStyle());
 	settingsDialog->GetEngineOutput()->setCurrentIndex(this->ui->vboard->GetEngineOutput());
 	settingsDialog->GetStyles()->setCurrentText(_currentStyle);
 	settingsDialog->GetHighlightMoves()->setChecked(this->ui->vboard->GetHighlightMoves());
@@ -98,7 +99,7 @@ void MainWindow::on_actionSettings_triggered()
 	{
 		QApplication::setStyle(settingsDialog->GetStyles()->itemText(settingsDialog->GetStyles()->currentIndex()));
 		_currentStyle = settingsDialog->GetStyles()->currentText();
-		const GameVariant newGameVariant = static_cast<GameVariant>(settingsDialog->GetGameVariants()->currentIndex());
+        const GameVariant newGameVariant = EngineManager::StringToGameVariant(settingsDialog->GetGameVariant()->text());
 		const PieceStyle pieceStyle = static_cast<PieceStyle>(settingsDialog->GetGamePieces()->currentIndex());
 		const EngineOutput engineOutput = static_cast<EngineOutput>(settingsDialog->GetEngineOutput()->currentIndex());
 		const bool highlightMoves = settingsDialog->GetHighlightMoves()->checkState() == Qt::Checked;
@@ -127,7 +128,7 @@ void MainWindow::on_actionSettings_triggered()
 		this->ui->vboard->SetHighlightLastMoves(highlightLastMoves);
         this->ui->vboard->SetTimerState(timerState);
         IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, _currentStyle,
-			settingsDialog->GetGameVariants()->currentText(), settingsDialog->GetGamePieces()->currentText(),
+            settingsDialog->GetGameVariant()->text(), settingsDialog->GetGamePieces()->currentText(),
 			settingsDialog->GetEngineOutput()->currentText(), highlightMoves, highlightShoots,
             highlightAttackers, highlightDefenders, highlightLastMoves, timerState);
 	}

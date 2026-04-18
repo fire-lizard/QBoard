@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VariantDialog</class>
+ <widget class="QDialog" name="VariantDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QDialogButtonBox" name="buttonBox">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>540</y>
+     <width>341</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="variantList">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>381</width>
+     <height>501</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Chess</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Capablanca Chess</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Gothic Chess</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Janus Chess</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Xiangqi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Shatranj</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Makruk</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Mini Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Judkins Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Whale Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Tori Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Euro Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Sho Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Wa Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>CrazyWa</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Chu Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Dai Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Tenjiku Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Dai Dai Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Maka Dai Dai Shogi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Ko Shogi</string>
+    </property>
+   </item>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>VariantDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>VariantDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
