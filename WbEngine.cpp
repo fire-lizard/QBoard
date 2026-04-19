@@ -137,7 +137,8 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 		moveStr.push_back(x2);
 		moveStr.push_back(y2);
 	}
-	if (promotion == 'n' || promotion == 'b' || promotion == 'r' || promotion == 'q' || promotion == '+')
+    if (promotion == 'n' || promotion == 'b' || promotion == 'r' || promotion == 'q' ||
+            promotion == 'a' || promotion == 'c' || promotion == '+')
 	{
 		moveStr.push_back(promotion);
 	}

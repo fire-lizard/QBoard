@@ -20,6 +20,7 @@ SOURCES += main.cpp\
     CapablancaChessBoard.cpp \
     GothicChessBoard.cpp \
     GothicChessPiece.cpp \
+    GrandChessBoard.cpp \
     JanusChessBoard.cpp \
     ToriShogiPiece.cpp \
     ToriShogiBoard.cpp \
@@ -89,6 +90,7 @@ HEADERS  += mainwindow.h \
     Common.h \
     GothicChessBoard.h \
     GothicChessPiece.h \
+    GrandChessBoard.h \
     JanusChessBoard.h \
     Piece.h \
     KanjiPiece.h \

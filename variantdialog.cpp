@@ -6,6 +6,7 @@ VariantDialog::VariantDialog(QWidget *parent) :
     ui(new Ui::VariantDialog)
 {
     ui->setupUi(this);
+    std::for_each(variantMap().begin(), variantMap().end(), [&](QPair<GameVariant, QString> p) {ui->variantList->addItem(p.second);});
 }
 
 VariantDialog::~VariantDialog()
@@ -16,4 +17,9 @@ VariantDialog::~VariantDialog()
 QString VariantDialog::GetVariant()
 {
     return ui->variantList->currentItem()->text();
+}
+
+void VariantDialog::on_variantList_itemDoubleClicked(QListWidgetItem *item)
+{
+    accept();
 }

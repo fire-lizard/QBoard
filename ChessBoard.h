@@ -41,5 +41,5 @@ protected:
 	int _halfMoveCount;
 	std::string _ep = "-";
 
-	bool EnemyPawnsAround(int x, int y) const;
+    virtual bool EnemyPawnsAround(int x, int y) const;
 };

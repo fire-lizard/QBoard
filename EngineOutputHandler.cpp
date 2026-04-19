@@ -388,7 +388,8 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			const bool isPromoted = moveArray.size() == 5
 				&& (y2 == 0 || y2 == board->GetHeight() - 1)
 				&& board->GetData(x1, y1)->GetType() == Pawn
-				&& (moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r' || moveArray[4] == 'q');
+                && (moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r'
+                    || moveArray[4] == 'q' || moveArray[4] == 'a' || moveArray[4] == 'c');
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
 			const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
 			board->Move(x1, y1, x2, y2, false);
@@ -410,13 +411,61 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 				case 'q':
 					board->GetData(x2, y2)->Promote(Queen);
 					break;
-				default:
+                case 'a':
+                    board->GetData(x2, y2)->Promote(Archbishop);
+                    break;
+                case 'c':
+                    board->GetData(x2, y2)->Promote(Chancellor);
+                    break;
+                default:
 					break;
 				}
 			}
 		}
 	}
-	else if (gameVariant == Shatranj)
+    else if (gameVariant == GrandChess)
+    {
+        if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
+        {
+            const bool isPromoted = moveArray.size() == 5
+                && (y2 == 0 || y2 == board->GetHeight() - 1)
+                && board->GetData(x1, y1)->GetType() == Pawn
+                && (moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r'
+                    || moveArray[4] == 'q' || moveArray[4] == 'a' || moveArray[4] == 'c');
+            board->GetMoves(board->GetData(x1, y1), x1, y1);
+            const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
+            board->Move(x1, y1, x2, y2, false);
+            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ct != None ? 'x' : ' ');
+            engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
+            if (isPromoted)
+            {
+                switch (moveArray[4])
+                {
+                case 'n':
+                    board->GetData(x2, y2)->Promote(Knight);
+                    break;
+                case 'b':
+                    board->GetData(x2, y2)->Promote(Bishop);
+                    break;
+                case 'r':
+                    board->GetData(x2, y2)->Promote(Rook);
+                    break;
+                case 'q':
+                    board->GetData(x2, y2)->Promote(Queen);
+                    break;
+                case 'a':
+                    board->GetData(x2, y2)->Promote(Archbishop);
+                    break;
+                case 'c':
+                    board->GetData(x2, y2)->Promote(Chancellor);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
+    else if (gameVariant == Shatranj)
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
 		{
@@ -628,7 +677,8 @@ void EngineOutputHandler::ReadStandardError(const QByteArray& buf, QTextEdit* te
 
 void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3)
 {
-    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == Shatranj)
+    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess
+            || gameVariant == JanusChess || gameVariant == GrandChess || gameVariant == Shatranj)
 	{
 		dynamic_cast<ShatranjBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
@@ -695,7 +745,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 		{
 			std::string stringCode(1, c);
 			PieceType pieceType = None;
-            if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == Shatranj)
+            if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess
+                    || gameVariant == JanusChess || gameVariant == GrandChess || gameVariant == Shatranj)
 			{
 				pieceType = ShatranjPiece::FromStringCode(uppercase(stringCode));
 			}
@@ -776,7 +827,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			i++;
 		}
 	} while ((i < w || j < h - 1) && k < fen.size());
-    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess)
+    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess
+            || gameVariant == JanusChess || gameVariant == GrandChess)
 	{
 		ChessBoard* cb = dynamic_cast<ChessBoard*>(board);
 		if (parts.size() >= 3)

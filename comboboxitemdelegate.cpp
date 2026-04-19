@@ -13,13 +13,7 @@ QWidget* ComboBoxItemDelegate::createEditor(QWidget* parent, const QStyleOptionV
 	if (index.column() == 1)
 	{
 		QComboBox* cb = new QComboBox(parent);
-		const int row = index.row();
-		cb->addItem(QString("Chess").arg(row));
-		cb->addItem(QString("Xiangqi").arg(row));
-		cb->addItem(QString("Shogi").arg(row));
-		cb->addItem(QString("Sho Shogi").arg(row));
-		cb->addItem(QString("Chu Shogi").arg(row));
-		cb->addItem(QString("Mini Shogi").arg(row));
+        std::for_each(variantMap().begin(), variantMap().end(), [&](QPair<GameVariant, QString> p) {cb->addItem(p.second);});
 		return cb;
 	}
 	if (index.column() == 2)

@@ -1,9 +1,11 @@
 #pragma once
+#include <algorithm>
 #include <QDialog>
 #include <QFileDialog>
 #include <QLineEdit>
 #include <QComboBox>
 #include "Common.h"
+#include "enginemanager.h"
 
 namespace Ui {
 class AddEngineDialog;

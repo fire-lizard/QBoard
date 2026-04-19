@@ -409,7 +409,7 @@ void MainWindow::on_actionSave_triggered()
 {
 	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
     if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess ||
-            gameVariant == JanusChess || gameVariant == Shatranj || gameVariant == Makruk)
+            gameVariant == JanusChess || gameVariant == GrandChess || gameVariant == Shatranj || gameVariant == Makruk)
 	{
 		QFileDialog fileDialog(this);
 		fileDialog.setNameFilter("FEN Files (*.fen);;PGN Files (*.pgn)");
@@ -421,13 +421,15 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-                if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess)
+                if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess ||
+                        gameVariant == JanusChess || gameVariant == GrandChess)
 				{
 					QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
 					QString hmStr = QString::number(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->HalfMoveCount());
                     QString clStr = gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess ?
                                 QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetCastling()) : "-";
-                    QString epStr = gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess ?
+                    QString epStr = gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess ||
+                            gameVariant == JanusChess || gameVariant == GrandChess ?
                                 QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetEnPassant()) : "-";
 					str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 					str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
@@ -454,6 +456,8 @@ void MainWindow::on_actionSave_triggered()
                     chessVariant = "[Variant \"gothic\"]\n\n";
                 else if (gameVariant == JanusChess)
                     chessVariant = "[Variant \"janus\"]\n\n";
+                else if (gameVariant == GrandChess)
+                    chessVariant = "[Variant \"grand\"]\n\n";
                 const QString result = "[Result \"*\"]\n";
 				const QString pgn = QString::fromStdString(dynamic_cast<ShatranjBoard*>(this->ui->vboard->GetBoard())->GetPGN());
                 str = (evt + site + currentDate + currentRound + whiteName + blackName + result + chessVariant + pgn).toLatin1();
@@ -817,7 +821,7 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 					engine->StartGame("6x6+6_shogi");
 					break;
                 case WhaleShogi:
-                    engine->StartGame("whale-shogi");
+                    engine->StartGame("whale");
                     break;
                 case ToriShogi:
                     engine->StartGame("7x7+6_shogi");
@@ -866,6 +870,9 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
                     break;
                 case JanusChess:
                     engine->StartGame("janus");
+                    break;
+                case GrandChess:
+                    engine->StartGame("grand");
                     break;
                 case DaiDaiShogi:
 				case MakaDaiDaiShogi:

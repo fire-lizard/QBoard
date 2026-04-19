@@ -1,6 +1,7 @@
 #pragma once
 #include <QStyledItemDelegate>
 #include <QComboBox>
+#include "enginemanager.h"
 
 class ComboBoxItemDelegate : public QStyledItemDelegate
 {

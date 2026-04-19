@@ -4,6 +4,7 @@
 AddEngineDialog::AddEngineDialog(QWidget *parent) : QDialog(parent), ui(new Ui::AddEngineDialog)
 {
     ui->setupUi(this);
+    std::for_each(variantMap().begin(), variantMap().end(), [&](QPair<GameVariant, QString> p) {ui->gameVariant->addItem(p.second);});
     on_gameVariant_currentIndexChanged(0);
 }
 

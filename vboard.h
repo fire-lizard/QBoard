@@ -9,6 +9,7 @@
 #include "KoShogiBoard.h"
 #include "GothicChessBoard.h"
 #include "JanusChessBoard.h"
+#include "GrandChessBoard.h"
 #include "XiangqiBoard.h"
 #include "MiniShogiBoard.h"
 #include "JudkinShogiBoard.h"

@@ -40,6 +40,10 @@ void EngineManager::on_toolButton_clicked()
 			ui->engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
             ui->engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineOptions));
         }
+        else
+        {
+            QMessageBox::critical(this, "Engine was not added to the list", "Engine name or engine path is empty!");
+        }
 	}
 }
 
@@ -102,7 +106,11 @@ void EngineManager::on_toolButton_2_clicked()
 			ui->engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
             ui->engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineOptions));
         }
-	}
+        else
+        {
+            QMessageBox::critical(this, "Engine was not added to the list", "Engine name or engine path is empty!");
+        }
+    }
 }
 
 void EngineManager::on_toolButton_3_clicked()
