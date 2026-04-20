@@ -215,42 +215,42 @@ void MainWindow::on_actionNew_game_triggered()
 
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		qDebug() << "Failed to open the file for reading.";
-		return;
 	}
+    else
+    {
+        QXmlStreamReader xml(&file);
 
-	QXmlStreamReader xml(&file);
+        while (!xml.atEnd() && !xml.hasError()) {
+            const QXmlStreamReader::TokenType token = xml.readNext();
 
-	while (!xml.atEnd() && !xml.hasError()) {
-		const QXmlStreamReader::TokenType token = xml.readNext();
+            if (token == QXmlStreamReader::StartElement) {
 
-		if (token == QXmlStreamReader::StartElement) {
-
-			// Read attributes
-			QString engineName;
-            GameVariant gameVariant = Chess;
-            EngineProtocol engineProtocol;
-			QString enginePath;
-            QString engineOptions;
-            foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
-				if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
-                if (attr.name().toString() == "GameVariant") gameVariant = EngineManager::StringToGameVariant(attr.value().toString());
-                if (attr.name().toString() == "EngineProtocol") engineProtocol = EngineManager::StringToEngineProtocol(attr.value().toString());
-				if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
-                if (attr.name().toString() == "EngineOptions") engineOptions = attr.value().toString();
+                // Read attributes
+                QString engineName;
+                GameVariant gameVariant = Chess;
+                EngineProtocol engineProtocol;
+                QString enginePath;
+                QString engineOptions;
+                foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
+                    if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
+                    if (attr.name().toString() == "GameVariant") gameVariant = EngineManager::StringToGameVariant(attr.value().toString());
+                    if (attr.name().toString() == "EngineProtocol") engineProtocol = EngineManager::StringToEngineProtocol(attr.value().toString());
+                    if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
+                    if (attr.name().toString() == "EngineOptions") engineOptions = attr.value().toString();
+                }
+                if (engineName != "" && enginePath != "" && gameVariant == this->ui->vboard->GetGameVariant())
+                {
+                    _engines.emplace_back(engineName, gameVariant, engineProtocol, enginePath, engineOptions);
+                }
             }
-            if (engineName != "" && enginePath != "" && gameVariant == this->ui->vboard->GetGameVariant())
-			{
-                _engines.emplace_back(engineName, gameVariant, engineProtocol, enginePath, engineOptions);
-			}
-		}
-	}
+        }
 
-	if (xml.hasError()) {
-		qDebug() << "Error reading XML:" << xml.errorString();
-	}
+        if (xml.hasError()) {
+            qDebug() << "Error reading XML:" << xml.errorString();
+        }
 
-	file.close();
-
+        file.close();
+    }
 	for (auto& engine : _engines)
 	{
 		newGameDialog->GetWhitePlayer()->addItem(std::get<0>(engine));
@@ -509,10 +509,9 @@ void MainWindow::on_actionSave_triggered()
 			file.close();
 		}
 	}
-    else if (gameVariant == MicroShogi || gameVariant == KyotoShogi ||
-             gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
-             gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi ||
-             gameVariant == EuroShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
+    else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi ||
+             gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi ||
+             gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
 	{
 		QFileDialog fileDialog(this);
 		if (gameVariant == CrazyWa || gameVariant == WaShogi)
@@ -818,7 +817,7 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
                     engine->StartGame("microshogi");
                     break;
                 case KyotoShogi:
-                    engine->StartGame("kyoto");
+                    engine->StartGame("kyotoshogi");
                     break;
                 case MiniShogi:
 					engine->StartGame("5x5+5_shogi");
@@ -827,13 +826,16 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 					engine->StartGame("6x6+6_shogi");
 					break;
                 case WhaleShogi:
-                    engine->StartGame("whale");
+                    engine->StartGame("whaleshogi");
                     break;
                 case ToriShogi:
                     engine->StartGame("7x7+6_shogi");
                     break;
                 case EuroShogi:
                     engine->StartGame("euroshogi");
+                    break;
+                case YariShogi:
+                    engine->StartGame("yarishogi");
                     break;
                 case ShoShogi:
 					engine->StartGame("sho");

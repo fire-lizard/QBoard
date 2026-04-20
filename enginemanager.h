@@ -33,6 +33,7 @@ namespace {
             {WhaleShogi,      "Whale Shogi"},
             {ToriShogi,       "Tori Shogi"},
             {EuroShogi,       "Euro Shogi"},
+            {YariShogi,       "Yari Shogi"},
             {ShoShogi,        "Sho Shogi"},
             {WaShogi,         "Wa Shogi"},
             {CrazyWa,         "CrazyWa"},

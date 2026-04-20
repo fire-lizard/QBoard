@@ -31,6 +31,8 @@ SOURCES += main.cpp\
     EuroShogiBoard.cpp \
     WhaleShogiBoard.cpp \
     WhaleShogiPiece.cpp \
+    YariShogiBoard.cpp \
+    YariShogiPiece.cpp \
     mainwindow.cpp \
     Board.cpp \
     ChessBoard.cpp \
@@ -108,6 +110,8 @@ HEADERS  += mainwindow.h \
     EuroShogiBoard.h \
     WhaleShogiBoard.h \
     WhaleShogiPiece.h \
+    YariShogiBoard.h \
+    YariShogiPiece.h \
     promotiondialog.h \
     gothicpromotiondialog.h \
     januspromotiondialog.h \

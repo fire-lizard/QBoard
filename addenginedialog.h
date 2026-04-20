@@ -33,9 +33,9 @@ public:
 private slots:
     void on_toolButton_clicked();
 
-    void on_gameVariant_currentIndexChanged(int index);
-
     void on_toolButton_2_clicked();
+
+    void on_gameVariant_textChanged(const QString &arg1);
 
 private:
     Ui::AddEngineDialog *ui;

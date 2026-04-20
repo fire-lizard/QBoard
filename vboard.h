@@ -16,6 +16,7 @@
 #include "WhaleShogiBoard.h"
 #include "ToriShogiBoard.h"
 #include "EuroShogiBoard.h"
+#include "YariShogiBoard.h"
 #include "WaShogiBoard.h"
 #include "TenjikuShogiBoard.h"
 #include "MakrukBoard.h"

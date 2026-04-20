@@ -8,11 +8,14 @@
      * Grand Chess
   2. Shogi Variants
      * Shogi
+     * Micro Shogi
+     * Kyoto Shogi
      * Mini Shogi
      * Judkins Shogi
      * Whale Shogi
      * Tori Shogi
      * Euro Shogi
+     * Yari Shogi
      * Sho Shogi
      * Wa Shogi
      * Chu Shogi
@@ -41,7 +44,7 @@
   3. WXF
   4. PSN
   5. CSA
-  5. KIF
-  5. KI2
+  6. KIF
+  7. KI2
   
 Also could be possible to import game as FEN and continue it (depends on the engine capabilities).

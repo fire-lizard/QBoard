@@ -46,6 +46,11 @@ void VBoard::paintEvent(QPaintEvent *)
         else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_torim/images_torim/";
         else resourcePrefix = ":/pieces_torik/images_torik/";
         break;
+    case YariShogi:
+        if (_pieceStyle == European) resourcePrefix = ":/pieces_yam/images_yam/";
+        else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_ptg/images_ptg/";
+        else resourcePrefix = ":/pieces_yam/images_yam/";
+        break;
     case ChuShogi:
 		if (_pieceStyle == Asian) resourcePrefix = ":/pieces_tnk/images_tnk/";
 		else if (_pieceStyle == Asian2) resourcePrefix = ":/pieces_maka2/images_maka2/";
@@ -492,6 +497,9 @@ void VBoard::paintEvent(QPaintEvent *)
                     else if (_pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
                     else imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
                     break;
+                case YariShogi:
+                    imageFileName = p->GetImageFileName();
+                    break;
                 case DaiShogi:
 					if (_pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 					else if (_pieceStyle == Asian2 || _pieceStyle == Asian4) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
@@ -568,6 +576,9 @@ void VBoard::paintEvent(QPaintEvent *)
                     {
                         painter.drawPixmap(i * w + w / 6, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
                     }
+                    break;
+                case YariShogi:
+                    painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
                     break;
                 case MakaDaiDaiShogi:
 					if (_pieceStyle == Asian)
@@ -1942,6 +1953,9 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
     case EuroShogi:
         _board = new EuroShogiBoard();
         break;
+    case YariShogi:
+        _board = new YariShogiBoard();
+        break;
     case WaShogi:
 		_board = new WaShogiBoard();
 		dynamic_cast<ShogiBoard*>(_board)->SetDrops(false);
@@ -2496,6 +2510,14 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
                 blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ShogiPiece)));
             }
         }
+        else if (_gameVariant == YariShogi)
+        {
+            for (auto& YariShogiPiece : YariShogiPieces)
+            {
+                whiteRegular->addAction(QString::fromStdString(YariShogiPiece::PieceType2Description(YariShogiPiece)));
+                blackRegular->addAction(QString::fromStdString(YariShogiPiece::PieceType2Description(YariShogiPiece)));
+            }
+        }
         else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)
 		{
 			for (auto& WaShogiPiece : WaShogiPieces)
@@ -2630,6 +2652,10 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
             {
                 _chosenPiece = ToriShogiPiece::Description2PieceType(selectedAction->text().toStdString());
             }
+            else if (_gameVariant == YariShogi)
+            {
+                _chosenPiece = YariShogiPiece::Description2PieceType(selectedAction->text().toStdString());
+            }
             else if (_gameVariant == CrazyWa || _gameVariant == WaShogi)
 			{
 				_chosenPiece = WaShogiPiece::Description2PieceType(selectedAction->text().toStdString());
@@ -2669,7 +2695,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 
     if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != Shogi && _gameVariant != MiniShogi &&
             _gameVariant != JudkinShogi && _gameVariant != WhaleShogi && _gameVariant != ToriShogi &&
-            _gameVariant != EuroShogi && _gameVariant != CrazyWa) return;
+            _gameVariant != EuroShogi && _gameVariant != YariShogi && _gameVariant != CrazyWa) return;
 	if ((_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black) ||
 		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;
 
@@ -2688,6 +2714,11 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
         {
             ToriShogiPiece p(cp, _currentPlayer);
             str = p.Description() + " (" + p.KanjiStringCode() + ")";
+        }
+        else if (_gameVariant == YariShogi)
+        {
+            YariShogiPiece p(cp, _currentPlayer);
+            str = p.Description();
         }
         else if (_gameVariant == CrazyWa)
 		{
@@ -2716,6 +2747,8 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
             newPiece = WhaleShogiPiece::Description2PieceType(longStringCode);
         else if (_gameVariant == ToriShogi)
             newPiece = ToriShogiPiece::Description2PieceType(longStringCode);
+        else if (_gameVariant == YariShogi)
+            newPiece = YariShogiPiece::Description2PieceType(longStringCode);
         else if (_gameVariant == CrazyWa)
             newPiece = WaShogiPiece::Description2PieceType(longStringCode);
         else

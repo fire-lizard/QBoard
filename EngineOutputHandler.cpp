@@ -198,7 +198,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 			else
 			{
                 QRegularExpressionMatch match = gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi ||
-                        gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi
+                        gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi
 					? _sgxbre.match(part) : _csre.match(part);
 				if (match.hasMatch())
 				{
@@ -498,10 +498,10 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		}
 	}
     else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
-             gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
+             gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
 	{
         if ((gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi ||
-             gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == CrazyWa) && (moveArray[1] == '@' || moveArray[1] == '*'))
+             gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == CrazyWa) && (moveArray[1] == '@' || moveArray[1] == '*'))
 		{
 			PieceType newPiece;
             if (gameVariant == WhaleShogi)
@@ -656,7 +656,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 					|| (gameVariant == JudkinShogi && (y2 == 0 || y2 == 5) && moveArray[4] == '+')
                     || (gameVariant == ToriShogi && (y2 <= 1 || y2 >= 5) && moveArray[4] == '+')
                     || (gameVariant == EuroShogi && (y2 <= 2 || y2 >= 5) && moveArray[4] == '+')
-                    || ((gameVariant == Shogi || gameVariant == ShoShogi) && (y2 <= 2 || y2 >= 6) && moveArray[4] == '+')
+                    || ((gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == YariShogi) && (y2 <= 2 || y2 >= 6) && moveArray[4] == '+')
 					|| ((gameVariant == WaShogi || gameVariant == CrazyWa) && (y2 <= 2 || y2 >= 8) && moveArray[4] == '+'));
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
 			board->Move(x1, y1, x2, y2, false);
@@ -779,7 +779,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			{
 				pieceType = ChuShogiPiece::FromStringCode(promo + uppercase(stringCode));
 			}
-			else if (gameVariant == DaiShogi || gameVariant == TenjikuShogi ||
+            else if (gameVariant == DaiShogi || gameVariant == TenjikuShogi || gameVariant == YariShogi ||
 				gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
 			{
 				if (k < fen.size() - 1 && (fen[k + 1] == '\'' || fen[k + 1] == '!' || fen[k + 1] == '~'))
@@ -795,7 +795,11 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 				{
 					pieceType = TenjikuShogiPiece::FromStringCode(promo + uppercase(stringCode));
 				}
-				else if (gameVariant == DaiDaiShogi)
+                else if (gameVariant == YariShogi)
+                {
+                    pieceType = YariShogiPiece::FromStringCode(uppercase(stringCode));
+                }
+                else if (gameVariant == DaiDaiShogi)
 				{
 					pieceType = DaiDaiShogiPiece::FromStringCode(promo + uppercase(stringCode));
 				}
@@ -850,8 +854,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			}
 		}
 	}
-    if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi ||
-            gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi)
+    if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
+            gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi)
 	{
 		if (parts.size() >= 3)
 		{
@@ -908,7 +912,7 @@ bool EngineOutputHandler::IsInsidePromotionZone(GameVariant gameVariant, PieceCo
             return true;
         }
     }
-    if (gameVariant == Shogi || gameVariant == ShoShogi)
+    if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == YariShogi)
 	{
 		if ((y >= 6 && pieceColour == Black) ||
 			(y <= 2 && pieceColour == White))
@@ -986,7 +990,7 @@ bool EngineOutputHandler::CanBePromoted(const Piece* piece, GameVariant gameVari
         {
             return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
         }
-        if ((gameVariant == Shogi || gameVariant == ShoShogi) && !piece->IsPromoted() &&
+        if ((gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == YariShogi) && !piece->IsPromoted() &&
 			piece->GetType() != King && piece->GetType() != Gold &&
 			piece->GetType() != DragonKing && piece->GetType() != DragonHorse)
 		{

@@ -65,7 +65,7 @@ std::string KyotoShogiPiece::GetImageFileName() const
     case Knight:
         return "Knight_" + colour + ".png";
     default:
-        return ShogiPiece::GetImageFileName();
+        return "";
     }
 }
 
@@ -93,7 +93,7 @@ std::string KyotoShogiPiece::GetKanjiImageFileName()
     case Knight:
         return "Knight_F" + colour + ".png";
     default:
-        return ShogiPiece::GetKanjiImageFileName();
+        return "";
     }
 }
 
@@ -121,6 +121,6 @@ std::string KyotoShogiPiece::GetKanjiImageFileName2()
     case Knight:
         return "Knight_I" + colour + ".png";
     default:
-        return ShogiPiece::GetKanjiImageFileName2();
+        return "";
     }
 }
