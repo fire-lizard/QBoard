@@ -13,7 +13,7 @@ enum GameFormat
 enum GameVariant
 {
     Chess, CapablancaChess, GothicChess, JanusChess, GrandChess, Xiangqi, Shatranj, Makruk,
-    Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, YariShogi,
+    Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi,
     ShoShogi, WaShogi, CrazyWa, ChuShogi, DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
 };
 
@@ -75,7 +75,7 @@ enum Direction
 	NorthWest, North, NorthEast, East, SouthEast, South, SouthWest, West
 };
 
-inline GameVariant shogiVariants[] = { MicroShogi, KyotoShogi, Shogi, MiniShogi, JudkinShogi, ToriShogi, EuroShogi, YariShogi, ChuShogi,
+inline GameVariant shogiVariants[] = { MicroShogi, KyotoShogi, Shogi, MiniShogi, JudkinShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi, ChuShogi,
                                        DaiShogi, ShoShogi, WaShogi, CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi };
 inline PieceType lionPieces[] = { Lion, Eagle, Unicorn, LionHawk, FreeEagle, LionDog, TeachingKing, BuddhistSpirit,
 								  FuriousFiend, GreatElephant, RoamingAssault, RisingDragon, WingedTiger, FlyingHawk,
@@ -157,6 +157,8 @@ inline PieceType EuroShogiPieces[] = { King, Gold, Bishop, Knight, Rook, Pawn };
 
 inline PieceType YariShogiPieces[] = { King, Rook, Pawn, YariKnight, YariGold, YariSilver, YariBishop, YariRook };
 
+inline PieceType HeianShogiPieces[] = { King, Pawn, Knight, Gold, Silver, Lance };
+
 inline char CHESSFEN[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 inline char CAPABLANCAFEN[] = "rnabqkbcnr/pppppppppp/10/10/10/10/PPPPPPPPPP/RNABQKBCNR w KQkq - 0 1";
@@ -186,6 +188,8 @@ inline char TORISHOGIFEN[] = "rpckcpl/3f3/sssssss/2s1S2/SSSSSSS/3F3/LPCKCPR w";
 inline char EUROSHOGIFEN[] = "1nbgkgn1/1r4b1/pppppppp/8/8/PPPPPPPP/1B4R1/1NGKGBN1 w";
 
 inline char YARISHOGIFEN[] = "r'n'n'kb'b'r'/7/ppppppp/7/7/7/PPPPPPP/7/R'B'B'KN'N'R' w";
+
+inline char HEIANSHOGIFEN[] = "lnsgkgsnl/9/ppppppppp/9/9/PPPPPPPPP/9/LNSGKGSNL w";
 
 inline char WASHOGIFEN[] = "hmlcvkwgudo/1e3s3f1/ppprpppxppp/3p3p3/11/11/11/3P3P3/PPPXPPPRPPP/1F3S3E1/ODUGWKVCLMH w";
 

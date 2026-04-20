@@ -34,6 +34,7 @@ namespace {
             {ToriShogi,       "Tori Shogi"},
             {EuroShogi,       "Euro Shogi"},
             {YariShogi,       "Yari Shogi"},
+            {HeianShogi,      "Heian Shogi"},
             {ShoShogi,        "Sho Shogi"},
             {WaShogi,         "Wa Shogi"},
             {CrazyWa,         "CrazyWa"},

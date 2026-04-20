@@ -16,6 +16,7 @@
      * Tori Shogi
      * Euro Shogi
      * Yari Shogi
+     * Heian Shogi
      * Sho Shogi
      * Wa Shogi
      * Chu Shogi

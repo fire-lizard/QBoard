@@ -32,6 +32,7 @@ void VBoard::paintEvent(QPaintEvent *)
 	case MiniShogi:
 	case JudkinShogi:
     case EuroShogi:
+    case HeianShogi:
 		if (_pieceStyle == European) resourcePrefix = ":/pieces_eur/images/";
 		else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_sho2/images_sho2/";
 		else if (_pieceStyle == Asian) resourcePrefix = ":/pieces_sho/images_sho/";
@@ -484,6 +485,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				case MiniShogi:
 				case JudkinShogi:
                 case EuroShogi:
+                case HeianShogi:
                     if (_pieceStyle == Mnemonic || _pieceStyle == Asian || _pieceStyle == Asian2) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 					else if (_pieceStyle == Asian3 || _pieceStyle == Asian4) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
 					else imageFileName = p->GetImageFileName();
@@ -555,6 +557,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				case MiniShogi:
 				case JudkinShogi:
                 case EuroShogi:
+                case HeianShogi:
                     if (isAsianStyle)
 					{
                         painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
@@ -1956,6 +1959,9 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
     case YariShogi:
         _board = new YariShogiBoard();
         break;
+    case HeianShogi:
+        _board = new HeianShogiBoard();
+        break;
     case WaShogi:
 		_board = new WaShogiBoard();
 		dynamic_cast<ShogiBoard*>(_board)->SetDrops(false);
@@ -2516,6 +2522,14 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
             {
                 whiteRegular->addAction(QString::fromStdString(YariShogiPiece::PieceType2Description(YariShogiPiece)));
                 blackRegular->addAction(QString::fromStdString(YariShogiPiece::PieceType2Description(YariShogiPiece)));
+            }
+        }
+        else if (_gameVariant == HeianShogi)
+        {
+            for (auto& ShogiPiece : HeianShogiPieces)
+            {
+                whiteRegular->addAction(QString::fromStdString(ShogiPiece::PieceType2Description(ShogiPiece)));
+                blackRegular->addAction(QString::fromStdString(ShogiPiece::PieceType2Description(ShogiPiece)));
             }
         }
         else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)

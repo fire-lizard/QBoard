@@ -511,7 +511,7 @@ void MainWindow::on_actionSave_triggered()
 	}
     else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi ||
              gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi ||
-             gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
+             gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == HeianShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
 	{
 		QFileDialog fileDialog(this);
 		if (gameVariant == CrazyWa || gameVariant == WaShogi)
@@ -836,6 +836,9 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
                     break;
                 case YariShogi:
                     engine->StartGame("yarishogi");
+                    break;
+                case HeianShogi:
+                    engine->StartGame("heian");
                     break;
                 case ShoShogi:
 					engine->StartGame("sho");
