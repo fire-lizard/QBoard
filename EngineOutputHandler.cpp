@@ -197,8 +197,8 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 			}
 			else
 			{
-                QRegularExpressionMatch match = gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
-                        gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi
+                QRegularExpressionMatch match = gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi ||
+                        gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi
 					? _sgxbre.match(part) : _csre.match(part);
 				if (match.hasMatch())
 				{
@@ -497,10 +497,10 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			}
 		}
 	}
-    else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
+    else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
              gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
 	{
-        if ((gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi ||
+        if ((gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi ||
              gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == CrazyWa) && (moveArray[1] == '@' || moveArray[1] == '*'))
 		{
 			PieceType newPiece;
@@ -686,8 +686,8 @@ void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceTy
 	{
 		dynamic_cast<MakrukBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
-    else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
-             gameVariant == JudkinShogi || gameVariant == EuroShogi)
+    else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi ||
+             gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == EuroShogi)
 	{
 		dynamic_cast<ShogiBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
@@ -758,8 +758,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			{
 				pieceType = MakrukPiece::FromStringCode(uppercase(stringCode));
 			}
-            else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
-                     gameVariant == JudkinShogi || gameVariant == EuroShogi)
+            else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi ||
+                     gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == EuroShogi)
             {
                 pieceType = ShogiPiece::FromStringCode(promo + uppercase(stringCode));
             }
@@ -819,7 +819,10 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			Piece* piece = board->CreatePiece(pieceType, c >= 'a' && c <= 'z' ? Black : White);
 			if (promo == "+")
 			{
-				piece->Promote();
+                if (gameVariant != MicroShogi && gameVariant != KyotoShogi)
+                {
+                    piece->Promote();
+                }
 			}
 			board->SetData(i, j, piece);
 			promo = "";
@@ -847,8 +850,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			}
 		}
 	}
-    if (gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
-            gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi)
+    if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi ||
+            gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi)
 	{
 		if (parts.size() >= 3)
 		{

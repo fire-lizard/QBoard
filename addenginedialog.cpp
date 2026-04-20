@@ -4,8 +4,9 @@
 AddEngineDialog::AddEngineDialog(QWidget *parent) : QDialog(parent), ui(new Ui::AddEngineDialog)
 {
     ui->setupUi(this);
-    std::for_each(variantMap().begin(), variantMap().end(), [&](QPair<GameVariant, QString> p) {ui->gameVariant->addItem(p.second);});
     on_gameVariant_currentIndexChanged(0);
+    ui->gameVariant->setText("Chess");
+    ui->gameVariant->setStyleSheet("QLineEdit { background: rgb(0, 223, 223); selection-background-color: rgb(223, 99, 0); }");
 }
 
 AddEngineDialog::~AddEngineDialog()
@@ -18,7 +19,7 @@ QLineEdit * AddEngineDialog::GetEngineName() const
 	return ui->engineName;
 }
 
-QComboBox* AddEngineDialog::GetGameVariant() const
+QLineEdit * AddEngineDialog::GetGameVariant() const
 {
 	return ui->gameVariant;
 }
@@ -45,7 +46,7 @@ void AddEngineDialog::SetEngineName(const QString& engineName) const
 
 void AddEngineDialog::SetGameVariant(const QString& gameVariant) const
 {
-    ui->gameVariant->setCurrentText(gameVariant);
+    ui->gameVariant->setText(gameVariant);
 }
 
 void AddEngineDialog::SetEngineProtocol(const QString& engineProtocol) const
@@ -97,3 +98,13 @@ void AddEngineDialog::on_gameVariant_currentIndexChanged(int index)
     ui->engineProtocol->addItem("XBoard");
 }
 
+
+void AddEngineDialog::on_toolButton_2_clicked()
+{
+    VariantDialog* vd = new VariantDialog(this);
+    vd->exec();
+    if (vd->result() == QDialog::Accepted)
+    {
+        ui->gameVariant->setText(vd->GetVariant());
+    }
+}

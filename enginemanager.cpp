@@ -26,7 +26,7 @@ void EngineManager::on_toolButton_clicked()
 	if (addEngineDialog->result() == QDialog::Accepted)
 	{
 		const QString engineName = addEngineDialog->GetEngineName()->text();
-		const QString gameName = addEngineDialog->GetGameVariant()->currentText();
+        const QString gameName = addEngineDialog->GetGameVariant()->text();
 		const QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
 		const QString enginePath = addEngineDialog->GetEnginePath()->text();
         const QString engineOptions = addEngineDialog->GetEngineOptions()->text();
@@ -94,7 +94,7 @@ void EngineManager::on_toolButton_2_clicked()
 	if (addEngineDialog->result() == QDialog::Accepted)
 	{
 		const QString engineName = addEngineDialog->GetEngineName()->text();
-		const QString gameName = addEngineDialog->GetGameVariant()->currentText();
+        const QString gameName = addEngineDialog->GetGameVariant()->text();
 		const QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
 		const QString enginePath = addEngineDialog->GetEnginePath()->text();
         const QString engineOptions = addEngineDialog->GetEngineOptions()->text();

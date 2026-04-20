@@ -11,7 +11,7 @@
 #include "JanusChessBoard.h"
 #include "GrandChessBoard.h"
 #include "XiangqiBoard.h"
-#include "MiniShogiBoard.h"
+#include "MicroShogiBoard.h"
 #include "JudkinShogiBoard.h"
 #include "WhaleShogiBoard.h"
 #include "ToriShogiBoard.h"

@@ -23,7 +23,11 @@ void VBoard::paintEvent(QPaintEvent *)
 		else if (_pieceStyle == Asian) resourcePrefix = ":/pieces_chi/images_chi/";
 		else resourcePrefix = ":/pieces_chi2/images_chi2/";
 		break;
-	case Shogi:
+    case MicroShogi:
+    case KyotoShogi:
+        resourcePrefix = ":/pieces_kyo/images_kyo/";
+        break;
+    case Shogi:
 	case ShoShogi:
 	case MiniShogi:
 	case JudkinShogi:
@@ -464,7 +468,13 @@ void VBoard::paintEvent(QPaintEvent *)
 					imageFileName = _pieceStyle == European ?
 						p->GetImageFileName() : dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 					break;
-				case Shogi:
+                case MicroShogi:
+                case KyotoShogi:
+                    if (_pieceStyle == European) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
+                    else if (_pieceStyle == Mnemonic) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
+                    else imageFileName = p->GetImageFileName();
+                    break;
+                case Shogi:
 				case ShoShogi:
 				case MiniShogi:
 				case JudkinShogi:
@@ -528,7 +538,11 @@ void VBoard::paintEvent(QPaintEvent *)
 				QPixmap pixmap(resourcePrefix + QString::fromStdString(imageFileName));
 				switch (_gameVariant)
 				{
-				case Shogi:
+                case MicroShogi:
+                case KyotoShogi:
+                    painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+                    break;
+                case Shogi:
 				case ShoShogi:
 				case MiniShogi:
 				case JudkinShogi:
@@ -732,7 +746,10 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			Piece* newPiece = _board->CreatePiece(_chosenPiece, _chosenColour);
 			if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), _chosenPiece) != std::end(_promotedPieces))
 			{
-				newPiece->Promote();
+                if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi)
+                {
+                    newPiece->Promote();
+                }
 			}
 			_board->SetData(x, y, newPiece);
 		}
@@ -1655,7 +1672,11 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 			_currentPiece->Promote();
 		}
 	}
-	else if (_gameVariant == DaiDaiShogi)
+    else if (_gameVariant == KyotoShogi)
+    {
+        _currentPiece->Promote();
+    }
+    else if (_gameVariant == DaiDaiShogi)
 	{
 		if (!_currentPiece->IsPromoted() && p != nullptr &&
 			std::find(std::begin(UnpromotablePieces),
@@ -1900,7 +1921,13 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		s = 48;
 		_board = new KoShogiBoard();
 		break;
-	case MiniShogi:
+    case MicroShogi:
+        _board = new MicroShogiBoard();
+        break;
+    case KyotoShogi:
+        _board = new KyotoShogiBoard();
+        break;
+    case MiniShogi:
 		_board = new MiniShogiBoard();
 		break;
 	case JudkinShogi:
@@ -2421,7 +2448,15 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ShogiPiece)));
 			}
 		}
-		else if (_gameVariant == MiniShogi)
+        else if (_gameVariant == MicroShogi || _gameVariant == KyotoShogi)
+        {
+            for (auto& ShogiPiece : MicroShogiPieces)
+            {
+                whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ShogiPiece)));
+                blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ShogiPiece)));
+            }
+        }
+        else if (_gameVariant == MiniShogi)
 		{
 			for (auto& ShogiPiece : MiniShogiPieces)
 			{
@@ -2619,7 +2654,10 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				Piece* newPiece = _board->CreatePiece(_chosenPiece, _chosenColour);
 				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), _chosenPiece) != std::end(_promotedPieces))
 				{
-					newPiece->Promote();
+                    if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi)
+                    {
+                        newPiece->Promote();
+                    }
 				}
 				_board->SetData(x, y, newPiece);
 			}
@@ -2629,8 +2667,9 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		return;
 	}
 
-    if (_gameVariant != Shogi && _gameVariant != MiniShogi && _gameVariant != JudkinShogi && _gameVariant != WhaleShogi &&
-            _gameVariant != ToriShogi && _gameVariant != EuroShogi && _gameVariant != CrazyWa) return;
+    if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != Shogi && _gameVariant != MiniShogi &&
+            _gameVariant != JudkinShogi && _gameVariant != WhaleShogi && _gameVariant != ToriShogi &&
+            _gameVariant != EuroShogi && _gameVariant != CrazyWa) return;
 	if ((_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black) ||
 		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;
 

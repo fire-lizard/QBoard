@@ -6,6 +6,7 @@
 #include <QComboBox>
 #include "Common.h"
 #include "enginemanager.h"
+#include "variantdialog.h"
 
 namespace Ui {
 class AddEngineDialog;
@@ -19,7 +20,7 @@ public:
     explicit AddEngineDialog(QWidget *parent = nullptr);
     ~AddEngineDialog() override;
 	QLineEdit* GetEngineName() const;
-	QComboBox* GetGameVariant() const;
+    QLineEdit* GetGameVariant() const;
 	QComboBox* GetEngineProtocol() const;
 	QLineEdit* GetEnginePath() const;
     QLineEdit* GetEngineOptions() const;
@@ -33,6 +34,8 @@ private slots:
     void on_toolButton_clicked();
 
     void on_gameVariant_currentIndexChanged(int index);
+
+    void on_toolButton_2_clicked();
 
 private:
     Ui::AddEngineDialog *ui;

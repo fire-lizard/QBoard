@@ -22,6 +22,10 @@ SOURCES += main.cpp\
     GothicChessPiece.cpp \
     GrandChessBoard.cpp \
     JanusChessBoard.cpp \
+    KyotoShogiBoard.cpp \
+    KyotoShogiPiece.cpp \
+    MicroShogiBoard.cpp \
+    MicroShogiPiece.cpp \
     ToriShogiPiece.cpp \
     ToriShogiBoard.cpp \
     EuroShogiBoard.cpp \
@@ -92,6 +96,10 @@ HEADERS  += mainwindow.h \
     GothicChessPiece.h \
     GrandChessBoard.h \
     JanusChessBoard.h \
+    KyotoShogiBoard.h \
+    KyotoShogiPiece.h \
+    MicroShogiBoard.h \
+    MicroShogiPiece.h \
     Piece.h \
     KanjiPiece.h \
     Logger.h \

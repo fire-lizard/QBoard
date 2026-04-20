@@ -13,8 +13,8 @@ enum GameFormat
 enum GameVariant
 {
     Chess, CapablancaChess, GothicChess, JanusChess, GrandChess, Xiangqi, Shatranj, Makruk,
-    Shogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, ShoShogi, WaShogi, CrazyWa,
-    ChuShogi, DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
+    Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi,
+    ShoShogi, WaShogi, CrazyWa, ChuShogi, DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
 };
 
 enum PieceColour
@@ -73,8 +73,8 @@ enum Direction
 	NorthWest, North, NorthEast, East, SouthEast, South, SouthWest, West
 };
 
-inline GameVariant shogiVariants[] = { Shogi, MiniShogi, JudkinShogi, ToriShogi, EuroShogi, ChuShogi, DaiShogi,
-                                       ShoShogi, WaShogi, CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi };
+inline GameVariant shogiVariants[] = { MicroShogi, KyotoShogi, Shogi, MiniShogi, JudkinShogi, ToriShogi, EuroShogi, ChuShogi,
+                                       DaiShogi, ShoShogi, WaShogi, CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi };
 inline PieceType lionPieces[] = { Lion, Eagle, Unicorn, LionHawk, FreeEagle, LionDog, TeachingKing, BuddhistSpirit,
 								  FuriousFiend, GreatElephant, RoamingAssault, RisingDragon, WingedTiger, FlyingHawk,
 								  Thunderclap, KnightCaptain, WingedHorse, ExtensiveFog, HolyLight, DoubleKylin, DoublePhoenix };
@@ -141,6 +141,8 @@ inline PieceType ShoShogiPieces[] = { King, Gold, Silver, Knight, Lance, Elephan
 									  PromotedLance, PromotedKnight, PromotedSilver, Tokin, Prince,
 									  DragonHorse, DragonKing };
 
+inline PieceType MicroShogiPieces[] = { King, Gold, Silver, Rook, Bishop, Pawn, Lance, Tokin, Knight };
+
 inline PieceType MiniShogiPieces[] = { King, Gold, Silver, Rook, Bishop, Pawn, PromotedSilver, Tokin, DragonHorse, DragonKing };
 
 inline PieceType JudkinsShogiPieces[] = { King, Gold, Silver, Knight, Rook, Bishop, Pawn, PromotedKnight, PromotedSilver, Tokin, DragonHorse, DragonKing };
@@ -159,9 +161,15 @@ inline char GOTHICFEN[] = "rnbqckabnr/pppppppppp/10/10/10/10/PPPPPPPPPP/RNBQCKAB
 
 inline char JANUSFEN[] = "ranbqkbnar/pppppppppp/10/10/10/10/PPPPPPPPPP/RANBQKBNAR w KQkq - 0 1";
 
+inline char GRANDFEN[] = "r8r/1nbqkcabn1/pppppppppp/10/10/10/10/PPPPPPPPPP/1NBQKCABN1/R8R w - - 0 1";
+
 inline char XIANGQIFEN[] = "rheakaehr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RHEAKAEHR w - - 0 1";
 
 inline char SHOGIFEN[] = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1";
+
+inline char MICROSHOGIFEN[] = "kbgs/p3/4/3P/SGBK w - 1";
+
+inline char KYOTOSHOGIFEN[] = "pgks+p/5/5/5/+PSKGP w - 1";
 
 inline char MINISHOGIFEN[] = "rbsgk/4p/5/P4/KGSBR w - 1";
 

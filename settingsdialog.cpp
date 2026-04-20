@@ -8,6 +8,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Se
 	foreach(const QString &str, QStyleFactory::keys()) {
 		ui->stylesComboBox->addItem(str);
 	}
+
+    ui->variantsLineEdit->setStyleSheet("QLineEdit { background: rgb(0, 223, 223); selection-background-color: rgb(223, 99, 0); }");
 }
 
 SettingsDialog::~SettingsDialog()

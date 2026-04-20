@@ -83,7 +83,6 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionSettings_triggered()
 {
 	SettingsDialog *settingsDialog = new SettingsDialog(this);
-    settingsDialog->GetGameVariant()->setStyleSheet("QLineEdit { background: rgb(0, 223, 223); selection-background-color: rgb(223, 99, 0); }");
     settingsDialog->GetGameVariant()->setText(EngineManager::GameVariantToString(this->ui->vboard->GetGameVariant()));
     settingsDialog->GetGamePieces()->setCurrentIndex(this->ui->vboard->GetPieceStyle());
 	settingsDialog->GetEngineOutput()->setCurrentIndex(this->ui->vboard->GetEngineOutput());
@@ -510,7 +509,8 @@ void MainWindow::on_actionSave_triggered()
 			file.close();
 		}
 	}
-	else if (gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
+    else if (gameVariant == MicroShogi || gameVariant == KyotoShogi ||
+             gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
              gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi ||
              gameVariant == EuroShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
 	{
@@ -814,7 +814,13 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 			{
 				switch (ui->vboard->GetGameVariant())
 				{
-				case MiniShogi:
+                case MicroShogi:
+                    engine->StartGame("microshogi");
+                    break;
+                case KyotoShogi:
+                    engine->StartGame("kyoto");
+                    break;
+                case MiniShogi:
 					engine->StartGame("5x5+5_shogi");
 					break;
 				case JudkinShogi:
@@ -847,7 +853,16 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 				case TenjikuShogi:
 					engine->StartGame("tenjiku");
 					break;
-				case Shogi:
+                case DaiDaiShogi:
+                    engine->StartGame("daidai");
+                    break;
+                case MakaDaiDaiShogi:
+                    engine->StartGame("maka");
+                    break;
+                case KoShogi:
+                    engine->StartGame("ko");
+                    break;
+                case Shogi:
 					engine->StartGame("shogi");
 					break;
 				case Shatranj:
@@ -874,11 +889,6 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
                 case GrandChess:
                     engine->StartGame("grand");
                     break;
-                case DaiDaiShogi:
-				case MakaDaiDaiShogi:
-				case KoShogi:
-					engine->StartGame();
-					break;
 				}
 				if (engineExe.toLower().contains("hachu"))
 				{

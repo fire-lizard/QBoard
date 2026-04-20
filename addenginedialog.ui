@@ -71,9 +71,9 @@
   <widget class="QComboBox" name="engineProtocol">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>240</x>
      <y>90</y>
-     <width>113</width>
+     <width>150</width>
      <height>22</height>
     </rect>
    </property>
@@ -152,16 +152,6 @@
     <string>Game variant</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="gameVariant">
-   <property name="geometry">
-    <rect>
-     <x>278</x>
-     <y>50</y>
-     <width>111</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="labelEngineOptions">
    <property name="geometry">
     <rect>
@@ -183,6 +173,32 @@
      <width>231</width>
      <height>22</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="gameVariant">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>50</y>
+     <width>120</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton_2">
+   <property name="geometry">
+    <rect>
+     <x>365</x>
+     <y>50</y>
+     <width>25</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>...</string>
    </property>
   </widget>
  </widget>

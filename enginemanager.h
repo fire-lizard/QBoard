@@ -26,6 +26,8 @@ namespace {
             {Shatranj,        "Shatranj"},
             {Makruk,          "Makruk"},
             {Shogi,           "Shogi"},
+            {MicroShogi,      "Micro Shogi"},
+            {KyotoShogi,      "Kyoto Shogi"},
             {MiniShogi,       "Mini Shogi"},
             {JudkinShogi,     "Judkins Shogi"},
             {WhaleShogi,      "Whale Shogi"},
