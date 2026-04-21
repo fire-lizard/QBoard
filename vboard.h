@@ -84,6 +84,7 @@ private:
 	bool AskForPromotion();
 	void FinishMove(int x, int y);
 	void CancelLionMove();
+    char ChessPieceChar(PieceType chessPiece);
 
 	Board *_board;
 	Board *_editorBoard = nullptr;

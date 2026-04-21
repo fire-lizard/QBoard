@@ -15,6 +15,7 @@ public:
     ~GothicPromotionDialog() override;
 
     PieceType GetChosenPiece() const;
+    void SetEnabled(PieceType pieceType, bool isEnabled);
 
 private slots:
     void on_toolButton_clicked();

@@ -16,34 +16,34 @@ JanusPromotionDialog::~JanusPromotionDialog()
 void JanusPromotionDialog::on_toolButton_clicked()
 {
     _chosenPiece = Rook;
-    close();
+    accept();
 }
 
 
 void JanusPromotionDialog::on_toolButton_2_clicked()
 {
     _chosenPiece = Knight;
-    close();
+    accept();
 }
 
 
 void JanusPromotionDialog::on_toolButton_3_clicked()
 {
     _chosenPiece = Bishop;
-    close();
+    accept();
 }
 
 
 void JanusPromotionDialog::on_toolButton_4_clicked()
 {
     _chosenPiece = Queen;
-    close();
+    accept();
 }
 
 void JanusPromotionDialog::on_toolButton_5_clicked()
 {
     _chosenPiece = Archbishop;
-    close();
+    accept();
 }
 
 PieceType JanusPromotionDialog::GetChosenPiece() const

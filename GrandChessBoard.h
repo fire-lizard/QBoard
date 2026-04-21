@@ -10,6 +10,9 @@ public:
     Board* Clone() override;
     void GetMoves(Piece *piece, int x, int y) override;
     bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
+    std::vector<PieceType> GetCapturedPieces(PieceColour pieceColour);
+    void AddCapturedPiece(PieceType p, PieceColour pieceColour);
+    void RemoveCapturedPiece(PieceType p, PieceColour pieceColour);
 
 protected:
 
@@ -27,4 +30,7 @@ protected:
     };
 
     bool EnemyPawnsAround(int x, int y) const override;
+
+private:
+    std::vector<std::pair<PieceColour, PieceType>> _capturedPieces;
 };

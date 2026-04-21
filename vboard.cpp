@@ -49,7 +49,7 @@ void VBoard::paintEvent(QPaintEvent *)
     case YariShogi:
         if (_pieceStyle == European) resourcePrefix = ":/pieces_yam/images_yam/";
         else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_ptg/images_ptg/";
-        else resourcePrefix = ":/pieces_yam/images_yam/";
+        else resourcePrefix = ":/pieces_yak/images_yak/";
         break;
     case ChuShogi:
 		if (_pieceStyle == Asian) resourcePrefix = ":/pieces_tnk/images_tnk/";
@@ -398,7 +398,7 @@ void VBoard::paintEvent(QPaintEvent *)
                 painter.setBrush(Qt::NoBrush);
 			}
 			// En Passant square highlighting
-            else if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == JanusChess) &&
+            else if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == JanusChess || _gameVariant == GrandChess) &&
                 dynamic_cast<ChessBoard*>(_board)->GetEnPassant() != "-" &&	dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[0] - 97 == i &&
 				(_currentPlayer == White && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 48 == j || _currentPlayer == Black && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 47 == j))
 			{
@@ -406,13 +406,6 @@ void VBoard::paintEvent(QPaintEvent *)
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
-            else if (_gameVariant == GrandChess && dynamic_cast<ChessBoard*>(_board)->GetEnPassant() != "-" &&	dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[0] - 97 == i &&
-                (_currentPlayer == White && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 48 == j || _currentPlayer == Black && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 46 == j))
-            {
-                painter.setBrush(Qt::blue);
-                painter.drawRect(rect);
-                painter.setBrush(Qt::NoBrush);
-            }
             else
 			{
                 if (_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess ||
@@ -1570,6 +1563,34 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	}
 }
 
+char VBoard::ChessPieceChar(PieceType chessPiece)
+{
+    if (chessPiece == Bishop)
+    {
+        return 'b';
+    }
+    else if (chessPiece == Knight)
+    {
+        return 'n';
+    }
+    else if (chessPiece == Rook)
+    {
+        return 'r';
+    }
+    else if (chessPiece == Archbishop)
+    {
+        return 'a';
+    }
+    else if (chessPiece == Chancellor)
+    {
+        return 'c';
+    }
+    else
+    {
+        return 'q';
+    }
+}
+
 char VBoard::CheckPromotion(const Piece *p, int y)
 {
 	char promotion = ' ';
@@ -1580,26 +1601,18 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 				(y == 0 && _currentPiece->GetColour() == White)))
 		{
 			PromotionDialog* pd = new PromotionDialog(this);
-			pd->exec();
-			const PieceType pt = pd->GetChosenPiece();
-			if (pt == Bishop)
-			{
-				promotion = 'b';
-			}
-			else if (pt == Knight)
-			{
-				promotion = 'n';
-			}
-			else if (pt == Rook)
-			{
-				promotion = 'r';
-			}
-			else
-			{
-				promotion = 'q';
-			}
-			_currentPiece->Promote(pt);
-		}
+            if (pd->exec() == QDialog::Accepted)
+            {
+                const PieceType pt = pd->GetChosenPiece();
+                promotion = ChessPieceChar(pt);
+                _currentPiece->Promote(pt);
+            }
+            else
+            {
+                promotion = 'q';
+                _currentPiece->Promote(Queen);
+            }
+        }
 	}
     else if (_gameVariant == JanusChess)
     {
@@ -1608,65 +1621,67 @@ char VBoard::CheckPromotion(const Piece *p, int y)
                 (y == 0 && _currentPiece->GetColour() == White)))
         {
             JanusPromotionDialog* pd = new JanusPromotionDialog(this);
-            pd->exec();
-            const PieceType pt = pd->GetChosenPiece();
-            if (pt == Bishop)
+            if (pd->exec() == QDialog::Accepted)
             {
-                promotion = 'b';
-            }
-            else if (pt == Knight)
-            {
-                promotion = 'n';
-            }
-            else if (pt == Rook)
-            {
-                promotion = 'r';
-            }
-            else if (pt == Archbishop)
-            {
-                promotion = 'a';
+                const PieceType pt = pd->GetChosenPiece();
+                promotion = ChessPieceChar(pt);
+                _currentPiece->Promote(pt);
             }
             else
             {
                 promotion = 'q';
+                _currentPiece->Promote(Queen);
             }
-            _currentPiece->Promote(pt);
         }
     }
-    else if (_gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == GrandChess)
+    else if (_gameVariant == CapablancaChess || _gameVariant == GothicChess)
     {
         if (_currentPiece->GetType() == Pawn &&
             ((y == 7 && _currentPiece->GetColour() == Black) ||
                 (y == 0 && _currentPiece->GetColour() == White)))
         {
             GothicPromotionDialog* pd = new GothicPromotionDialog(this);
-            pd->exec();
-            const PieceType pt = pd->GetChosenPiece();
-            if (pt == Bishop)
+            if (pd->exec() == QDialog::Accepted)
             {
-                promotion = 'b';
-            }
-            else if (pt == Knight)
-            {
-                promotion = 'n';
-            }
-            else if (pt == Rook)
-            {
-                promotion = 'r';
-            }
-            else if (pt == Archbishop)
-            {
-                promotion = 'a';
-            }
-            else if (pt == Chancellor)
-            {
-                promotion = 'c';
+                const PieceType pt = pd->GetChosenPiece();
+                promotion = ChessPieceChar(pt);
+                _currentPiece->Promote(pt);
             }
             else
             {
                 promotion = 'q';
+                _currentPiece->Promote(Queen);
             }
-            _currentPiece->Promote(pt);
+        }
+    }
+    else if (_gameVariant == GrandChess)
+    {
+        GrandChessBoard* gcBoard = dynamic_cast<GrandChessBoard*>(_board);
+        auto capturedPieces = gcBoard->GetCapturedPieces(_currentPlayer == White ? Black : White);
+        if (_currentPiece->GetType() == Pawn && !capturedPieces.empty() &&
+            ((y >= 7 && _currentPiece->GetColour() == Black) ||
+            (y <= 2 && _currentPiece->GetColour() == White)))
+        {
+            GothicPromotionDialog* pd = new GothicPromotionDialog(this);
+            pd->SetEnabled(Rook, std::find(std::begin(capturedPieces), std::end(capturedPieces), Rook) != std::end(capturedPieces));
+            pd->SetEnabled(Knight, std::find(std::begin(capturedPieces), std::end(capturedPieces), Knight) != std::end(capturedPieces));
+            pd->SetEnabled(Bishop, std::find(std::begin(capturedPieces), std::end(capturedPieces), Bishop) != std::end(capturedPieces));
+            pd->SetEnabled(Queen, std::find(std::begin(capturedPieces), std::end(capturedPieces), Queen) != std::end(capturedPieces));
+            pd->SetEnabled(Archbishop, std::find(std::begin(capturedPieces), std::end(capturedPieces), Archbishop) != std::end(capturedPieces));
+            pd->SetEnabled(Chancellor, std::find(std::begin(capturedPieces), std::end(capturedPieces), Chancellor) != std::end(capturedPieces));
+            if (pd->exec() == QDialog::Accepted)
+            {
+                const PieceType pt = pd->GetChosenPiece();
+                promotion = ChessPieceChar(pt);
+                _currentPiece->Promote(pt);
+                gcBoard->RemoveCapturedPiece(pt, _currentPlayer);
+            }
+            else if (y == 9 || y == 0)
+            {
+                promotion = ChessPieceChar(capturedPieces[0]);
+                _currentPiece->Promote(capturedPieces[0]);
+                gcBoard->RemoveCapturedPiece(capturedPieces[0], _currentPlayer);
+            }
         }
     }
     else if (_gameVariant == Shatranj)
@@ -1806,7 +1821,8 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             {
                 _currentPiece->Promote();
             }
-            else if (((pt == Pawn && _gameVariant != ChuShogi) || pt == Knight || pt == Lance) &&
+            else if (((pt == Pawn && _gameVariant != ChuShogi && _gameVariant != HeianDaiShogi) || (pt == Knight && _gameVariant != HeianDaiShogi) ||
+                      (pt == Lance && _gameVariant != HeianDaiShogi)) &&
 				((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
 			{
 				_currentPiece->Promote();
@@ -2799,7 +2815,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				return;
 			}
 			const Piece* kp = _currentPlayer == White ? _board->GetData(x, y - 1) : _board->GetData(x, y + 1);
-			if (kp != nullptr && kp->GetType() == King && kp->GetColour() != _currentPlayer)
+            if (kp != nullptr && kp->GetType() == King && kp->GetColour() != _currentPlayer && _gameVariant != YariShogi)
 			{
 				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot check king by the pawn drop",
 					QMessageBox::Ok, this);

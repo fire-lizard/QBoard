@@ -16,28 +16,28 @@ PromotionDialog::~PromotionDialog()
 void PromotionDialog::on_toolButton_clicked()
 {
     _chosenPiece = Rook;
-    close();
+    accept();
 }
 
 
 void PromotionDialog::on_toolButton_2_clicked()
 {
     _chosenPiece = Knight;
-    close();
+    accept();
 }
 
 
 void PromotionDialog::on_toolButton_3_clicked()
 {
     _chosenPiece = Bishop;
-    close();
+    accept();
 }
 
 
 void PromotionDialog::on_toolButton_4_clicked()
 {
     _chosenPiece = Queen;
-    close();
+    accept();
 }
 
 PieceType PromotionDialog::GetChosenPiece() const

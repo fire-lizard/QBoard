@@ -35,15 +35,15 @@ std::string YariShogiPiece::StringCode()
     switch (_pieceType)
     {
     case YariKnight:
-        return "N'";
+        return "N";
     case YariRook:
-        return "R'";
+        return "Y";
     case YariBishop:
-        return "B'";
+        return "B";
     case YariGold:
-        return "G'";
+        return "G";
     case YariSilver:
-        return "S'";
+        return "S";
     default:
         return ShogiPiece::StringCode();
     }
@@ -52,11 +52,11 @@ std::string YariShogiPiece::StringCode()
 PieceType YariShogiPiece::FromStringCode(const std::string& code)
 {
     static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-        {"N'", YariKnight},
-        {"R'", YariRook},
-        {"B'", YariBishop},
-        {"G'", YariGold},
-        {"S'", YariSilver}
+        {"N", YariKnight},
+        {"Y", YariRook},
+        {"B", YariBishop},
+        {"G", YariGold},
+        {"S", YariSilver}
     };
 
     const auto it = codeToPieceType.find(code);
@@ -66,11 +66,11 @@ PieceType YariShogiPiece::FromStringCode(const std::string& code)
 std::string YariShogiPiece::ToStringCode(PieceType piece)
 {
     static const std::unordered_map<PieceType, std::string> pieceTypeToCode = {
-        {YariKnight, "N'"},
-        {YariRook, "R'"},
-        {YariBishop, "B'"},
-        {YariGold, "G'"},
-        {YariSilver, "S'"}
+        {YariKnight, "N"},
+        {YariRook, "Y"},
+        {YariBishop, "B"},
+        {YariGold, "G"},
+        {YariSilver, "S"}
     };
 
     const auto it = pieceTypeToCode.find(piece);

@@ -22,6 +22,10 @@ Board* GrandChessBoard::Clone()
             cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
         }
     }
+    for (const auto& capturedPiece: _capturedPieces)
+    {
+        cb->AddCapturedPiece(capturedPiece.second, capturedPiece.first);
+    }
     cb->SetMoveCount(_moveCount);
     cb->SetHalfMoveCount(_halfMoveCount);
     cb->SetCastling("-");
@@ -39,6 +43,7 @@ void GrandChessBoard::Initialize()
     _bkc = false;
     _bqc = false;
     _ep = "-";
+    _capturedPieces.clear();
     for (int i = 0; i < _width; i++)
     {
         for (int j = 0; j < _height; j++)
@@ -77,17 +82,42 @@ void GrandChessBoard::GetMoves(Piece *piece, int x, int y)
             {
                 CheckMove(piece, x, y + 2);
             }
-            if (y + 1 < _height && _data[x][y + 1] == nullptr)
+            if (y + 1 < _height - 1 && _data[x][y + 1] == nullptr)
             {
                 CheckMove(piece, x, y + 1);
             }
-            if (y + 1 < _height && x + 1 < _width && _data[x + 1][y + 1] != nullptr)
+            if (y + 1 < _height - 1 && x + 1 < _width && _data[x + 1][y + 1] != nullptr)
             {
                 CheckMove(piece, x + 1, y + 1);
             }
-            if (y + 1 < _height && x - 1 >= 0 && _data[x - 1][y + 1] != nullptr)
+            if (y + 1 < _height - 1 && x - 1 >= 0 && _data[x - 1][y + 1] != nullptr)
             {
                 CheckMove(piece, x - 1, y + 1);
+            }
+            // Unlike standard chess, a pawn may be promoted only to a captured piece of the same colour
+            // Pawn can still give check to the King on tenth rank
+            if (y == _height - 2 && x + 1 < _width && _data[x + 1][y + 1] != nullptr && _data[x + 1][y + 1]->GetType() == King)
+            {
+                CheckMove(piece, x + 1, y + 1);
+            }
+            if (y == _height - 2 && x - 1 >= 0 && _data[x - 1][y + 1] != nullptr && _data[x - 1][y + 1]->GetType() == King)
+            {
+                CheckMove(piece, x - 1, y + 1);
+            }
+            if (y == _height - 2 && !GetCapturedPieces(White).empty())
+            {
+                if (_data[x][y + 1] == nullptr)
+                {
+                    CheckMove(piece, x, y + 1);
+                }
+                if (x + 1 < _width && _data[x + 1][y + 1] != nullptr)
+                {
+                    CheckMove(piece, x + 1, y + 1);
+                }
+                if (x - 1 >= 0 && _data[x - 1][y + 1] != nullptr)
+                {
+                    CheckMove(piece, x - 1, y + 1);
+                }
             }
             // En passant
             if (_ep != "-")
@@ -106,17 +136,42 @@ void GrandChessBoard::GetMoves(Piece *piece, int x, int y)
             {
                 CheckMove(piece, x, y - 2);
             }
-            if (y - 1 >= 0 && _data[x][y - 1] == nullptr)
+            if (y - 1 >= 1 && _data[x][y - 1] == nullptr)
             {
                 CheckMove(piece, x, y - 1);
             }
-            if (y - 1 >= 0 && x + 1 < _width && _data[x + 1][y - 1] != nullptr)
+            if (y - 1 >= 1 && x + 1 < _width && _data[x + 1][y - 1] != nullptr)
             {
                 CheckMove(piece, x + 1, y - 1);
             }
-            if (y - 1 >= 0 && x - 1 >= 0 && _data[x - 1][y - 1] != nullptr)
+            if (y - 1 >= 1 && x - 1 >= 0 && _data[x - 1][y - 1] != nullptr)
             {
                 CheckMove(piece, x - 1, y - 1);
+            }
+            // Unlike standard chess, a pawn may be promoted only to a captured piece of the same colour
+            // Pawn can still give check to the King on tenth rank
+            if (y == 1 && x + 1 < _width && _data[x + 1][y - 1] != nullptr && _data[x + 1][y - 1]->GetType() == King)
+            {
+                CheckMove(piece, x + 1, y - 1);
+            }
+            if (y == 1 && x - 1 >= 0 && _data[x - 1][y - 1] != nullptr && _data[x - 1][y - 1]->GetType() == King)
+            {
+                CheckMove(piece, x - 1, y - 1);
+            }
+            if (y == 1 && !GetCapturedPieces(Black).empty())
+            {
+                if (_data[x][y - 1] == nullptr)
+                {
+                    CheckMove(piece, x, y - 1);
+                }
+                if (x + 1 < _width && _data[x + 1][y - 1] != nullptr)
+                {
+                    CheckMove(piece, x + 1, y - 1);
+                }
+                if (x - 1 >= 0 && _data[x - 1][y - 1] != nullptr)
+                {
+                    CheckMove(piece, x - 1, y - 1);
+                }
             }
             // En passant
             if (_ep != "-")
@@ -144,6 +199,10 @@ bool GrandChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
     const bool result = Board::Move(oldX, oldY, newX, newY, cl);
     if (result)
     {
+        if (destPieceType != None && destPieceType != Pawn)
+        {
+            _capturedPieces.emplace_back(pieceColour, destPieceType);
+        }
         dynamic_cast<ChessPiece*>(_data[newX][newY])->Move();
         // En passant
         if (pieceType == Pawn && abs(oldY - newY) == 2 && EnemyPawnsAround(newX, newY))
@@ -199,4 +258,34 @@ bool GrandChessBoard::EnemyPawnsAround(int x, int y) const
     const bool fpa = (fp != nullptr) && (fp->GetType() == Pawn) && (fp->GetColour() == pieceColour);
     const bool spa = (sp != nullptr) && (sp->GetType() == Pawn) && (sp->GetColour() == pieceColour);
     return fpa || spa;
+}
+
+std::vector<PieceType> GrandChessBoard::GetCapturedPieces(PieceColour pieceColour)
+{
+    std::vector<PieceType> result;
+    for (auto& capturedPiece : _capturedPieces)
+    {
+        if (capturedPiece.first == pieceColour)
+        {
+            result.emplace_back(capturedPiece.second);
+        }
+    }
+    return result;
+}
+
+void GrandChessBoard::AddCapturedPiece(PieceType p, PieceColour pieceColour)
+{
+    _capturedPieces.emplace_back(pieceColour, p);
+}
+
+void GrandChessBoard::RemoveCapturedPiece(PieceType p, PieceColour pieceColour)
+{
+    for (size_t index = 0; index < _capturedPieces.size(); index++)
+    {
+        if (_capturedPieces[index].first == pieceColour && _capturedPieces[index].second == p)
+        {
+            _capturedPieces.erase(_capturedPieces.begin() + index);
+            break;
+        }
+    }
 }

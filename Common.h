@@ -189,7 +189,7 @@ inline char TORISHOGIFEN[] = "rpckcpl/3f3/sssssss/2s1S2/SSSSSSS/3F3/LPCKCPR w";
 
 inline char EUROSHOGIFEN[] = "1nbgkgn1/1r4b1/pppppppp/8/8/PPPPPPPP/1B4R1/1NGKGBN1 w";
 
-inline char YARISHOGIFEN[] = "r'n'n'kb'b'r'/7/ppppppp/7/7/7/PPPPPPP/7/R'B'B'KN'N'R' w";
+inline char YARISHOGIFEN[] = "ynnkbby/7/ppppppp/7/7/7/PPPPPPP/7/YBBKNNY w";
 
 inline char HEIANSHOGIFEN[] = "lnsgkgsnl/9/ppppppppp/9/9/PPPPPPPPP/9/LNSGKGSNL w";
 
