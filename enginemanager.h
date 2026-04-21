@@ -39,6 +39,7 @@ namespace {
             {WaShogi,         "Wa Shogi"},
             {CrazyWa,         "CrazyWa"},
             {ChuShogi,        "Chu Shogi"},
+            {HeianDaiShogi,   "Heian Dai Shogi"},
             {DaiShogi,        "Dai Shogi"},
             {TenjikuShogi,    "Tenjiku Shogi"},
             {DaiDaiShogi,     "Dai Dai Shogi"},

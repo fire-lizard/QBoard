@@ -20,6 +20,7 @@
      * Sho Shogi
      * Wa Shogi
      * Chu Shogi
+     * Heian Dai Shogi
      * Dai Shogi
      * Tenjiku Shogi
      * Dai Dai Shogi

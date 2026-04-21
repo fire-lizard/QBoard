@@ -23,6 +23,7 @@ SOURCES += main.cpp\
     GrandChessBoard.cpp \
     HeianDaiShogiBoard.cpp \
     HeianShogiBoard.cpp \
+    HeianShogiPiece.cpp \
     JanusChessBoard.cpp \
     KyotoShogiBoard.cpp \
     KyotoShogiPiece.cpp \
@@ -101,6 +102,7 @@ HEADERS  += mainwindow.h \
     GrandChessBoard.h \
     HeianDaiShogiBoard.h \
     HeianShogiBoard.h \
+    HeianShogiPiece.h \
     JanusChessBoard.h \
     KyotoShogiBoard.h \
     KyotoShogiPiece.h \

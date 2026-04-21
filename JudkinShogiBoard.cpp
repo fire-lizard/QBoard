@@ -13,7 +13,8 @@ JudkinShogiBoard::~JudkinShogiBoard()
 
 void JudkinShogiBoard::Initialize()
 {
-	_capturedPieces.clear();
+    _moveCount = 0;
+    _capturedPieces.clear();
 	for (int i = 0; i < _width; i++)
 	{
 		for (int j = 0; j < _height; j++)

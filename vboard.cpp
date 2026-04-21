@@ -32,7 +32,6 @@ void VBoard::paintEvent(QPaintEvent *)
 	case MiniShogi:
 	case JudkinShogi:
     case EuroShogi:
-    case HeianShogi:
 		if (_pieceStyle == European) resourcePrefix = ":/pieces_eur/images/";
 		else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_sho2/images_sho2/";
 		else if (_pieceStyle == Asian) resourcePrefix = ":/pieces_sho/images_sho/";
@@ -61,6 +60,8 @@ void VBoard::paintEvent(QPaintEvent *)
 		else resourcePrefix = ":/pieces_eur/images/";
 		break;
 	case DaiShogi:
+    case HeianShogi:
+    case HeianDaiShogi:
 		if (_pieceStyle == Asian) resourcePrefix = ":/pieces_tnk/images_tnk/";
 		else if (_pieceStyle == Asian2 || _pieceStyle == Asian4) resourcePrefix = ":/pieces_maka2/images_maka2/";
 		else if (_pieceStyle == Asian3) resourcePrefix = ":/pieces_dai/images_dai/";
@@ -485,7 +486,6 @@ void VBoard::paintEvent(QPaintEvent *)
 				case MiniShogi:
 				case JudkinShogi:
                 case EuroShogi:
-                case HeianShogi:
                     if (_pieceStyle == Mnemonic || _pieceStyle == Asian || _pieceStyle == Asian2) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 					else if (_pieceStyle == Asian3 || _pieceStyle == Asian4) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
 					else imageFileName = p->GetImageFileName();
@@ -503,6 +503,8 @@ void VBoard::paintEvent(QPaintEvent *)
                     imageFileName = p->GetImageFileName();
                     break;
                 case DaiShogi:
+                case HeianShogi:
+                case HeianDaiShogi:
 					if (_pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 					else if (_pieceStyle == Asian2 || _pieceStyle == Asian4) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
 					else imageFileName = p->GetImageFileName();
@@ -557,7 +559,6 @@ void VBoard::paintEvent(QPaintEvent *)
 				case MiniShogi:
 				case JudkinShogi:
                 case EuroShogi:
-                case HeianShogi:
                     if (isAsianStyle)
 					{
                         painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
@@ -605,6 +606,8 @@ void VBoard::paintEvent(QPaintEvent *)
 					break;
 				case ChuShogi:
 				case DaiShogi:
+                case HeianShogi:
+                case HeianDaiShogi:
 					if (_pieceStyle == Asian2 || _pieceStyle == Asian4)
 					{
 						painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
@@ -1962,6 +1965,9 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
     case HeianShogi:
         _board = new HeianShogiBoard();
         break;
+    case HeianDaiShogi:
+        _board = new HeianDaiShogiBoard();
+        break;
     case WaShogi:
 		_board = new WaShogiBoard();
 		dynamic_cast<ShogiBoard*>(_board)->SetDrops(false);
@@ -2526,10 +2532,18 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
         }
         else if (_gameVariant == HeianShogi)
         {
-            for (auto& ShogiPiece : HeianShogiPieces)
+            for (auto& HeianShogiPiece : HeianShogiPieces)
             {
-                whiteRegular->addAction(QString::fromStdString(ShogiPiece::PieceType2Description(ShogiPiece)));
-                blackRegular->addAction(QString::fromStdString(ShogiPiece::PieceType2Description(ShogiPiece)));
+                whiteRegular->addAction(QString::fromStdString(ShogiPiece::PieceType2Description(HeianShogiPiece)));
+                blackRegular->addAction(QString::fromStdString(ShogiPiece::PieceType2Description(HeianShogiPiece)));
+            }
+        }
+        else if (_gameVariant == HeianDaiShogi)
+        {
+            for (auto& HeianShogiPiece : HeianDaiShogiPieces)
+            {
+                whiteRegular->addAction(QString::fromStdString(ShogiPiece::PieceType2Description(HeianShogiPiece)));
+                blackRegular->addAction(QString::fromStdString(ShogiPiece::PieceType2Description(HeianShogiPiece)));
             }
         }
         else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)

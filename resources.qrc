@@ -2469,22 +2469,4 @@
         <file>images_yak/SilverP.png</file>
         <file>images_yak/SilverPFlip.png</file>
     </qresource>
-    <qresource prefix="/pieces_hei">
-        <file>images_hei/Copper.png</file>
-        <file>images_hei/CopperFlip.png</file>
-        <file>images_hei/FierceTiger.png</file>
-        <file>images_hei/FierceTigerFlip.png</file>
-        <file>images_hei/FlyingDragon.png</file>
-        <file>images_hei/FlyingDragonFlip.png</file>
-        <file>images_hei/FreeChariot.png</file>
-        <file>images_hei/FreeChariotFlip.png</file>
-        <file>images_hei/GoBetween.png</file>
-        <file>images_hei/GoBetweenFlip.png</file>
-        <file>images_hei/Iron.png</file>
-        <file>images_hei/IronFlip.png</file>
-        <file>images_hei/PromotedP.png</file>
-        <file>images_hei/PromotedPFlip.png</file>
-        <file>images_hei/SideMover.png</file>
-        <file>images_hei/SideMoverFlip.png</file>
-    </qresource>
 </RCC>

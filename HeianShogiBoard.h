@@ -1,8 +1,7 @@
 #pragma once
-#include "ShogiBoard.h"
-#include "ShogiPiece.h"
+#include "HeianDaiShogiBoard.h"
 
-class HeianShogiBoard : public ShogiBoard
+class HeianShogiBoard : public HeianDaiShogiBoard
 {
 public:
     HeianShogiBoard();

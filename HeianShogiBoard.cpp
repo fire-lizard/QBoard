@@ -13,14 +13,14 @@ HeianShogiBoard::~HeianShogiBoard()
 
 void HeianShogiBoard::Initialize()
 {
-    _capturedPieces.clear();
+    _moveCount = 0;
     for (int i = 0; i < _width; i++)
     {
         for (int j = 0; j < _height; j++)
         {
             if (_initialSetup[j][i] != None)
             {
-                _data[i][j] = new ShogiPiece(_initialSetup[j][i], j < 5 ? Black : White);
+                _data[i][j] = new HeianShogiPiece(_initialSetup[j][i], j < 5 ? Black : White);
             }
             else
             {

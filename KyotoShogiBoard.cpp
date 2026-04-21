@@ -13,6 +13,7 @@ KyotoShogiBoard::~KyotoShogiBoard()
 
 void KyotoShogiBoard::Initialize()
 {
+    _moveCount = 0;
     _capturedPieces.clear();
     for (int i = 0; i < _width; i++)
     {

@@ -14,7 +14,7 @@ enum GameVariant
 {
     Chess, CapablancaChess, GothicChess, JanusChess, GrandChess, Xiangqi, Shatranj, Makruk,
     Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi,
-    ShoShogi, WaShogi, CrazyWa, ChuShogi, DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
+    ShoShogi, WaShogi, CrazyWa, ChuShogi, HeianDaiShogi, DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
 };
 
 enum PieceColour
@@ -76,7 +76,7 @@ enum Direction
 };
 
 inline GameVariant shogiVariants[] = { MicroShogi, KyotoShogi, Shogi, MiniShogi, JudkinShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi, ChuShogi,
-                                       DaiShogi, ShoShogi, WaShogi, CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi };
+                                       HeianDaiShogi, DaiShogi, ShoShogi, WaShogi, CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi };
 inline PieceType lionPieces[] = { Lion, Eagle, Unicorn, LionHawk, FreeEagle, LionDog, TeachingKing, BuddhistSpirit,
 								  FuriousFiend, GreatElephant, RoamingAssault, RisingDragon, WingedTiger, FlyingHawk,
 								  Thunderclap, KnightCaptain, WingedHorse, ExtensiveFog, HolyLight, DoubleKylin, DoublePhoenix };
@@ -159,6 +159,8 @@ inline PieceType YariShogiPieces[] = { King, Rook, Pawn, YariKnight, YariGold, Y
 
 inline PieceType HeianShogiPieces[] = { King, Pawn, Knight, Gold, Silver, Lance };
 
+inline PieceType HeianDaiShogiPieces[] = { King, Pawn, Knight, Gold, Silver, Copper, Iron, GoBetween, SideMover, Lance, Tiger, FlyingDragon, ReverseChariot };
+
 inline char CHESSFEN[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 inline char CAPABLANCAFEN[] = "rnabqkbcnr/pppppppppp/10/10/10/10/PPPPPPPPPP/RNABQKBCNR w KQkq - 0 1";
@@ -191,6 +193,8 @@ inline char YARISHOGIFEN[] = "r'n'n'kb'b'r'/7/ppppppp/7/7/7/PPPPPPP/7/R'B'B'KN'N
 
 inline char HEIANSHOGIFEN[] = "lnsgkgsnl/9/ppppppppp/9/9/PPPPPPPPP/9/LNSGKGSNL w";
 
+inline char HEIANDAISHOGIFEN[] = "lyjcsgkgscjyl/af'2t1m1t2f'a/ppppppppppppp/6i6/13/13/13/13/13/6I6/PPPPPPPPPPPPP/AF'2T1M1T2F'A/LYJCSGKGSCJYL w";
+
 inline char WASHOGIFEN[] = "hmlcvkwgudo/1e3s3f1/ppprpppxppp/3p3p3/11/11/11/3P3P3/PPPXPPPRPPP/1F3S3E1/ODUGWKVCLMH w";
 
 inline char CHUSHOGIFEN[] = "lfcsgekgscfl/a1b1txot1b1a/mvrhdqndhrvm/pppppppppppp/3i4i3"
@@ -217,6 +221,11 @@ inline char MAKADAIDAISHOGIFEN[] = "le'ut'jcsga!kg!gscjt'ue'l/a1z1k!1i!ftetfi!1k
 "u!1y1v'1f's!p!n!r!t!f'1v'1y1u!/rr'mz!vbhdx!qy!dhbvz!ml'r/ppppppppppppppppppp/"
 "5i7i5/19/19/19/19/19/5I7I5/PPPPPPPPPPPPPPPPPPP/RL'MZ!VBHDX!QY!DHBVZ!MR'R/"
 "U!1Y1V'1F'S!P!N!R!T!F'1V'1Y1U!/1O!1A'1L!1WONXW1L!1A'1O!1/A1Z1K!1I!FTETFI!1K!1Z1A/LE'UT'JCSGA!KG!GSCJT'UE'L";
+
+inline char KOSHOGIFEN[] = "a't'cfsgnexkoengsfcs'a'/r'h1d1q1tlmut1q1d1hr'/bic'l'bic'l'bjbl'c'ibl'c'ib/"
+                           "w1y1y1y1y1y1y1y1y1w/1v1p1p1p1v1p1p1p1v1/ru'azazazau'azazazau'r/9v'9/19/19/19/19/19/9V'9/"
+                           "RU'AZAZAZAU'AZAZAZAU'R/1V1P1P1P1V1P1P1P1V1/W1Y1Y1Y1Y1Y1Y1Y1Y1W/BIC'L'BIC'L'BJBL'C'IBL'C'IB/"
+                           "R'H1D1Q1TUMLT1Q1D1HR'/A'S'CFSGNEOKXENGSFCT'A'";
 
 inline char SHOSHOGIFEN[] = "lnsgkgsnl/1r2e2b1/ppppppppp/9/9/9/PPPPPPPPP/1B2E2R1/LNSGKGSNL";
 
