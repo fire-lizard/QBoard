@@ -15,7 +15,9 @@ public:
 	void SetActive(bool val);
 	QTextEdit* GetTextEdit() const;
 	void SetTextEdit(QTextEdit* textEdit);
-	QProcess* GetProcess() const;
+    int  GetEngineDepth() const;
+    void SetEngineDepth(int engineDepth);
+    QProcess* GetProcess() const;
 	void WriteToProcess(QByteArray buf) const;
 	std::vector<QByteArray> Moves() const;
 	virtual void SetFEN(std::string fen) = 0;
@@ -28,7 +30,8 @@ public:
 protected:
 	mutable std::unique_ptr<QProcess> _process = nullptr;
 	QTextEdit *_textEdit;
-	bool _isActive = false;
+    int  _engineDepth = 10;
+    bool _isActive = false;
 	std::vector<QByteArray> _moves;
 	std::string _fen;
 };

@@ -1601,6 +1601,8 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 				(y == 0 && _currentPiece->GetColour() == White)))
 		{
 			PromotionDialog* pd = new PromotionDialog(this);
+            pd->SetEnabled(Archbishop, false);
+            pd->SetEnabled(Chancellor, false);
             if (pd->exec() == QDialog::Accepted)
             {
                 const PieceType pt = pd->GetChosenPiece();
@@ -1620,7 +1622,8 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             ((y == 7 && _currentPiece->GetColour() == Black) ||
                 (y == 0 && _currentPiece->GetColour() == White)))
         {
-            JanusPromotionDialog* pd = new JanusPromotionDialog(this);
+            PromotionDialog* pd = new PromotionDialog(this);
+            pd->SetEnabled(Chancellor, false);
             if (pd->exec() == QDialog::Accepted)
             {
                 const PieceType pt = pd->GetChosenPiece();
@@ -1640,7 +1643,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             ((y == 7 && _currentPiece->GetColour() == Black) ||
                 (y == 0 && _currentPiece->GetColour() == White)))
         {
-            GothicPromotionDialog* pd = new GothicPromotionDialog(this);
+            PromotionDialog* pd = new PromotionDialog(this);
             if (pd->exec() == QDialog::Accepted)
             {
                 const PieceType pt = pd->GetChosenPiece();
@@ -1662,7 +1665,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             ((y >= 7 && _currentPiece->GetColour() == Black) ||
             (y <= 2 && _currentPiece->GetColour() == White)))
         {
-            GothicPromotionDialog* pd = new GothicPromotionDialog(this);
+            PromotionDialog* pd = new PromotionDialog(this);
             pd->SetEnabled(Rook, std::find(std::begin(capturedPieces), std::end(capturedPieces), Rook) != std::end(capturedPieces));
             pd->SetEnabled(Knight, std::find(std::begin(capturedPieces), std::end(capturedPieces), Knight) != std::end(capturedPieces));
             pd->SetEnabled(Bishop, std::find(std::begin(capturedPieces), std::end(capturedPieces), Bishop) != std::end(capturedPieces));
@@ -2229,6 +2232,16 @@ bool VBoard::GetTimerState() const
 void VBoard::SetTimerState(bool timerState)
 {
     _timerState = timerState;
+}
+
+int VBoard::GetEngineDepth() const
+{
+    return _engineDepth;
+}
+
+void VBoard::SetEngineDepth(int engineDepth)
+{
+    _engineDepth = engineDepth;
 }
 
 bool VBoard::CheckRepetition(int oldX, int oldY, int newX, int newY)

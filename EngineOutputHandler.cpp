@@ -161,7 +161,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 				}
 			}
 			else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == WaShogi || gameVariant == TenjikuShogi ||
-					 gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
+                     gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi || gameVariant == HeianDaiShogi)
 			{
 				QRegularExpressionMatch match = _csre.match(part);
 				if (match.hasMatch())
@@ -199,7 +199,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 			{
                 QRegularExpressionMatch match = gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi ||
                         gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi ||
-                        gameVariant == HeianShogi || gameVariant == HeianDaiShogi
+                        gameVariant == HeianShogi
 					? _sgxbre.match(part) : _csre.match(part);
 				if (match.hasMatch())
 				{

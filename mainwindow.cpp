@@ -63,7 +63,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		this->ui->vboard->SetHighlightAttackers(QVariant(settings[6]).toBool());
 		this->ui->vboard->SetHighlightDefenders(QVariant(settings[7]).toBool());
 		this->ui->vboard->SetHighlightLastMoves(QVariant(settings[8]).toBool());
-		this->ui->vboard->GetBoard()->Initialize();
+        this->ui->vboard->SetTimerState(QVariant(settings[9]).toBool());
+        this->ui->vboard->SetEngineDepth(QVariant(settings[10]).toInt());
+        this->ui->vboard->GetBoard()->Initialize();
 		this->ui->statusBar->showMessage(settings[1] == "Xiangqi" ? "Red move" : "White move");
 		this->ui->vboard->repaint();
 	}
@@ -93,6 +95,7 @@ void MainWindow::on_actionSettings_triggered()
 	settingsDialog->GetHighlightDefenders()->setChecked(this->ui->vboard->GetHighlightDefenders());
 	settingsDialog->GetHighlightLastMoves()->setChecked(this->ui->vboard->GetHighlightLastMoves());
     settingsDialog->GetTimerState()->setChecked(this->ui->vboard->GetTimerState());
+    settingsDialog->GetEngineDepth()->setValue(this->ui->vboard->GetEngineDepth());
     settingsDialog->exec();
 	if (settingsDialog->result() == QDialog::Accepted)
 	{
@@ -107,6 +110,7 @@ void MainWindow::on_actionSettings_triggered()
 		const bool highlightDefenders = settingsDialog->GetHighlightDefenders()->checkState() == Qt::Checked;
 		const bool highlightLastMoves = settingsDialog->GetHighlightLastMoves()->checkState() == Qt::Checked;
         const bool timerState = settingsDialog->GetTimerState()->checkState() == Qt::Checked;
+        const int  engineDepth = settingsDialog->GetEngineDepth()->value();
         if (pieceStyle != this->ui->vboard->GetPieceStyle())
 		{
 			this->ui->vboard->SetPieceStyle(pieceStyle);
@@ -126,11 +130,21 @@ void MainWindow::on_actionSettings_triggered()
 		this->ui->vboard->SetHighlightDefenders(highlightDefenders);
 		this->ui->vboard->SetHighlightLastMoves(highlightLastMoves);
         this->ui->vboard->SetTimerState(timerState);
-        IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, _currentStyle,
-            settingsDialog->GetGameVariant()->text(), settingsDialog->GetGamePieces()->currentText(),
-			settingsDialog->GetEngineOutput()->currentText(), highlightMoves, highlightShoots,
-            highlightAttackers, highlightDefenders, highlightLastMoves, timerState);
-	}
+        this->ui->vboard->SetEngineDepth(engineDepth);
+        ConfigRecord configRecord;
+        configRecord.styleName = _currentStyle;
+        configRecord.gameVariant = settingsDialog->GetGameVariant()->text();
+        configRecord.pieceStyle = settingsDialog->GetGamePieces()->currentText();
+        configRecord.engineOutput = settingsDialog->GetEngineOutput()->currentText();
+        configRecord.highlightMoves = highlightMoves;
+        configRecord.highlightShoots = highlightShoots;
+        configRecord.highlightAttackers = highlightAttackers;
+        configRecord.highlightDefenders = highlightDefenders;
+        configRecord.highlightLastMoves = highlightLastMoves;
+        configRecord.timerState = timerState;
+        configRecord.engineDepth = engineDepth;
+        IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, configRecord);
+    }
 }
 
 void MainWindow::on_actionAbout_triggered()

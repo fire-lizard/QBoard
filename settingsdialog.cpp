@@ -67,6 +67,11 @@ QCheckBox* SettingsDialog::GetTimerState() const
     return ui->timerCheckBox;
 }
 
+QSlider* SettingsDialog::GetEngineDepth() const
+{
+    return ui->engineDepthHorizontalSlider;
+}
+
 void SettingsDialog::on_toolButton_clicked()
 {
     VariantDialog* vd = new VariantDialog(this);

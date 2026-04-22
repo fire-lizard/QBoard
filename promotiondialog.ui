@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>410</width>
+    <width>655</width>
     <height>55</height>
    </rect>
   </property>
@@ -82,6 +82,40 @@
    <property name="icon">
     <iconset resource="resources.qrc">
      <normaloff>:/pieces_eur/images/BlackQueen.png</normaloff>:/pieces_eur/images/BlackQueen.png</iconset>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton_5">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>10</y>
+     <width>33</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/pieces_eur/images/BlackArchbishop.png</normaloff>:/pieces_eur/images/BlackArchbishop.png</iconset>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton_6">
+   <property name="geometry">
+    <rect>
+     <x>610</x>
+     <y>10</y>
+     <width>33</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/pieces_eur/images/BlackChancellor.png</normaloff>:/pieces_eur/images/BlackChancellor.png</iconset>
    </property>
   </widget>
  </widget>

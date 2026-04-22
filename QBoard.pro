@@ -46,8 +46,6 @@ SOURCES += main.cpp\
     KanjiPiece.cpp \
     Logger.cpp \
     promotiondialog.cpp \
-    gothicpromotiondialog.cpp \
-    januspromotiondialog.cpp \
     settingsdialog.cpp \
     variantdialog.cpp \
     vboard.cpp \
@@ -119,8 +117,6 @@ HEADERS  += mainwindow.h \
     YariShogiBoard.h \
     YariShogiPiece.h \
     promotiondialog.h \
-    gothicpromotiondialog.h \
-    januspromotiondialog.h \
     settingsdialog.h \
     variantdialog.h \
     vboard.h \
@@ -164,8 +160,6 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     promotiondialog.ui \
-    gothicpromotiondialog.ui \
-    januspromotiondialog.ui \
     settingsdialog.ui \
     enginemanager.ui \
     networkmanager.ui \

@@ -43,7 +43,7 @@ void UsiEngine::Move()
 	}
 	moveStr += "\n";
 	WriteToProcess(moveStr);
-	WriteToProcess("go depth 10\n");
+    WriteToProcess("go depth " + QByteArray::number(_engineDepth) + "\n");
 }
 
 void UsiEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
@@ -59,7 +59,7 @@ void UsiEngine::Move(signed char x1, signed char y1, signed char x2, signed char
 	moveStr += AddMove(x1, y1, x2, y2, promotion);
 	moveStr += "\n";
 	WriteToProcess(moveStr);
-	WriteToProcess("go depth 10\n");
+    WriteToProcess("go depth " + QByteArray::number(_engineDepth) + "\n");
 }
 
 QByteArray UsiEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)

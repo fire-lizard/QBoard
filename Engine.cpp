@@ -54,6 +54,16 @@ void Engine::SetTextEdit(QTextEdit* textEdit)
 	_textEdit = textEdit;
 }
 
+int Engine::GetEngineDepth() const
+{
+    return _engineDepth;
+}
+
+void Engine::SetEngineDepth(int engineDepth)
+{
+    _engineDepth = engineDepth;
+}
+
 QProcess* Engine::GetProcess() const
 {
 	return _process.get();

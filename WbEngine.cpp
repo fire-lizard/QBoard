@@ -67,6 +67,7 @@ void WbEngine::StartGame(QString variant)
 		const QString str = "variant " + variant + "\n";
 		WriteToProcess(str.toLatin1());
 	}
+    WriteToProcess("sd " + QByteArray::number(_engineDepth) + "\n");
 }
 
 void WbEngine::SetMemory(int memorySize)

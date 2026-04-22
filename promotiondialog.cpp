@@ -40,7 +40,29 @@ void PromotionDialog::on_toolButton_4_clicked()
     accept();
 }
 
+void PromotionDialog::on_toolButton_5_clicked()
+{
+    _chosenPiece = Archbishop;
+    accept();
+}
+
+void PromotionDialog::on_toolButton_6_clicked()
+{
+    _chosenPiece = Chancellor;
+    accept();
+}
+
 PieceType PromotionDialog::GetChosenPiece() const
 {
     return _chosenPiece;
+}
+
+void PromotionDialog::SetEnabled(PieceType pieceType, bool isEnabled)
+{
+    if (pieceType == Rook) ui->toolButton->setEnabled(isEnabled);
+    if (pieceType == Knight) ui->toolButton_2->setEnabled(isEnabled);
+    if (pieceType == Bishop) ui->toolButton_3->setEnabled(isEnabled);
+    if (pieceType == Queen) ui->toolButton_4->setEnabled(isEnabled);
+    if (pieceType == Archbishop) ui->toolButton_5->setEnabled(isEnabled);
+    if (pieceType == Chancellor) ui->toolButton_6->setEnabled(isEnabled);
 }
