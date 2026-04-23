@@ -36,11 +36,11 @@ void GrandeAcedrexBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                _data[i][j] = new GrandeAcedrexPiece(_initialSetup[j][i], j < 5 ? Black : White);
+                SetData(i, j, new GrandeAcedrexPiece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
-                _data[i][j] = nullptr;
+                SetData(i, j, nullptr);
             }
         }
     }
@@ -88,22 +88,22 @@ void GrandeAcedrexBoard::GetMoves(Piece* piece, int x, int y)
         CheckMove(piece, x + 1, y - 1);
         CheckMove(piece, x - 1, y + 1);
         CheckMove(piece, x - 1, y - 1);
-        if (_data[x + 1][y + 1] == nullptr)
+        if (GetData(x + 1, y + 1) == nullptr)
         {
             CheckDirection(piece, x + 1, y + 1, North);
             CheckDirection(piece, x + 1, y + 1, East);
         }
-        if (_data[x + 1][y - 1] == nullptr)
+        if (GetData(x + 1, y - 1) == nullptr)
         {
             CheckDirection(piece, x + 1, y - 1, South);
             CheckDirection(piece, x + 1, y - 1, East);
         }
-        if (_data[x - 1][y + 1] == nullptr)
+        if (GetData(x - 1, y + 1) == nullptr)
         {
             CheckDirection(piece, x - 1, y + 1, North);
             CheckDirection(piece, x - 1, y + 1, West);
         }
-        if (_data[x - 1][y - 1] == nullptr)
+        if (GetData(x - 1, y - 1) == nullptr)
         {
             CheckDirection(piece, x - 1, y - 1, South);
             CheckDirection(piece, x - 1, y - 1, West);
@@ -140,42 +140,42 @@ void GrandeAcedrexBoard::GetMoves(Piece* piece, int x, int y)
         CheckDirection(piece, x, y, NorthWest);
         break;
     case Unicorn:
-        if (_data[x + 1][y + 2] == nullptr)
+        if (GetData(x + 1, y + 2) == nullptr)
         {
             CheckMove(piece, x + 1, y + 2);
             CheckDirection(piece, x + 1, y + 2, NorthEast);
         }
-        if (_data[x - 1][y + 2] == nullptr)
+        if (GetData(x - 1, y + 2) == nullptr)
         {
             CheckMove(piece, x - 1, y + 2);
             CheckDirection(piece, x - 1, y + 2, NorthWest);
         }
-        if (_data[x + 1][y - 2] == nullptr)
+        if (GetData(x + 1, y - 2) == nullptr)
         {
             CheckMove(piece, x + 1, y - 2);
             CheckDirection(piece, x + 1, y - 2, SouthEast);
         }
-        if (_data[x - 1][y - 2] == nullptr)
+        if (GetData(x - 1, y - 2) == nullptr)
         {
             CheckMove(piece, x - 1, y - 2);
             CheckDirection(piece, x - 1, y - 2, SouthWest);
         }
-        if (_data[x + 2][y + 1] == nullptr)
+        if (GetData(x + 2, y + 1) == nullptr)
         {
             CheckMove(piece, x + 2, y + 1);
             CheckDirection(piece, x + 2, y + 1, NorthEast);
         }
-        if (_data[x + 2][y - 1] == nullptr)
+        if (GetData(x + 2, y - 1) == nullptr)
         {
             CheckMove(piece, x + 2, y - 1);
             CheckDirection(piece, x + 2, y - 1, SouthEast);
         }
-        if (_data[x - 2][y + 1] == nullptr)
+        if (GetData(x - 2, y + 1) == nullptr)
         {
             CheckMove(piece, x - 2, y + 1);
             CheckDirection(piece, x - 2, y + 1, NorthWest);
         }
-        if (_data[x - 2][y - 1] == nullptr)
+        if (GetData(x - 2, y - 1) == nullptr)
         {
             CheckMove(piece, x - 2, y - 1);
             CheckDirection(piece, x - 2, y - 1, SouthWest);
@@ -192,7 +192,7 @@ bool GrandeAcedrexBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
     const bool result = ShatranjBoard::Move(oldX, oldY, newX, newY, cl);
     if (result)
     {
-        dynamic_cast<ChessPiece*>(_data[newX][newY])->Move();
+        dynamic_cast<ChessPiece*>(GetData(newX, newY))->Move();
     }
     return result;
 }

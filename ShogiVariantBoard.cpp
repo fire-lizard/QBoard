@@ -2,7 +2,7 @@
 
 void ShogiVariantBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
 {
-	_data[x][y] = new ShogiPiece(pieceType, pieceColour);
+	SetData(x, y, new ShogiPiece(pieceType, pieceColour));
 }
 
 std::vector<PieceType> ShogiVariantBoard::GetCapturedPieces(PieceColour pieceColour)
@@ -77,10 +77,10 @@ std::string ShogiVariantBoard::CapturedPieceString()
 
 bool ShogiVariantBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
-	if (_data[oldX][oldY] != nullptr)
+	if (GetData(oldX, oldY) != nullptr)
 	{
-		PieceColour pieceColour = _data[oldX][oldY]->GetColour();
-		PieceType pt = _data[newX][newY] != nullptr && _data[newX][newY]->GetColour() != _data[oldX][oldY]->GetColour() ? _data[newX][newY]->GetBaseType() : None;
+		PieceColour pieceColour = GetData(oldX, oldY)->GetColour();
+		PieceType pt = GetData(newX, newY) != nullptr && GetData(newX, newY)->GetColour() != GetData(oldX, oldY)->GetColour() ? GetData(newX, newY)->GetBaseType() : None;
 		const bool result = Board::Move(oldX, oldY, newX, newY, cl);
         if (result && pt != None && pt != Porpoise)
 		{

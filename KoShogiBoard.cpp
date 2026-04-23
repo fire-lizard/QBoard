@@ -20,11 +20,11 @@ void KoShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				_data[i][j] = new KoShogiPiece(_initialSetup[j][i], j < 8 ? Black : White);
+				SetData(i, j, new KoShogiPiece(_initialSetup[j][i], j < 8 ? Black : White));
 			}
 			else
 			{
-				_data[i][j] = nullptr;
+				SetData(i, j, nullptr);
 			}
 		}
 	}
@@ -59,45 +59,45 @@ void KoShogiBoard::RemoveShoot(int x, int y)
 bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	// Gun carriage and Chariot of the Gods cannot capture a heavenly fortress by displacement.
-	Piece* sp = _data[oldX][oldY];
-	if (sp != nullptr && (sp->GetType() == CannonCarriage || sp->GetType() == DivineCarriage) && _data[newX][newY] != nullptr && _data[newX][newY]->GetType() == FreeBoar)
+	Piece* sp = GetData(oldX, oldY);
+	if (sp != nullptr && (sp->GetType() == CannonCarriage || sp->GetType() == DivineCarriage) && GetData(newX, newY) != nullptr && GetData(newX, newY)->GetType() == FreeBoar)
 	{
 		return false;
 	}
-	if (_data[oldX][oldY] != nullptr && IsMovePossible(newX, newY))
+	if (GetData(oldX, oldY) != nullptr && IsMovePossible(newX, newY))
 	{
-		auto pieces = GetEnemyPiecesAround(newX, newY, _data[oldX][oldY]->GetColour());
-		if (std::any_of(pieces.begin(), pieces.end(), [=](std::pair<int, int> t) {return _data[t.first][t.second]->GetType() == PoisonFlame;}))
+		auto pieces = GetEnemyPiecesAround(newX, newY, GetData(oldX, oldY)->GetColour());
+		if (std::any_of(pieces.begin(), pieces.end(), [=](std::pair<int, int> t) {return GetData(t.first, t.second)->GetType() == PoisonFlame;}))
 		{
-			delete _data[oldX][oldY];
-			_data[oldX][oldY] = nullptr;
-			if (_data[newX][newY] != nullptr)
+			delete GetData(oldX, oldY);
+			SetData(oldX, oldY, nullptr);
+			if (GetData(newX, newY) != nullptr)
 			{
-				delete _data[newX][newY];
-				_data[newX][newY] = nullptr;
+				delete GetData(newX, newY);
+				SetData(newX, newY, nullptr);
 			}
 			return true;
 		}
 		// Poison Flame moves
-		if (_data[oldX][oldY]->GetType() == PoisonFlame)
+		if (GetData(oldX, oldY)->GetType() == PoisonFlame)
 		{
-			for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {delete _data[p.first][p.second]; _data[p.first][p.second] = nullptr;});
+			for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {delete GetData(p.first, p.second); SetData(p.first, p.second, nullptr);});
 		}
 	}
 	const bool result = DaiShogiBoard::Move(oldX, oldY, newX, newY, cl);
 	// If the Taoist priest is captured, the drum and banner can no longer promote, and if either or both have already promoted, then they immediately revert.
-	if (result == true && _data[newX][newY] != nullptr && _data[newX][newY]->GetType() == TaoistPriest)
+	if (result == true && GetData(newX, newY) != nullptr && GetData(newX, newY)->GetType() == TaoistPriest)
 	{
 		_taoistPriestCaptured = true;
 		const auto raLocation = EngineOutputHandler::GetPieceLocation(this, RoamingAssault, sp->GetColour() == White ? Black : White);
 		if (raLocation.first != -1 && raLocation.second != -1)
 		{
-			dynamic_cast<KoShogiPiece*>(_data[raLocation.first][raLocation.second])->Demote();
+			dynamic_cast<KoShogiPiece*>(GetData(raLocation.first, raLocation.second))->Demote();
 		}
 		const auto tcLocation = EngineOutputHandler::GetPieceLocation(this, Thunderclap, sp->GetColour() == White ? Black : White);
 		if (tcLocation.first != -1 && tcLocation.second != -1)
 		{
-			dynamic_cast<KoShogiPiece*>(_data[tcLocation.first][tcLocation.second])->Demote();
+			dynamic_cast<KoShogiPiece*>(GetData(tcLocation.first, tcLocation.second))->Demote();
 		}
 	}
 	// Whenever the immaculate light is within 5 intersections of the five-li fog, the fog reverts to a Taoist priest.
@@ -114,7 +114,7 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 		const auto efLocation = EngineOutputHandler::GetPieceLocation(this, ExtensiveFog, sp->GetColour() == White ? Black : White);
 		if (efLocation.first != -1 && efLocation.second != -1 && abs(efLocation.first - newX) <= 5 && abs(efLocation.second - newY) <= 5)
 		{
-			dynamic_cast<KoShogiPiece*>(_data[efLocation.first][efLocation.second])->Demote();
+			dynamic_cast<KoShogiPiece*>(GetData(efLocation.first, efLocation.second))->Demote();
 		}
 	}
 	return result;
@@ -475,11 +475,11 @@ void KoShogiBoard::CheckPriestMove(const Piece* piece, int x, int y)
 {
 	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
 	{
-		if (_data[x][y] != nullptr && _data[x][y]->GetType() != TaoistPriest && _data[x][y]->GetType() != SpiritualMonk &&
-			_data[x][y]->GetType() != ExtensiveFog && _data[x][y]->GetType() != HolyLight)
+		if (GetData(x, y) != nullptr && GetData(x, y)->GetType() != TaoistPriest && GetData(x, y)->GetType() != SpiritualMonk &&
+			GetData(x, y)->GetType() != ExtensiveFog && GetData(x, y)->GetType() != HolyLight)
 		{
 		}
-		else if (_data[x][y] == nullptr || _data[x][y]->GetColour() != piece->GetColour())
+		else if (GetData(x, y) == nullptr || GetData(x, y)->GetColour() != piece->GetColour())
 		{
 			_moves.emplace_back(x, y);
 		}
@@ -488,10 +488,10 @@ void KoShogiBoard::CheckPriestMove(const Piece* piece, int x, int y)
 
 void KoShogiBoard::Shoot(int x, int y)
 {
-	if (_data[x][y] != nullptr)
+	if (GetData(x, y) != nullptr)
 	{
-		delete _data[x][y];
-		_data[x][y] = nullptr;
+		delete GetData(x, y);
+		SetData(x, y, nullptr);
 	}
 }
 
@@ -510,9 +510,9 @@ void KoShogiBoard::CheckShoot(const Piece* piece, int x, int y)
 	}
 	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
 	{
-		if (_data[x][y] != nullptr && _data[x][y]->GetColour() != piece->GetColour())
+		if (GetData(x, y) != nullptr && GetData(x, y)->GetColour() != piece->GetColour())
 		{
-			const auto dt = _data[x][y]->GetType();
+			const auto dt = GetData(x, y)->GetType();
 			// Longbow and Crossbow cannot shoot a shield, shield unit, chariot, chariot unit, Gun carriage, Chariot of the Gods and heavenly fortress.
 			if (pt == Longbow || pt == LongbowKnight || pt == Crossbow || pt == CrossbowKnight)
 			{
@@ -541,7 +541,7 @@ void KoShogiBoard::CheckShootingDirection(const Piece* piece, int x, int y, Dire
 	while (InBounds(x, y, direction) && i < count)
 	{
 		CheckDirectionInc(x, y, direction);
-		if (_data[x][y] != nullptr)
+		if (GetData(x, y) != nullptr)
 		{
 			CheckShoot(piece, x, y);
 			if (!shootOver)
@@ -592,7 +592,7 @@ void KoShogiBoard::dfsFiveSteps(int r, int c, int step, PieceColour pieceColour,
 		if (nr < 0 || nr >= N || nc < 0 || nc >= N) {
 			continue;
 		}
-		if (_data[nr][nc] != nullptr && _data[nr][nc]->GetColour() == pieceColour) {
+		if (GetData(nr, nc) != nullptr && GetData(nr, nc)->GetColour() == pieceColour) {
 			continue; // cannot step here
 		}
 
@@ -635,14 +635,14 @@ std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c,
 
 		if (piece->GetType() == ExtensiveFog || piece->GetType() == HolyLight)
 		{
-			if (_data[rr][cc] != nullptr && _data[rr][cc]->GetType() != TaoistPriest && _data[rr][cc]->GetType() != SpiritualMonk &&
-				_data[rr][cc]->GetType() != ExtensiveFog && _data[rr][cc]->GetType() != HolyLight) {
+			if (GetData(rr, cc) != nullptr && GetData(rr, cc)->GetType() != TaoistPriest && GetData(rr, cc)->GetType() != SpiritualMonk &&
+				GetData(rr, cc)->GetType() != ExtensiveFog && GetData(rr, cc)->GetType() != HolyLight) {
 				continue;
 			}
 		}
 
 		// The piece can land on this square if it's EMPTY or ENEMY
-		if (_data[rr][cc] != nullptr && _data[rr][cc]->GetColour() == piece->GetColour()) {
+		if (GetData(rr, cc) != nullptr && GetData(rr, cc)->GetColour() == piece->GetColour()) {
 			continue;
 		}
 

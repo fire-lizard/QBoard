@@ -54,28 +54,6 @@ PieceType WhaleShogiPiece::FromStringCode(const std::string& code)
     return it != codeToPieceType.end() ? it->second : None;
 }
 
-std::string WhaleShogiPiece::ToStringCode(PieceType piece)
-{
-    static const std::unordered_map<PieceType, std::string> pieceTypeToCode = {
-    { King,           "W" },
-    { GreyWhale,      "G" },
-    { Porpoise,       "P" },
-    { DragonKing,     "K" },
-    { Narwhal,        "N" },
-    { Humpback,       "H" },
-    { BlueWhale,      "B" },
-    { Pawn,           "D" }
-    };
-
-    const auto it = pieceTypeToCode.find(piece);
-    return it != pieceTypeToCode.end() ? it->second : "";
-}
-
-std::string WhaleShogiPiece::Description() const
-{
-    return PieceType2Description(_pieceType);
-}
-
 std::string WhaleShogiPiece::PieceType2Description(PieceType pieceType)
 {
     switch (pieceType)

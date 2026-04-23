@@ -193,11 +193,6 @@ std::string WaShogiPiece::ToStringCode(PieceType piece)
 	return it != pieceTypeToCode.end() ? it->second : "";
 }
 
-std::string WaShogiPiece::Description() const
-{
-	return PieceType2Description(_pieceType);
-}
-
 std::string WaShogiPiece::PieceType2Description(PieceType pieceType)
 {
 	switch (pieceType)

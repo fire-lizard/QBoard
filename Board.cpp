@@ -11,10 +11,10 @@ void Board::Clear()
 	{
 		for (int j = 0; j < _height; j++)
 		{
-			if (_data[i][j] != nullptr)
+			if (GetData(i, j) != nullptr)
 			{
-				delete _data[i][j];
-				_data[i][j] = nullptr;
+				delete GetData(i, j);
+				SetData(i, j, nullptr);
 			}
 		}
 	}
@@ -27,12 +27,19 @@ std::vector<std::pair<int, int>> Board::Moves() const
 
 Piece* Board::GetData(int x, int y) const
 {
-	return _data[x][y];
+    if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
+    {
+        return _data[x][y];
+    }
+    return nullptr;
 }
 
 void Board::SetData(int x, int y, Piece *p)
 {
-	_data[x][y] = p;
+    if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
+    {
+        _data[x][y]= p;
+    }
 }
 
 int Board::MoveCount() const
@@ -53,15 +60,15 @@ std::string Board::GetFEN() const
 	{
 		for (int i = 0; i < _width; i++)
 		{
-			if (_data[i][j] != nullptr)
+			if (GetData(i, j) != nullptr)
 			{
 				if (emptySquares > 0)
 				{
 					fen.append(std::to_string(emptySquares));
 					emptySquares = 0;
 				}
-				std::string sc = _data[i][j]->StringCode();
-				if (_data[i][j]->GetColour() == Black)
+				std::string sc = GetData(i, j)->StringCode();
+				if (GetData(i, j)->GetColour() == Black)
 				{
 					std::transform(sc.begin(), sc.end(), sc.begin(), [](const char v) { return static_cast<char>(std::tolower(v)); });
 				}
@@ -135,7 +142,7 @@ void Board::CheckMove(const Piece *piece, int x, int y)
 {
 	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
 	{
-		if (_data[x][y] == nullptr || _data[x][y]->GetColour() != piece->GetColour())
+		if (GetData(x, y) == nullptr || GetData(x, y)->GetColour() != piece->GetColour())
 		{
 			_moves.emplace_back(x, y);
 		}
@@ -148,7 +155,7 @@ void Board::CheckDirection(const Piece *piece, int x, int y, Direction direction
 	{
 		CheckDirectionInc(x, y, direction);
 		CheckMove(piece, x, y);
-		if (_data[x][y] != nullptr)
+		if (GetData(x, y) != nullptr)
 		{
 			break;
 		}
@@ -162,7 +169,7 @@ void Board::CheckDirection(const Piece* piece, int x, int y, Direction direction
 	{
 		CheckDirectionInc(x, y, direction);
 		CheckMove(piece, x, y);
-		if (_data[x][y] != nullptr)
+		if (GetData(x, y) != nullptr)
 		{
 			break;
 		}
@@ -198,12 +205,12 @@ bool Board::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	if (std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}) || !cl)
 	{
-		if (_data[newX][newY] != nullptr)
+		if (GetData(newX, newY) != nullptr)
 		{
-			delete _data[newX][newY];
+			delete GetData(newX, newY);
 		}
-		_data[newX][newY] = _data[oldX][oldY];
-		_data[oldX][oldY] = nullptr;
+		SetData(newX, newY, GetData(oldX, oldY));
+		SetData(oldX, oldY, nullptr);
 		return true;
 	}
 	return false;
@@ -227,9 +234,9 @@ std::vector<std::tuple<int, int, int, int>> Board::GetAllMoves(PieceColour piece
 	{
 		for (int j = 0; j < _height; j++)
 		{
-			if (_data[i][j] != nullptr && _data[i][j]->GetColour() == pieceColour)
+			if (GetData(i, j) != nullptr && GetData(i, j)->GetColour() == pieceColour)
 			{
-				GetMoves(_data[i][j], i, j);
+				GetMoves(GetData(i, j), i, j);
 				for_each(_moves.begin(), _moves.end(), [&](std::pair<int, int> p) {result.emplace_back(i, j, p.first, p.second);});
 			}
 		}
@@ -248,7 +255,7 @@ bool Board::HasPiece(PieceType pieceType, PieceColour pieceColour) const
 	{
 		for (int j = 0; j < _height; j++)
 		{
-			if (_data[i][j] != nullptr && _data[i][j]->GetType() == pieceType && _data[i][j]->GetColour() == pieceColour)
+			if (GetData(i, j) != nullptr && GetData(i, j)->GetType() == pieceType && GetData(i, j)->GetColour() == pieceColour)
 			{
 				return true;
 			}
@@ -260,9 +267,9 @@ bool Board::HasPiece(PieceType pieceType, PieceColour pieceColour) const
 std::vector<std::pair<int, int>> Board::GetAttackers(int x, int y)
 {
 	std::vector<std::pair<int, int>> vec;
-	if (_data[x][y] != nullptr)
+	if (GetData(x, y) != nullptr)
 	{
-		const PieceColour pieceColour = _data[x][y]->GetColour();
+		const PieceColour pieceColour = GetData(x, y)->GetColour();
 		Board* board = this->Clone();
 		board->SetData(x, y, nullptr);
 		const auto opponentMoves = board->GetAllMoves(pieceColour == White ? Black : White);
@@ -281,9 +288,9 @@ std::vector<std::pair<int, int>> Board::GetAttackers(int x, int y)
 std::vector<std::pair<int, int>> Board::GetDefenders(int x, int y)
 {
 	std::vector<std::pair<int, int>> vec;
-	if (_data[x][y] != nullptr)
+	if (GetData(x, y) != nullptr)
 	{
-		const PieceColour pieceColour = _data[x][y]->GetColour();
+		const PieceColour pieceColour = GetData(x, y)->GetColour();
 		Board* board = this->Clone();
 		board->SetData(x, y, nullptr);
 		const auto playerMoves = board->GetAllMoves(pieceColour);

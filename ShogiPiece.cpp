@@ -130,11 +130,6 @@ std::string ShogiPiece::ToStringCode(PieceType piece)
 	return it != pieceTypeToCode.end() ? it->second : "";
 }
 
-std::string ShogiPiece::Description() const
-{
-	return PieceType2Description(_pieceType);
-}
-
 std::string ShogiPiece::KanjiStringCode()
 {
 	switch (_pieceType)

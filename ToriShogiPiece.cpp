@@ -69,29 +69,6 @@ PieceType ToriShogiPiece::FromStringCode(const std::string& code)
     return it != codeToPieceType.end() ? it->second : None;
 }
 
-std::string ToriShogiPiece::ToStringCode(PieceType piece)
-{
-    static const std::unordered_map<PieceType, std::string> pieceTypeToCode = {
-    { King,           "K"  },
-    { Falcon,         "F"  },
-    { Eagle,          "+F" },
-    { Crane,          "C"  },
-    { Pheasant,       "P"  },
-    { LeftQuail,      "L"  },
-    { RightQuail,     "R"  },
-    { Pawn,           "S"  },
-    { Goose,          "+S" }
-    };
-
-    const auto it = pieceTypeToCode.find(piece);
-    return it != pieceTypeToCode.end() ? it->second : "";
-}
-
-std::string ToriShogiPiece::Description() const
-{
-    return PieceType2Description(_pieceType);
-}
-
 std::string ToriShogiPiece::PieceType2Description(PieceType pieceType)
 {
     switch (pieceType)

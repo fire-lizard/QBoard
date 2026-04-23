@@ -37,11 +37,11 @@ void XiangqiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				_data[i][j] = new XiangqiPiece(_initialSetup[j][i], j < 5 ? Black : White);
+				SetData(i, j, new XiangqiPiece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
-				_data[i][j] = nullptr;
+				SetData(i, j, nullptr);
 			}
 		}
 	}
@@ -86,16 +86,16 @@ void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 	case Elephant:
 		if ((piece->GetColour() == White && y > 5) || piece->GetColour() == Black)
 		{
-			if (_data[x - 1][y - 1] == nullptr)
+			if (GetData(x - 1, y - 1) == nullptr)
 				CheckMove(piece, x - 2, y - 2);
-			if (_data[x + 1][y - 1] == nullptr)
+			if (GetData(x + 1, y - 1) == nullptr)
 				CheckMove(piece, x + 2, y - 2);
 		}
 		if ((piece->GetColour() == Black && y < 4) || piece->GetColour() == White)
 		{
-			if (_data[x - 1][y + 1] == nullptr)
+			if (GetData(x - 1, y + 1) == nullptr)
 				CheckMove(piece, x - 2, y + 2);
-			if (_data[x + 1][y + 1] == nullptr)
+			if (GetData(x + 1, y + 1) == nullptr)
 				CheckMove(piece, x + 2, y + 2);
 		}
 		break;
@@ -120,22 +120,22 @@ void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		break;
 	case Knight:
-		if (_data[x][y + 1] == nullptr)
+		if (GetData(x, y + 1) == nullptr)
 		{
 			CheckMove(piece, x + 1, y + 2);
 			CheckMove(piece, x - 1, y + 2);
 		}
-		if (_data[x + 1][y] == nullptr)
+		if (GetData(x + 1, y) == nullptr)
 		{
 			CheckMove(piece, x + 2, y + 1);
 			CheckMove(piece, x + 2, y - 1);
 		}
-		if (_data[x - 1][y] == nullptr)
+		if (GetData(x - 1, y) == nullptr)
 		{
 			CheckMove(piece, x - 2, y + 1);
 			CheckMove(piece, x - 2, y - 1);
 		}
-		if (_data[x][y - 1] == nullptr)
+		if (GetData(x, y - 1) == nullptr)
 		{
 			CheckMove(piece, x + 1, y - 2);
 			CheckMove(piece, x - 1, y - 2);
@@ -157,7 +157,7 @@ void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direct
 	do
 	{
 		CheckDirectionInc(x, y, direction);
-		if (_data[x][y] == nullptr)
+		if (GetData(x, y) == nullptr)
 			CheckMove(piece, x, y);
 		else
 		{
@@ -165,8 +165,8 @@ void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direct
 			{
 				CheckDirectionInc(x, y, direction);
 			} 
-			while (_data[x][y] == nullptr && InBounds(x, y, direction));
-			if (CheckPosition(x, y) && _data[x][y] != nullptr && _data[x][y]->GetColour() != piece->GetColour())
+			while (GetData(x, y) == nullptr && InBounds(x, y, direction));
+			if (CheckPosition(x, y) && GetData(x, y) != nullptr && GetData(x, y)->GetColour() != piece->GetColour())
 			{
 				CheckMove(piece, x, y);
 			}
@@ -179,12 +179,12 @@ void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direct
 bool XiangqiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	for (int& _pieceFile : _pieceFiles) _pieceFile = -1;
-	const PieceColour pieceColour = _data[oldX][oldY]->GetColour();
-	const PieceType pieceType = _data[oldX][oldY]->GetType();
+	const PieceColour pieceColour = GetData(oldX, oldY)->GetColour();
+	const PieceType pieceType = GetData(oldX, oldY)->GetType();
 	int pieceCount = 0;
 	for (int index = 0; index < _height; index++)
 	{
-		const Piece* p = _data[oldX][index];
+		const Piece* p = GetData(oldX, index);
 		if (p != nullptr && p->GetColour() == pieceColour && p->GetType() == pieceType)
 		{
 			_pieceFiles[pieceCount] = index;

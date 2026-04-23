@@ -45,11 +45,11 @@ void CapablancaChessBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                _data[i][j] = new GothicChessPiece(_initialSetup[j][i], j < 5 ? Black : White);
+                SetData(i, j, new GothicChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
-                _data[i][j] = nullptr;
+                SetData(i, j, nullptr);
             }
         }
     }
@@ -77,10 +77,10 @@ void CapablancaChessBoard::GetMoves(Piece *piece, int x, int y)
         // Check castling
         if (!dynamic_cast<ChessPiece*>(piece)->HasMoved())
         {
-            if (_data[0][y] != nullptr)
+            if (GetData(0, y) != nullptr)
             {
-                const ChessPiece* cp = dynamic_cast<ChessPiece*>(_data[0][y]);
-                if (!cp->HasMoved() && cp->GetType() == Rook && _data[1][y] == nullptr && _data[2][y] == nullptr && _data[3][y] == nullptr && _data[4][y] == nullptr)
+                const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(0, y));
+                if (!cp->HasMoved() && cp->GetType() == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr && GetData(4, y) == nullptr)
                 {
                     if ((piece->GetColour() == White && _wqc == true) || (piece->GetColour() == Black && _bqc == true))
                     {
@@ -88,10 +88,10 @@ void CapablancaChessBoard::GetMoves(Piece *piece, int x, int y)
                     }
                 }
             }
-            if (_data[9][y] != nullptr)
+            if (GetData(9, y) != nullptr)
             {
-                const ChessPiece* cp = dynamic_cast<ChessPiece*>(_data[9][y]);
-                if (!cp->HasMoved() && cp->GetType() == Rook && _data[6][y] == nullptr && _data[7][y] == nullptr && _data[8][y] == nullptr)
+                const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(9, y));
+                if (!cp->HasMoved() && cp->GetType() == Rook && GetData(6, y) == nullptr && GetData(7, y) == nullptr && GetData(8, y) == nullptr)
                 {
                     if ((piece->GetColour() == White && _wkc == true) || (piece->GetColour() == Black && _bkc == true))
                     {

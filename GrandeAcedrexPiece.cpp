@@ -56,28 +56,6 @@ PieceType GrandeAcedrexPiece::FromStringCode(const std::string& code)
     return it != codeToPieceType.end() ? it->second : None;
 }
 
-std::string GrandeAcedrexPiece::ToStringCode(PieceType piece)
-{
-    static const std::unordered_map<PieceType, std::string> pieceTypeToCode = {
-        {King, "K"},
-        {Aanca, "A"},
-        {Rook, "R"},
-        {Bishop, "C"},
-        {Giraffe, "G"},
-        {Unicorn, "U"},
-        {Lion, "L"},
-        {Pawn, "P"}
-    };
-
-    const auto it = pieceTypeToCode.find(piece);
-    return it != pieceTypeToCode.end() ? it->second : "";
-}
-
-std::string GrandeAcedrexPiece::Description() const
-{
-    return PieceType2Description(_pieceType);
-}
-
 std::string GrandeAcedrexPiece::PieceType2Description(PieceType pieceType)
 {
     switch (pieceType)

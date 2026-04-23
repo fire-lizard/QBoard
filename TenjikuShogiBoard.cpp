@@ -19,11 +19,11 @@ void TenjikuShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				_data[i][j] = new TenjikuShogiPiece(_initialSetup[j][i], j < 7 ? Black : White);
+				SetData(i, j, new TenjikuShogiPiece(_initialSetup[j][i], j < 7 ? Black : White));
 			}
 			else
 			{
-				_data[i][j] = nullptr;
+				SetData(i, j, nullptr);
 			}
 		}
 	}
@@ -59,11 +59,11 @@ void TenjikuShogiBoard::CheckJump(const Piece* piece, int x, int y, Direction di
 		{
 			CheckMove(piece, x, y);
 		}
-		if (_data[x][y] != nullptr)
+		if (GetData(x, y) != nullptr)
 		{
 			beforeJump = false;
 			CheckMove(piece, x, y);
-			PieceType pieceType = _data[x][y]->GetType();
+			PieceType pieceType = GetData(x, y)->GetType();
 			if (pieceType == King || piece->GetType() == pieceType || pieceType == GreatGeneral
 				|| std::find(std::begin(_jumpingPieces), std::end(_jumpingPieces), pieceType) != std::end(_jumpingPieces))
 			{
@@ -77,7 +77,7 @@ void TenjikuShogiBoard::CheckIgui(const Piece* piece, int x, int y)
 {
 	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
 	{
-		if (_data[x][y] != nullptr && _data[x][y]->GetColour() != piece->GetColour())
+		if (GetData(x, y) != nullptr && GetData(x, y)->GetColour() != piece->GetColour())
 		{
 			_moves.emplace_back(x, y);
 		}
@@ -87,12 +87,12 @@ void TenjikuShogiBoard::CheckIgui(const Piece* piece, int x, int y)
 bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	// Heavenly Tetrach moves
-	if (_data[oldX][oldY]->GetType() == HeavenlyTetrarch && abs(oldX - newX) <= 1 && abs(oldY - newY) <= 1 && (oldX != newX || oldY != newY))
+	if (GetData(oldX, oldY)->GetType() == HeavenlyTetrarch && abs(oldX - newX) <= 1 && abs(oldY - newY) <= 1 && (oldX != newX || oldY != newY))
 	{
 		if (std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}))
 		{
-			delete _data[newX][newY];
-			_data[newX][newY] = nullptr;
+			delete GetData(newX, newY);
+			SetData(newX, newY, nullptr);
 			return true;
 		}
 	}
@@ -100,22 +100,22 @@ bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	{
 		if (IsMovePossible(newX, newY))
 		{
-			auto pieces = GetEnemyPiecesAround(newX, newY, _data[oldX][oldY]->GetColour());
-			if (std::any_of(pieces.begin(), pieces.end(), [=](std::pair<int, int> t) {return _data[t.first][t.second]->GetType() == FireDemon;}))
+			auto pieces = GetEnemyPiecesAround(newX, newY, GetData(oldX, oldY)->GetColour());
+			if (std::any_of(pieces.begin(), pieces.end(), [=](std::pair<int, int> t) {return GetData(t.first, t.second)->GetType() == FireDemon;}))
 			{
-				delete _data[oldX][oldY];
-				_data[oldX][oldY] = nullptr;
-				if (_data[newX][newY] != nullptr)
+				delete GetData(oldX, oldY);
+				SetData(oldX, oldY, nullptr);
+				if (GetData(newX, newY) != nullptr)
 				{
-					delete _data[newX][newY];
-					_data[newX][newY] = nullptr;
+					delete GetData(newX, newY);
+					SetData(newX, newY, nullptr);
 				}
 				return true;
 			}
 			// Fire Demon moves
-			if (_data[oldX][oldY]->GetType() == FireDemon)
+			if (GetData(oldX, oldY)->GetType() == FireDemon)
 			{
-				for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {delete _data[p.first][p.second]; _data[p.first][p.second] = nullptr;});
+				for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {delete GetData(p.first, p.second); SetData(p.first, p.second, nullptr);});
 			}
 		}
 	}
@@ -169,12 +169,12 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x - 1, y - 1, NorthWest);
 
 		CheckMove(piece, x + 2, y);
-		if (_data[x + 2][y] == nullptr)
+		if (GetData(x + 2, y) == nullptr)
 		{
 			CheckMove(piece, x + 3, y);
 		}
 		CheckMove(piece, x - 2, y);
-		if (_data[x - 2][y] == nullptr)
+		if (GetData(x - 2, y) == nullptr)
 		{
 			CheckMove(piece, x - 3, y);
 		}
@@ -347,11 +347,11 @@ void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 			{
 				board[i + MAX_MOVES][j + MAX_MOVES] = 'W';
 			}
-			else if (_data[x + i][y + j] != nullptr && _data[x + i][y + j]->GetColour() != _data[x][y]->GetColour())
+			else if (GetData(x + i, y + j) != nullptr && GetData(x + i, y + j)->GetColour() != GetData(x, y)->GetColour())
 			{
 				board[i + MAX_MOVES][j + MAX_MOVES] = 'W';
 			}
-			else if (_data[x + i][y + j] != nullptr && _data[x + i][y + j]->GetColour() == _data[x][y]->GetColour())
+			else if (GetData(x + i, y + j) != nullptr && GetData(x + i, y + j)->GetColour() == GetData(x, y)->GetColour())
 			{
 				board[i + MAX_MOVES][j + MAX_MOVES] = 'B';
 			}

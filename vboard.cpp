@@ -2829,28 +2829,23 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		std::string str;
         if (_gameVariant == WhaleShogi)
         {
-            WhaleShogiPiece p(cp, _currentPlayer);
-            str = p.Description();
+            str = WhaleShogiPiece::PieceType2Description(cp);
         }
         else if (_gameVariant == ToriShogi)
         {
-            ToriShogiPiece p(cp, _currentPlayer);
-            str = p.Description() + " (" + p.KanjiStringCode() + ")";
+            str = ToriShogiPiece::PieceType2Description(cp);
         }
         else if (_gameVariant == YariShogi)
         {
-            YariShogiPiece p(cp, _currentPlayer);
-            str = p.Description();
+            str = YariShogiPiece::PieceType2Description(cp);
         }
         else if (_gameVariant == CrazyWa)
 		{
-			WaShogiPiece p(cp, _currentPlayer);
-			str = p.Description() + " (" + p.KanjiStringCode() + ")";
+            str = WaShogiPiece::PieceType2Description(cp);
 		}
 		else
 		{
-			ShogiPiece p(cp, _currentPlayer);
-			str = p.Description() + " (" + p.KanjiStringCode() + ")";
+            str = ShogiPiece::PieceType2Description(cp);
 		}
 		menu.addAction(QString::fromStdString(str));
 	}

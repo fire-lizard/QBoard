@@ -45,11 +45,11 @@ void ChessBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				_data[i][j] = new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White);
+				SetData(i, j, new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
-				_data[i][j] = nullptr;
+				SetData(i, j, nullptr);
 			}
 		}
 	}
@@ -98,8 +98,8 @@ void ChessBoard::SetEnPassant(std::string val)
 
 bool ChessBoard::EnemyPawnsAround(int x, int y) const
 {
-	const Piece *fp = x > 0 ? _data[x - 1][y] : nullptr;
-	const Piece *sp = x < _width - 1 ? _data[x + 1][y] : nullptr;
+	const Piece *fp = x > 0 ? GetData(x - 1, y) : nullptr;
+	const Piece *sp = x < _width - 1 ? GetData(x + 1, y) : nullptr;
 	const PieceColour pieceColour = y == 3 ? White : Black;
 	const bool fpa = (fp != nullptr) && (fp->GetType() == Pawn) && (fp->GetColour() == pieceColour);
 	const bool spa = (sp != nullptr) && (sp->GetType() == Pawn) && (sp->GetColour() == pieceColour);
@@ -123,10 +123,10 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 		// Check castling
 		if (!dynamic_cast<ChessPiece*>(piece)->HasMoved())
 		{
-			if (_data[0][y] != nullptr)
+			if (GetData(0, y) != nullptr)
 			{
-				const ChessPiece* cp = dynamic_cast<ChessPiece*>(_data[0][y]);
-				if (!cp->HasMoved() && cp->GetType() == Rook && _data[1][y] == nullptr && _data[2][y] == nullptr && _data[3][y] == nullptr)
+				const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(0, y));
+				if (!cp->HasMoved() && cp->GetType() == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr)
 				{
 					if ((piece->GetColour() == White && _wqc == true) || (piece->GetColour() == Black && _bqc == true))
 					{
@@ -134,10 +134,10 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 					}
 				}
 			}
-			if (_data[7][y] != nullptr)
+			if (GetData(7, y) != nullptr)
 			{
-				const ChessPiece* cp = dynamic_cast<ChessPiece*>(_data[7][y]);
-				if (!cp->HasMoved() && cp->GetType() == Rook && _data[5][y] == nullptr && _data[6][y] == nullptr)
+				const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(7, y));
+				if (!cp->HasMoved() && cp->GetType() == Rook && GetData(5, y) == nullptr && GetData(6, y) == nullptr)
 				{
 					if ((piece->GetColour() == White && _wkc == true) || (piece->GetColour() == Black && _bkc == true))
 					{
@@ -166,19 +166,19 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 	case Pawn:
 		if (piece->GetColour() == Black)
 		{
-			if (y == 1 && _data[x][y + 1] == nullptr && _data[x][y + 2] == nullptr)
+			if (y == 1 && GetData(x, y + 1) == nullptr && GetData(x, y + 2) == nullptr)
 			{
 				CheckMove(piece, x, y + 2);
 			}
-			if (y + 1 < _height && _data[x][y + 1] == nullptr)
+			if (y + 1 < _height && GetData(x, y + 1) == nullptr)
 			{
 				CheckMove(piece, x, y + 1);
 			}
-			if (y + 1 < _height && x + 1 < _width && _data[x + 1][y + 1] != nullptr)
+			if (y + 1 < _height && x + 1 < _width && GetData(x + 1, y + 1) != nullptr)
 			{
 				CheckMove(piece, x + 1, y + 1);
 			}
-			if (y + 1 < _height && x - 1 >= 0 && _data[x - 1][y + 1] != nullptr)
+			if (y + 1 < _height && x - 1 >= 0 && GetData(x - 1, y + 1) != nullptr)
 			{
 				CheckMove(piece, x - 1, y + 1);
 			}
@@ -195,19 +195,19 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		else
 		{
-			if (y == 6 && _data[x][y - 1] == nullptr && _data[x][y - 2] == nullptr)
+			if (y == 6 && GetData(x, y - 1) == nullptr && GetData(x, y - 2) == nullptr)
 			{
 				CheckMove(piece, x, y - 2);
 			}
-			if (y - 1 >= 0 && _data[x][y - 1] == nullptr)
+			if (y - 1 >= 0 && GetData(x, y - 1) == nullptr)
 			{
 				CheckMove(piece, x, y - 1);
 			}
-			if (y - 1 >= 0 && x + 1 < _width && _data[x + 1][y - 1] != nullptr)
+			if (y - 1 >= 0 && x + 1 < _width && GetData(x + 1, y - 1) != nullptr)
 			{
 				CheckMove(piece, x + 1, y - 1);
 			}
-			if (y - 1 >= 0 && x - 1 >= 0 && _data[x - 1][y - 1] != nullptr)
+			if (y - 1 >= 0 && x - 1 >= 0 && GetData(x - 1, y - 1) != nullptr)
 			{
 				CheckMove(piece, x - 1, y - 1);
 			}
@@ -231,13 +231,13 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 
 bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
-	const PieceType pieceType = _data[oldX][oldY]->GetType();
-	const PieceColour pieceColour = _data[oldX][oldY]->GetColour();
-	const PieceType destPieceType = _data[newX][newY] != nullptr ? _data[newX][newY]->GetType() : None;
+	const PieceType pieceType = GetData(oldX, oldY)->GetType();
+	const PieceColour pieceColour = GetData(oldX, oldY)->GetColour();
+	const PieceType destPieceType = GetData(newX, newY) != nullptr ? GetData(newX, newY)->GetType() : None;
 	const bool result = Board::Move(oldX, oldY, newX, newY, cl);
 	if (result)
 	{
-		dynamic_cast<ChessPiece*>(_data[newX][newY])->Move();
+		dynamic_cast<ChessPiece*>(GetData(newX, newY))->Move();
 		// Castling
 		if (pieceType == Rook)
 		{
@@ -304,17 +304,17 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 			const int number = _ep[1] - 48;
 			if (letter == _ep[0] &&	((pieceColour == White && newY == number - 1) || (pieceColour == Black && newY == number + 2)))
 			{
-				const Piece* p = pieceColour == White ? _data[newX][number] : _data[newX][number + 1];
+				const Piece* p = pieceColour == White ? GetData(newX, number) : GetData(newX, number + 1);
 				if (p != nullptr && p->GetType() == Pawn && p->GetColour() != pieceColour)
 				{
 					delete p;
 					if (pieceColour == White)
 					{
-						_data[newX][number] = nullptr;
+						SetData(newX, number, nullptr);
 					}
 					else
 					{
-						_data[newX][number + 1] = nullptr;
+						SetData(newX, number + 1, nullptr);
 					}
 				}
 			}
