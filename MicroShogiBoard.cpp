@@ -21,11 +21,11 @@ void MicroShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                _data[i][j] = new MicroShogiPiece(_initialSetup[j][i], j < 2 ? Black : White);
+                SetData(i, j, new MicroShogiPiece(_initialSetup[j][i], j < 2 ? Black : White));
             }
             else
             {
-                _data[i][j] = nullptr;
+                SetData(i, j, nullptr);
             }
         }
     }
@@ -52,11 +52,11 @@ Board* MicroShogiBoard::Clone()
 
 bool MicroShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
-    const PieceType destPieceType = _data[newX][newY] != nullptr ? _data[newX][newY]->GetType() : None;
+    const PieceType destPieceType = GetData(newX, newY) != nullptr ? GetData(newX, newY)->GetType() : None;
     const bool result = ShogiVariantBoard::Move(oldX, oldY, newX, newY, cl);
     if (result && destPieceType != None)
     {
-        _data[newX][newY]->Promote();
+        GetData(newX, newY)->Promote();
     }
     return result;
 }
@@ -68,5 +68,5 @@ Piece* MicroShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour
 
 void MicroShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
 {
-    _data[x][y] = new MicroShogiPiece(pieceType, pieceColour);
+    SetData(x, y, new MicroShogiPiece(pieceType, pieceColour));
 }

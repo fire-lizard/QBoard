@@ -22,11 +22,11 @@ void WaShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				_data[i][j] = new WaShogiPiece(_initialSetup[j][i], j < 5 ? Black : White);
+				SetData(i, j, new WaShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
-				_data[i][j] = nullptr;
+				SetData(i, j, nullptr);
 			}
 		}
 	}
@@ -58,7 +58,7 @@ Piece* WaShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 
 void WaShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
 {
-	_data[x][y] = new WaShogiPiece(pieceType, pieceColour);
+	SetData(x, y, new WaShogiPiece(pieceType, pieceColour));
 }
 
 std::string WaShogiBoard::formatEnumCounts(const std::vector<PieceType>& enumList)

@@ -26,11 +26,11 @@ void ShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				_data[i][j] = new ShogiPiece(_initialSetup[j][i], j < 5 ? Black : White);
+				SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
-				_data[i][j] = nullptr;
+				SetData(i, j, nullptr);
 			}
 		}
 	}
@@ -248,7 +248,7 @@ void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 	_csa += y1 == '*' ? "00" : std::to_string(_width - x1) + std::to_string(y1 + 1);
 	_csa += std::to_string(_width - x2);
 	_csa += std::to_string(y2 + 1);
-	_csa += _pieceToCSA.at(promotion != '+' ? pieceType : _data[x2][y2]->GetType());
+	_csa += _pieceToCSA.at(promotion != '+' ? pieceType : GetData(x2, y2)->GetType());
 	_csa += ",T1\n";
 	// KIF
 	_kif += "  " + std::to_string(_moveCount) + " "; // Add move number

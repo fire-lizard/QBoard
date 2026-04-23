@@ -21,11 +21,11 @@ void YariShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                _data[i][j] = new YariShogiPiece(_initialSetup[j][i], j < 5 ? Black : White);
+                SetData(i, j, new YariShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
-                _data[i][j] = nullptr;
+                SetData(i, j, nullptr);
             }
         }
     }
@@ -57,7 +57,7 @@ Piece* YariShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 
 void YariShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
 {
-    _data[x][y] = new YariShogiPiece(pieceType, pieceColour);
+    SetData(x, y, new YariShogiPiece(pieceType, pieceColour));
 }
 
 void YariShogiBoard::GetMoves(Piece *piece, int x, int y)

@@ -21,11 +21,11 @@ void KyotoShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                _data[i][j] = new KyotoShogiPiece(_initialSetup[j][i], j < 2 ? Black : White);
+                SetData(i, j, new KyotoShogiPiece(_initialSetup[j][i], j < 2 ? Black : White));
             }
             else
             {
-                _data[i][j] = nullptr;
+                SetData(i, j, nullptr);
             }
         }
     }
@@ -57,5 +57,5 @@ Piece* KyotoShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour
 
 void KyotoShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
 {
-    _data[x][y] = new KyotoShogiPiece(pieceType, pieceColour);
+    SetData(x, y, new KyotoShogiPiece(pieceType, pieceColour));
 }

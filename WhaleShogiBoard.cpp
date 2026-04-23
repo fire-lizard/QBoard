@@ -21,11 +21,11 @@ void WhaleShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                _data[i][j] = new WhaleShogiPiece(_initialSetup[j][i], j < 3 ? Black : White);
+                SetData(i, j, new WhaleShogiPiece(_initialSetup[j][i], j < 3 ? Black : White));
             }
             else
             {
-                _data[i][j] = nullptr;
+                SetData(i, j, nullptr);
             }
         }
     }
@@ -57,7 +57,7 @@ Piece* WhaleShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour
 
 void WhaleShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
 {
-    _data[x][y] = new WhaleShogiPiece(pieceType, pieceColour);
+    SetData(x, y, new WhaleShogiPiece(pieceType, pieceColour));
 }
 
 void WhaleShogiBoard::GetMoves(Piece* piece, int x, int y)

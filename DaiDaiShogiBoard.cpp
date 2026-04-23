@@ -20,11 +20,11 @@ void DaiDaiShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				_data[i][j] = new DaiDaiShogiPiece(_initialSetup[j][i], j < 8 ? Black : White);
+				SetData(i, j, new DaiDaiShogiPiece(_initialSetup[j][i], j < 8 ? Black : White));
 			}
 			else
 			{
-				_data[i][j] = nullptr;
+				SetData(i, j, nullptr);
 			}
 		}
 	}

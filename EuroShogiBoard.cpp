@@ -21,11 +21,11 @@ void EuroShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                _data[i][j] = new ShogiPiece(_initialSetup[j][i], j < 3 ? Black : White);
+                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 3 ? Black : White));
             }
             else
             {
-                _data[i][j] = nullptr;
+                SetData(i, j, nullptr);
             }
         }
     }

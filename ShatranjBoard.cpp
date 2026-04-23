@@ -36,11 +36,11 @@ void ShatranjBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				_data[i][j] = new ShatranjPiece(_initialSetup[j][i], j < 5 ? Black : White);
+				SetData(i, j, new ShatranjPiece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
-				_data[i][j] = nullptr;
+				SetData(i, j, nullptr);
 			}
 		}
 	}
@@ -87,30 +87,30 @@ void ShatranjBoard::GetMoves(Piece* piece, int x, int y)
 	case Pawn:
 		if (piece->GetColour() == Black)
 		{
-			if (y + 1 < _height && _data[x][y + 1] == nullptr)
+			if (y + 1 < _height && GetData(x, y + 1) == nullptr)
 			{
 				CheckMove(piece, x, y + 1);
 			}
-			if (y + 1 < _height && x + 1 < _width && _data[x + 1][y + 1] != nullptr)
+			if (y + 1 < _height && x + 1 < _width && GetData(x + 1, y + 1) != nullptr)
 			{
 				CheckMove(piece, x + 1, y + 1);
 			}
-			if (y + 1 < _height && x - 1 >= 0 && _data[x - 1][y + 1] != nullptr)
+			if (y + 1 < _height && x - 1 >= 0 && GetData(x - 1, y + 1) != nullptr)
 			{
 				CheckMove(piece, x - 1, y + 1);
 			}
 		}
 		else
 		{
-			if (y - 1 >= 0 && _data[x][y - 1] == nullptr)
+			if (y - 1 >= 0 && GetData(x, y - 1) == nullptr)
 			{
 				CheckMove(piece, x, y - 1);
 			}
-			if (y - 1 >= 0 && x + 1 < _width && _data[x + 1][y - 1] != nullptr)
+			if (y - 1 >= 0 && x + 1 < _width && GetData(x + 1, y - 1) != nullptr)
 			{
 				CheckMove(piece, x + 1, y - 1);
 			}
-			if (y - 1 >= 0 && x - 1 >= 0 && _data[x - 1][y - 1] != nullptr)
+			if (y - 1 >= 0 && x - 1 >= 0 && GetData(x - 1, y - 1) != nullptr)
 			{
 				CheckMove(piece, x - 1, y - 1);
 			}
