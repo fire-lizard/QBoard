@@ -14,6 +14,7 @@
 #include "TenjikuShogiPiece.h"
 #include "DaiDaiShogiPiece.h"
 #include "KoShogiPiece.h"
+#include "GrandeAcedrexPiece.h"
 
 struct Move
 {

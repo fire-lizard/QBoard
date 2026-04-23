@@ -12,7 +12,7 @@ enum GameFormat
 
 enum GameVariant
 {
-    Chess, CapablancaChess, GothicChess, JanusChess, GrandChess, Xiangqi, Shatranj, Makruk,
+    Chess, CapablancaChess, GothicChess, JanusChess, GrandChess, GrandeAcedrex, Xiangqi, Shatranj, Makruk,
     Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi,
     ShoShogi, WaShogi, CrazyWa, ChuShogi, HeianDaiShogi, DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
 };
@@ -34,11 +34,14 @@ enum EngineOutput
 
 enum PieceType
 {
-	None, King, Lion, Queen, DragonKing, DragonHorse, Rook, Bishop, Knight, VerticalMover, SideMover, ReverseChariot, Lance, Kylin, Phoenix,
-	Elephant, Prince, Tiger, Gold, Silver, Copper, Leopard, GoBetween, Pawn, Eagle, Unicorn, FlyingOx, FreeBoar, FlyingStag, WhiteHorse, Whale,
-	// Promoted Shogi pieces
-	PromotedLance, PromotedKnight, PromotedSilver, Tokin,
-	// Dai Shogi pieces
+    // Chess Pieces
+    None, King, Queen, Rook, Bishop, Knight, Pawn,
+    // Shogi pieces
+    DragonKing, DragonHorse, Gold, Silver, Lance, PromotedLance, PromotedKnight, PromotedSilver, Tokin,
+    // Chu Shogi Pieces
+    Lion, VerticalMover, SideMover, ReverseChariot, Kylin, Phoenix, Elephant, Prince, Tiger, Copper,
+    Leopard, GoBetween, Eagle, Unicorn, FlyingOx, FreeBoar, FlyingStag, WhiteHorse, Whale,
+    // Dai Shogi pieces
 	ViolentOx, FlyingDragon, AngryBoar, CatSword, EvilWolf, Iron, Stone,
 	// Wa Shogi pieces
 	PloddingOx, LiberatedHorse, HeavenlyHorse, SwoopingOwl, CloudEagle, StruttingCrow, FlyingFalcon, FlyingCock, RaidingFalcon, FlyingGoose,
@@ -67,7 +70,9 @@ enum PieceType
     // Whale Shogi Pieces
     GreyWhale, Porpoise, Narwhal, Humpback, BlueWhale,
     // Yari Shogi Pieces
-    YariKnight, YariGold, YariSilver, YariBishop, YariRook
+    YariKnight, YariGold, YariSilver, YariBishop, YariRook,
+    // Grande Acedrex Pieces
+    Aanca, Giraffe
 };
 
 enum Direction
@@ -129,6 +134,8 @@ inline PieceType GothicChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn
 
 inline PieceType JanusChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn, Archbishop };
 
+inline PieceType GrandeAcedrexPieces[] = { King, Aanca, Bishop, Giraffe, Unicorn, Lion, Rook, Pawn };
+
 inline PieceType ShatranjPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn };
 
 inline PieceType MakrukPieces[] = { King, Queen, Silver, Knight, Rook, Pawn };
@@ -168,6 +175,8 @@ inline char CAPABLANCAFEN[] = "rnabqkbcnr/pppppppppp/10/10/10/10/PPPPPPPPPP/RNAB
 inline char GOTHICFEN[] = "rnbqckabnr/pppppppppp/10/10/10/10/PPPPPPPPPP/RNBQCKABNR w KQkq - 0 1";
 
 inline char JANUSFEN[] = "ranbqkbnar/pppppppppp/10/10/10/10/PPPPPPPPPP/RANBQKBNAR w KQkq - 0 1";
+
+inline char GRANDEACEDREXFEN[] = "rlugcakcgulr/12/12/pppppppppppp/12/12/12/12/PPPPPPPPPPPP/12/12/RLUGCAKCGULR w - - 0 1";
 
 inline char GRANDFEN[] = "r8r/1nbqkcabn1/pppppppppp/10/10/10/10/PPPPPPPPPP/1NBQKCABN1/R8R w - - 0 1";
 

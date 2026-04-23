@@ -4,7 +4,7 @@ YariShogiBoard::YariShogiBoard()
 {
     _width = 7;
     _height = 9;
-    ShogiBoard::Initialize();
+    YariShogiBoard::Initialize();
 }
 
 YariShogiBoard::~YariShogiBoard()

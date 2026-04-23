@@ -285,7 +285,7 @@ PieceType Piece::Description2PieceType(const std::string& description)
 	if (description == "Vertical Mover")    return VerticalMover;
 	if (description == "Side Mover")        return SideMover;
 	if (description == "Cannon")            return Cannon;
-    if (description == "Reverse Chariot")    return ReverseChariot;
+    if (description == "Reverse Chariot")   return ReverseChariot;
 	if (description == "Lance")             return Lance;
 	if (description == "Kylin")             return Kylin;
 	if (description == "Phoenix")           return Phoenix;

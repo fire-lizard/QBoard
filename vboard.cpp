@@ -100,6 +100,7 @@ void VBoard::paintEvent(QPaintEvent *)
     case GothicChess:
     case JanusChess:
     case GrandChess:
+    case GrandeAcedrex:
         resourcePrefix = ":/pieces_eur/images/";
     }
 	QPainter painter(this);
@@ -181,7 +182,8 @@ void VBoard::paintEvent(QPaintEvent *)
                             painter.setBrush(Qt::NoBrush);
 						}
 					}
-                    else if (_gameVariant != ToriShogi && EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, i, j))
+                    else if (_gameVariant != ToriShogi && _gameVariant != GrandeAcedrex &&
+                             EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, i, j))
 					{
 						if (_board->GetData(i, j) != nullptr)
 						{
@@ -408,7 +410,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			}
             else
 			{
-                if (_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess ||
+                if (_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == GrandeAcedrex ||
                         _gameVariant == JanusChess || _gameVariant == GrandChess || _gameVariant == Shatranj || _gameVariant == Makruk)
 				{
 					if ((i + j) % 2 != 0)
@@ -533,7 +535,8 @@ void VBoard::paintEvent(QPaintEvent *)
                 case JanusChess:
                 case GrandChess:
                 case Shatranj:
-					imageFileName = p->GetImageFileName();
+                case GrandeAcedrex:
+                    imageFileName = p->GetImageFileName();
 					break;
                 case Makruk:
                     if (_pieceStyle == European) imageFileName = p->GetImageFileName();
@@ -624,6 +627,7 @@ void VBoard::paintEvent(QPaintEvent *)
                 case GothicChess:
                 case JanusChess:
                 case GrandChess:
+                case GrandeAcedrex:
                     painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
 					break;
                 case Makruk:
@@ -1482,7 +1486,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 		else if (_board->Move(_oldX, _oldY, x, y))
 		{
-			const char promotion = CheckPromotion(p, y);
+            const char promotion = _gameVariant != GrandeAcedrex ? CheckPromotion(p, y) : CheckPromotion(p, x, y);
 			if (engine != nullptr && engine->IsActive())
 			{
 				if (_gameVariant == Xiangqi)
@@ -1589,6 +1593,52 @@ char VBoard::ChessPieceChar(PieceType chessPiece)
     {
         return 'q';
     }
+}
+
+char VBoard::CheckPromotion(const Piece *p, int x, int y)
+{
+    char promotion = ' ';
+    if (_gameVariant == GrandeAcedrex)
+    {
+        if (_currentPiece->GetType() == Pawn &&
+            ((y == 11 && _currentPiece->GetColour() == Black) ||
+            (y == 0 && _currentPiece->GetColour() == White)))
+        {
+            switch (x)
+            {
+            case 0:
+            case 11:
+                promotion = 'r';
+                _currentPiece->Promote(Rook);
+                break;
+            case 1:
+            case 10:
+                promotion = 'l';
+                _currentPiece->Promote(Lion);
+                break;
+            case 2:
+            case 9:
+                promotion = 'u';
+                _currentPiece->Promote(Unicorn);
+                break;
+            case 3:
+            case 8:
+                promotion = 'g';
+                _currentPiece->Promote(Giraffe);
+                break;
+            case 4:
+            case 7:
+                promotion = 'c';
+                _currentPiece->Promote(Bishop);
+                break;
+            default:
+                promotion = 'a';
+                _currentPiece->Promote(Aanca);
+                break;
+            }
+        }
+    }
+    return promotion;
 }
 
 char VBoard::CheckPromotion(const Piece *p, int y)
@@ -1926,6 +1976,9 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
         break;
     case GrandChess:
         _board = new GrandChessBoard();
+        break;
+    case GrandeAcedrex:
+        _board = new GrandeAcedrexBoard();
         break;
     case Shogi:
 		_board = new ShogiBoard();
@@ -2455,6 +2508,14 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
                 blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
             }
         }
+        else if (_gameVariant == GrandeAcedrex)
+        {
+            for (auto& GrandeAcedrexPiece : GrandeAcedrexPieces)
+            {
+                whiteRegular->addAction(QString::fromStdString(GrandeAcedrexPiece::PieceType2Description(GrandeAcedrexPiece)));
+                blackRegular->addAction(QString::fromStdString(GrandeAcedrexPiece::PieceType2Description(GrandeAcedrexPiece)));
+            }
+        }
         else if (_gameVariant == Shatranj)
 		{
 			for (auto& ShatranjPiece : ShatranjPieces)
@@ -2721,7 +2782,11 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			{
 				_chosenPiece = KoShogiPiece::Description2PieceType(selectedAction->text().toStdString());
 			}
-			else
+            else if (_gameVariant == GrandeAcedrex)
+            {
+                _chosenPiece = GrandeAcedrexPiece::Description2PieceType(selectedAction->text().toStdString());
+            }
+            else
 			{
 				_chosenPiece = Piece::Description2PieceType(selectedAction->text().toStdString());
 			}
@@ -2737,7 +2802,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				Piece* newPiece = _board->CreatePiece(_chosenPiece, _chosenColour);
 				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), _chosenPiece) != std::end(_promotedPieces))
 				{
-                    if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi)
+                    if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != GrandeAcedrex)
                     {
                         newPiece->Promote();
                     }

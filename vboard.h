@@ -10,6 +10,7 @@
 #include "GothicChessBoard.h"
 #include "JanusChessBoard.h"
 #include "GrandChessBoard.h"
+#include "GrandeAcedrexBoard.h"
 #include "XiangqiBoard.h"
 #include "MicroShogiBoard.h"
 #include "JudkinShogiBoard.h"
@@ -78,7 +79,8 @@ private:
 	void mousePressEvent(QMouseEvent *event) override;
 
 	bool CheckRepetition(int oldX, int oldY, int newX, int newY);
-	char CheckPromotion(const Piece* p, int y);
+    char CheckPromotion(const Piece* p, int x, int y);
+    char CheckPromotion(const Piece* p, int y);
 	bool PossibleMove(int x, int y) const;
 	bool PossibleShoot(int x, int y) const;
 	bool AskForPromotion();
@@ -136,7 +138,7 @@ private:
 	bool _highlightShoots = true;
 	bool _highlightAttackers = true;
 	bool _highlightDefenders = true;
-	bool _highlightLastMoves = true;
+	bool _highlightLastMoves = false;
     bool _timerState = false;
     int  _engineDepth = 10;
 	Communications* _comm = nullptr;

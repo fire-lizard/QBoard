@@ -355,7 +355,11 @@ void MainWindow::on_actionNew_game_triggered()
 		else
 			StopEngine(_whiteEngine);
 
-		this->ui->vboard->GetBoard()->Initialize();
+        if (this->ui->vboard->GetEditorMode())
+        {
+            this->ui->vboard->SetEditorMode(false);
+        }
+        this->ui->vboard->GetBoard()->Initialize();
 		this->ui->vboard->SetCurrentPlayer(White);
 		this->ui->vboard->repaint();
 
@@ -421,8 +425,8 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionSave_triggered()
 {
 	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
-    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess ||
-            gameVariant == JanusChess || gameVariant == GrandChess || gameVariant == Shatranj || gameVariant == Makruk)
+    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == GrandeAcedrex ||
+        gameVariant == JanusChess || gameVariant == GrandChess || gameVariant == Shatranj || gameVariant == Makruk)
 	{
 		QFileDialog fileDialog(this);
 		fileDialog.setNameFilter("FEN Files (*.fen);;PGN Files (*.pgn)");
@@ -471,6 +475,8 @@ void MainWindow::on_actionSave_triggered()
                     chessVariant = "[Variant \"janus\"]\n\n";
                 else if (gameVariant == GrandChess)
                     chessVariant = "[Variant \"grand\"]\n\n";
+                else if (gameVariant == GrandeAcedrex)
+                    chessVariant = "[Variant \"grande acedrex\"]\n\n";
                 const QString result = "[Result \"*\"]\n";
 				const QString pgn = QString::fromStdString(dynamic_cast<ShatranjBoard*>(this->ui->vboard->GetBoard())->GetPGN());
                 str = (evt + site + currentDate + currentRound + whiteName + blackName + result + chessVariant + pgn).toLatin1();
@@ -772,7 +778,11 @@ void MainWindow::StartNewGame(GameVariant newGameVariant) const
 {
 	StopEngine(_whiteEngine);
 	StopEngine(_blackEngine);
-	this->ui->vboard->SetGameVariant(newGameVariant);
+    if (this->ui->vboard->GetEditorMode())
+    {
+        this->ui->vboard->SetEditorMode(false);
+    }
+    this->ui->vboard->SetGameVariant(newGameVariant);
 	this->ui->vboard->GetBoard()->Initialize();
 	this->ui->vboard->SetCurrentPlayer(White);
 	this->ui->textEdit->setText("");
@@ -911,7 +921,10 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
                 case GrandChess:
                     engine->StartGame("grand");
                     break;
-				}
+                case GrandeAcedrex:
+                    engine->StartGame("grande-acedrex");
+                    break;
+                }
 				if (engineExe.toLower().contains("hachu"))
 				{
 					std::dynamic_pointer_cast<WbEngine>(engine)->SetMemory(_engineMemorySize);

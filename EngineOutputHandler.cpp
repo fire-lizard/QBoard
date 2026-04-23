@@ -135,8 +135,8 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
     const QRegularExpression _csre = QRegularExpression(R"(([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrqac])?)");
     const QRegularExpression _cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])(\+)?)");
 	const QRegularExpression _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
-    const QRegularExpression _sgxbre = QRegularExpression(R"(([RBGSNLPFCWKHDa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
-    const QRegularExpression _sgusre = QRegularExpression(R"(([RBGSNLPFCWKHD1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");
+    const QRegularExpression _sgxbre = QRegularExpression(R"(([RBGSNLPFCWKHDYa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
+    const QRegularExpression _sgusre = QRegularExpression(R"(([RBGSNLPFCWKHDY1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");
 	QByteArray result;
 	QStringList parts = QString(buf).trimmed().split(QRegularExpression("[\r\n]+"), Qt::SkipEmptyParts);
 	for (auto& part : parts)
@@ -466,6 +466,48 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             }
         }
     }
+    else if (gameVariant == GrandeAcedrex)
+    {
+        if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
+        {
+            const bool isPromoted = moveArray.size() == 5
+                && (y2 == 0 || y2 == board->GetHeight() - 1)
+                && board->GetData(x1, y1)->GetType() == Pawn
+                && (moveArray[4] == 'u' || moveArray[4] == 'l' || moveArray[4] == 'r'
+                    || moveArray[4] == 'g' || moveArray[4] == 'a' || moveArray[4] == 'c');
+            board->GetMoves(board->GetData(x1, y1), x1, y1);
+            const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
+            board->Move(x1, y1, x2, y2, false);
+            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ct != None ? 'x' : ' ');
+            engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
+            if (isPromoted)
+            {
+                switch (moveArray[4])
+                {
+                case 'u':
+                    board->GetData(x2, y2)->Promote(Unicorn);
+                    break;
+                case 'l':
+                    board->GetData(x2, y2)->Promote(Lion);
+                    break;
+                case 'r':
+                    board->GetData(x2, y2)->Promote(Rook);
+                    break;
+                case 'g':
+                    board->GetData(x2, y2)->Promote(Giraffe);
+                    break;
+                case 'a':
+                    board->GetData(x2, y2)->Promote(Aanca);
+                    break;
+                case 'c':
+                    board->GetData(x2, y2)->Promote(Bishop);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
     else if (gameVariant == Shatranj)
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
@@ -753,7 +795,11 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			{
 				pieceType = ShatranjPiece::FromStringCode(uppercase(stringCode));
 			}
-			else if (gameVariant == Xiangqi)
+            else if (gameVariant == GrandeAcedrex)
+            {
+                pieceType = GrandeAcedrexPiece::FromStringCode(uppercase(stringCode));
+            }
+            else if (gameVariant == Xiangqi)
 			{
 				pieceType = XiangqiPiece::FromStringCode(uppercase(stringCode));
 			}

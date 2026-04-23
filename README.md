@@ -6,6 +6,7 @@
      * Gothic Chess
      * Janus Chess
      * Grand Chess
+     * Grande Acedrex
   2. Shogi Variants
      * Shogi
      * Micro Shogi

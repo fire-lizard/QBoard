@@ -21,6 +21,8 @@ SOURCES += main.cpp\
     GothicChessBoard.cpp \
     GothicChessPiece.cpp \
     GrandChessBoard.cpp \
+    GrandeAcedrexBoard.cpp \
+    GrandeAcedrexPiece.cpp \
     HeianDaiShogiBoard.cpp \
     HeianShogiBoard.cpp \
     HeianShogiPiece.cpp \
@@ -98,6 +100,8 @@ HEADERS  += mainwindow.h \
     GothicChessBoard.h \
     GothicChessPiece.h \
     GrandChessBoard.h \
+    GrandeAcedrexBoard.h \
+    GrandeAcedrexPiece.h \
     HeianDaiShogiBoard.h \
     HeianShogiBoard.h \
     HeianShogiPiece.h \
