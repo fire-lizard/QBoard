@@ -64,7 +64,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		this->ui->vboard->SetHighlightDefenders(QVariant(settings[7]).toBool());
 		this->ui->vboard->SetHighlightLastMoves(QVariant(settings[8]).toBool());
         this->ui->vboard->SetTimerState(QVariant(settings[9]).toBool());
-        this->ui->vboard->SetEngineDepth(QVariant(settings[10]).toInt());
+        _whiteEngineDepth = QVariant(settings[10]).toInt();
+        _blackEngineDepth = QVariant(settings[11]).toInt();
         this->ui->vboard->GetBoard()->Initialize();
 		this->ui->statusBar->showMessage(settings[1] == "Xiangqi" ? "Red move" : "White move");
 		this->ui->vboard->repaint();
@@ -95,7 +96,8 @@ void MainWindow::on_actionSettings_triggered()
 	settingsDialog->GetHighlightDefenders()->setChecked(this->ui->vboard->GetHighlightDefenders());
 	settingsDialog->GetHighlightLastMoves()->setChecked(this->ui->vboard->GetHighlightLastMoves());
     settingsDialog->GetTimerState()->setChecked(this->ui->vboard->GetTimerState());
-    settingsDialog->GetEngineDepth()->setValue(this->ui->vboard->GetEngineDepth());
+    settingsDialog->GetWhiteEngineDepth()->setValue(_whiteEngineDepth);
+    settingsDialog->GetBlackEngineDepth()->setValue(_blackEngineDepth);
     settingsDialog->exec();
 	if (settingsDialog->result() == QDialog::Accepted)
 	{
@@ -110,7 +112,22 @@ void MainWindow::on_actionSettings_triggered()
 		const bool highlightDefenders = settingsDialog->GetHighlightDefenders()->checkState() == Qt::Checked;
 		const bool highlightLastMoves = settingsDialog->GetHighlightLastMoves()->checkState() == Qt::Checked;
         const bool timerState = settingsDialog->GetTimerState()->checkState() == Qt::Checked;
-        const int  engineDepth = settingsDialog->GetEngineDepth()->value();
+        if (_whiteEngineDepth != settingsDialog->GetWhiteEngineDepth()->value())
+        {
+            _whiteEngineDepth = settingsDialog->GetWhiteEngineDepth()->value();
+            if (_whiteEngine != nullptr && _whiteEngine->IsActive())
+            {
+                _whiteEngine->SetEngineDepth(_whiteEngineDepth);
+            }
+        }
+        if (_blackEngineDepth != settingsDialog->GetBlackEngineDepth()->value())
+        {
+            _blackEngineDepth = settingsDialog->GetBlackEngineDepth()->value();
+            if (_blackEngine != nullptr && _blackEngine->IsActive())
+            {
+                _blackEngine->SetEngineDepth(_blackEngineDepth);
+            }
+        }
         if (pieceStyle != this->ui->vboard->GetPieceStyle())
 		{
 			this->ui->vboard->SetPieceStyle(pieceStyle);
@@ -130,7 +147,6 @@ void MainWindow::on_actionSettings_triggered()
 		this->ui->vboard->SetHighlightDefenders(highlightDefenders);
 		this->ui->vboard->SetHighlightLastMoves(highlightLastMoves);
         this->ui->vboard->SetTimerState(timerState);
-        this->ui->vboard->SetEngineDepth(engineDepth);
         ConfigRecord configRecord;
         configRecord.styleName = _currentStyle;
         configRecord.gameVariant = settingsDialog->GetGameVariant()->text();
@@ -142,7 +158,8 @@ void MainWindow::on_actionSettings_triggered()
         configRecord.highlightDefenders = highlightDefenders;
         configRecord.highlightLastMoves = highlightLastMoves;
         configRecord.timerState = timerState;
-        configRecord.engineDepth = engineDepth;
+        configRecord.whiteEngineDepth = _whiteEngineDepth;
+        configRecord.blackEngineDepth = _blackEngineDepth;
         IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, configRecord);
     }
 }
@@ -150,7 +167,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-    aboutStr.append("<center>QBoard 1.0.5<br/>");
+    aboutStr.append("<center>QBoard 1.0.6<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
@@ -1005,6 +1022,15 @@ void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engin
 				engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
 				engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
                 engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineOptions));
+                QDir engineDir = QFileInfo(enginePath).dir();
+                if (QFile::exists(engineDir.filePath("logo.bmp")))
+                {
+                    reinterpret_cast<EngineManager*>(engineTable->parent())->SetImageInCell(currentRow, 5, engineDir.filePath("logo.bmp"));
+                }
+                else if (QFile::exists(engineDir.filePath("logo.png")))
+                {
+                    reinterpret_cast<EngineManager*>(engineTable->parent())->SetImageInCell(currentRow, 5, engineDir.filePath("logo.png"));
+                }
             }
 		}
 		else if (token == QXmlStreamReader::Characters && !xml.isWhitespace()) {

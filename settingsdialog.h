@@ -26,7 +26,8 @@ public:
 	QCheckBox* GetHighlightDefenders() const;
 	QCheckBox* GetHighlightLastMoves() const;
     QCheckBox* GetTimerState() const;
-    QSlider*   GetEngineDepth() const;
+    QSlider*   GetWhiteEngineDepth() const;
+    QSlider*   GetBlackEngineDepth() const;
 
 	private slots:
 

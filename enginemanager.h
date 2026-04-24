@@ -3,6 +3,8 @@
 #include <QDialog>
 #include <QMessageBox>
 #include <QTableWidget>
+#include <QHBoxLayout>
+#include <QLabel>
 #include "comboboxitemdelegate.h"
 #include "addenginedialog.h"
 #include "Common.h"
@@ -59,6 +61,7 @@ public:
     explicit EngineManager(QWidget *parent = nullptr);
     ~EngineManager() override;
 	QTableWidget* GetEngineTable() const;
+    void SetImageInCell(int row, int col, const QString& imagePath);
     static QString GameVariantToString(GameVariant variant);
     static GameVariant StringToGameVariant(const QString& str);
     static EngineProtocol StringToEngineProtocol(const QString& str);

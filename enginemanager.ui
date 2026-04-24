@@ -75,6 +75,11 @@
      <string>Options</string>
     </property>
    </column>
+   <column>
+    <property name="text">
+     <string>Logo</string>
+    </property>
+   </column>
   </widget>
   <widget class="QToolButton" name="toolButton">
    <property name="geometry">

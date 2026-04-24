@@ -16,7 +16,8 @@ public:
     bool highlightDefenders;
     bool highlightLastMoves;
     bool timerState;
-    int engineDepth;
+    int  whiteEngineDepth;
+    int  blackEngineDepth;
 };
 
 class IniFile {

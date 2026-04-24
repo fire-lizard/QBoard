@@ -2287,16 +2287,6 @@ void VBoard::SetTimerState(bool timerState)
     _timerState = timerState;
 }
 
-int VBoard::GetEngineDepth() const
-{
-    return _engineDepth;
-}
-
-void VBoard::SetEngineDepth(int engineDepth)
-{
-    _engineDepth = engineDepth;
-}
-
 bool VBoard::CheckRepetition(int oldX, int oldY, int newX, int newY)
 {
 	// Repetition rule

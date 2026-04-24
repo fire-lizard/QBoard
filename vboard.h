@@ -65,8 +65,6 @@ public:
 	void SetHighlightLastMoves(bool highlightLastMoves);
     bool GetTimerState() const;
     void SetTimerState(bool timerState);
-    int  GetEngineDepth() const;
-    void SetEngineDepth(int engineDepth);
 
 protected:
 	void contextMenuEvent(QContextMenuEvent* event) override;
@@ -140,7 +138,6 @@ private:
 	bool _highlightDefenders = true;
 	bool _highlightLastMoves = false;
     bool _timerState = false;
-    int  _engineDepth = 10;
 	Communications* _comm = nullptr;
 	bool _waitForOtherPlayer = false;
 

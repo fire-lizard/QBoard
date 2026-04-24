@@ -16,7 +16,8 @@ void IniFile::writeToIniFile(const QString& filePath, const ConfigRecord& config
     settings.setValue("HighlightDefenders", configRecord.highlightDefenders);
     settings.setValue("HighlightLastMoves", configRecord.highlightLastMoves);
     settings.setValue("TimerState", configRecord.timerState);
-    settings.setValue("EngineDepth", configRecord.engineDepth);
+    settings.setValue("Engine1Depth", configRecord.whiteEngineDepth);
+    settings.setValue("Engine2Depth", configRecord.blackEngineDepth);
     settings.endGroup();
 
 	// Sync the changes explicitly (optional)
@@ -39,7 +40,8 @@ QStringList IniFile::readFromIniFile(const QString& filePath) {
     const bool highlightDefenders = settings.value("HighlightDefenders", true).toBool();
     const bool highlightLastMoves = settings.value("HighlightLastMoves", true).toBool();
     const bool timerState = settings.value("TimerState", true).toBool();
-    const int  engineDepth = settings.value("EngineDepth", 10).toInt();
+    const int  whiteEngineDepth = settings.value("Engine1Depth", 10).toInt();
+    const int  blackEngineDepth = settings.value("Engine2Depth", 10).toInt();
     settings.endGroup();
 
     // Return values
@@ -47,6 +49,6 @@ QStringList IniFile::readFromIniFile(const QString& filePath) {
     result << styleName << gameVariant << pieceStyle << engineOutput << QVariant(highlightMoves).toString();
     result << QVariant(highlightShoots).toString() << QVariant(highlightAttackers).toString();
 	result << QVariant(highlightDefenders).toString() << QVariant(highlightLastMoves).toString();
-    result << QVariant(timerState).toString() << QVariant(engineDepth).toString();
+    result << QVariant(timerState).toString() << QVariant(whiteEngineDepth).toString() << QVariant(blackEngineDepth).toString();
     return result;
 }

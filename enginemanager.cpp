@@ -19,6 +19,28 @@ QTableWidget * EngineManager::GetEngineTable() const
 	return ui->engineTable;
 }
 
+void EngineManager::SetImageInCell(int row, int col, const QString& imagePath)
+{
+    QSize size = QSize(100, 50);
+    QWidget* container = new QWidget();
+    QHBoxLayout* layout = new QHBoxLayout(container);
+    layout->setContentsMargins(4, 4, 4, 4);
+    layout->setAlignment(Qt::AlignCenter);
+
+    QLabel* label = new QLabel();
+    QPixmap pixmap(imagePath);
+
+    if (!pixmap.isNull())
+    {
+        pixmap = pixmap.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        label->setPixmap(pixmap);
+    }
+
+    layout->addWidget(label);
+    ui->engineTable->setCellWidget(row, col, container);
+    ui->engineTable->setRowHeight(row, size.height() + 10);
+}
+
 void EngineManager::on_toolButton_clicked()
 {
 	AddEngineDialog *addEngineDialog = new AddEngineDialog(this);
@@ -39,6 +61,15 @@ void EngineManager::on_toolButton_clicked()
 			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
 			ui->engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
             ui->engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineOptions));
+            QDir engineDir = QFileInfo(enginePath).dir();
+            if (QFile::exists(engineDir.filePath("logo.bmp")))
+            {
+                SetImageInCell(currentRow, 5, engineDir.filePath("logo.bmp"));
+            }
+            else if (QFile::exists(engineDir.filePath("logo.png")))
+            {
+                SetImageInCell(currentRow, 5, engineDir.filePath("logo.png"));
+            }
         }
         else
         {
@@ -105,6 +136,15 @@ void EngineManager::on_toolButton_2_clicked()
 			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
 			ui->engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
             ui->engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineOptions));
+            QDir engineDir = QFileInfo(enginePath).dir();
+            if (QFile::exists(engineDir.filePath("logo.bmp")))
+            {
+                SetImageInCell(currentRow, 5, engineDir.filePath("logo.bmp"));
+            }
+            else if (QFile::exists(engineDir.filePath("logo.png")))
+            {
+                SetImageInCell(currentRow, 5, engineDir.filePath("logo.png"));
+            }
         }
         else
         {

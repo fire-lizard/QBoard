@@ -84,12 +84,14 @@ private:
 	QString _whiteEngineExe = "";
     QString _whiteEngineOptions = "";
     QString _whiteEngineName = "";
-	EngineProtocol _whiteEngineProtocol = XBoard;
+    int _whiteEngineDepth = 10;
+    EngineProtocol _whiteEngineProtocol = XBoard;
 	std::shared_ptr<Engine> _blackEngine = nullptr;
 	QString _blackEngineExe = "";
     QString _blackEngineOptions = "";
     QString _blackEngineName = "";
-	EngineProtocol _blackEngineProtocol = XBoard;
+    int _blackEngineDepth = 10;
+    EngineProtocol _blackEngineProtocol = XBoard;
 	QTimer* _whiteTimer = nullptr;
 	QTimer* _blackTimer = nullptr;
     QString _player_stylesheet;

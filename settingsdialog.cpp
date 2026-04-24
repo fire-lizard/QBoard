@@ -67,9 +67,14 @@ QCheckBox* SettingsDialog::GetTimerState() const
     return ui->timerCheckBox;
 }
 
-QSlider* SettingsDialog::GetEngineDepth() const
+QSlider* SettingsDialog::GetWhiteEngineDepth() const
 {
-    return ui->engineDepthHorizontalSlider;
+    return ui->engine2DepthHorizontalSlider;
+}
+
+QSlider* SettingsDialog::GetBlackEngineDepth() const
+{
+    return ui->engine1DepthHorizontalSlider;
 }
 
 void SettingsDialog::on_toolButton_clicked()
