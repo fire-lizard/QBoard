@@ -24,4 +24,8 @@ class IniFile {
 public:
     static void writeToIniFile(const QString& filePath, const ConfigRecord& configRecord);
     static QStringList readFromIniFile(const QString& filePath);
+
+private:
+    static const int _minEngineDepth = 1;
+    static const int _maxEngineDepth = 20;
 };

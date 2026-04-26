@@ -74,7 +74,7 @@ void EngineOutputHandler::CalculateCheck(Board* board, PieceColour pieceColour, 
 	Board* brd = board->Clone();
 	brd->GetMoves(board->GetData(oldX, oldY), oldX, oldY);
 	brd->Move(oldX, oldY, newX, newY);
-	const auto location = GetPieceLocation(board, King, pieceColour);
+    const auto location = GetPieceLocation(brd, King, pieceColour);
 	const int kx = location.first;
 	const int ky = location.second;
 	auto opponentMoves = brd->GetAllMoves(pieceColour == White ? Black : White);
@@ -87,6 +87,19 @@ void EngineOutputHandler::CalculateCheck(Board* board, PieceColour pieceColour, 
 		}
 	});
 	delete brd;
+}
+
+void EngineOutputHandler::RollbackIllegalMove(GameVariant gameVariant, Board *board, std::shared_ptr<Engine> engine, std::vector<std::string> moves)
+{
+    if (engine != nullptr && engine->IsActive() && !engine->Moves().empty())
+    {
+        Logger::writeToLog("Illegal move " + engine->Moves()[engine->Moves().size() - 1], LogLevel::Warning);
+    }
+    if (moves.size() > 1)
+    {
+        moves.pop_back();
+        SetFenToBoard(board, QByteArray::fromStdString(moves[moves.size() - 1]), gameVariant);
+    }
 }
 
 std::pair<int, int> EngineOutputHandler::GetPieceLocation(const Board* board, PieceType pieceType, PieceColour pieceColour)

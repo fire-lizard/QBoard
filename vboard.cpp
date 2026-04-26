@@ -1559,7 +1559,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
 				{
-					EngineOutputHandler::CalculateCheck(_board, _currentPlayer, _moves, x, y, t.first, t.second);
+                    EngineOutputHandler::CalculateCheck(_board, _currentPlayer, _moves, x, y, t.first, t.second);
 				});
 			}
 		}
@@ -2329,18 +2329,10 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	const QByteArray buf = p->readAllStandardOutput();
 	if (buf.contains("Illegal move"))
 	{
-		QMessageBox::critical(this, "Error", "Illegal move");
-		if (_blackEngine != nullptr && _blackEngine->IsActive() && !_blackEngine->Moves().empty())
-		{
-			Logger::writeToLog("Illegal move " + _blackEngine->Moves()[_blackEngine->Moves().size() - 1], LogLevel::Warning);
-		}
-		if (_blackMoves.size() > 1)
-		{
-			_blackMoves.pop_back();
-			EngineOutputHandler::SetFenToBoard(_board, QByteArray::fromStdString(_blackMoves[_blackMoves.size() - 1]), _gameVariant);
-			this->repaint();
-		}
-		this->_statusBar->showMessage("Black move");
+        QMessageBox::critical(this, "Error", "Illegal move");
+        EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _blackEngine, _blackMoves);
+        this->repaint();
+        this->_statusBar->showMessage("Black move");
 		_currentPlayer = Black;
 		return;
 	}
@@ -2388,17 +2380,9 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	if (buf.contains("Illegal move"))
 	{
 		QMessageBox::critical(this, "Error", "Illegal move");
-		if (_whiteEngine != nullptr && _whiteEngine->IsActive() && !_whiteEngine->Moves().empty())
-		{
-			Logger::writeToLog("Illegal move " + _whiteEngine->Moves()[_whiteEngine->Moves().size() - 1], LogLevel::Warning);
-		}
-		if (_whiteMoves.size() > 1)
-		{
-			_whiteMoves.pop_back();
-			EngineOutputHandler::SetFenToBoard(_board, QByteArray::fromStdString(_whiteMoves[_whiteMoves.size() - 1]), _gameVariant);
-			this->repaint();
-		}
-		this->_statusBar->showMessage(_gameVariant == Xiangqi ? "Red move" : "White move");
+        EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _whiteEngine, _whiteMoves);
+        this->repaint();
+        this->_statusBar->showMessage(_gameVariant == Xiangqi ? "Red move" : "White move");
 		_currentPlayer = White;
 		return;
 	}

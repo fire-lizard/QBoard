@@ -16,11 +16,11 @@ public:
 	QTextEdit* GetTextEdit() const;
 	void SetTextEdit(QTextEdit* textEdit);
     int  GetEngineDepth() const;
-    void SetEngineDepth(int engineDepth);
     QProcess* GetProcess() const;
 	void WriteToProcess(QByteArray buf) const;
 	std::vector<QByteArray> Moves() const;
-	virtual void SetFEN(std::string fen) = 0;
+    virtual void SetEngineDepth(int engineDepth);
+    virtual void SetFEN(std::string fen) = 0;
 	virtual EngineProtocol GetType() = 0;
 	virtual void StartGame(QString variant = "") = 0;
 	virtual void Move() = 0;

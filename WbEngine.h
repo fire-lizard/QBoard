@@ -7,7 +7,8 @@ class WbEngine : public Engine
 public:
 	WbEngine();
 	~WbEngine() override;
-	void SetFEN(std::string fen) override;
+    void SetEngineDepth(int engineDepth) override;
+    void SetFEN(std::string fen) override;
 	void SetMemory(int memorySize);
 	EngineProtocol GetType() override;
 	void StartGame(QString variant = "") override;

@@ -167,7 +167,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-    aboutStr.append("<center>QBoard 1.0.6<br/>");
+    aboutStr.append("<center>QBoard 1.0.7<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
@@ -408,7 +408,10 @@ void MainWindow::on_actionOpen_triggered()
 		file.open(QIODevice::ReadOnly | QIODevice::Text);
 		const QByteArray str = file.readAll();
 		file.close();
-		Board* board = this->ui->vboard->GetBoard();
+        QList<QByteArray> parts = str.split(' ');
+        if (parts.contains("w")) this->ui->vboard->SetCurrentPlayer(White);
+        else if (parts.contains("b")) this->ui->vboard->SetCurrentPlayer(Black);
+        Board* board = this->ui->vboard->GetBoard();
 		const QString errorStr = EngineOutputHandler::SetFenToBoard(board, str, ui->vboard->GetGameVariant());
 		if (!errorStr.isEmpty())
 		{
@@ -436,7 +439,7 @@ void MainWindow::on_actionOpen_triggered()
 				_whiteEngine->SetFEN(str.toStdString());
 			}
 		}
-	}
+    }
 }
 
 void MainWindow::on_actionSave_triggered()

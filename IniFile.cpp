@@ -40,8 +40,8 @@ QStringList IniFile::readFromIniFile(const QString& filePath) {
     const bool highlightDefenders = settings.value("HighlightDefenders", true).toBool();
     const bool highlightLastMoves = settings.value("HighlightLastMoves", true).toBool();
     const bool timerState = settings.value("TimerState", true).toBool();
-    const int  whiteEngineDepth = settings.value("Engine1Depth", 10).toInt();
-    const int  blackEngineDepth = settings.value("Engine2Depth", 10).toInt();
+    int whiteEngineDepth = settings.value("Engine1Depth", 10).toInt();
+    int blackEngineDepth = settings.value("Engine2Depth", 10).toInt();
     settings.endGroup();
 
     // Return values
@@ -49,6 +49,10 @@ QStringList IniFile::readFromIniFile(const QString& filePath) {
     result << styleName << gameVariant << pieceStyle << engineOutput << QVariant(highlightMoves).toString();
     result << QVariant(highlightShoots).toString() << QVariant(highlightAttackers).toString();
 	result << QVariant(highlightDefenders).toString() << QVariant(highlightLastMoves).toString();
+    if (whiteEngineDepth < _minEngineDepth) whiteEngineDepth = _minEngineDepth;
+    if (whiteEngineDepth > _maxEngineDepth) whiteEngineDepth = _maxEngineDepth;
+    if (blackEngineDepth < _minEngineDepth) blackEngineDepth = _minEngineDepth;
+    if (blackEngineDepth > _maxEngineDepth) blackEngineDepth = _maxEngineDepth;
     result << QVariant(timerState).toString() << QVariant(whiteEngineDepth).toString() << QVariant(blackEngineDepth).toString();
     return result;
 }

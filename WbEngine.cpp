@@ -14,6 +14,12 @@ EngineProtocol WbEngine::GetType()
 	return XBoard;
 }
 
+void WbEngine::SetEngineDepth(int engineDepth)
+{
+    _engineDepth = engineDepth;
+    WriteToProcess("sd " + QByteArray::number(_engineDepth) + "\n");
+}
+
 void WbEngine::SetFEN(std::string fen)
 {
 	_fen = std::move(fen);
