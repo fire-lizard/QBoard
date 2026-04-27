@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QBoard"
-#define MyAppVersion "1.0.7"
+#define MyAppVersion "1.0.8"
 #define MyAppPublisher "Fire Lizard Software"
 #define MyAppURL "https://github.com/fire-lizard/QBoard"
 #define MyAppExeName "QBoard.exe"
@@ -89,8 +89,8 @@ Source: "engines\UCCI\*"; DestDir: "{app}\engines\UCCI"; Flags: ignoreversion re
 Source: "engines\UCCI\Binghewusi\*"; DestDir: "{app}\engines\UCCI\Binghewusi"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\UCCI\Binghewusi
 Source: "engines\UCI\*"; DestDir: "{app}\engines\UCI"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\UCI
 Source: "engines\UCI\Fruit 2.2.1\*"; DestDir: "{app}\engines\UCI\Fruit 2.2.1"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\UCI\Fruit
-Source: "engines\UCI\Komodo 14.1\*"; DestDir: "{app}\engines\Komodo 14.1"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\UCI\Komodo
-Source: "engines\UCI\Stockfish 10\*"; DestDir: "{app}\engines\Stockfish 10"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\UCI\Stockfish
+Source: "engines\UCI\Komodo 14.1\*"; DestDir: "{app}\engines\UCI\Komodo 14.1"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\UCI\Komodo
+Source: "engines\UCI\Stockfish 10\*"; DestDir: "{app}\engines\UCI\Stockfish 10"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\UCI\Stockfish
 Source: "engines\USI\*"; DestDir: "{app}\engines\USI"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\USI
 Source: "engines\USI\LaramieV3\*"; DestDir: "{app}\engines\USI\LaramieV3"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\USI\LaramieV3
 Source: "engines\WinBoard\*"; DestDir: "{app}\engines\WinBoard"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard

@@ -134,14 +134,14 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 					}
 				}
 			}
-			if (GetData(7, y) != nullptr)
+            if (GetData(_width - 1, y) != nullptr)
 			{
-				const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(7, y));
+                const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(_width - 1, y));
 				if (!cp->HasMoved() && cp->GetType() == Rook && GetData(5, y) == nullptr && GetData(6, y) == nullptr)
 				{
 					if ((piece->GetColour() == White && _wkc == true) || (piece->GetColour() == Black && _bkc == true))
 					{
-						_moves.emplace_back(7, y);
+                        _moves.emplace_back(_width - 1, y);
 					}
 				}
 			}
@@ -195,7 +195,7 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		else
 		{
-			if (y == 6 && GetData(x, y - 1) == nullptr && GetData(x, y - 2) == nullptr)
+            if (y == _height - 2 && GetData(x, y - 1) == nullptr && GetData(x, y - 2) == nullptr)
 			{
 				CheckMove(piece, x, y - 2);
 			}

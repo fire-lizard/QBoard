@@ -16,6 +16,7 @@
     <Engine EngineName="Fairy-Max" GameVariant="Capablanca Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/fmax.exe" EngineOptions=""/>
     <Engine EngineName="Fairy-Max" GameVariant="Gothic Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/fmax.exe" EngineOptions=""/>
     <Engine EngineName="Fairy-Max" GameVariant="Janus Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/fmax.exe" EngineOptions=""/>
+    <Engine EngineName="Fairy-Max" GameVariant="Grande Acedrex" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/fmax.exe" EngineOptions=""/>
     <Engine EngineName="Laramie V3" GameVariant="Shogi" EngineProtocol="USI" EnginePath="engines/USI/LaramieV3/LaramieV3.exe" EngineOptions=""/>
     <Engine EngineName="Shokidoki" GameVariant="Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
     <Engine EngineName="crazywa" GameVariant="Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>

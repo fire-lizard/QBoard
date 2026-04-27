@@ -18,6 +18,7 @@ macx-clang {
 
 SOURCES += main.cpp\
     CapablancaChessBoard.cpp \
+    ChancellorChessBoard.cpp \
     GothicChessBoard.cpp \
     GothicChessPiece.cpp \
     GrandChessBoard.cpp \
@@ -31,6 +32,7 @@ SOURCES += main.cpp\
     KyotoShogiPiece.cpp \
     MicroShogiBoard.cpp \
     MicroShogiPiece.cpp \
+    ModernChessBoard.cpp \
     ToriShogiPiece.cpp \
     ToriShogiBoard.cpp \
     EuroShogiBoard.cpp \
@@ -92,6 +94,7 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     Board.h \
     CapablancaChessBoard.h \
+    ChancellorChessBoard.h \
     ChessBoard.h \
     ChessPiece.h \
     ChuShogiBoard.h \
@@ -110,6 +113,7 @@ HEADERS  += mainwindow.h \
     KyotoShogiPiece.h \
     MicroShogiBoard.h \
     MicroShogiPiece.h \
+    ModernChessBoard.h \
     Piece.h \
     KanjiPiece.h \
     Logger.h \

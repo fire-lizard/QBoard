@@ -445,8 +445,8 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionSave_triggered()
 {
 	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
-    if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == GrandeAcedrex ||
-        gameVariant == JanusChess || gameVariant == GrandChess || gameVariant == Shatranj || gameVariant == Makruk)
+    if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) ||
+            gameVariant == GrandeAcedrex || gameVariant == Shatranj || gameVariant == Makruk)
 	{
 		QFileDialog fileDialog(this);
 		fileDialog.setNameFilter("FEN Files (*.fen);;PGN Files (*.pgn)");
@@ -458,15 +458,14 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-                if (gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess ||
-                        gameVariant == JanusChess || gameVariant == GrandChess)
+                if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants))
 				{
 					QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
 					QString hmStr = QString::number(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->HalfMoveCount());
-                    QString clStr = gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess ?
+                    QString clStr = gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess ||
+                            gameVariant == JanusChess || gameVariant == ChancellorChess || gameVariant == ModernChess ?
                                 QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetCastling()) : "-";
-                    QString epStr = gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess ||
-                            gameVariant == JanusChess || gameVariant == GrandChess ?
+                    QString epStr = std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) ?
                                 QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetEnPassant()) : "-";
 					str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 					str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
@@ -495,6 +494,10 @@ void MainWindow::on_actionSave_triggered()
                     chessVariant = "[Variant \"janus\"]\n\n";
                 else if (gameVariant == GrandChess)
                     chessVariant = "[Variant \"grand\"]\n\n";
+                else if (gameVariant == ChancellorChess)
+                    chessVariant = "[Variant \"chancellor\"]\n\n";
+                else if (gameVariant == ModernChess)
+                    chessVariant = "[Variant \"modern\"]\n\n";
                 else if (gameVariant == GrandeAcedrex)
                     chessVariant = "[Variant \"grande acedrex\"]\n\n";
                 const QString result = "[Result \"*\"]\n";
@@ -941,6 +944,12 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
                 case GrandChess:
                     engine->StartGame("grand");
                     break;
+                case ChancellorChess:
+                    engine->StartGame("chancellor");
+                    break;
+                case ModernChess:
+                    engine->StartGame("modern");
+                    break;
                 case GrandeAcedrex:
                     engine->StartGame("grande-acedrex");
                     break;
@@ -959,14 +968,16 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 				connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(blackEngineReadyReadStandardOutput()));
 				connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(blackEngineReadyReadStandardError()));
 				connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(blackEngineReadyReadStandardError()));
-				this->ui->vboard->SetBlackEngine(engine);
+                engine->SetEngineDepth(_blackEngineDepth);
+                this->ui->vboard->SetBlackEngine(engine);
 			}
 			else
 			{
 				connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(whiteEngineReadyReadStandardOutput()));
 				connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(whiteEngineReadyReadStandardError()));
 				connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(whiteEngineReadyReadStandardError()));
-				this->ui->vboard->SetWhiteEngine(engine);
+                engine->SetEngineDepth(_whiteEngineDepth);
+                this->ui->vboard->SetWhiteEngine(engine);
 				engine->Move();
 			}
 		}
@@ -1033,6 +1044,14 @@ void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engin
                 else if (QFile::exists(engineDir.filePath("logo.png")))
                 {
                     reinterpret_cast<EngineManager*>(engineTable->parent())->SetImageInCell(currentRow, 5, engineDir.filePath("logo.png"));
+                }
+                else if (QFile::exists(engineDir.filePath("logo.jpg")))
+                {
+                    reinterpret_cast<EngineManager*>(engineTable->parent())->SetImageInCell(currentRow, 5, engineDir.filePath("logo.jpg"));
+                }
+                else if (QFile::exists(engineDir.filePath("logo.gif")))
+                {
+                    reinterpret_cast<EngineManager*>(engineTable->parent())->SetImageInCell(currentRow, 5, engineDir.filePath("logo.gif"));
                 }
             }
 		}

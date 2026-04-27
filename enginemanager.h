@@ -24,6 +24,8 @@ namespace {
             {GothicChess,     "Gothic Chess"},
             {JanusChess,      "Janus Chess"},
             {GrandChess,      "Grand Chess"},
+            {ChancellorChess, "Chancellor Chess"},
+            {ModernChess,     "Modern Chess"},
             {GrandeAcedrex,   "Grande Acedrex"},
             {Xiangqi,         "Xiangqi"},
             {Shatranj,        "Shatranj"},

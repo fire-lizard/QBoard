@@ -5,6 +5,8 @@
      * Capablanca Chess
      * Gothic Chess
      * Janus Chess
+     * Chancellor Chess
+     * Modern Chess
      * Grand Chess
      * Grande Acedrex
   2. Shogi Variants

@@ -39,6 +39,61 @@
     </rect>
    </property>
   </widget>
+  <widget class="QRadioButton" name="allGamesRadioButton">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>10</y>
+     <width>100</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>All Games</string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="chessGamesRadioButton">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>50</y>
+     <width>100</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Chess Variants</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="shogiGamesRadioButton">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>90</y>
+     <width>100</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Shogi Variants</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="otherGamesRadioButton">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>130</y>
+     <width>100</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Other Games</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>
