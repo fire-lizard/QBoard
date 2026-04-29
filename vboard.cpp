@@ -1506,7 +1506,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			if (_board->GetData(x, y) != nullptr)
 			{
-				EngineOutputHandler::AddMove(_board, _gameVariant, promotion == '+' ? _board->GetData(x, y)->GetBaseType() : _board->GetData(x, y)->GetType(), _oldX, _oldY, x, y, promotion, p != nullptr ? 'x' : ' ');
+				EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetBaseType(), _oldX, _oldY, x, y, promotion, p != nullptr ? 'x' : ' ');
 			}
 			FinishMove(x, y);
 		}
@@ -1561,7 +1561,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		_shoots.clear();
 		_moves = _board->Moves();
 		CancelLionMove();
-		if (std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) == std::end(shogiVariants))
+        if (_gameVariant != ShoShogi && _gameVariant != ChuShogi && _gameVariant != DaiShogi && _gameVariant != TenjikuShogi &&
+            _gameVariant != DaiDaiShogi && _gameVariant != MakaDaiDaiShogi && _gameVariant != KoShogi)
 		{
 			for (int index = 0; index < 4; index++)
 			{
@@ -2317,7 +2318,7 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	if (buf.contains("Illegal move"))
 	{
         QMessageBox::critical(this, "Error", "Illegal move");
-        EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _blackEngine, _blackMoves);
+        EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _whiteEngine, _whiteMoves);
         this->repaint();
         this->_statusBar->showMessage("Black move");
 		_currentPlayer = Black;
@@ -2367,7 +2368,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	if (buf.contains("Illegal move"))
 	{
 		QMessageBox::critical(this, "Error", "Illegal move");
-        EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _whiteEngine, _whiteMoves);
+        EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _blackEngine, _blackMoves);
         this->repaint();
         this->_statusBar->showMessage(_gameVariant == Xiangqi ? "Red move" : "White move");
 		_currentPlayer = White;

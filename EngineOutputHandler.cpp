@@ -710,11 +710,11 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), moveArray[0], moveArray[1], x2, board->GetHeight() - y2, ' ', ' ');
             if (engine->GetType() == USI)
             {
-                engine->AddMove(x1, y1, board->GetWidth() - x2, y2, ' ');
+                engine->AddMove(moveArray[0], moveArray[1], board->GetWidth() - x2, y2, ' ');
             }
             else
             {
-                engine->AddMove(x1, y1, x2, board->GetHeight() - y2, ' ');
+                engine->AddMove(moveArray[0], moveArray[1], x2, board->GetHeight() - y2, ' ');
             }
 		}
 		else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
@@ -729,8 +729,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                     || ((gameVariant == WaShogi || gameVariant == CrazyWa) && (y2 <= 2 || y2 >= 8) && moveArray[ms - 1] == '+'));
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
 			board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, isPromoted ? board->GetData(x2, y2)->GetBaseType() : board->GetData(x2, y2)->GetType(),
-                    x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
+            AddMove(board, gameVariant, board->GetData(x2, y2)->GetBaseType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
             if (engine->GetType() == USI)
             {
                 engine->AddMove(board->GetWidth() - x1, y1, board->GetWidth() - x2, y2, isPromoted ? moveArray[ms - 1] : ' ');
@@ -741,9 +740,9 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             }
 			if (isPromoted)
 			{
-				board->GetData(x2, y2)->Promote();
-			}
-		}
+                board->GetData(x2, y2)->Promote();
+            }
+        }
 	}
 }
 

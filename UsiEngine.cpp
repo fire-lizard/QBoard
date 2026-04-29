@@ -14,7 +14,10 @@ void UsiEngine::SetFEN(std::string fen)
 {
 	trimNewline(fen);
 	_fen = std::move(fen);
-	WriteToProcess("usinewgame\n");
+    if (_process != nullptr && _process->processId() > 0 && _process->state() != QProcess::ProcessState::NotRunning)
+    {
+        WriteToProcess("usinewgame\n");
+    }
 	_moves.clear();
 }
 
@@ -35,8 +38,8 @@ void UsiEngine::Move()
 {
 	_textEdit->setText("");
 	QByteArray moveStr;
-    moveStr += "position sfen " + QByteArray::fromStdString(_fen.substr(0, _fen.size() - 5)) + " moves ";
-	for (const auto& _move : _moves)
+    moveStr += "position sfen " + QByteArray::fromStdString(_fen) + " moves ";
+    for (const auto& _move : _moves)
 	{
 		moveStr += _move;
 		moveStr += " ";
@@ -50,8 +53,8 @@ void UsiEngine::Move(signed char x1, signed char y1, signed char x2, signed char
 {
 	_textEdit->setText("");
 	QByteArray moveStr;
-    moveStr += "position sfen " + QByteArray::fromStdString(_fen.substr(0, _fen.size() - 5)) + " moves ";
-	for (const auto& _move : _moves)
+    moveStr += "position sfen " + QByteArray::fromStdString(_fen) + " moves ";
+    for (const auto& _move : _moves)
 	{
 		moveStr += _move;
 		moveStr += " ";

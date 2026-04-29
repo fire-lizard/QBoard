@@ -333,6 +333,7 @@ void MainWindow::on_actionNew_game_triggered()
 				break;
 			case USI:
 				_blackEngine = std::make_shared<UsiEngine>();
+                _blackEngine->SetFEN(QString(SHOGIFEN).replace("w - 1", "b - 1").toStdString());
 				break;
 			case XBoard:
 				_blackEngine = std::make_shared<WbEngine>();
