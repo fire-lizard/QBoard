@@ -58,6 +58,7 @@ Name: "engines\USI"; Description: "USI engines"; Types: full custom
 Name: "engines\USI\LaramieV3"; Description: "Laramie V3"; Types: full custom
 Name: "engines\WinBoard"; Description: "WinBoard engines"; Types: full custom
 Name: "engines\WinBoard\FairyMax"; Description: "Fairy-Max 5.0b"; Types: full custom
+Name: "engines\WinBoard\FairyStockfish"; Description: "Fairy-Stockfish 14"; Types: full custom
 Name: "engines\WinBoard\Pulsar"; Description: "Pulsar"; Types: full custom
 Name: "engines\WinBoard\HaQi"; Description: "HaQiKid 1.8a"; Types: full custom
 Name: "engines\WinBoard\XQWL"; Description: "XQWLight 0.6"; Types: full custom
@@ -95,6 +96,7 @@ Source: "engines\USI\*"; DestDir: "{app}\engines\USI"; Flags: ignoreversion recu
 Source: "engines\USI\LaramieV3\*"; DestDir: "{app}\engines\USI\LaramieV3"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\USI\LaramieV3
 Source: "engines\WinBoard\*"; DestDir: "{app}\engines\WinBoard"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard
 Source: "engines\WinBoard\Fairy-Max\*"; DestDir: "{app}\engines\WinBoard\Fairy-Max"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\FairyMax
+Source: "engines\WinBoard\Fairy-Stockfish\*"; DestDir: "{app}\engines\WinBoard\Fairy-Stockfish"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\FairyStockfish
 Source: "engines\WinBoard\Pulsar\*"; DestDir: "{app}\engines\WinBoard\Pulsar"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\Pulsar
 Source: "engines\WinBoard\HaQi\*"; DestDir: "{app}\engines\WinBoard\HaQi"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\HaQi
 Source: "engines\WinBoard\XQWL\*"; DestDir: "{app}\engines\WinBoard\XQWL"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\XQWL

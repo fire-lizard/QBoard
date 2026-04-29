@@ -17,7 +17,10 @@ EngineProtocol WbEngine::GetType()
 void WbEngine::SetEngineDepth(int engineDepth)
 {
     _engineDepth = engineDepth;
-    WriteToProcess("sd " + QByteArray::number(_engineDepth) + "\n");
+    if (_process != nullptr && _process->processId() > 0 && _process->state() != QProcess::ProcessState::NotRunning)
+    {
+        WriteToProcess("sd " + QByteArray::number(_engineDepth) + "\n");
+    }
 }
 
 void WbEngine::SetFEN(std::string fen)

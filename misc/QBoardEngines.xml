@@ -33,4 +33,8 @@
     <Engine EngineName="HaChu" GameVariant="Dai Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
     <Engine EngineName="HaChu" GameVariant="Tenjiku Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
     <Engine EngineName="whale_shogi" GameVariant="Whale Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Other/whale_shogi.exe" EngineOptions=""/>
+    <Engine EngineName="fairy-stockfish" GameVariant="Micro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="fairy-stockfish" GameVariant="Yari Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="fairy-stockfish" GameVariant="Chancellor Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="fairy-stockfish" GameVariant="Modern Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
 </Engines>

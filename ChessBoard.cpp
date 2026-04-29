@@ -296,7 +296,7 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 			_ep = "";
 			const char letter = newX + 97;
 			_ep.push_back(letter);
-			_ep.append(oldY == 5 ? "6" : "3");
+            _ep.append(oldY == _height - 3 ? "6" : "3");
 		}
 		else if (pieceType == Pawn && _ep != "-")
 		{

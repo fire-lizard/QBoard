@@ -404,7 +404,8 @@ void VBoard::paintEvent(QPaintEvent *)
 			// En Passant square highlighting
             else if ((std::find(std::begin(chessVariants), std::end(chessVariants), _gameVariant) != std::end(chessVariants)) &&
                 dynamic_cast<ChessBoard*>(_board)->GetEnPassant() != "-" &&	dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[0] - 97 == i &&
-				(_currentPlayer == White && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 48 == j || _currentPlayer == Black && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 47 == j))
+                (_currentPlayer == White && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 48 == j ||
+                 _currentPlayer == Black && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - (_gameVariant == ChancellorChess || _gameVariant == ModernChess ? 46 : 47) == j))
 			{
 				painter.setBrush(Qt::blue);
 				painter.drawRect(rect);
@@ -1736,7 +1737,11 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 	}
     else if (_gameVariant == KyotoShogi)
     {
-        _currentPiece->Promote();
+        if (_currentPiece->GetType() != King)
+        {
+            promotion = '+';
+            _currentPiece->Promote();
+        }
     }
     else if (_gameVariant == DaiDaiShogi)
 	{
@@ -2325,7 +2330,7 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 		if (moveArray.isEmpty()) return;
 		if (moveArray.size() < 8)
 		{
-			const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _blackEngine->GetType(), _gameVariant, _board->GetWidth(), _board->GetHeight());
+            const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
 			QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
 			_blackEngine->Move(convertedMoveArray[0], convertedMoveArray[1], convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
 		}
@@ -2375,7 +2380,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 		if (moveArray.isEmpty()) return;
 		if (moveArray.size() < 8)
 		{
-			const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _whiteEngine->GetType(), _gameVariant, _board->GetWidth(), _board->GetHeight());
+            const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());
 			QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());
 			_whiteEngine->Move(convertedMoveArray[0], convertedMoveArray[1], convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
 		}

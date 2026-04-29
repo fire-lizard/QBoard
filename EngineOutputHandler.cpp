@@ -174,7 +174,9 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 				}
 			}
 			else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == WaShogi || gameVariant == TenjikuShogi ||
-                     gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi || gameVariant == HeianDaiShogi)
+                     gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi || gameVariant == HeianDaiShogi ||
+                     gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == GrandChess ||
+                     gameVariant == GrandeAcedrex)
 			{
 				QRegularExpressionMatch match = _csre.match(part);
 				if (match.hasMatch())
@@ -248,7 +250,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 	return result;
 }
 
-Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol engineProtocol, GameVariant gameVariant, int width, int height)
+Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol engineProtocol, int width, int height)
 {
 	int x1, y1, x2, y2;
 	if (engineProtocol == Qianhong)
@@ -265,8 +267,7 @@ Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol e
 		x2 = width - moveArray[2] + 48;
 		y2 = moveArray[3] - 97;
 	}
-	else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == WaShogi || gameVariant == CrazyWa || gameVariant == TenjikuShogi ||
-			 gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
+    else if (width >= 10 || (width != 9 && height >= 10))
 	{
 		x1 = moveArray[0] - 97;
 		y1 = width - moveArray[1];
@@ -317,21 +318,25 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		if (str.contains("usermove=1")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("usermove", true);
 	}
 	const QByteArray moveArray = ExtractMove(buf, engine->GetType(), gameVariant);
-	textEdit->setText(engineOutput == Verbose ? buf : moveArray);
+    if (std::any_of(buf.begin(), buf.end(), [=](char t) {return isprint(t);}))
+    {
+        textEdit->setText(engineOutput == Verbose ? buf : moveArray);
+    }
 	if (moveArray.isEmpty()) return;
-	const Move m = ByteArrayToMove(moveArray, engine->GetType(), gameVariant, board->GetWidth(), board->GetHeight());
+    const Move m = ByteArrayToMove(moveArray, engine->GetType(), board->GetWidth(), board->GetHeight());
 	int x1 = m.x1;
 	int y1 = m.y1;
 	int x2 = m.x2;
 	int y2 = m.y2;
-	if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi ||
+    const int ms = moveArray.size();
+    if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi ||
 		gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
 		{
-			if (moveArray.size() < 8)
+            if (ms < 8)
 			{
-				const bool isPromoted = moveArray.size() == 5 && moveArray[4] == '+' && (y2 <= 3 || y2 >= 8);
+                const bool isPromoted = moveArray[ms - 1] == '+' && (y2 <= 3 || y2 >= 8);
 				board->GetMoves(board->GetData(x1, y1), x1, y1);
 				if (board->GetData(x2, y2) != nullptr)
 				{
@@ -339,8 +344,8 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 				}
 				board->SetData(x2, y2, board->GetData(x1, y1));
 				board->SetData(x1, y1, nullptr);
-				AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ' ');
-				engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
+                AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
+                engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
 				if (isPromoted)
 				{
 					board->GetData(x2, y2)->Promote();
@@ -364,8 +369,8 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 					board->SetData(x1, y1, nullptr);
 				}
 				board->SetData(x2, y2, nullptr);
-				AddMove(board, gameVariant, board->GetData(x3, y3)->GetType(), x1, y1, x2, y2, x3, y3);
-				std::dynamic_pointer_cast<WbEngine>(engine)->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
+                AddMove(board, gameVariant, board->GetData(x3, y3)->GetType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x3, board->GetHeight() - y3);
+                std::dynamic_pointer_cast<WbEngine>(engine)->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x3, board->GetHeight() - y3);
 			}
 		}
 	}
@@ -385,20 +390,18 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     {
         if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
         {
-            const int ms = moveArray.size();
-            const bool isPromoted = ms >= 5
-                && (y2 == 0 || y2 == board->GetHeight() - 1)
-                && board->GetData(x1, y1)->GetType() == Pawn
-                && (moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r'
-                    || moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c');
+            const bool isPromoted = (y2 == 0 || y2 == board->GetHeight() - 1) && board->GetData(x1, y1)->GetType() == Pawn &&
+                (moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
+                 moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c');
             board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
             board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ct != None ? 'x' : ' ');
-            engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
+            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+                    isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
+            engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
             if (isPromoted)
             {
-                switch (moveArray[4])
+                switch (moveArray[ms - 1])
                 {
                 case 'n':
                     board->GetData(x2, y2)->Promote(Knight);
@@ -440,23 +443,22 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			board->SetData(x2 > 4 ? 7 : 0, y2, board->GetData(x1, y1));
 			board->SetData(4, y1, rook);
 			dynamic_cast<ChessBoard*>(board)->WriteCastling(x1 == 7 ? "O-O" : "O-O-O");
-			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
+            engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, ' ');
 		}
 		else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
 		{
-			const bool isPromoted = moveArray.size() == 5
-				&& (y2 == 0 || y2 == board->GetHeight() - 1)
-				&& board->GetData(x1, y1)->GetType() == Pawn
-                && (moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r'
-                    || moveArray[4] == 'q' || moveArray[4] == 'a' || moveArray[4] == 'c');
+            const bool isPromoted = (y2 == 0 || y2 == board->GetHeight() - 1) && board->GetData(x1, y1)->GetType() == Pawn &&
+                (moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r' ||
+                 moveArray[4] == 'q' || moveArray[4] == 'a' || moveArray[4] == 'c');
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
 			const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
 			board->Move(x1, y1, x2, y2, false);
-			AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ct != None ? 'x' : ' ');
-			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
+            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+                    isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
+            engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
 			if (isPromoted)
 			{
-				switch (moveArray[4])
+                switch (moveArray[ms - 1])
 				{
 				case 'n':
 					board->GetData(x2, y2)->Promote(Knight);
@@ -486,19 +488,18 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     {
         if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
         {
-            const bool isPromoted = moveArray.size() == 5
-                && (y2 == 0 || y2 == board->GetHeight() - 1)
-                && board->GetData(x1, y1)->GetType() == Pawn
-                && (moveArray[4] == 'u' || moveArray[4] == 'l' || moveArray[4] == 'r'
-                    || moveArray[4] == 'g' || moveArray[4] == 'a' || moveArray[4] == 'c');
+            const bool isPromoted = (y2 == 0 || y2 == board->GetHeight() - 1) && board->GetData(x1, y1)->GetType() == Pawn &&
+                (moveArray[ms - 1] == 'u' || moveArray[ms - 1] == 'l' || moveArray[ms - 1] == 'r' ||
+                 moveArray[ms - 1] == 'g' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c');
             board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
             board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ct != None ? 'x' : ' ');
-            engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
+            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+                    isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
+            engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
             if (isPromoted)
             {
-                switch (moveArray[4])
+                switch (moveArray[ms - 1])
                 {
                 case 'u':
                     board->GetData(x2, y2)->Promote(Unicorn);
@@ -706,23 +707,38 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 }
             }
 			dynamic_cast<ShogiVariantBoard*>(board)->PlacePiece(newPiece, currentPlayer, x2, y2);
-			AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), moveArray[0], moveArray[1], x2, y2, ' ', ' ');
-			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
+            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), moveArray[0], moveArray[1], x2, board->GetHeight() - y2, ' ', ' ');
+            if (engine->GetType() == USI)
+            {
+                engine->AddMove(x1, y1, board->GetWidth() - x2, y2, ' ');
+            }
+            else
+            {
+                engine->AddMove(x1, y1, x2, board->GetHeight() - y2, ' ');
+            }
 		}
 		else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
 		{
-			const bool isPromoted = moveArray.size() == 5 &&
-				((gameVariant == MiniShogi && (y2 == 0 || y2 == 4) && moveArray[4] == '+')
-					|| (gameVariant == JudkinShogi && (y2 == 0 || y2 == 5) && moveArray[4] == '+')
-                    || (gameVariant == ToriShogi && (y2 <= 1 || y2 >= 5) && moveArray[4] == '+')
-                    || ((gameVariant == EuroShogi || gameVariant == HeianShogi) && (y2 <= 2 || y2 >= 5) && moveArray[4] == '+')
-                    || (gameVariant == HeianDaiShogi && (y2 <= 2 || y2 >= 10) && moveArray[4] == '+')
-                    || ((gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == YariShogi) && (y2 <= 2 || y2 >= 6) && moveArray[4] == '+')
-					|| ((gameVariant == WaShogi || gameVariant == CrazyWa) && (y2 <= 2 || y2 >= 8) && moveArray[4] == '+'));
+            const bool isPromoted =
+                ((gameVariant == MiniShogi && (y2 == 0 || y2 == 4) && moveArray[ms - 1] == '+')
+                    || (gameVariant == JudkinShogi && (y2 == 0 || y2 == 5) && moveArray[ms - 1] == '+')
+                    || (gameVariant == ToriShogi && (y2 <= 1 || y2 >= 5) && moveArray[ms - 1] == '+')
+                    || ((gameVariant == EuroShogi || gameVariant == HeianShogi) && (y2 <= 2 || y2 >= 5) && moveArray[ms - 1] == '+')
+                    || (gameVariant == HeianDaiShogi && (y2 <= 2 || y2 >= 10) && moveArray[ms - 1] == '+')
+                    || ((gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == YariShogi) && (y2 <= 2 || y2 >= 6) && moveArray[ms - 1] == '+')
+                    || ((gameVariant == WaShogi || gameVariant == CrazyWa) && (y2 <= 2 || y2 >= 8) && moveArray[ms - 1] == '+'));
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
 			board->Move(x1, y1, x2, y2, false);
-			AddMove(board, gameVariant, isPromoted ? board->GetData(x2, y2)->GetBaseType() : board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, isPromoted ? moveArray[4] : ' ', ' ');
-			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[4] : ' ');
+            AddMove(board, gameVariant, isPromoted ? board->GetData(x2, y2)->GetBaseType() : board->GetData(x2, y2)->GetType(),
+                    x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
+            if (engine->GetType() == USI)
+            {
+                engine->AddMove(board->GetWidth() - x1, y1, board->GetWidth() - x2, y2, isPromoted ? moveArray[ms - 1] : ' ');
+            }
+            else
+            {
+                engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
+            }
 			if (isPromoted)
 			{
 				board->GetData(x2, y2)->Promote();

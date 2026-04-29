@@ -26,7 +26,7 @@ class EngineOutputHandler
 {
 public:
 	static QByteArray ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant);
-	static Move ByteArrayToMove(QByteArray moveArray, EngineProtocol engineProtocol, GameVariant gameVariant, int width, int height);
+    static Move ByteArrayToMove(QByteArray moveArray, EngineProtocol engineProtocol, int width, int height);
 	static QByteArray MoveToByteArray(Move m, EngineProtocol engineProtocol, int width, int height);
 	static void ReadStandardOutput(const QByteArray& buf, const std::shared_ptr<Engine>& engine, Board* board, QTextEdit* textEdit,
 		GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer);

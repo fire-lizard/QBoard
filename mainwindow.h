@@ -79,7 +79,7 @@ private:
 	NetworkManager* _nm = nullptr;
 	Communications *_comm = nullptr;
 	QString _currentStyle = "";
-	int _engineMemorySize = 80;
+    int _engineMemorySize = 32;
 	std::shared_ptr<Engine> _whiteEngine = nullptr;
 	QString _whiteEngineExe = "";
     QString _whiteEngineOptions = "";

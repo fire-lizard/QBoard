@@ -167,7 +167,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-    aboutStr.append("<center>QBoard 1.0.7<br/>");
+    aboutStr.append("<center>QBoard 1.0.8<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
@@ -338,8 +338,9 @@ void MainWindow::on_actionNew_game_triggered()
 				_blackEngine = std::make_shared<WbEngine>();
 				break;
 			}
-			_blackEngine->SetTextEdit(ui->textEdit_2);
-			_blackEngine->SetActive(true);
+            _blackEngine->SetEngineDepth(_blackEngineDepth);
+            _blackEngine->SetTextEdit(ui->textEdit_2);
+            _blackEngine->SetActive(true);
             LoadEngine(_blackEngine, _blackEngineExe, _blackEngineOptions, Black);
 		}
 		else
@@ -365,8 +366,9 @@ void MainWindow::on_actionNew_game_triggered()
 				_whiteEngine = std::make_shared<WbEngine>();
 				break;
 			}
-			_whiteEngine->SetTextEdit(ui->textEdit);
-			_whiteEngine->SetActive(true);
+            _whiteEngine->SetEngineDepth(_whiteEngineDepth);
+            _whiteEngine->SetTextEdit(ui->textEdit);
+            _whiteEngine->SetActive(true);
             LoadEngine(_whiteEngine, _whiteEngineExe, _whiteEngineOptions, White);
 		}
 		else
@@ -861,7 +863,7 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 				switch (ui->vboard->GetGameVariant())
 				{
                 case MicroShogi:
-                    engine->StartGame("microshogi");
+                    engine->StartGame("micro");
                     break;
                 case KyotoShogi:
                     engine->StartGame("kyotoshogi");
@@ -876,7 +878,7 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
                     engine->StartGame("whaleshogi");
                     break;
                 case ToriShogi:
-                    engine->StartGame("7x7+6_shogi");
+                    engine->StartGame("torishogi");
                     break;
                 case EuroShogi:
                     engine->StartGame("euroshogi");
@@ -954,11 +956,11 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
                     engine->StartGame("grande-acedrex");
                     break;
                 }
-				if (engineExe.toLower().contains("hachu"))
+                if (engineExe.toLower().contains("hachu") || engineExe.toLower().contains("chessv"))
 				{
 					std::dynamic_pointer_cast<WbEngine>(engine)->SetMemory(_engineMemorySize);
-				}
-			}
+                }
+            }
 			else
 			{
 				engine->StartGame();
@@ -968,7 +970,6 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 				connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(blackEngineReadyReadStandardOutput()));
 				connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(blackEngineReadyReadStandardError()));
 				connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(blackEngineReadyReadStandardError()));
-                engine->SetEngineDepth(_blackEngineDepth);
                 this->ui->vboard->SetBlackEngine(engine);
 			}
 			else
@@ -976,7 +977,6 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 				connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(whiteEngineReadyReadStandardOutput()));
 				connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(whiteEngineReadyReadStandardError()));
 				connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(whiteEngineReadyReadStandardError()));
-                engine->SetEngineDepth(_whiteEngineDepth);
                 this->ui->vboard->SetWhiteEngine(engine);
 				engine->Move();
 			}
