@@ -9,6 +9,7 @@ void Logger::writeToLog(const QString& message, const LogLevel level)
     // Open the file in append mode
     if (!logFile.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
         qDebug() << "Failed to open log file:" << logFileName;
+        return;
     }
 
     QTextStream logStream(&logFile);

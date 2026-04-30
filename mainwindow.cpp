@@ -67,9 +67,24 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         _whiteEngineDepth = QVariant(settings[10]).toInt();
         _blackEngineDepth = QVariant(settings[11]).toInt();
         this->ui->vboard->GetBoard()->Initialize();
-		this->ui->statusBar->showMessage(settings[1] == "Xiangqi" ? "Red move" : "White move");
+        this->ui->statusBar->showMessage(settings[1] == "Xiangqi" || settings[1] == "Janggi" ? "Red move" : "White move");
 		this->ui->vboard->repaint();
 	}
+    else
+    {
+        ConfigRecord configRecord;
+        configRecord.styleName = _currentStyle;
+        configRecord.gameVariant = EngineManager::GameVariantToString(this->ui->vboard->GetGameVariant());
+        configRecord.highlightMoves = true;
+        configRecord.highlightShoots = true;
+        configRecord.highlightAttackers = true;
+        configRecord.highlightDefenders = true;
+        configRecord.highlightLastMoves = false;
+        configRecord.timerState = this->ui->vboard->GetTimerState();
+        configRecord.whiteEngineDepth = _whiteEngineDepth;
+        configRecord.blackEngineDepth = _blackEngineDepth;
+        IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, configRecord);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -233,7 +248,7 @@ void MainWindow::on_actionNew_game_triggered()
 	NewGameDialog* newGameDialog = new NewGameDialog(this);
     newGameDialog->GetWhitePlayer()->addItem(_userName);
     newGameDialog->GetBlackPlayer()->addItem(_userName);
-	if (this->ui->vboard->GetGameVariant() == Xiangqi)
+    if (this->ui->vboard->GetGameVariant() == Xiangqi || this->ui->vboard->GetGameVariant() == Janggi)
 	{
 		newGameDialog->GetWhitePlayerLabel()->setText("<html><head/><body><p><span style='color:#ffffff;background:#ff0000; '>Red player</span></p></body></html>");
 	}
@@ -449,7 +464,7 @@ void MainWindow::on_actionSave_triggered()
 {
 	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
     if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) ||
-            gameVariant == GrandeAcedrex || gameVariant == Shatranj || gameVariant == Makruk)
+            gameVariant == GrandeAcedrex || gameVariant == Shatranj || gameVariant == Makruk || gameVariant == Shatar)
 	{
 		QFileDialog fileDialog(this);
 		fileDialog.setNameFilter("FEN Files (*.fen);;PGN Files (*.pgn)");
@@ -813,7 +828,7 @@ void MainWindow::StartNewGame(GameVariant newGameVariant) const
 	this->ui->vboard->SetCurrentPlayer(White);
 	this->ui->textEdit->setText("");
 	this->ui->textEdit_2->setText("");
-	this->ui->statusBar->showMessage(newGameVariant == Xiangqi ? "Red move" : "White move");
+    this->ui->statusBar->showMessage(newGameVariant == Xiangqi || newGameVariant == Janggi ? "Red move" : "White move");
 	this->ui->vboard->repaint();
 
     if (_whiteTimer != nullptr)
@@ -932,7 +947,13 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 				case Xiangqi:
 					engine->StartGame("xiangqi");
 					break;
-				case Chess:
+                case Janggi:
+                    engine->StartGame("janggi");
+                    break;
+                case Shatar:
+                    engine->StartGame("shatar");
+                    break;
+                case Chess:
 					engine->StartGame("normal");
 					break;
                 case CapablancaChess:

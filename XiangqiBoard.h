@@ -15,6 +15,9 @@ public:
 	void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2);
 	std::string GetWXF();
 
+protected:
+    void CheckCannonDirection(const Piece *piece, int x, int y, Direction direction);
+
 private:
 	std::string _wxf;
 	int _pieceFiles[5] = {-1, -1, -1, -1, -1};
@@ -28,8 +31,6 @@ private:
 		{Silver, "A"},
 		{Cannon, "C"}
 	};
-
-	void CheckCannonDirection(const Piece *piece, int x, int y, Direction direction);
 
 	PieceType _initialSetup[10][9] = {
 		{ Rook, Knight, Elephant, Silver, King, Silver, Elephant, Knight, Rook },

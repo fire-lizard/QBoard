@@ -12,7 +12,7 @@ enum GameFormat
 
 enum GameVariant
 {
-    Chess, CapablancaChess, GothicChess, JanusChess, ChancellorChess, ModernChess, GrandChess, GrandeAcedrex, Xiangqi,
+    Chess, CapablancaChess, GothicChess, JanusChess, ChancellorChess, ModernChess, GrandChess, GrandeAcedrex, Xiangqi, Janggi, Shatar,
     Shatranj, Makruk, Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, YariShogi,
     HeianShogi, ShoShogi, WaShogi, CrazyWa, ChuShogi, HeianDaiShogi, DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
 };

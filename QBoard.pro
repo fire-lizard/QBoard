@@ -27,12 +27,14 @@ SOURCES += main.cpp\
     HeianDaiShogiBoard.cpp \
     HeianShogiBoard.cpp \
     HeianShogiPiece.cpp \
+    JanggiBoard.cpp \
     JanusChessBoard.cpp \
     KyotoShogiBoard.cpp \
     KyotoShogiPiece.cpp \
     MicroShogiBoard.cpp \
     MicroShogiPiece.cpp \
     ModernChessBoard.cpp \
+    ShatarBoard.cpp \
     ToriShogiPiece.cpp \
     ToriShogiBoard.cpp \
     EuroShogiBoard.cpp \
@@ -108,6 +110,7 @@ HEADERS  += mainwindow.h \
     HeianDaiShogiBoard.h \
     HeianShogiBoard.h \
     HeianShogiPiece.h \
+    JanggiBoard.h \
     JanusChessBoard.h \
     KyotoShogiBoard.h \
     KyotoShogiPiece.h \
@@ -117,6 +120,7 @@ HEADERS  += mainwindow.h \
     Piece.h \
     KanjiPiece.h \
     Logger.h \
+    ShatarBoard.h \
     ToriShogiPiece.h \
     ToriShogiBoard.h \
     EuroShogiBoard.h \

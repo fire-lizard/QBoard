@@ -25,7 +25,7 @@ public:
 
 private:
 	bool _memory = false;
-	int _memorySize = 80;
+    int _memorySize = 32;
 	bool _usermove = false;
 	bool _setboard = false;
 };

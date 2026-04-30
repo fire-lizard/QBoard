@@ -374,7 +374,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			}
 		}
 	}
-	else if (gameVariant == Xiangqi)
+    else if (gameVariant == Xiangqi || gameVariant == Janggi)
 	{
 		y1--;
 		y2--;
@@ -525,7 +525,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             }
         }
     }
-    else if (gameVariant == Shatranj)
+    else if (gameVariant == Shatranj || gameVariant == Shatar)
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
 		{
@@ -753,7 +753,8 @@ void EngineOutputHandler::ReadStandardError(const QByteArray& buf, QTextEdit* te
 
 void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3)
 {
-    if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) || gameVariant == Shatranj)
+    if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) ||
+            gameVariant == Shatranj || gameVariant == Shatar)
 	{
 		dynamic_cast<ShatranjBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
@@ -820,7 +821,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 		{
 			std::string stringCode(1, c);
 			PieceType pieceType = None;
-            if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) || gameVariant == Shatranj)
+            if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) ||
+                    gameVariant == Shatranj || gameVariant == Shatar)
 			{
 				pieceType = ShatranjPiece::FromStringCode(uppercase(stringCode));
 			}
@@ -828,7 +830,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
             {
                 pieceType = GrandeAcedrexPiece::FromStringCode(uppercase(stringCode));
             }
-            else if (gameVariant == Xiangqi)
+            else if (gameVariant == Xiangqi || gameVariant == Janggi)
 			{
 				pieceType = XiangqiPiece::FromStringCode(uppercase(stringCode));
 			}

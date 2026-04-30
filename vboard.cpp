@@ -18,6 +18,7 @@ void VBoard::paintEvent(QPaintEvent *)
 	switch (_gameVariant)
 	{
 	case Xiangqi:
+    case Janggi:
 		if (_pieceStyle == European) resourcePrefix = ":/pieces_eur/images/";
 		else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_xia/images_xia/";
 		else if (_pieceStyle == Asian) resourcePrefix = ":/pieces_chi/images_chi/";
@@ -88,6 +89,7 @@ void VBoard::paintEvent(QPaintEvent *)
 		break;
 	case Chess:
     case Shatranj:
+    case Shatar:
         if (_pieceStyle == European) resourcePrefix = ":/pieces_eur/images/";
 		else if (_pieceStyle == Mnemonic) resourcePrefix = ":/pieces_eur/images_eur/";
 		else resourcePrefix = ":/pieces_eur2/images_eur2/";
@@ -305,7 +307,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					{
 						painter.setBrush(Qt::magenta);
 					}
-                    if (_gameVariant != KoShogi && _gameVariant != Xiangqi)
+                    if (_gameVariant != KoShogi && _gameVariant != Xiangqi && _gameVariant != Janggi)
                     {
                         painter.drawRect(rect);
                     }
@@ -320,7 +322,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				else if (_board->GetData(i, j) == nullptr)
 				{
 					painter.setBrush(Qt::cyan);
-                    if (_gameVariant != KoShogi && _gameVariant != Xiangqi)
+                    if (_gameVariant != KoShogi && _gameVariant != Xiangqi && _gameVariant != Janggi)
                     {
                         painter.drawRect(rect);
                     }
@@ -374,7 +376,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			else if ((_lastWhiteMoveFrom.first == i && _lastWhiteMoveFrom.second == j || _lastWhiteMoveTo.first == i && _lastWhiteMoveTo.second == j) && _highlightLastMoves)
 			{
 				painter.setBrush(QColor(245, 245, 220, 127));
-                if (_gameVariant != KoShogi && _gameVariant != Xiangqi)
+                if (_gameVariant != KoShogi && _gameVariant != Xiangqi && _gameVariant != Janggi)
                 {
                     painter.drawRect(rect);
                 }
@@ -389,7 +391,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			else if ((_lastBlackMoveFrom.first == i && _lastBlackMoveFrom.second == j || _lastBlackMoveTo.first == i && _lastBlackMoveTo.second == j) && _highlightLastMoves)
 			{
 				painter.setBrush(QColor(255, 228, 196, 127));
-                if (_gameVariant != KoShogi && _gameVariant != Xiangqi)
+                if (_gameVariant != KoShogi && _gameVariant != Xiangqi && _gameVariant != Janggi)
                 {
                     painter.drawRect(rect);
                 }
@@ -414,12 +416,12 @@ void VBoard::paintEvent(QPaintEvent *)
             else
 			{
                 if (std::find(std::begin(chessVariants), std::end(chessVariants), _gameVariant) != std::end(chessVariants) ||
-                        _gameVariant == GrandeAcedrex || _gameVariant == Shatranj || _gameVariant == Makruk)
+                        _gameVariant == GrandeAcedrex || _gameVariant == Shatranj || _gameVariant == Makruk || _gameVariant == Shatar)
 				{
 					if ((i + j) % 2 != 0)
 						painter.setBrush(Qt::gray);
 				}
-                if (_gameVariant != KoShogi && _gameVariant != Xiangqi)
+                if (_gameVariant != KoShogi && _gameVariant != Xiangqi && _gameVariant != Janggi)
                 {
                     painter.drawRect(rect);
                 }
@@ -427,7 +429,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			}
 		}
 	}
-    if (_gameVariant == KoShogi || _gameVariant == Xiangqi)
+    if (_gameVariant == KoShogi || _gameVariant == Xiangqi || _gameVariant == Janggi)
     {
         for (int i = 0; i < _board->GetWidth() - 1; i++)
         {
@@ -470,6 +472,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				switch (_gameVariant)
 				{
 				case Xiangqi:
+                case Janggi:
 					imageFileName = _pieceStyle == European ?
 						p->GetImageFileName() : dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
 					break;
@@ -540,6 +543,7 @@ void VBoard::paintEvent(QPaintEvent *)
                 case ChancellorChess:
                 case ModernChess:
                 case Shatranj:
+                case Shatar:
                 case GrandeAcedrex:
                     imageFileName = p->GetImageFileName();
 					break;
@@ -649,6 +653,7 @@ void VBoard::paintEvent(QPaintEvent *)
                     break;
                 case Chess:
 				case Shatranj:
+                case Shatar:
                     if (_pieceStyle == European)
                     {
                         painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
@@ -663,6 +668,7 @@ void VBoard::paintEvent(QPaintEvent *)
                     }
                     break;
                 case Xiangqi:
+                case Janggi:
                     if (_pieceStyle == European || _pieceStyle == Asian)
 					{
                         painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
@@ -721,7 +727,7 @@ void VBoard::FinishMove(int x, int y)
 	}
 	_currentPlayer = _currentPlayer == White ? Black : White;
 	_statusBar->setStyleSheet("QStatusBar { color : black; }");
-	_statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi ? "Red move" : "White move" : "Black move");
+    _statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi || _gameVariant == Janggi ? "Red move" : "White move" : "Black move");
 	_currentPiece = nullptr;
 	_oldX = -1;
 	_oldY = -1;
@@ -1497,7 +1503,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
             const char promotion = _gameVariant != GrandeAcedrex ? CheckPromotion(p, y) : CheckPromotion(p, x, y);
 			if (engine != nullptr && engine->IsActive())
 			{
-				if (_gameVariant == Xiangqi)
+                if (_gameVariant == Xiangqi || _gameVariant == Janggi)
 					engine->Move(_oldX, _board->GetHeight() - _oldY - 1, x, _board->GetHeight() - y - 1, promotion);
 				else if (engine->GetType() == USI)
 					engine->Move(_board->GetWidth() - _oldX, _oldY, _board->GetWidth() - x, y, promotion);
@@ -1716,7 +1722,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             }
         }
     }
-    else if (_gameVariant == Shatranj)
+    else if (_gameVariant == Shatranj || _gameVariant == Shatar)
 	{
 		if (_currentPiece->GetType() == Pawn &&
 			((y == 7 && _currentPiece->GetColour() == Black) ||
@@ -2045,7 +2051,13 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	case Makruk:
 		_board = new MakrukBoard();
 		break;
-	}
+    case Janggi:
+        _board = new JanggiBoard();
+        break;
+    case Shatar:
+        _board = new ShatarBoard();
+        break;
+    }
 	this->setFixedSize(_board->GetWidth() * s + 1, _board->GetHeight() * s + 1);
 	if (this->_window != nullptr)
 	{
@@ -2370,7 +2382,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 		QMessageBox::critical(this, "Error", "Illegal move");
         EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _blackEngine, _blackMoves);
         this->repaint();
-        this->_statusBar->showMessage(_gameVariant == Xiangqi ? "Red move" : "White move");
+        this->_statusBar->showMessage(_gameVariant == Xiangqi || _gameVariant == Janggi ? "Red move" : "White move");
 		_currentPlayer = White;
 		return;
 	}
@@ -2394,7 +2406,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	{
 		_currentPlayer = White;
 	}
-	this->_statusBar->showMessage(_gameVariant == Xiangqi ? "Red move" : "White move");
+    this->_statusBar->showMessage(_gameVariant == Xiangqi || _gameVariant == Janggi ? "Red move" : "White move");
 	this->repaint();
 }
 
@@ -2486,7 +2498,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
                 blackRegular->addAction(QString::fromStdString(GrandeAcedrexPiece::PieceType2Description(GrandeAcedrexPiece)));
             }
         }
-        else if (_gameVariant == Shatranj)
+        else if (_gameVariant == Shatranj || _gameVariant == Shatar)
 		{
 			for (auto& ShatranjPiece : ShatranjPieces)
 			{
@@ -2502,7 +2514,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(MakrukPiece)));
 			}
 		}
-		else if (_gameVariant == Xiangqi)
+        else if (_gameVariant == Xiangqi || _gameVariant == Janggi)
 		{
 			for (auto& XiangqiPiece : XiangqiPieces)
 			{
