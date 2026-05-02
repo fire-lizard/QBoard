@@ -264,6 +264,27 @@ bool Board::HasPiece(PieceType pieceType, PieceColour pieceColour) const
 	return false;
 }
 
+std::pair<int, int> Board::GetPieceLocation(PieceType pieceType, PieceColour pieceColour)
+{
+    int kx = -1, ky = -1;
+    for (int i = 0; i < GetWidth(); i++)
+    {
+        for (int j = 0; j < GetHeight(); j++)
+        {
+            const Piece* p = GetData(i, j);
+            if (p != nullptr && p->GetBaseType() == pieceType && p->GetColour() == pieceColour)
+            {
+                kx = i;
+                ky = j;
+                break;
+            }
+        }
+        if (kx > -1 && ky > -1)
+            break;
+    }
+    return { kx, ky };
+}
+
 std::vector<std::pair<int, int>> Board::GetAttackers(int x, int y)
 {
 	std::vector<std::pair<int, int>> vec;

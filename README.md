@@ -31,8 +31,10 @@
      * Ko Shogi
   3. Other Board Games
      * Xiangqi
+     * Janggi
      * Makruk
      * Shatranj
+     * Shatar
 
 # Supported Engine Protocols:
 

@@ -71,11 +71,11 @@ QProcess* Engine::GetProcess() const
 
 void Engine::WriteToProcess(QByteArray buf) const
 {
-	if (std::any_of(buf.begin(), buf.end(), [=](char t) {return isprint(t);}))
-	{
-		_textEdit->append(buf);
-	}
-	_process->write(buf);
+    if (std::any_of(buf.begin(), buf.end(), [=](char t) {return isprint(t);}))
+    {
+        _textEdit->append(buf);
+        _process->write(buf);
+    }
 }
 
 std::vector<QByteArray> Engine::Moves() const

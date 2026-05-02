@@ -34,8 +34,8 @@ public:
 	static void AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3);
 	static QString SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant);
 	static void CalculateCheck(Board* board, PieceColour pieceColour, std::vector<std::pair<int, int>>& moves, int oldX, int oldY, int newX, int newY);
-	static std::pair<int, int> GetPieceLocation(const Board* board, PieceType pieceType, PieceColour pieceColour);
-	static std::vector<std::pair<int, int>> GetPieceLocations(const Board* board, PieceType pieceType, PieceColour pieceColour);
+    static void CalculateXiangqiCheck(Board* board, std::vector<std::pair<int, int>>& moves, int oldX, int oldY, int newX, int newY);
+    static std::vector<std::pair<int, int>> GetPieceLocations(const Board* board, PieceType pieceType, PieceColour pieceColour);
 	static bool IsInsidePromotionZone(GameVariant gameVariant, PieceColour pieceColour, int y);
 	static bool CanBePromoted(const Piece* piece, GameVariant gameVariant, int oldY, int newY);
 	static bool IsLionMove(const Piece* piece, int x1, int y1, int x2, int y2);

@@ -436,7 +436,7 @@ void VBoard::paintEvent(QPaintEvent *)
             for (int j = 0; j < _board->GetHeight() - 1; j++)
             {
                 QRect rect(i * w + w / 2, j * h + h / 2, w, h);
-                if (_gameVariant == KoShogi || j != 4)
+                if (_gameVariant == KoShogi || _gameVariant == Janggi || j != 4)
                 {
                     painter.drawRect(rect);
                 }
@@ -870,7 +870,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				else
 				{
 					_tcMoves.emplace_back(x, y);
-					_tcMoves.insert(_tcMoves.begin(), EngineOutputHandler::GetPieceLocation(_board, Thunderclap, _currentPlayer));
+                    _tcMoves.insert(_tcMoves.begin(), _board->GetPieceLocation(Thunderclap, _currentPlayer));
 					for (int index = 0; index < _tcMoves.size() - 1; index++)
 					{
 						if (_board->Move(_tcMoves[index].first, _tcMoves[index].second, _tcMoves[index + 1].first, _tcMoves[index + 1].second))
@@ -1570,7 +1570,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
         if (_gameVariant != ShoShogi && _gameVariant != ChuShogi && _gameVariant != DaiShogi && _gameVariant != TenjikuShogi &&
             _gameVariant != DaiDaiShogi && _gameVariant != MakaDaiDaiShogi && _gameVariant != KoShogi)
 		{
-			for (int index = 0; index < 4; index++)
+            for (int index = 0; index < 4; index++)
 			{
 				std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
 				{
@@ -1578,6 +1578,13 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				});
 			}
 		}
+        if (_gameVariant == Xiangqi || _gameVariant == Janggi)
+        {
+            std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+            {
+                EngineOutputHandler::CalculateXiangqiCheck(_board, _moves, x, y, t.first, t.second);
+            });
+        }
 		this->repaint();
 	}
 }

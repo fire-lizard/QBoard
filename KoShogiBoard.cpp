@@ -89,12 +89,12 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	if (result == true && GetData(newX, newY) != nullptr && GetData(newX, newY)->GetType() == TaoistPriest)
 	{
 		_taoistPriestCaptured = true;
-		const auto raLocation = EngineOutputHandler::GetPieceLocation(this, RoamingAssault, sp->GetColour() == White ? Black : White);
+        const auto raLocation = GetPieceLocation(RoamingAssault, sp->GetColour() == White ? Black : White);
 		if (raLocation.first != -1 && raLocation.second != -1)
 		{
 			dynamic_cast<KoShogiPiece*>(GetData(raLocation.first, raLocation.second))->Demote();
 		}
-		const auto tcLocation = EngineOutputHandler::GetPieceLocation(this, Thunderclap, sp->GetColour() == White ? Black : White);
+        const auto tcLocation = GetPieceLocation(Thunderclap, sp->GetColour() == White ? Black : White);
 		if (tcLocation.first != -1 && tcLocation.second != -1)
 		{
 			dynamic_cast<KoShogiPiece*>(GetData(tcLocation.first, tcLocation.second))->Demote();
@@ -103,7 +103,7 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	// Whenever the immaculate light is within 5 intersections of the five-li fog, the fog reverts to a Taoist priest.
 	if (result == true && sp != nullptr && sp->GetType() == ExtensiveFog)
 	{
-		const auto hlLocation = EngineOutputHandler::GetPieceLocation(this, HolyLight, sp->GetColour() == White ? Black : White);
+        const auto hlLocation = GetPieceLocation(HolyLight, sp->GetColour() == White ? Black : White);
 		if (hlLocation.first != -1 && hlLocation.second != -1 && abs(hlLocation.first - newX) <= 5 && abs(hlLocation.second - newY) <= 5)
 		{
 			dynamic_cast<KoShogiPiece*>(sp)->Demote();
@@ -111,7 +111,7 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	}
 	else if (result == true && sp != nullptr && sp->GetType() == HolyLight)
 	{
-		const auto efLocation = EngineOutputHandler::GetPieceLocation(this, ExtensiveFog, sp->GetColour() == White ? Black : White);
+        const auto efLocation = GetPieceLocation(ExtensiveFog, sp->GetColour() == White ? Black : White);
 		if (efLocation.first != -1 && efLocation.second != -1 && abs(efLocation.first - newX) <= 5 && abs(efLocation.second - newY) <= 5)
 		{
 			dynamic_cast<KoShogiPiece*>(GetData(efLocation.first, efLocation.second))->Demote();
@@ -129,8 +129,8 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		// If the drum is killed, the pawns may no longer move forward.
 		if (piece->GetColour() == Black)
 		{
-			if (EngineOutputHandler::GetPieceLocation(this, Drum, piece->GetColour()).first != -1 ||
-				EngineOutputHandler::GetPieceLocation(this, Thunderclap, piece->GetColour()).first != -1)
+            if (GetPieceLocation(Drum, piece->GetColour()).first != -1 ||
+                GetPieceLocation(Thunderclap, piece->GetColour()).first != -1)
 			{
 				CheckMove(piece, x, y + 1);
 			}
@@ -138,8 +138,8 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		else
 		{
-			if (EngineOutputHandler::GetPieceLocation(this, Drum, piece->GetColour()).first != -1 ||
-				EngineOutputHandler::GetPieceLocation(this, Thunderclap, piece->GetColour()).first != -1)
+            if (GetPieceLocation(Drum, piece->GetColour()).first != -1 ||
+                GetPieceLocation(Thunderclap, piece->GetColour()).first != -1)
 			{
 				CheckMove(piece, x, y - 1);
 			}
@@ -502,7 +502,7 @@ void KoShogiBoard::CheckShoot(const Piece* piece, int x, int y)
 	// are disabled from shooting if they are within five intersections of an enemy five-li fog.
 	if (pt != TaoistPriest && pt != SpiritualMonk && pt != ExtensiveFog && pt != HolyLight)
 	{
-		const auto fogLocation = EngineOutputHandler::GetPieceLocation(this, ExtensiveFog, piece->GetColour() == White ? Black : White);
+        const auto fogLocation = GetPieceLocation(ExtensiveFog, piece->GetColour() == White ? Black : White);
 		if (fogLocation.first != -1 && fogLocation.second != -1 && (abs(fogLocation.first - x) <= 5 && abs(fogLocation.second - y) <= 5))
 		{
 			return;

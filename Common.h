@@ -191,6 +191,8 @@ inline char GRANDFEN[] = "r8r/1nbqkcabn1/pppppppppp/10/10/10/10/PPPPPPPPPP/1NBQK
 
 inline char XIANGQIFEN[] = "rheakaehr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RHEAKAEHR w - - 0 1";
 
+inline char JANGGIFEN[] = "rhea1aehr/4k4/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/4K4/RHEA1AEHR w";
+
 inline char SHOGIFEN[] = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1";
 
 inline char MICROSHOGIFEN[] = "kbgs/p3/4/3P/SGBK w - 1";
@@ -248,5 +250,7 @@ inline char KOSHOGIFEN[] = "a't'cfsgnexkoengsfcs'a'/r'h1d1q1tlmut1q1d1hr'/bic'l'
 inline char SHOSHOGIFEN[] = "lnsgkgsnl/1r2e2b1/ppppppppp/9/9/9/PPPPPPPPP/1B2E2R1/LNSGKGSNL";
 
 inline char SHATRANJFEN[] = "rnbkqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBKQBNR";
+
+inline char SHATARFEN[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBKQBNR";
 
 inline char MAKRUKFEN[] = "rnsmksnr/8/pppppppp/8/8/PPPPPPPP/8/RNSKMSNR";

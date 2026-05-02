@@ -19,7 +19,8 @@ public:
 	void RemoveMoves();
 	std::vector<std::tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
 	std::vector<std::pair<int, int>> Moves() const;
-	Piece* GetData(int x, int y) const;
+    std::pair<int, int> GetPieceLocation(PieceType pieceType, PieceColour pieceColour);
+    Piece* GetData(int x, int y) const;
 	void SetData(int x, int y, Piece *p);
 	std::string GetFEN() const;
 	void SetFEN(std::string fen);

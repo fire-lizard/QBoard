@@ -68,15 +68,15 @@ void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 			CheckMove(piece, x - 1, y);
 		break;
 	case Silver:
-        if ((x < 5 && (piece->GetColour() == Black && y < 2)) || piece->GetColour() == White)
+        if (x < 5 && (piece->GetColour() == Black && y < 2 || piece->GetColour() == White))
 			CheckMove(piece, x + 1, y + 1);
-        if ((x < 5 && (piece->GetColour() == White && y > 7)) || piece->GetColour() == Black)
+        if (x < 5 && (piece->GetColour() == White && y > 7 || piece->GetColour() == Black))
 			CheckMove(piece, x + 1, y - 1);
-        if ((x > 3 && (piece->GetColour() == Black && y < 2)) || piece->GetColour() == White)
+        if (x > 3 && (piece->GetColour() == Black && y < 2 || piece->GetColour() == White))
 			CheckMove(piece, x - 1, y + 1);
-        if ((x > 3 && (piece->GetColour() == White && y > 7)) || piece->GetColour() == Black)
-			CheckMove(piece, x - 1, y - 1);
-		break;
+        if (x > 3 && (piece->GetColour() == White && y > 7 || piece->GetColour() == Black))
+            CheckMove(piece, x - 1, y - 1);
+        break;
 	case Rook:
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, East);
@@ -158,7 +158,9 @@ void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direct
 	{
 		CheckDirectionInc(x, y, direction);
 		if (GetData(x, y) == nullptr)
+        {
 			CheckMove(piece, x, y);
+        }
 		else
 		{
 			do
@@ -281,4 +283,23 @@ void XiangqiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2
 std::string XiangqiBoard::GetWXF()
 {
 	return _wxf;
+}
+
+bool XiangqiBoard::AreTwoKingsLookingOnEachOther()
+{
+    const auto loc1 = GetPieceLocation(King, Black);
+    const auto loc2 = GetPieceLocation(King, White);
+    if (loc1.first == loc2.first)
+    {
+        int step = loc1.second > loc2.second ? -1 : 1;
+        for (int index = loc1.second + step; index != loc2.second; index += step)
+        {
+            if (GetData(loc1.first, index) != nullptr)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
 }

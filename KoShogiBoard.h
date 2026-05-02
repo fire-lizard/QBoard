@@ -1,7 +1,8 @@
 #pragma once
+#include <set>
 #include "Common.h"
 #include "KoShogiPiece.h"
-#include "EngineOutputHandler.h"
+#include "DaiShogiBoard.h"
 
 inline PieceType StepMovers[15] = { King,Gold,Elephant,Silver,Leopard,Copper,MiddleTroop,Drum,Flag,Tiger,FrankishCannon,Longbow,Crossbow,CatSword,Pawn };
 inline PieceType ShootingPieces[12] = { FrankishCannon,DivineCarriage,Longbow,LongbowKnight,Crossbow,CrossbowKnight,

@@ -11,6 +11,9 @@ public:
     Board* Clone() override;
     void GetMoves(Piece *piece, int x, int y) override;
 
+protected:
+    void CheckCannonDirection(const Piece *piece, int x, int y, Direction direction) override;
+
 private:
 
     PieceType _initialSetup[10][9] = {

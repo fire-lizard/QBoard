@@ -13,10 +13,11 @@ public:
 	void GetMoves(Piece *piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 	void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2);
-	std::string GetWXF();
+    bool AreTwoKingsLookingOnEachOther();
+    std::string GetWXF();
 
 protected:
-    void CheckCannonDirection(const Piece *piece, int x, int y, Direction direction);
+    virtual void CheckCannonDirection(const Piece *piece, int x, int y, Direction direction);
 
 private:
 	std::string _wxf;

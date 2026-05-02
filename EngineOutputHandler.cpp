@@ -74,7 +74,7 @@ void EngineOutputHandler::CalculateCheck(Board* board, PieceColour pieceColour, 
 	Board* brd = board->Clone();
 	brd->GetMoves(board->GetData(oldX, oldY), oldX, oldY);
 	brd->Move(oldX, oldY, newX, newY);
-    const auto location = GetPieceLocation(brd, King, pieceColour);
+    const auto location = brd->GetPieceLocation(King, pieceColour);
 	const int kx = location.first;
 	const int ky = location.second;
 	auto opponentMoves = brd->GetAllMoves(pieceColour == White ? Black : White);
@@ -89,6 +89,19 @@ void EngineOutputHandler::CalculateCheck(Board* board, PieceColour pieceColour, 
 	delete brd;
 }
 
+void EngineOutputHandler::CalculateXiangqiCheck(Board* board, std::vector<std::pair<int, int>>& moves, int oldX, int oldY, int newX, int newY)
+{
+    Board* brd = board->Clone();
+    brd->GetMoves(board->GetData(oldX, oldY), oldX, oldY);
+    brd->Move(oldX, oldY, newX, newY);
+    if (dynamic_cast<XiangqiBoard*>(brd)->AreTwoKingsLookingOnEachOther())
+    {
+        board->RemoveMove(newX, newY);
+        RemoveMove(moves, newX, newY);
+    }
+    delete brd;
+}
+
 void EngineOutputHandler::RollbackIllegalMove(GameVariant gameVariant, Board *board, std::shared_ptr<Engine> engine, std::vector<std::string> moves)
 {
     if (engine != nullptr && engine->IsActive() && !engine->Moves().empty())
@@ -100,27 +113,6 @@ void EngineOutputHandler::RollbackIllegalMove(GameVariant gameVariant, Board *bo
         moves.pop_back();
         SetFenToBoard(board, QByteArray::fromStdString(moves[moves.size() - 1]), gameVariant);
     }
-}
-
-std::pair<int, int> EngineOutputHandler::GetPieceLocation(const Board* board, PieceType pieceType, PieceColour pieceColour)
-{
-	int kx = -1, ky = -1;
-	for (int i = 0; i < board->GetWidth(); i++)
-	{
-		for (int j = 0; j < board->GetHeight(); j++)
-		{
-			const Piece* p = board->GetData(i, j);
-			if (p != nullptr && p->GetBaseType() == pieceType && p->GetColour() == pieceColour)
-			{
-				kx = i;
-				ky = j;
-				break;
-			}
-		}
-		if (kx > -1 && ky > -1)
-			break;
-	}
-	return { kx, ky };
 }
 
 std::vector<std::pair<int, int>> EngineOutputHandler::GetPieceLocations(const Board* board, PieceType pieceType, PieceColour pieceColour)

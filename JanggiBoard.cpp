@@ -60,29 +60,50 @@ void JanggiBoard::GetMoves(Piece *piece, int x, int y)
             CheckMove(piece, x, y - 1);
         if (x > 3)
             CheckMove(piece, x - 1, y);
-        if ((x < 5 && (piece->GetColour() == Black && y < 2)) || piece->GetColour() == White)
-            CheckMove(piece, x + 1, y + 1);
-        if ((x < 5 && (piece->GetColour() == White && y > 7)) || piece->GetColour() == Black)
-            CheckMove(piece, x + 1, y - 1);
-        if ((x > 3 && (piece->GetColour() == Black && y < 2)) || piece->GetColour() == White)
-            CheckMove(piece, x - 1, y + 1);
-        if ((x > 3 && (piece->GetColour() == White && y > 7)) || piece->GetColour() == Black)
-            CheckMove(piece, x - 1, y - 1);
+        if (x == 3 && y == 1 || x == 5 && y == 1 || x == 4 && y == 0 || x == 4 && y == 2 ||
+            x == 3 && y == 8 || x == 5 && y == 8 || x == 4 && y == 9 || x == 4 && y == 7)
+        {
+        }
+        else
+        {
+            if (x < 5 && (piece->GetColour() == Black && y < 2 || piece->GetColour() == White))
+                CheckMove(piece, x + 1, y + 1);
+            if (x < 5 && (piece->GetColour() == White && y > 7 || piece->GetColour() == Black))
+                CheckMove(piece, x + 1, y - 1);
+            if (x > 3 && (piece->GetColour() == Black && y < 2 || piece->GetColour() == White))
+                CheckMove(piece, x - 1, y + 1);
+            if (x > 3 && (piece->GetColour() == White && y > 7 || piece->GetColour() == Black))
+                CheckMove(piece, x - 1, y - 1);
+        }
         break;
     case Elephant:
-        if ((piece->GetColour() == White) || piece->GetColour() == Black)
+        if (GetData(x, y + 1) == nullptr)
         {
-            if (GetData(x - 1, y - 1) == nullptr)
-                CheckMove(piece, x - 2, y - 2);
-            if (GetData(x + 1, y - 1) == nullptr)
-                CheckMove(piece, x + 2, y - 2);
+            if (GetData(x + 1, y + 2) == nullptr)
+                CheckMove(piece, x + 2, y + 3);
+            if (GetData(x - 1, y + 2) == nullptr)
+                CheckMove(piece, x - 2, y + 3);
         }
-        if ((piece->GetColour() == Black) || piece->GetColour() == White)
+        if (GetData(x + 1, y) == nullptr)
         {
-            if (GetData(x - 1, y + 1) == nullptr)
-                CheckMove(piece, x - 2, y + 2);
-            if (GetData(x + 1, y + 1) == nullptr)
-                CheckMove(piece, x + 2, y + 2);
+            if (GetData(x + 2, y + 1) == nullptr)
+                CheckMove(piece, x + 3, y + 2);
+            if (GetData(x + 2, y - 1) == nullptr)
+                CheckMove(piece, x + 3, y - 2);
+        }
+        if (GetData(x - 1, y) == nullptr)
+        {
+            if (GetData(x - 2, y + 1) == nullptr)
+                CheckMove(piece, x - 3, y + 2);
+            if (GetData(x - 2, y - 1) == nullptr)
+                CheckMove(piece, x - 3, y - 2);
+        }
+        if (GetData(x, y - 1) == nullptr)
+        {
+            if (GetData(x + 1, y - 2) == nullptr)
+                CheckMove(piece, x + 2, y - 3);
+            if (GetData(x - 1, y - 2) == nullptr)
+                CheckMove(piece, x - 2, y - 3);
         }
         break;
     case Pawn:
@@ -91,19 +112,149 @@ void JanggiBoard::GetMoves(Piece *piece, int x, int y)
         if (piece->GetColour() == Black)
         {
             CheckMove(piece, x, y + 1);
+            if (x == 4 && y == 8)
+            {
+                CheckMove(piece, x + 1, y + 1);
+                CheckMove(piece, x - 1, y + 1);
+            }
+            else if (x == 3 && y == 7)
+            {
+                CheckMove(piece, x + 1, y + 1);
+            }
+            else if (x == 5 && y == 7)
+            {
+                CheckMove(piece, x - 1, y + 1);
+            }
         }
         else
         {
             CheckMove(piece, x, y - 1);
+            if (x == 4 && y == 1)
+            {
+                CheckMove(piece, x + 1, y - 1);
+                CheckMove(piece, x - 1, y - 1);
+            }
+            else if (x == 3 && y == 2)
+            {
+                CheckMove(piece, x + 1, y - 1);
+            }
+            else if (x == 5 && y == 2)
+            {
+                CheckMove(piece, x - 1, y - 1);
+            }
         }
         break;
     case Cannon:
+        if (x == 3 && y == 2)
+        {
+            CheckCannonDirection(piece, x, y, SouthEast);
+        }
+        else if (x == 5 && y == 2)
+        {
+            CheckCannonDirection(piece, x, y, SouthWest);
+        }
+        else if (x == 3 && y == 7)
+        {
+            CheckCannonDirection(piece, x, y, NorthEast);
+        }
+        else if (x == 5 && y == 7)
+        {
+            CheckCannonDirection(piece, x, y, NorthWest);
+        }
+        else if (x == 3 && y == 0)
+        {
+            if (GetData(4, 1) != nullptr && GetData(4, 1)->GetType() != Cannon)
+                CheckMove(piece, 5, 2);
+        }
+        else if (x == 5 && y == 0)
+        {
+            if (GetData(4, 1) != nullptr && GetData(4, 1)->GetType() != Cannon)
+                CheckMove(piece, 3, 2);
+        }
+        else if (x == 3 && y == 9)
+        {
+            if (GetData(4, 8) != nullptr && GetData(4, 8)->GetType() != Cannon)
+                CheckMove(piece, 5, 7);
+        }
+        else if (x == 5 && y == 9)
+        {
+            if (GetData(4, 8) != nullptr && GetData(4, 8)->GetType() != Cannon)
+                CheckMove(piece, 3, 7);
+        }
         CheckCannonDirection(piece, x, y, North);
         CheckCannonDirection(piece, x, y, East);
         CheckCannonDirection(piece, x, y, West);
         CheckCannonDirection(piece, x, y, South);
         break;
+    case Rook:
+        if (x == 3 && y == 2)
+        {
+            CheckDirection(piece, x, y, SouthEast);
+        }
+        else if (x == 5 && y == 2)
+        {
+            CheckDirection(piece, x, y, SouthWest);
+        }
+        else if (x == 3 && y == 7)
+        {
+            CheckDirection(piece, x, y, NorthEast);
+        }
+        else if (x == 5 && y == 7)
+        {
+            CheckDirection(piece, x, y, NorthWest);
+        }
+        else if (x == 3 && y == 0)
+        {
+            CheckDirection(piece, x, y, NorthEast, 2);
+        }
+        else if (x == 5 && y == 0)
+        {
+            CheckDirection(piece, x, y, NorthWest, 2);
+        }
+        else if (x == 3 && y == 9)
+        {
+            CheckDirection(piece, x, y, SouthEast, 2);
+        }
+        else if (x == 5 && y == 9)
+        {
+            CheckDirection(piece, x, y, SouthWest, 2);
+        }
+        CheckDirection(piece, x, y, North);
+        CheckDirection(piece, x, y, East);
+        CheckDirection(piece, x, y, West);
+        CheckDirection(piece, x, y, South);
+        break;
     default:
         XiangqiBoard::GetMoves(piece, x, y);
     }
+}
+
+void JanggiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direction direction)
+{
+    do
+    {
+        CheckDirectionInc(x, y, direction);
+        if (GetData(x, y) != nullptr)
+        {
+            if (GetData(x, y)->GetType() == Cannon)
+            {
+                break;
+            }
+            do
+            {
+                CheckDirectionInc(x, y, direction);
+                if (GetData(x, y) == nullptr)
+                    CheckMove(piece, x, y);
+            }
+            while (GetData(x, y) == nullptr && InBounds(x, y, direction));
+            if (CheckPosition(x, y) && GetData(x, y) != nullptr &&
+                    GetData(x, y)->GetColour() != piece->GetColour() &&
+                    GetData(x, y)->GetType() != Cannon)
+            {
+                CheckMove(piece, x, y);
+            }
+            break;
+        }
+    }
+    while (InBounds(x, y, direction));
 }

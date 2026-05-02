@@ -68,13 +68,13 @@ void WbEngine::Edit(const Board* board) const
 void WbEngine::StartGame(QString variant)
 {
 	_moves.clear();
-	WriteToProcess("xboard\n");
-	WriteToProcess("protover\n");
-	WriteToProcess("new\n");
+    WriteToProcess("xboard\n");
+    WriteToProcess("protover\n");
+    WriteToProcess("new\n");
 	if (variant != "")
 	{
-		const QString str = "variant " + variant + "\n";
-		WriteToProcess(str.toLatin1());
+        const QString str = "variant " + variant + "\n";
+        WriteToProcess(str.toLatin1());
 	}
     WriteToProcess("sd " + QByteArray::number(_engineDepth) + "\n");
 }
@@ -95,22 +95,19 @@ void WbEngine::Move()
 void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	_textEdit->setText("");
-	WriteToProcess(AddMove(x1, y1, x2, y2, promotion));
-	WriteToProcess("\n");
+    WriteToProcess(AddMove(x1, y1, x2, y2, promotion) + "\n");
 }
 
 void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, signed char x3, signed char y3)
 {
 	_textEdit->setText("");
-	WriteToProcess(AddMove(x1, y1, x2, y2, x3, y3));
-	WriteToProcess("\n");
+    WriteToProcess(AddMove(x1, y1, x2, y2, x3, y3) + "\n");
 }
 
 void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, signed char x3, signed char y3, signed char x4, signed char y4)
 {
 	_textEdit->setText("");
-	WriteToProcess(AddMove(x1, y1, x2, y2, x3, y3, x4, y4));
-	WriteToProcess("\n");
+    WriteToProcess(AddMove(x1, y1, x2, y2, x3, y3, x4, y4) + "\n");
 }
 
 QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)

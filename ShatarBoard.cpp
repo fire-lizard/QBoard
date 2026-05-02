@@ -36,7 +36,7 @@ void ShatarBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new ShatranjPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new ShatranjPiece(_initialSetup[j][i], j < 4 ? Black : White));
             }
             else
             {
@@ -93,7 +93,7 @@ void ShatarBoard::GetMoves(Piece* piece, int x, int y)
         }
         else
         {
-            if (x == 4 && y == _height - 2 && GetData(x, y - 1) == nullptr && GetData(x, y - 2) == nullptr)
+            if (x == 3 && y == _height - 2 && GetData(x, y - 1) == nullptr && GetData(x, y - 2) == nullptr)
             {
                 CheckMove(piece, x, y - 2);
             }
