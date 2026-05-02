@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	_userName = qgetenv("USER");
 	if (_userName.isEmpty())
 		_userName = qgetenv("USERNAME");
-	setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
+    setWindowFlags(Qt::Window | Qt::WindowMaximizeButtonHint | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
 	this->ui->vboard->SetMainWindow(this);
 	this->ui->vboard->SetTextEdit(this->ui->textEdit);
 	this->ui->vboard->SetTextEdit2(this->ui->textEdit_2);
@@ -182,7 +182,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-    aboutStr.append("<center>QBoard 1.0.8<br/>");
+    aboutStr.append("<center>QBoard 1.0.9<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
@@ -978,7 +978,7 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
                     engine->StartGame("grande-acedrex");
                     break;
                 }
-                if (engineExe.toLower().contains("hachu") || engineExe.toLower().contains("chessv"))
+                if (engineExe.toLower().contains("hachu"))
 				{
 					std::dynamic_pointer_cast<WbEngine>(engine)->SetMemory(_engineMemorySize);
                 }

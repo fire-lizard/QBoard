@@ -1578,7 +1578,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				});
 			}
 		}
-        if (_gameVariant == Xiangqi || _gameVariant == Janggi)
+        if (_gameVariant == Xiangqi || (_gameVariant == Janggi && dynamic_cast<XiangqiBoard*>(_board)->AreTwoKingsLookingOnEachOther()))
         {
             std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
             {
@@ -2065,10 +2065,10 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
         _board = new ShatarBoard();
         break;
     }
-	this->setFixedSize(_board->GetWidth() * s + 1, _board->GetHeight() * s + 1);
+    this->setFixedSize(_board->GetWidth() * s + 1, _board->GetHeight() * s + 1);
 	if (this->_window != nullptr)
 	{
-		this->_window->setFixedSize(width() + 280, height() + 100);
+        this->_window->setFixedSize(width() + 280, height() + 100);
         this->_groupBox->setGeometry(x() + width() + 10, y() + 2, 250, 0.2 * height());
         this->_textEdit->setGeometry(x() + width() + 10, y() + 2 + 0.2 * height(), 250, 0.4 * height());
         this->_textEdit2->setGeometry(x() + width() + 10, y() + 2 + 0.6 * height(), 250, 0.4 * height());
