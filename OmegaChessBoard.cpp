@@ -29,7 +29,13 @@ Board* OmegaChessBoard::Clone()
 void OmegaChessBoard::Initialize()
 {
     _moveCount = 0;
+    _halfMoveCount = 0;
     _pgn = "";
+    _wkc = true;
+    _wqc = true;
+    _bkc = true;
+    _bqc = true;
+    _ep = "-";
     for (int i = 0; i < _width; i++)
     {
         for (int j = 0; j < _height; j++)
@@ -49,6 +55,16 @@ void OmegaChessBoard::Initialize()
 Piece* OmegaChessBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
     return new OmegaChessPiece(pieceType, pieceColour);
+}
+
+bool OmegaChessBoard::EnemyPawnsAround(int x, int y) const
+{
+    const Piece *fp = x > 0 ? GetData(x - 1, y) : nullptr;
+    const Piece *sp = x < _width - 1 ? GetData(x + 1, y) : nullptr;
+    const PieceColour pieceColour = y == 3 ? White : Black;
+    const bool fpa = (fp != nullptr) && (fp->GetType() == Pawn) && (fp->GetColour() == pieceColour);
+    const bool spa = (sp != nullptr) && (sp->GetType() == Pawn) && (sp->GetColour() == pieceColour);
+    return fpa || spa;
 }
 
 void OmegaChessBoard::GetMoves(Piece* piece, int x, int y)
@@ -156,4 +172,111 @@ void OmegaChessBoard::GetMoves(Piece* piece, int x, int y)
         ChessBoard::GetMoves(piece, x, y);
         break;
     }
+}
+
+bool OmegaChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
+{
+    const PieceType pieceType = GetData(oldX, oldY)->GetType();
+    const PieceColour pieceColour = GetData(oldX, oldY)->GetColour();
+    const PieceType destPieceType = GetData(newX, newY) != nullptr ? GetData(newX, newY)->GetType() : None;
+    const bool result = Board::Move(oldX, oldY, newX, newY, cl);
+    if (result)
+    {
+        dynamic_cast<ChessPiece*>(GetData(newX, newY))->Move();
+        // Castling
+        if (pieceType == Rook)
+        {
+            if (oldX == 0 && oldY == _height - 1)
+            {
+                _wqc = false;
+            }
+            else if (oldX == _width - 1 && oldY == _height - 1)
+            {
+                _wkc = false;
+            }
+            else if (oldX == 0 && oldY == 0)
+            {
+                _bqc = false;
+            }
+            else if (oldX == _width - 1 && oldY == 0)
+            {
+                _bkc = false;
+            }
+        }
+        else if (pieceType == King)
+        {
+            if (pieceColour == White)
+            {
+                _wqc = false;
+                _wkc = false;
+            }
+            else
+            {
+                _bqc = false;
+                _bkc = false;
+            }
+        }
+        if (destPieceType == Rook)
+        {
+            if (newX == 0 && newY == _height - 1)
+            {
+                _wqc = false;
+            }
+            else if (newX == _width - 1 && newY == _height - 1)
+            {
+                _wkc = false;
+            }
+            else if (newX == 0 && newY == 0)
+            {
+                _bqc = false;
+            }
+            else if (newX == _width - 1 && newY == 0)
+            {
+                _bkc = false;
+            }
+        }
+        // En passant
+        if (pieceType == Pawn && abs(oldY - newY) == 2 && EnemyPawnsAround(newX, newY))
+        {
+            _ep = "";
+            const char letter = newX + 97;
+            _ep.push_back(letter);
+            _ep.append(oldY == _height - 3 ? "6" : "3");
+        }
+        else if (pieceType == Pawn && _ep != "-")
+        {
+            const char letter = newX + 97;
+            const int number = _ep[1] - 48;
+            if (letter == _ep[0] &&	((pieceColour == White && newY == number - 1) || (pieceColour == Black && newY == number + 2)))
+            {
+                const Piece* p = pieceColour == White ? GetData(newX, number) : GetData(newX, number + 1);
+                if (p != nullptr && p->GetType() == Pawn && p->GetColour() != pieceColour)
+                {
+                    delete p;
+                    if (pieceColour == White)
+                    {
+                        SetData(newX, number, nullptr);
+                    }
+                    else
+                    {
+                        SetData(newX, number + 1, nullptr);
+                    }
+                }
+            }
+            _ep = "-";
+        }
+        else
+        {
+            _ep = "-";
+        }
+        if (pieceType == Pawn || destPieceType != None)
+        {
+            _halfMoveCount = 0;
+        }
+        else
+        {
+            _halfMoveCount++;
+        }
+    }
+    return result;
 }

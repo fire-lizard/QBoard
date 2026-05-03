@@ -421,6 +421,47 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             }
         }
     }
+    else if (gameVariant == OmegaChess)
+    {
+        if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
+        {
+            const bool isPromoted = (y2 == 1 || y2 == board->GetHeight() - 2) && board->GetData(x1, y1)->GetType() == Pawn &&
+                (moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
+                 moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'c' || moveArray[ms - 1] == 'w');
+            board->GetMoves(board->GetData(x1, y1), x1, y1);
+            const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
+            board->Move(x1, y1, x2, y2, false);
+            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+                    isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
+            engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
+            if (isPromoted)
+            {
+                switch (moveArray[ms - 1])
+                {
+                case 'n':
+                    board->GetData(x2, y2)->Promote(Knight);
+                    break;
+                case 'b':
+                    board->GetData(x2, y2)->Promote(Bishop);
+                    break;
+                case 'r':
+                    board->GetData(x2, y2)->Promote(Rook);
+                    break;
+                case 'q':
+                    board->GetData(x2, y2)->Promote(Queen);
+                    break;
+                case 'c':
+                    board->GetData(x2, y2)->Promote(Champion);
+                    break;
+                case 'w':
+                    board->GetData(x2, y2)->Promote(Wizard);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
     else if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants))
 	{
 		// Castling check

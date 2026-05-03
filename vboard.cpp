@@ -1516,10 +1516,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
             const char promotion = _gameVariant != GrandeAcedrex ? CheckPromotion(p, y) : CheckPromotion(p, x, y);
 			if (engine != nullptr && engine->IsActive())
 			{
-                if (_gameVariant == Xiangqi || _gameVariant == Janggi)
+                if (_gameVariant == Xiangqi || _gameVariant == Janggi || _gameVariant == GrandChess)
 					engine->Move(_oldX, _board->GetHeight() - _oldY - 1, x, _board->GetHeight() - y - 1, promotion);
-                if (_gameVariant == GrandChess)
-                    engine->Move(_oldX, _board->GetHeight() - _oldY - 1, x, _board->GetHeight() - y - 1, promotion);
                 else if (engine->GetType() == USI)
 					engine->Move(_board->GetWidth() - _oldX, _oldY, _board->GetWidth() - x, y, promotion);
 				else
@@ -1636,9 +1634,13 @@ char VBoard::ChessPieceChar(PieceType chessPiece)
     {
         return 'a';
     }
-    else if (chessPiece == Chancellor)
+    else if (chessPiece == Chancellor || chessPiece == Champion)
     {
         return 'c';
+    }
+    else if (chessPiece == Wizard)
+    {
+        return 'w';
     }
     else
     {
@@ -1710,6 +1712,8 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             pd->SetEnabled(Queen, std::find(std::begin(capturedPieces), std::end(capturedPieces), Queen) != std::end(capturedPieces));
             pd->SetEnabled(Archbishop, std::find(std::begin(capturedPieces), std::end(capturedPieces), Archbishop) != std::end(capturedPieces));
             pd->SetEnabled(Chancellor, std::find(std::begin(capturedPieces), std::end(capturedPieces), Chancellor) != std::end(capturedPieces));
+            pd->SetEnabled(Champion, false);
+            pd->SetEnabled(Wizard, false);
             if (pd->exec() == QDialog::Accepted)
             {
                 const PieceType pt = pd->GetChosenPiece();
@@ -1725,6 +1729,26 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             }
         }
     }
+    else if (_gameVariant == OmegaChess)
+    {
+        if (_currentPiece->GetType() == Pawn &&
+            ((y == 10 && _currentPiece->GetColour() == Black) ||
+            (y == 1 && _currentPiece->GetColour() == White)))
+        {
+            PromotionDialog* pd = new PromotionDialog(this);
+            if (pd->exec() == QDialog::Accepted)
+            {
+                const PieceType pt = pd->GetChosenPiece();
+                promotion = ChessPieceChar(pt);
+                _currentPiece->Promote(pt);
+            }
+            else
+            {
+                promotion = 'q';
+                _currentPiece->Promote(Queen);
+            }
+        }
+    }
     else if (std::find(std::begin(chessVariants), std::end(chessVariants), _gameVariant) != std::end(chessVariants))
     {
         if (_currentPiece->GetType() == Pawn &&
@@ -1732,6 +1756,8 @@ char VBoard::CheckPromotion(const Piece *p, int y)
                 (y == 0 && _currentPiece->GetColour() == White)))
         {
             PromotionDialog* pd = new PromotionDialog(this);
+            pd->SetEnabled(Champion, false);
+            pd->SetEnabled(Wizard, false);
             if (_gameVariant == Chess)
             {
                 pd->SetEnabled(Archbishop, false);

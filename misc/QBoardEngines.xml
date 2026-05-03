@@ -40,4 +40,5 @@
     <Engine EngineName="fairy-stockfish" GameVariant="Grand Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Shatar" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Janggi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="SjaakII" GameVariant="Omega Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
 </Engines>

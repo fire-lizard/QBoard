@@ -973,7 +973,7 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
                     engine->StartGame("grand");
                     break;
                 case OmegaChess:
-                    engine->StartGame("omegachess");
+                    engine->StartGame("omega");
                     break;
                 case ChancellorChess:
                     engine->StartGame("chancellor");

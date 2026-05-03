@@ -40,7 +40,7 @@ private:
         {Chancellor, 'C'},
         {Queen, 'Q'},
         {King, 'K'},
-        {Champion, 'V'},
+        {Champion, 'C'},
         {Wizard, 'W'}
 	};
 };

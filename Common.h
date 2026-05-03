@@ -191,7 +191,7 @@ inline char MODERNFEN[] = "rnbqkabnr/ppppppppp/9/9/9/9/9/PPPPPPPPP/RNBAKQBNR w K
 
 inline char GRANDFEN[] = "r8r/1nbqkcabn1/pppppppppp/10/10/10/10/PPPPPPPPPP/1NBQKCABN1/R8R w - - 0 1";
 
-inline char OMEGAFEN[] = "w10w/1vrnbqkbnrv1/1pppppppppp1/12/12/12/12/12/12/1PPPPPPPPPP1/1VRNBQKBNRV1/W10W w - - 0 1";
+inline char OMEGAFEN[] = "w10w/1crnbqkbnrc1/1pppppppppp1/12/12/12/12/12/12/1PPPPPPPPPP1/1CRNBQKBNRC1/W10W w - - 0 1";
 
 inline char GRANDEACEDREXFEN[] = "rlugcakcgulr/12/12/pppppppppppp/12/12/12/12/PPPPPPPPPPPP/12/12/RLUGCAKCGULR w - - 0 1";
 

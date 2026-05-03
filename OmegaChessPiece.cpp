@@ -14,7 +14,7 @@ std::string OmegaChessPiece::StringCode()
     switch (_pieceType)
     {
     case Champion:
-        return "V";
+        return "C";
     case Wizard:
         return "W";
     default:
@@ -25,7 +25,7 @@ std::string OmegaChessPiece::StringCode()
 PieceType OmegaChessPiece::FromStringCode(const std::string& code)
 {
     static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-        {"V", Champion},
+        {"C", Champion},
         {"W", Wizard}
     };
 
