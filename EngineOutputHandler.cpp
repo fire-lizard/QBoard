@@ -380,6 +380,8 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	}
     else if (gameVariant == GrandChess)
     {
+        y1--;
+        y2--;
         if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
         {
             const bool isPromoted = (y2 == 0 || y2 == board->GetHeight() - 1) && board->GetData(x1, y1)->GetType() == Pawn &&

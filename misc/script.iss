@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QBoard"
-#define MyAppVersion "1.0.9"
+#define MyAppVersion "1.1"
 #define MyAppPublisher "Fire Lizard Software"
 #define MyAppURL "https://github.com/fire-lizard/QBoard"
 #define MyAppExeName "QBoard.exe"
@@ -60,6 +60,7 @@ Name: "engines\WinBoard"; Description: "WinBoard engines"; Types: full custom
 Name: "engines\WinBoard\FairyMax"; Description: "Fairy-Max 5.0b"; Types: full custom
 Name: "engines\WinBoard\FairyStockfish"; Description: "Fairy-Stockfish 14"; Types: full custom
 Name: "engines\WinBoard\Pulsar"; Description: "Pulsar"; Types: full custom
+Name: "engines\WinBoard\Nebiyu"; Description: "Nebiyu 1.45"; Types: full custom
 Name: "engines\WinBoard\HaQi"; Description: "HaQiKid 1.8a"; Types: full custom
 Name: "engines\WinBoard\XQWL"; Description: "XQWLight 0.6"; Types: full custom
 Name: "engines\WinBoard\Shokidoki"; Description: "Shokidoki"; Types: full custom
@@ -98,6 +99,7 @@ Source: "engines\WinBoard\*"; DestDir: "{app}\engines\WinBoard"; Flags: ignoreve
 Source: "engines\WinBoard\Fairy-Max\*"; DestDir: "{app}\engines\WinBoard\Fairy-Max"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\FairyMax
 Source: "engines\WinBoard\Fairy-Stockfish\*"; DestDir: "{app}\engines\WinBoard\Fairy-Stockfish"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\FairyStockfish
 Source: "engines\WinBoard\Pulsar\*"; DestDir: "{app}\engines\WinBoard\Pulsar"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\Pulsar
+Source: "engines\WinBoard\Nebiyu\*"; DestDir: "{app}\engines\WinBoard\Nebiyu"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\Nebiyu
 Source: "engines\WinBoard\HaQi\*"; DestDir: "{app}\engines\WinBoard\HaQi"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\HaQi
 Source: "engines\WinBoard\XQWL\*"; DestDir: "{app}\engines\WinBoard\XQWL"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\XQWL
 Source: "engines\WinBoard\Shokidoki\*"; DestDir: "{app}\engines\WinBoard\Shokidoki"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\Shokidoki

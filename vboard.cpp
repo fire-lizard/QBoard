@@ -1505,7 +1505,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
                 if (_gameVariant == Xiangqi || _gameVariant == Janggi)
 					engine->Move(_oldX, _board->GetHeight() - _oldY - 1, x, _board->GetHeight() - y - 1, promotion);
-				else if (engine->GetType() == USI)
+                if (_gameVariant == GrandChess)
+                    engine->Move(_oldX, _board->GetHeight() - _oldY - 1, x, _board->GetHeight() - y - 1, promotion);
+                else if (engine->GetType() == USI)
 					engine->Move(_board->GetWidth() - _oldX, _oldY, _board->GetWidth() - x, y, promotion);
 				else
 					engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);

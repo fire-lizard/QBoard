@@ -394,6 +394,8 @@ void MainWindow::on_actionNew_game_triggered()
         {
             this->ui->vboard->SetEditorMode(false);
         }
+        this->ui->vboard->SetBlackEngine(_blackEngine);
+        this->ui->vboard->SetWhiteEngine(_whiteEngine);
         this->ui->vboard->GetBoard()->Initialize();
 		this->ui->vboard->SetCurrentPlayer(White);
 		this->ui->vboard->repaint();
@@ -992,14 +994,12 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 				connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(blackEngineReadyReadStandardOutput()));
 				connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(blackEngineReadyReadStandardError()));
 				connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(blackEngineReadyReadStandardError()));
-                this->ui->vboard->SetBlackEngine(engine);
 			}
 			else
 			{
 				connect(process, SIGNAL(readyReadStandardOutput()), this->ui->vboard, SLOT(whiteEngineReadyReadStandardOutput()));
 				connect(process, SIGNAL(readyReadStandardError()), this->ui->vboard, SLOT(whiteEngineReadyReadStandardError()));
 				connect(process, SIGNAL(errorOccurred(QProcess::ProcessError)), this->ui->vboard, SLOT(whiteEngineReadyReadStandardError()));
-                this->ui->vboard->SetWhiteEngine(engine);
 				engine->Move();
 			}
 		}
