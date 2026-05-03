@@ -8,6 +8,7 @@
      * Chancellor Chess
      * Modern Chess
      * Grand Chess
+     * Omega Chess
      * Grande Acedrex
   2. Shogi Variants
      * Shogi

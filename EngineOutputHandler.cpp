@@ -168,7 +168,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 			else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == WaShogi || gameVariant == TenjikuShogi ||
                      gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi || gameVariant == HeianDaiShogi ||
                      gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == GrandChess ||
-                     gameVariant == GrandeAcedrex)
+                     gameVariant == OmegaChess || gameVariant == GrandeAcedrex)
 			{
 				QRegularExpressionMatch match = _csre.match(part);
 				if (match.hasMatch())

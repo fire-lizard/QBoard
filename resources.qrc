@@ -167,6 +167,8 @@
         <file>images/BlackRook.png</file>
         <file>images/BlackSword.png</file>
         <file>images/BlackUnicorn.png</file>
+        <file>images/BlackViking.png</file>
+        <file>images/BlackWizard.png</file>
         <file>images/WhiteAdvisor.png</file>
         <file>images/WhiteArchbishop.png</file>
         <file>images/WhiteBishop.png</file>
@@ -196,6 +198,8 @@
         <file>images/WhiteRook.png</file>
         <file>images/WhiteSword.png</file>
         <file>images/WhiteUnicorn.png</file>
+        <file>images/WhiteViking.png</file>
+        <file>images/WhiteWizard.png</file>
         <file>images/BlackGoldKnight.png</file>
         <file>images/BlackGoldLance.png</file>
         <file>images/BlackGoldPawn.png</file>

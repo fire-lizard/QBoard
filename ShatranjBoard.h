@@ -39,7 +39,9 @@ private:
         {Archbishop, 'A'},
         {Chancellor, 'C'},
         {Queen, 'Q'},
-		{King, 'K'}
+        {King, 'K'},
+        {Champion, 'V'},
+        {Wizard, 'W'}
 	};
 };
 

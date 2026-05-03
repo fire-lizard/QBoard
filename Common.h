@@ -12,8 +12,8 @@ enum GameFormat
 
 enum GameVariant
 {
-    Chess, CapablancaChess, GothicChess, JanusChess, ChancellorChess, ModernChess, GrandChess, GrandeAcedrex, Xiangqi, Janggi, Shatar,
-    Shatranj, Makruk, Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, YariShogi,
+    Chess, CapablancaChess, GothicChess, JanusChess, ChancellorChess, ModernChess, GrandChess, OmegaChess, GrandeAcedrex, Xiangqi,
+    Janggi, Shatar, Shatranj, Makruk, Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, YariShogi,
     HeianShogi, ShoShogi, WaShogi, CrazyWa, ChuShogi, HeianDaiShogi, DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
 };
 
@@ -65,6 +65,8 @@ enum PieceType
     Longbow, LongbowKnight, Crossbow, CrossbowKnight, Cannon, CannonCarriage, FrankishCannon, DivineCarriage, KnightCaptain, WingedHorse, ShieldCaptain,
     // Gothic Chess Pieces
     Chancellor, Archbishop,
+    // Omega Chess Pieces
+    Champion, Wizard,
     // Tori Shogi Pieces
     Falcon, Crane, Pheasant, LeftQuail, RightQuail, Goose,
     // Whale Shogi Pieces
@@ -80,7 +82,7 @@ enum Direction
 	NorthWest, North, NorthEast, East, SouthEast, South, SouthWest, West
 };
 
-inline GameVariant chessVariants[] = { Chess, CapablancaChess, GothicChess, JanusChess, GrandChess, ChancellorChess, ModernChess };
+inline GameVariant chessVariants[] = { Chess, CapablancaChess, GothicChess, JanusChess, GrandChess, OmegaChess, ChancellorChess, ModernChess };
 
 inline GameVariant shogiVariants[] = { MicroShogi, KyotoShogi, Shogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi,
                                        ChuShogi, HeianDaiShogi, DaiShogi, ShoShogi, WaShogi, CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi };
@@ -139,6 +141,8 @@ inline PieceType JanusChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn,
 
 inline PieceType ChancellorChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn, Chancellor };
 
+inline PieceType OmegaChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn, Champion, Wizard };
+
 inline PieceType GrandeAcedrexPieces[] = { King, Aanca, Bishop, Giraffe, Unicorn, Lion, Rook, Pawn };
 
 inline PieceType ShatranjPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn };
@@ -185,9 +189,11 @@ inline char CHANCELLORFEN[] = "rnbqkcbnr/ppppppppp/9/9/9/9/9/PPPPPPPPP/RNBQKCBNR
 
 inline char MODERNFEN[] = "rnbqkabnr/ppppppppp/9/9/9/9/9/PPPPPPPPP/RNBAKQBNR w KQkq - 0 1";
 
-inline char GRANDEACEDREXFEN[] = "rlugcakcgulr/12/12/pppppppppppp/12/12/12/12/PPPPPPPPPPPP/12/12/RLUGCAKCGULR w - - 0 1";
-
 inline char GRANDFEN[] = "r8r/1nbqkcabn1/pppppppppp/10/10/10/10/PPPPPPPPPP/1NBQKCABN1/R8R w - - 0 1";
+
+inline char OMEGAFEN[] = "w10w/1vrnbqkbnrv1/1pppppppppp1/12/12/12/12/12/12/1PPPPPPPPPP1/1VRNBQKBNRV1/W10W w - - 0 1";
+
+inline char GRANDEACEDREXFEN[] = "rlugcakcgulr/12/12/pppppppppppp/12/12/12/12/PPPPPPPPPPPP/12/12/RLUGCAKCGULR w - - 0 1";
 
 inline char XIANGQIFEN[] = "rheakaehr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RHEAKAEHR w - - 0 1";
 

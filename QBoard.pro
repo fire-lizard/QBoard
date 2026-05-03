@@ -34,6 +34,8 @@ SOURCES += main.cpp\
     MicroShogiBoard.cpp \
     MicroShogiPiece.cpp \
     ModernChessBoard.cpp \
+    OmegaChessBoard.cpp \
+    OmegaChessPiece.cpp \
     ShatarBoard.cpp \
     ToriShogiPiece.cpp \
     ToriShogiBoard.cpp \
@@ -117,6 +119,8 @@ HEADERS  += mainwindow.h \
     MicroShogiBoard.h \
     MicroShogiPiece.h \
     ModernChessBoard.h \
+    OmegaChessBoard.h \
+    OmegaChessPiece.h \
     Piece.h \
     KanjiPiece.h \
     Logger.h \

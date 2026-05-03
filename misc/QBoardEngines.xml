@@ -37,6 +37,7 @@
     <Engine EngineName="fairy-stockfish" GameVariant="Yari Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Chancellor Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Modern Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="fairy-stockfish" GameVariant="Grand Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="fairy-stockfish" GameVariant="Shatar" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Janggi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
-    <Engine EngineName="Nebiyu" GameVariant="Grand Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
 </Engines>

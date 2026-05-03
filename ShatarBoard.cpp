@@ -61,6 +61,12 @@ void ShatarBoard::GetMoves(Piece* piece, int x, int y)
         CheckDirection(piece, x, y, West);
         CheckDirection(piece, x, y, South);
         break;
+    case Bishop:
+        CheckDirection(piece, x, y, NorthEast);
+        CheckDirection(piece, x, y, NorthWest);
+        CheckDirection(piece, x, y, SouthEast);
+        CheckDirection(piece, x, y, SouthWest);
+        break;
     case Knight:
         if (GetData(x + 1, y + 2) == nullptr || GetData(x + 1, y + 2)->GetType() != King) CheckMove(piece, x + 1, y + 2);
         if (GetData(x - 1, y + 2) == nullptr || GetData(x - 1, y + 2)->GetType() != King) CheckMove(piece, x - 1, y + 2);
@@ -74,10 +80,6 @@ void ShatarBoard::GetMoves(Piece* piece, int x, int y)
     case Pawn:
         if (piece->GetColour() == Black)
         {
-            if (x == 3 && y == 1 && GetData(x, y + 1) == nullptr && GetData(x, y + 2) == nullptr)
-            {
-                CheckMove(piece, x, y + 2);
-            }
             if (y + 1 < _height && GetData(x, y + 1) == nullptr)
             {
                 CheckMove(piece, x, y + 1);
@@ -93,10 +95,6 @@ void ShatarBoard::GetMoves(Piece* piece, int x, int y)
         }
         else
         {
-            if (x == 3 && y == _height - 2 && GetData(x, y - 1) == nullptr && GetData(x, y - 2) == nullptr)
-            {
-                CheckMove(piece, x, y - 2);
-            }
             if (y - 1 >= 0 && GetData(x, y - 1) == nullptr)
             {
                 CheckMove(piece, x, y - 1);

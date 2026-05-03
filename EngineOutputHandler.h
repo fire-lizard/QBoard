@@ -40,8 +40,6 @@ public:
 	static bool CanBePromoted(const Piece* piece, GameVariant gameVariant, int oldY, int newY);
 	static bool IsLionMove(const Piece* piece, int x1, int y1, int x2, int y2);
     static void RollbackIllegalMove(GameVariant gameVariant, Board *board, std::shared_ptr<Engine> _engine, std::vector<std::string> moves);
-
-private:
 	static void RemoveMove(std::vector<std::pair<int, int>>& moves, int x, int y);
 };
 

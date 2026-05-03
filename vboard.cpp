@@ -102,6 +102,7 @@ void VBoard::paintEvent(QPaintEvent *)
     case GothicChess:
     case JanusChess:
     case GrandChess:
+    case OmegaChess:
     case ChancellorChess:
     case ModernChess:
     case GrandeAcedrex:
@@ -129,7 +130,17 @@ void VBoard::paintEvent(QPaintEvent *)
                 painter.setPen(_editorMode ? Qt::magenta : Qt::black);
 				painter.setBrush(Qt::NoBrush);
 			}
-			else if (PossibleMove(i, j) && _highlightMoves)
+            else if (_gameVariant == OmegaChess &&
+                    (j == 0 && i >= 1 && i <= _board->GetWidth() - 2 ||
+                     j == _board->GetHeight() - 1 && i >= 1 && i <= _board->GetWidth() - 2 ||
+                     i == 0 && j >= 1 && j <= _board->GetHeight() - 2 ||
+                     i == _board->GetWidth() - 1 && j >= 1 && j <= _board->GetHeight() - 2))
+            {
+                painter.setBrush(Qt::black);
+                painter.drawRect(rect);
+                painter.setBrush(Qt::NoBrush);
+            }
+            else if (PossibleMove(i, j) && _highlightMoves)
 			{
 				if (_currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->GetType()) != std::end(lionPieces))
 				{
@@ -540,6 +551,7 @@ void VBoard::paintEvent(QPaintEvent *)
                 case GothicChess:
                 case JanusChess:
                 case GrandChess:
+                case OmegaChess:
                 case ChancellorChess:
                 case ModernChess:
                 case Shatranj:
@@ -636,6 +648,7 @@ void VBoard::paintEvent(QPaintEvent *)
                 case GothicChess:
                 case JanusChess:
                 case GrandChess:
+                case OmegaChess:
                 case ChancellorChess:
                 case ModernChess:
                 case GrandeAcedrex:
@@ -1587,7 +1600,21 @@ void VBoard::mousePressEvent(QMouseEvent* event)
                 EngineOutputHandler::CalculateXiangqiCheck(_board, _moves, x, y, t.first, t.second);
             });
         }
-		this->repaint();
+        if (_gameVariant == OmegaChess)
+        {
+            std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+            {
+                if (t.second == 0 && t.first >= 1 && t.first <= _board->GetWidth() - 2 ||
+                    t.second == _board->GetHeight() - 1 && t.first >= 1 && t.first <= _board->GetWidth() - 2 ||
+                    t.first == 0 && t.second >= 1 && t.second <= _board->GetHeight() - 2 ||
+                    t.first == _board->GetWidth() - 1 && t.second >= 1 && t.second <= _board->GetHeight() - 2)
+                {
+                    _board->RemoveMove(t.first, t.second);
+                    EngineOutputHandler::RemoveMove(_moves, t.first, t.second);
+                }
+            });
+        }
+        this->repaint();
 	}
 }
 
@@ -1974,6 +2001,9 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
         break;
     case GrandChess:
         _board = new GrandChessBoard();
+        break;
+    case OmegaChess:
+        _board = new OmegaChessBoard();
         break;
     case ChancellorChess:
         _board = new ChancellorChessBoard();
@@ -2478,6 +2508,14 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
         else if (_gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == GrandChess)
         {
             for (auto& ChessPiece : GothicChessPieces)
+            {
+                whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
+                blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
+            }
+        }
+        else if (_gameVariant == OmegaChess)
+        {
+            for (auto& ChessPiece : OmegaChessPieces)
             {
                 whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
                 blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));

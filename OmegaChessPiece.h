@@ -1,12 +1,11 @@
 #pragma once
 #include "ChessPiece.h"
 
-class GrandeAcedrexPiece : public ChessPiece
+class OmegaChessPiece : public ChessPiece
 {
 public:
-    GrandeAcedrexPiece(PieceType pieceType, PieceColour pieceColour);
-    ~GrandeAcedrexPiece() override;
-    void Promote(PieceType pieceType = None) override;
+    OmegaChessPiece(PieceType pieceType, PieceColour pieceColour);
+    ~OmegaChessPiece() override;
     std::string StringCode() override;
     std::string GetImageFileName() const override;
     static PieceType FromStringCode(const std::string& code);
