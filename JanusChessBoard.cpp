@@ -54,3 +54,50 @@ void JanusChessBoard::Initialize()
         }
     }
 }
+
+void JanusChessBoard::GetMoves(Piece *piece, int x, int y)
+{
+    _moves.clear();
+    switch (piece->GetType())
+    {
+    case King:
+        CheckMove(piece, x + 1, y + 1);
+        CheckMove(piece, x + 1, y);
+        CheckMove(piece, x + 1, y - 1);
+        CheckMove(piece, x, y + 1);
+        CheckMove(piece, x, y - 1);
+        CheckMove(piece, x - 1, y + 1);
+        CheckMove(piece, x - 1, y);
+        CheckMove(piece, x - 1, y - 1);
+        // Check castling
+        if (!dynamic_cast<ChessPiece*>(piece)->HasMoved())
+        {
+            if (GetData(0, y) != nullptr)
+            {
+                const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(0, y));
+                if (!cp->HasMoved() && cp->GetType() == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr)
+                {
+                    if ((piece->GetColour() == White && _wqc == true) || (piece->GetColour() == Black && _bqc == true))
+                    {
+                        _moves.emplace_back(0, y);
+                    }
+                }
+            }
+            if (GetData(9, y) != nullptr)
+            {
+                const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(9, y));
+                if (!cp->HasMoved() && cp->GetType() == Rook && GetData(5, y) == nullptr && GetData(6, y) == nullptr && GetData(7, y) == nullptr && GetData(8, y) == nullptr)
+                {
+                    if ((piece->GetColour() == White && _wkc == true) || (piece->GetColour() == Black && _bkc == true))
+                    {
+                        _moves.emplace_back(9, y);
+                    }
+                }
+            }
+        }
+        break;
+    default:
+        CapablancaChessBoard::GetMoves(piece, x, y);
+        break;
+    }
+}

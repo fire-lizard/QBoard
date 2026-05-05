@@ -423,7 +423,11 @@ void MainWindow::on_actionOpen_triggered()
 	fileDialog.setWindowTitle("Open file");
 	if (fileDialog.exec())
 	{
-		const QString fileName = fileDialog.selectedFiles()[0];
+        if (this->ui->vboard->GetEditorMode())
+        {
+            this->ui->vboard->SetEditorMode(false);
+        }
+        const QString fileName = fileDialog.selectedFiles()[0];
 		QFile file(fileName);
 		file.open(QIODevice::ReadOnly | QIODevice::Text);
 		const QByteArray str = file.readAll();

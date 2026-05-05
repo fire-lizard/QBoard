@@ -14,7 +14,7 @@ public:
 private:
 
     PieceType _initialSetup[9][9] = {
-        { Rook, Knight, Bishop, Queen, King, Chancellor, Bishop, Knight, Rook },
+        { Rook, Knight, Bishop, Queen, King, Chancellor, Knight, Bishop, Rook },
         { Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
         { None, None, None, None, None, None, None, None, None },
         { None, None, None, None, None, None, None, None, None },
@@ -22,6 +22,6 @@ private:
         { None, None, None, None, None, None, None, None, None },
         { None, None, None, None, None, None, None, None, None },
         { Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
-        { Rook, Knight, Bishop, Queen, King, Chancellor, Bishop, Knight, Rook }
+        { Rook, Knight, Bishop, Queen, King, Chancellor, Knight, Bishop, Rook }
     };
 };
