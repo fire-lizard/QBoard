@@ -61,7 +61,7 @@ bool OmegaChessBoard::EnemyPawnsAround(int x, int y) const
 {
     const Piece *fp = x > 0 ? GetData(x - 1, y) : nullptr;
     const Piece *sp = x < _width - 1 ? GetData(x + 1, y) : nullptr;
-    const PieceColour pieceColour = y == 3 ? White : Black;
+    const PieceColour pieceColour = y < 6 ? White : Black;
     const bool fpa = (fp != nullptr) && (fp->GetType() == Pawn) && (fp->GetColour() == pieceColour);
     const bool spa = (sp != nullptr) && (sp->GetType() == Pawn) && (sp->GetColour() == pieceColour);
     return fpa || spa;
@@ -277,7 +277,14 @@ bool OmegaChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
             _ep = "";
             const char letter = newX + 97;
             _ep.push_back(letter);
-            _ep.append(oldY == _height - 3 ? "6" : "3");
+            _ep.append(oldY == _height - 3 ? "6" : "4");
+        }
+        else if (pieceType == Pawn && abs(oldY - newY) == 3 && EnemyPawnsAround(newX, newY))
+        {
+            _ep = "";
+            const char letter = newX + 97;
+            _ep.push_back(letter);
+            _ep.append(oldY == _height - 3 ? "5" : "5");
         }
         else if (pieceType == Pawn && _ep != "-")
         {

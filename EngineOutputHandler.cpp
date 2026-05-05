@@ -846,29 +846,42 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 	const int w = board->GetWidth();
 	const int h = board->GetHeight();
 	int i = 0, j = 0, k = 0;
+    bool isDigit = false;
     std::string promo;
     do
 	{
         const char c = fen[k].toLatin1();
 		if (c == '/')
 		{
-			k++;
+            k++;
 			j++;
 			i = 0;
-		}
+            isDigit = false;
+        }
 		if (c == '+')
 		{
 			k++;
 			promo = "+";
-		}
+            isDigit = false;
+        }
         else if (c >= '0' && c <= '9')
 		{
 			k++;
 			i += c - 48;
+            if (!isDigit)
+            {
+                isDigit = true;
+            }
+            else
+            {
+                i += c != '0' ? 10 : 9;
+                isDigit = false;
+            }
 		}
 		else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
 		{
-			std::string stringCode(1, c);
+            isDigit = false;
+            std::string stringCode(1, c);
 			PieceType pieceType = None;
             if (gameVariant == OmegaChess)
             {
