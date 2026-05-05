@@ -482,8 +482,7 @@ void MainWindow::on_actionSave_triggered()
 				{
 					QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
 					QString hmStr = QString::number(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->HalfMoveCount());
-                    QString clStr = gameVariant == Chess || gameVariant == CapablancaChess || gameVariant == GothicChess ||
-                            gameVariant == JanusChess || gameVariant == ChancellorChess || gameVariant == ModernChess ?
+                    QString clStr = gameVariant != GrandChess ?
                                 QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetCastling()) : "-";
                     QString epStr = std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) ?
                                 QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetEnPassant()) : "-";

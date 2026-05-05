@@ -805,7 +805,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		std::find(std::begin(ShootingPieces), std::end(ShootingPieces), _currentPiece->GetType()) != std::end(ShootingPieces);
 	// Castling check
     if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess ||
-         _gameVariant == JanusChess || _gameVariant == ChancellorChess || _gameVariant == ModernChess) &&
+         _gameVariant == JanusChess || _gameVariant == ChancellorChess || _gameVariant == ModernChess ||
+         _gameVariant == OmegaChess) &&
         _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
 		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved() && _board->IsMovePossible(x, y))
 	{
@@ -818,6 +819,17 @@ void VBoard::mousePressEvent(QMouseEvent* event)
             if (engine != nullptr && engine->IsActive())
             {
                 engine->Move(_oldX, _board->GetHeight() - _oldY, x == _board->GetWidth() - 1 ? 6 : 2, _board->GetHeight() - y, ' ');
+            }
+        }
+        else if (_gameVariant == OmegaChess)
+        {
+            _board->SetData(x, y, nullptr);
+            _board->SetData(6, y, nullptr);
+            _board->SetData(x == 2 ? 4 : 8, y, _currentPiece);
+            _board->SetData(x == 2 ? 5 : 7, y, p);
+            if (engine != nullptr && engine->IsActive())
+            {
+                engine->Move(_oldX, _board->GetHeight() - _oldY, x == 9 ? 8 : 2, _board->GetHeight() - y, ' ');
             }
         }
         else

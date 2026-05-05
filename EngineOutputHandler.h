@@ -14,6 +14,7 @@
 #include "TenjikuShogiPiece.h"
 #include "DaiDaiShogiPiece.h"
 #include "KoShogiPiece.h"
+#include "OmegaChessPiece.h"
 #include "GrandeAcedrexPiece.h"
 #include "Logger.h"
 

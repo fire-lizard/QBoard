@@ -248,9 +248,9 @@ Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol e
 	if (engineProtocol == Qianhong)
 	{
 		x1 = moveArray[0] - 65;
-		y1 = 10 - moveArray[1];
+        y1 = height - moveArray[1];
 		x2 = moveArray[2] - 65;
-		y2 = 10 - moveArray[3];
+        y2 = height - moveArray[3];
 	}
 	else if (engineProtocol == USI)
 	{
@@ -262,11 +262,11 @@ Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol e
     else if (width >= 10 || (width != 9 && height >= 10))
 	{
 		x1 = moveArray[0] - 97;
-		y1 = width - moveArray[1];
+        y1 = height - moveArray[1];
 		x2 = moveArray[2] - 97;
-		y2 = width - moveArray[3];
+        y2 = height - moveArray[3];
 	}
-	else
+    else
 	{
 		x1 = moveArray[0] - 97;
 		y1 = height - moveArray[1] + 48;
@@ -423,7 +423,20 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     }
     else if (gameVariant == OmegaChess)
     {
-        if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
+        // Castling check
+        if ((moveArray == "g11j11" || moveArray == "g11i11" || moveArray == "g11d8" || moveArray == "g11c11" || moveArray == "g11b11" ||
+             moveArray == "g2j2" || moveArray == "g2i2" || moveArray == "g2d2" || moveArray == "g2c2" || moveArray == "g2b2") &&
+            board->GetData(x1, y1) != nullptr && board->GetData(x1, y1)->GetType() == King &&
+            board->GetData(x2 > 5 ? board->GetWidth() - 3 : 2, y2) != nullptr &&
+            board->GetData(x2 > 5 ? board->GetWidth() - 3 : 2, y2)->GetType() == Rook)
+        {
+            Piece* rook = board->GetData(x2 > 5 ? board->GetWidth() - 3 : 2, y2);
+            board->SetData(x2 > 5 ? board->GetWidth() - 3 : 2, y2, board->GetData(x1, y1));
+            board->SetData(6, y1, rook);
+            dynamic_cast<ChessBoard*>(board)->WriteCastling(x1 == board->GetWidth() - 3 ? "O-O" : "O-O-O");
+            engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, ' ');
+        }
+        else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
         {
             const bool isPromoted = (y2 == 1 || y2 == board->GetHeight() - 2) && board->GetData(x1, y1)->GetType() == Pawn &&
                 (moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
@@ -472,12 +485,13 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
              moveArray == "f8i8" || moveArray == "f8j8" || moveArray == "f8c8" || moveArray == "f8b8" || moveArray == "f8a8" ||
              moveArray == "f1i1" || moveArray == "f1j1" || moveArray == "f1c1" || moveArray == "f1b1" || moveArray == "f1a1") &&
 			board->GetData(x1, y1) != nullptr && board->GetData(x1, y1)->GetType() == King &&
-			board->GetData(x2 > 4 ? 7 : 0, y2) != nullptr && board->GetData(x2 > 4 ? 7 : 0, y2)->GetType() == Rook)
+            board->GetData(x2 > 5 ? board->GetWidth() - 1 : 0, y2) != nullptr &&
+            board->GetData(x2 > 5 ? board->GetWidth() - 1 : 0, y2)->GetType() == Rook)
 		{
-			Piece* rook = board->GetData(x2 > 4 ? 7 : 0, y2);
-			board->SetData(x2 > 4 ? 7 : 0, y2, board->GetData(x1, y1));
-			board->SetData(4, y1, rook);
-			dynamic_cast<ChessBoard*>(board)->WriteCastling(x1 == 7 ? "O-O" : "O-O-O");
+            Piece* rook = board->GetData(x2 > 5 ? board->GetWidth() - 1 : 0, y2);
+            board->SetData(x2 > 5 ? board->GetWidth() - 1 : 0, y2, board->GetData(x1, y1));
+            board->SetData(board->GetWidth() == 10 ? 5 : 4, y1, rook);
+            dynamic_cast<ChessBoard*>(board)->WriteCastling(x1 == board->GetWidth() - 1 ? "O-O" : "O-O-O");
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, ' ');
 		}
 		else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
@@ -832,10 +846,10 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 	const int w = board->GetWidth();
 	const int h = board->GetHeight();
 	int i = 0, j = 0, k = 0;
-	std::string promo;
-	do
+    std::string promo;
+    do
 	{
-		const char c = fen[k].toLatin1();
+        const char c = fen[k].toLatin1();
 		if (c == '/')
 		{
 			k++;
@@ -847,7 +861,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			k++;
 			promo = "+";
 		}
-		else if (c >= '0' && c <= '9')
+        else if (c >= '0' && c <= '9')
 		{
 			k++;
 			i += c - 48;
@@ -856,7 +870,11 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 		{
 			std::string stringCode(1, c);
 			PieceType pieceType = None;
-            if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) ||
+            if (gameVariant == OmegaChess)
+            {
+                pieceType = OmegaChessPiece::FromStringCode(uppercase(stringCode));
+            }
+            else if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) ||
                     gameVariant == Shatranj || gameVariant == Shatar)
 			{
 				pieceType = ShatranjPiece::FromStringCode(uppercase(stringCode));
