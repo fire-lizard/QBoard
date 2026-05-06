@@ -523,6 +523,8 @@ void MainWindow::on_actionSave_triggered()
                     chessVariant = "[Variant \"chancellor\"]\n\n";
                 else if (gameVariant == ModernChess)
                     chessVariant = "[Variant \"modern\"]\n\n";
+                else if (gameVariant == CourierChess)
+                    chessVariant = "[Variant \"courier\"]\n\n";
                 else if (gameVariant == GrandeAcedrex)
                     chessVariant = "[Variant \"grande acedrex\"]\n\n";
                 const QString result = "[Result \"*\"]\n";
@@ -977,6 +979,9 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
                     break;
                 case OmegaChess:
                     engine->StartGame("omega");
+                    break;
+                case CourierChess:
+                    engine->StartGame("courier");
                     break;
                 case ChancellorChess:
                     engine->StartGame("chancellor");

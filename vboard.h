@@ -13,6 +13,7 @@
 #include "ModernChessBoard.h"
 #include "GrandChessBoard.h"
 #include "OmegaChessBoard.h"
+#include "CourierChessBoard.h"
 #include "GrandeAcedrexBoard.h"
 #include "JanggiBoard.h"
 #include "ShatarBoard.h"

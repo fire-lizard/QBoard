@@ -168,7 +168,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 			else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == WaShogi || gameVariant == TenjikuShogi ||
                      gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi || gameVariant == HeianDaiShogi ||
                      gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == GrandChess ||
-                     gameVariant == OmegaChess || gameVariant == GrandeAcedrex)
+                     gameVariant == OmegaChess || gameVariant == CourierChess || gameVariant == GrandeAcedrex)
 			{
 				QRegularExpressionMatch match = _csre.match(part);
 				if (match.hasMatch())
@@ -574,7 +574,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             }
         }
     }
-    else if (gameVariant == Shatranj || gameVariant == Shatar)
+    else if (gameVariant == Shatranj || gameVariant == Shatar || gameVariant == CourierChess)
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
 		{

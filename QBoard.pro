@@ -19,6 +19,8 @@ macx-clang {
 SOURCES += main.cpp\
     CapablancaChessBoard.cpp \
     ChancellorChessBoard.cpp \
+    CourierChessBoard.cpp \
+    CourierChessPiece.cpp \
     GothicChessBoard.cpp \
     GothicChessPiece.cpp \
     GrandChessBoard.cpp \
@@ -104,6 +106,8 @@ HEADERS  += mainwindow.h \
     ChuShogiBoard.h \
     ChuShogiPiece.h \
     Common.h \
+    CourierChessBoard.h \
+    CourierChessPiece.h \
     GothicChessBoard.h \
     GothicChessPiece.h \
     GrandChessBoard.h \

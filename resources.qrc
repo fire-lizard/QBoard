@@ -152,6 +152,7 @@
         <file>images/BlackDolphin.png</file>
         <file>images/BlackElephant.png</file>
         <file>images/BlackGold.png</file>
+        <file>images/BlackHat.png</file>
         <file>images/BlackHawk.png</file>
         <file>images/BlackHCrown.png</file>
         <file>images/BlackHSword.png</file>
@@ -162,6 +163,7 @@
         <file>images/BlackLion.png</file>
         <file>images/BlackMarshall.png</file>
         <file>images/BlackPawn.png</file>
+        <file>images/BlackPegasus.png</file>
         <file>images/BlackPrincess.png</file>
         <file>images/BlackQueen.png</file>
         <file>images/BlackRook.png</file>
@@ -183,6 +185,7 @@
         <file>images/WhiteDolphin.png</file>
         <file>images/WhiteElephant.png</file>
         <file>images/WhiteGold.png</file>
+        <file>images/WhiteHat.png</file>
         <file>images/WhiteHawk.png</file>
         <file>images/WhiteHCrown.png</file>
         <file>images/WhiteHSword.png</file>
@@ -193,6 +196,7 @@
         <file>images/WhiteLion.png</file>
         <file>images/WhiteMarshall.png</file>
         <file>images/WhitePawn.png</file>
+        <file>images/WhitePegasus.png</file>
         <file>images/WhitePrincess.png</file>
         <file>images/WhiteQueen.png</file>
         <file>images/WhiteRook.png</file>

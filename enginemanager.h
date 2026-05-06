@@ -27,6 +27,7 @@ namespace {
             {ModernChess,     "Modern Chess"},
             {GrandChess,      "Grand Chess"},
             {OmegaChess,      "Omega Chess"},
+            {CourierChess,    "Courier Chess"},
             {GrandeAcedrex,   "Grande Acedrex"},
             {Xiangqi,         "Xiangqi"},
             {Janggi,          "Janggi"},

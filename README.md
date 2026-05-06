@@ -9,6 +9,7 @@
      * Modern Chess
      * Grand Chess
      * Omega Chess
+     * Courier Chess
      * Grande Acedrex
   2. Shogi Variants
      * Shogi

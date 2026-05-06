@@ -103,6 +103,7 @@ void VBoard::paintEvent(QPaintEvent *)
     case JanusChess:
     case GrandChess:
     case OmegaChess:
+    case CourierChess:
     case ChancellorChess:
     case ModernChess:
     case GrandeAcedrex:
@@ -552,6 +553,7 @@ void VBoard::paintEvent(QPaintEvent *)
                 case JanusChess:
                 case GrandChess:
                 case OmegaChess:
+                case CourierChess:
                 case ChancellorChess:
                 case ModernChess:
                 case Shatranj:
@@ -649,6 +651,7 @@ void VBoard::paintEvent(QPaintEvent *)
                 case JanusChess:
                 case GrandChess:
                 case OmegaChess:
+                case CourierChess:
                 case ChancellorChess:
                 case ModernChess:
                 case GrandeAcedrex:
@@ -1796,10 +1799,10 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             }
         }
     }
-    else if (_gameVariant == Shatranj || _gameVariant == Shatar)
+    else if (_gameVariant == Shatranj || _gameVariant == Shatar || _gameVariant == CourierChess)
 	{
 		if (_currentPiece->GetType() == Pawn &&
-			((y == 7 && _currentPiece->GetColour() == Black) ||
+            ((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) ||
 				(y == 0 && _currentPiece->GetColour() == White)))
 		{
 			promotion = 'q';
@@ -2042,6 +2045,9 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
         break;
     case OmegaChess:
         _board = new OmegaChessBoard();
+        break;
+    case CourierChess:
+        _board = new CourierChessBoard();
         break;
     case ChancellorChess:
         _board = new ChancellorChessBoard();
@@ -2554,6 +2560,14 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
         else if (_gameVariant == OmegaChess)
         {
             for (auto& ChessPiece : OmegaChessPieces)
+            {
+                whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
+                blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
+            }
+        }
+        else if (_gameVariant == CourierChess)
+        {
+            for (auto& ChessPiece : CourierChessPieces)
             {
                 whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
                 blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
