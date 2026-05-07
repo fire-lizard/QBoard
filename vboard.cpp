@@ -427,7 +427,7 @@ void VBoard::paintEvent(QPaintEvent *)
 			}
             else
 			{
-                if (std::find(std::begin(chessVariants), std::end(chessVariants), _gameVariant) != std::end(chessVariants) ||
+                if (std::find(std::begin(chessVariants), std::end(chessVariants), _gameVariant) != std::end(chessVariants) || _gameVariant == CourierChess ||
                         _gameVariant == GrandeAcedrex || _gameVariant == Shatranj || _gameVariant == Makruk || _gameVariant == Shatar)
 				{
 					if ((i + j) % 2 != 0)
@@ -2413,7 +2413,11 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	if (buf.contains("Illegal move"))
 	{
         QMessageBox::critical(this, "Error", "Illegal move");
-        EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _whiteEngine, _whiteMoves);
+        if (!_whiteEngine->Moves().empty())
+        {
+            Logger::writeToLog("Illegal move " + _whiteEngine->Moves()[_whiteEngine->Moves().size() - 1], LogLevel::Warning);
+        }
+        EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _whiteMoves);
         this->repaint();
         this->_statusBar->showMessage("Black move");
 		_currentPlayer = Black;
@@ -2463,7 +2467,11 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	if (buf.contains("Illegal move"))
 	{
 		QMessageBox::critical(this, "Error", "Illegal move");
-        EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _blackEngine, _blackMoves);
+        if (!_blackEngine->Moves().empty())
+        {
+            Logger::writeToLog("Illegal move " + _blackEngine->Moves()[_blackEngine->Moves().size() - 1], LogLevel::Warning);
+        }
+        EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _blackMoves);
         this->repaint();
         this->_statusBar->showMessage(_gameVariant == Xiangqi || _gameVariant == Janggi ? "Red move" : "White move");
 		_currentPlayer = White;

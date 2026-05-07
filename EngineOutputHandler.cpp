@@ -102,12 +102,8 @@ void EngineOutputHandler::CalculateXiangqiCheck(Board* board, std::vector<std::p
     delete brd;
 }
 
-void EngineOutputHandler::RollbackIllegalMove(GameVariant gameVariant, Board *board, std::shared_ptr<Engine> engine, std::vector<std::string> moves)
+void EngineOutputHandler::RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<std::string> moves)
 {
-    if (engine != nullptr && engine->IsActive() && !engine->Moves().empty())
-    {
-        Logger::writeToLog("Illegal move " + engine->Moves()[engine->Moves().size() - 1], LogLevel::Warning);
-    }
     if (moves.size() > 1)
     {
         moves.pop_back();

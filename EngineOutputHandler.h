@@ -16,7 +16,6 @@
 #include "KoShogiPiece.h"
 #include "OmegaChessPiece.h"
 #include "GrandeAcedrexPiece.h"
-#include "Logger.h"
 
 struct Move
 {
@@ -40,7 +39,7 @@ public:
 	static bool IsInsidePromotionZone(GameVariant gameVariant, PieceColour pieceColour, int y);
 	static bool CanBePromoted(const Piece* piece, GameVariant gameVariant, int oldY, int newY);
 	static bool IsLionMove(const Piece* piece, int x1, int y1, int x2, int y2);
-    static void RollbackIllegalMove(GameVariant gameVariant, Board *board, std::shared_ptr<Engine> _engine, std::vector<std::string> moves);
+    static void RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<std::string> moves);
 	static void RemoveMove(std::vector<std::pair<int, int>>& moves, int x, int y);
 };
 
