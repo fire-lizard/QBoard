@@ -49,17 +49,3 @@ PieceType OmegaChessPiece::Description2PieceType(const std::string& description)
     if (description == "Wizard")    return Wizard;
     return Piece::Description2PieceType(description);
 }
-
-std::string OmegaChessPiece::GetImageFileName() const
-{
-    const std::string colour = _pieceColour == White ? "White" : "Black";
-    switch (_pieceType)
-    {
-    case Champion:
-        return colour + "Viking.png";
-    case Wizard:
-        return colour + "Wizard.png";
-    default:
-        return ChessPiece::GetImageFileName();
-    }
-}

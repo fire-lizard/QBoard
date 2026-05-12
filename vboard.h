@@ -29,6 +29,7 @@
 #include "MakrukBoard.h"
 #include "promotiondialog.h"
 #include "EngineOutputHandler.h"
+#include "graphicsmanager.h"
 #include "Logger.h"
 
 class VBoard : public QWidget

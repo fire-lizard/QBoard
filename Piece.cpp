@@ -123,6 +123,19 @@ std::string Piece::GetImageFileName() const
         return colour + "Archbishop.png";
     case Chancellor:
         return colour + "Chancellor.png";
+    case Aanca:
+        return colour + "Hawk.png";
+    case Giraffe:
+        return colour + "Camel.png";
+    case Champion:
+        return colour + "Viking.png";
+    case Wizard:
+    case Sage:
+        return colour + "Wizard.png";
+    case Schleich:
+        return colour + "Hat.png";
+    case Courier:
+        return colour + "Pegasus.png";
     default:
 		return "";
 	}

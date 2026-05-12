@@ -74,17 +74,3 @@ PieceType GrandeAcedrexPiece::Description2PieceType(const std::string& descripti
     if (description == "Giraffe")    return Giraffe;
     return Piece::Description2PieceType(description);
 }
-
-std::string GrandeAcedrexPiece::GetImageFileName() const
-{
-    const std::string colour = _pieceColour == White ? "White" : "Black";
-    switch (_pieceType)
-    {
-    case Aanca:
-        return colour + "Hawk.png";
-    case Giraffe:
-        return colour + "Camel.png";
-    default:
-        return ChessPiece::GetImageFileName();
-    }
-}

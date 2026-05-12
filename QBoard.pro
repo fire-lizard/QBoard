@@ -46,6 +46,7 @@ SOURCES += main.cpp\
     WhaleShogiPiece.cpp \
     YariShogiBoard.cpp \
     YariShogiPiece.cpp \
+    graphicsmanager.cpp \
     mainwindow.cpp \
     Board.cpp \
     ChessBoard.cpp \
@@ -95,7 +96,8 @@ SOURCES += main.cpp\
     networkmanager.cpp \
     comboboxitemdelegate.cpp \
     newgamedialog.cpp \
-    addenginedialog.cpp
+    addenginedialog.cpp \
+    zboard.cpp
 
 HEADERS  += mainwindow.h \
     Board.h \
@@ -136,6 +138,7 @@ HEADERS  += mainwindow.h \
     WhaleShogiPiece.h \
     YariShogiBoard.h \
     YariShogiPiece.h \
+    graphicsmanager.h \
     promotiondialog.h \
     settingsdialog.h \
     variantdialog.h \
@@ -176,7 +179,8 @@ HEADERS  += mainwindow.h \
     networkmanager.h \
     comboboxitemdelegate.h \
     newgamedialog.h \
-    addenginedialog.h
+    addenginedialog.h \
+    zboard.h
 
 FORMS    += mainwindow.ui \
     promotiondialog.ui \

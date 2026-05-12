@@ -59,19 +59,3 @@ PieceType CourierChessPiece::Description2PieceType(const std::string& descriptio
     if (description == "Courier")   return Courier;
     return Piece::Description2PieceType(description);
 }
-
-std::string CourierChessPiece::GetImageFileName() const
-{
-    const std::string colour = _pieceColour == White ? "White" : "Black";
-    switch (_pieceType)
-    {
-    case Sage:
-        return colour + "Wizard.png";
-    case Schleich:
-        return colour + "Hat.png";
-    case Courier:
-        return colour + "Pegasus.png";
-    default:
-        return ShatranjPiece::GetImageFileName();
-    }
-}
