@@ -74,7 +74,7 @@ enum PieceType
     // Yari Shogi Pieces
     YariKnight, YariGold, YariSilver, YariBishop, YariRook,
     // Grande Acedrex Pieces
-    Aanca, Giraffe,
+    Aanca, Giraffe, Crocodile,
     // Courier Chess Pieces
     Sage, Schleich, Courier
 };
@@ -147,7 +147,7 @@ inline PieceType OmegaChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn,
 
 inline PieceType CourierChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn, Sage, Schleich, Courier };
 
-inline PieceType GrandeAcedrexPieces[] = { King, Aanca, Bishop, Giraffe, Unicorn, Lion, Rook, Pawn };
+inline PieceType GrandeAcedrexPieces[] = { King, Aanca, Giraffe, Crocodile, Unicorn, Lion, Rook, Pawn };
 
 inline PieceType ShatranjPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn };
 

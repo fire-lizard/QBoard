@@ -342,6 +342,7 @@ QString GraphicsManager::GetImageFileName(PieceColour pieceColour, PieceType pie
     case Rook:
         return colour + promo + "Rook.png";
     case Bishop:
+    case Crocodile:
         return colour + promo + "Bishop.png";
     case VerticalMover:
         return colour + promo + "Sword.png";
@@ -960,7 +961,7 @@ QString GraphicsManager::GetKanjiImageFileName3(PieceColour pieceColour, PieceTy
     case Tile:
     case Stone:
     case Earth:
-        return QString::fromStdString(MakaDaiDaiShogiPieceType2Description(pieceType)) + "General" + colour + ".png";
+        return QString::fromStdString(StringManager::PieceType2Description(DaiDaiShogi, pieceType)) + "General" + colour + ".png";
     case Leopard:
         return "FerociousLeopard" + colour + ".png";
     case Tiger:
@@ -986,7 +987,7 @@ QString GraphicsManager::GetKanjiImageFileName3(PieceColour pieceColour, PieceTy
     case Wood:
         return "WoodGeneral" + colour + ".png";
     default:
-        QString desc = QString::fromStdString(MakaDaiDaiShogiPieceType2Description(pieceType));
+        QString desc = QString::fromStdString(StringManager::PieceType2Description(DaiDaiShogi, pieceType));
         desc.replace(" ", "");
         return desc + colour + ".png";
     }
@@ -1011,213 +1012,6 @@ QString GraphicsManager::GetTenjikuShogiImageFileName(PieceColour pieceColour, P
     }
 }
 
-std::string GraphicsManager::MakaDaiDaiShogiPieceType2Description(PieceType pieceType)
-{
-    switch (pieceType)
-    {
-    case None: return "None";
-    case King: return "King";
-    case Lion: return "Lion";
-    case Queen: return "Queen";
-    case DragonKing: return "Dragon King";
-    case DragonHorse: return "Dragon Horse";
-    case Rook: return "Rook";
-    case Bishop: return "Bishop";
-    case Knight: return "Knight";
-    case VerticalMover: return "Vertical Mover";
-    case SideMover: return "Side Mover";
-    case Cannon: return "Cannon";
-    case ReverseChariot: return "Reverse Chariot";
-    case Lance: return "Lance";
-    case Kylin: return "Kylin";
-    case Phoenix: return "Phoenix";
-    case Elephant: return "Elephant";
-    case Prince: return "Prince";
-    case Tiger: return "Tiger";
-    case Gold: return "Gold";
-    case Silver: return "Silver";
-    case Copper: return "Copper";
-    case Leopard: return "Leopard";
-    case GoBetween: return "Go Between";
-    case Pawn: return "Pawn";
-    case Eagle: return "Eagle";
-    case Unicorn: return "Unicorn";
-    case FlyingOx: return "Flying Ox";
-    case FreeBoar: return "Free Boar";
-    case FlyingStag: return "Flying Stag";
-    case WhiteHorse: return "White Horse";
-    case Whale: return "Whale";
-    case PromotedLance: return "Promoted Lance";
-    case PromotedKnight: return "Promoted Knight";
-    case PromotedSilver: return "Promoted Silver";
-    case Tokin: return "Tokin";
-    case ViolentOx: return "Violent Ox";
-    case FlyingDragon: return "Flying Dragon";
-    case AngryBoar: return "Angry Boar";
-    case CatSword: return "Cat Sword";
-    case EvilWolf: return "Evil Wolf";
-    case Iron: return "Iron";
-    case Stone: return "Stone";
-    case Dog: return "Dog";
-    case ViceGeneral: return "Vice General";
-    case GreatGeneral: return "Great General";
-    case BishopGeneral: return "Bishop General";
-    case RookGeneral: return "Rook General";
-    case MultiGeneral: return "Multi General";
-    case FreeEagle: return "Free Eagle";
-    case LionHawk: return "Lion Hawk";
-    case SideSoldier: return "Side Soldier";
-    case VerticalSoldier: return "Vertical Soldier";
-    case ChariotSoldier: return "Chariot Soldier";
-    case WaterBuffalo: return "Water Buffalo";
-    case HeavenlyTetrarch: return "Heavenly Tetrarch";
-    case FireDemon: return "Fire Demon";
-    case BlindMonkey:          return "Blind Monkey";
-    case BlueDragon:           return "Blue Dragon";
-    case Dove:                 return "Dove";
-    case EasternBarbarian:     return "Eastern Barbarian";
-    case WesternBarbarian:     return "Western Barbarian";
-    case SouthernBarbarian:    return "Southern Barbarian";
-    case NorthernBarbarian:    return "Northern Barbarian";
-    case EnchantedBadger:      return "Enchanted Badger";
-    case EnchantedFox:         return "Enchanted Fox";
-    case FragrantElephant:     return "Fragrant Elephant";
-    case FreeDemon:            return "Free Demon";
-    case FreeDreamEater:       return "Free Dream Eater";
-    case FuriousFiend:         return "Furious Fiend";
-    case GoldenBird:           return "Golden Bird";
-    case GreatElephant:        return "Great Elephant";
-    case HowlingDog:           return "Howling Dog";
-    case LeftGeneral:          return "Left General";
-    case RightGeneral:         return "Right General";
-    case Tengu:                return "Tengu";
-    case NeighboringKing:      return "Neighboring King";
-    case OldKite:              return "Old Kite";
-    case PoisonousSnake:       return "Poisonous Snake";
-    case PrancingStag:         return "Prancing Stag";
-    case RacingChariot:        return "Racing Chariot";
-    case RushingBird:          return "Rushing Bird";
-    case SavageTiger:          return "Savage Tiger";
-    case BuddhistDevil:        return "Buddhist Devil";
-    case Yaksha:               return "Yaksha";
-    case SquareMover:          return "Square Mover";
-    case StandardBearer:       return "Standard Bearer";
-    case ViolentBear:          return "Violent Bear";
-    case WhiteElephant:        return "White Elephant";
-    case WhiteTiger:           return "White Tiger";
-    case Wood:                 return "Wood";
-    case FlyingHorse:          return "Flying Horse";
-    case GreatDragon:          return "Great Dragon";
-    case MountainWitch:        return "Mountain Witch";
-    case WizardStork:          return "Wizard Stork";
-    case LionDog:              return "Lion Dog";
-    case Deva:                 return "Deva";
-    case DarkSpirit:           return "Dark Spirit";
-    case Tile:                 return "Tile";
-    case Earth:                return "Earth";
-    case CoiledSerpent:        return "Coiled Serpent";
-    case RecliningDragon:      return "Reclining Dragon";
-    case ChineseCock:          return "Chinese Cock";
-    case OldMonkey:            return "Old Monkey";
-    case BlindBear:            return "Blind Bear";
-    case Wrestler:             return "Wrestler";
-    case Guardian:             return "Guardian";
-    case BuddhistSpirit:       return "Buddhist Spirit";
-    case OldRat:               return "OldRat";
-    case Donkey:               return "Donkey";
-    case Capricorn:            return "Capricorn";
-    case HookMover:            return "Hook Mover";
-    case SideFlier:            return "Side Flier";
-    case LeftChariot:          return "Left Chariot";
-    case RightChariot:         return "Right Chariot";
-    case Emperor:              return "Emperor";
-    case TeachingKing:         return "Teaching King";
-    case FreeGold:             return "Free Gold";
-    case FreeSilver:           return "Free Silver";
-    case FreeCopper:           return "Free Copper";
-    case FreeIron:             return "Free Iron";
-    case FreeTile:             return "Free Tile";
-    case FreeStone:            return "Free Stone";
-    case FreeEarth:            return "Free Earth";
-    case FreeGo:               return "Free Go";
-    case FreeTiger:            return "Free Tiger";
-    case FreeLeopard:          return "Free Leopard";
-    case FreeSerpent:          return "Free Serpent";
-    case FreeDragon:           return "Free Dragon";
-    case FreeWolf:             return "Free Wolf";
-    case FreeCat:              return "Free Cat";
-    case FreeBear:             return "Free Bear";
-    case Bat:                  return "Bat";
-    case Archbishop:           return "Archbishop";
-    case Chancellor:           return "Chancellor";
-    default: return "";
-    }
-}
-
-std::string GraphicsManager::KoShogiPieceType2Description(PieceType pieceType)
-{
-    switch (pieceType)
-    {
-    case King:           return "General";
-    case Prince:         return "Governor";
-    case Queen:          return "Millenary";
-    case Rook:           return "Chariot Unit";
-    case Bishop:         return "Elephant";
-    case Gold:           return "Aide";
-    case Silver:         return "Staff";
-    case Copper:         return "Engineer";
-    case FlyingOx:       return "Commissar";
-    case FreeBoar:       return "Heavenly Fortress";
-    case VerticalMover:  return "Patrol Unit";
-    case DragonHorse:    return "Centuria";
-    case DragonKing:     return "Quartermaster";
-    case CatSword:       return "Shield";
-    case Leopard:        return "Chief of Staff";
-    case FlyingStag:     return "Town Brigade";
-    case Tiger:          return "Sentry";
-    case Elephant:       return "Aide de Camp";
-    case Phoenix:        return "Staff Officer";
-    case Kylin:          return "Clerk";
-    case Knight:         return "Cavalryman";
-    case Pawn:           return "Pawn";
-    case MiddleTroop:          return "Middle Troop";
-    case Drum:                 return "Drum";
-    case Thunderclap:          return "Thunderclap";
-    case Flag:                 return "Flag";
-    case RoamingAssault:       return "Roaming Assault";
-    case CompanyCommander:     return "Company Commander";
-    case ViceCommissioner:     return "Vice Commissioner";
-    case PoisonFlame:          return "Poison Flame";
-    case Lion:                 return "Wrestler";
-    case DoubleKylin:          return "Master at Arms";
-    case DoublePhoenix:        return "Flag and Drum";
-    case TaoistPriest:         return "Taoist Priest";
-    case SpiritualMonk:        return "Spiritual Monk";
-    case ExtensiveFog:         return "Extensive Fog";
-    case HolyLight:			   return "Holy Light";
-    case AdvanceGuard:         return "Advance Guard";
-    case RearGuard:            return "Rear Guard";
-    case SkywardNet:           return "Skyward Net";
-    case EarthwardNet:         return "Earthward Net";
-    case RisingDragon:         return "Rising Dragon";
-    case WingedTiger:          return "Winged Tiger";
-    case FlyingHawk:           return "Flying Hawk";
-    case Longbow:              return "Longbow";
-    case LongbowKnight:        return "Longbow Knight";
-    case Crossbow:             return "Crossbow";
-    case CrossbowKnight:       return "Crossbow Knight";
-    case Cannon:               return "Cannon";
-    case CannonCarriage:       return "Cannon Carriage";
-    case FrankishCannon:       return "Frankish Cannon";
-    case DivineCarriage:       return "Divine Carriage";
-    case KnightCaptain:        return "Knight Captain";
-    case WingedHorse:          return "Winged Horse";
-    case ShieldCaptain:        return "Shield Captain";
-    case Chariot:              return "Chariot";
-    case Vanguard:             return "Vanguard";
-    default: return "";
-    }
-}
 
 QString GraphicsManager::GetKoShogiImageFileName(PieceStyle pieceStyle, PieceColour pieceColour, PieceType pieceType, bool isPromoted)
 {
@@ -1332,7 +1126,7 @@ QString GraphicsManager::GetKoShogiImageFileName(PieceStyle pieceStyle, PieceCol
         case Lion:
             return "Wrestler" + colour + ".png";
         default:
-            QString desc = QString::fromStdString(KoShogiPieceType2Description(pieceType));
+            QString desc = QString::fromStdString(StringManager::PieceType2Description(KoShogi, pieceType));
             desc.replace(" ", "");
             return desc + colour + ".png";
         }

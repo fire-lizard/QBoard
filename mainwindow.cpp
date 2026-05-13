@@ -392,7 +392,7 @@ void MainWindow::on_actionNew_game_triggered()
 
         if (this->ui->vboard->GetEditorMode())
         {
-            this->ui->vboard->SetEditorMode(false);
+            this->ui->vboard->SetEditorMode(false, true);
         }
         this->ui->vboard->SetBlackEngine(_blackEngine);
         this->ui->vboard->SetWhiteEngine(_whiteEngine);
@@ -425,7 +425,7 @@ void MainWindow::on_actionOpen_triggered()
 	{
         if (this->ui->vboard->GetEditorMode())
         {
-            this->ui->vboard->SetEditorMode(false);
+            this->ui->vboard->SetEditorMode(false, true);
         }
         const QString fileName = fileDialog.selectedFiles()[0];
 		QFile file(fileName);
@@ -830,7 +830,7 @@ void MainWindow::StartNewGame(GameVariant newGameVariant) const
 	StopEngine(_blackEngine);
     if (this->ui->vboard->GetEditorMode())
     {
-        this->ui->vboard->SetEditorMode(false);
+        this->ui->vboard->SetEditorMode(false, true);
     }
     this->ui->vboard->SetGameVariant(newGameVariant);
 	this->ui->vboard->GetBoard()->Initialize();

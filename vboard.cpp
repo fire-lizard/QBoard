@@ -1943,7 +1943,7 @@ bool VBoard::GetEditorMode() const
 	return _editorMode;
 }
 
-void VBoard::SetEditorMode(bool editorMode)
+void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 {
 	if (editorMode)
 	{
@@ -1955,7 +1955,7 @@ void VBoard::SetEditorMode(bool editorMode)
 		delete _editorBoard;
 		_editorBoard = _board->Clone();
 	}
-	else
+    else if (!newGameStarted)
 	{
 		if (*_board != _editorBoard->GetFEN())
 		{
@@ -2239,12 +2239,12 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			whitePromoted->addAction("None");
 		}
 
-		if (_gameVariant == Chess)
+        /*if (_gameVariant == Chess)
 		{
 			for (auto& ChessPiece : ChessPieces)
 			{
-				whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
-				blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
+                whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
+                blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ChessPiece)));
 			}
 		}
         else if (_gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == GrandChess)
@@ -2291,32 +2291,32 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
         {
             for (auto& GrandeAcedrexPiece : GrandeAcedrexPieces)
             {
-                whiteRegular->addAction(QString::fromStdString(GrandeAcedrexPiece::PieceType2Description(GrandeAcedrexPiece)));
-                blackRegular->addAction(QString::fromStdString(GrandeAcedrexPiece::PieceType2Description(GrandeAcedrexPiece)));
+                whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(GrandeAcedrexPiece)));
+                blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(GrandeAcedrexPiece)));
             }
         }
         else if (_gameVariant == Shatranj || _gameVariant == Shatar)
 		{
 			for (auto& ShatranjPiece : ShatranjPieces)
 			{
-				whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ShatranjPiece)));
-				blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ShatranjPiece)));
+                whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ShatranjPiece)));
+                blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(ShatranjPiece)));
 			}
 		}
 		else if (_gameVariant == Makruk)
 		{
 			for (auto& MakrukPiece : MakrukPieces)
 			{
-				whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(MakrukPiece)));
-				blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(MakrukPiece)));
+                whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(MakrukPiece)));
+                blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(MakrukPiece)));
 			}
 		}
         else if (_gameVariant == Xiangqi || _gameVariant == Janggi)
 		{
 			for (auto& XiangqiPiece : XiangqiPieces)
 			{
-				whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(XiangqiPiece)));
-				blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(XiangqiPiece)));
+                whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(XiangqiPiece)));
+                blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(XiangqiPiece)));
 			}
 		}
 		else if (_gameVariant == Shogi)
@@ -2395,24 +2395,24 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
         {
             for (auto& YariShogiPiece : YariShogiPieces)
             {
-                whiteRegular->addAction(QString::fromStdString(YariShogiPiece::PieceType2Description(YariShogiPiece)));
-                blackRegular->addAction(QString::fromStdString(YariShogiPiece::PieceType2Description(YariShogiPiece)));
+                whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(YariShogiPiece)));
+                blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(YariShogiPiece)));
             }
         }
         else if (_gameVariant == HeianShogi)
         {
             for (auto& HeianShogiPiece : HeianShogiPieces)
             {
-                whiteRegular->addAction(QString::fromStdString(ShogiPiece::PieceType2Description(HeianShogiPiece)));
-                blackRegular->addAction(QString::fromStdString(ShogiPiece::PieceType2Description(HeianShogiPiece)));
+                whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(HeianShogiPiece)));
+                blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(HeianShogiPiece)));
             }
         }
         else if (_gameVariant == HeianDaiShogi)
         {
             for (auto& HeianShogiPiece : HeianDaiShogiPieces)
             {
-                whiteRegular->addAction(QString::fromStdString(ShogiPiece::PieceType2Description(HeianShogiPiece)));
-                blackRegular->addAction(QString::fromStdString(ShogiPiece::PieceType2Description(HeianShogiPiece)));
+                whiteRegular->addAction(QString::fromStdString(Piece::PieceType2Description(HeianShogiPiece)));
+                blackRegular->addAction(QString::fromStdString(Piece::PieceType2Description(HeianShogiPiece)));
             }
         }
         else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)
@@ -2526,7 +2526,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 					blackRegular->addAction(QString::fromStdString(KoShogiPiece::PieceType2Description(KoShogiPiece)));
 				}
 			}
-		}
+        }*/
 
 		const QAction* selectedAction = menu.exec(event->globalPos());
 
@@ -2541,34 +2541,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				return;
 			}
 			_chosenColour = qobject_cast<QMenu*>(selectedAction->parent()->parent())->title() == "White" ? White : Black;
-            if (_gameVariant == WhaleShogi)
-            {
-                _chosenPiece = WhaleShogiPiece::Description2PieceType(selectedAction->text().toStdString());
-            }
-            else if (_gameVariant == ToriShogi)
-            {
-                _chosenPiece = ToriShogiPiece::Description2PieceType(selectedAction->text().toStdString());
-            }
-            else if (_gameVariant == YariShogi)
-            {
-                _chosenPiece = YariShogiPiece::Description2PieceType(selectedAction->text().toStdString());
-            }
-            else if (_gameVariant == CrazyWa || _gameVariant == WaShogi)
-			{
-				_chosenPiece = WaShogiPiece::Description2PieceType(selectedAction->text().toStdString());
-			}
-			else if (_gameVariant == KoShogi)
-			{
-				_chosenPiece = KoShogiPiece::Description2PieceType(selectedAction->text().toStdString());
-			}
-            else if (_gameVariant == GrandeAcedrex)
-            {
-                _chosenPiece = GrandeAcedrexPiece::Description2PieceType(selectedAction->text().toStdString());
-            }
-            else
-			{
-				_chosenPiece = Piece::Description2PieceType(selectedAction->text().toStdString());
-			}
+            _chosenPiece = StringManager::Description2PieceType(_gameVariant, selectedAction->text().toStdString());
 
 			const Piece* p = _board->GetData(x, y);
 			delete p;
@@ -2605,27 +2578,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 	const auto cps = dynamic_cast<ShogiVariantBoard*>(_board)->GetCapturedPieces(_currentPlayer);
 	for (const auto cp : cps)
 	{
-		std::string str;
-        if (_gameVariant == WhaleShogi)
-        {
-            str = WhaleShogiPiece::PieceType2Description(cp);
-        }
-        else if (_gameVariant == ToriShogi)
-        {
-            str = ToriShogiPiece::PieceType2Description(cp);
-        }
-        else if (_gameVariant == YariShogi)
-        {
-            str = YariShogiPiece::PieceType2Description(cp);
-        }
-        else if (_gameVariant == CrazyWa)
-		{
-            str = WaShogiPiece::PieceType2Description(cp);
-		}
-		else
-		{
-            str = ShogiPiece::PieceType2Description(cp);
-		}
+        const std::string str = StringManager::PieceType2Description(_gameVariant, cp);
 		menu.addAction(QString::fromStdString(str));
 	}
 
@@ -2638,17 +2591,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		QStringList parts = selectedAction->text().split(' ', Qt::SkipEmptyParts);
         const std::string longStringCode = _gameVariant == WhaleShogi || _gameVariant == ToriShogi || _gameVariant == CrazyWa
                 ? (parts[0] + " " + parts[1]).toStdString() : parts[0].toStdString();
-        PieceType newPiece;
-        if (_gameVariant == WhaleShogi)
-            newPiece = WhaleShogiPiece::Description2PieceType(longStringCode);
-        else if (_gameVariant == ToriShogi)
-            newPiece = ToriShogiPiece::Description2PieceType(longStringCode);
-        else if (_gameVariant == YariShogi)
-            newPiece = YariShogiPiece::Description2PieceType(longStringCode);
-        else if (_gameVariant == CrazyWa)
-            newPiece = WaShogiPiece::Description2PieceType(longStringCode);
-        else
-            newPiece = ShogiPiece::Description2PieceType(longStringCode);
+        const PieceType newPiece = StringManager::Description2PieceType(_gameVariant, longStringCode);
 
 		if (_board->GetData(x, y) != nullptr)
 		{

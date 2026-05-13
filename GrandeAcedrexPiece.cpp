@@ -24,7 +24,7 @@ std::string GrandeAcedrexPiece::StringCode()
         return "A";
     case Rook:
         return "R";
-    case Bishop:
+    case Crocodile:
         return "C";
     case Giraffe:
         return "G";
@@ -45,7 +45,7 @@ PieceType GrandeAcedrexPiece::FromStringCode(const std::string& code)
         {"K", King},
         {"A", Aanca},
         {"R", Rook},
-        {"C", Bishop},
+        {"C", Crocodile},
         {"G", Giraffe},
         {"U", Unicorn},
         {"L", Lion},
@@ -54,23 +54,4 @@ PieceType GrandeAcedrexPiece::FromStringCode(const std::string& code)
 
     const auto it = codeToPieceType.find(code);
     return it != codeToPieceType.end() ? it->second : None;
-}
-
-std::string GrandeAcedrexPiece::PieceType2Description(PieceType pieceType)
-{
-    switch (pieceType)
-    {
-    case Aanca: return "Aanca";
-    case Bishop: return "Crocodile";
-    case Giraffe: return "Giraffe";
-    default: return Piece::PieceType2Description(pieceType);
-    }
-}
-
-PieceType GrandeAcedrexPiece::Description2PieceType(const std::string& description)
-{
-    if (description == "Aanca")      return Aanca;
-    if (description == "Crocodile")  return Bishop;
-    if (description == "Giraffe")    return Giraffe;
-    return Piece::Description2PieceType(description);
 }

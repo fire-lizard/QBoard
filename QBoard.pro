@@ -57,6 +57,7 @@ SOURCES += main.cpp\
     Logger.cpp \
     promotiondialog.cpp \
     settingsdialog.cpp \
+    stringmanager.cpp \
     variantdialog.cpp \
     vboard.cpp \
     IniFile.cpp \
@@ -139,6 +140,7 @@ HEADERS  += mainwindow.h \
     graphicsmanager.h \
     promotiondialog.h \
     settingsdialog.h \
+    stringmanager.h \
     variantdialog.h \
     vboard.h \
     IniFile.h \

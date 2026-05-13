@@ -6,6 +6,7 @@
 #include "KanjiPiece.h"
 #include "ChuShogiPiece.h"
 #include "MakrukPiece.h"
+#include "stringmanager.h"
 
 class GraphicsManager
 {
@@ -30,6 +31,4 @@ private:
     static QString GetWaShogiImageFileName(PieceStyle pieceStyle, PieceColour pieceColour, PieceType pieceType, bool isPromoted);
     static QString GetWhaleShogiImageFileName(PieceColour pieceColour, PieceType pieceType);
     static QString GetYariShogiImageFileName(PieceColour pieceColour, PieceType pieceType);
-    static std::string MakaDaiDaiShogiPieceType2Description(PieceType pieceType);
-    static std::string KoShogiPieceType2Description(PieceType pieceType);
 };

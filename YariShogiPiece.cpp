@@ -62,26 +62,3 @@ PieceType YariShogiPiece::FromStringCode(const std::string& code)
     const auto it = codeToPieceType.find(code);
     return it != codeToPieceType.end() ? it->second : ShogiPiece::FromStringCode(code);
 }
-
-std::string YariShogiPiece::PieceType2Description(PieceType pieceType)
-{
-    switch (pieceType)
-    {
-    case YariKnight: return "Yari Knight";
-    case YariRook: return "Yari Rook";
-    case YariBishop: return "Yari Bishop";
-    case YariGold: return "Yari Gold";
-    case YariSilver: return "Yari Silver";
-    default: return Piece::PieceType2Description(pieceType);
-    }
-}
-
-PieceType YariShogiPiece::Description2PieceType(const std::string& description)
-{
-    if (description == "Yari Knight")    return YariKnight;
-    if (description == "Yari Rook")      return YariRook;
-    if (description == "Yari Bishop")    return YariBishop;
-    if (description == "Yari Gold")      return YariGold;
-    if (description == "Yari Silver")    return YariSilver;
-    return Piece::Description2PieceType(description);
-}

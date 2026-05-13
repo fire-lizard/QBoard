@@ -32,20 +32,3 @@ PieceType OmegaChessPiece::FromStringCode(const std::string& code)
     const auto it = codeToPieceType.find(code);
     return it != codeToPieceType.end() ? it->second : ChessPiece::FromStringCode(code);
 }
-
-std::string OmegaChessPiece::PieceType2Description(PieceType pieceType)
-{
-    switch (pieceType)
-    {
-    case Champion: return "Champion";
-    case Wizard: return "Wizard";
-    default: return Piece::PieceType2Description(pieceType);
-    }
-}
-
-PieceType OmegaChessPiece::Description2PieceType(const std::string& description)
-{
-    if (description == "Champion")  return Champion;
-    if (description == "Wizard")    return Wizard;
-    return Piece::Description2PieceType(description);
-}

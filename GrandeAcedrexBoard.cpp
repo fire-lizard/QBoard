@@ -133,7 +133,7 @@ void GrandeAcedrexBoard::GetMoves(Piece* piece, int x, int y)
         CheckMove(piece, x, y - 3);
         CheckMove(piece, x, y + 3);
         break;
-    case Bishop:
+    case Crocodile:
         CheckDirection(piece, x, y, NorthEast);
         CheckDirection(piece, x, y, SouthEast);
         CheckDirection(piece, x, y, SouthWest);

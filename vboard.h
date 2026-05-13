@@ -58,7 +58,7 @@ public:
 	QStatusBar* GetStatusBar() const;
 	void SetStatusBar(QStatusBar* statusBar);
 	bool GetEditorMode() const;
-	void SetEditorMode(bool editorMode);
+    void SetEditorMode(bool editorMode, bool newGameStarted = false);
 	bool GetHighlightMoves() const;
 	void SetHighlightMoves(bool highlightMoves);
 	bool GetHighlightShoots() const;

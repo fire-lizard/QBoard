@@ -40,22 +40,3 @@ PieceType CourierChessPiece::FromStringCode(const std::string& code)
     const auto it = codeToPieceType.find(code);
     return it != codeToPieceType.end() ? it->second : ShatranjPiece::FromStringCode(code);
 }
-
-std::string CourierChessPiece::PieceType2Description(PieceType pieceType)
-{
-    switch (pieceType)
-    {
-    case Sage: return "Sage";
-    case Schleich: return "Schleich";
-    case Courier: return "Courier";
-    default: return Piece::PieceType2Description(pieceType);
-    }
-}
-
-PieceType CourierChessPiece::Description2PieceType(const std::string& description)
-{
-    if (description == "Sage")      return Sage;
-    if (description == "Schleich")  return Schleich;
-    if (description == "Courier")   return Courier;
-    return Piece::Description2PieceType(description);
-}

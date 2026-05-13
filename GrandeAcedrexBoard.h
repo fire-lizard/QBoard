@@ -16,7 +16,7 @@ public:
 private:
 
     PieceType _initialSetup[12][12] = {
-    {Rook, Lion, Unicorn, Giraffe, Bishop, Aanca, King, Bishop, Giraffe, Unicorn, Lion, Rook},
+    {Rook, Lion, Unicorn, Giraffe, Crocodile, Aanca, King, Crocodile, Giraffe, Unicorn, Lion, Rook},
     {None, None, None, None, None, None, None, None, None, None, None, None},
     {None, None, None, None, None, None, None, None, None, None, None, None},
     {Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn},
@@ -27,6 +27,6 @@ private:
     {Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn},
     {None, None, None, None, None, None, None, None, None, None, None, None},
     {None, None, None, None, None, None, None, None, None, None, None, None},
-    {Rook, Lion, Unicorn, Giraffe, Bishop, Aanca, King, Bishop, Giraffe, Unicorn, Lion, Rook}
+    {Rook, Lion, Unicorn, Giraffe, Crocodile, Aanca, King, Crocodile, Giraffe, Unicorn, Lion, Rook}
     };
 };

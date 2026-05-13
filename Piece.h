@@ -12,8 +12,6 @@ public:
 	PieceType GetType() const;
 	PieceColour GetColour() const;
 	bool IsPromoted() const;
-	static std::string PieceType2Description(PieceType pieceType);
-	static PieceType Description2PieceType(const std::string& description);
 
 protected:
 	Piece(PieceType pieceType, PieceColour pieceColour);
