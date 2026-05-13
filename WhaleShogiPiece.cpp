@@ -82,29 +82,3 @@ PieceType WhaleShogiPiece::Description2PieceType(const std::string& description)
     if (description == "Dolphin")      return Pawn;
     return None;
 }
-
-std::string WhaleShogiPiece::GetImageFileName() const
-{
-    std::string colour = _pieceColour == White ? "B" : "W";
-    switch (_pieceType)
-    {
-    case King:
-        return colour + "WhWhale.png";
-    case GreyWhale:
-        return colour + "GrWhale.png";
-    case Porpoise:
-        return colour + "Porpoise.png";
-    case DragonKing:
-        return colour + "KWhale.png";
-    case Narwhal:
-        return colour + "Narwhal.png";
-    case Humpback:
-        return colour + "HBwhale.png";
-    case BlueWhale:
-        return colour + "BWhale.png";
-    case Pawn:
-        return colour + "Dolphin.png";
-    default:
-        return "";
-    }
-}

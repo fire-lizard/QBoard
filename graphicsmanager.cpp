@@ -3,7 +3,7 @@
 void GraphicsManager::DrawPiece(QPainter& painter, Piece *p, GameVariant gameVariant, PieceStyle pieceStyle, int w, int h, int i, int j)
 {
     bool isAsianStyle = pieceStyle == Asian || pieceStyle == Asian2 || pieceStyle == Asian3 || pieceStyle == Asian4;
-    QPixmap pixmap(GraphicsManager::GetImageFileName(gameVariant, pieceStyle, p));
+    QPixmap pixmap(GraphicsManager::GetImageFileName(gameVariant, pieceStyle, p->GetColour(), p->GetType(), p->IsPromoted()));
     switch (gameVariant)
     {
     case MicroShogi:
@@ -235,75 +235,70 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     }
 }
 
-QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pieceStyle, Piece *p)
+QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pieceStyle, PieceColour pieceColour, PieceType pieceType, bool isPromoted)
 {
-    bool isAsianStyle = pieceStyle == Asian || pieceStyle == Asian2 || pieceStyle == Asian3 || pieceStyle == Asian4;
-    std::string imageFileName;
+    QString imageFileName;
     switch (gameVariant)
     {
     case Xiangqi:
     case Janggi:
         imageFileName = pieceStyle == European ?
-            p->GetImageFileName() : dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
+            GetImageFileName(pieceColour, pieceType, isPromoted) : GetXiangqiImageFileName(pieceColour, pieceType);
         break;
     case MicroShogi:
     case KyotoShogi:
-        if (pieceStyle == European) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
-        else if (pieceStyle == Mnemonic) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
-        else imageFileName = p->GetImageFileName();
+        imageFileName = GetKyotoShogiImageFileName(pieceStyle, pieceColour, pieceType);
         break;
     case Shogi:
     case ShoShogi:
     case MiniShogi:
     case JudkinShogi:
     case EuroShogi:
-        if (pieceStyle == Mnemonic || pieceStyle == Asian || pieceStyle == Asian2) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
-        else if (pieceStyle == Asian3 || pieceStyle == Asian4) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
-        else imageFileName = p->GetImageFileName();
+    case HeianShogi:
+        if (pieceStyle == Mnemonic || pieceStyle == Asian || pieceStyle == Asian2) imageFileName = GetShogiImageFileName(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Asian3 || pieceStyle == Asian4) imageFileName = GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);
+        else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
         break;
     case WhaleShogi:
-        if (pieceStyle == European) imageFileName = p->GetImageFileName();
-        else imageFileName = "L" + p->GetImageFileName();
+        if (pieceStyle == European) imageFileName = GetWhaleShogiImageFileName(pieceColour, pieceType);
+        else imageFileName = "L" + GetWhaleShogiImageFileName(pieceColour, pieceType);
         break;
     case ToriShogi:
-        if (pieceStyle == European) imageFileName = p->GetImageFileName();
-        else if (pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
-        else imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
+        imageFileName = GetToriShogiImageFileName(pieceStyle, pieceColour, pieceType);
         break;
     case YariShogi:
-        imageFileName = p->GetImageFileName();
+        imageFileName = GetYariShogiImageFileName(pieceColour, pieceType);
         break;
     case DaiShogi:
-    case HeianShogi:
     case HeianDaiShogi:
-        if (pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
-        else if (pieceStyle == Asian2 || pieceStyle == Asian4) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
-        else imageFileName = p->GetImageFileName();
+        if (pieceStyle == Asian) imageFileName = GetKanjiImageFileName(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Asian2 || pieceStyle == Asian4) imageFileName = GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);
+        else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
         break;
     case MakaDaiDaiShogi:
         imageFileName = pieceStyle == Asian ?
-            dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName() : dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
+            GetKanjiImageFileName3(pieceColour, pieceType, isPromoted) : GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);
         break;
     case KoShogi:
-        imageFileName = pieceStyle == Asian || pieceStyle == Mnemonic ?
-            dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName() :
-            isAsianStyle ? dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2() : dynamic_cast<ChuShogiPiece*>(p)->GetMnemonicImageFileName();
+        imageFileName = GetKoShogiImageFileName(pieceStyle, pieceColour, pieceType, isPromoted);
         break;
     case ChuShogi:
-        if (pieceStyle == Asian) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
-        else if (pieceStyle == Asian2) imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName2();
-        else if (pieceStyle == Asian3) imageFileName = "J" + dynamic_cast<ChuShogiPiece*>(p)->GetMnemonicImageFileName();
-        else if (pieceStyle == Mnemonic) imageFileName = dynamic_cast<ChuShogiPiece*>(p)->GetMnemonicImageFileName();
-        else imageFileName = p->GetImageFileName();
+        if (pieceStyle == Asian) imageFileName = GetKanjiImageFileName(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Asian2) imageFileName = GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Asian3) imageFileName = "J" + GetMnemonicImageFileName(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Mnemonic) imageFileName = GetMnemonicImageFileName(pieceColour, pieceType, isPromoted);
+        else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
         break;
     case TenjikuShogi:
+        if (pieceStyle == European || pieceStyle == Mnemonic) imageFileName = GetTenjikuShogiImageFileName(pieceColour, pieceType, isPromoted);
+        else imageFileName = GetKanjiImageFileName(pieceColour, pieceType, isPromoted);
+        break;
     case WaShogi:
     case CrazyWa:
-        imageFileName = isAsianStyle ?
-            dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName() : p->GetImageFileName();
+        imageFileName = GetWaShogiImageFileName(pieceStyle, pieceColour, pieceType, isPromoted);
         break;
     case DaiDaiShogi:
-        imageFileName = dynamic_cast<KanjiPiece*>(p)->GetKanjiImageFileName();
+        imageFileName = GetKanjiImageFileName3(pieceColour, pieceType, isPromoted);
         break;
     case Chess:
     case CapablancaChess:
@@ -317,14 +312,14 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     case Shatranj:
     case Shatar:
     case GrandeAcedrex:
-        imageFileName = p->GetImageFileName();
+        imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
         break;
     case Makruk:
-        if (pieceStyle == European) imageFileName = p->GetImageFileName();
-        else imageFileName = dynamic_cast<MakrukPiece*>(p)->GetImageFileName2();
+        if (pieceStyle == European) imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
+        else imageFileName = GetMakrukImageFileName(pieceColour, pieceType, isPromoted);
         break;
     }
-    return GetResourcePrefix(gameVariant, pieceStyle) + QString::fromStdString(imageFileName);
+    return GetResourcePrefix(gameVariant, pieceStyle) + imageFileName;
 }
 
 QString GraphicsManager::GetImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted)
@@ -436,10 +431,10 @@ QString GraphicsManager::GetImageFileName(PieceColour pieceColour, PieceType pie
     }
 }
 
-QString GraphicsManager::GetMakrukImageFileName(PieceColour pieceColour, PieceType pieceType, PieceType basePieceType, bool isPromoted)
+QString GraphicsManager::GetMakrukImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted)
 {
     QString colour = pieceColour == White ? "White" : "Black";
-    if (basePieceType == Pawn && isPromoted)
+    if (pieceType == Queen && isPromoted)
     {
         return colour + "PawnP.png";
     }
@@ -471,6 +466,27 @@ QString GraphicsManager::GetXiangqiImageFileName(PieceColour pieceColour, PieceT
     default:
         return "";
     }
+}
+
+QString GraphicsManager::GetShogiImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted)
+{
+    if (isPromoted)
+    {
+        const QString colour = pieceColour == White ? "White" : "Black";
+        if (pieceType == DragonHorse)
+        {
+            return colour + "CrownedBishop.png";
+        }
+        if (pieceType == DragonKing)
+        {
+            return colour + "CrownedRook.png";
+        }
+        if (pieceType == Prince)
+        {
+            return colour + "King.png";
+        }
+    }
+    return GetImageFileName(pieceColour, pieceType, isPromoted);
 }
 
 QString GraphicsManager::GetWhaleShogiImageFileName(PieceColour pieceColour, PieceType pieceType)
@@ -525,9 +541,224 @@ QString GraphicsManager::GetYariShogiImageFileName(PieceColour pieceColour, Piec
     }
 }
 
+QString GraphicsManager::GetMnemonicImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted)
+{
+    const QString colour = pieceColour == White ? "_B" : "_W";
+    const QString promo = isPromoted ? "P" : "";
+    switch (pieceType)
+    {
+    case King:
+        return "King" + colour + ".png";
+    case Prince:
+        return "Prince" + colour + ".png";
+    case Lion:
+        return promo + "Lion" + colour + ".png";
+    case Queen:
+        return promo + "FreeKing" + colour + ".png";
+    case DragonKing:
+        return promo + "Dragon" + colour + ".png";
+    case DragonHorse:
+        return promo + "Horse" + colour + ".png";
+    case Rook:
+        return promo + "Rook" + colour + ".png";
+    case Bishop:
+        return promo + "Bishop" + colour + ".png";
+    case VerticalMover:
+        return promo + "Vertical" + colour + ".png";
+    case SideMover:
+        return promo + "Side" + colour + ".png";
+    case ReverseChariot:
+        return "Reverse" + colour + ".png";
+    case Lance:
+        return "Lance" + colour + ".png";
+    case Kylin:
+        return "Kylin" + colour + ".png";
+    case Phoenix:
+        return "Phoenix" + colour + ".png";
+    case Elephant:
+        return promo + "Elephant" + colour + ".png";
+    case Tiger:
+        return "Tiger" + colour + ".png";
+    case Leopard:
+        return "Leopard" + colour + ".png";
+    case Gold:
+        return "Gold" + colour + ".png";
+    case Silver:
+        return "Silver" + colour + ".png";
+    case Copper:
+        return "Copper" + colour + ".png";
+    case GoBetween:
+        return "GoBetween" + colour + ".png";
+    case Eagle:
+        return "Eagle" + colour + ".png";
+    case Unicorn:
+        return "Falcon" + colour + ".png";
+    case FlyingStag:
+        return "Stag" + colour + ".png";
+    case FreeBoar:
+        return "Boar" + colour + ".png";
+    case FlyingOx:
+        return "Ox" + colour + ".png";
+    case WhiteHorse:
+        return "WHorse" + colour + ".png";
+    case Whale:
+        return "Whale" + colour + ".png";
+    case Tokin:
+        return "Tokin" + colour + ".png";
+    case Pawn:
+        return "Pawn" + colour + ".png";
+    case ViceGeneral:
+        return "ViceGeneral" + colour + ".png";
+    case GreatGeneral:
+        return "GreatGeneral" + colour + ".png";
+    case BishopGeneral:
+        return promo + "BishopGeneral" + colour + ".png";
+    case RookGeneral:
+        return promo + "RookGeneral" + colour + ".png";
+    case MultiGeneral:
+        return "Multi-General" + colour + "2.png";
+    case Dog:
+        return promo + "Dog" + colour + ".png";
+    case FreeEagle:
+        return "FreeEagle" + colour + ".png";
+    case LionHawk:
+        return "Lion-Hawk" + colour + ".png";
+    case SideSoldier:
+        return promo + "SideSoldier" + colour + ".png";
+    case VerticalSoldier:
+        return promo + "VerticalSoldier" + colour + ".png";
+    case ChariotSoldier:
+        return promo + "ChariotSoldier" + colour + ".png";
+    case WaterBuffalo:
+        return promo + "WaterBuffalo" + colour + ".png";
+    case HeavenlyTetrarch:
+        return "Heaven" + colour + ".png";
+    case FireDemon:
+        return "FireDemon" + colour + ".png";
+    case Knight:
+        return "Knight" + colour + ".png";
+    case Iron:
+        return "Iron" + colour + ".png";
+    default:
+        return "";
+    }
+}
+
 QString GraphicsManager::GetKanjiImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted)
 {
-    //
+    QString colour = pieceColour == White ? "" : "Flip";
+    if (isPromoted && pieceType != King)
+    {
+        colour = "P" + colour;
+    }
+    switch (pieceType)
+    {
+    case King:
+        return "King" + colour + ".png";
+    case Prince:
+        return "Prince" + colour + ".png";
+    case Lion:
+        return "Lion" + colour + ".png";
+    case Queen:
+        return "Queen" + colour + ".png";
+    case DragonKing:
+        return "DragonKing" + colour + ".png";
+    case DragonHorse:
+        return "DragonHorse" + colour + ".png";
+    case Rook:
+        return "Rook" + colour + ".png";
+    case Bishop:
+        return "Bishop" + colour + ".png";
+    case VerticalMover:
+        return "VerticalMover" + colour + ".png";
+    case SideMover:
+        return "SideMover" + colour + ".png";
+    case ReverseChariot:
+        return "Chariot" + colour + ".png";
+    case Lance:
+        return "Lance" + colour + ".png";
+    case Kylin:
+        return "Kirin" + colour + ".png";
+    case Phoenix:
+        return "Phoenix" + colour + ".png";
+    case Elephant:
+        return "Elephant" + colour + ".png";
+    case Tiger:
+        return "Tiger" + colour + ".png";
+    case Gold:
+    case Tokin:
+        return "Gold" + colour + ".png";
+    case Silver:
+        return "Silver" + colour + ".png";
+    case Copper:
+        return "Copper" + colour + ".png";
+    case Leopard:
+        return "Leopard" + colour + ".png";
+    case GoBetween:
+        return "GoBetween" + colour + ".png";
+    case Pawn:
+        return "Pawn" + colour + ".png";
+    case Eagle:
+        return "Eagle" + colour + ".png";
+    case Unicorn:
+        return "Hawk" + colour + ".png";
+    case FlyingOx:
+        return "FlyingOx" + colour + ".png";
+    case FreeBoar:
+        return "FreeBoar" + colour + ".png";
+    case FlyingStag:
+        return "Stag" + colour + ".png";
+    case WhiteHorse:
+        return "White" + colour + ".png";
+    case Whale:
+        return "Whale" + colour + ".png";
+    case Knight:
+        return "Knight" + colour + ".png";
+    case ViolentOx:
+        return "ViolentOx" + colour + ".png";
+    case FlyingDragon:
+        return "FlyingDragon" + colour + ".png";
+    case AngryBoar:
+        return "AngryBoar" + colour + ".png";
+    case CatSword:
+        return "Cat" + colour + ".png";
+    case EvilWolf:
+        return "Wolf" + colour + ".png";
+    case Iron:
+        return "Iron" + colour + ".png";
+    case Stone:
+        return "Stone" + colour + ".png";
+    case ViceGeneral:
+        return "Vice" + colour + ".png";
+    case GreatGeneral:
+        return "Great" + colour + ".png";
+    case BishopGeneral:
+        return "BishopGeneral" + colour + ".png";
+    case RookGeneral:
+        return "RookGeneral" + colour + ".png";
+    case MultiGeneral:
+        return "Multi" + colour + ".png";
+    case Dog:
+        return "Dog" + colour + ".png";
+    case FreeEagle:
+        return "FreeEagle" + colour + ".png";
+    case LionHawk:
+        return "LionHawk" + colour + ".png";
+    case SideSoldier:
+        return "SideSoldier" + colour + ".png";
+    case VerticalSoldier:
+        return "VerticalSoldier" + colour + ".png";
+    case ChariotSoldier:
+        return "ChariotSoldier" + colour + ".png";
+    case WaterBuffalo:
+        return "WaterBuffalo" + colour + ".png";
+    case HeavenlyTetrarch:
+        return "HeavenlyTetrarch" + colour + ".png";
+    case FireDemon:
+        return "FireDemon" + colour + ".png";
+    default:
+        return "";
+    }
 }
 
 QString GraphicsManager::GetKanjiImageFileName2(PieceColour pieceColour, PieceType pieceType, bool isPromoted)
@@ -710,5 +941,764 @@ QString GraphicsManager::GetKanjiImageFileName2(PieceColour pieceColour, PieceTy
         return "Perevernutyj_serebrjanyj_general" + colour + ".png";
     default:
         return "";
+    }
+}
+
+QString GraphicsManager::GetKanjiImageFileName3(PieceColour pieceColour, PieceType pieceType, bool isPromoted)
+{
+    QString colour = pieceColour == White ? "" : "Flip";
+    if (isPromoted && pieceType != King && pieceType != Queen && pieceType != DragonKing && pieceType != DragonHorse)
+    {
+        colour = "P" + colour;
+    }
+    switch (pieceType)
+    {
+    case Gold:
+    case Silver:
+    case Copper:
+    case Iron:
+    case Tile:
+    case Stone:
+    case Earth:
+        return QString::fromStdString(MakaDaiDaiShogiPieceType2Description(pieceType)) + "General" + colour + ".png";
+    case Leopard:
+        return "FerociousLeopard" + colour + ".png";
+    case Tiger:
+        return "BlindTiger" + colour + ".png";
+    case Elephant:
+        return "DrunkElephant" + colour + ".png";
+    case Kylin:
+        return "Kirin" + colour + ".png";
+    case Guardian:
+        return "GuardianGod" + colour + ".png";
+    case Yaksha:
+        return "SheDevil" + colour + ".png";
+    case FreeSerpent:
+        return "FreeSnake" + colour + ".png";
+    case FreeGo:
+        return "FreeGoBetween" + colour + ".png";
+    case Tengu:
+        return "LongNosedGoblin" + colour + ".png";
+    case RacingChariot:
+        return "SideChariot" + colour + ".png";
+    case NeighboringKing:
+        return "NeighborKing" + colour + ".png";
+    case Wood:
+        return "WoodGeneral" + colour + ".png";
+    default:
+        QString desc = QString::fromStdString(MakaDaiDaiShogiPieceType2Description(pieceType));
+        desc.replace(" ", "");
+        return desc + colour + ".png";
+    }
+}
+
+QString GraphicsManager::GetTenjikuShogiImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted)
+{
+    const QString colour = pieceColour == White ? "_B" : "_W";
+    const QString promo = isPromoted ? "P" : "";
+    switch (pieceType)
+    {
+    case Queen:
+        return promo + "Queen" + colour + ".png";
+    case Tokin:
+        return promo + "Gold" + colour + ".png";
+    case FreeBoar:
+        return "FBoar" + colour + ".png";
+    case FlyingOx:
+        return "pOx" + colour + ".png";
+    default:
+        return GetMnemonicImageFileName(pieceColour, pieceType, isPromoted);
+    }
+}
+
+std::string GraphicsManager::MakaDaiDaiShogiPieceType2Description(PieceType pieceType)
+{
+    switch (pieceType)
+    {
+    case None: return "None";
+    case King: return "King";
+    case Lion: return "Lion";
+    case Queen: return "Queen";
+    case DragonKing: return "Dragon King";
+    case DragonHorse: return "Dragon Horse";
+    case Rook: return "Rook";
+    case Bishop: return "Bishop";
+    case Knight: return "Knight";
+    case VerticalMover: return "Vertical Mover";
+    case SideMover: return "Side Mover";
+    case Cannon: return "Cannon";
+    case ReverseChariot: return "Reverse Chariot";
+    case Lance: return "Lance";
+    case Kylin: return "Kylin";
+    case Phoenix: return "Phoenix";
+    case Elephant: return "Elephant";
+    case Prince: return "Prince";
+    case Tiger: return "Tiger";
+    case Gold: return "Gold";
+    case Silver: return "Silver";
+    case Copper: return "Copper";
+    case Leopard: return "Leopard";
+    case GoBetween: return "Go Between";
+    case Pawn: return "Pawn";
+    case Eagle: return "Eagle";
+    case Unicorn: return "Unicorn";
+    case FlyingOx: return "Flying Ox";
+    case FreeBoar: return "Free Boar";
+    case FlyingStag: return "Flying Stag";
+    case WhiteHorse: return "White Horse";
+    case Whale: return "Whale";
+    case PromotedLance: return "Promoted Lance";
+    case PromotedKnight: return "Promoted Knight";
+    case PromotedSilver: return "Promoted Silver";
+    case Tokin: return "Tokin";
+    case ViolentOx: return "Violent Ox";
+    case FlyingDragon: return "Flying Dragon";
+    case AngryBoar: return "Angry Boar";
+    case CatSword: return "Cat Sword";
+    case EvilWolf: return "Evil Wolf";
+    case Iron: return "Iron";
+    case Stone: return "Stone";
+    case Dog: return "Dog";
+    case ViceGeneral: return "Vice General";
+    case GreatGeneral: return "Great General";
+    case BishopGeneral: return "Bishop General";
+    case RookGeneral: return "Rook General";
+    case MultiGeneral: return "Multi General";
+    case FreeEagle: return "Free Eagle";
+    case LionHawk: return "Lion Hawk";
+    case SideSoldier: return "Side Soldier";
+    case VerticalSoldier: return "Vertical Soldier";
+    case ChariotSoldier: return "Chariot Soldier";
+    case WaterBuffalo: return "Water Buffalo";
+    case HeavenlyTetrarch: return "Heavenly Tetrarch";
+    case FireDemon: return "Fire Demon";
+    case BlindMonkey:          return "Blind Monkey";
+    case BlueDragon:           return "Blue Dragon";
+    case Dove:                 return "Dove";
+    case EasternBarbarian:     return "Eastern Barbarian";
+    case WesternBarbarian:     return "Western Barbarian";
+    case SouthernBarbarian:    return "Southern Barbarian";
+    case NorthernBarbarian:    return "Northern Barbarian";
+    case EnchantedBadger:      return "Enchanted Badger";
+    case EnchantedFox:         return "Enchanted Fox";
+    case FragrantElephant:     return "Fragrant Elephant";
+    case FreeDemon:            return "Free Demon";
+    case FreeDreamEater:       return "Free Dream Eater";
+    case FuriousFiend:         return "Furious Fiend";
+    case GoldenBird:           return "Golden Bird";
+    case GreatElephant:        return "Great Elephant";
+    case HowlingDog:           return "Howling Dog";
+    case LeftGeneral:          return "Left General";
+    case RightGeneral:         return "Right General";
+    case Tengu:                return "Tengu";
+    case NeighboringKing:      return "Neighboring King";
+    case OldKite:              return "Old Kite";
+    case PoisonousSnake:       return "Poisonous Snake";
+    case PrancingStag:         return "Prancing Stag";
+    case RacingChariot:        return "Racing Chariot";
+    case RushingBird:          return "Rushing Bird";
+    case SavageTiger:          return "Savage Tiger";
+    case BuddhistDevil:        return "Buddhist Devil";
+    case Yaksha:               return "Yaksha";
+    case SquareMover:          return "Square Mover";
+    case StandardBearer:       return "Standard Bearer";
+    case ViolentBear:          return "Violent Bear";
+    case WhiteElephant:        return "White Elephant";
+    case WhiteTiger:           return "White Tiger";
+    case Wood:                 return "Wood";
+    case FlyingHorse:          return "Flying Horse";
+    case GreatDragon:          return "Great Dragon";
+    case MountainWitch:        return "Mountain Witch";
+    case WizardStork:          return "Wizard Stork";
+    case LionDog:              return "Lion Dog";
+    case Deva:                 return "Deva";
+    case DarkSpirit:           return "Dark Spirit";
+    case Tile:                 return "Tile";
+    case Earth:                return "Earth";
+    case CoiledSerpent:        return "Coiled Serpent";
+    case RecliningDragon:      return "Reclining Dragon";
+    case ChineseCock:          return "Chinese Cock";
+    case OldMonkey:            return "Old Monkey";
+    case BlindBear:            return "Blind Bear";
+    case Wrestler:             return "Wrestler";
+    case Guardian:             return "Guardian";
+    case BuddhistSpirit:       return "Buddhist Spirit";
+    case OldRat:               return "OldRat";
+    case Donkey:               return "Donkey";
+    case Capricorn:            return "Capricorn";
+    case HookMover:            return "Hook Mover";
+    case SideFlier:            return "Side Flier";
+    case LeftChariot:          return "Left Chariot";
+    case RightChariot:         return "Right Chariot";
+    case Emperor:              return "Emperor";
+    case TeachingKing:         return "Teaching King";
+    case FreeGold:             return "Free Gold";
+    case FreeSilver:           return "Free Silver";
+    case FreeCopper:           return "Free Copper";
+    case FreeIron:             return "Free Iron";
+    case FreeTile:             return "Free Tile";
+    case FreeStone:            return "Free Stone";
+    case FreeEarth:            return "Free Earth";
+    case FreeGo:               return "Free Go";
+    case FreeTiger:            return "Free Tiger";
+    case FreeLeopard:          return "Free Leopard";
+    case FreeSerpent:          return "Free Serpent";
+    case FreeDragon:           return "Free Dragon";
+    case FreeWolf:             return "Free Wolf";
+    case FreeCat:              return "Free Cat";
+    case FreeBear:             return "Free Bear";
+    case Bat:                  return "Bat";
+    case Archbishop:           return "Archbishop";
+    case Chancellor:           return "Chancellor";
+    default: return "";
+    }
+}
+
+std::string GraphicsManager::KoShogiPieceType2Description(PieceType pieceType)
+{
+    switch (pieceType)
+    {
+    case King:           return "General";
+    case Prince:         return "Governor";
+    case Queen:          return "Millenary";
+    case Rook:           return "Chariot Unit";
+    case Bishop:         return "Elephant";
+    case Gold:           return "Aide";
+    case Silver:         return "Staff";
+    case Copper:         return "Engineer";
+    case FlyingOx:       return "Commissar";
+    case FreeBoar:       return "Heavenly Fortress";
+    case VerticalMover:  return "Patrol Unit";
+    case DragonHorse:    return "Centuria";
+    case DragonKing:     return "Quartermaster";
+    case CatSword:       return "Shield";
+    case Leopard:        return "Chief of Staff";
+    case FlyingStag:     return "Town Brigade";
+    case Tiger:          return "Sentry";
+    case Elephant:       return "Aide de Camp";
+    case Phoenix:        return "Staff Officer";
+    case Kylin:          return "Clerk";
+    case Knight:         return "Cavalryman";
+    case Pawn:           return "Pawn";
+    case MiddleTroop:          return "Middle Troop";
+    case Drum:                 return "Drum";
+    case Thunderclap:          return "Thunderclap";
+    case Flag:                 return "Flag";
+    case RoamingAssault:       return "Roaming Assault";
+    case CompanyCommander:     return "Company Commander";
+    case ViceCommissioner:     return "Vice Commissioner";
+    case PoisonFlame:          return "Poison Flame";
+    case Lion:                 return "Wrestler";
+    case DoubleKylin:          return "Master at Arms";
+    case DoublePhoenix:        return "Flag and Drum";
+    case TaoistPriest:         return "Taoist Priest";
+    case SpiritualMonk:        return "Spiritual Monk";
+    case ExtensiveFog:         return "Extensive Fog";
+    case HolyLight:			   return "Holy Light";
+    case AdvanceGuard:         return "Advance Guard";
+    case RearGuard:            return "Rear Guard";
+    case SkywardNet:           return "Skyward Net";
+    case EarthwardNet:         return "Earthward Net";
+    case RisingDragon:         return "Rising Dragon";
+    case WingedTiger:          return "Winged Tiger";
+    case FlyingHawk:           return "Flying Hawk";
+    case Longbow:              return "Longbow";
+    case LongbowKnight:        return "Longbow Knight";
+    case Crossbow:             return "Crossbow";
+    case CrossbowKnight:       return "Crossbow Knight";
+    case Cannon:               return "Cannon";
+    case CannonCarriage:       return "Cannon Carriage";
+    case FrankishCannon:       return "Frankish Cannon";
+    case DivineCarriage:       return "Divine Carriage";
+    case KnightCaptain:        return "Knight Captain";
+    case WingedHorse:          return "Winged Horse";
+    case ShieldCaptain:        return "Shield Captain";
+    case Chariot:              return "Chariot";
+    case Vanguard:             return "Vanguard";
+    default: return "";
+    }
+}
+
+QString GraphicsManager::GetKoShogiImageFileName(PieceStyle pieceStyle, PieceColour pieceColour, PieceType pieceType, bool isPromoted)
+{
+    if (pieceStyle == European)
+    {
+        QString colour = pieceColour == White ? "w" : "b";
+        switch (pieceType)
+        {
+        case King:           return colour + "g" + ".png";
+        case Prince:         return colour + "go" + ".png";
+        case Queen:          return colour + "m" + ".png";
+        case Rook:           return colour + "cu" + ".png";
+        case Bishop:         return colour + "e" + ".png";
+        case Gold:           return colour + "a" + ".png";
+        case Silver:         return colour + "s" + ".png";
+        case Copper:         return colour + "en" + ".png";
+        case FlyingOx:       return colour + "co" + ".png";
+        case FreeBoar:       return colour + "ib" + ".png";
+        case VerticalMover:  return colour + "pu" + ".png";
+        case DragonHorse:    return colour + "cr" + ".png";
+        case DragonKing:     return colour + "q" + ".png";
+        case CatSword:       return colour + "sh" + ".png";
+        case Leopard:        return colour + "cs" + ".png";
+        case FlyingStag:     return colour + "tb" + ".png";
+        case Tiger:          return colour + "sn" + ".png";
+        case Elephant:       return colour + "ac" + ".png";
+        case Phoenix:        return colour + "so" + ".png";
+        case Kylin:          return colour + "cl" + ".png";
+        case Knight:         return colour + "hs" + ".png";
+        case Pawn:           return colour + "p" + ".png";
+        case MiddleTroop:          return colour + "mt" + ".png";
+        case Drum:                 return colour + "d" + ".png";
+        case Thunderclap:          return colour + "tc" + ".png";
+        case Flag:                 return colour + "b" + ".png";
+        case RoamingAssault:       return colour + "ra" + ".png";
+        case CompanyCommander:     return colour + "vb" + ".png";
+        case ViceCommissioner:     return colour + "vc" + ".png";
+        case PoisonFlame:          return colour + "pf" + ".png";
+        case Lion:                 return colour + "wr" + ".png";
+        case DoubleKylin:          return colour + "ma" + ".png";
+        case DoublePhoenix:        return colour + "bd" + ".png";
+        case TaoistPriest:         return colour + "tp" + ".png";
+        case SpiritualMonk:        return colour + "sm" + ".png";
+        case ExtensiveFog:         return colour + "tf" + ".png";
+        case HolyLight:			   return colour + "il" + ".png";
+        case AdvanceGuard:         return colour + "ag" + ".png";
+        case RearGuard:            return colour + "rg" + ".png";
+        case SkywardNet:           return colour + "hv" + ".png";
+        case EarthwardNet:         return colour + "ev" + ".png";
+        case RisingDragon:         return colour + "da" + ".png";
+        case WingedTiger:          return colour + "tw" + ".png";
+        case FlyingHawk:           return colour + "wh" + ".png";
+        case Longbow:              return colour + "lb" + ".png";
+        case LongbowKnight:        return colour + "lc" + ".png";
+        case Crossbow:             return colour + "sb" + ".png";
+        case CrossbowKnight:       return colour + "sc" + ".png";
+        case Cannon:               return colour + "c" + ".png";
+        case CannonCarriage:       return colour + "gc" + ".png";
+        case FrankishCannon:       return colour + "ec" + ".png";
+        case DivineCarriage:       return colour + "cg" + ".png";
+        case KnightCaptain:        return colour + "ca" + ".png";
+        case WingedHorse:          return colour + "wg" + ".png";
+        case ShieldCaptain:        return colour + "su" + ".png";
+        case Chariot:              return colour + "ch" + ".png";
+        case Vanguard:             return colour + "v" + ".png";
+        default: return "";
+        }
+    }
+    else if (pieceStyle == Asian || pieceStyle == Mnemonic)
+    {
+        QString colour = pieceColour == White ? "F" : "";
+        if (isPromoted && pieceType != King && pieceType != Lion && pieceType != Bishop)
+        {
+            colour = "P" + colour;
+        }
+        switch (pieceType)
+        {
+        case Rook:
+            return "ChariotCaptain" + colour + ".png";
+        case VerticalMover:
+            return "PawnCaptain" + colour + ".png";
+        case Knight:
+            return "Knight" + colour + ".png";
+        case FrankishCannon:
+            return "EuropeanCannon" + colour + ".png";
+        case Copper:
+            return "MilitaryEngineer" + colour + ".png";
+        case Queen:
+            return "Chiliarch" + colour + ".png";
+        case Leopard:
+            return "MilitaryOfficer" + colour + ".png";
+        case DragonKing:
+            return "Optio" + colour + ".png";
+        case Elephant:
+            return "Guard" + colour + ".png";
+        case SkywardNet:
+            return "SkyNet" + colour + ".png";
+        case EarthwardNet:
+            return "EarthNet" + colour + ".png";
+        case FlyingStag:
+            return "BattalionCommander" + colour + ".png";
+        case DoubleKylin:
+            return "Strategist" + colour + ".png";
+        case DoublePhoenix:
+            return "Flag-Drum" + colour + ".png";
+        case FlyingOx:
+            return "MilitaryCommissioner" + colour + ".png";
+        case FreeBoar:
+            return "ImperialBase" + colour + ".png";
+        case Prince:
+            return "Marshal" + colour + ".png";
+        case Lion:
+            return "Wrestler" + colour + ".png";
+        default:
+            QString desc = QString::fromStdString(KoShogiPieceType2Description(pieceType));
+            desc.replace(" ", "");
+            return desc + colour + ".png";
+        }
+    }
+    else
+    {
+        QString colour = pieceColour == White ? "kw" : "kb";
+        switch (pieceType)
+        {
+        case King:           return colour + "g" + ".png";
+        case Prince:         return colour + "go" + ".png";
+        case Queen:          return colour + (isPromoted ? "mm" : "m") + ".png";
+        case Rook:           return colour + (isPromoted ? "cc" : "cu") + ".png";
+        case Bishop:         return colour + "e" + ".png";
+        case Gold:           return colour + "a" + ".png";
+        case Silver:         return colour + "s" + ".png";
+        case Copper:         return colour + "en" + ".png";
+        case FlyingOx:       return colour + "co" + ".png";
+        case FreeBoar:       return colour + "ib" + ".png";
+        case VerticalMover:  return colour + (isPromoted ? "pp" : "pu") + ".png";
+        case DragonHorse:    return colour + (isPromoted ? "ss" : "cr") + ".png";
+        case DragonKing:     return colour + (isPromoted ? "aa" : "q") + ".png";
+        case CatSword:       return colour + "sh" + ".png";
+        case Leopard:        return colour + "cs" + ".png";
+        case FlyingStag:     return colour + "tb" + ".png";
+        case Tiger:          return colour + "sn" + ".png";
+        case Elephant:       return colour + "ac" + ".png";
+        case Phoenix:        return colour + "so" + ".png";
+        case Kylin:          return colour + "cl" + ".png";
+        case Knight:         return colour + "hs" + ".png";
+        case Pawn:           return colour + "p" + ".png";
+        case MiddleTroop:          return colour + "mt" + ".png";
+        case Drum:                 return colour + "d" + ".png";
+        case Thunderclap:          return colour + "tc" + ".png";
+        case Flag:                 return colour + "b" + ".png";
+        case RoamingAssault:       return colour + "ra" + ".png";
+        case CompanyCommander:     return colour + "vb" + ".png";
+        case ViceCommissioner:     return colour + "vc" + ".png";
+        case PoisonFlame:          return colour + "pf" + ".png";
+        case Lion:                 return colour + "wr" + ".png";
+        case DoubleKylin:          return colour + "ma" + ".png";
+        case DoublePhoenix:        return colour + "bd" + ".png";
+        case TaoistPriest:         return colour + "tp" + ".png";
+        case SpiritualMonk:        return colour + "sm" + ".png";
+        case ExtensiveFog:         return colour + "tf" + ".png";
+        case HolyLight:			   return colour + "il" + ".png";
+        case AdvanceGuard:         return colour + "ag" + ".png";
+        case RearGuard:            return colour + "rg" + ".png";
+        case SkywardNet:           return colour + "hv" + ".png";
+        case EarthwardNet:         return colour + "ev" + ".png";
+        case RisingDragon:         return colour + "da" + ".png";
+        case WingedTiger:          return colour + "tw" + ".png";
+        case FlyingHawk:           return colour + "wh" + ".png";
+        case Longbow:              return colour + "lb" + ".png";
+        case LongbowKnight:        return colour + "lc" + ".png";
+        case Crossbow:             return colour + "sb" + ".png";
+        case CrossbowKnight:       return colour + "sc" + ".png";
+        case Cannon:               return colour + "c" + ".png";
+        case CannonCarriage:       return colour + "gc" + ".png";
+        case FrankishCannon:       return colour + "ec" + ".png";
+        case DivineCarriage:       return colour + "cg" + ".png";
+        case KnightCaptain:        return colour + (isPromoted ? "hh" : "ca") + ".png";
+        case WingedHorse:          return colour + "wg" + ".png";
+        case ShieldCaptain:        return colour + (isPromoted ? "uu" : "su") + ".png";
+        case Chariot:              return colour + "ch" + ".png";
+        case Vanguard:             return colour + "v" + ".png";
+        default: return "";
+        }
+    }
+}
+
+QString GraphicsManager::GetKyotoShogiImageFileName(PieceStyle pieceStyle, PieceColour pieceColour, PieceType pieceType)
+{
+    const QString colour = pieceColour == White ? "B" : "W";
+    if (pieceStyle == European)
+    {
+        switch (pieceType)
+        {
+        case King:
+            return "King_I" + colour + ".png";
+        case Rook:
+            return "Rook_I" + colour + ".png";
+        case Bishop:
+            return "Bishop_I" + colour + ".png";
+        case Lance:
+            return "Lance_I" + colour + ".png";
+        case Gold:
+            return "Gold_I" + colour + ".png";
+        case Tokin:
+            return "Tokin_I" + colour + ".png";
+        case Silver:
+            return "Silver_I" + colour + ".png";
+        case Pawn:
+            return "Pawn_I" + colour + ".png";
+        case Knight:
+            return "Knight_I" + colour + ".png";
+        default:
+            return "";
+        }
+    }
+    else if (pieceStyle == Mnemonic)
+    {
+        switch (pieceType)
+        {
+        case King:
+            return "King_F" + colour + ".png";
+        case Rook:
+            return "Rook_F" + colour + ".png";
+        case Bishop:
+            return "Bishop_F" + colour + ".png";
+        case Lance:
+            return "Lance_F" + colour + ".png";
+        case Gold:
+            return "Gold_F" + colour + ".png";
+        case Tokin:
+            return "Tokin_F" + colour + ".png";
+        case Silver:
+            return "Silver_F" + colour + ".png";
+        case Pawn:
+            return "Pawn_F" + colour + ".png";
+        case Knight:
+            return "Knight_F" + colour + ".png";
+        default:
+            return "";
+        }
+    }
+    else
+    {
+        switch (pieceType)
+        {
+        case King:
+            return "King_" + colour + ".png";
+        case Rook:
+            return "Rook_" + colour + ".png";
+        case Bishop:
+            return "Bishop_" + colour + ".png";
+        case Lance:
+            return "Lance_" + colour + ".png";
+        case Gold:
+            return "Gold_" + colour + ".png";
+        case Tokin:
+            return "Tokin_" + colour + ".png";
+        case Silver:
+            return "Silver_" + colour + ".png";
+        case Pawn:
+            return "Pawn_" + colour + ".png";
+        case Knight:
+            return "Knight_" + colour + ".png";
+        default:
+            return "";
+        }
+    }
+}
+
+QString GraphicsManager::GetWaShogiImageFileName(PieceStyle pieceStyle, PieceColour pieceColour, PieceType pieceType, bool isPromoted)
+{
+    if (pieceStyle == European || pieceStyle == Mnemonic)
+    {
+        QString colour = pieceColour == White ? "B" : "W";
+        if (isPromoted && (pieceType == CloudEagle || pieceType == FlyingFalcon || pieceType == Rook
+            || pieceType == SideMover || pieceType == Gold || pieceType == Silver || pieceType == TreacherousFox))
+        {
+            colour += "+";
+        }
+        switch (pieceType)
+        {
+        case King:
+            return colour + "craneking.png";
+        case Rook:
+            return colour + "GlidingSwallow.png";
+        case Lance:
+            return colour + "oxcart.png";
+        case Tokin:
+            return colour + "GoldenBird.png";
+        case Pawn:
+            return colour + "SparrowPawn.png";
+        case SideMover:
+            return colour + "Swallowswings.png";
+        case PloddingOx:
+            return colour + "PloddingOx.png";
+        case LiberatedHorse:
+            return colour + "LiberatedHorse.png";
+        case HeavenlyHorse:
+            return colour + "HeavenlyHorse.png";
+        case SwoopingOwl:
+            return colour + "SwoopingOwl.png";
+        case CloudEagle:
+            return colour + "CloudEagle.png";
+        case StruttingCrow:
+            return colour + "StruttingCrow.png";
+        case FlyingFalcon:
+            return colour + "FlyingFalcon.png";
+        case FlyingCock:
+            return colour + "FlyingCockerel.png";
+        case RaidingFalcon:
+            return colour + "RaidingFalcon.png";
+        case FlyingGoose:
+            return colour + "FlyingGoose.png";
+        case ClimbingMonkey:
+            return colour + "ClimbingMonkey.png";
+        case Silver:
+            return colour + "ViolentStag.png";
+        case Dog:
+            return colour + "Blinddog.png";
+        case Gold:
+            return colour + "ViolentWolf.png";
+        case Elephant:
+            return colour + "RoamingBoar.png";
+        case BearEyes:
+            return colour + "BearEyes.png";
+        case RunningRabbit:
+            return colour + "RunningRabbit.png";
+        case TreacherousFox:
+            return colour + "TreacherousFox.png";
+        case TenaciousFalcon:
+            return colour + "TenaciousFalcon.png";
+        default:
+            return "";
+        }
+    }
+    else
+    {
+        QString colour = pieceColour == White ? "" : "Flip";
+        if (isPromoted && pieceType != King)
+        {
+            colour = "P" + colour;
+        }
+        switch (pieceType)
+        {
+        case King:
+            return "CraneKing" + colour + ".png";
+        case Rook:
+            return "GlidingSwallow" + colour + ".png";
+        case Lance:
+            return "OxCart" + colour + ".png";
+        case Tokin:
+            return "GoldenBird" + colour + ".png";
+        case Pawn:
+            return "SparrowPawn" + colour + ".png";
+        case SideMover:
+            return "SwallowWing" + colour + ".png";
+        case PloddingOx:
+            return "PloddingOx" + colour + ".png";
+        case LiberatedHorse:
+            return "LiberatedHorse" + colour + ".png";
+        case HeavenlyHorse:
+            return "HeavenlyHorse" + colour + ".png";
+        case SwoopingOwl:
+            return "SwoopingKite" + colour + ".png";
+        case CloudEagle:
+            return "CloudEagle" + colour + ".png";
+        case StruttingCrow:
+            return "StruttingCrow" + colour + ".png";
+        case FlyingFalcon:
+            return "FlyingHawk" + colour + ".png";
+        case FlyingCock:
+            return "FlyingCock" + colour + ".png";
+        case RaidingFalcon:
+            return "RaidingHawk" + colour + ".png";
+        case FlyingGoose:
+            return "FlyingGoose" + colour + ".png";
+        case ClimbingMonkey:
+            return "ClimbingMonkey" + colour + ".png";
+        case Silver:
+            return "ViolentStag" + colour + ".png";
+        case Dog:
+            return "BlindDog" + colour + ".png";
+        case Gold:
+            return "ViolentWolf" + colour + ".png";
+        case Elephant:
+            return "RoamingBoar" + colour + ".png";
+        case BearEyes:
+            return "BearEye" + colour + ".png";
+        case RunningRabbit:
+            return "RunningRabbit" + colour + ".png";
+        case TreacherousFox:
+            return "TreacherousFox" + colour + ".png";
+        case TenaciousFalcon:
+            return "TenaciousHawk" + colour + ".png";
+        default:
+            return "";
+        }
+    }
+}
+
+QString GraphicsManager::GetToriShogiImageFileName(PieceStyle pieceStyle, PieceColour pieceColour, PieceType pieceType)
+{
+    if (pieceStyle == European || pieceStyle == Mnemonic)
+    {
+        QString colour = pieceColour == White ? "B" : "W";
+        switch (pieceType)
+        {
+        case King:
+            return colour + "Phoenix.png";
+        case Falcon:
+            return colour + "Falcon.png";
+        case Eagle:
+            return colour + "Eagle.png";
+        case Crane:
+            return colour + "Crane.png";
+        case Pheasant:
+            return colour + "Pheasant.png";
+        case LeftQuail:
+            return colour + "LQuail.png";
+        case RightQuail:
+            return colour + "RQuail.png";
+        case Pawn:
+            return colour + "Swallow.png";
+        case Goose:
+            return colour + "Goose.png";
+        default:
+            return "";
+        }
+    }
+    else if (pieceStyle == Asian)
+    {
+        QString colour = pieceColour == White ? "B" : "W";
+        switch (pieceType)
+        {
+        case King:
+            return colour + "PhoenixJ.png";
+        case Falcon:
+            return colour + "FalconJ.png";
+        case Eagle:
+            return colour + "EagleJ.png";
+        case Crane:
+            return colour + "CraneJ.png";
+        case Pheasant:
+            return colour + "PheasantJ.png";
+        case LeftQuail:
+            return colour + "LQuailJ.png";
+        case RightQuail:
+            return colour + "RQuailJ.png";
+        case Pawn:
+            return colour + "SwallowJ.png";
+        case Goose:
+            return colour + "GooseJ.png";
+        default:
+            return "";
+        }
+    }
+    else
+    {
+        QString colour = pieceColour == White ? "" : "Flip";
+        switch (pieceType)
+        {
+        case King:
+            return "DaPeng" + colour + ".png";
+        case Falcon:
+            return "Hawk" + colour + ".png";
+        case Eagle:
+            return "MountainHawkP" + colour + ".png";
+        case Crane:
+            return "Crane" + colour + ".png";
+        case Pheasant:
+            return "Pheasant" + colour + ".png";
+        case LeftQuail:
+            return "L-Quail" + colour + ".png";
+        case RightQuail:
+            return "R-Quail" + colour + ".png";
+        case Pawn:
+            return "Swallow" + colour + ".png";
+        case Goose:
+            return "WildGooseP" + colour + ".png";
+        default:
+            return "";
+        }
     }
 }

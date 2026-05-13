@@ -6,7 +6,6 @@ class Piece
 {
 public:
 	virtual ~Piece();
-	virtual std::string GetImageFileName() const;
 	virtual void Promote(PieceType pieceType = None) = 0;
 	virtual std::string StringCode() = 0;
 	PieceType GetBaseType() const;

@@ -85,29 +85,3 @@ PieceType YariShogiPiece::Description2PieceType(const std::string& description)
     if (description == "Yari Silver")    return YariSilver;
     return Piece::Description2PieceType(description);
 }
-
-std::string YariShogiPiece::GetImageFileName() const
-{
-    std::string colour = _pieceColour == White ? "" : "Flip";
-    switch (_pieceType)
-    {
-    case King:
-        return "King" + colour + ".png";
-    case Rook:
-        return "RookP" + colour + ".png";
-    case Pawn:
-        return "Pawn" + colour + ".png";
-    case YariKnight:
-        return "Knight" + colour + ".png";
-    case YariRook:
-        return "Rook" + colour + ".png";
-    case YariBishop:
-        return "Bishop" + colour + ".png";
-    case YariGold:
-        return "Gold" + colour + ".png";
-    case YariSilver:
-        return "Silver" + colour + ".png";
-    default:
-        return "";
-    }
-}

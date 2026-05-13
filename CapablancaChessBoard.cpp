@@ -45,7 +45,7 @@ void CapablancaChessBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new GothicChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
@@ -53,11 +53,6 @@ void CapablancaChessBoard::Initialize()
             }
         }
     }
-}
-
-Piece* CapablancaChessBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return new GothicChessPiece(pieceType, pieceColour);
 }
 
 void CapablancaChessBoard::GetMoves(Piece *piece, int x, int y)

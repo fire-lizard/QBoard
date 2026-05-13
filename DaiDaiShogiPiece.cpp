@@ -299,25 +299,3 @@ std::string DaiDaiShogiPiece::KanjiStringCode()
 		return MakaDaiDaiShogiPiece::KanjiStringCode();
 	}
 }
-
-std::string DaiDaiShogiPiece::GetKanjiImageFileName()
-{
-	std::string colour = _pieceColour == White ? "" : "Flip";
-	if (_isPromoted && _pieceType != King)
-	{
-		colour = "P" + colour;
-	}
-	switch (_pieceType)
-	{
-	case Tengu:
-		return "LongNosedGoblin" + colour + ".png";
-	case RacingChariot:
-		return "SideChariot" + colour + ".png";
-	case NeighboringKing:
-		return "NeighborKing" + colour + ".png";
-	case Wood:
-		return "WoodGeneral" + colour + ".png";
-	default:
-		return MakaDaiDaiShogiPiece::GetKanjiImageFileName();
-	}
-}

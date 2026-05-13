@@ -22,7 +22,6 @@ SOURCES += main.cpp\
     CourierChessBoard.cpp \
     CourierChessPiece.cpp \
     GothicChessBoard.cpp \
-    GothicChessPiece.cpp \
     GrandChessBoard.cpp \
     GrandeAcedrexBoard.cpp \
     GrandeAcedrexPiece.cpp \
@@ -111,7 +110,6 @@ HEADERS  += mainwindow.h \
     CourierChessBoard.h \
     CourierChessPiece.h \
     GothicChessBoard.h \
-    GothicChessPiece.h \
     GrandChessBoard.h \
     GrandeAcedrexBoard.h \
     GrandeAcedrexPiece.h \

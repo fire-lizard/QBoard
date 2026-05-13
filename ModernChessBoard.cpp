@@ -45,7 +45,7 @@ void ModernChessBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new GothicChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
