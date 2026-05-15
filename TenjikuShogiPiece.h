@@ -9,8 +9,5 @@ public:
 	TenjikuShogiPiece(PieceType pieceType, PieceColour pieceColour);
 	~TenjikuShogiPiece() override;
 	void Promote(PieceType pieceType = None) override;
-	std::string StringCode() override;
-	std::string KanjiStringCode() override;
-	static PieceType FromStringCode(const std::string& code);
 };
 

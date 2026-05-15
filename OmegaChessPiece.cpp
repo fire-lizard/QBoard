@@ -21,14 +21,3 @@ std::string OmegaChessPiece::StringCode()
         return ChessPiece::StringCode();
     }
 }
-
-PieceType OmegaChessPiece::FromStringCode(const std::string& code)
-{
-    static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-        {"C", Champion},
-        {"W", Wizard}
-    };
-
-    const auto it = codeToPieceType.find(code);
-    return it != codeToPieceType.end() ? it->second : ChessPiece::FromStringCode(code);
-}

@@ -26,17 +26,3 @@ std::string CourierChessPiece::StringCode()
         return ShatranjPiece::StringCode();
     }
 }
-
-PieceType CourierChessPiece::FromStringCode(const std::string& code)
-{
-    static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-        {"E", Bishop},
-        {"B", Courier},
-        {"W", Schleich},
-        {"M", Sage},
-        {"F", Queen}
-    };
-
-    const auto it = codeToPieceType.find(code);
-    return it != codeToPieceType.end() ? it->second : ShatranjPiece::FromStringCode(code);
-}

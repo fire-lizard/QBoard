@@ -20,18 +20,3 @@ std::string MakrukPiece::StringCode()
 		return ShatranjPiece::StringCode();
 	}
 }
-
-PieceType MakrukPiece::FromStringCode(const std::string& code)
-{
-	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-		{"K", King},
-		{"M", Queen},
-		{"S", Silver},
-		{"R", Rook},
-		{"N", Knight},
-		{"P", Pawn}
-	};
-
-	const auto it = codeToPieceType.find(code);
-	return it != codeToPieceType.end() ? it->second : None;
-}

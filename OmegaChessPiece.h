@@ -7,5 +7,4 @@ public:
     OmegaChessPiece(PieceType pieceType, PieceColour pieceColour);
     ~OmegaChessPiece() override;
     std::string StringCode() override;
-    static PieceType FromStringCode(const std::string& code);
 };

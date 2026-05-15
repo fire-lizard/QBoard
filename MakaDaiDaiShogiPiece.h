@@ -9,8 +9,5 @@ public:
 	MakaDaiDaiShogiPiece(PieceType pieceType, PieceColour pieceColour);
 	~MakaDaiDaiShogiPiece() override;
 	void Promote(PieceType pieceType = None) override;
-	std::string StringCode() override;
-	std::string KanjiStringCode() override;
-	static PieceType FromStringCode(const std::string& code);
 };
 

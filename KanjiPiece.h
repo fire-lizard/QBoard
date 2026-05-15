@@ -6,6 +6,5 @@ class KanjiPiece : public Piece
 public:
 	KanjiPiece(PieceType pieceType, PieceColour pieceColour);
 	~KanjiPiece() override;
-	virtual std::string KanjiStringCode() = 0;
 };
 

@@ -2,6 +2,7 @@
 #include <QRegularExpression>
 #include "Common.h"
 #include "WbEngine.h"
+#include "stringmanager.h"
 #include "ChessBoard.h"
 #include "XiangqiBoard.h"
 #include "ShogiBoard.h"

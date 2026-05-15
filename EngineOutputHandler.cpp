@@ -879,48 +879,11 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
             isDigit = false;
             std::string stringCode(1, c);
 			PieceType pieceType = None;
-            if (gameVariant == OmegaChess)
-            {
-                pieceType = OmegaChessPiece::FromStringCode(uppercase(stringCode));
-            }
-            else if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) ||
-                    gameVariant == Shatranj || gameVariant == Shatar)
+            if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi ||
+                gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == EuroShogi || gameVariant == HeianShogi ||
+                gameVariant == HeianDaiShogi || gameVariant == ToriShogi || gameVariant == WaShogi || gameVariant == CrazyWa || gameVariant == ChuShogi)
 			{
-				pieceType = ShatranjPiece::FromStringCode(uppercase(stringCode));
-			}
-            else if (gameVariant == GrandeAcedrex)
-            {
-                pieceType = GrandeAcedrexPiece::FromStringCode(uppercase(stringCode));
-            }
-            else if (gameVariant == Xiangqi || gameVariant == Janggi)
-			{
-				pieceType = XiangqiPiece::FromStringCode(uppercase(stringCode));
-			}
-			else if (gameVariant == Makruk)
-			{
-				pieceType = MakrukPiece::FromStringCode(uppercase(stringCode));
-			}
-            else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi ||
-                     gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == EuroShogi || gameVariant == HeianShogi ||
-                     gameVariant == HeianDaiShogi)
-            {
-                pieceType = ShogiPiece::FromStringCode(promo + uppercase(stringCode));
-            }
-            else if (gameVariant == WhaleShogi)
-            {
-                pieceType = WhaleShogiPiece::FromStringCode(uppercase(stringCode));
-            }
-            else if (gameVariant == ToriShogi)
-            {
-                pieceType = ToriShogiPiece::FromStringCode(promo + uppercase(stringCode));
-            }
-            else if (gameVariant == WaShogi || gameVariant == CrazyWa)
-			{
-				pieceType = WaShogiPiece::FromStringCode(promo + uppercase(stringCode));
-			}
-			else if (gameVariant == ChuShogi)
-			{
-				pieceType = ChuShogiPiece::FromStringCode(promo + uppercase(stringCode));
+                pieceType = StringManager::StringCode2PieceType(gameVariant, promo + uppercase(stringCode));
 			}
             else if (gameVariant == DaiShogi || gameVariant == TenjikuShogi || gameVariant == YariShogi ||
 				gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
@@ -930,32 +893,20 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 					k++;
 					stringCode.push_back(fen[k].toLatin1());
 				}
-				if (gameVariant == DaiShogi)
-				{
-					pieceType = DaiShogiPiece::FromStringCode(promo + uppercase(stringCode));
-				}
-				else if (gameVariant == TenjikuShogi)
-				{
-					pieceType = TenjikuShogiPiece::FromStringCode(promo + uppercase(stringCode));
-				}
-                else if (gameVariant == YariShogi)
+                if (gameVariant == YariShogi)
                 {
-                    pieceType = YariShogiPiece::FromStringCode(uppercase(stringCode));
+                    pieceType = StringManager::StringCode2PieceType(gameVariant, uppercase(stringCode));
                 }
-                else if (gameVariant == DaiDaiShogi)
+                else
 				{
-					pieceType = DaiDaiShogiPiece::FromStringCode(promo + uppercase(stringCode));
-				}
-				else if (gameVariant == MakaDaiDaiShogi)
-				{
-					pieceType = MakaDaiDaiShogiPiece::FromStringCode(promo + uppercase(stringCode));
-				}
-				else if (gameVariant == KoShogi)
-				{
-					pieceType = KoShogiPiece::FromStringCode(promo + uppercase(stringCode));
-				}
+                    pieceType = StringManager::StringCode2PieceType(gameVariant, promo + uppercase(stringCode));
+                }
 			}
-			if (pieceType == None)
+            else
+            {
+                pieceType = StringManager::StringCode2PieceType(gameVariant, uppercase(stringCode));
+            }
+            if (pieceType == None)
 			{
 				return "Invalid character found in the FEN string at position " + QString::number(k);
 			}
@@ -1007,11 +958,11 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			{
 				if (parts[2][k] >= 'a' && parts[2][k] <= 'z')
 				{
-					svb->AddCapturedPiece(ShogiPiece::FromStringCode(uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
+                    svb->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
 				}
 				else if (parts[2][k] >= 'A' && parts[2][k] <= 'Z')
 				{
-					svb->AddCapturedPiece(ShogiPiece::FromStringCode(std::string(1, parts[2][k].toLatin1())), White);
+                    svb->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, std::string(1, parts[2][k].toLatin1())), White);
 				}
 				k++;
 			} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z')));

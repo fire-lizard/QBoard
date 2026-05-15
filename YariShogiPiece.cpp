@@ -49,16 +49,3 @@ std::string YariShogiPiece::StringCode()
     }
 }
 
-PieceType YariShogiPiece::FromStringCode(const std::string& code)
-{
-    static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-        {"N", YariKnight},
-        {"Y", YariRook},
-        {"B", YariBishop},
-        {"G", YariGold},
-        {"S", YariSilver}
-    };
-
-    const auto it = codeToPieceType.find(code);
-    return it != codeToPieceType.end() ? it->second : ShogiPiece::FromStringCode(code);
-}

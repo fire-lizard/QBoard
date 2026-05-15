@@ -8,9 +8,7 @@ public:
 	ShogiPiece(PieceType pieceType, PieceColour pieceColour);
 	~ShogiPiece() override;
 	void Promote(PieceType pieceType = None) override;
-	std::string StringCode() override;
-	std::string KanjiStringCode() override;
-	static PieceType FromStringCode(const std::string& code);
-	static std::string ToStringCode(PieceType piece);
+    std::string StringCode() override;
+    static std::string ToStringCode(PieceType piece);
 };
 

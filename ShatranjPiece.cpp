@@ -38,20 +38,3 @@ std::string ShatranjPiece::StringCode()
 		return "";
 	}
 }
-
-PieceType ShatranjPiece::FromStringCode(const std::string& code)
-{
-	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-		{"K", King},
-		{"Q", Queen},
-		{"R", Rook},
-		{"B", Bishop},
-		{"N", Knight},
-        {"A", Archbishop},
-        {"C", Chancellor},
-        {"P", Pawn}
-	};
-
-	const auto it = codeToPieceType.find(code);
-	return it != codeToPieceType.end() ? it->second : None;
-}
