@@ -19,7 +19,7 @@ void DaiShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				SetData(i, j, new DaiShogiPiece(_initialSetup[j][i], j < 7 ? Black : White));
+                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 7 ? Black : White));
 			}
 			else
 			{
@@ -46,16 +46,21 @@ Board* DaiShogiBoard::Clone()
 
 Piece* DaiShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-	return new DaiShogiPiece(pieceType, pieceColour);
+    return new ShogiPiece(pieceType, pieceColour);
 }
 
 void DaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) != nullptr)
+    Promote(GetData(x, y), pt);
+}
+
+void DaiShogiBoard::Promote(Piece *piece, PieceType pt)
+{
+    if (piece != nullptr)
     {
-        GetData(x, y)->IsPromoted = true;
+        piece->IsPromoted = true;
         PieceType pieceType = None;
-        switch (GetData(x, y)->GetType())
+        switch (piece->GetType())
         {
         case Iron:
         case Stone:
@@ -68,12 +73,12 @@ void DaiShogiBoard::Promote(int x, int y, PieceType pt)
             pieceType = Gold;
             break;
         default:
-            ChuShogiBoard::Promote(x, y, pt);
+            ChuShogiBoard::Promote(piece, pt);
             break;
         }
         if (pieceType != None)
         {
-            GetData(x, y)->SetType(pieceType);
+            piece->SetType(pieceType);
         }
     }
 }

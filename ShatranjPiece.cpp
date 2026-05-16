@@ -7,9 +7,3 @@ ShatranjPiece::ShatranjPiece(PieceType pieceType, PieceColour pieceColour) : Pie
 ShatranjPiece::~ShatranjPiece()
 {
 }
-
-void ShatranjPiece::Promote(PieceType pieceType)
-{
-	IsPromoted = true;
-	_pieceType = Queen;
-}

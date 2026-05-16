@@ -19,7 +19,7 @@ void ChuShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				SetData(i, j, new ChuShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
@@ -46,16 +46,21 @@ Board* ChuShogiBoard::Clone()
 
 Piece* ChuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-	return new ChuShogiPiece(pieceType, pieceColour);
+    return new ShogiPiece(pieceType, pieceColour);
 }
 
 void ChuShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) != nullptr)
+    Promote(GetData(x, y), pt);
+}
+
+void ChuShogiBoard::Promote(Piece *piece, PieceType pt)
+{
+    if (piece != nullptr)
     {
-        GetData(x, y)->IsPromoted = true;
+        piece->IsPromoted = true;
         PieceType pieceType = None;
-        switch (GetData(x, y)->GetType())
+        switch (piece->GetType())
         {
         case DragonKing:
             pieceType = Eagle;
@@ -116,7 +121,7 @@ void ChuShogiBoard::Promote(int x, int y, PieceType pt)
         }
         if (pieceType != None)
         {
-            GetData(x, y)->SetType(pieceType);
+            piece->SetType(pieceType);
         }
     }
 }

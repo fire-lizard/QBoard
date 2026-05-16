@@ -4,7 +4,6 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include "Common.h"
-#include "ChuShogiPiece.h"
 #include "graphicsmanager.h"
 
 class ZBoard : public QWidget

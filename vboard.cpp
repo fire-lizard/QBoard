@@ -481,7 +481,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
                 if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi)
                 {
-                    newPiece->Promote();
+                    _board->Promote(newPiece, None);
                 }
 			}
 			_board->SetData(x, y, newPiece);
@@ -1367,31 +1367,31 @@ char VBoard::CheckPromotion(const Piece *p, int x, int y)
             case 0:
             case 11:
                 promotion = 'r';
-                _currentPiece->Promote(Rook);
+                _board->Promote(_currentPiece, Rook);
                 break;
             case 1:
             case 10:
                 promotion = 'l';
-                _currentPiece->Promote(Lion);
+                _board->Promote(_currentPiece, Lion);
                 break;
             case 2:
             case 9:
                 promotion = 'u';
-                _currentPiece->Promote(Unicorn);
+                _board->Promote(_currentPiece, Unicorn);
                 break;
             case 3:
             case 8:
                 promotion = 'g';
-                _currentPiece->Promote(Giraffe);
+                _board->Promote(_currentPiece, Giraffe);
                 break;
             case 4:
             case 7:
                 promotion = 'c';
-                _currentPiece->Promote(Bishop);
+                _board->Promote(_currentPiece, Bishop);
                 break;
             default:
                 promotion = 'a';
-                _currentPiece->Promote(Aanca);
+                _board->Promote(_currentPiece, Aanca);
                 break;
             }
         }
@@ -1423,13 +1423,13 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             {
                 const PieceType pt = pd->GetChosenPiece();
                 promotion = ChessPieceChar(pt);
-                _currentPiece->Promote(pt);
+                _board->Promote(_currentPiece, pt);
                 gcBoard->RemoveCapturedPiece(pt, _currentPlayer);
             }
             else if (y == 9 || y == 0)
             {
                 promotion = ChessPieceChar(capturedPieces[0]);
-                _currentPiece->Promote(capturedPieces[0]);
+                _board->Promote(_currentPiece, capturedPieces[0]);
                 gcBoard->RemoveCapturedPiece(capturedPieces[0], _currentPlayer);
             }
         }
@@ -1445,12 +1445,12 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             {
                 const PieceType pt = pd->GetChosenPiece();
                 promotion = ChessPieceChar(pt);
-                _currentPiece->Promote(pt);
+                _board->Promote(_currentPiece, pt);
             }
             else
             {
                 promotion = 'q';
-                _currentPiece->Promote(Queen);
+                _board->Promote(_currentPiece, Queen);
             }
         }
     }
@@ -1480,12 +1480,12 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             {
                 const PieceType pt = pd->GetChosenPiece();
                 promotion = ChessPieceChar(pt);
-                _currentPiece->Promote(pt);
+                _board->Promote(_currentPiece, pt);
             }
             else
             {
                 promotion = 'q';
-                _currentPiece->Promote(Queen);
+                _board->Promote(_currentPiece, Queen);
             }
         }
     }
@@ -1496,7 +1496,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 				(y == 0 && _currentPiece->GetColour() == White)))
 		{
 			promotion = 'q';
-			_currentPiece->Promote();
+            _board->Promote(_currentPiece, None);
 		}
 	}
 	else if (_gameVariant == Makruk)
@@ -1506,7 +1506,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 				(y <= 2 && _currentPiece->GetColour() == White)))
 		{
 			promotion = 'q';
-			_currentPiece->Promote();
+            _board->Promote(_currentPiece, None);
 		}
 	}
     else if (_gameVariant == KyotoShogi)
@@ -1514,7 +1514,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
         if (_currentPiece->GetType() != King)
         {
             promotion = '+';
-            _currentPiece->Promote();
+            _board->Promote(_currentPiece, None);
         }
     }
     else if (_gameVariant == DaiDaiShogi)
@@ -1525,7 +1525,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 				_currentPiece->GetType()) == std::end(UnpromotablePieces))
 		{
 			promotion = '+';
-			_currentPiece->Promote();
+            _board->Promote(_currentPiece, None);
 		}
 	}
 	else if (_gameVariant == MakaDaiDaiShogi)
@@ -1536,17 +1536,17 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 			if (p->GetBaseType() == Deva)
 			{
 				promotion = '+';
-				_currentPiece->Promote(TeachingKing);
+                _board->Promote(_currentPiece, TeachingKing);
 			}
 			else if (p->GetBaseType() == DarkSpirit)
 			{
 				promotion = '+';
-				_currentPiece->Promote(BuddhistSpirit);
+                _board->Promote(_currentPiece, BuddhistSpirit);
 			}
             else if (p->IsPromoted || AskForPromotion())
 			{
 				promotion = '+';
-				_currentPiece->Promote();
+                _board->Promote(_currentPiece, None);
 			}
 			else
 			{
@@ -1566,14 +1566,14 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 			if (p->GetType() == King || p->GetType() == Prince || p->GetType() == MiddleTroop || p->GetType() == Flag || p->GetType() == Drum)
 			{
 				promotion = '+';
-				_currentPiece->Promote();
+                _board->Promote(_currentPiece, None);
 			}
 			else if (std::find(std::begin(StepMovers), std::end(StepMovers), _currentPiece->GetType()) != std::end(StepMovers))
 			{
 				if (p->GetType() == Lion || p->GetType() == RisingDragon || p->GetType() == RoamingAssault || p->GetType() == Thunderclap)
 				{
 					promotion = '+';
-					_currentPiece->Promote();
+                    _board->Promote(_currentPiece, None);
 				}
 			}
 			else if (_currentPiece->GetType() == Knight)
@@ -1581,13 +1581,13 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 				if (p->GetType() == FrankishCannon)
 				{
 					promotion = '+';
-					_currentPiece->Promote();
+                    _board->Promote(_currentPiece, None);
 				}
 			}
             else if (p->IsPromoted || AskForPromotion())
 			{
 				promotion = '+';
-				_currentPiece->Promote();
+                _board->Promote(_currentPiece, None);
 			}
 			else
 			{
@@ -1599,12 +1599,12 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 				const auto aguards = EngineOutputHandler::GetPieceLocations(_board, AdvanceGuard, _currentPlayer);
 				for (const auto& aguard : aguards)
 				{
-					_board->GetData(aguard.first, aguard.second)->Promote();
+                    _board->Promote(aguard.first, aguard.second, None);
 				}
 				const auto rguards = EngineOutputHandler::GetPieceLocations(_board, RearGuard, _currentPlayer);
 				for (const auto& rguard : rguards)
 				{
-					_board->GetData(rguard.first, rguard.second)->Promote();
+                    _board->Promote(rguard.first, rguard.second, None);
 				}
 				const auto pfLocations = EngineOutputHandler::GetPieceLocations(_board, PoisonFlame, _currentPlayer == White ? Black : White);
 				for (const auto& pfLocation : pfLocations)
@@ -1628,19 +1628,19 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 		{
             if (_gameVariant == ToriShogi)
             {
-                _currentPiece->Promote();
+                _board->Promote(_currentPiece, None);
             }
             else if (((pt == Pawn && _gameVariant != ChuShogi && _gameVariant != HeianDaiShogi) || (pt == Knight && _gameVariant != HeianDaiShogi) ||
                       (pt == Lance && _gameVariant != HeianDaiShogi)) &&
 				((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
 			{
-				_currentPiece->Promote();
+                _board->Promote(_currentPiece, None);
 			}
             else if (!_currentPiece->IsPromoted)
 			{
 				if (AskForPromotion())
 				{
-					_currentPiece->Promote();
+                    _board->Promote(_currentPiece, None);
 					promotion = '+';
 				}
 				else
@@ -2536,7 +2536,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			{
                 if (_board->GetData(x, y) != nullptr && !_board->GetData(x, y)->IsPromoted)
 				{
-					_board->GetData(x, y)->Promote();
+                    _board->Promote(x, y, None);
 				}
 				return;
 			}
@@ -2556,7 +2556,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				{
                     if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != GrandeAcedrex)
                     {
-                        newPiece->Promote();
+                        _board->Promote(newPiece, None);
                     }
 				}
 				_board->SetData(x, y, newPiece);

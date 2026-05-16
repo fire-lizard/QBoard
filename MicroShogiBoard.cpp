@@ -21,7 +21,7 @@ void MicroShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new MicroShogiPiece(_initialSetup[j][i], j < 2 ? Black : White));
+                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 2 ? Black : White));
             }
             else
             {
@@ -56,27 +56,32 @@ bool MicroShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
     const bool result = ShogiVariantBoard::Move(oldX, oldY, newX, newY, cl);
     if (result && destPieceType != None)
     {
-        GetData(newX, newY)->Promote();
+        Promote(newX, newY, None);
     }
     return result;
 }
 
 Piece* MicroShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-    return new MicroShogiPiece(pieceType, pieceColour);
+    return new ShogiPiece(pieceType, pieceColour);
 }
 
 void MicroShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
 {
-    SetData(x, y, new MicroShogiPiece(pieceType, pieceColour));
+    SetData(x, y, new ShogiPiece(pieceType, pieceColour));
 }
 
 void MicroShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) != nullptr)
+    Promote(GetData(x, y), pt);
+}
+
+void MicroShogiBoard::Promote(Piece *piece, PieceType pt)
+{
+    if (piece != nullptr)
     {
         PieceType pieceType = None;
-        switch (GetData(x, y)->GetType())
+        switch (piece->GetType())
         {
         case Rook:
             pieceType = Gold;
@@ -107,7 +112,7 @@ void MicroShogiBoard::Promote(int x, int y, PieceType pt)
         }
         if (pieceType != None)
         {
-            GetData(x, y)->SetType(pieceType);
+            piece->SetType(pieceType);
         }
     }
 }

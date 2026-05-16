@@ -62,10 +62,15 @@ Piece* ChessBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 
 void ChessBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) != nullptr)
+    Promote(GetData(x, y), pt);
+}
+
+void ChessBoard::Promote(Piece *piece, PieceType pt)
+{
+    if (piece != nullptr)
     {
-        GetData(x, y)->IsPromoted = true;
-        GetData(x, y)->SetType(pt);
+        piece->IsPromoted = true;
+        piece->SetType(pt);
     }
 }
 

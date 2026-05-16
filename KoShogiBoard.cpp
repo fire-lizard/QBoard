@@ -20,7 +20,7 @@ void KoShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				SetData(i, j, new KoShogiPiece(_initialSetup[j][i], j < 8 ? Black : White));
+                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 8 ? Black : White));
 			}
 			else
 			{
@@ -47,16 +47,21 @@ Board* KoShogiBoard::Clone()
 
 Piece* KoShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-	return new KoShogiPiece(pieceType, pieceColour);
+    return new ShogiPiece(pieceType, pieceColour);
 }
 
 void KoShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) != nullptr)
+    Promote(GetData(x, y), pt);
+}
+
+void KoShogiBoard::Promote(Piece *piece, PieceType pt)
+{
+    if (piece != nullptr)
     {
-        GetData(x, y)->IsPromoted = true;
+        piece->IsPromoted = true;
         PieceType pieceType = None;
-        switch (GetData(x, y)->GetType())
+        switch (piece->GetType())
         {
         case Kylin:
             pieceType = DoubleKylin;
@@ -154,7 +159,7 @@ void KoShogiBoard::Promote(int x, int y, PieceType pt)
         }
         if (pieceType != None)
         {
-            GetData(x, y)->SetType(pieceType);
+            piece->SetType(pieceType);
         }
     }
 }
@@ -165,6 +170,15 @@ void KoShogiBoard::Demote(int x, int y)
     {
         GetData(x, y)->IsPromoted = false;
         GetData(x, y)->SetType(GetData(x, y)->GetBaseType());
+    }
+}
+
+void KoShogiBoard::Demote(Piece *piece)
+{
+    if (piece != nullptr)
+    {
+        piece->IsPromoted = false;
+        piece->SetType(piece->GetBaseType());
     }
 }
 
@@ -210,12 +224,12 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
         const auto raLocation = GetPieceLocation(RoamingAssault, sp->GetColour() == White ? Black : White);
 		if (raLocation.first != -1 && raLocation.second != -1)
 		{
-			dynamic_cast<KoShogiPiece*>(GetData(raLocation.first, raLocation.second))->Demote();
+            Demote(raLocation.first, raLocation.second);
 		}
         const auto tcLocation = GetPieceLocation(Thunderclap, sp->GetColour() == White ? Black : White);
 		if (tcLocation.first != -1 && tcLocation.second != -1)
 		{
-			dynamic_cast<KoShogiPiece*>(GetData(tcLocation.first, tcLocation.second))->Demote();
+            Demote(tcLocation.first, tcLocation.second);
 		}
 	}
 	// Whenever the immaculate light is within 5 intersections of the five-li fog, the fog reverts to a Taoist priest.
@@ -224,7 +238,7 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
         const auto hlLocation = GetPieceLocation(HolyLight, sp->GetColour() == White ? Black : White);
 		if (hlLocation.first != -1 && hlLocation.second != -1 && abs(hlLocation.first - newX) <= 5 && abs(hlLocation.second - newY) <= 5)
 		{
-			dynamic_cast<KoShogiPiece*>(sp)->Demote();
+            Demote(sp);
 		}
 	}
 	else if (result == true && sp != nullptr && sp->GetType() == HolyLight)
@@ -232,7 +246,7 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
         const auto efLocation = GetPieceLocation(ExtensiveFog, sp->GetColour() == White ? Black : White);
 		if (efLocation.first != -1 && efLocation.second != -1 && abs(efLocation.first - newX) <= 5 && abs(efLocation.second - newY) <= 5)
 		{
-			dynamic_cast<KoShogiPiece*>(GetData(efLocation.first, efLocation.second))->Demote();
+            Demote(efLocation.first, efLocation.second);
 		}
 	}
 	return result;

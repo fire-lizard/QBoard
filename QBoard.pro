@@ -23,33 +23,25 @@ SOURCES += main.cpp\
     GothicChessBoard.cpp \
     GrandChessBoard.cpp \
     GrandeAcedrexBoard.cpp \
-    GrandeAcedrexPiece.cpp \
     HeianDaiShogiBoard.cpp \
     HeianShogiBoard.cpp \
-    HeianShogiPiece.cpp \
     JanggiBoard.cpp \
     JanusChessBoard.cpp \
     KyotoShogiBoard.cpp \
-    KyotoShogiPiece.cpp \
     MicroShogiBoard.cpp \
-    MicroShogiPiece.cpp \
     ModernChessBoard.cpp \
     OmegaChessBoard.cpp \
     ShatarBoard.cpp \
-    ToriShogiPiece.cpp \
     ToriShogiBoard.cpp \
     EuroShogiBoard.cpp \
     WhaleShogiBoard.cpp \
-    WhaleShogiPiece.cpp \
     YariShogiBoard.cpp \
-    YariShogiPiece.cpp \
     graphicsmanager.cpp \
     mainwindow.cpp \
     Board.cpp \
     ChessBoard.cpp \
     ChessPiece.cpp \
     ChuShogiBoard.cpp \
-    ChuShogiPiece.cpp \
     Piece.cpp \
     Logger.cpp \
     promotiondialog.cpp \
@@ -75,17 +67,12 @@ SOURCES += main.cpp\
     ShatranjPiece.cpp \
     MakrukBoard.cpp \
     DaiShogiBoard.cpp \
-    DaiShogiPiece.cpp \
     TenjikuShogiBoard.cpp \
-    TenjikuShogiPiece.cpp \
     WaShogiBoard.cpp \
     WaShogiPiece.cpp \
     DaiDaiShogiBoard.cpp \
-    DaiDaiShogiPiece.cpp \
     MakaDaiDaiShogiBoard.cpp \
-    MakaDaiDaiShogiPiece.cpp \
     KoShogiBoard.cpp \
-    KoShogiPiece.cpp \
     EngineOutputHandler.cpp \
     Communications.cpp \
     enginemanager.cpp \
@@ -102,34 +89,26 @@ HEADERS  += mainwindow.h \
     ChessBoard.h \
     ChessPiece.h \
     ChuShogiBoard.h \
-    ChuShogiPiece.h \
     Common.h \
     CourierChessBoard.h \
     GothicChessBoard.h \
     GrandChessBoard.h \
     GrandeAcedrexBoard.h \
-    GrandeAcedrexPiece.h \
     HeianDaiShogiBoard.h \
     HeianShogiBoard.h \
-    HeianShogiPiece.h \
     JanggiBoard.h \
     JanusChessBoard.h \
     KyotoShogiBoard.h \
-    KyotoShogiPiece.h \
     MicroShogiBoard.h \
-    MicroShogiPiece.h \
     ModernChessBoard.h \
     OmegaChessBoard.h \
     Piece.h \
     Logger.h \
     ShatarBoard.h \
-    ToriShogiPiece.h \
     ToriShogiBoard.h \
     EuroShogiBoard.h \
     WhaleShogiBoard.h \
-    WhaleShogiPiece.h \
     YariShogiBoard.h \
-    YariShogiPiece.h \
     graphicsmanager.h \
     promotiondialog.h \
     settingsdialog.h \
@@ -154,17 +133,12 @@ HEADERS  += mainwindow.h \
     ShatranjPiece.h \
     MakrukBoard.h \
     DaiShogiBoard.h \
-    DaiShogiPiece.h \
     TenjikuShogiBoard.h \
-    TenjikuShogiPiece.h \
     WaShogiBoard.h \
     WaShogiPiece.h \
     DaiDaiShogiBoard.h \
-    DaiDaiShogiPiece.h \
     MakaDaiDaiShogiBoard.h \
-    MakaDaiDaiShogiPiece.h \
     KoShogiBoard.h \
-    KoShogiPiece.h \
     EngineOutputHandler.h \
     Communications.h \
     enginemanager.h \

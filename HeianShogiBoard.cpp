@@ -20,7 +20,7 @@ void HeianShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new HeianShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {

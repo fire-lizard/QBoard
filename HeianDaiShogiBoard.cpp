@@ -20,7 +20,7 @@ void HeianDaiShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new HeianShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
@@ -47,15 +47,20 @@ Board* HeianDaiShogiBoard::Clone()
 
 Piece* HeianDaiShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-    return new HeianShogiPiece(pieceType, pieceColour);
+    return new ShogiPiece(pieceType, pieceColour);
 }
 
 void HeianDaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) != nullptr)
+    Promote(GetData(x, y), pt);
+}
+
+void HeianDaiShogiBoard::Promote(Piece *piece, PieceType pt)
+{
+    if (piece != nullptr)
     {
-        GetData(x, y)->IsPromoted = true;
-        GetData(x, y)->SetType(Gold);
+        piece->IsPromoted = true;
+        piece->SetType(Gold);
     }
 }
 

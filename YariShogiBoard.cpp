@@ -21,7 +21,7 @@ void YariShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new YariShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
@@ -52,21 +52,26 @@ Board* YariShogiBoard::Clone()
 
 Piece* YariShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-    return new YariShogiPiece(pieceType, pieceColour);
+    return new ShogiPiece(pieceType, pieceColour);
 }
 
 void YariShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
 {
-    SetData(x, y, new YariShogiPiece(pieceType, pieceColour));
+    SetData(x, y, new ShogiPiece(pieceType, pieceColour));
 }
 
 void YariShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) != nullptr)
+    Promote(GetData(x, y), pt);
+}
+
+void YariShogiBoard::Promote(Piece *piece, PieceType pt)
+{
+    if (piece != nullptr)
     {
-        GetData(x, y)->IsPromoted = true;
+        piece->IsPromoted = true;
         PieceType pieceType = None;
-        switch (GetData(x, y)->GetType())
+        switch (piece->GetType())
         {
         case YariKnight:
             pieceType = YariGold;
@@ -85,7 +90,7 @@ void YariShogiBoard::Promote(int x, int y, PieceType pt)
         }
         if (pieceType != None)
         {
-            GetData(x, y)->SetType(pieceType);
+            piece->SetType(pieceType);
         }
     }
 }

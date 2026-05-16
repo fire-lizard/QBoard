@@ -19,7 +19,7 @@ void MakaDaiDaiShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				SetData(i, j, new MakaDaiDaiShogiPiece(_initialSetup[j][i], j < 8 ? Black : White));
+                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 8 ? Black : White));
 			}
 			else
 			{
@@ -46,17 +46,22 @@ Board* MakaDaiDaiShogiBoard::Clone()
 
 Piece* MakaDaiDaiShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-	return new MakaDaiDaiShogiPiece(pieceType, pieceColour);
+    return new ShogiPiece(pieceType, pieceColour);
 }
 
 void MakaDaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) != nullptr)
+    Promote(GetData(x, y), pt);
+}
+
+void MakaDaiDaiShogiBoard::Promote(Piece *piece, PieceType pt)
+{
+    if (piece != nullptr)
     {
-        GetData(x, y)->IsPromoted = true;
+        piece->IsPromoted = true;
         if (pt != None)
         {
-            GetData(x, y)->SetType(pt);
+            piece->SetType(pt);
             return;
         }
         PieceType pieceType = None;
@@ -168,7 +173,7 @@ void MakaDaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
         }
         if (pieceType != None)
         {
-            GetData(x, y)->SetType(pieceType);
+            piece->SetType(pieceType);
         }
     }
 }

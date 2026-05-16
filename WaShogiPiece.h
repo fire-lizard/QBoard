@@ -8,7 +8,6 @@ class WaShogiPiece : public Piece
 public:
 	WaShogiPiece(PieceType pieceType, PieceColour pieceColour);
 	~WaShogiPiece() override;
-	void Promote(PieceType pieceType = None) override;
 	static std::string ToStringCode(PieceType piece);
 };
 

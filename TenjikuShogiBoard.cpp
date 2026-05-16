@@ -19,7 +19,7 @@ void TenjikuShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				SetData(i, j, new TenjikuShogiPiece(_initialSetup[j][i], j < 7 ? Black : White));
+                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 7 ? Black : White));
 			}
 			else
 			{
@@ -46,16 +46,21 @@ Board* TenjikuShogiBoard::Clone()
 
 Piece* TenjikuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-	return new TenjikuShogiPiece(pieceType, pieceColour);
+    return new ShogiPiece(pieceType, pieceColour);
 }
 
 void TenjikuShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) != nullptr)
+    Promote(GetData(x, y), pt);
+}
+
+void TenjikuShogiBoard::Promote(Piece *piece, PieceType pt)
+{
+    if (piece != nullptr)
     {
-        GetData(x, y)->IsPromoted = true;
+        piece->IsPromoted = true;
         PieceType pieceType = None;
-        switch (GetData(x, y)->GetType())
+        switch (piece->GetType())
         {
         case BishopGeneral:
             pieceType = ViceGeneral;
@@ -97,12 +102,12 @@ void TenjikuShogiBoard::Promote(int x, int y, PieceType pt)
             pieceType = RookGeneral;
             break;
         default:
-            DaiShogiBoard::Promote(x, y, pt);
+            DaiShogiBoard::Promote(piece, pt);
             break;
         }
         if (pieceType != None)
         {
-            GetData(x, y)->SetType(pieceType);
+            piece->SetType(pieceType);
         }
     }
 }

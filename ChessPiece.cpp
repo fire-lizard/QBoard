@@ -9,12 +9,6 @@ ChessPiece::~ChessPiece()
 {
 }
 
-void ChessPiece::Promote(PieceType pieceType)
-{
-    IsPromoted = true;
-	_pieceType = pieceType;
-}
-
 void ChessPiece::Move()
 {
 	_hasMoved = true;

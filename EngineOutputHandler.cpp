@@ -336,7 +336,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
 				if (isPromoted)
 				{
-					board->GetData(x2, y2)->Promote();
+                    board->Promote(x2, y2, None);
 				}
 			}
 			else
@@ -394,22 +394,22 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 switch (moveArray[ms - 1])
                 {
                 case 'n':
-                    board->GetData(x2, y2)->Promote(Knight);
+                    board->Promote(x2, y2, Knight);
                     break;
                 case 'b':
-                    board->GetData(x2, y2)->Promote(Bishop);
+                    board->Promote(x2, y2, Bishop);
                     break;
                 case 'r':
-                    board->GetData(x2, y2)->Promote(Rook);
+                    board->Promote(x2, y2, Rook);
                     break;
                 case 'q':
-                    board->GetData(x2, y2)->Promote(Queen);
+                    board->Promote(x2, y2, Queen);
                     break;
                 case 'a':
-                    board->GetData(x2, y2)->Promote(Archbishop);
+                    board->Promote(x2, y2, Archbishop);
                     break;
                 case 'c':
-                    board->GetData(x2, y2)->Promote(Chancellor);
+                    board->Promote(x2, y2, Chancellor);
                     break;
                 default:
                     break;
@@ -448,22 +448,22 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 switch (moveArray[ms - 1])
                 {
                 case 'n':
-                    board->GetData(x2, y2)->Promote(Knight);
+                    board->Promote(x2, y2, Knight);
                     break;
                 case 'b':
-                    board->GetData(x2, y2)->Promote(Bishop);
+                    board->Promote(x2, y2, Bishop);
                     break;
                 case 'r':
-                    board->GetData(x2, y2)->Promote(Rook);
+                    board->Promote(x2, y2, Rook);
                     break;
                 case 'q':
-                    board->GetData(x2, y2)->Promote(Queen);
+                    board->Promote(x2, y2, Queen);
                     break;
                 case 'c':
-                    board->GetData(x2, y2)->Promote(Champion);
+                    board->Promote(x2, y2, Champion);
                     break;
                 case 'w':
-                    board->GetData(x2, y2)->Promote(Wizard);
+                    board->Promote(x2, y2, Wizard);
                     break;
                 default:
                     break;
@@ -505,23 +505,23 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			{
                 switch (moveArray[ms - 1])
 				{
-				case 'n':
-					board->GetData(x2, y2)->Promote(Knight);
-					break;
-				case 'b':
-					board->GetData(x2, y2)->Promote(Bishop);
-					break;
-				case 'r':
-					board->GetData(x2, y2)->Promote(Rook);
-					break;
-				case 'q':
-					board->GetData(x2, y2)->Promote(Queen);
-					break;
+                case 'n':
+                    board->Promote(x2, y2, Knight);
+                    break;
+                case 'b':
+                    board->Promote(x2, y2, Bishop);
+                    break;
+                case 'r':
+                    board->Promote(x2, y2, Rook);
+                    break;
+                case 'q':
+                    board->Promote(x2, y2, Queen);
+                    break;
                 case 'a':
-                    board->GetData(x2, y2)->Promote(Archbishop);
+                    board->Promote(x2, y2, Archbishop);
                     break;
                 case 'c':
-                    board->GetData(x2, y2)->Promote(Chancellor);
+                    board->Promote(x2, y2, Chancellor);
                     break;
                 default:
 					break;
@@ -547,22 +547,22 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 switch (moveArray[ms - 1])
                 {
                 case 'u':
-                    board->GetData(x2, y2)->Promote(Unicorn);
+                    board->Promote(x2, y2, Unicorn);
                     break;
                 case 'l':
-                    board->GetData(x2, y2)->Promote(Lion);
+                    board->Promote(x2, y2, Lion);
                     break;
                 case 'r':
-                    board->GetData(x2, y2)->Promote(Rook);
+                    board->Promote(x2, y2, Rook);
                     break;
                 case 'g':
-                    board->GetData(x2, y2)->Promote(Giraffe);
+                    board->Promote(x2, y2, Giraffe);
                     break;
                 case 'a':
-                    board->GetData(x2, y2)->Promote(Aanca);
+                    board->Promote(x2, y2, Aanca);
                     break;
                 case 'c':
-                    board->GetData(x2, y2)->Promote(Bishop);
+                    board->Promote(x2, y2, Bishop);
                     break;
                 default:
                     break;
@@ -582,7 +582,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 			if (isPromoted)
 			{
-				board->GetData(x2, y2)->Promote();
+                board->Promote(x2, y2, None);
 			}
 		}
 	}
@@ -598,7 +598,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 			if (isPromoted)
 			{
-				board->GetData(x2, y2)->Promote();
+                board->Promote(x2, y2, None);
 			}
 		}
 	}
@@ -785,7 +785,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             }
 			if (isPromoted)
 			{
-                board->GetData(x2, y2)->Promote();
+                board->Promote(x2, y2, None);
             }
         }
 	}
@@ -919,7 +919,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			{
                 if (gameVariant != MicroShogi && gameVariant != KyotoShogi)
                 {
-                    piece->Promote();
+                    board->Promote(piece, None);
                 }
 			}
 			board->SetData(i, j, piece);

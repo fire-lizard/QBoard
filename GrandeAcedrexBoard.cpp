@@ -36,7 +36,7 @@ void GrandeAcedrexBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new GrandeAcedrexPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
@@ -48,15 +48,20 @@ void GrandeAcedrexBoard::Initialize()
 
 Piece* GrandeAcedrexBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-    return new GrandeAcedrexPiece(pieceType, pieceColour);
+    return new ChessPiece(pieceType, pieceColour);
 }
 
 void GrandeAcedrexBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) != nullptr)
+    Promote(GetData(x, y), pt);
+}
+
+void GrandeAcedrexBoard::Promote(Piece *piece, PieceType pt)
+{
+    if (piece != nullptr)
     {
-        GetData(x, y)->IsPromoted = true;
-        GetData(x, y)->SetType(pt);
+        piece->IsPromoted = true;
+        piece->SetType(pt);
     }
 }
 

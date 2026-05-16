@@ -56,6 +56,10 @@ void XiangqiBoard::Promote(int x, int y, PieceType pt)
 {
 }
 
+void XiangqiBoard::Promote(Piece *piece, PieceType pt)
+{
+}
+
 void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 {
 	_moves.clear();

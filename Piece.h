@@ -6,7 +6,6 @@ class Piece
 {
 public:
 	virtual ~Piece();
-	virtual void Promote(PieceType pieceType = None) = 0;
 	PieceType GetBaseType() const;
 	PieceType GetType() const;
     void SetType(PieceType pieceType);

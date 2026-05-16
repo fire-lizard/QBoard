@@ -1,6 +1,5 @@
 #pragma once
 #include "MiniShogiBoard.h"
-#include "KyotoShogiPiece.h"
 
 class KyotoShogiBoard : public MiniShogiBoard
 {
@@ -12,6 +11,7 @@ public:
     Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
     void PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y) override;
     void Promote(int x, int y, PieceType pt) override;
+    void Promote(Piece *piece, PieceType pt) override;
 
 private:
 

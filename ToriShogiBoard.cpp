@@ -22,9 +22,9 @@ void ToriShogiBoard::Initialize()
             if (_initialSetup[j][i] != None)
             {
                 if (j != 3)
-                    SetData(i, j, new ToriShogiPiece(_initialSetup[j][i], j < 3 ? Black : White));
+                    SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 3 ? Black : White));
                 else
-                    SetData(i, j, new ToriShogiPiece(_initialSetup[j][i], i < 3 ? Black : White));
+                    SetData(i, j, new ShogiPiece(_initialSetup[j][i], i < 3 ? Black : White));
             }
             else
             {
@@ -55,26 +55,31 @@ Board* ToriShogiBoard::Clone()
 
 Piece* ToriShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-    return new ToriShogiPiece(pieceType, pieceColour);
+    return new ShogiPiece(pieceType, pieceColour);
 }
 
 void ToriShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
 {
-    SetData(x, y, new ToriShogiPiece(pieceType, pieceColour));
+    SetData(x, y, new ShogiPiece(pieceType, pieceColour));
 }
 
 void ToriShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) != nullptr)
+    Promote(GetData(x, y), pt);
+}
+
+void ToriShogiBoard::Promote(Piece *piece, PieceType pt)
+{
+    if (piece != nullptr)
     {
-        GetData(x, y)->IsPromoted = true;
-        switch (GetData(x, y)->GetType())
+        piece->IsPromoted = true;
+        switch (piece->GetType())
         {
         case Falcon:
-            GetData(x, y)->SetType(Eagle);
+            piece->SetType(Eagle);
             break;
         case Pawn:
-            GetData(x, y)->SetType(Goose);
+            piece->SetType(Goose);
             break;
         default:
             break;

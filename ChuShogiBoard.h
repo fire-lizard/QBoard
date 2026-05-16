@@ -1,6 +1,6 @@
 #pragma once
 #include "Board.h"
-#include "ChuShogiPiece.h"
+#include "ShogiPiece.h"
 
 class ChuShogiBoard : public Board
 {
@@ -11,6 +11,7 @@ public:
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
     void Promote(int x, int y, PieceType pieceType) override;
+    void Promote(Piece *piece, PieceType pt) override;
     void GetMoves(Piece *piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 	bool DoubleMove(int x1, int y1, int x2, int y2, int x3, int y3);

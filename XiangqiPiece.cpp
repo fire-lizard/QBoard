@@ -7,7 +7,3 @@ XiangqiPiece::XiangqiPiece(PieceType pieceType, PieceColour pieceColour) : Piece
 XiangqiPiece::~XiangqiPiece()
 {
 }
-
-void XiangqiPiece::Promote(PieceType pieceType)
-{
-}

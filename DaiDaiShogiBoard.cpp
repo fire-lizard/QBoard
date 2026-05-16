@@ -1,5 +1,4 @@
 #include "DaiDaiShogiBoard.h"
-#include "DaiDaiShogiPiece.h"
 
 DaiDaiShogiBoard::DaiDaiShogiBoard()
 {
@@ -20,7 +19,7 @@ void DaiDaiShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				SetData(i, j, new DaiDaiShogiPiece(_initialSetup[j][i], j < 8 ? Black : White));
+                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 8 ? Black : White));
 			}
 			else
 			{
@@ -47,18 +46,23 @@ Board* DaiDaiShogiBoard::Clone()
 
 Piece* DaiDaiShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
-	return new DaiDaiShogiPiece(pieceType, pieceColour);
+    return new ShogiPiece(pieceType, pieceColour);
 }
 
 void DaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) == nullptr || std::find(std::begin(UnpromotablePieces), std::end(UnpromotablePieces), GetData(x, y)->GetType()) != std::end(UnpromotablePieces))
+    Promote(GetData(x, y), pt);
+}
+
+void DaiDaiShogiBoard::Promote(Piece *piece, PieceType pt)
+{
+    if (piece == nullptr || std::find(std::begin(UnpromotablePieces), std::end(UnpromotablePieces), piece->GetType()) != std::end(UnpromotablePieces))
     {
         return;
     }
-    GetData(x, y)->IsPromoted = true;
+    piece->IsPromoted = true;
     PieceType pieceType = None;
-    switch (GetData(x, y)->GetType())
+    switch (piece->GetType())
     {
     case OldKite:
         pieceType = Tengu;
@@ -128,7 +132,7 @@ void DaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
     }
     if (pieceType != None)
     {
-        GetData(x, y)->SetType(pieceType);
+        piece->SetType(pieceType);
     }
 }
 

@@ -12,7 +12,8 @@ public:
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
     void Promote(int x, int y, PieceType pt) override;
-	void GetMoves(Piece *piece, int x, int y) override;
+    void Promote(Piece *piece, PieceType pt) override;
+    void GetMoves(Piece *piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 	void WriteCastling(const std::string& moveStr);
 	std::string GetCastling() const;

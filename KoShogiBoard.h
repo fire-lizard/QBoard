@@ -1,7 +1,6 @@
 #pragma once
 #include <set>
 #include "Common.h"
-#include "KoShogiPiece.h"
 #include "DaiShogiBoard.h"
 
 inline PieceType StepMovers[15] = { King,Gold,Elephant,Silver,Leopard,Copper,MiddleTroop,Drum,Flag,Tiger,FrankishCannon,Longbow,Crossbow,CatSword,Pawn };
@@ -17,7 +16,7 @@ public:
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
     void Promote(int x, int y, PieceType pt) override;
-    void Demote(int x, int y);
+    void Promote(Piece *piece, PieceType pt) override;
     void GetMoves(Piece* piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
     std::string GetStringCode(int x, int y) const override;
@@ -27,7 +26,9 @@ public:
 	bool IsTaoistPriestCaptured() const;
 
 private:
-	void CheckShoot(const Piece* piece, int x, int y);
+    void Demote(int x, int y);
+    void Demote(Piece *piece);
+    void CheckShoot(const Piece* piece, int x, int y);
 	void CheckPriestMove(const Piece* piece, int x, int y);
 	void CheckShootingDirection(const Piece* piece, int x, int y, Direction direction, int count, bool shootOver);
 	void getAll5StepPaths(int startR, int startC, PieceColour pieceColour);
