@@ -36,7 +36,7 @@ void CourierChessBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new CourierChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new ShatranjPiece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
@@ -44,11 +44,6 @@ void CourierChessBoard::Initialize()
             }
         }
     }
-}
-
-Piece* CourierChessBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return new CourierChessPiece(pieceType, pieceColour);
 }
 
 void CourierChessBoard::GetMoves(Piece* piece, int x, int y)

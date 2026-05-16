@@ -1,6 +1,6 @@
 ﻿#include "WaShogiPiece.h"
 
-WaShogiPiece::WaShogiPiece(PieceType pieceType, PieceColour pieceColour) : KanjiPiece(pieceType, pieceColour)
+WaShogiPiece::WaShogiPiece(PieceType pieceType, PieceColour pieceColour) : Piece(pieceType, pieceColour)
 {
 }
 

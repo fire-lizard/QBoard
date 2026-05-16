@@ -1,6 +1,5 @@
 #pragma once
 #include "ShatranjBoard.h"
-#include "CourierChessPiece.h"
 
 class CourierChessBoard : public ShatranjBoard
 {
@@ -9,7 +8,6 @@ public:
     ~CourierChessBoard() override;
     void Initialize() override;
     Board* Clone() override;
-    Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
     void GetMoves(Piece* piece, int x, int y) override;
     std::string GetStringCode(int x, int y) const override;
 

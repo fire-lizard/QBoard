@@ -23,8 +23,10 @@
     <Engine EngineName="crazywa" GameVariant="Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>
     <Engine EngineName="Shokidoki" GameVariant="Mini Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
     <Engine EngineName="crazywa" GameVariant="Mini Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>
+    <Engine EngineName="Nebiyu" GameVariant="Mini Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
     <Engine EngineName="Shokidoki" GameVariant="Judkins Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
     <Engine EngineName="crazywa" GameVariant="Judkins Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>
+    <Engine EngineName="Nebiyu" GameVariant="Judkins Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
     <Engine EngineName="Shokidoki" GameVariant="Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
     <Engine EngineName="Shokidoki" GameVariant="Euro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
     <Engine EngineName="crazywa" GameVariant="CrazyWa" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>

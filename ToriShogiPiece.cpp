@@ -1,6 +1,6 @@
 #include "ToriShogiPiece.h"
 
-ToriShogiPiece::ToriShogiPiece(PieceType pieceType, PieceColour pieceColour) : KanjiPiece(pieceType, pieceColour)
+ToriShogiPiece::ToriShogiPiece(PieceType pieceType, PieceColour pieceColour) : Piece(pieceType, pieceColour)
 {
 }
 

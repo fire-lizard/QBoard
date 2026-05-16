@@ -1,8 +1,8 @@
 #pragma once
 #include <unordered_map>
-#include "KanjiPiece.h"
+#include "Piece.h"
 
-class XiangqiPiece : public KanjiPiece
+class XiangqiPiece : public Piece
 {
 public:
 	XiangqiPiece(PieceType pieceType, PieceColour pieceColour);

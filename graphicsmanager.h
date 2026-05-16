@@ -3,9 +3,7 @@
 #include <QPainter>
 #include <QPixmap>
 #include "Common.h"
-#include "KanjiPiece.h"
 #include "ChuShogiPiece.h"
-#include "MakrukPiece.h"
 #include "stringmanager.h"
 
 class GraphicsManager

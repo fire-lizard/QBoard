@@ -20,7 +20,6 @@ SOURCES += main.cpp\
     CapablancaChessBoard.cpp \
     ChancellorChessBoard.cpp \
     CourierChessBoard.cpp \
-    CourierChessPiece.cpp \
     GothicChessBoard.cpp \
     GrandChessBoard.cpp \
     GrandeAcedrexBoard.cpp \
@@ -36,7 +35,6 @@ SOURCES += main.cpp\
     MicroShogiPiece.cpp \
     ModernChessBoard.cpp \
     OmegaChessBoard.cpp \
-    OmegaChessPiece.cpp \
     ShatarBoard.cpp \
     ToriShogiPiece.cpp \
     ToriShogiBoard.cpp \
@@ -53,7 +51,6 @@ SOURCES += main.cpp\
     ChuShogiBoard.cpp \
     ChuShogiPiece.cpp \
     Piece.cpp \
-    KanjiPiece.cpp \
     Logger.cpp \
     promotiondialog.cpp \
     settingsdialog.cpp \
@@ -77,7 +74,6 @@ SOURCES += main.cpp\
     ShatranjBoard.cpp \
     ShatranjPiece.cpp \
     MakrukBoard.cpp \
-    MakrukPiece.cpp \
     DaiShogiBoard.cpp \
     DaiShogiPiece.cpp \
     TenjikuShogiBoard.cpp \
@@ -109,7 +105,6 @@ HEADERS  += mainwindow.h \
     ChuShogiPiece.h \
     Common.h \
     CourierChessBoard.h \
-    CourierChessPiece.h \
     GothicChessBoard.h \
     GrandChessBoard.h \
     GrandeAcedrexBoard.h \
@@ -125,9 +120,7 @@ HEADERS  += mainwindow.h \
     MicroShogiPiece.h \
     ModernChessBoard.h \
     OmegaChessBoard.h \
-    OmegaChessPiece.h \
     Piece.h \
-    KanjiPiece.h \
     Logger.h \
     ShatarBoard.h \
     ToriShogiPiece.h \
@@ -160,7 +153,6 @@ HEADERS  += mainwindow.h \
     ShatranjBoard.h \
     ShatranjPiece.h \
     MakrukBoard.h \
-    MakrukPiece.h \
     DaiShogiBoard.h \
     DaiShogiPiece.h \
     TenjikuShogiBoard.h \

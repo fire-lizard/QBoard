@@ -36,7 +36,7 @@ void MakrukBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				SetData(i, j, new MakrukPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new ShatranjPiece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
@@ -44,11 +44,6 @@ void MakrukBoard::Initialize()
 			}
 		}
 	}
-}
-
-Piece* MakrukBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-	return new MakrukPiece(pieceType, pieceColour);
 }
 
 void MakrukBoard::GetMoves(Piece* piece, int x, int y)

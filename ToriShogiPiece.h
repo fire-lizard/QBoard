@@ -1,8 +1,8 @@
 #pragma once
 #include <unordered_map>
-#include "KanjiPiece.h"
+#include "Piece.h"
 
-class ToriShogiPiece : public KanjiPiece
+class ToriShogiPiece : public Piece
 {
 public:
     ToriShogiPiece(PieceType pieceType, PieceColour pieceColour);

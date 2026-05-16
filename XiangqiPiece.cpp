@@ -1,6 +1,6 @@
 ﻿#include "XiangqiPiece.h"
 
-XiangqiPiece::XiangqiPiece(PieceType pieceType, PieceColour pieceColour) : KanjiPiece(pieceType, pieceColour)
+XiangqiPiece::XiangqiPiece(PieceType pieceType, PieceColour pieceColour) : Piece(pieceType, pieceColour)
 {
 }
 

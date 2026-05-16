@@ -2,7 +2,6 @@
 #include <map>
 #include "Common.h"
 #include "ShatranjBoard.h"
-#include "MakrukPiece.h"
 
 class MakrukBoard : public ShatranjBoard
 {
@@ -11,7 +10,6 @@ public:
 	~MakrukBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
-	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
 	void GetMoves(Piece* piece, int x, int y) override;
     std::string GetStringCode(int x, int y) const override;
     void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture) override;

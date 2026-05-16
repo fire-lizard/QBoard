@@ -4,8 +4,6 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include "Common.h"
-#include "MakrukPiece.h"
-#include "KanjiPiece.h"
 #include "ChuShogiPiece.h"
 #include "graphicsmanager.h"
 

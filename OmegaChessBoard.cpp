@@ -42,7 +42,7 @@ void OmegaChessBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new OmegaChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
@@ -50,11 +50,6 @@ void OmegaChessBoard::Initialize()
             }
         }
     }
-}
-
-Piece* OmegaChessBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return new OmegaChessPiece(pieceType, pieceColour);
 }
 
 bool OmegaChessBoard::EnemyPawnsAround(int x, int y) const
