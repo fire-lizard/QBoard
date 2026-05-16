@@ -10,7 +10,7 @@ ShogiPiece::~ShogiPiece()
 
 void ShogiPiece::Promote(PieceType pieceType)
 {
-	_isPromoted = true;
+	IsPromoted = true;
 	switch (_pieceType)
 	{
 	case Rook:

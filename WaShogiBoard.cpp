@@ -61,6 +61,66 @@ void WaShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int 
 	SetData(x, y, new WaShogiPiece(pieceType, pieceColour));
 }
 
+void WaShogiBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = true;
+        PieceType pieceType = None;
+        switch (GetData(x, y)->GetType())
+        {
+        case Lance:
+            pieceType = PloddingOx;
+            break;
+        case Pawn:
+            pieceType = Tokin;
+            break;
+        case SideMover:
+            pieceType = Rook;
+            break;
+        case LiberatedHorse:
+            pieceType = HeavenlyHorse;
+            break;
+        case SwoopingOwl:
+            pieceType = CloudEagle;
+            break;
+        case StruttingCrow:
+            pieceType = FlyingFalcon;
+            break;
+        case FlyingFalcon:
+            pieceType = TenaciousFalcon;
+            break;
+        case FlyingCock:
+            pieceType = RaidingFalcon;
+            break;
+        case FlyingGoose:
+            pieceType = SideMover;
+            break;
+        case ClimbingMonkey:
+            pieceType = Silver;
+            break;
+        case Silver:
+            pieceType = Elephant;
+            break;
+        case Dog:
+            pieceType = Gold;
+            break;
+        case Gold:
+            pieceType = BearEyes;
+            break;
+        case RunningRabbit:
+            pieceType = TreacherousFox;
+            break;
+        default:
+            break;
+        }
+        if (pieceType != None)
+        {
+            GetData(x, y)->SetType(pieceType);
+        }
+    }
+}
+
 std::string WaShogiBoard::formatEnumCounts(const std::vector<PieceType>& enumList)
 {
     const std::vector<PieceType> order = { Rook, SideMover, Gold, Silver, LiberatedHorse, Lance, Pawn, SwoopingOwl, CloudEagle, StruttingCrow,

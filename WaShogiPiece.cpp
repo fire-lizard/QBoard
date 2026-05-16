@@ -10,7 +10,7 @@ WaShogiPiece::~WaShogiPiece()
 
 void WaShogiPiece::Promote(PieceType pieceType)
 {
-	_isPromoted = true;
+	IsPromoted = true;
 	switch (_pieceType)
 	{
 	case Lance:

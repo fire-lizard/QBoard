@@ -60,6 +60,15 @@ Piece* ChessBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 	return new ChessPiece(pieceType, pieceColour);
 }
 
+void ChessBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = true;
+        GetData(x, y)->SetType(pt);
+    }
+}
+
 std::string ChessBoard::GetCastling() const
 {
 	std::string str;

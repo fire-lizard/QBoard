@@ -10,7 +10,7 @@ ToriShogiPiece::~ToriShogiPiece()
 
 void ToriShogiPiece::Promote(PieceType pieceType)
 {
-    _isPromoted = true;
+    IsPromoted = true;
     switch (_pieceType)
     {
     case Falcon:

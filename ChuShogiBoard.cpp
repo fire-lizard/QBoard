@@ -49,6 +49,78 @@ Piece* ChuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 	return new ChuShogiPiece(pieceType, pieceColour);
 }
 
+void ChuShogiBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = true;
+        PieceType pieceType = None;
+        switch (GetData(x, y)->GetType())
+        {
+        case DragonKing:
+            pieceType = Eagle;
+            break;
+        case DragonHorse:
+            pieceType = Unicorn;
+            break;
+        case Rook:
+            pieceType = DragonKing;
+            break;
+        case Bishop:
+            pieceType = DragonHorse;
+            break;
+        case VerticalMover:
+            pieceType = FlyingOx;
+            break;
+        case SideMover:
+            pieceType = FreeBoar;
+            break;
+        case ReverseChariot:
+            pieceType = Whale;
+            break;
+        case Lance:
+            pieceType = WhiteHorse;
+            break;
+        case Kylin:
+            pieceType = Lion;
+            break;
+        case Phoenix:
+            pieceType = Queen;
+            break;
+        case Elephant:
+            pieceType = Prince;
+            break;
+        case Tiger:
+            pieceType = FlyingStag;
+            break;
+        case Gold:
+            pieceType = Rook;
+            break;
+        case Silver:
+            pieceType = VerticalMover;
+            break;
+        case Copper:
+            pieceType = SideMover;
+            break;
+        case Leopard:
+            pieceType = Bishop;
+            break;
+        case GoBetween:
+            pieceType = Elephant;
+            break;
+        case Pawn:
+            pieceType = Tokin;
+            break;
+        default:
+            break;
+        }
+        if (pieceType != None)
+        {
+            GetData(x, y)->SetType(pieceType);
+        }
+    }
+}
+
 bool ChuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	// Lion capture rule #2

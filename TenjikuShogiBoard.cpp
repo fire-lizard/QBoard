@@ -49,6 +49,64 @@ Piece* TenjikuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColo
 	return new TenjikuShogiPiece(pieceType, pieceColour);
 }
 
+void TenjikuShogiBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = true;
+        PieceType pieceType = None;
+        switch (GetData(x, y)->GetType())
+        {
+        case BishopGeneral:
+            pieceType = ViceGeneral;
+            break;
+        case RookGeneral:
+            pieceType = GreatGeneral;
+            break;
+        case Dog:
+            pieceType = MultiGeneral;
+            break;
+        case SideSoldier:
+            pieceType = WaterBuffalo;
+            break;
+        case VerticalSoldier:
+            pieceType = ChariotSoldier;
+            break;
+        case ChariotSoldier:
+            pieceType = HeavenlyTetrarch;
+            break;
+        case WaterBuffalo:
+            pieceType = FireDemon;
+            break;
+        case Queen:
+            pieceType = FreeEagle;
+            break;
+        case Iron:
+            pieceType = VerticalSoldier;
+            break;
+        case Knight:
+            pieceType = SideSoldier;
+            break;
+        case Lion:
+            pieceType = LionHawk;
+            break;
+        case Unicorn:
+            pieceType = BishopGeneral;
+            break;
+        case Eagle:
+            pieceType = RookGeneral;
+            break;
+        default:
+            DaiShogiBoard::Promote(x, y, pt);
+            break;
+        }
+        if (pieceType != None)
+        {
+            GetData(x, y)->SetType(pieceType);
+        }
+    }
+}
+
 void TenjikuShogiBoard::CheckJump(const Piece* piece, int x, int y, Direction direction)
 {
 	bool beforeJump = true;

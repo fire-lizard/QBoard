@@ -10,6 +10,6 @@ ShatranjPiece::~ShatranjPiece()
 
 void ShatranjPiece::Promote(PieceType pieceType)
 {
-	_isPromoted = true;
+	IsPromoted = true;
 	_pieceType = Queen;
 }

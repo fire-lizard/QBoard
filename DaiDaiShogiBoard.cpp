@@ -50,6 +50,88 @@ Piece* DaiDaiShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColou
 	return new DaiDaiShogiPiece(pieceType, pieceColour);
 }
 
+void DaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) == nullptr || std::find(std::begin(UnpromotablePieces), std::end(UnpromotablePieces), GetData(x, y)->GetType()) != std::end(UnpromotablePieces))
+    {
+        return;
+    }
+    GetData(x, y)->IsPromoted = true;
+    PieceType pieceType = None;
+    switch (GetData(x, y)->GetType())
+    {
+    case OldKite:
+        pieceType = Tengu;
+        break;
+    case PoisonousSnake:
+        pieceType = HookMover;
+        break;
+    case Lion:
+        pieceType = FuriousFiend;
+        break;
+    case LionDog:
+        pieceType = GreatElephant;
+        break;
+    case EasternBarbarian:
+        pieceType = Lion;
+        break;
+    case WesternBarbarian:
+        pieceType = LionDog;
+        break;
+    case NorthernBarbarian:
+        pieceType = FragrantElephant;
+        break;
+    case SouthernBarbarian:
+        pieceType = WhiteElephant;
+        break;
+    case WaterBuffalo:
+        pieceType = FreeDreamEater;
+        break;
+    case RushingBird:
+        pieceType = FreeDemon;
+        break;
+    case FlyingHorse:
+        pieceType = Queen;
+        break;
+    case NeighboringKing:
+        pieceType = StandardBearer;
+        break;
+    case BlindMonkey:
+        pieceType = MountainWitch;
+        break;
+    case OldRat:
+        pieceType = WizardStork;
+        break;
+    case EnchantedBadger:
+        pieceType = Dove;
+        break;
+    case EnchantedFox:
+        pieceType = Yaksha;
+        break;
+    case CatSword:
+        pieceType = DragonHorse;
+        break;
+    case FlyingDragon:
+        pieceType = DragonKing;
+        break;
+    case PrancingStag:
+        pieceType = SquareMover;
+        break;
+    case Phoenix:
+        pieceType = GoldenBird;
+        break;
+    case Kylin:
+        pieceType = GreatDragon;
+        break;
+    default:
+        break;
+    }
+    if (pieceType != None)
+    {
+        GetData(x, y)->SetType(pieceType);
+    }
+}
+
 void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();

@@ -10,7 +10,7 @@ TenjikuShogiPiece::~TenjikuShogiPiece()
 
 void TenjikuShogiPiece::Promote(PieceType pieceType)
 {
-	_isPromoted = true;
+	IsPromoted = true;
 	switch (_pieceType)
 	{
 	case BishopGeneral:

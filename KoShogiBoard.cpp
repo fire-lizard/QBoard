@@ -50,6 +50,124 @@ Piece* KoShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 	return new KoShogiPiece(pieceType, pieceColour);
 }
 
+void KoShogiBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = true;
+        PieceType pieceType = None;
+        switch (GetData(x, y)->GetType())
+        {
+        case Kylin:
+            pieceType = DoubleKylin;
+            break;
+        case Phoenix:
+            pieceType = DoublePhoenix;
+            break;
+        case Elephant:
+            pieceType = DragonKing;
+            break;
+        case Gold:
+            pieceType = FlyingStag;
+            break;
+        case Silver:
+            pieceType = CompanyCommander;
+            break;
+        case Leopard:
+            pieceType = ViceCommissioner;
+            break;
+        case Copper:
+            pieceType = PoisonFlame;
+            break;
+        case TaoistPriest:
+            pieceType = ExtensiveFog;
+            break;
+        case SpiritualMonk:
+            pieceType = HolyLight;
+            break;
+        case AdvanceGuard:
+            pieceType = SkywardNet;
+            break;
+        case MiddleTroop:
+            pieceType = Prince;
+            break;
+        case Drum:
+            pieceType = Thunderclap;
+            break;
+        case Flag:
+            pieceType = RoamingAssault;
+            break;
+        case Tiger:
+            pieceType = DragonHorse;
+            break;
+        case Queen:
+            pieceType = RisingDragon;
+            break;
+        case DragonKing:
+            pieceType = WingedTiger;
+            break;
+        case DragonHorse:
+            pieceType = FlyingHawk;
+            break;
+        case RearGuard:
+            pieceType = EarthwardNet;
+            break;
+        case FrankishCannon:
+            pieceType = DivineCarriage;
+            break;
+        case Longbow:
+            pieceType = LongbowKnight;
+            break;
+        case Crossbow:
+            pieceType = CrossbowKnight;
+            break;
+        case Cannon:
+            pieceType = CannonCarriage;
+            break;
+        case Knight:
+            pieceType = KnightCaptain;
+            break;
+        case KnightCaptain:
+            pieceType = WingedHorse;
+            break;
+        case Pawn:
+            pieceType = VerticalMover;
+            break;
+        case CatSword:
+            pieceType = ShieldCaptain;
+            break;
+        case ShieldCaptain:
+            pieceType = FreeBoar;
+            break;
+        case Chariot:
+            pieceType = Rook;
+            break;
+        case Rook:
+            pieceType = Queen;
+            break;
+        case VerticalMover:
+        case Vanguard:
+            pieceType = FlyingOx;
+            break;
+        default:
+            break;
+        }
+        if (pieceType != None)
+        {
+            GetData(x, y)->SetType(pieceType);
+        }
+    }
+}
+
+void KoShogiBoard::Demote(int x, int y)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = false;
+        GetData(x, y)->SetType(GetData(x, y)->GetBaseType());
+    }
+}
+
 void KoShogiBoard::RemoveShoot(int x, int y)
 {
 	const auto it = std::remove_if(_shoots.begin(), _shoots.end(), [=](const auto& p) { return p.first == x && p.second == y; });

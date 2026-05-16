@@ -10,6 +10,6 @@ HeianShogiPiece::~HeianShogiPiece()
 
 void HeianShogiPiece::Promote(PieceType pieceType)
 {
-    _isPromoted = true;
+    IsPromoted = true;
     _pieceType = Gold;
 }

@@ -10,7 +10,7 @@ ChuShogiPiece::~ChuShogiPiece()
 
 void ChuShogiPiece::Promote(PieceType pieceType)
 {
-	_isPromoted = true;
+	IsPromoted = true;
 	switch (_pieceType)
 	{
 	case DragonKing:

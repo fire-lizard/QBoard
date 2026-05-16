@@ -70,3 +70,44 @@ void MicroShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, i
 {
     SetData(x, y, new MicroShogiPiece(pieceType, pieceColour));
 }
+
+void MicroShogiBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        PieceType pieceType = None;
+        switch (GetData(x, y)->GetType())
+        {
+        case Rook:
+            pieceType = Gold;
+            break;
+        case Bishop:
+            pieceType = Tokin;
+            break;
+        case Tokin:
+            pieceType = Bishop;
+            break;
+        case Lance:
+            pieceType = Silver;
+            break;
+        case Silver:
+            pieceType = Lance;
+            break;
+        case Knight:
+            pieceType = Pawn;
+            break;
+        case Gold:
+            pieceType = Rook;
+            break;
+        case Pawn:
+            pieceType = Knight;
+            break;
+        default:
+            break;
+        }
+        if (pieceType != None)
+        {
+            GetData(x, y)->SetType(pieceType);
+        }
+    }
+}

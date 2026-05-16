@@ -10,7 +10,7 @@ MakaDaiDaiShogiPiece::~MakaDaiDaiShogiPiece()
 
 void MakaDaiDaiShogiPiece::Promote(PieceType pieceType)
 {
-	_isPromoted = true;
+	IsPromoted = true;
 	if (pieceType != None)
 	{
 		_pieceType = pieceType;

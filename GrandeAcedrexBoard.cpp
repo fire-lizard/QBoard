@@ -51,6 +51,15 @@ Piece* GrandeAcedrexBoard::CreatePiece(PieceType pieceType, PieceColour pieceCol
     return new GrandeAcedrexPiece(pieceType, pieceColour);
 }
 
+void GrandeAcedrexBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = true;
+        GetData(x, y)->SetType(pt);
+    }
+}
+
 void GrandeAcedrexBoard::GetMoves(Piece* piece, int x, int y)
 {
     _moves.clear();

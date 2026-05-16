@@ -1519,7 +1519,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
     }
     else if (_gameVariant == DaiDaiShogi)
 	{
-		if (!_currentPiece->IsPromoted() && p != nullptr &&
+        if (!_currentPiece->IsPromoted && p != nullptr &&
 			std::find(std::begin(UnpromotablePieces),
 				std::end(UnpromotablePieces),
 				_currentPiece->GetType()) == std::end(UnpromotablePieces))
@@ -1531,7 +1531,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 	else if (_gameVariant == MakaDaiDaiShogi)
 	{
 		if (_currentPiece->GetType() != Queen && _currentPiece->GetType() != DragonKing &&
-			_currentPiece->GetType() != DragonHorse && !_currentPiece->IsPromoted() && p != nullptr)
+            _currentPiece->GetType() != DragonHorse && !_currentPiece->IsPromoted && p != nullptr)
 		{
 			if (p->GetBaseType() == Deva)
 			{
@@ -1543,7 +1543,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 				promotion = '+';
 				_currentPiece->Promote(BuddhistSpirit);
 			}
-			else if (p->IsPromoted() || AskForPromotion())
+            else if (p->IsPromoted || AskForPromotion())
 			{
 				promotion = '+';
 				_currentPiece->Promote();
@@ -1561,7 +1561,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 		{
 		}
 		else if (_currentPiece->GetType() != King && _currentPiece->GetType() != Lion &&
-			_currentPiece->GetType() != Bishop && !_currentPiece->IsPromoted() && p != nullptr)
+            _currentPiece->GetType() != Bishop && !_currentPiece->IsPromoted && p != nullptr)
 		{
 			if (p->GetType() == King || p->GetType() == Prince || p->GetType() == MiddleTroop || p->GetType() == Flag || p->GetType() == Drum)
 			{
@@ -1584,7 +1584,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 					_currentPiece->Promote();
 				}
 			}
-			else if (p->IsPromoted() || AskForPromotion())
+            else if (p->IsPromoted || AskForPromotion())
 			{
 				promotion = '+';
 				_currentPiece->Promote();
@@ -1636,7 +1636,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 			{
 				_currentPiece->Promote();
 			}
-			else if (!_currentPiece->IsPromoted())
+            else if (!_currentPiece->IsPromoted)
 			{
 				if (AskForPromotion())
 				{
@@ -2534,7 +2534,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		{
 			if (selectedAction->text() == "Promote")
 			{
-				if (_board->GetData(x, y) != nullptr && !_board->GetData(x, y)->IsPromoted())
+                if (_board->GetData(x, y) != nullptr && !_board->GetData(x, y)->IsPromoted)
 				{
 					_board->GetData(x, y)->Promote();
 				}

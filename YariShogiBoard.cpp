@@ -60,6 +60,36 @@ void YariShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, in
     SetData(x, y, new YariShogiPiece(pieceType, pieceColour));
 }
 
+void YariShogiBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = true;
+        PieceType pieceType = None;
+        switch (GetData(x, y)->GetType())
+        {
+        case YariKnight:
+            pieceType = YariGold;
+            break;
+        case YariRook:
+            pieceType = Rook;
+            break;
+        case YariBishop:
+            pieceType = YariGold;
+            break;
+        case Pawn:
+            pieceType = YariSilver;
+            break;
+        default:
+            break;
+        }
+        if (pieceType != None)
+        {
+            GetData(x, y)->SetType(pieceType);
+        }
+    }
+}
+
 void YariShogiBoard::GetMoves(Piece *piece, int x, int y)
 {
     _moves.clear();

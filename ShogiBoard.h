@@ -11,6 +11,7 @@ public:
 	void Initialize() override;
 	Board* Clone() override;
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
+    void Promote(int x, int y, PieceType pt) override;
     void GetMoves(Piece *piece, int x, int y) override;
 	virtual void SetDrops(bool hasDrops);
 	void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture);

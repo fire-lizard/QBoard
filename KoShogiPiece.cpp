@@ -10,7 +10,7 @@ KoShogiPiece::~KoShogiPiece()
 
 void KoShogiPiece::Promote(PieceType pieceType)
 {
-	_isPromoted = true;
+	IsPromoted = true;
 	switch (_pieceType)
 	{
 	case Kylin:
@@ -111,9 +111,9 @@ void KoShogiPiece::Promote(PieceType pieceType)
 
 void KoShogiPiece::Demote()
 {
-	if (_isPromoted)
+    if (IsPromoted)
 	{
-		_isPromoted = false;
+        IsPromoted = false;
 		_pieceType = _basePieceType;
 	}
 }

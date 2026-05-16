@@ -11,7 +11,7 @@ ChessPiece::~ChessPiece()
 
 void ChessPiece::Promote(PieceType pieceType)
 {
-	_isPromoted = true;
+    IsPromoted = true;
 	_pieceType = pieceType;
 }
 

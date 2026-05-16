@@ -63,6 +63,25 @@ void ToriShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, in
     SetData(x, y, new ToriShogiPiece(pieceType, pieceColour));
 }
 
+void ToriShogiBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = true;
+        switch (GetData(x, y)->GetType())
+        {
+        case Falcon:
+            GetData(x, y)->SetType(Eagle);
+            break;
+        case Pawn:
+            GetData(x, y)->SetType(Goose);
+            break;
+        default:
+            break;
+        }
+    }
+}
+
 void ToriShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
     _moves.clear();

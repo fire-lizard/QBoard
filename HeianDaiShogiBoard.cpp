@@ -50,6 +50,15 @@ Piece* HeianDaiShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceCol
     return new HeianShogiPiece(pieceType, pieceColour);
 }
 
+void HeianDaiShogiBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = true;
+        GetData(x, y)->SetType(Gold);
+    }
+}
+
 void HeianDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
     _moves.clear();

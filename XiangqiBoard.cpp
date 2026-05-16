@@ -52,6 +52,10 @@ Piece* XiangqiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 	return new XiangqiPiece(pieceType, pieceColour);
 }
 
+void XiangqiBoard::Promote(int x, int y, PieceType pt)
+{
+}
+
 void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 {
 	_moves.clear();

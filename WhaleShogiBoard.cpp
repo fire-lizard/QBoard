@@ -60,6 +60,10 @@ void WhaleShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, i
     SetData(x, y, new WhaleShogiPiece(pieceType, pieceColour));
 }
 
+void WhaleShogiBoard::Promote(int x, int y, PieceType pt)
+{
+}
+
 void WhaleShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
     _moves.clear();

@@ -5,7 +5,7 @@ Piece::Piece(PieceType pieceType, PieceColour pieceColour)
 	_basePieceType = pieceType;
 	_pieceType = pieceType;
 	_pieceColour = pieceColour;
-	_isPromoted = false;
+    IsPromoted = false;
 }
 
 Piece::~Piece()
@@ -22,12 +22,12 @@ PieceType Piece::GetType() const
 	return _pieceType;
 }
 
+void Piece::SetType(PieceType pieceType)
+{
+    _pieceType = pieceType;
+}
+
 PieceColour Piece::GetColour() const
 {
 	return _pieceColour;
-}
-
-bool Piece::IsPromoted() const
-{
-	return _isPromoted;
 }

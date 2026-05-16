@@ -12,7 +12,8 @@ public:
 	virtual void Initialize() = 0;
 	virtual Board* Clone() = 0;
 	virtual Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) = 0;
-	virtual void GetMoves(Piece *piece, int x, int y) = 0;
+    virtual void Promote(int x, int y, PieceType pt) = 0;
+    virtual void GetMoves(Piece *piece, int x, int y) = 0;
 	virtual bool Move(int oldX, int oldY, int newX, int newY, bool cl = true);
     virtual std::string GetStringCode(int x, int y) const;
     void Clear();

@@ -59,3 +59,44 @@ void KyotoShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, i
 {
     SetData(x, y, new KyotoShogiPiece(pieceType, pieceColour));
 }
+
+void KyotoShogiBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        PieceType pieceType = None;
+        switch (GetData(x, y)->GetType())
+        {
+        case Rook:
+            pieceType = Pawn;
+            break;
+        case Bishop:
+            pieceType = Silver;
+            break;
+        case Tokin:
+            pieceType = Lance;
+            break;
+        case Lance:
+            pieceType = Tokin;
+            break;
+        case Silver:
+            pieceType = Bishop;
+            break;
+        case Knight:
+            pieceType = Gold;
+            break;
+        case Gold:
+            pieceType = Knight;
+            break;
+        case Pawn:
+            pieceType = Rook;
+            break;
+        default:
+            break;
+        }
+        if (pieceType != None)
+        {
+            GetData(x, y)->SetType(pieceType);
+        }
+    }
+}

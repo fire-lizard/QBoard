@@ -49,6 +49,130 @@ Piece* MakaDaiDaiShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceC
 	return new MakaDaiDaiShogiPiece(pieceType, pieceColour);
 }
 
+void MakaDaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = true;
+        if (pt != None)
+        {
+            GetData(x, y)->SetType(pt);
+            return;
+        }
+        PieceType pieceType = None;
+        switch (pieceType)
+        {
+        case King:
+            pieceType = Emperor;
+            break;
+        case Elephant:
+            pieceType = King;
+            break;
+        case Deva:
+            pieceType = TeachingKing;
+            break;
+        case DarkSpirit:
+            pieceType = BuddhistSpirit;
+            break;
+        case Gold:
+            pieceType = FreeGold;
+            break;
+        case Silver:
+            pieceType = FreeSilver;
+            break;
+        case Copper:
+            pieceType = FreeCopper;
+            break;
+        case Iron:
+            pieceType = FreeIron;
+            break;
+        case Tile:
+            pieceType = FreeTile;
+            break;
+        case Stone:
+            pieceType = FreeStone;
+            break;
+        case GoBetween:
+            pieceType = FreeGo;
+            break;
+        case Earth:
+            pieceType = FreeEarth;
+            break;
+        case Tiger:
+            pieceType = FreeTiger;
+            break;
+        case Leopard:
+            pieceType = FreeLeopard;
+            break;
+        case CoiledSerpent:
+            pieceType = FreeSerpent;
+            break;
+        case RecliningDragon:
+            pieceType = FreeDragon;
+            break;
+        case OldMonkey:
+            pieceType = MountainWitch;
+            break;
+        case ChineseCock:
+            pieceType = WizardStork;
+            break;
+        case CatSword:
+            pieceType = FreeCat;
+            break;
+        case Lion:
+            pieceType = FuriousFiend;
+            break;
+        case Phoenix:
+            pieceType = GoldenBird;
+            break;
+        case Kylin:
+            pieceType = GreatDragon;
+            break;
+        case EvilWolf:
+            pieceType = FreeWolf;
+            break;
+        case BlindBear:
+            pieceType = FreeBear;
+            break;
+        case AngryBoar:
+            pieceType = FreeBoar;
+            break;
+        case OldRat:
+            pieceType = Bat;
+            break;
+        case Lance:
+        case ReverseChariot:
+        case LionDog:
+        case Wrestler:
+        case Guardian:
+        case BuddhistDevil:
+        case Yaksha:
+        case FlyingDragon:
+        case ViolentOx:
+        case Knight:
+        case Donkey:
+        case Capricorn:
+        case HookMover:
+        case Bishop:
+        case Rook:
+        case VerticalMover:
+        case SideMover:
+        case LeftChariot:
+        case RightChariot:
+        case SideFlier:
+        case Pawn:
+            pieceType = Gold;
+            break;
+        default:
+            break;
+        }
+        if (pieceType != None)
+        {
+            GetData(x, y)->SetType(pieceType);
+        }
+    }
+}
+
 void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();

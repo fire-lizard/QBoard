@@ -51,6 +51,15 @@ Piece* ShatranjBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 	return new ShatranjPiece(pieceType, pieceColour);
 }
 
+void ShatranjBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = true;
+        GetData(x, y)->SetType(Queen);
+    }
+}
+
 void ShatranjBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();

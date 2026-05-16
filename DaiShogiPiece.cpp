@@ -10,7 +10,7 @@ DaiShogiPiece::~DaiShogiPiece()
 
 void DaiShogiPiece::Promote(PieceType pieceType)
 {
-	_isPromoted = true;
+	IsPromoted = true;
 	switch (_pieceType)
 	{
 	case Iron:

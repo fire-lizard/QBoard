@@ -49,6 +49,35 @@ Piece* DaiShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 	return new DaiShogiPiece(pieceType, pieceColour);
 }
 
+void DaiShogiBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = true;
+        PieceType pieceType = None;
+        switch (GetData(x, y)->GetType())
+        {
+        case Iron:
+        case Stone:
+        case AngryBoar:
+        case ViolentOx:
+        case FlyingDragon:
+        case EvilWolf:
+        case CatSword:
+        case Knight:
+            pieceType = Gold;
+            break;
+        default:
+            ChuShogiBoard::Promote(x, y, pt);
+            break;
+        }
+        if (pieceType != None)
+        {
+            GetData(x, y)->SetType(pieceType);
+        }
+    }
+}
+
 void DaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();

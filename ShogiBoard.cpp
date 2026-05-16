@@ -60,6 +60,45 @@ Piece* ShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 	return new ShogiPiece(pieceType, pieceColour);
 }
 
+void ShogiBoard::Promote(int x, int y, PieceType pt)
+{
+    if (GetData(x, y) != nullptr)
+    {
+        GetData(x, y)->IsPromoted = true;
+        PieceType pieceType = None;
+        switch (GetData(x, y)->GetType())
+        {
+        case Rook:
+            pieceType = DragonKing;
+            break;
+        case Bishop:
+            pieceType = DragonHorse;
+            break;
+        case Elephant:
+            pieceType = Prince;
+            break;
+        case Lance:
+            pieceType = PromotedLance;
+            break;
+        case Silver:
+            pieceType = PromotedSilver;
+            break;
+        case Knight:
+            pieceType = PromotedKnight;
+            break;
+        case Pawn:
+            pieceType = Tokin;
+            break;
+        default:
+            break;
+        }
+        if (pieceType != None)
+        {
+            GetData(x, y)->SetType(pieceType);
+        }
+    }
+}
+
 void ShogiBoard::GetMoves(Piece *piece, int x, int y)
 {
 	_moves.clear();

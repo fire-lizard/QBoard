@@ -14,7 +14,7 @@ void DaiDaiShogiPiece::Promote(PieceType pieceType)
 	{
 		return;
 	}
-	_isPromoted = true;
+	IsPromoted = true;
 	switch (_pieceType)
 	{
 	case OldKite:

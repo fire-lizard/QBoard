@@ -10,6 +10,7 @@ public:
     void Initialize() override;
     Board* Clone() override;
     Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
+    void Promote(int x, int y, PieceType pt) override;
     void GetMoves(Piece* piece, int x, int y) override;
 
 private:
