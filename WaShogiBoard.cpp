@@ -320,3 +320,65 @@ std::string WaShogiBoard::GetPGN()
 {
 	return _pgn;
 }
+
+std::string WaShogiBoard::GetStringCode(int x, int y) const
+{
+    if (GetData(x, y) == nullptr) return "";
+    PieceType pieceType = GetData(x, y)->GetType();
+    PieceType basePieceType = GetData(x, y)->GetBaseType();
+    switch (pieceType)
+    {
+    case King:
+        return "K";
+    case Rook:
+        return "+S";
+    case Lance:
+        return "O";
+    case Tokin:
+        return "+P";
+    case Pawn:
+        return "P";
+    case SideMover:
+        return basePieceType == FlyingGoose ? "+G" : "S";
+    case PloddingOx:
+        return "+O";
+    case LiberatedHorse:
+        return "H";
+    case HeavenlyHorse:
+        return "+H";
+    case SwoopingOwl:
+        return "L";
+    case CloudEagle:
+        return basePieceType == SwoopingOwl ? "+L" : "E";
+    case StruttingCrow:
+        return "U";
+    case FlyingFalcon:
+        return basePieceType == StruttingCrow ? "+U" : "F";
+    case FlyingCock:
+        return "C";
+    case RaidingFalcon:
+        return "+C";
+    case FlyingGoose:
+        return "G";
+    case ClimbingMonkey:
+        return "M";
+    case Silver:
+        return basePieceType == ClimbingMonkey ? "+M" : "V";
+    case Dog:
+        return "D";
+    case Gold:
+        return basePieceType == Dog ? "+D" : "W";
+    case Elephant:
+        return "+V";
+    case BearEyes:
+        return "+W";
+    case RunningRabbit:
+        return "R";
+    case TreacherousFox:
+        return basePieceType == RunningRabbit ? "+R" : "X";
+    case TenaciousFalcon:
+        return "+F";
+    default:
+        return "";
+    }
+}

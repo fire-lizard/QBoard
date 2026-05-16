@@ -196,3 +196,30 @@ bool GrandeAcedrexBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
     }
     return result;
 }
+
+std::string GrandeAcedrexBoard::GetStringCode(int x, int y) const
+{
+    if (GetData(x, y) == nullptr) return "";
+    PieceType pieceType = GetData(x, y)->GetType();
+    switch (pieceType)
+    {
+    case King:
+        return "K";
+    case Aanca:
+        return "A";
+    case Rook:
+        return "R";
+    case Crocodile:
+        return "C";
+    case Giraffe:
+        return "G";
+    case Unicorn:
+        return "U";
+    case Lion:
+        return "L";
+    case Pawn:
+        return "P";
+    default:
+        return Board::GetStringCode(x, y);
+    }
+}

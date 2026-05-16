@@ -14,7 +14,8 @@ public:
 	virtual Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) = 0;
 	virtual void GetMoves(Piece *piece, int x, int y) = 0;
 	virtual bool Move(int oldX, int oldY, int newX, int newY, bool cl = true);
-	void Clear();
+    virtual std::string GetStringCode(int x, int y) const;
+    void Clear();
 	void RemoveMove(int x, int y);
 	void RemoveMoves();
 	std::vector<std::tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
@@ -22,7 +23,7 @@ public:
     std::pair<int, int> GetPieceLocation(PieceType pieceType, PieceColour pieceColour);
     Piece* GetData(int x, int y) const;
 	void SetData(int x, int y, Piece *p);
-	std::string GetFEN() const;
+    std::string GetFEN() const;
 	void SetFEN(std::string fen);
 	int GetWidth() const;
 	int GetHeight() const;

@@ -7,7 +7,6 @@ class StringManager
 {
 public:
     static std::string PieceType2Description(GameVariant gameVariant, PieceType pieceType);
-    static std::string PieceType2StringCode(GameVariant gameVariant, PieceType pieceType);
     static std::string PieceType2KanjiCode(GameVariant gameVariant, PieceType pieceType, PieceColour pieceColour);
     static std::string PieceType2GHCode(GameVariant gameVariant, PieceType pieceType, PieceType basePieceType);
     static PieceType Description2PieceType(GameVariant gameVariant, const std::string& description);

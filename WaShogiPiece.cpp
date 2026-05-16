@@ -60,65 +60,6 @@ void WaShogiPiece::Promote(PieceType pieceType)
 	}
 }
 
-std::string WaShogiPiece::StringCode()
-{
-	switch (_pieceType)
-	{
-	case King:
-		return "K";
-	case Rook:
-		return "+S";
-	case Lance:
-		return "O";
-	case Tokin:
-		return "+P";
-	case Pawn:
-		return "P";
-	case SideMover:
-		return _basePieceType == FlyingGoose ? "+G" : "S";
-	case PloddingOx:
-		return "+O";
-	case LiberatedHorse:
-		return "H";
-	case HeavenlyHorse:
-		return "+H";
-	case SwoopingOwl:
-		return "L";
-	case CloudEagle:
-		return _basePieceType == SwoopingOwl ? "+L" : "E";
-	case StruttingCrow:
-		return "U";
-	case FlyingFalcon:
-		return _basePieceType == StruttingCrow ? "+U" : "F";
-	case FlyingCock:
-		return "C";
-	case RaidingFalcon:
-		return "+C";
-	case FlyingGoose:
-		return "G";
-	case ClimbingMonkey:
-		return "M";
-	case Silver:
-		return _basePieceType == ClimbingMonkey ? "+M" : "V";
-	case Dog:
-		return "D";
-	case Gold:
-		return _basePieceType == Dog ? "+D" : "W";
-	case Elephant:
-		return "+V";
-	case BearEyes:
-		return "+W";
-	case RunningRabbit:
-		return "R";
-	case TreacherousFox:
-		return _basePieceType == RunningRabbit ? "+R" : "X";
-	case TenaciousFalcon:
-		return "+F";
-	default:
-		return "";
-	}
-}
-
 std::string WaShogiPiece::ToStringCode(PieceType piece)
 {
 	static const std::unordered_map<PieceType, std::string> pieceTypeToCode = {

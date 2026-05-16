@@ -177,3 +177,32 @@ void ToriShogiBoard::GetMoves(Piece* piece, int x, int y)
         break;
     }
 }
+
+std::string ToriShogiBoard::GetStringCode(int x, int y) const
+{
+    if (GetData(x, y) == nullptr) return "";
+    PieceType pieceType = GetData(x, y)->GetType();
+    switch (pieceType)
+    {
+    case King:
+        return "K";
+    case Falcon:
+        return "F";
+    case Eagle:
+        return "+F";
+    case Crane:
+        return "C";
+    case Pheasant:
+        return "P";
+    case LeftQuail:
+        return "L";
+    case RightQuail:
+        return "R";
+    case Pawn:
+        return "S";
+    case Goose:
+        return "+S";
+    default:
+        return "";
+    }
+}

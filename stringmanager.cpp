@@ -610,25 +610,6 @@ PieceType StringManager::WhaleShogiDescription2PieceType(const std::string& desc
     return None;
 }
 
-std::string StringManager::PieceType2StringCode(GameVariant gameVariant, PieceType pieceType)
-{
-    if (gameVariant == KoShogi)
-    {
-    }
-    if (gameVariant == WaShogi || gameVariant == CrazyWa)
-    {
-    }
-    else if (gameVariant == ToriShogi)
-    {
-    }
-    else if (gameVariant == WhaleShogi)
-    {
-    }
-    else
-    {
-    }
-}
-
 PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std::string& stringCode)
 {
     if (gameVariant == Xiangqi)

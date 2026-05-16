@@ -12,6 +12,7 @@ public:
 	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
 	void GetMoves(Piece *piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
+    std::string GetStringCode(int x, int y) const override;
 	void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2);
     bool AreTwoKingsLookingOnEachOther();
     std::string GetWXF();

@@ -67,7 +67,7 @@ std::string Board::GetFEN() const
 					fen.append(std::to_string(emptySquares));
 					emptySquares = 0;
 				}
-				std::string sc = GetData(i, j)->StringCode();
+                std::string sc = GetStringCode(i, j);
 				if (GetData(i, j)->GetColour() == Black)
 				{
 					std::transform(sc.begin(), sc.end(), sc.begin(), [](const char v) { return static_cast<char>(std::tolower(v)); });
@@ -340,4 +340,348 @@ bool Board::operator == (const std::string& fen) const
 bool Board::operator != (const std::string& fen) const
 {
 	return this->GetFEN() != fen;
+}
+
+std::string Board::GetStringCode(int x, int y) const
+{
+    if (GetData(x, y) == nullptr) return "";
+    PieceType pieceType = GetData(x, y)->GetType();
+    PieceType basePieceType = GetData(x, y)->GetBaseType();
+    switch (pieceType)
+    {
+    case King:
+        return "K";
+    case Prince:
+        return "+E";
+    case Lion:
+        if (basePieceType == Kylin) return "+O"; else if (basePieceType == EasternBarbarian) return "+C'"; else return "N";
+    case Queen:
+        if (basePieceType == Phoenix) return "+X"; else if (basePieceType == FlyingHorse) return "+A~"; else return "Q";
+    case DragonKing:
+        if (basePieceType == Rook) return "+R"; else if (basePieceType == FlyingDragon) return "+F'"; else return "D";
+    case DragonHorse:
+        if (basePieceType == Bishop) return "+B"; else if (basePieceType == CatSword) return "+Z'"; else return "H";
+    case Rook:
+        return basePieceType == Gold ? "+G": "R";
+    case Bishop:
+        return basePieceType == Leopard ? "+F" : "B";
+    case VerticalMover:
+        return basePieceType == Silver ? "+S" : "V";
+    case SideMover:
+        return basePieceType == Copper ? "+C" : "M";
+    case ReverseChariot:
+        return "A";
+    case Lance:
+        return "L";
+    case Kylin:
+        return "O";
+    case Phoenix:
+        return "X";
+    case Elephant:
+        return basePieceType == GoBetween ? "+I" : "E";
+    case Tiger:
+        return "T";
+    case Silver:
+        return "S";
+    case Copper:
+        return "C";
+    case Leopard:
+        return "F";
+    case GoBetween:
+        return "I";
+    case Pawn:
+        return "P";
+    case Tokin:
+        return "+P";
+    case Eagle:
+        return basePieceType == DragonKing ? "+D": "E!";
+    case Unicorn:
+        return basePieceType == DragonHorse ? "+H": "F!";
+    case FlyingOx:
+        return "+V";
+    case FreeBoar:
+        if (basePieceType == AngryBoar) return "+A"; else return "+M";
+    case FlyingStag:
+        return "+T";
+    case WhiteHorse:
+        return "+L";
+    case Whale:
+        return "+A";
+    case Iron:
+        return "J";
+    case Stone:
+        return "U";
+    case AngryBoar:
+        return "A'";
+    case ViolentOx:
+        return "V'";
+    case FlyingDragon:
+        return "F'";
+    case EvilWolf:
+        return "W";
+    case CatSword:
+        return "Z";
+    case Knight:
+        return "Y";
+    case WaterBuffalo:
+        return basePieceType == SideSoldier ? "+S'" : "W!";
+    case Emperor:
+        return "+K";
+    case Deva:
+        return "A!";
+    case DarkSpirit:
+        return "G!";
+    case TeachingKing:
+        return "+A!";
+    case BuddhistSpirit:
+        return "+G!";
+    case FreeGold:
+        return "+G";
+    case FreeSilver:
+        return "+S";
+    case FreeCopper:
+        return "+C";
+    case FreeIron:
+        return "+J";
+    case FreeTile:
+        return "+T'";
+    case FreeStone:
+        return "+U";
+    case FreeEarth:
+        return "+E'";
+    case FreeGo:
+        return "+I";
+    case FreeTiger:
+        return "+T";
+    case FreeLeopard:
+        return "+F";
+    case CoiledSerpent:
+        return "I!";
+    case RecliningDragon:
+        return "J!";
+    case FreeSerpent:
+        return "+I!";
+    case FreeDragon:
+        return "+J!";
+    case OldMonkey:
+        return "M!";
+    case MountainWitch:
+        return "+M!";
+    case ChineseCock:
+        return "K!";
+    case WizardStork:
+        return "+K!";
+    case FreeCat:
+        return "+Z";
+    case FuriousFiend:
+        return "+N";
+    case FreeWolf:
+        return "+W";
+    case BlindBear:
+        return "L!";
+    case FreeBear:
+        return "+L!";
+    case OldRat:
+        return "O!";
+    case Bat:
+        return "+O!";
+    case Wrestler:
+        return "P!";
+    case Guardian:
+        return "R!";
+    case BuddhistDevil:
+        return "S!";
+    case Donkey:
+        return "U!";
+    case Capricorn:
+        return "X!";
+    case LeftChariot:
+        return "L'";
+    case RightChariot:
+        return "R'";
+    case SideFlier:
+        return "Z!";
+    case Tile:
+        return "T'";
+    case Earth:
+        return "E'";
+    case Tengu:
+        return basePieceType == OldKite ? "+K'" : "J'";
+    case Yaksha:
+        return basePieceType == EnchantedFox ? "+F~" : "T!";
+    case HookMover:
+        return basePieceType == PoisonousSnake ? "+M'" : "Y!";
+    case OldKite:
+        return "K'";
+    case PoisonousSnake:
+        return "M'";
+    case GreatElephant:
+        return "+N!";
+    case LionDog:
+        return basePieceType == WesternBarbarian ? "+B'" : "N!'";
+    case WesternBarbarian:
+        return "B'";
+    case EasternBarbarian:
+        return "C'";
+    case SouthernBarbarian:
+        return "G'";
+    case NorthernBarbarian:
+        return "H'";
+    case FragrantElephant:
+        return basePieceType == NorthernBarbarian ? "+H'" : "N'";
+    case WhiteElephant:
+        return basePieceType == SouthernBarbarian ? "+G'" : "O'";
+    case FreeDreamEater:
+        return basePieceType == WaterBuffalo ? "+W!": "P'";
+    case FreeDemon:
+        return basePieceType == RushingBird ? "+X'" : "U'";
+    case RushingBird:
+        return "X'";
+    case StandardBearer:
+        return basePieceType == NeighboringKing ? "+B~" : "Y'";
+    case FlyingHorse:
+        return "A~";
+    case NeighboringKing:
+        return "B~";
+    case BlindMonkey:
+        return "C~";
+    case Dove:
+        return basePieceType == EnchantedBadger ? "+E~" : "D~";
+    case EnchantedBadger:
+        return "E~";
+    case EnchantedFox:
+        return "F~";
+    case RacingChariot:
+        return "G~";
+    case SquareMover:
+        return basePieceType == PrancingStag ? "+I~" : "H~";
+    case PrancingStag:
+        return "I~";
+    case WhiteTiger:
+        return "J~";
+    case BlueDragon:
+        return "K~";
+    case HowlingDog:
+        return "M~";
+    case ViolentBear:
+        return "N~";
+    case LeftGeneral:
+        return "L~";
+    case RightGeneral:
+        return "R~";
+    case SavageTiger:
+        return "O~";
+    case Wood:
+        return "W'";
+    case GoldenBird:
+        return basePieceType == Phoenix ? "+X" : "P~";
+    case GreatDragon:
+        return basePieceType == Kylin ? "+O" : "Q~";
+    case PromotedLance:
+        return "+L";
+    case PromotedKnight:
+        return "+N";
+    case PromotedSilver:
+        return "+S";
+    case Dog:
+        return "D'";
+    case MultiGeneral:
+        return "+D'";
+    case ViceGeneral:
+        return basePieceType == BishopGeneral ? "+B!" : "V!";
+    case GreatGeneral:
+        return basePieceType == RookGeneral ? "+R!" : "Q!";
+    case BishopGeneral:
+        return basePieceType == Unicorn ? "+F!" : "B!";
+    case RookGeneral:
+        return basePieceType == Eagle ? "+E!" : "R!";
+    case FreeEagle:
+        return basePieceType == Queen ? "+Q" : "Q'";
+    case LionHawk:
+        return basePieceType == Lion ? "+N" : "H!";
+    case SideSoldier:
+        return basePieceType == Knight ? "+Y" : "S'";
+    case VerticalSoldier:
+        return basePieceType == Iron ? "+J" : "V'";
+    case ChariotSoldier:
+        return basePieceType == VerticalSoldier ? "+V'" : "C!";
+    case HeavenlyTetrarch:
+        return "+C!";
+    case FireDemon:
+        return basePieceType == WaterBuffalo ? "+W!" : "D!";
+    case Gold:
+        switch (basePieceType)
+        {
+        case Iron:
+            return "+J";
+        case Stone:
+            return "+U";
+        case AngryBoar:
+            return "+A'";
+        case ViolentOx:
+            return "+V'";
+        case FlyingDragon:
+            return "+F'";
+        case EvilWolf:
+            return "+W";
+        case CatSword:
+            return "+Z";
+        case Knight:
+            return "+Y";
+        case Lance:
+            return "+L";
+        case ReverseChariot:
+            return "+A";
+        case LionDog:
+            return "+N!";
+        case Wrestler:
+            return "+P!";
+        case Guardian:
+            return "+R!";
+        case BuddhistDevil:
+            return "+S!";
+        case Yaksha:
+            return "+T!";
+        case Donkey:
+            return "+U!";
+        case Capricorn:
+            return "+X!";
+        case HookMover:
+            return "+Y!";
+        case Bishop:
+            return "+B";
+        case Rook:
+            return "+R";
+        case VerticalMover:
+            return "+V";
+        case SideMover:
+            return "+M";
+        case LeftChariot:
+            return "+L'";
+        case RightChariot:
+            return "+R'";
+        case SideFlier:
+            return "+Z!";
+        case Pawn:
+            return "+P";
+        default:
+            return "G";
+        }
+    case Archbishop:
+        return "A";
+    case Chancellor:
+        return "C";
+    case YariKnight:
+        return "N";
+    case YariRook:
+        return "Y";
+    case YariBishop:
+        return "B";
+    case YariGold:
+        return "G";
+    case YariSilver:
+        return "S";
+    default:
+        return "";
+    }
 }

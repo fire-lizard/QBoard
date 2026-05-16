@@ -23,30 +23,3 @@ void ToriShogiPiece::Promote(PieceType pieceType)
         break;
     }
 }
-
-std::string ToriShogiPiece::StringCode()
-{
-    switch (_pieceType)
-    {
-    case King:
-        return "K";
-    case Falcon:
-        return "F";
-    case Eagle:
-        return "+F";
-    case Crane:
-        return "C";
-    case Pheasant:
-        return "P";
-    case LeftQuail:
-        return "L";
-    case RightQuail:
-        return "R";
-    case Pawn:
-        return "S";
-    case Goose:
-        return "+S";
-    default:
-        return "";
-    }
-}

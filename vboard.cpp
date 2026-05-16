@@ -2650,8 +2650,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			}
 		}
 		dynamic_cast<ShogiVariantBoard*>(_board)->PlacePiece(newPiece, _currentPlayer, x, y);
-		Piece* p = _board->GetData(x, y);
-		const char sc = p->StringCode()[0];
+        const char sc = _board->GetStringCode(x, y)[0];
 		const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
 		if (engine != nullptr && engine->IsActive())
 		{

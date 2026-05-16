@@ -14,7 +14,8 @@ public:
 	void PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y) override;
 	void GetMoves(Piece* piece, int x, int y) override;
 	void SetDrops(bool hasDrops) override;
-	virtual void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture);
+    std::string GetStringCode(int x, int y) const override;
+    virtual void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture);
 	std::string GetPGN();
 
 protected:

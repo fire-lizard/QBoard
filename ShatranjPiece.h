@@ -9,6 +9,5 @@ public:
 	ShatranjPiece(PieceType pieceType, PieceColour pieceColour);
 	~ShatranjPiece() override;
 	void Promote(PieceType pieceType = None) override;
-    std::string StringCode() override;
 };
 

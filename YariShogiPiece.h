@@ -7,5 +7,4 @@ public:
     YariShogiPiece(PieceType pieceType, PieceColour pieceColour);
     ~YariShogiPiece() override;
     void Promote(PieceType pieceType = None) override;
-    std::string StringCode() override;
 };

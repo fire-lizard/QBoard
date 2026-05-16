@@ -13,28 +13,3 @@ void ShatranjPiece::Promote(PieceType pieceType)
 	_isPromoted = true;
 	_pieceType = Queen;
 }
-
-std::string ShatranjPiece::StringCode()
-{
-	switch (_pieceType)
-	{
-	case King:
-		return "K";
-	case Queen:
-		return "Q";
-	case Rook:
-		return "R";
-	case Bishop:
-		return "B";
-	case Knight:
-		return "N";
-    case Archbishop:
-        return "A";
-    case Chancellor:
-        return "C";
-    case Pawn:
-		return "P";
-	default:
-		return "";
-	}
-}

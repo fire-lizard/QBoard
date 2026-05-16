@@ -323,3 +323,18 @@ bool OmegaChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
     }
     return result;
 }
+
+std::string OmegaChessBoard::GetStringCode(int x, int y) const
+{
+    if (GetData(x, y) == nullptr) return "";
+    PieceType pieceType = GetData(x, y)->GetType();
+    switch (pieceType)
+    {
+    case Champion:
+        return "C";
+    case Wizard:
+        return "W";
+    default:
+        return Board::GetStringCode(x, y);
+    }
+}

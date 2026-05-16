@@ -7,5 +7,4 @@ public:
     GrandeAcedrexPiece(PieceType pieceType, PieceColour pieceColour);
     ~GrandeAcedrexPiece() override;
     void Promote(PieceType pieceType = None) override;
-    std::string StringCode() override;
 };

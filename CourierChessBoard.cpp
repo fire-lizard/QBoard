@@ -83,3 +83,24 @@ void CourierChessBoard::GetMoves(Piece* piece, int x, int y)
         break;
     }
 }
+
+std::string CourierChessBoard::GetStringCode(int x, int y) const
+{
+    if (GetData(x, y) == nullptr) return "";
+    PieceType pieceType = GetData(x, y)->GetType();
+    switch (pieceType)
+    {
+    case Bishop:
+        return "E";
+    case Courier:
+        return "B";
+    case Schleich:
+        return "W";
+    case Sage:
+        return "M";
+    case Queen:
+        return "F";
+    default:
+        return Board::GetStringCode(x, y);
+    }
+}

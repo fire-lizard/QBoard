@@ -29,23 +29,3 @@ void YariShogiPiece::Promote(PieceType pieceType)
         break;
     }
 }
-
-std::string YariShogiPiece::StringCode()
-{
-    switch (_pieceType)
-    {
-    case YariKnight:
-        return "N";
-    case YariRook:
-        return "Y";
-    case YariBishop:
-        return "B";
-    case YariGold:
-        return "G";
-    case YariSilver:
-        return "S";
-    default:
-        return ShogiPiece::StringCode();
-    }
-}
-

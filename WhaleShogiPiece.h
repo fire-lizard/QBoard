@@ -8,5 +8,4 @@ public:
     WhaleShogiPiece(PieceType pieceType, PieceColour pieceColour);
     ~WhaleShogiPiece() override;
     void Promote(PieceType pieceType = None) override;
-    std::string StringCode() override;
 };

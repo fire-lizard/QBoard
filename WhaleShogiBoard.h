@@ -12,6 +12,7 @@ public:
     Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
     void PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y) override;
     void GetMoves(Piece* piece, int x, int y) override;
+    std::string GetStringCode(int x, int y) const override;
 
 private:
 

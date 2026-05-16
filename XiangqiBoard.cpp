@@ -303,3 +303,28 @@ bool XiangqiBoard::AreTwoKingsLookingOnEachOther()
     }
     return false;
 }
+
+std::string XiangqiBoard::GetStringCode(int x, int y) const
+{
+    if (GetData(x, y) == nullptr) return "";
+    PieceType pieceType = GetData(x, y)->GetType();
+    switch (pieceType)
+    {
+    case King:
+        return "K";
+    case Silver:
+        return "A";
+    case Rook:
+        return "R";
+    case Cannon:
+        return "C";
+    case Knight:
+        return "H";
+    case Elephant:
+        return "E";
+    case Pawn:
+        return "P";
+    default:
+        return "";
+    }
+}

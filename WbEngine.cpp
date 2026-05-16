@@ -54,7 +54,7 @@ void WbEngine::Edit(const Board* board) const
 					WriteToProcess("c\n");
 					pieceColour = newPieceColour;
 				}
-				str += p->StringCode();
+                str += board->GetStringCode(i, j);
 				str.push_back(letter);
 				str += std::to_string(number);
 				str.push_back('\n');

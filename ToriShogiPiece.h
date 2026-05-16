@@ -8,5 +8,4 @@ public:
     ToriShogiPiece(PieceType pieceType, PieceColour pieceColour);
     ~ToriShogiPiece() override;
     void Promote(PieceType pieceType = None) override;
-    std::string StringCode() override;
 };

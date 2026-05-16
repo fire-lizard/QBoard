@@ -8,7 +8,6 @@ public:
 	KoShogiPiece(PieceType pieceType, PieceColour pieceColour);
 	~KoShogiPiece() override;
 	void Promote(PieceType pieceType = None) override;
-	std::string StringCode() override;
 	void Demote();
 };
 

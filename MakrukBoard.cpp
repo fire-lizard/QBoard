@@ -102,3 +102,18 @@ void MakrukBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2,
 	_pgn += " ";
 	_moveCount++;
 }
+
+std::string MakrukBoard::GetStringCode(int x, int y) const
+{
+    if (GetData(x, y) == nullptr) return "";
+    PieceType pieceType = GetData(x, y)->GetType();
+    switch (pieceType)
+    {
+    case Queen:
+        return "M";
+    case Silver:
+        return "S";
+    default:
+        return Board::GetStringCode(x, y);
+    }
+}
