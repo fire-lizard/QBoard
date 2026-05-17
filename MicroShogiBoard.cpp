@@ -61,16 +61,6 @@ bool MicroShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
     return result;
 }
 
-Piece* MicroShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return new ShogiPiece(pieceType, pieceColour);
-}
-
-void MicroShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
-{
-    SetData(x, y, new ShogiPiece(pieceType, pieceColour));
-}
-
 void MicroShogiBoard::Promote(int x, int y, PieceType pt)
 {
     Promote(GetData(x, y), pt);

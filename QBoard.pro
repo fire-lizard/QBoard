@@ -69,7 +69,6 @@ SOURCES += main.cpp\
     DaiShogiBoard.cpp \
     TenjikuShogiBoard.cpp \
     WaShogiBoard.cpp \
-    WaShogiPiece.cpp \
     DaiDaiShogiBoard.cpp \
     MakaDaiDaiShogiBoard.cpp \
     KoShogiBoard.cpp \
@@ -135,7 +134,6 @@ HEADERS  += mainwindow.h \
     DaiShogiBoard.h \
     TenjikuShogiBoard.h \
     WaShogiBoard.h \
-    WaShogiPiece.h \
     DaiDaiShogiBoard.h \
     MakaDaiDaiShogiBoard.h \
     KoShogiBoard.h \

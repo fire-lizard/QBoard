@@ -50,16 +50,6 @@ Board* WhaleShogiBoard::Clone()
     return cb;
 }
 
-Piece* WhaleShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return new ShogiPiece(pieceType, pieceColour);
-}
-
-void WhaleShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
-{
-    SetData(x, y, new ShogiPiece(pieceType, pieceColour));
-}
-
 void WhaleShogiBoard::Promote(int x, int y, PieceType pt)
 {
 }
@@ -184,4 +174,44 @@ std::string WhaleShogiBoard::GetStringCode(int x, int y) const
     default:
         return "";
     }
+}
+
+std::string WhaleShogiBoard::formatEnumCounts(const std::vector<PieceType>& enumList)
+{
+    static const std::unordered_map<PieceType, std::string> pieceTypeToCode = {
+        {GreyWhale, "G"},
+        {DragonKing, "K"},
+        {Narwhal, "N"},
+        {Humpback, "H"},
+        {BlueWhale, "B"},
+        {Pawn, "D"}
+    };
+
+    // Define the required order of pieces
+    const std::vector<PieceType> order = { GreyWhale, DragonKing, Narwhal, Humpback, BlueWhale, Pawn };
+
+    // Count occurrences of each piece
+    std::unordered_map<PieceType, int> counts;
+    for (const auto& piece : enumList)
+    {
+        counts[piece]++;
+    }
+
+    std::ostringstream result;
+
+    // Construct the output string based on the order
+    for (const auto& piece : order) {
+        const auto it = pieceTypeToCode.find(piece);
+        if (it != pieceTypeToCode.end())
+        {
+            if (counts[piece] > 1) {
+                result << counts[piece] << it->second; // Add count + first letter
+            }
+            else if (counts[piece] == 1) {
+                result << it->second; // Add just the first letter
+            }
+        }
+    }
+
+    return result.str();
 }

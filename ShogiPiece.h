@@ -7,6 +7,5 @@ class ShogiPiece : public Piece
 public:
 	ShogiPiece(PieceType pieceType, PieceColour pieceColour);
 	~ShogiPiece() override;
-    static std::string ToStringCode(PieceType piece);
 };
 

@@ -22,7 +22,7 @@ void WaShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				SetData(i, j, new WaShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
@@ -49,16 +49,6 @@ Board* WaShogiBoard::Clone()
 	}
 	cb->SetMoveCount(_moveCount);
 	return cb;
-}
-
-Piece* WaShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-	return new WaShogiPiece(pieceType, pieceColour);
-}
-
-void WaShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
-{
-	SetData(x, y, new WaShogiPiece(pieceType, pieceColour));
 }
 
 void WaShogiBoard::Promote(int x, int y, PieceType pt)
@@ -128,6 +118,26 @@ void WaShogiBoard::Promote(Piece *piece, PieceType pt)
 
 std::string WaShogiBoard::formatEnumCounts(const std::vector<PieceType>& enumList)
 {
+    static const std::unordered_map<PieceType, std::string> pieceTypeToCode = {
+        { King,           "K"  },
+        { Lance,          "O"  },
+        { Pawn,           "P"  },
+        { SideMover,      "S"  },
+        { LiberatedHorse, "H"  },
+        { SwoopingOwl,    "L"  },
+        { CloudEagle,     "E"  },
+        { StruttingCrow,  "U"  },
+        { FlyingFalcon,   "F"  },
+        { FlyingCock,     "C"  },
+        { FlyingGoose,    "G"  },
+        { ClimbingMonkey, "M"  },
+        { Silver,         "V"  },
+        { Dog,            "D"  },
+        { Gold,           "W"  },
+        { RunningRabbit,  "R"  },
+        { TreacherousFox, "X"  }
+    };
+
     const std::vector<PieceType> order = { Rook, SideMover, Gold, Silver, LiberatedHorse, Lance, Pawn, SwoopingOwl, CloudEagle, StruttingCrow,
                                            FlyingFalcon, FlyingCock, FlyingGoose, ClimbingMonkey, Dog, RunningRabbit, TreacherousFox };
 
@@ -141,12 +151,16 @@ std::string WaShogiBoard::formatEnumCounts(const std::vector<PieceType>& enumLis
 	std::ostringstream result;
 
 	for (const auto& piece : order) {
-		if (counts[piece] > 1) {
-			result << counts[piece] << WaShogiPiece::ToStringCode(piece); // Add count + first letter
-		}
-		else if (counts[piece] == 1) {
-			result << WaShogiPiece::ToStringCode(piece); // Add just the first letter
-		}
+        const auto it = pieceTypeToCode.find(piece);
+        if (it != pieceTypeToCode.end())
+        {
+            if (counts[piece] > 1) {
+                result << counts[piece] << it->second; // Add count + first letter
+            }
+            else if (counts[piece] == 1) {
+                result << it->second; // Add just the first letter
+            }
+        }
 	}
 
 	return result.str();

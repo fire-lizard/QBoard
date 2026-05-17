@@ -45,11 +45,6 @@ Board* HeianDaiShogiBoard::Clone()
     return cb;
 }
 
-Piece* HeianDaiShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return new ShogiPiece(pieceType, pieceColour);
-}
-
 void HeianDaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
     Promote(GetData(x, y), pt);

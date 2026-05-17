@@ -77,12 +77,12 @@ void OmegaChessBoard::GetMoves(Piece* piece, int x, int y)
         CheckMove(piece, x - 1, y);
         CheckMove(piece, x - 1, y - 1);
         // Check castling
-        if (!dynamic_cast<ChessPiece*>(piece)->HasMoved())
+        if (!piece->HasMoved)
         {
             if (GetData(2, y) != nullptr)
             {
-                const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(2, y));
-                if (!cp->HasMoved() && cp->GetType() == Rook && GetData(3, y) == nullptr && GetData(4, y) == nullptr && GetData(5, y) == nullptr)
+                const Piece* cp = GetData(2, y);
+                if (!cp->HasMoved && cp->GetType() == Rook && GetData(3, y) == nullptr && GetData(4, y) == nullptr && GetData(5, y) == nullptr)
                 {
                     if ((piece->GetColour() == White && _wqc == true) || (piece->GetColour() == Black && _bqc == true))
                     {
@@ -92,8 +92,8 @@ void OmegaChessBoard::GetMoves(Piece* piece, int x, int y)
             }
             if (GetData(_width - 3, y) != nullptr)
             {
-                const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(_width - 3, y));
-                if (!cp->HasMoved() && cp->GetType() == Rook && GetData(7, y) == nullptr && GetData(8, y) == nullptr)
+                const Piece* cp = GetData(_width - 3, y);
+                if (!cp->HasMoved && cp->GetType() == Rook && GetData(7, y) == nullptr && GetData(8, y) == nullptr)
                 {
                     if ((piece->GetColour() == White && _wkc == true) || (piece->GetColour() == Black && _bkc == true))
                     {
@@ -213,7 +213,7 @@ bool OmegaChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
     const bool result = Board::Move(oldX, oldY, newX, newY, cl);
     if (result && GetData(newX, newY) != nullptr)
     {
-        dynamic_cast<ChessPiece*>(GetData(newX, newY))->Move();
+        GetData(newX, newY)->HasMoved = true;
         // Castling
         if (pieceType == Rook)
         {

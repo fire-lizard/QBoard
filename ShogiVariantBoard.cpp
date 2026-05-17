@@ -37,7 +37,17 @@ void ShogiVariantBoard::RemoveCapturedPiece(PieceType p, PieceColour pieceColour
 
 std::string ShogiVariantBoard::formatEnumCounts(const std::vector<PieceType>& enumList) 
 {
-	// Define the required order of pieces
+    static const std::unordered_map<PieceType, std::string> pieceTypeToCode = {
+        {Rook, "R"},
+        {Bishop, "B"},
+        {Lance, "L"},
+        {Silver, "S"},
+        {Gold, "G"},
+        {Knight, "N"},
+        {Pawn, "P"}
+    };
+
+    // Define the required order of pieces
     const std::vector<PieceType> order = { Rook, Bishop, Gold, Silver, Knight, Lance, Pawn };
 
 	// Count occurrences of each piece
@@ -51,12 +61,16 @@ std::string ShogiVariantBoard::formatEnumCounts(const std::vector<PieceType>& en
 
 	// Construct the output string based on the order
 	for (const auto& piece : order) {
-		if (counts[piece] > 1) {
-			result << counts[piece] << ShogiPiece::ToStringCode(piece); // Add count + first letter
-		}
-		else if (counts[piece] == 1) {
-			result << ShogiPiece::ToStringCode(piece); // Add just the first letter
-		}
+        const auto it = pieceTypeToCode.find(piece);
+        if (it != pieceTypeToCode.end())
+        {
+            if (counts[piece] > 1) {
+                result << counts[piece] << it->second; // Add count + first letter
+            }
+            else if (counts[piece] == 1) {
+                result << it->second; // Add just the first letter
+            }
+        }
 	}
 
 	return result.str();

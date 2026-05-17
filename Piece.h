@@ -11,6 +11,7 @@ public:
     void SetType(PieceType pieceType);
 	PieceColour GetColour() const;
     bool IsPromoted;
+    bool HasMoved;
 
 protected:
 	Piece(PieceType pieceType, PieceColour pieceColour);

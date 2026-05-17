@@ -50,16 +50,6 @@ Board* YariShogiBoard::Clone()
     return cb;
 }
 
-Piece* YariShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return new ShogiPiece(pieceType, pieceColour);
-}
-
-void YariShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
-{
-    SetData(x, y, new ShogiPiece(pieceType, pieceColour));
-}
-
 void YariShogiBoard::Promote(int x, int y, PieceType pt)
 {
     Promote(GetData(x, y), pt);
@@ -176,4 +166,42 @@ void YariShogiBoard::GetMoves(Piece *piece, int x, int y)
         ShogiBoard::GetMoves(piece, x, y);
         break;
     }
+}
+
+std::string YariShogiBoard::formatEnumCounts(const std::vector<PieceType>& enumList)
+{
+    static const std::unordered_map<PieceType, std::string> pieceTypeToCode = {
+        {YariKnight, "R"},
+        {YariRook, "B"},
+        {YariBishop, "L"},
+        {Pawn, "P"}
+    };
+
+    // Define the required order of pieces
+    const std::vector<PieceType> order = { YariKnight, YariRook, YariBishop, Pawn };
+
+    // Count occurrences of each piece
+    std::unordered_map<PieceType, int> counts;
+    for (const auto& piece : enumList)
+    {
+        counts[piece]++;
+    }
+
+    std::ostringstream result;
+
+    // Construct the output string based on the order
+    for (const auto& piece : order) {
+        const auto it = pieceTypeToCode.find(piece);
+        if (it != pieceTypeToCode.end())
+        {
+            if (counts[piece] > 1) {
+                result << counts[piece] << it->second; // Add count + first letter
+            }
+            else if (counts[piece] == 1) {
+                result << it->second; // Add just the first letter
+            }
+        }
+    }
+
+    return result.str();
 }

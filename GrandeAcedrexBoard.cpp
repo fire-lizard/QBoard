@@ -79,7 +79,7 @@ void GrandeAcedrexBoard::GetMoves(Piece* piece, int x, int y)
         CheckMove(piece, x - 1, y + 1);
         CheckMove(piece, x - 1, y);
         CheckMove(piece, x - 1, y - 1);
-        if (!dynamic_cast<ChessPiece*>(piece)->HasMoved())
+        if (!piece->HasMoved)
         {
             CheckMove(piece, x + 2, y);
             CheckMove(piece, x - 2, y);
@@ -206,7 +206,7 @@ bool GrandeAcedrexBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
     const bool result = ShatranjBoard::Move(oldX, oldY, newX, newY, cl);
     if (result)
     {
-        dynamic_cast<ChessPiece*>(GetData(newX, newY))->Move();
+        GetData(newX, newY)->HasMoved = true;
     }
     return result;
 }

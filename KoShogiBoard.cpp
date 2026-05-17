@@ -45,11 +45,6 @@ Board* KoShogiBoard::Clone()
 	return cb;
 }
 
-Piece* KoShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return new ShogiPiece(pieceType, pieceColour);
-}
-
 void KoShogiBoard::Promote(int x, int y, PieceType pt)
 {
     Promote(GetData(x, y), pt);

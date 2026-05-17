@@ -44,11 +44,6 @@ Board* MakaDaiDaiShogiBoard::Clone()
 	return cb;
 }
 
-Piece* MakaDaiDaiShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return new ShogiPiece(pieceType, pieceColour);
-}
-
 void MakaDaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
     Promote(GetData(x, y), pt);

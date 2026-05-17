@@ -70,12 +70,12 @@ void CapablancaChessBoard::GetMoves(Piece *piece, int x, int y)
         CheckMove(piece, x - 1, y);
         CheckMove(piece, x - 1, y - 1);
         // Check castling
-        if (!dynamic_cast<ChessPiece*>(piece)->HasMoved())
+        if (!piece->HasMoved)
         {
             if (GetData(0, y) != nullptr)
             {
-                const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(0, y));
-                if (!cp->HasMoved() && cp->GetType() == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr && GetData(4, y) == nullptr)
+                const Piece* cp = GetData(0, y);
+                if (!cp->HasMoved && cp->GetType() == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr && GetData(4, y) == nullptr)
                 {
                     if ((piece->GetColour() == White && _wqc == true) || (piece->GetColour() == Black && _bqc == true))
                     {
@@ -85,8 +85,8 @@ void CapablancaChessBoard::GetMoves(Piece *piece, int x, int y)
             }
             if (GetData(9, y) != nullptr)
             {
-                const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(9, y));
-                if (!cp->HasMoved() && cp->GetType() == Rook && GetData(6, y) == nullptr && GetData(7, y) == nullptr && GetData(8, y) == nullptr)
+                const Piece* cp = GetData(9, y);
+                if (!cp->HasMoved && cp->GetType() == Rook && GetData(6, y) == nullptr && GetData(7, y) == nullptr && GetData(8, y) == nullptr)
                 {
                     if ((piece->GetColour() == White && _wkc == true) || (piece->GetColour() == Black && _bkc == true))
                     {

@@ -500,8 +500,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
     if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess ||
          _gameVariant == JanusChess || _gameVariant == ChancellorChess || _gameVariant == ModernChess ||
          _gameVariant == OmegaChess) &&
-        _currentPiece != nullptr && _currentPiece->GetType() == King && !dynamic_cast<ChessPiece*>(_currentPiece)->HasMoved() &&
-		p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !dynamic_cast<ChessPiece*>(p)->HasMoved() && _board->IsMovePossible(x, y))
+        _currentPiece != nullptr && _currentPiece->GetType() == King && !_currentPiece->HasMoved &&
+        p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !p->HasMoved && _board->IsMovePossible(x, y))
 	{
         if (_gameVariant == Chess || _gameVariant == ChancellorChess || _gameVariant == ModernChess)
         {

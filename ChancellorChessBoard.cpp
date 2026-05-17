@@ -70,12 +70,12 @@ void ChancellorChessBoard::GetMoves(Piece *piece, int x, int y)
         CheckMove(piece, x - 1, y);
         CheckMove(piece, x - 1, y - 1);
         // Check castling
-        if (!dynamic_cast<ChessPiece*>(piece)->HasMoved())
+        if (!piece->HasMoved)
         {
             if (GetData(0, y) != nullptr)
             {
-                const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(0, y));
-                if (!cp->HasMoved() && cp->GetType() == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr)
+                const Piece* cp = GetData(0, y);
+                if (!cp->HasMoved && cp->GetType() == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr)
                 {
                     if ((piece->GetColour() == White && _wqc == true) || (piece->GetColour() == Black && _bqc == true))
                     {
@@ -85,8 +85,8 @@ void ChancellorChessBoard::GetMoves(Piece *piece, int x, int y)
             }
             if (GetData(_width - 1, y) != nullptr)
             {
-                const ChessPiece* cp = dynamic_cast<ChessPiece*>(GetData(_width - 1, y));
-                if (!cp->HasMoved() && cp->GetType() == Rook && GetData(5, y) == nullptr && GetData(6, y) == nullptr)
+                const Piece* cp = GetData(_width - 1, y);
+                if (!cp->HasMoved && cp->GetType() == Rook && GetData(5, y) == nullptr && GetData(6, y) == nullptr)
                 {
                     if ((piece->GetColour() == White && _wkc == true) || (piece->GetColour() == Black && _bkc == true))
                     {
@@ -170,7 +170,7 @@ bool ChancellorChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
     const bool result = Board::Move(oldX, oldY, newX, newY, cl);
     if (result && GetData(newX, newY) != nullptr)
     {
-        dynamic_cast<ChessPiece*>(GetData(newX, newY))->Move();
+        GetData(newX, newY)->HasMoved  = true;
         // Castling
         if (pieceType == Rook)
         {

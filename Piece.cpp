@@ -6,6 +6,7 @@ Piece::Piece(PieceType pieceType, PieceColour pieceColour)
 	_pieceType = pieceType;
 	_pieceColour = pieceColour;
     IsPromoted = false;
+    HasMoved = false;
 }
 
 Piece::~Piece()

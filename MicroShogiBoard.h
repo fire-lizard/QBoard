@@ -9,8 +9,6 @@ public:
     void Initialize() override;
     Board* Clone() override;
     bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
-    Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
-    void PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y) override;
     void Promote(int x, int y, PieceType pt) override;
     void Promote(Piece *piece, PieceType pt) override;
 

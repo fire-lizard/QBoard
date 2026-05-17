@@ -44,11 +44,6 @@ Board* TenjikuShogiBoard::Clone()
 	return cb;
 }
 
-Piece* TenjikuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return new ShogiPiece(pieceType, pieceColour);
-}
-
 void TenjikuShogiBoard::Promote(int x, int y, PieceType pt)
 {
     Promote(GetData(x, y), pt);

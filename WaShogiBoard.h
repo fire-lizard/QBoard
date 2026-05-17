@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "Common.h"
 #include "ShogiBoard.h"
-#include "WaShogiPiece.h"
 
 class WaShogiBoard : public ShogiBoard
 {
@@ -10,8 +9,6 @@ public:
 	~WaShogiBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
-	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
-	void PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y) override;
     void Promote(int x, int y, PieceType pt) override;
     void Promote(Piece *piece, PieceType pt) override;
     void GetMoves(Piece* piece, int x, int y) override;

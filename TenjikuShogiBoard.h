@@ -17,7 +17,6 @@ public:
 	~TenjikuShogiBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
-	Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) override;
     void Promote(int x, int y, PieceType pieceType) override;
     void Promote(Piece *piece, PieceType pt) override;
     void GetMoves(Piece* piece, int x, int y) override;

@@ -50,16 +50,6 @@ Board* KyotoShogiBoard::Clone()
     return cb;
 }
 
-Piece* KyotoShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return new ShogiPiece(pieceType, pieceColour);
-}
-
-void KyotoShogiBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
-{
-    SetData(x, y, new ShogiPiece(pieceType, pieceColour));
-}
-
 void KyotoShogiBoard::Promote(int x, int y, PieceType pt)
 {
     Promote(GetData(x, y), pt);
