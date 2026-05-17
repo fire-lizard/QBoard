@@ -19,7 +19,7 @@ Board* GrandeAcedrexBoard::Clone()
         for (int j = 0; j < GetHeight(); j++)
         {
             const Piece* p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
         }
     }
     cb->SetMoveCount(_moveCount);
@@ -36,7 +36,7 @@ void GrandeAcedrexBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
@@ -44,11 +44,6 @@ void GrandeAcedrexBoard::Initialize()
             }
         }
     }
-}
-
-Piece* GrandeAcedrexBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return new ChessPiece(pieceType, pieceColour);
 }
 
 void GrandeAcedrexBoard::Promote(int x, int y, PieceType pt)
@@ -61,14 +56,14 @@ void GrandeAcedrexBoard::Promote(Piece *piece, PieceType pt)
     if (piece != nullptr)
     {
         piece->IsPromoted = true;
-        piece->SetType(pt);
+        piece->Type = pt;
     }
 }
 
 void GrandeAcedrexBoard::GetMoves(Piece* piece, int x, int y)
 {
     _moves.clear();
-    switch (piece->GetType())
+    switch (piece->Type)
     {
     case King:
         CheckMove(piece, x + 1, y + 1);
@@ -83,7 +78,7 @@ void GrandeAcedrexBoard::GetMoves(Piece* piece, int x, int y)
         {
             CheckMove(piece, x + 2, y);
             CheckMove(piece, x - 2, y);
-            if (piece->GetColour() == Black)
+            if (piece->Colour == Black)
             {
                 CheckMove(piece, x, y + 2);
                 CheckMove(piece, x + 2, y + 2);
@@ -214,7 +209,7 @@ bool GrandeAcedrexBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 std::string GrandeAcedrexBoard::GetStringCode(int x, int y) const
 {
     if (GetData(x, y) == nullptr) return "";
-    PieceType pieceType = GetData(x, y)->GetType();
+    PieceType pieceType = GetData(x, y)->Type;
     switch (pieceType)
     {
     case King:

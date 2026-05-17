@@ -1,6 +1,5 @@
 #pragma once
 #include "XiangqiBoard.h"
-#include "XiangqiPiece.h"
 
 class JanggiBoard : public XiangqiBoard
 {

@@ -3,7 +3,24 @@
 #include <algorithm>
 #include <utility>
 #include <tuple>
-#include "Piece.h"
+#include "Common.h"
+
+struct Piece
+{
+    Piece(PieceType pieceType, PieceColour pieceColour)
+    {
+        BaseType = pieceType;
+        Type = pieceType;
+        Colour = pieceColour;
+        IsPromoted = false;
+        HasMoved = false;
+    }
+    PieceType BaseType;
+    PieceType Type;
+    PieceColour Colour;
+    bool IsPromoted;
+    bool HasMoved;
+};
 
 class Board
 {
@@ -11,16 +28,16 @@ public:
 	virtual ~Board();
 	virtual void Initialize() = 0;
 	virtual Board* Clone() = 0;
-	virtual Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour) = 0;
     virtual void Promote(int x, int y, PieceType pt) = 0;
     virtual void Promote(Piece *piece, PieceType pt) = 0;
     virtual void GetMoves(Piece *piece, int x, int y) = 0;
-	virtual bool Move(int oldX, int oldY, int newX, int newY, bool cl = true);
+    virtual bool Move(int oldX, int oldY, int newX, int newY, bool cl = true);
     virtual std::string GetStringCode(int x, int y) const;
     void Clear();
 	void RemoveMove(int x, int y);
 	void RemoveMoves();
-	std::vector<std::tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
+    Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour);
+    std::vector<std::tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
 	std::vector<std::pair<int, int>> Moves() const;
     std::pair<int, int> GetPieceLocation(PieceType pieceType, PieceColour pieceColour);
     Piece* GetData(int x, int y) const;

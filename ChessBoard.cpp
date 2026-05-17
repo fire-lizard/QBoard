@@ -19,7 +19,7 @@ Board* ChessBoard::Clone()
 		for (int j = 0; j < GetHeight(); j++)
 		{
 			const Piece *p = GetData(i, j);
-			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
@@ -45,7 +45,7 @@ void ChessBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				SetData(i, j, new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
@@ -53,11 +53,6 @@ void ChessBoard::Initialize()
 			}
 		}
 	}
-}
-
-Piece* ChessBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-	return new ChessPiece(pieceType, pieceColour);
 }
 
 void ChessBoard::Promote(int x, int y, PieceType pt)
@@ -70,7 +65,7 @@ void ChessBoard::Promote(Piece *piece, PieceType pt)
     if (piece != nullptr)
     {
         piece->IsPromoted = true;
-        piece->SetType(pt);
+        piece->Type = pt;
     }
 }
 
@@ -115,15 +110,15 @@ bool ChessBoard::EnemyPawnsAround(int x, int y) const
 	const Piece *fp = x > 0 ? GetData(x - 1, y) : nullptr;
 	const Piece *sp = x < _width - 1 ? GetData(x + 1, y) : nullptr;
 	const PieceColour pieceColour = y == 3 ? White : Black;
-	const bool fpa = (fp != nullptr) && (fp->GetType() == Pawn) && (fp->GetColour() == pieceColour);
-	const bool spa = (sp != nullptr) && (sp->GetType() == Pawn) && (sp->GetColour() == pieceColour);
+    const bool fpa = (fp != nullptr) && (fp->Type == Pawn) && (fp->Colour == pieceColour);
+    const bool spa = (sp != nullptr) && (sp->Type == Pawn) && (sp->Colour == pieceColour);
 	return fpa || spa;
 }
 
 void ChessBoard::GetMoves(Piece *piece, int x, int y)
 {
 	_moves.clear();
-	switch (piece->GetType())
+    switch (piece->Type)
 	{
 	case King:
 		CheckMove(piece, x + 1, y + 1);
@@ -140,9 +135,9 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 			if (GetData(0, y) != nullptr)
 			{
                 const Piece* cp = GetData(0, y);
-                if (!cp->HasMoved && cp->GetType() == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr)
+                if (!cp->HasMoved && cp->Type == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr)
 				{
-					if ((piece->GetColour() == White && _wqc == true) || (piece->GetColour() == Black && _bqc == true))
+                    if ((piece->Colour == White && _wqc == true) || (piece->Colour == Black && _bqc == true))
 					{
 						_moves.emplace_back(0, y);
 					}
@@ -151,9 +146,9 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
             if (GetData(_width - 1, y) != nullptr)
 			{
                 const Piece* cp = GetData(_width - 1, y);
-                if (!cp->HasMoved && cp->GetType() == Rook && GetData(5, y) == nullptr && GetData(6, y) == nullptr)
+                if (!cp->HasMoved && cp->Type == Rook && GetData(5, y) == nullptr && GetData(6, y) == nullptr)
 				{
-					if ((piece->GetColour() == White && _wkc == true) || (piece->GetColour() == Black && _bkc == true))
+                    if ((piece->Colour == White && _wkc == true) || (piece->Colour == Black && _bkc == true))
 					{
                         _moves.emplace_back(_width - 1, y);
 					}
@@ -178,7 +173,7 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, NorthWest);
 		break;
 	case Pawn:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			if (y == 1 && GetData(x, y + 1) == nullptr && GetData(x, y + 2) == nullptr)
 			{
@@ -245,9 +240,9 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 
 bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
-	const PieceType pieceType = GetData(oldX, oldY)->GetType();
-	const PieceColour pieceColour = GetData(oldX, oldY)->GetColour();
-	const PieceType destPieceType = GetData(newX, newY) != nullptr ? GetData(newX, newY)->GetType() : None;
+    const PieceType pieceType = GetData(oldX, oldY)->Type;
+    const PieceColour pieceColour = GetData(oldX, oldY)->Colour;
+    const PieceType destPieceType = GetData(newX, newY) != nullptr ? GetData(newX, newY)->Type : None;
 	const bool result = Board::Move(oldX, oldY, newX, newY, cl);
     if (result && GetData(newX, newY) != nullptr)
 	{
@@ -319,7 +314,7 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 			if (letter == _ep[0] &&	((pieceColour == White && newY == number - 1) || (pieceColour == Black && newY == number + 2)))
 			{
 				const Piece* p = pieceColour == White ? GetData(newX, number) : GetData(newX, number + 1);
-				if (p != nullptr && p->GetType() == Pawn && p->GetColour() != pieceColour)
+                if (p != nullptr && p->Type == Pawn && p->Colour != pieceColour)
 				{
 					delete p;
 					if (pieceColour == White)

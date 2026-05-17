@@ -21,7 +21,7 @@ void KyotoShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 2 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 2 ? Black : White));
             }
             else
             {
@@ -39,7 +39,7 @@ Board* KyotoShogiBoard::Clone()
         for (int j = 0; j < GetHeight(); j++)
         {
             const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
         }
     }
     for (const auto& capturedPiece: _capturedPieces)
@@ -60,7 +60,7 @@ void KyotoShogiBoard::Promote(Piece *piece, PieceType pt)
     if (piece != nullptr)
     {
         PieceType pieceType = None;
-        switch (piece->GetType())
+        switch (piece->Type)
         {
         case Rook:
             pieceType = Pawn;
@@ -91,7 +91,7 @@ void KyotoShogiBoard::Promote(Piece *piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->SetType(pieceType);
+            piece->Type = pieceType;
         }
     }
 }

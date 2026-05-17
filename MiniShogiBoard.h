@@ -1,6 +1,5 @@
 #pragma once
 #include "ShogiBoard.h"
-#include "ShogiPiece.h"
 
 class MiniShogiBoard : public ShogiBoard
 {

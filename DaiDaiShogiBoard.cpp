@@ -19,7 +19,7 @@ void DaiDaiShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 8 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 8 ? Black : White));
 			}
 			else
 			{
@@ -37,7 +37,7 @@ Board* DaiDaiShogiBoard::Clone()
 		for (int j = 0; j < GetHeight(); j++)
 		{
 			const Piece* p = GetData(i, j);
-			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
@@ -51,13 +51,13 @@ void DaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
 
 void DaiDaiShogiBoard::Promote(Piece *piece, PieceType pt)
 {
-    if (piece == nullptr || std::find(std::begin(UnpromotablePieces), std::end(UnpromotablePieces), piece->GetType()) != std::end(UnpromotablePieces))
+    if (piece == nullptr || std::find(std::begin(UnpromotablePieces), std::end(UnpromotablePieces), piece->Type) != std::end(UnpromotablePieces))
     {
         return;
     }
     piece->IsPromoted = true;
     PieceType pieceType = None;
-    switch (piece->GetType())
+    switch (piece->Type)
     {
     case OldKite:
         pieceType = Tengu;
@@ -127,14 +127,14 @@ void DaiDaiShogiBoard::Promote(Piece *piece, PieceType pt)
     }
     if (pieceType != None)
     {
-        piece->SetType(pieceType);
+        piece->Type = pieceType;
     }
 }
 
 void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();
-	switch (piece->GetType())
+    switch (piece->Type)
 	{
 	case Tengu:
 		GetAllPossibleMoves(x, y, true);
@@ -153,7 +153,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, South);
 		CheckDirection(piece, x, y, West);
 		CheckDirection(piece, x, y, East);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckLionDirection(piece, x, y, SouthWest, 3);
 			CheckLionDirection(piece, x, y, SouthEast, 3);
@@ -177,7 +177,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, South, 2);
 		CheckDirection(piece, x, y, West, 2);
 		CheckDirection(piece, x, y, East, 2);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x + 1, y + 1);
 			CheckMove(piece, x - 1, y + 1);
@@ -191,7 +191,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case PoisonousSnake:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y + 2);
 			CheckMove(piece, x + 2, y - 2);
@@ -209,7 +209,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, East, 2);
 		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x, y + 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y + 1);
 			CheckMove(piece, x + 1, y + 1);
@@ -225,7 +225,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, South, 2);
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y + 1);
 			CheckMove(piece, x + 1, y + 1);
@@ -239,7 +239,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case NorthernBarbarian:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, NorthEast, 2);
 			CheckDirection(piece, x, y, NorthWest, 2);
@@ -257,7 +257,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case SouthernBarbarian:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, SouthEast, 2);
 			CheckDirection(piece, x, y, SouthWest, 2);
@@ -277,7 +277,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, East, 2);
 		CheckDirection(piece, x, y, North, 2);
 		CheckDirection(piece, x, y, South, 2);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, NorthWest);
 			CheckDirection(piece, x, y, NorthEast);
@@ -297,7 +297,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, East, 2);
 		CheckDirection(piece, x, y, North, 2);
 		CheckDirection(piece, x, y, South, 2);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, NorthWest, 2);
 			CheckDirection(piece, x, y, NorthEast, 2);
@@ -315,7 +315,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case StandardBearer:
 		CheckDirection(piece, x, y, West, 2);
 		CheckDirection(piece, x, y, East, 2);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, North);
 			CheckDirection(piece, x, y, NorthWest);
@@ -339,7 +339,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x, y + 1);
 		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, NorthWest, 2);
 			CheckDirection(piece, x, y, NorthEast, 2);
@@ -353,7 +353,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case EnchantedBadger:
 		CheckDirection(piece, x, y, West, 2);
 		CheckDirection(piece, x, y, East, 2);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, North, 2);
 		}
@@ -365,7 +365,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case EnchantedFox:
 		CheckDirection(piece, x, y, West, 2);
 		CheckDirection(piece, x, y, East, 2);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, South, 2);
 			CheckDirection(piece, x, y, NorthWest, 2);
@@ -385,7 +385,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x + 1, y - 1);
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y - 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y + 1);
 		}
@@ -399,7 +399,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, East, 2);
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, South);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, NorthEast);
 			CheckMove(piece, x - 1, y + 1);
@@ -415,7 +415,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, East);
 		CheckDirection(piece, x, y, North, 2);
 		CheckDirection(piece, x, y, South, 2);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, NorthWest);
 			CheckMove(piece, x + 1, y + 1);
@@ -429,7 +429,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case ViolentBear:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, NorthEast, 2);
 			CheckDirection(piece, x, y, NorthWest, 2);
@@ -443,7 +443,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case SavageTiger:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, South, 2);
 			CheckMove(piece, x, y + 1);
@@ -455,7 +455,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case Wood:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, NorthWest, 2);
 			CheckDirection(piece, x, y, NorthEast, 2);
@@ -493,7 +493,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, SouthEast);
 		CheckDirection(piece, x, y, West);
 		CheckDirection(piece, x, y, East);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, North);
 		}
@@ -536,7 +536,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, South);
 		CheckDirection(piece, x, y, East);
 		CheckDirection(piece, x, y, West);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
@@ -552,7 +552,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, South);
 		CheckDirection(piece, x, y, East);
 		CheckDirection(piece, x, y, West);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y + 1);
 			CheckMove(piece, x + 1, y + 1);
@@ -564,7 +564,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case HowlingDog:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, North);
 			CheckMove(piece, x, y - 1);
@@ -582,7 +582,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y - 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x + 1, y);
 		}
@@ -598,7 +598,7 @@ void DaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y - 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y);
 		}

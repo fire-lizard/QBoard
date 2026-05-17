@@ -19,7 +19,7 @@ Board* GothicChessBoard::Clone()
         for (int j = 0; j < GetHeight(); j++)
         {
             const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
         }
     }
     cb->SetMoveCount(_moveCount);
@@ -45,7 +45,7 @@ void GothicChessBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {

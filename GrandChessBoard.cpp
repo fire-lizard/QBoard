@@ -19,7 +19,7 @@ Board* GrandChessBoard::Clone()
         for (int j = 0; j < GetHeight(); j++)
         {
             const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
         }
     }
     for (const auto& capturedPiece: _capturedPieces)
@@ -50,7 +50,7 @@ void GrandChessBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
@@ -63,7 +63,7 @@ void GrandChessBoard::Initialize()
 void GrandChessBoard::GetMoves(Piece *piece, int x, int y)
 {
     _moves.clear();
-    switch (piece->GetType())
+    switch (piece->Type)
     {
     case King:
         CheckMove(piece, x + 1, y + 1);
@@ -76,7 +76,7 @@ void GrandChessBoard::GetMoves(Piece *piece, int x, int y)
         CheckMove(piece, x - 1, y - 1);
         break;
     case Pawn:
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             if (y == 2 && GetData(x, y + 1) == nullptr && GetData(x, y + 2) == nullptr)
             {
@@ -96,11 +96,11 @@ void GrandChessBoard::GetMoves(Piece *piece, int x, int y)
             }
             // Unlike standard chess, a pawn may be promoted only to a captured piece of the same colour
             // Pawn can still give check to the King on tenth rank
-            if (y == _height - 2 && x + 1 < _width && GetData(x + 1, y + 1) != nullptr && GetData(x + 1, y + 1)->GetType() == King)
+            if (y == _height - 2 && x + 1 < _width && GetData(x + 1, y + 1) != nullptr && GetData(x + 1, y + 1)->Type == King)
             {
                 CheckMove(piece, x + 1, y + 1);
             }
-            if (y == _height - 2 && x - 1 >= 0 && GetData(x - 1, y + 1) != nullptr && GetData(x - 1, y + 1)->GetType() == King)
+            if (y == _height - 2 && x - 1 >= 0 && GetData(x - 1, y + 1) != nullptr && GetData(x - 1, y + 1)->Type == King)
             {
                 CheckMove(piece, x - 1, y + 1);
             }
@@ -150,11 +150,11 @@ void GrandChessBoard::GetMoves(Piece *piece, int x, int y)
             }
             // Unlike standard chess, a pawn may be promoted only to a captured piece of the same colour
             // Pawn can still give check to the King on tenth rank
-            if (y == 1 && x + 1 < _width && GetData(x + 1, y - 1) != nullptr && GetData(x + 1, y - 1)->GetType() == King)
+            if (y == 1 && x + 1 < _width && GetData(x + 1, y - 1) != nullptr && GetData(x + 1, y - 1)->Type == King)
             {
                 CheckMove(piece, x + 1, y - 1);
             }
-            if (y == 1 && x - 1 >= 0 && GetData(x - 1, y - 1) != nullptr && GetData(x - 1, y - 1)->GetType() == King)
+            if (y == 1 && x - 1 >= 0 && GetData(x - 1, y - 1) != nullptr && GetData(x - 1, y - 1)->Type == King)
             {
                 CheckMove(piece, x - 1, y - 1);
             }
@@ -193,9 +193,9 @@ void GrandChessBoard::GetMoves(Piece *piece, int x, int y)
 
 bool GrandChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
-    const PieceType pieceType = GetData(oldX, oldY)->GetType();
-    const PieceColour pieceColour = GetData(oldX, oldY)->GetColour();
-    const PieceType destPieceType = GetData(newX, newY) != nullptr ? GetData(newX, newY)->GetType() : None;
+    const PieceType pieceType = GetData(oldX, oldY)->Type;
+    const PieceColour pieceColour = GetData(oldX, oldY)->Colour;
+    const PieceType destPieceType = GetData(newX, newY) != nullptr ? GetData(newX, newY)->Type : None;
     const bool result = Board::Move(oldX, oldY, newX, newY, cl);
     if (result && GetData(newX, newY) != nullptr)
     {
@@ -219,7 +219,7 @@ bool GrandChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
             if (letter == _ep[0] &&	((pieceColour == White && newY == number - 1) || (pieceColour == Black && newY == number + 2)))
             {
                 const Piece* p = pieceColour == White ? GetData(newX, number) : GetData(newX, number + 1);
-                if (p != nullptr && p->GetType() == Pawn && p->GetColour() != pieceColour)
+                if (p != nullptr && p->Type == Pawn && p->Colour != pieceColour)
                 {
                     delete p;
                     if (pieceColour == White)
@@ -255,8 +255,8 @@ bool GrandChessBoard::EnemyPawnsAround(int x, int y) const
     const Piece *fp = x > 0 ? GetData(x - 1, y) : nullptr;
     const Piece *sp = x < _width - 1 ? GetData(x + 1, y) : nullptr;
     const PieceColour pieceColour = y == 4 ? White : Black;
-    const bool fpa = (fp != nullptr) && (fp->GetType() == Pawn) && (fp->GetColour() == pieceColour);
-    const bool spa = (sp != nullptr) && (sp->GetType() == Pawn) && (sp->GetColour() == pieceColour);
+    const bool fpa = (fp != nullptr) && (fp->Type == Pawn) && (fp->Colour == pieceColour);
+    const bool spa = (sp != nullptr) && (sp->Type == Pawn) && (sp->Colour == pieceColour);
     return fpa || spa;
 }
 

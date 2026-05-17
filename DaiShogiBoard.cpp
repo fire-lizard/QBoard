@@ -19,7 +19,7 @@ void DaiShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 7 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 7 ? Black : White));
 			}
 			else
 			{
@@ -37,7 +37,7 @@ Board* DaiShogiBoard::Clone()
 		for (int j = 0; j < GetHeight(); j++)
 		{
 			const Piece* p = GetData(i, j);
-			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
@@ -55,7 +55,7 @@ void DaiShogiBoard::Promote(Piece *piece, PieceType pt)
     {
         piece->IsPromoted = true;
         PieceType pieceType = None;
-        switch (piece->GetType())
+        switch (piece->Type)
         {
         case Iron:
         case Stone:
@@ -73,7 +73,7 @@ void DaiShogiBoard::Promote(Piece *piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->SetType(pieceType);
+            piece->Type = pieceType;
         }
     }
 }
@@ -81,10 +81,10 @@ void DaiShogiBoard::Promote(Piece *piece, PieceType pt)
 void DaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();
-	switch (piece->GetType())
+    switch (piece->Type)
 	{
 	case Knight:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y + 2);
 			CheckMove(piece, x + 1, y + 2);
@@ -122,7 +122,7 @@ void DaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case EvilWolf:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y + 1);
 			CheckMove(piece, x - 1, y + 1);
@@ -136,7 +136,7 @@ void DaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case Iron:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y + 1);
 			CheckMove(piece, x - 1, y + 1);
@@ -150,7 +150,7 @@ void DaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case Stone:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y + 1);
 			CheckMove(piece, x + 1, y + 1);
@@ -184,7 +184,7 @@ void DaiShogiBoard::CheckLionDirection(const Piece* piece, int x, int y, Directi
 	{
 		CheckDirectionInc(x, y, direction);
 		CheckMove(piece, x, y);
-		if (GetData(x, y) != nullptr && GetData(x, y)->GetColour() == piece->GetColour())
+        if (GetData(x, y) != nullptr && GetData(x, y)->Colour == piece->Colour)
 		{
 			break;
 		}
@@ -204,11 +204,11 @@ std::vector<std::pair<int, int>> DaiShogiBoard::GetEnemyPiecesAround(int x, int 
 	{
 		int i = x + direction[0];
 		int j = y + direction[1];
-		if (i < 0 || i > _width - 1 || j < 0 || j > _height - 1 || GetData(i, j) == nullptr || GetData(i, j)->GetColour() == pieceColour)
+        if (i < 0 || i > _width - 1 || j < 0 || j > _height - 1 || GetData(i, j) == nullptr || GetData(i, j)->Colour == pieceColour)
 		{
 			continue;
 		}
-		if (GetData(i, j)->GetColour() != pieceColour)
+        if (GetData(i, j)->Colour != pieceColour)
 		{
 			result.emplace_back(i, j);
 		}

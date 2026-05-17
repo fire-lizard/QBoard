@@ -21,7 +21,7 @@ void WhaleShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 3 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 3 ? Black : White));
             }
             else
             {
@@ -39,7 +39,7 @@ Board* WhaleShogiBoard::Clone()
         for (int j = 0; j < GetHeight(); j++)
         {
             const Piece* p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
         }
     }
     for (const auto& capturedPiece : _capturedPieces)
@@ -61,10 +61,10 @@ void WhaleShogiBoard::Promote(Piece *piece, PieceType pt)
 void WhaleShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
     _moves.clear();
-    switch (piece->GetType())
+    switch (piece->Type)
     {
     case GreyWhale:
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckDirection(piece, x, y, North);
             CheckDirection(piece, x, y, SouthEast);
@@ -84,7 +84,7 @@ void WhaleShogiBoard::GetMoves(Piece* piece, int x, int y)
     case Narwhal:
         CheckMove(piece, x + 1, y);
         CheckMove(piece, x - 1, y);
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckMove(piece, x, y - 1);
             CheckMove(piece, x, y + 2);
@@ -100,7 +100,7 @@ void WhaleShogiBoard::GetMoves(Piece* piece, int x, int y)
         CheckMove(piece, x + 1, y - 1);
         CheckMove(piece, x - 1, y + 1);
         CheckMove(piece, x - 1, y - 1);
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckMove(piece, x, y - 1);
         }
@@ -112,7 +112,7 @@ void WhaleShogiBoard::GetMoves(Piece* piece, int x, int y)
     case BlueWhale:
         CheckMove(piece, x, y + 1);
         CheckMove(piece, x, y - 1);
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckMove(piece, x - 1, y + 1);
             CheckMove(piece, x + 1, y + 1);
@@ -124,7 +124,7 @@ void WhaleShogiBoard::GetMoves(Piece* piece, int x, int y)
         }
         break;
     case Pawn:
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckMove(piece, x, y + 1);
             if (y == _height - 1)
@@ -152,7 +152,7 @@ void WhaleShogiBoard::GetMoves(Piece* piece, int x, int y)
 std::string WhaleShogiBoard::GetStringCode(int x, int y) const
 {
     if (GetData(x, y) == nullptr) return "";
-    PieceType pieceType = GetData(x, y)->GetType();
+    PieceType pieceType = GetData(x, y)->Type;
     switch (pieceType)
     {
     case King:

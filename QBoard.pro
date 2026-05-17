@@ -40,9 +40,7 @@ SOURCES += main.cpp\
     mainwindow.cpp \
     Board.cpp \
     ChessBoard.cpp \
-    ChessPiece.cpp \
     ChuShogiBoard.cpp \
-    Piece.cpp \
     Logger.cpp \
     promotiondialog.cpp \
     settingsdialog.cpp \
@@ -52,9 +50,7 @@ SOURCES += main.cpp\
     IniFile.cpp \
     ShogiVariantBoard.cpp \
     ShogiBoard.cpp \
-    ShogiPiece.cpp \
     XiangqiBoard.cpp \
-    XiangqiPiece.cpp \
     Engine.cpp \
     UciEngine.cpp \
     WbEngine.cpp \
@@ -64,7 +60,6 @@ SOURCES += main.cpp\
     MiniShogiBoard.cpp \
     JudkinShogiBoard.cpp \
     ShatranjBoard.cpp \
-    ShatranjPiece.cpp \
     MakrukBoard.cpp \
     DaiShogiBoard.cpp \
     TenjikuShogiBoard.cpp \
@@ -86,7 +81,6 @@ HEADERS  += mainwindow.h \
     CapablancaChessBoard.h \
     ChancellorChessBoard.h \
     ChessBoard.h \
-    ChessPiece.h \
     ChuShogiBoard.h \
     Common.h \
     CourierChessBoard.h \
@@ -101,7 +95,6 @@ HEADERS  += mainwindow.h \
     MicroShogiBoard.h \
     ModernChessBoard.h \
     OmegaChessBoard.h \
-    Piece.h \
     Logger.h \
     ShatarBoard.h \
     ToriShogiBoard.h \
@@ -117,9 +110,7 @@ HEADERS  += mainwindow.h \
     IniFile.h \
     ShogiVariantBoard.h \
     ShogiBoard.h \
-    ShogiPiece.h \
     XiangqiBoard.h \
-    XiangqiPiece.h \
     Engine.h \
     UciEngine.h \
     WbEngine.h \
@@ -129,7 +120,6 @@ HEADERS  += mainwindow.h \
     MiniShogiBoard.h \
     JudkinShogiBoard.h \
     ShatranjBoard.h \
-    ShatranjPiece.h \
     MakrukBoard.h \
     DaiShogiBoard.h \
     TenjikuShogiBoard.h \

@@ -19,7 +19,7 @@ Board* JanusChessBoard::Clone()
         for (int j = 0; j < GetHeight(); j++)
         {
             const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
         }
     }
     cb->SetMoveCount(_moveCount);
@@ -45,7 +45,7 @@ void JanusChessBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
@@ -58,7 +58,7 @@ void JanusChessBoard::Initialize()
 void JanusChessBoard::GetMoves(Piece *piece, int x, int y)
 {
     _moves.clear();
-    switch (piece->GetType())
+    switch (piece->Type)
     {
     case King:
         CheckMove(piece, x + 1, y + 1);
@@ -75,9 +75,9 @@ void JanusChessBoard::GetMoves(Piece *piece, int x, int y)
             if (GetData(0, y) != nullptr)
             {
                 const Piece* cp = GetData(0, y);
-                if (!cp->HasMoved && cp->GetType() == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr)
+                if (!cp->HasMoved && cp->Type == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr)
                 {
-                    if ((piece->GetColour() == White && _wqc == true) || (piece->GetColour() == Black && _bqc == true))
+                    if ((piece->Colour == White && _wqc == true) || (piece->Colour == Black && _bqc == true))
                     {
                         _moves.emplace_back(0, y);
                     }
@@ -86,9 +86,9 @@ void JanusChessBoard::GetMoves(Piece *piece, int x, int y)
             if (GetData(9, y) != nullptr)
             {
                 const Piece* cp = GetData(9, y);
-                if (!cp->HasMoved && cp->GetType() == Rook && GetData(5, y) == nullptr && GetData(6, y) == nullptr && GetData(7, y) == nullptr && GetData(8, y) == nullptr)
+                if (!cp->HasMoved && cp->Type == Rook && GetData(5, y) == nullptr && GetData(6, y) == nullptr && GetData(7, y) == nullptr && GetData(8, y) == nullptr)
                 {
-                    if ((piece->GetColour() == White && _wkc == true) || (piece->GetColour() == Black && _bkc == true))
+                    if ((piece->Colour == White && _wkc == true) || (piece->Colour == Black && _bkc == true))
                     {
                         _moves.emplace_back(9, y);
                     }

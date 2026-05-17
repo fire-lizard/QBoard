@@ -19,7 +19,7 @@ void MakaDaiDaiShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 8 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 8 ? Black : White));
 			}
 			else
 			{
@@ -37,7 +37,7 @@ Board* MakaDaiDaiShogiBoard::Clone()
 		for (int j = 0; j < GetHeight(); j++)
 		{
 			const Piece* p = GetData(i, j);
-			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
@@ -56,7 +56,7 @@ void MakaDaiDaiShogiBoard::Promote(Piece *piece, PieceType pt)
         piece->IsPromoted = true;
         if (pt != None)
         {
-            piece->SetType(pt);
+            piece->Type = pt;
             return;
         }
         PieceType pieceType = None;
@@ -168,7 +168,7 @@ void MakaDaiDaiShogiBoard::Promote(Piece *piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->SetType(pieceType);
+            piece->Type = pieceType;
         }
     }
 }
@@ -176,7 +176,7 @@ void MakaDaiDaiShogiBoard::Promote(Piece *piece, PieceType pt)
 void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();
-	switch (piece->GetType())
+    switch (piece->Type)
 	{
 	case Emperor:
 		for (int i = 0; i < GetWidth(); i++)
@@ -188,9 +188,9 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 				{
 					_moves.emplace_back(i, j);
 				}
-				else if (p->GetColour() != piece->GetColour())
+                else if (p->Colour != piece->Colour)
 				{
-					if (p->GetType() == King || p->GetType() == Prince || p->GetType() == Emperor)
+                    if (p->Type == King || p->Type == Prince || p->Type == Emperor)
 					{
 						const std::vector<std::pair<int, int>> royalDefenders = GetDefenders(i, j);
 						if (royalDefenders.empty())
@@ -362,7 +362,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		GetAllPossibleMoves(x, y, false);
 		break;
 	case Deva:
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
@@ -377,7 +377,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x - 1, y);
 		break;
 	case DarkSpirit:
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
@@ -392,7 +392,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x + 1, y);
 		break;
 	case Tile:
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
@@ -406,7 +406,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case Earth:
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
@@ -422,7 +422,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, South);
 		CheckDirection(piece, x, y, East);
 		CheckDirection(piece, x, y, West);
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, SouthEast);
 			CheckDirection(piece, x, y, SouthWest);
@@ -438,7 +438,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, NorthWest);
 		CheckDirection(piece, x, y, SouthEast);
 		CheckDirection(piece, x, y, SouthWest);
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, South);
 		}
@@ -450,7 +450,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case FreeCopper:
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, South);
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, SouthEast);
 			CheckDirection(piece, x, y, SouthWest);
@@ -462,7 +462,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case FreeIron:
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, South);
 			CheckDirection(piece, x, y, SouthEast);
@@ -476,7 +476,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case FreeTile:
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, North);
 			CheckDirection(piece, x, y, SouthEast);
@@ -490,7 +490,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case FreeStone:
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, SouthEast);
 			CheckDirection(piece, x, y, SouthWest);
@@ -513,7 +513,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, NorthWest);
 		CheckDirection(piece, x, y, SouthEast);
 		CheckDirection(piece, x, y, SouthWest);
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, North);
 		}
@@ -533,7 +533,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case CoiledSerpent:
 		CheckMove(piece, x, y + 1);
 		CheckMove(piece, x, y - 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
@@ -549,7 +549,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x, y + 1);
 		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
@@ -563,7 +563,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case FreeSerpent:
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, South);
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, NorthEast);
 			CheckDirection(piece, x, y, NorthWest);
@@ -579,7 +579,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, South);
 		CheckDirection(piece, x, y, East);
 		CheckDirection(piece, x, y, West);
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, NorthEast);
 			CheckDirection(piece, x, y, NorthWest);
@@ -595,7 +595,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x + 1, y - 1);
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y - 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y - 1);
 		}
@@ -609,7 +609,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, NorthWest);
 		CheckDirection(piece, x, y, SouthEast);
 		CheckDirection(piece, x, y, SouthWest);
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, North);
 		}
@@ -621,7 +621,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case ChineseCock:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
@@ -639,7 +639,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, NorthWest);
 		CheckDirection(piece, x, y, SouthEast);
 		CheckDirection(piece, x, y, SouthWest);
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, North);
 		}
@@ -677,7 +677,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case FreeWolf:
 		CheckDirection(piece, x, y, East);
 		CheckDirection(piece, x, y, West);
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, South);
 			CheckDirection(piece, x, y, SouthEast);
@@ -695,7 +695,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x, y + 1);
 		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, North);
 		}
@@ -713,7 +713,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, NorthWest);
 		break;
 	case OldRat:
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, SouthEast, 2);
 			CheckDirection(piece, x, y, SouthWest, 2);
@@ -727,7 +727,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case Bat:
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, South);
 			CheckDirection(piece, x, y, NorthWest);
@@ -753,7 +753,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, North, 3);
 		CheckDirection(piece, x, y, South, 3);
 		CheckDirection(piece, x, y, East, 3);
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
@@ -767,7 +767,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case BuddhistDevil:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, SouthWest, 3);
 			CheckDirection(piece, x, y, SouthEast, 3);
@@ -799,7 +799,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x - 1, y);
 		break;
 	case LeftChariot:
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, South);
 			CheckDirection(piece, x, y, SouthWest, 3);
@@ -815,7 +815,7 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case RightChariot:
-		if (piece->GetColour() == White)
+        if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, South);
 			CheckDirection(piece, x, y, SouthEast);
@@ -891,13 +891,13 @@ std::vector<std::pair<int, int>> MakaDaiDaiShogiBoard::GetRay(int startR, int st
 			break;
 		}
 		const Piece* d = GetData(r, c);
-		if (d != nullptr && d->GetColour() == pieceColour) {
+        if (d != nullptr && d->Colour == pieceColour) {
 			break;
 		}
 
 		result.emplace_back(r, c);
 
-		if (d != nullptr && d->GetColour() != pieceColour) {
+        if (d != nullptr && d->Colour != pieceColour) {
 			break;
 		}
 	}
@@ -928,7 +928,7 @@ void MakaDaiDaiShogiBoard::GetAllPossibleMoves(int startR, int startC, bool diag
 	//   (Segment1) in direction d1
 	//   (Segment2) in direction d2 (which may be the same as d1 or different)
 
-	const PieceColour pieceColour = GetData(startR, startC) != nullptr ? GetData(startR, startC)->GetColour() : White;
+    const PieceColour pieceColour = GetData(startR, startC) != nullptr ? GetData(startR, startC)->Colour : White;
 
 	for (const auto& d1 : directions) {
 		constexpr int BOARD_SIZE = 19;

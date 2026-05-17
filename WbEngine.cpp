@@ -47,7 +47,7 @@ void WbEngine::Edit(const Board* board) const
 			{
 				const char letter = i + 97;
 				const int number = board->GetHeight() - j;
-				const PieceColour newPieceColour = p->GetColour();
+                const PieceColour newPieceColour = p->Colour;
 				std::string str;
 				if (newPieceColour != pieceColour)
 				{

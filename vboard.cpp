@@ -47,28 +47,28 @@ void VBoard::paintEvent(QPaintEvent *)
             }
             else if (PossibleMove(i, j) && _highlightMoves)
 			{
-				if (_currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->GetType()) != std::end(lionPieces))
+                if (_currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->Type) != std::end(lionPieces))
 				{
 					// Lion move highlighting
 					if (_gameVariant == KoShogi && !_lionMovedOnce && EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, i, j))
 					{
 						const bool lcond1 = (abs(_oldX - i) == 2 || abs(_oldY - j) == 2) &&
-							(_currentPiece->GetType() == Lion || _currentPiece->GetType() == WingedTiger ||
-								_currentPiece->GetType() == FlyingHawk || _currentPiece->GetType() == RisingDragon);
-						const bool lcond2 = abs(_oldX - i) == 1 && abs(_oldY - j) == 1 && _currentPiece->GetType() == FlyingHawk;
+                            (_currentPiece->Type == Lion || _currentPiece->Type == WingedTiger ||
+                                _currentPiece->Type == FlyingHawk || _currentPiece->Type == RisingDragon);
+                        const bool lcond2 = abs(_oldX - i) == 1 && abs(_oldY - j) == 1 && _currentPiece->Type == FlyingHawk;
 						const bool lcond3 = (abs(_oldX - i) == 4 || abs(_oldY - j) == 4) &&
-							(_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight);
-						const bool lcond4 = abs(_oldX - i) + abs(_oldY - j) > 2 && _currentPiece->GetType() == DoubleKylin;
+                            (_currentPiece->Type == KnightCaptain || _currentPiece->Type == ExtensiveFog || _currentPiece->Type == HolyLight);
+                        const bool lcond4 = abs(_oldX - i) + abs(_oldY - j) > 2 && _currentPiece->Type == DoubleKylin;
 						const bool lcond5 = (abs(_oldX - i) > 2 || abs(_oldY - j) > 2 ||
 							abs(_oldX - i) + abs(_oldY - j) > 1 && abs(_oldX - i) != abs(_oldY - j) ||
-							abs(_oldX - i) == 1 && abs(_oldY - j) == 1) && _currentPiece->GetType() == DoublePhoenix;
+                            abs(_oldX - i) == 1 && abs(_oldY - j) == 1) && _currentPiece->Type == DoublePhoenix;
 						const bool lcond6 = !(abs(_oldX - i) == 2 && abs(_oldY - j) == 1 || abs(_oldX - i) == 1 && abs(_oldY - j) == 2) &&
-							_currentPiece->GetType() == WingedHorse;
+                            _currentPiece->Type == WingedHorse;
 						const bool lcond7 = _tcMoves.empty() && (abs(_oldX - i) > 1 || abs(_oldY - j) > 1) &&
-							_currentPiece->GetType() == Thunderclap;
+                            _currentPiece->Type == Thunderclap;
 						const bool lcond8 = !_tcMoves.empty() && 
 							(abs(_tcMoves[_tcMoves.size() - 1].first - i) > 1 || abs(_tcMoves[_tcMoves.size() - 1].second - j) > 1) &&
-							_currentPiece->GetType() == Thunderclap;
+                            _currentPiece->Type == Thunderclap;
 						if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) != nullptr)
 						{
 							painter.setBrush(QColorConstants::Svg::lightpink);
@@ -203,7 +203,7 @@ void VBoard::paintEvent(QPaintEvent *)
 						}
 					}
 				}
-				else if (_currentPiece != nullptr && _currentPiece->GetType() == HeavenlyTetrarch &&
+                else if (_currentPiece != nullptr && _currentPiece->Type == HeavenlyTetrarch &&
 					abs(_oldX - i) + abs(_oldY - j) >= 1 && abs(_oldX - i) + abs(_oldY - j) <= 2)
 				{
 					if (_board->GetData(i, j) != nullptr)
@@ -215,7 +215,7 @@ void VBoard::paintEvent(QPaintEvent *)
 				}
 				else if (_board->GetData(i, j) != nullptr)
 				{
-					if (_board->GetData(i, j)->GetColour() != _currentPlayer)
+                    if (_board->GetData(i, j)->Colour != _currentPlayer)
 					{
 						painter.setBrush(Qt::red);
 					}
@@ -493,15 +493,15 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	if (_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black ||
 		_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White) return;
 	const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
-	const bool isLionPiece = _currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->GetType()) != std::end(lionPieces);
+    const bool isLionPiece = _currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->Type) != std::end(lionPieces);
 	const bool isShootingPiece = _gameVariant == KoShogi && _currentPiece != nullptr &&
-		std::find(std::begin(ShootingPieces), std::end(ShootingPieces), _currentPiece->GetType()) != std::end(ShootingPieces);
+        std::find(std::begin(ShootingPieces), std::end(ShootingPieces), _currentPiece->Type) != std::end(ShootingPieces);
 	// Castling check
     if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess ||
          _gameVariant == JanusChess || _gameVariant == ChancellorChess || _gameVariant == ModernChess ||
          _gameVariant == OmegaChess) &&
-        _currentPiece != nullptr && _currentPiece->GetType() == King && !_currentPiece->HasMoved &&
-        p != nullptr && p->GetColour() == _currentPlayer && p->GetType() == Rook && !p->HasMoved && _board->IsMovePossible(x, y))
+        _currentPiece != nullptr && _currentPiece->Type == King && !_currentPiece->HasMoved &&
+        p != nullptr && p->Colour == _currentPlayer && p->Type == Rook && !p->HasMoved && _board->IsMovePossible(x, y))
 	{
         if (_gameVariant == Chess || _gameVariant == ChancellorChess || _gameVariant == ModernChess)
         {
@@ -542,9 +542,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	// Null move
 	else if ((_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||
 		_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi) &&
-		_currentPiece != nullptr && p != nullptr && p->GetColour() == _currentPlayer &&
-		x == _oldX && y == _oldY && !_lionMovedOnce && _currentPiece->GetType() != Thunderclap &&
-		(isLionPiece || _currentPiece->GetType() == ViceGeneral || _currentPiece->GetType() == FireDemon || _currentPiece->GetType() == HeavenlyTetrarch))
+        _currentPiece != nullptr && p != nullptr && p->Colour == _currentPlayer &&
+        x == _oldX && y == _oldY && !_lionMovedOnce && _currentPiece->Type != Thunderclap &&
+        (isLionPiece || _currentPiece->Type == ViceGeneral || _currentPiece->Type == FireDemon || _currentPiece->Type == HeavenlyTetrarch))
 	{
 		if (_board->IsMovePossible(x, y) && !CheckRepetition(_oldX, _oldY, x, y))
 		{
@@ -556,21 +556,21 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 	}
 	// Lion move
-	else if (_currentPiece != nullptr && (p == nullptr || p->GetColour() != _currentPlayer) && !CheckRepetition(_oldX, _oldY, x, y))
+    else if (_currentPiece != nullptr && (p == nullptr || p->Colour != _currentPlayer) && !CheckRepetition(_oldX, _oldY, x, y))
 	{
 		if (isLionPiece && !_lionMovedOnce && EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y))
 		{
-			if (_tcMoves.empty() && (abs(_oldX - x) > 1 || abs(_oldY - y) > 1) && _currentPiece->GetType() == Thunderclap)
+            if (_tcMoves.empty() && (abs(_oldX - x) > 1 || abs(_oldY - y) > 1) && _currentPiece->Type == Thunderclap)
 			{
 			}
 			else if (!_tcMoves.empty() && (abs(_tcMoves[_tcMoves.size() - 1].first - x) > 1 ||
-				abs(_tcMoves[_tcMoves.size() - 1].second - y) > 1) && _currentPiece->GetType() == Thunderclap)
+                abs(_tcMoves[_tcMoves.size() - 1].second - y) > 1) && _currentPiece->Type == Thunderclap)
 			{
 			}
             else if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair<int, int>(x, y)) != std::end(_tcMoves))
 			{
 			}
-			else if (_currentPiece->GetType() == Thunderclap && PossibleMove(x, y))
+            else if (_currentPiece->Type == Thunderclap && PossibleMove(x, y))
 			{
 				if (_tcMoves.size() < 4)
 				{
@@ -604,7 +604,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 			}
 			else if (PossibleMove(x, y) && (abs(_oldX - x) == 0 && abs(_oldY - y) == 2 || abs(_oldX - x) == 2 && abs(_oldY - y) == 0 ||
-				abs(_oldX - x) == 2 && abs(_oldY - y) == 2) && _currentPiece->GetType() == RisingDragon)
+                abs(_oldX - x) == 2 && abs(_oldY - y) == 2) && _currentPiece->Type == RisingDragon)
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
@@ -616,7 +616,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 			}
 			else if (PossibleMove(x, y) && (abs(_oldX - x) == 0 && abs(_oldY - y) == 2 || abs(_oldX - x) == 2 && abs(_oldY - y) == 0) &&
-				_currentPiece->GetType() == WingedTiger)
+                _currentPiece->Type == WingedTiger)
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
@@ -627,7 +627,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove(x, y);
 				}
 			}
-			else if (PossibleMove(x, y) && (abs(_oldX - x) == 1 && abs(_oldY - y) == 1) && _currentPiece->GetType() == FlyingHawk)
+            else if (PossibleMove(x, y) && (abs(_oldX - x) == 1 && abs(_oldY - y) == 1) && _currentPiece->Type == FlyingHawk)
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
@@ -638,20 +638,20 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove(x, y);
 				}
 			}
-			else if (_gameVariant == KoShogi && (abs(_oldX - x) == 2 || abs(_oldY - y) == 2) && _currentPiece->GetType() == Lion)
+            else if (_gameVariant == KoShogi && (abs(_oldX - x) == 2 || abs(_oldY - y) == 2) && _currentPiece->Type == Lion)
 			{
 			}
 			else if (_gameVariant == KoShogi && (abs(_oldX - x) == 2 && abs(_oldY - y) == 1 || abs(_oldX - x) == 1 && abs(_oldY - y) == 2) &&
-				_currentPiece->GetType() == RisingDragon)
+                _currentPiece->Type == RisingDragon)
 			{
 			}
-			else if (_gameVariant == KoShogi && (abs(_oldX - x) == 2 && abs(_oldY - y) == 2) && _currentPiece->GetType() == WingedTiger)
+            else if (_gameVariant == KoShogi && (abs(_oldX - x) == 2 && abs(_oldY - y) == 2) && _currentPiece->Type == WingedTiger)
 			{
 			}
-			else if (abs(_oldX - x) + abs(_oldY - y) > 1 && _currentPiece->GetType() == FlyingHawk)
+            else if (abs(_oldX - x) + abs(_oldY - y) > 1 && _currentPiece->Type == FlyingHawk)
 			{
 			}
-			else if (PossibleMove(x, y) && _currentPiece->GetType() == RoamingAssault)
+            else if (PossibleMove(x, y) && _currentPiece->Type == RoamingAssault)
 			{
 				if (x < _oldX)
 				{
@@ -684,12 +684,12 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				FinishMove(x, y);
 			}
 			else if (PossibleMove(x, y) && (abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
-				(_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk ||
-					_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == FreeEagle))
+                (_currentPiece->Type == Lion || _currentPiece->Type == LionHawk ||
+                    _currentPiece->Type == BuddhistSpirit || _currentPiece->Type == FreeEagle))
 			{
 				// Lion capture rule #1
 				if (_gameVariant == ChuShogi && _board->GetData(x, y) != nullptr &&
-					_currentPiece->GetType() == Lion && _board->GetData(x, y)->GetType() == Lion &&
+                    _currentPiece->Type == Lion && _board->GetData(x, y)->Type == Lion &&
 					(abs(_oldX - x) == 2 || abs(_oldY - y) == 2))
 				{
 					const std::vector<std::pair<int, int>> lionDefenders = _board->GetDefenders(x, y);
@@ -709,8 +709,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 			}
 			else if (PossibleMove(x, y) && (abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
-				(_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
-					_currentPiece->GetType() == GreatElephant || _currentPiece->GetType() == TeachingKing))
+                (_currentPiece->Type == LionDog || _currentPiece->Type == FuriousFiend ||
+                    _currentPiece->Type == GreatElephant || _currentPiece->Type == TeachingKing))
 			{
 				if (p != nullptr)
 				{
@@ -738,8 +738,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 			}
 			else if (PossibleMove(x, y) && (abs(_oldX - x) >= 3 || abs(_oldY - y) >= 3) &&
-				(_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
-					_currentPiece->GetType() == GreatElephant || _currentPiece->GetType() == TeachingKing))
+                (_currentPiece->Type == LionDog || _currentPiece->Type == FuriousFiend ||
+                    _currentPiece->Type == GreatElephant || _currentPiece->Type == TeachingKing))
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
@@ -751,10 +751,10 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove(x, y);
 				}
 			}
-			else if (PossibleMove(x, y) && (abs(_oldX - x) == 2 && _oldY - y == 2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == White) ||
-				(abs(_oldX - x) == 2 && _oldY - y == -2 && _currentPiece->GetType() == Eagle && _currentPiece->GetColour() == Black) ||
-				(_oldX == x && _oldY - y == 2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == White) ||
-				(_oldX == x && _oldY - y == -2 && _currentPiece->GetType() == Unicorn && _currentPiece->GetColour() == Black))
+            else if (PossibleMove(x, y) && (abs(_oldX - x) == 2 && _oldY - y == 2 && _currentPiece->Type == Eagle && _currentPiece->Colour == White) ||
+                (abs(_oldX - x) == 2 && _oldY - y == -2 && _currentPiece->Type == Eagle && _currentPiece->Colour == Black) ||
+                (_oldX == x && _oldY - y == 2 && _currentPiece->Type == Unicorn && _currentPiece->Colour == White) ||
+                (_oldX == x && _oldY - y == -2 && _currentPiece->Type == Unicorn && _currentPiece->Colour == Black))
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
@@ -767,26 +767,26 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 			}
 			else if (!(abs(_oldX - x) == 2 && abs(_oldY - y) == 1 || abs(_oldX - x) == 1 && abs(_oldY - y) == 2) &&
-				_currentPiece->GetType() == KnightCaptain)
+                _currentPiece->Type == KnightCaptain)
 			{
 			}
 			else if (!(abs(_oldX - x) == 2 && abs(_oldY - y) == 0 || abs(_oldX - x) == 0 && abs(_oldY - y) == 2 ||
-				abs(_oldX - x) == 2 && abs(_oldY - y) == 2) && (_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
+                abs(_oldX - x) == 2 && abs(_oldY - y) == 2) && (_currentPiece->Type == ExtensiveFog || _currentPiece->Type == HolyLight))
 			{
 			}
-			else if ((abs(_oldX - x) == 4 || abs(_oldY - y) == 4) && (_currentPiece->GetType() == KnightCaptain ||
-				_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
+            else if ((abs(_oldX - x) == 4 || abs(_oldY - y) == 4) && (_currentPiece->Type == KnightCaptain ||
+                _currentPiece->Type == ExtensiveFog || _currentPiece->Type == HolyLight))
 			{
 			}
 			else if (!(abs(_oldX - x) == 2 && abs(_oldY - y) == 1 || abs(_oldX - x) == 1 && abs(_oldY - y) == 2) && 
-				_currentPiece->GetType() == WingedHorse)
+                _currentPiece->Type == WingedHorse)
 			{
 			}
-			else if (abs(_oldX - x) + abs(_oldY - y) > 2 && _currentPiece->GetType() == DoubleKylin)
+            else if (abs(_oldX - x) + abs(_oldY - y) > 2 && _currentPiece->Type == DoubleKylin)
 			{
 			}
 			else if ((abs(_oldX - x) > 2 || abs(_oldY - y) > 2 || abs(_oldX - x) + abs(_oldY - y) > 1 && abs(_oldX - x) != abs(_oldY - y) ||
-				abs(_oldX - x) == 1 && abs(_oldY - y) == 1) && _currentPiece->GetType() == DoublePhoenix)
+                abs(_oldX - x) == 1 && abs(_oldY - y) == 1) && _currentPiece->Type == DoublePhoenix)
 			{
 			}
 			else if (_gameVariant == KoShogi && _board->GetData(x, y) == nullptr)
@@ -795,7 +795,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				_lionMovedOnce = true;
 				for (int index = _moves.size() - 1; index >= 0; index--)
 				{
-					if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == RisingDragon)
+                    if (_currentPiece->Type == Lion || _currentPiece->Type == RisingDragon)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
 							abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1)
@@ -803,7 +803,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == WingedTiger)
+                    else if (_currentPiece->Type == WingedTiger)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
 							abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1 ||
@@ -813,7 +813,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == FlyingHawk)
+                    else if (_currentPiece->Type == FlyingHawk)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
 							abs(_moves[index].first - x) + abs(_moves[index].second - y) > 1)
@@ -821,7 +821,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight)
+                    else if (_currentPiece->Type == ExtensiveFog || _currentPiece->Type == HolyLight)
 					{
 						if (abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2)
 						{
@@ -833,7 +833,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_preparedToShoot = true;
 						}
 					}
-					else if (_currentPiece->GetType() == KnightCaptain)
+                    else if (_currentPiece->Type == KnightCaptain)
 					{
 						if (abs(_moves[index].first - x) >= 3 || abs(_moves[index].second - y) >= 3 ||
 							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) == 1 ||
@@ -843,7 +843,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == WingedHorse)
+                    else if (_currentPiece->Type == WingedHorse)
 					{
 						if (!(abs(_moves[index].first - x) == 2 && abs(_moves[index].second - y) == 1 ||
 							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) == 2))
@@ -851,14 +851,14 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == DoubleKylin)
+                    else if (_currentPiece->Type == DoubleKylin)
 					{
 						if (abs(_moves[index].first - x) + abs(_moves[index].second - y) > 2)
 						{
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == DoublePhoenix)
+                    else if (_currentPiece->Type == DoublePhoenix)
 					{
 						if (abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2 ||
 							abs(_moves[index].first - x) + abs(_moves[index].second - y) > 1 &&
@@ -889,8 +889,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				_lionMovedOnce = true;
 				for (int index = _moves.size() - 1; index >= 0; index--)
 				{
-					if (_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
-						_currentPiece->GetType() == TeachingKing)
+                    if (_currentPiece->Type == LionDog || _currentPiece->Type == FuriousFiend ||
+                        _currentPiece->Type == TeachingKing)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
 							abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2)
@@ -898,7 +898,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == GreatElephant)
+                    else if (_currentPiece->Type == GreatElephant)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
 							abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2 ||
@@ -908,8 +908,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk ||
-						_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == RisingDragon)
+                    else if (_currentPiece->Type == Lion || _currentPiece->Type == LionHawk ||
+                        _currentPiece->Type == BuddhistSpirit || _currentPiece->Type == RisingDragon)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
 							abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1)
@@ -917,7 +917,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == FreeEagle || _currentPiece->GetType() == Eagle || _currentPiece->GetType() == WingedTiger)
+                    else if (_currentPiece->Type == FreeEagle || _currentPiece->Type == Eagle || _currentPiece->Type == WingedTiger)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
 							abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1 ||
@@ -927,7 +927,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == Unicorn)
+                    else if (_currentPiece->Type == Unicorn)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
 							abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1 ||
@@ -936,7 +936,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == FlyingHawk)
+                    else if (_currentPiece->Type == FlyingHawk)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
 							abs(_moves[index].first - x) + abs(_moves[index].second - y) > 1)
@@ -944,7 +944,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight)
+                    else if (_currentPiece->Type == ExtensiveFog || _currentPiece->Type == HolyLight)
 					{
 						if (abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2)
 						{
@@ -957,7 +957,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						}
 						repaint();
 					}
-					else if (_currentPiece->GetType() == KnightCaptain)
+                    else if (_currentPiece->Type == KnightCaptain)
 					{
 						if (abs(_moves[index].first - x) >= 3 || abs(_moves[index].second - y) >= 3 ||
 							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) == 1 ||
@@ -967,7 +967,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == WingedHorse)
+                    else if (_currentPiece->Type == WingedHorse)
 					{
 						if (!(abs(_moves[index].first - x) == 2 && abs(_moves[index].second - y) == 1 ||
 							abs(_moves[index].first - x) == 1 && abs(_moves[index].second - y) == 2))
@@ -975,14 +975,14 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == DoubleKylin)
+                    else if (_currentPiece->Type == DoubleKylin)
 					{
 						if (abs(_moves[index].first - x) + abs(_moves[index].second - y) > 2)
 						{
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-					else if (_currentPiece->GetType() == DoublePhoenix)
+                    else if (_currentPiece->Type == DoublePhoenix)
 					{
 						if (abs(_moves[index].first - x) > 2 || abs(_moves[index].second - y) > 2 ||
 							abs(_moves[index].first - x) + abs(_moves[index].second - y) > 1 &&
@@ -998,11 +998,11 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 		else if (isLionPiece && _lionMovedOnce)
 		{
-			if (_currentPiece->GetType() == Lion || _currentPiece->GetType() == LionHawk ||
-				_currentPiece->GetType() == BuddhistSpirit || _currentPiece->GetType() == FreeEagle ||
-				_currentPiece->GetType() == Unicorn || _currentPiece->GetType() == Eagle ||
-				_currentPiece->GetType() == WingedTiger || _currentPiece->GetType() == FlyingHawk ||
-				_currentPiece->GetType() == RisingDragon)
+            if (_currentPiece->Type == Lion || _currentPiece->Type == LionHawk ||
+                _currentPiece->Type == BuddhistSpirit || _currentPiece->Type == FreeEagle ||
+                _currentPiece->Type == Unicorn || _currentPiece->Type == Eagle ||
+                _currentPiece->Type == WingedTiger || _currentPiece->Type == FlyingHawk ||
+                _currentPiece->Type == RisingDragon)
 			{
 				if (PossibleMove(x, y))
 				{
@@ -1018,8 +1018,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					}
 				}
 			}
-			else if (_currentPiece->GetType() == LionDog || _currentPiece->GetType() == FuriousFiend ||
-				_currentPiece->GetType() == GreatElephant || _currentPiece->GetType() == TeachingKing)
+            else if (_currentPiece->Type == LionDog || _currentPiece->Type == FuriousFiend ||
+                _currentPiece->Type == GreatElephant || _currentPiece->Type == TeachingKing)
 			{
 				if (_lionMovedTwice && PossibleMove(x, y))
 				{
@@ -1089,7 +1089,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 			}
 			else if (_preparedToShoot && !_pieceShotOnce && PossibleShoot(x, y) &&
-				(_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
+                (_currentPiece->Type == ExtensiveFog || _currentPiece->Type == HolyLight))
 			{
 				if (_lionMovedTwice)
 				{
@@ -1108,7 +1108,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 			}
 			else if (PossibleMove(x, y) &&
-				(_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
+                (_currentPiece->Type == ExtensiveFog || _currentPiece->Type == HolyLight))
 			{
 				KoShogiBoard* ksBoard = dynamic_cast<KoShogiBoard*>(_board);
 				_shoots = ksBoard->GetShoots(_currentPiece, x, y);
@@ -1131,7 +1131,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 			}
 			else if ((_moves.empty() || _lionMovedTwice) && PossibleShoot(x, y) &&
-				(_currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight))
+                (_currentPiece->Type == ExtensiveFog || _currentPiece->Type == HolyLight))
 			{
 				KoShogiBoard *ksBoard = dynamic_cast<KoShogiBoard*>(_board);
 				ksBoard->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, _lionSecondMove.first, _lionSecondMove.second);
@@ -1150,8 +1150,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					FinishMove(x, y);
 				}
 			}
-			else if (PossibleMove(x, y) && (_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == WingedHorse ||
-				_currentPiece->GetType() == DoubleKylin || _currentPiece->GetType() == DoublePhoenix))
+            else if (PossibleMove(x, y) && (_currentPiece->Type == KnightCaptain || _currentPiece->Type == WingedHorse ||
+                _currentPiece->Type == DoubleKylin || _currentPiece->Type == DoublePhoenix))
 			{
 				if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 				{
@@ -1185,7 +1185,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		else if (isShootingPiece && _preparedToShoot && PossibleShoot(x, y))
 		{
 			KoShogiBoard* ksBoard = dynamic_cast<KoShogiBoard*>(_board);
-			if (_currentPiece->GetBaseType() == FrankishCannon && !_pieceShotOnce)
+            if (_currentPiece->BaseType == FrankishCannon && !_pieceShotOnce)
 			{
 				if (_shoots.size() > 1)
 				{
@@ -1203,7 +1203,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			else
 			{
 				ksBoard->Move(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, false);
-				if (_currentPiece->GetBaseType() == FrankishCannon && _pieceShotOnce)
+                if (_currentPiece->BaseType == FrankishCannon && _pieceShotOnce)
 				{
 					ksBoard->Shoot(_firstShoot.first, _firstShoot.second);
 				}
@@ -1230,7 +1230,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			if (_board->GetData(x, y) != nullptr)
 			{
-				EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetBaseType(), _oldX, _oldY, x, y, promotion, p != nullptr ? 'x' : ' ');
+                EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->BaseType, _oldX, _oldY, x, y, promotion, p != nullptr ? 'x' : ' ');
 			}
 			FinishMove(x, y);
 		}
@@ -1250,8 +1250,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 	}
 	else if (x == _oldX && y == _oldY && _lionMovedOnce && abs(_lionFirstMove.first - x) <= 2 && abs(_lionFirstMove.second - y) <= 2 &&
-		(_currentPiece->GetType() == KnightCaptain || _currentPiece->GetType() == ExtensiveFog || _currentPiece->GetType() == HolyLight ||
-		_currentPiece->GetType() == DoubleKylin || _currentPiece->GetType() == DoublePhoenix || _currentPiece->GetType() == WingedHorse))
+        (_currentPiece->Type == KnightCaptain || _currentPiece->Type == ExtensiveFog || _currentPiece->Type == HolyLight ||
+        _currentPiece->Type == DoubleKylin || _currentPiece->Type == DoublePhoenix || _currentPiece->Type == WingedHorse))
 	{
 		if (dynamic_cast<ChuShogiBoard*>(_board)->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y))
 		{
@@ -1259,7 +1259,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 			}
-			EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
+            EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->Type, _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
 			FinishMove(x, y);
 		}
 	}
@@ -1271,11 +1271,11 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 			}
-			EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->GetType(), _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
+            EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->Type, _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
 			FinishMove(x, y);
 		}
 	}
-	else if (p != nullptr && p->GetColour() == _currentPlayer)
+    else if (p != nullptr && p->Colour == _currentPlayer)
 	{
 		_currentPiece = _board->GetData(x, y);
 		_oldX = x;
@@ -1358,9 +1358,9 @@ char VBoard::CheckPromotion(const Piece *p, int x, int y)
     char promotion = ' ';
     if (_gameVariant == GrandeAcedrex)
     {
-        if (_currentPiece->GetType() == Pawn &&
-            ((y == 11 && _currentPiece->GetColour() == Black) ||
-            (y == 0 && _currentPiece->GetColour() == White)))
+        if (_currentPiece->Type == Pawn &&
+            ((y == 11 && _currentPiece->Colour == Black) ||
+            (y == 0 && _currentPiece->Colour == White)))
         {
             switch (x)
             {
@@ -1406,9 +1406,9 @@ char VBoard::CheckPromotion(const Piece *p, int y)
     {
         GrandChessBoard* gcBoard = dynamic_cast<GrandChessBoard*>(_board);
         auto capturedPieces = gcBoard->GetCapturedPieces(_currentPlayer == White ? Black : White);
-        if (_currentPiece->GetType() == Pawn && !capturedPieces.empty() &&
-            ((y >= 7 && _currentPiece->GetColour() == Black) ||
-            (y <= 2 && _currentPiece->GetColour() == White)))
+        if (_currentPiece->Type == Pawn && !capturedPieces.empty() &&
+            ((y >= 7 && _currentPiece->Colour == Black) ||
+            (y <= 2 && _currentPiece->Colour == White)))
         {
             PromotionDialog* pd = new PromotionDialog(this);
             pd->SetEnabled(Rook, std::find(std::begin(capturedPieces), std::end(capturedPieces), Rook) != std::end(capturedPieces));
@@ -1436,9 +1436,9 @@ char VBoard::CheckPromotion(const Piece *p, int y)
     }
     else if (_gameVariant == OmegaChess)
     {
-        if (_currentPiece->GetType() == Pawn &&
-            ((y == 10 && _currentPiece->GetColour() == Black) ||
-            (y == 1 && _currentPiece->GetColour() == White)))
+        if (_currentPiece->Type == Pawn &&
+            ((y == 10 && _currentPiece->Colour == Black) ||
+            (y == 1 && _currentPiece->Colour == White)))
         {
             PromotionDialog* pd = new PromotionDialog(this);
             if (pd->exec() == QDialog::Accepted)
@@ -1456,9 +1456,9 @@ char VBoard::CheckPromotion(const Piece *p, int y)
     }
     else if (std::find(std::begin(chessVariants), std::end(chessVariants), _gameVariant) != std::end(chessVariants))
     {
-        if (_currentPiece->GetType() == Pawn &&
-            ((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) ||
-                (y == 0 && _currentPiece->GetColour() == White)))
+        if (_currentPiece->Type == Pawn &&
+            ((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) ||
+                (y == 0 && _currentPiece->Colour == White)))
         {
             PromotionDialog* pd = new PromotionDialog(this);
             pd->SetEnabled(Champion, false);
@@ -1491,9 +1491,9 @@ char VBoard::CheckPromotion(const Piece *p, int y)
     }
     else if (_gameVariant == Shatranj || _gameVariant == Shatar || _gameVariant == CourierChess)
 	{
-		if (_currentPiece->GetType() == Pawn &&
-            ((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) ||
-				(y == 0 && _currentPiece->GetColour() == White)))
+        if (_currentPiece->Type == Pawn &&
+            ((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) ||
+                (y == 0 && _currentPiece->Colour == White)))
 		{
 			promotion = 'q';
             _board->Promote(_currentPiece, None);
@@ -1501,9 +1501,9 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 	}
 	else if (_gameVariant == Makruk)
 	{
-		if (_currentPiece->GetType() == Pawn &&
-			((y >= 5 && _currentPiece->GetColour() == Black) ||
-				(y <= 2 && _currentPiece->GetColour() == White)))
+        if (_currentPiece->Type == Pawn &&
+            ((y >= 5 && _currentPiece->Colour == Black) ||
+                (y <= 2 && _currentPiece->Colour == White)))
 		{
 			promotion = 'q';
             _board->Promote(_currentPiece, None);
@@ -1511,7 +1511,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 	}
     else if (_gameVariant == KyotoShogi)
     {
-        if (_currentPiece->GetType() != King)
+        if (_currentPiece->Type != King)
         {
             promotion = '+';
             _board->Promote(_currentPiece, None);
@@ -1522,7 +1522,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
         if (!_currentPiece->IsPromoted && p != nullptr &&
 			std::find(std::begin(UnpromotablePieces),
 				std::end(UnpromotablePieces),
-				_currentPiece->GetType()) == std::end(UnpromotablePieces))
+                _currentPiece->Type) == std::end(UnpromotablePieces))
 		{
 			promotion = '+';
             _board->Promote(_currentPiece, None);
@@ -1530,15 +1530,15 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 	}
 	else if (_gameVariant == MakaDaiDaiShogi)
 	{
-		if (_currentPiece->GetType() != Queen && _currentPiece->GetType() != DragonKing &&
-            _currentPiece->GetType() != DragonHorse && !_currentPiece->IsPromoted && p != nullptr)
+        if (_currentPiece->Type != Queen && _currentPiece->Type != DragonKing &&
+            _currentPiece->Type != DragonHorse && !_currentPiece->IsPromoted && p != nullptr)
 		{
-			if (p->GetBaseType() == Deva)
+            if (p->BaseType == Deva)
 			{
 				promotion = '+';
                 _board->Promote(_currentPiece, TeachingKing);
 			}
-			else if (p->GetBaseType() == DarkSpirit)
+            else if (p->BaseType == DarkSpirit)
 			{
 				promotion = '+';
                 _board->Promote(_currentPiece, BuddhistSpirit);
@@ -1557,28 +1557,28 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 	else if (_gameVariant == KoShogi)
 	{
 		// If the Taoist priest is captured, the drum and banner can no longer promote.
-		if (dynamic_cast<KoShogiBoard*>(_board)->IsTaoistPriestCaptured() && (_currentPiece->GetType() == Flag || _currentPiece->GetType() == Drum))
+        if (dynamic_cast<KoShogiBoard*>(_board)->IsTaoistPriestCaptured() && (_currentPiece->Type == Flag || _currentPiece->Type == Drum))
 		{
 		}
-		else if (_currentPiece->GetType() != King && _currentPiece->GetType() != Lion &&
-            _currentPiece->GetType() != Bishop && !_currentPiece->IsPromoted && p != nullptr)
+        else if (_currentPiece->Type != King && _currentPiece->Type != Lion &&
+            _currentPiece->Type != Bishop && !_currentPiece->IsPromoted && p != nullptr)
 		{
-			if (p->GetType() == King || p->GetType() == Prince || p->GetType() == MiddleTroop || p->GetType() == Flag || p->GetType() == Drum)
+            if (p->Type == King || p->Type == Prince || p->Type == MiddleTroop || p->Type == Flag || p->Type == Drum)
 			{
 				promotion = '+';
                 _board->Promote(_currentPiece, None);
 			}
-			else if (std::find(std::begin(StepMovers), std::end(StepMovers), _currentPiece->GetType()) != std::end(StepMovers))
+            else if (std::find(std::begin(StepMovers), std::end(StepMovers), _currentPiece->Type) != std::end(StepMovers))
 			{
-				if (p->GetType() == Lion || p->GetType() == RisingDragon || p->GetType() == RoamingAssault || p->GetType() == Thunderclap)
+                if (p->Type == Lion || p->Type == RisingDragon || p->Type == RoamingAssault || p->Type == Thunderclap)
 				{
 					promotion = '+';
                     _board->Promote(_currentPiece, None);
 				}
 			}
-			else if (_currentPiece->GetType() == Knight)
+            else if (_currentPiece->Type == Knight)
 			{
-				if (p->GetType() == FrankishCannon)
+                if (p->Type == FrankishCannon)
 				{
 					promotion = '+';
                     _board->Promote(_currentPiece, None);
@@ -1594,7 +1594,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 				promotion = '=';
 			}
 			// When the clerk promotes to master at arms, all the allied advance and rear guards promote as well, while any enemy poison flame dies.
-			if (promotion == '+' && _currentPiece->GetBaseType() == Kylin && _currentPiece->GetType() == DoubleKylin)
+            if (promotion == '+' && _currentPiece->BaseType == Kylin && _currentPiece->Type == DoubleKylin)
 			{
 				const auto aguards = EngineOutputHandler::GetPieceLocations(_board, AdvanceGuard, _currentPlayer);
 				for (const auto& aguard : aguards)
@@ -1617,13 +1617,13 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 	}
 	else if (std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) != std::end(shogiVariants))
 	{
-		const PieceType pt = _currentPiece->GetType();
+        const PieceType pt = _currentPiece->Type;
 		const bool pcond1 = EngineOutputHandler::CanBePromoted(_currentPiece, _gameVariant, _oldY, y);
 		const bool pcond2 = (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi) &&
 			EngineOutputHandler::IsInsidePromotionZone(_gameVariant, _currentPlayer, _oldY) &&
 			EngineOutputHandler::IsInsidePromotionZone(_gameVariant, _currentPlayer, y) && p != nullptr;
 		const bool pcond3 = _gameVariant == ChuShogi && pt == Pawn &&
-			((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White));
+            ((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) || (y == 0 && _currentPiece->Colour == White));
 		if (pcond1 || pcond2 || pcond3)
 		{
             if (_gameVariant == ToriShogi)
@@ -1632,7 +1632,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             }
             else if (((pt == Pawn && _gameVariant != ChuShogi && _gameVariant != HeianDaiShogi) || (pt == Knight && _gameVariant != HeianDaiShogi) ||
                       (pt == Lance && _gameVariant != HeianDaiShogi)) &&
-				((y == _board->GetHeight() - 1 && _currentPiece->GetColour() == Black) || (y == 0 && _currentPiece->GetColour() == White)))
+                ((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) || (y == 0 && _currentPiece->Colour == White)))
 			{
                 _board->Promote(_currentPiece, None);
 			}
@@ -1968,7 +1968,7 @@ void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 				_editorBoard = nullptr;
 				if (_blackEngine != nullptr && _blackEngine->IsActive())
 				{
-					if (_blackEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_blackEngine)->GetOption("setboard"))
+                    if (_blackEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_blackEngine)->GetOption("setboard"))
 					{
 						std::dynamic_pointer_cast<WbEngine>(_blackEngine)->Edit(_board);
 					}
@@ -1979,7 +1979,7 @@ void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 				}
 				if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 				{
-					if (_whiteEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->GetOption("setboard"))
+                    if (_whiteEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->GetOption("setboard"))
 					{
 						std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->Edit(_board);
 					}
@@ -2116,12 +2116,12 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, White);
 	if (_blackEngine != nullptr && _blackEngine->IsActive())
 	{
-		const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _whiteEngine->GetType(), _gameVariant);
+        const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _whiteEngine->GetType(), _gameVariant);
 		if (moveArray.isEmpty()) return;
 		if (moveArray.size() < 8)
 		{
             const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
-			QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
+            QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
 			_blackEngine->Move(convertedMoveArray[0], convertedMoveArray[1], convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
 		}
 		else
@@ -2170,12 +2170,12 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, Black);
 	if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 	{
-		const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _blackEngine->GetType(), _gameVariant);
+        const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _blackEngine->GetType(), _gameVariant);
 		if (moveArray.isEmpty()) return;
 		if (moveArray.size() < 8)
 		{
             const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());
-			QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());
+            QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());
 			_whiteEngine->Move(convertedMoveArray[0], convertedMoveArray[1], convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
 		}
 		else
@@ -2610,7 +2610,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				return;
 			}
 			const Piece* kp = _currentPlayer == White ? _board->GetData(x, y - 1) : _board->GetData(x, y + 1);
-            if (kp != nullptr && kp->GetType() == King && kp->GetColour() != _currentPlayer && _gameVariant != YariShogi)
+            if (kp != nullptr && kp->Type == King && kp->Colour != _currentPlayer && _gameVariant != YariShogi)
 			{
 				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot check king by the pawn drop",
 					QMessageBox::Ok, this);
@@ -2620,7 +2620,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			for (int index = 0; index < _board->GetHeight(); index++)
 			{
 				const Piece* p = _board->GetData(x, index);
-				if (p != nullptr && p->GetType() == Pawn && p->GetColour() == _currentPlayer)
+                if (p != nullptr && p->Type == Pawn && p->Colour == _currentPlayer)
 				{
 					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place second pawn on the same column",
 						QMessageBox::Ok, this);
@@ -2654,7 +2654,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
 		if (engine != nullptr && engine->IsActive())
 		{
-			if (engine->GetType() == USI)
+            if (engine->GetType() == USI)
 				engine->Move(sc, '*', _board->GetWidth() - x, y, ' ');
 			else
 				engine->Move(sc, '@', x, _board->GetHeight() - y, ' ');

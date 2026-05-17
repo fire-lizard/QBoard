@@ -21,7 +21,7 @@ void EuroShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 3 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 3 ? Black : White));
             }
             else
             {
@@ -39,7 +39,7 @@ Board* EuroShogiBoard::Clone()
         for (int j = 0; j < GetHeight(); j++)
         {
             const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
         }
     }
     for (const auto& capturedPiece: _capturedPieces)
@@ -53,12 +53,12 @@ Board* EuroShogiBoard::Clone()
 void EuroShogiBoard::GetMoves(Piece *piece, int x, int y)
 {
     _moves.clear();
-    switch (piece->GetType())
+    switch (piece->Type)
     {
     case Knight:
         CheckMove(piece, x - 1, y);
         CheckMove(piece, x + 1, y);
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckMove(piece, x - 1, y + 2);
             CheckMove(piece, x + 1, y + 2);

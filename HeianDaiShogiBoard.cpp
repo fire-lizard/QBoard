@@ -20,7 +20,7 @@ void HeianDaiShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
@@ -38,7 +38,7 @@ Board* HeianDaiShogiBoard::Clone()
         for (int j = 0; j < GetHeight(); j++)
         {
             const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
         }
     }
     cb->SetMoveCount(_moveCount);
@@ -55,19 +55,19 @@ void HeianDaiShogiBoard::Promote(Piece *piece, PieceType pt)
     if (piece != nullptr)
     {
         piece->IsPromoted = true;
-        piece->SetType(Gold);
+        piece->Type = Gold;
     }
 }
 
 void HeianDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
     _moves.clear();
-    switch (piece->GetType())
+    switch (piece->Type)
     {
     case SideMover:
         CheckDirection(piece, x, y, East);
         CheckDirection(piece, x, y, West);
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckMove(piece, x, y + 1);
         }
@@ -91,7 +91,7 @@ void HeianDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
     case Iron:
         CheckMove(piece, x + 1, y);
         CheckMove(piece, x - 1, y);
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckMove(piece, x, y + 1);
             CheckMove(piece, x - 1, y + 1);

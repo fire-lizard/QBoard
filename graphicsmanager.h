@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <QPixmap>
 #include "Common.h"
-#include "ShogiPiece.h"
+#include "Board.h"
 #include "stringmanager.h"
 
 class GraphicsManager

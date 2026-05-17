@@ -19,7 +19,7 @@ Board* JanggiBoard::Clone()
         for (int j = 0; j < GetHeight(); j++)
         {
             const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
         }
     }
     cb->SetMoveCount(_moveCount);
@@ -35,7 +35,7 @@ void JanggiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new XiangqiPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
@@ -48,15 +48,15 @@ void JanggiBoard::Initialize()
 void JanggiBoard::GetMoves(Piece *piece, int x, int y)
 {
     _moves.clear();
-    switch (piece->GetType())
+    switch (piece->Type)
     {
     case King:
     case Silver:
         if (x < 5)
             CheckMove(piece, x + 1, y);
-        if ((piece->GetColour() == Black && y < 2) || piece->GetColour() == White)
+        if ((piece->Colour == Black && y < 2) || piece->Colour == White)
             CheckMove(piece, x, y + 1);
-        if ((piece->GetColour() == White && y > 7) || piece->GetColour() == Black)
+        if ((piece->Colour == White && y > 7) || piece->Colour == Black)
             CheckMove(piece, x, y - 1);
         if (x > 3)
             CheckMove(piece, x - 1, y);
@@ -66,13 +66,13 @@ void JanggiBoard::GetMoves(Piece *piece, int x, int y)
         }
         else
         {
-            if (x < 5 && (piece->GetColour() == Black && y < 2 || piece->GetColour() == White))
+            if (x < 5 && (piece->Colour == Black && y < 2 || piece->Colour == White))
                 CheckMove(piece, x + 1, y + 1);
-            if (x < 5 && (piece->GetColour() == White && y > 7 || piece->GetColour() == Black))
+            if (x < 5 && (piece->Colour == White && y > 7 || piece->Colour == Black))
                 CheckMove(piece, x + 1, y - 1);
-            if (x > 3 && (piece->GetColour() == Black && y < 2 || piece->GetColour() == White))
+            if (x > 3 && (piece->Colour == Black && y < 2 || piece->Colour == White))
                 CheckMove(piece, x - 1, y + 1);
-            if (x > 3 && (piece->GetColour() == White && y > 7 || piece->GetColour() == Black))
+            if (x > 3 && (piece->Colour == White && y > 7 || piece->Colour == Black))
                 CheckMove(piece, x - 1, y - 1);
         }
         break;
@@ -109,7 +109,7 @@ void JanggiBoard::GetMoves(Piece *piece, int x, int y)
     case Pawn:
         CheckMove(piece, x + 1, y);
         CheckMove(piece, x - 1, y);
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckMove(piece, x, y + 1);
             if (x == 4 && y == 8)
@@ -163,22 +163,22 @@ void JanggiBoard::GetMoves(Piece *piece, int x, int y)
         }
         else if (x == 3 && y == 0)
         {
-            if (GetData(4, 1) != nullptr && GetData(4, 1)->GetType() != Cannon)
+            if (GetData(4, 1) != nullptr && GetData(4, 1)->Type != Cannon)
                 CheckMove(piece, 5, 2);
         }
         else if (x == 5 && y == 0)
         {
-            if (GetData(4, 1) != nullptr && GetData(4, 1)->GetType() != Cannon)
+            if (GetData(4, 1) != nullptr && GetData(4, 1)->Type != Cannon)
                 CheckMove(piece, 3, 2);
         }
         else if (x == 3 && y == 9)
         {
-            if (GetData(4, 8) != nullptr && GetData(4, 8)->GetType() != Cannon)
+            if (GetData(4, 8) != nullptr && GetData(4, 8)->Type != Cannon)
                 CheckMove(piece, 5, 7);
         }
         else if (x == 5 && y == 9)
         {
-            if (GetData(4, 8) != nullptr && GetData(4, 8)->GetType() != Cannon)
+            if (GetData(4, 8) != nullptr && GetData(4, 8)->Type != Cannon)
                 CheckMove(piece, 3, 7);
         }
         CheckCannonDirection(piece, x, y, North);
@@ -236,7 +236,7 @@ void JanggiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Directi
         CheckDirectionInc(x, y, direction);
         if (GetData(x, y) != nullptr)
         {
-            if (GetData(x, y)->GetType() == Cannon)
+            if (GetData(x, y)->Type == Cannon)
             {
                 break;
             }
@@ -248,8 +248,8 @@ void JanggiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Directi
             }
             while (GetData(x, y) == nullptr && InBounds(x, y, direction));
             if (CheckPosition(x, y) && GetData(x, y) != nullptr &&
-                    GetData(x, y)->GetColour() != piece->GetColour() &&
-                    GetData(x, y)->GetType() != Cannon)
+                    GetData(x, y)->Colour != piece->Colour &&
+                    GetData(x, y)->Type != Cannon)
             {
                 CheckMove(piece, x, y);
             }

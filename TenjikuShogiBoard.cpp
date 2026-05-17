@@ -19,7 +19,7 @@ void TenjikuShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 7 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 7 ? Black : White));
 			}
 			else
 			{
@@ -37,7 +37,7 @@ Board* TenjikuShogiBoard::Clone()
 		for (int j = 0; j < GetHeight(); j++)
 		{
 			const Piece* p = GetData(i, j);
-			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
@@ -55,7 +55,7 @@ void TenjikuShogiBoard::Promote(Piece *piece, PieceType pt)
     {
         piece->IsPromoted = true;
         PieceType pieceType = None;
-        switch (piece->GetType())
+        switch (piece->Type)
         {
         case BishopGeneral:
             pieceType = ViceGeneral;
@@ -102,7 +102,7 @@ void TenjikuShogiBoard::Promote(Piece *piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->SetType(pieceType);
+            piece->Type = pieceType;
         }
     }
 }
@@ -121,8 +121,8 @@ void TenjikuShogiBoard::CheckJump(const Piece* piece, int x, int y, Direction di
 		{
 			beforeJump = false;
 			CheckMove(piece, x, y);
-			PieceType pieceType = GetData(x, y)->GetType();
-			if (pieceType == King || piece->GetType() == pieceType || pieceType == GreatGeneral
+            PieceType pieceType = GetData(x, y)->Type;
+            if (pieceType == King || piece->Type == pieceType || pieceType == GreatGeneral
 				|| std::find(std::begin(_jumpingPieces), std::end(_jumpingPieces), pieceType) != std::end(_jumpingPieces))
 			{
 				break;
@@ -135,7 +135,7 @@ void TenjikuShogiBoard::CheckIgui(const Piece* piece, int x, int y)
 {
 	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
 	{
-		if (GetData(x, y) != nullptr && GetData(x, y)->GetColour() != piece->GetColour())
+        if (GetData(x, y) != nullptr && GetData(x, y)->Colour != piece->Colour)
 		{
 			_moves.emplace_back(x, y);
 		}
@@ -145,7 +145,7 @@ void TenjikuShogiBoard::CheckIgui(const Piece* piece, int x, int y)
 bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	// Heavenly Tetrach moves
-	if (GetData(oldX, oldY)->GetType() == HeavenlyTetrarch && abs(oldX - newX) <= 1 && abs(oldY - newY) <= 1 && (oldX != newX || oldY != newY))
+    if (GetData(oldX, oldY)->Type == HeavenlyTetrarch && abs(oldX - newX) <= 1 && abs(oldY - newY) <= 1 && (oldX != newX || oldY != newY))
 	{
 		if (std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}))
 		{
@@ -158,8 +158,8 @@ bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	{
 		if (IsMovePossible(newX, newY))
 		{
-			auto pieces = GetEnemyPiecesAround(newX, newY, GetData(oldX, oldY)->GetColour());
-			if (std::any_of(pieces.begin(), pieces.end(), [=](std::pair<int, int> t) {return GetData(t.first, t.second)->GetType() == FireDemon;}))
+            auto pieces = GetEnemyPiecesAround(newX, newY, GetData(oldX, oldY)->Colour);
+            if (std::any_of(pieces.begin(), pieces.end(), [=](std::pair<int, int> t) {return GetData(t.first, t.second)->Type == FireDemon;}))
 			{
 				delete GetData(oldX, oldY);
 				SetData(oldX, oldY, nullptr);
@@ -171,7 +171,7 @@ bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 				return true;
 			}
 			// Fire Demon moves
-			if (GetData(oldX, oldY)->GetType() == FireDemon)
+            if (GetData(oldX, oldY)->Type == FireDemon)
 			{
 				for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {delete GetData(p.first, p.second); SetData(p.first, p.second, nullptr);});
 			}
@@ -183,7 +183,7 @@ bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();
-	switch (piece->GetType())
+    switch (piece->Type)
 	{
 	case ViceGeneral:
 		CheckJump(piece, x, y, SouthWest);
@@ -260,7 +260,7 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckJump(piece, x, y, South);
 		break;
 	case MultiGeneral:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, North);
 			CheckDirection(piece, x, y, SouthWest);
@@ -274,7 +274,7 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		}
 		break;
 	case Dog:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y + 1);
 			CheckMove(piece, x - 1, y - 1);
@@ -290,7 +290,7 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case SideSoldier:
 		CheckDirection(piece, x, y, West);
 		CheckDirection(piece, x, y, East);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y - 1);
 			CheckDirection(piece, x, y, North, 2);
@@ -304,7 +304,7 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case VerticalSoldier:
 		CheckDirection(piece, x, y, East, 2);
 		CheckDirection(piece, x, y, West, 2);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, North);
 			CheckMove(piece, x, y - 1);
@@ -405,11 +405,11 @@ void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 			{
 				board[i + MAX_MOVES][j + MAX_MOVES] = 'W';
 			}
-			else if (GetData(x + i, y + j) != nullptr && GetData(x + i, y + j)->GetColour() != GetData(x, y)->GetColour())
+            else if (GetData(x + i, y + j) != nullptr && GetData(x + i, y + j)->Colour != GetData(x, y)->Colour)
 			{
 				board[i + MAX_MOVES][j + MAX_MOVES] = 'W';
 			}
-			else if (GetData(x + i, y + j) != nullptr && GetData(x + i, y + j)->GetColour() == GetData(x, y)->GetColour())
+            else if (GetData(x + i, y + j) != nullptr && GetData(x + i, y + j)->Colour == GetData(x, y)->Colour)
 			{
 				board[i + MAX_MOVES][j + MAX_MOVES] = 'B';
 			}

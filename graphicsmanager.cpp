@@ -3,7 +3,7 @@
 void GraphicsManager::DrawPiece(QPainter& painter, Piece *p, GameVariant gameVariant, PieceStyle pieceStyle, int w, int h, int i, int j)
 {
     bool isAsianStyle = pieceStyle == Asian || pieceStyle == Asian2 || pieceStyle == Asian3 || pieceStyle == Asian4;
-    QPixmap pixmap(GraphicsManager::GetImageFileName(gameVariant, pieceStyle, p->GetColour(), p->GetType(), p->IsPromoted));
+    QPixmap pixmap(GraphicsManager::GetImageFileName(gameVariant, pieceStyle, p->Colour, p->Type, p->IsPromoted));
     switch (gameVariant)
     {
     case MicroShogi:

@@ -19,7 +19,7 @@ Board* ChancellorChessBoard::Clone()
         for (int j = 0; j < GetHeight(); j++)
         {
             const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
         }
     }
     cb->SetMoveCount(_moveCount);
@@ -45,7 +45,7 @@ void ChancellorChessBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new ChessPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
@@ -58,7 +58,7 @@ void ChancellorChessBoard::Initialize()
 void ChancellorChessBoard::GetMoves(Piece *piece, int x, int y)
 {
     _moves.clear();
-    switch (piece->GetType())
+    switch (piece->Type)
     {
     case King:
         CheckMove(piece, x + 1, y + 1);
@@ -75,9 +75,9 @@ void ChancellorChessBoard::GetMoves(Piece *piece, int x, int y)
             if (GetData(0, y) != nullptr)
             {
                 const Piece* cp = GetData(0, y);
-                if (!cp->HasMoved && cp->GetType() == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr)
+                if (!cp->HasMoved && cp->Type == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr)
                 {
-                    if ((piece->GetColour() == White && _wqc == true) || (piece->GetColour() == Black && _bqc == true))
+                    if ((piece->Colour == White && _wqc == true) || (piece->Colour == Black && _bqc == true))
                     {
                         _moves.emplace_back(0, y);
                     }
@@ -86,9 +86,9 @@ void ChancellorChessBoard::GetMoves(Piece *piece, int x, int y)
             if (GetData(_width - 1, y) != nullptr)
             {
                 const Piece* cp = GetData(_width - 1, y);
-                if (!cp->HasMoved && cp->GetType() == Rook && GetData(5, y) == nullptr && GetData(6, y) == nullptr)
+                if (!cp->HasMoved && cp->Type == Rook && GetData(5, y) == nullptr && GetData(6, y) == nullptr)
                 {
-                    if ((piece->GetColour() == White && _wkc == true) || (piece->GetColour() == Black && _bkc == true))
+                    if ((piece->Colour == White && _wkc == true) || (piece->Colour == Black && _bkc == true))
                     {
                         _moves.emplace_back(_width - 1, y);
                     }
@@ -97,7 +97,7 @@ void ChancellorChessBoard::GetMoves(Piece *piece, int x, int y)
         }
         break;
     case Pawn:
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             if (y == 1 && GetData(x, y + 1) == nullptr && GetData(x, y + 2) == nullptr)
             {
@@ -164,9 +164,9 @@ void ChancellorChessBoard::GetMoves(Piece *piece, int x, int y)
 
 bool ChancellorChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
-    const PieceType pieceType = GetData(oldX, oldY)->GetType();
-    const PieceColour pieceColour = GetData(oldX, oldY)->GetColour();
-    const PieceType destPieceType = GetData(newX, newY) != nullptr ? GetData(newX, newY)->GetType() : None;
+    const PieceType pieceType = GetData(oldX, oldY)->Type;
+    const PieceColour pieceColour = GetData(oldX, oldY)->Colour;
+    const PieceType destPieceType = GetData(newX, newY) != nullptr ? GetData(newX, newY)->Type : None;
     const bool result = Board::Move(oldX, oldY, newX, newY, cl);
     if (result && GetData(newX, newY) != nullptr)
     {
@@ -238,7 +238,7 @@ bool ChancellorChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
             if (letter == _ep[0] &&	((pieceColour == White && newY == number - 1) || (pieceColour == Black && newY == number + 3)))
             {
                 const Piece* p = pieceColour == White ? GetData(newX, number) : GetData(newX, number + 2);
-                if (p != nullptr && p->GetType() == Pawn && p->GetColour() != pieceColour)
+                if (p != nullptr && p->Type == Pawn && p->Colour != pieceColour)
                 {
                     delete p;
                     if (pieceColour == White)

@@ -26,7 +26,7 @@ void ShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
@@ -44,7 +44,7 @@ Board* ShogiBoard::Clone()
 		for (int j = 0; j < GetHeight(); j++)
 		{
 			const Piece *p = GetData(i, j);
-			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
 		}
 	}
 	for (const auto& capturedPiece: _capturedPieces)
@@ -53,11 +53,6 @@ Board* ShogiBoard::Clone()
 	}
 	cb->SetMoveCount(_moveCount);
 	return cb;
-}
-
-Piece* ShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-	return new ShogiPiece(pieceType, pieceColour);
 }
 
 void ShogiBoard::Promote(int x, int y, PieceType pt)
@@ -71,7 +66,7 @@ void ShogiBoard::Promote(Piece *piece, PieceType pt)
     {
         piece->IsPromoted = true;
         PieceType pieceType = None;
-        switch (piece->GetType())
+        switch (piece->Type)
         {
         case Rook:
             pieceType = DragonKing;
@@ -99,7 +94,7 @@ void ShogiBoard::Promote(Piece *piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->SetType(pieceType);
+            piece->Type = pieceType;
         }
     }
 }
@@ -107,7 +102,7 @@ void ShogiBoard::Promote(Piece *piece, PieceType pt)
 void ShogiBoard::GetMoves(Piece *piece, int x, int y)
 {
 	_moves.clear();
-	switch (piece->GetType())
+    switch (piece->Type)
 	{
 	case King:
 	case Prince:
@@ -163,7 +158,7 @@ void ShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, NorthWest);
 		break;
 	case Lance:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, North);
 		}
@@ -181,7 +176,7 @@ void ShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x, y + 1);
 		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y + 1);
 			CheckMove(piece, x + 1, y + 1);
@@ -197,7 +192,7 @@ void ShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x + 1, y - 1);
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y - 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y + 1);
 		}
@@ -207,7 +202,7 @@ void ShogiBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		break;
 	case Pawn:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y + 1);
 		}
@@ -217,7 +212,7 @@ void ShogiBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		break;
 	case Knight:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y + 2);
 			CheckMove(piece, x + 1, y + 2);
@@ -235,7 +230,7 @@ void ShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y);
 		CheckMove(piece, x - 1, y - 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y + 1);
 		}
@@ -292,7 +287,7 @@ void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 	_csa += y1 == '*' ? "00" : std::to_string(_width - x1) + std::to_string(y1 + 1);
 	_csa += std::to_string(_width - x2);
 	_csa += std::to_string(y2 + 1);
-    _csa += _pieceToCSA.at(promotion != '+' || GetData(x2, y2) == nullptr ? pieceType : GetData(x2, y2)->GetType());
+    _csa += _pieceToCSA.at(promotion != '+' || GetData(x2, y2) == nullptr ? pieceType : GetData(x2, y2)->Type);
 	_csa += ",T1\n";
 	// KIF
 	_kif += "  " + std::to_string(_moveCount) + " "; // Add move number

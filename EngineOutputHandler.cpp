@@ -14,23 +14,23 @@ bool EngineOutputHandler::IsLionMove(const Piece* piece, int x1, int y1, int x2,
 {
 	if (piece != nullptr)
 	{
-		if (piece->GetType() == Unicorn)
+        if (piece->Type == Unicorn)
 		{
-			if ((x1 == x2 && y1 - y2 == +1 || x1 == x2 && y1 - y2 == +2) && piece->GetColour() == White ||
-				(x1 == x2 && y1 - y2 == -1 || x1 == x2 && y1 - y2 == -2) && piece->GetColour() == Black)
+            if ((x1 == x2 && y1 - y2 == +1 || x1 == x2 && y1 - y2 == +2) && piece->Colour == White ||
+                (x1 == x2 && y1 - y2 == -1 || x1 == x2 && y1 - y2 == -2) && piece->Colour == Black)
 			{
 				return true;
 			}
 		}
-		else if (piece->GetType() == Eagle)
+        else if (piece->Type == Eagle)
 		{
-			if ((abs(x1 - x2) == 1 && y1 - y2 == +1 || abs(x1 - x2) == 2 && y1 - y2 == +2) && piece->GetColour() == White ||
-				(abs(x1 - x2) == 1 && y1 - y2 == -1 || abs(x1 - x2) == 2 && y1 - y2 == -2) && piece->GetColour() == Black)
+            if ((abs(x1 - x2) == 1 && y1 - y2 == +1 || abs(x1 - x2) == 2 && y1 - y2 == +2) && piece->Colour == White ||
+                (abs(x1 - x2) == 1 && y1 - y2 == -1 || abs(x1 - x2) == 2 && y1 - y2 == -2) && piece->Colour == Black)
 			{
 				return true;
 			}
 		}
-		else if (piece->GetType() == FreeEagle || piece->GetType() == WingedTiger)
+        else if (piece->Type == FreeEagle || piece->Type == WingedTiger)
 		{
 			if (abs(x1 - x2) == 1 && abs(y1 - y2) == 1 || abs(x1 - x2) == 2 && abs(y1 - y2) == 2 ||
 				abs(x1 - x2) == 2 && abs(y1 - y2) == 0 || abs(x1 - x2) == 0 && abs(y1 - y2) == 2)
@@ -38,30 +38,30 @@ bool EngineOutputHandler::IsLionMove(const Piece* piece, int x1, int y1, int x2,
 				return true;
 			}
 		}
-		else if (piece->GetType() == GreatElephant)
+        else if (piece->Type == GreatElephant)
 		{
-			if (piece->GetColour() == White && !(abs(x1 - x2) == 1 && y1 - y2 == +1 || abs(x1 - x2) == 2 && y1 - y2 == +2) ||
-				piece->GetColour() == Black && !(abs(x1 - x2) == 1 && y1 - y2 == -1 || abs(x1 - x2) == 2 && y1 - y2 == -2))
+            if (piece->Colour == White && !(abs(x1 - x2) == 1 && y1 - y2 == +1 || abs(x1 - x2) == 2 && y1 - y2 == +2) ||
+                piece->Colour == Black && !(abs(x1 - x2) == 1 && y1 - y2 == -1 || abs(x1 - x2) == 2 && y1 - y2 == -2))
 			{
 				return abs(x1 - x2) < 4 && abs(y1 - y2) < 4;
 			}
 		}
-		else if (piece->GetType() == Lion || piece->GetType() == LionDog || piece->GetType() == FuriousFiend || piece->GetType() == Thunderclap ||
-			piece->GetType() == KnightCaptain || piece->GetType() == ExtensiveFog || piece->GetType() == HolyLight ||
-			piece->GetType() == WingedHorse || piece->GetType() == DoubleKylin || piece->GetType() == DoublePhoenix ||
-			piece->GetType() == RoamingAssault)
+        else if (piece->Type == Lion || piece->Type == LionDog || piece->Type == FuriousFiend || piece->Type == Thunderclap ||
+            piece->Type == KnightCaptain || piece->Type == ExtensiveFog || piece->Type == HolyLight ||
+            piece->Type == WingedHorse || piece->Type == DoubleKylin || piece->Type == DoublePhoenix ||
+            piece->Type == RoamingAssault)
 		{
 			return true;
 		}
-		else if (piece->GetType() == LionHawk || piece->GetType() == BuddhistSpirit || piece->GetType() == RisingDragon)
+        else if (piece->Type == LionHawk || piece->Type == BuddhistSpirit || piece->Type == RisingDragon)
 		{
 			return abs(x1 - x2) < 3 && abs(y1 - y2) < 3;
 		}
-		else if (piece->GetType() == TeachingKing)
+        else if (piece->Type == TeachingKing)
 		{
 			return abs(x1 - x2) < 4 && abs(y1 - y2) < 4;
 		}
-		else if (piece->GetType() == FlyingHawk)
+        else if (piece->Type == FlyingHawk)
 		{
 			return abs(x1 - x2) + abs(y1 - y2) < 3;
 		}
@@ -120,7 +120,7 @@ std::vector<std::pair<int, int>> EngineOutputHandler::GetPieceLocations(const Bo
 		for (int j = 0; j < board->GetHeight(); j++)
 		{
 			const Piece* p = board->GetData(i, j);
-			if (p != nullptr && p->GetBaseType() == pieceType && p->GetColour() == pieceColour)
+            if (p != nullptr && p->BaseType == pieceType && p->Colour == pieceColour)
 			{
 				kx = i;
 				ky = j;
@@ -332,7 +332,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 				}
 				board->SetData(x2, y2, board->GetData(x1, y1));
 				board->SetData(x1, y1, nullptr);
-                AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
+                AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
                 engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
 				if (isPromoted)
 				{
@@ -357,7 +357,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 					board->SetData(x1, y1, nullptr);
 				}
 				board->SetData(x2, y2, nullptr);
-                AddMove(board, gameVariant, board->GetData(x3, y3)->GetType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x3, board->GetHeight() - y3);
+                AddMove(board, gameVariant, board->GetData(x3, y3)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x3, board->GetHeight() - y3);
                 std::dynamic_pointer_cast<WbEngine>(engine)->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x3, board->GetHeight() - y3);
 			}
 		}
@@ -370,7 +370,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		{
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
 			board->Move(x1, y1, x2, y2, false);
-			AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, ' ', ' ');
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2, ' ', ' ');
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 		}
 	}
@@ -380,13 +380,13 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
         y2--;
         if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
         {
-            const bool isPromoted = (y2 == 0 || y2 == board->GetHeight() - 1) && board->GetData(x1, y1)->GetType() == Pawn &&
+            const bool isPromoted = (y2 == 0 || y2 == board->GetHeight() - 1) && board->GetData(x1, y1)->Type == Pawn &&
                 (moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
                  moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c');
             board->GetMoves(board->GetData(x1, y1), x1, y1);
-            const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
+            const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
                     isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
             if (isPromoted)
@@ -422,9 +422,9 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
         // Castling check
         if ((moveArray == "g11j11" || moveArray == "g11i11" || moveArray == "g11d8" || moveArray == "g11c11" || moveArray == "g11b11" ||
              moveArray == "g2j2" || moveArray == "g2i2" || moveArray == "g2d2" || moveArray == "g2c2" || moveArray == "g2b2") &&
-            board->GetData(x1, y1) != nullptr && board->GetData(x1, y1)->GetType() == King &&
+            board->GetData(x1, y1) != nullptr && board->GetData(x1, y1)->Type == King &&
             board->GetData(x2 > 5 ? board->GetWidth() - 3 : 2, y2) != nullptr &&
-            board->GetData(x2 > 5 ? board->GetWidth() - 3 : 2, y2)->GetType() == Rook)
+            board->GetData(x2 > 5 ? board->GetWidth() - 3 : 2, y2)->Type == Rook)
         {
             Piece* rook = board->GetData(x2 > 5 ? board->GetWidth() - 3 : 2, y2);
             board->SetData(x2 > 5 ? board->GetWidth() - 3 : 2, y2, board->GetData(x1, y1));
@@ -434,13 +434,13 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
         }
         else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
         {
-            const bool isPromoted = (y2 == 1 || y2 == board->GetHeight() - 2) && board->GetData(x1, y1)->GetType() == Pawn &&
+            const bool isPromoted = (y2 == 1 || y2 == board->GetHeight() - 2) && board->GetData(x1, y1)->Type == Pawn &&
                 (moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
                  moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'c' || moveArray[ms - 1] == 'w');
             board->GetMoves(board->GetData(x1, y1), x1, y1);
-            const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
+            const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
                     isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
             if (isPromoted)
@@ -480,9 +480,9 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
              moveArray == "e9g9" || moveArray == "e1i1" ||
              moveArray == "f8i8" || moveArray == "f8j8" || moveArray == "f8c8" || moveArray == "f8b8" || moveArray == "f8a8" ||
              moveArray == "f1i1" || moveArray == "f1j1" || moveArray == "f1c1" || moveArray == "f1b1" || moveArray == "f1a1") &&
-			board->GetData(x1, y1) != nullptr && board->GetData(x1, y1)->GetType() == King &&
+            board->GetData(x1, y1) != nullptr && board->GetData(x1, y1)->Type == King &&
             board->GetData(x2 > 5 ? board->GetWidth() - 1 : 0, y2) != nullptr &&
-            board->GetData(x2 > 5 ? board->GetWidth() - 1 : 0, y2)->GetType() == Rook)
+            board->GetData(x2 > 5 ? board->GetWidth() - 1 : 0, y2)->Type == Rook)
 		{
             Piece* rook = board->GetData(x2 > 5 ? board->GetWidth() - 1 : 0, y2);
             board->SetData(x2 > 5 ? board->GetWidth() - 1 : 0, y2, board->GetData(x1, y1));
@@ -492,13 +492,13 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		}
 		else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
 		{
-            const bool isPromoted = (y2 == 0 || y2 == board->GetHeight() - 1) && board->GetData(x1, y1)->GetType() == Pawn &&
+            const bool isPromoted = (y2 == 0 || y2 == board->GetHeight() - 1) && board->GetData(x1, y1)->Type == Pawn &&
                 (moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r' ||
                  moveArray[4] == 'q' || moveArray[4] == 'a' || moveArray[4] == 'c');
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
-			const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
+            const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->Type : None;
 			board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
                     isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
 			if (isPromoted)
@@ -533,13 +533,13 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     {
         if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
         {
-            const bool isPromoted = (y2 == 0 || y2 == board->GetHeight() - 1) && board->GetData(x1, y1)->GetType() == Pawn &&
+            const bool isPromoted = (y2 == 0 || y2 == board->GetHeight() - 1) && board->GetData(x1, y1)->Type == Pawn &&
                 (moveArray[ms - 1] == 'u' || moveArray[ms - 1] == 'l' || moveArray[ms - 1] == 'r' ||
                  moveArray[ms - 1] == 'g' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c');
             board->GetMoves(board->GetData(x1, y1), x1, y1);
-            const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
+            const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
                     isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
             if (isPromoted)
@@ -574,11 +574,11 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
 		{
-			const bool isPromoted = board->GetData(x1, y1)->GetType() == Pawn && (y2 == 0 || y2 == board->GetHeight() - 1);
+            const bool isPromoted = board->GetData(x1, y1)->Type == Pawn && (y2 == 0 || y2 == board->GetHeight() - 1);
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
-			const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
+            const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->Type : None;
 			board->Move(x1, y1, x2, y2, false);
-			AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, ' ', ct != None ? 'x' : ' ');
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2, ' ', ct != None ? 'x' : ' ');
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 			if (isPromoted)
 			{
@@ -590,11 +590,11 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != nullptr)
 		{
-			const bool isPromoted = board->GetData(x1, y1)->GetType() == Pawn && (y2 <= 2 || y2 >= board->GetHeight() - 3);
+            const bool isPromoted = board->GetData(x1, y1)->Type == Pawn && (y2 <= 2 || y2 >= board->GetHeight() - 3);
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
-			const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->GetType() : None;
+            const PieceType ct = board->GetData(x2, y2) != nullptr ? board->GetData(x2, y2)->Type : None;
 			board->Move(x1, y1, x2, y2, false);
-			AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), x1, y1, x2, y2, ' ', ct != None ? 'x' : ' ');
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2, ' ', ct != None ? 'x' : ' ');
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 			if (isPromoted)
 			{
@@ -752,7 +752,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 }
             }
 			dynamic_cast<ShogiVariantBoard*>(board)->PlacePiece(newPiece, currentPlayer, x2, y2);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->GetType(), moveArray[0], moveArray[1], x2, board->GetHeight() - y2, ' ', ' ');
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, moveArray[0], moveArray[1], x2, board->GetHeight() - y2, ' ', ' ');
             if (engine->GetType() == USI)
             {
                 engine->AddMove(moveArray[0], moveArray[1], board->GetWidth() - x2, y2, ' ');
@@ -774,7 +774,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                     || ((gameVariant == WaShogi || gameVariant == CrazyWa) && (y2 <= 2 || y2 >= 8) && moveArray[ms - 1] == '+'));
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
 			board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->GetBaseType(), x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
+            AddMove(board, gameVariant, board->GetData(x2, y2)->BaseType, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
             if (engine->GetType() == USI)
             {
                 engine->AddMove(board->GetWidth() - x1, y1, board->GetWidth() - x2, y2, isPromoted ? moveArray[ms - 1] : ' ');
@@ -1069,60 +1069,60 @@ bool EngineOutputHandler::CanBePromoted(const Piece* piece, GameVariant gameVari
 	if (piece != nullptr)
 	{
         if (gameVariant == MiniShogi && !piece->IsPromoted &&
-			piece->GetType() != King && piece->GetType() != Gold &&
-			piece->GetType() != DragonKing && piece->GetType() != DragonHorse)
+            piece->Type != King && piece->Type != Gold &&
+            piece->Type != DragonKing && piece->Type != DragonHorse)
 		{
-			return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+            return IsInsidePromotionZone(gameVariant, piece->Colour, oldY) || IsInsidePromotionZone(gameVariant, piece->Colour, newY);
 		}
         if (gameVariant == JudkinShogi && !piece->IsPromoted &&
-			piece->GetType() != King && piece->GetType() != Gold &&
-			piece->GetType() != DragonKing && piece->GetType() != DragonHorse)
+            piece->Type != King && piece->Type != Gold &&
+            piece->Type != DragonKing && piece->Type != DragonHorse)
 		{
-			return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+            return IsInsidePromotionZone(gameVariant, piece->Colour, oldY) || IsInsidePromotionZone(gameVariant, piece->Colour, newY);
 		}
         if (gameVariant == ToriShogi && !piece->IsPromoted &&
-            (piece->GetType() == Falcon || piece->GetType() == Pawn))
+            (piece->Type == Falcon || piece->Type == Pawn))
         {
-            return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+            return IsInsidePromotionZone(gameVariant, piece->Colour, oldY) || IsInsidePromotionZone(gameVariant, piece->Colour, newY);
         }
         if ((gameVariant == EuroShogi || gameVariant == HeianShogi || gameVariant == HeianDaiShogi) && !piece->IsPromoted &&
-            piece->GetType() != King && piece->GetType() != Gold &&
-            piece->GetType() != DragonKing && piece->GetType() != DragonHorse)
+            piece->Type != King && piece->Type != Gold &&
+            piece->Type != DragonKing && piece->Type != DragonHorse)
         {
-            return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+            return IsInsidePromotionZone(gameVariant, piece->Colour, oldY) || IsInsidePromotionZone(gameVariant, piece->Colour, newY);
         }
         if ((gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == YariShogi) && !piece->IsPromoted &&
-			piece->GetType() != King && piece->GetType() != Gold &&
-			piece->GetType() != DragonKing && piece->GetType() != DragonHorse)
+            piece->Type != King && piece->Type != Gold &&
+            piece->Type != DragonKing && piece->Type != DragonHorse)
 		{
-			return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+            return IsInsidePromotionZone(gameVariant, piece->Colour, oldY) || IsInsidePromotionZone(gameVariant, piece->Colour, newY);
 		}
         if ((gameVariant == WaShogi || gameVariant == CrazyWa) && !piece->IsPromoted &&
-			piece->GetType() != King && piece->GetType() != CloudEagle && piece->GetType() != TreacherousFox)
+            piece->Type != King && piece->Type != CloudEagle && piece->Type != TreacherousFox)
 		{
-			return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+            return IsInsidePromotionZone(gameVariant, piece->Colour, oldY) || IsInsidePromotionZone(gameVariant, piece->Colour, newY);
 		}
-        if (gameVariant == ChuShogi && !piece->IsPromoted && piece->GetType() != King &&
-			piece->GetType() != Queen && piece->GetType() != Lion)
+        if (gameVariant == ChuShogi && !piece->IsPromoted && piece->Type != King &&
+            piece->Type != Queen && piece->Type != Lion)
 		{
-			return !IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) && IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+            return !IsInsidePromotionZone(gameVariant, piece->Colour, oldY) && IsInsidePromotionZone(gameVariant, piece->Colour, newY);
 		}
-        if (gameVariant == DaiShogi && !piece->IsPromoted && piece->GetType() != King &&
-			piece->GetType() != Queen && piece->GetType() != Lion)
+        if (gameVariant == DaiShogi && !piece->IsPromoted && piece->Type != King &&
+            piece->Type != Queen && piece->Type != Lion)
 		{
-			return !IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) && IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+            return !IsInsidePromotionZone(gameVariant, piece->Colour, oldY) && IsInsidePromotionZone(gameVariant, piece->Colour, newY);
 		}
-        if (gameVariant == TenjikuShogi && !piece->IsPromoted && piece->GetType() != King &&
-			piece->GetType() != Queen && piece->GetType() != Lion && piece->GetType() != LionHawk &&
-			piece->GetType() != ViceGeneral && piece->GetType() != GreatGeneral &&
-			piece->GetType() != FireDemon && piece->GetType() != FreeEagle)
+        if (gameVariant == TenjikuShogi && !piece->IsPromoted && piece->Type != King &&
+            piece->Type != Queen && piece->Type != Lion && piece->Type != LionHawk &&
+            piece->Type != ViceGeneral && piece->Type != GreatGeneral &&
+            piece->Type != FireDemon && piece->Type != FreeEagle)
 		{
-			return !IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) && IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+            return !IsInsidePromotionZone(gameVariant, piece->Colour, oldY) && IsInsidePromotionZone(gameVariant, piece->Colour, newY);
 		}
-        if (gameVariant == KoShogi && !piece->IsPromoted && piece->GetType() != King &&
-			piece->GetType() != Lion && piece->GetType() != Bishop)
+        if (gameVariant == KoShogi && !piece->IsPromoted && piece->Type != King &&
+            piece->Type != Lion && piece->Type != Bishop)
 		{
-			return IsInsidePromotionZone(gameVariant, piece->GetColour(), oldY) || IsInsidePromotionZone(gameVariant, piece->GetColour(), newY);
+            return IsInsidePromotionZone(gameVariant, piece->Colour, oldY) || IsInsidePromotionZone(gameVariant, piece->Colour, newY);
 		}
 	}
 	return false;

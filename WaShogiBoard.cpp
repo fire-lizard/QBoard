@@ -22,7 +22,7 @@ void WaShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
@@ -40,7 +40,7 @@ Board* WaShogiBoard::Clone()
 		for (int j = 0; j < GetHeight(); j++)
 		{
 			const Piece* p = GetData(i, j);
-			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
 		}
 	}
 	for (const auto& capturedPiece : _capturedPieces)
@@ -62,7 +62,7 @@ void WaShogiBoard::Promote(Piece *piece, PieceType pt)
     {
         piece->IsPromoted = true;
         PieceType pieceType = None;
-        switch (piece->GetType())
+        switch (piece->Type)
         {
         case Lance:
             pieceType = PloddingOx;
@@ -111,7 +111,7 @@ void WaShogiBoard::Promote(Piece *piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->SetType(pieceType);
+            piece->Type = pieceType;
         }
     }
 }
@@ -169,7 +169,7 @@ std::string WaShogiBoard::formatEnumCounts(const std::vector<PieceType>& enumLis
 void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
 	_moves.clear();
-	switch (piece->GetType())
+    switch (piece->Type)
 	{
 	case PloddingOx:
 	case BearEyes:
@@ -189,7 +189,7 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, West);
 		break;
 	case LiberatedHorse:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, North);
 			CheckDirection(piece, x, y, South, 2);
@@ -209,7 +209,7 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 		break;
 	case SwoopingOwl:
 	case StruttingCrow:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y - 1);
 			CheckMove(piece, x - 1, y + 1);
@@ -231,7 +231,7 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x + 1, y - 1);
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x + 1, y + 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, NorthWest, 3);
 			CheckDirection(piece, x, y, NorthEast, 3);
@@ -247,7 +247,7 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, NorthEast);
 		CheckDirection(piece, x, y, SouthWest);
 		CheckDirection(piece, x, y, SouthEast);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y - 1);
 		}
@@ -259,7 +259,7 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case FlyingCock:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
@@ -275,7 +275,7 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x, y, South);
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
@@ -290,7 +290,7 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case ClimbingMonkey:
 		CheckMove(piece, x, y + 1);
 		CheckMove(piece, x, y - 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y + 1);
 			CheckMove(piece, x + 1, y + 1);
@@ -304,7 +304,7 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 	case Dog:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y - 1);
 			CheckMove(piece, x - 1, y + 1);
@@ -322,7 +322,7 @@ void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckMove(piece, x + 1, y - 1);
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x + 1, y + 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, North);
 			CheckMove(piece, x, y - 1);
@@ -403,8 +403,8 @@ std::string WaShogiBoard::GetPGN()
 std::string WaShogiBoard::GetStringCode(int x, int y) const
 {
     if (GetData(x, y) == nullptr) return "";
-    PieceType pieceType = GetData(x, y)->GetType();
-    PieceType basePieceType = GetData(x, y)->GetBaseType();
+    PieceType pieceType = GetData(x, y)->Type;
+    PieceType basePieceType = GetData(x, y)->BaseType;
     switch (pieceType)
     {
     case King:

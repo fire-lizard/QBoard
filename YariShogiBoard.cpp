@@ -21,7 +21,7 @@ void YariShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
@@ -39,7 +39,7 @@ Board* YariShogiBoard::Clone()
         for (int j = 0; j < GetHeight(); j++)
         {
             const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
         }
     }
     for (const auto& capturedPiece: _capturedPieces)
@@ -61,7 +61,7 @@ void YariShogiBoard::Promote(Piece *piece, PieceType pt)
     {
         piece->IsPromoted = true;
         PieceType pieceType = None;
-        switch (piece->GetType())
+        switch (piece->Type)
         {
         case YariKnight:
             pieceType = YariGold;
@@ -80,7 +80,7 @@ void YariShogiBoard::Promote(Piece *piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->SetType(pieceType);
+            piece->Type = pieceType;
         }
     }
 }
@@ -88,12 +88,12 @@ void YariShogiBoard::Promote(Piece *piece, PieceType pt)
 void YariShogiBoard::GetMoves(Piece *piece, int x, int y)
 {
     _moves.clear();
-    switch (piece->GetType())
+    switch (piece->Type)
     {
     case YariRook:
         CheckDirection(piece, x, y, East);
         CheckDirection(piece, x, y, West);
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckDirection(piece, x, y, North);
         }
@@ -105,7 +105,7 @@ void YariShogiBoard::GetMoves(Piece *piece, int x, int y)
     case YariGold:
         CheckMove(piece, x + 1, y);
         CheckMove(piece, x - 1, y);
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckDirection(piece, x, y, North);
             CheckMove(piece, x, y + 1);
@@ -121,7 +121,7 @@ void YariShogiBoard::GetMoves(Piece *piece, int x, int y)
         }
         break;
     case YariSilver:
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckDirection(piece, x, y, North);
             CheckMove(piece, x, y + 1);
@@ -139,7 +139,7 @@ void YariShogiBoard::GetMoves(Piece *piece, int x, int y)
     case YariBishop:
         CheckMove(piece, x + 1, y);
         CheckMove(piece, x - 1, y);
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckDirection(piece, x, y, North);
         }
@@ -149,7 +149,7 @@ void YariShogiBoard::GetMoves(Piece *piece, int x, int y)
         }
         break;
     case YariKnight:
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckDirection(piece, x, y, North);
             CheckMove(piece, x - 1, y + 2);

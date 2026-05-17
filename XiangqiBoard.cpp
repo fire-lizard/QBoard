@@ -1,5 +1,4 @@
 #include "XiangqiBoard.h"
-#include "XiangqiPiece.h"
 
 XiangqiBoard::XiangqiBoard()
 {
@@ -20,7 +19,7 @@ Board* XiangqiBoard::Clone()
 		for (int j = 0; j < GetHeight(); j++)
 		{
 			const Piece *p = GetData(i, j);
-			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
@@ -37,7 +36,7 @@ void XiangqiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				SetData(i, j, new XiangqiPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
@@ -45,11 +44,6 @@ void XiangqiBoard::Initialize()
 			}
 		}
 	}
-}
-
-Piece* XiangqiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-	return new XiangqiPiece(pieceType, pieceColour);
 }
 
 void XiangqiBoard::Promote(int x, int y, PieceType pt)
@@ -63,26 +57,26 @@ void XiangqiBoard::Promote(Piece *piece, PieceType pt)
 void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 {
 	_moves.clear();
-	switch (piece->GetType())
+    switch (piece->Type)
 	{
 	case King:
 		if (x < 5)
 			CheckMove(piece, x + 1, y);
-        if ((piece->GetColour() == Black && y < 2) || piece->GetColour() == White)
+        if ((piece->Colour == Black && y < 2) || piece->Colour == White)
 			CheckMove(piece, x, y + 1);
-        if ((piece->GetColour() == White && y > 7) || piece->GetColour() == Black)
+        if ((piece->Colour == White && y > 7) || piece->Colour == Black)
 			CheckMove(piece, x, y - 1);
 		if (x > 3)
 			CheckMove(piece, x - 1, y);
 		break;
 	case Silver:
-        if (x < 5 && (piece->GetColour() == Black && y < 2 || piece->GetColour() == White))
+        if (x < 5 && (piece->Colour == Black && y < 2 || piece->Colour == White))
 			CheckMove(piece, x + 1, y + 1);
-        if (x < 5 && (piece->GetColour() == White && y > 7 || piece->GetColour() == Black))
+        if (x < 5 && (piece->Colour == White && y > 7 || piece->Colour == Black))
 			CheckMove(piece, x + 1, y - 1);
-        if (x > 3 && (piece->GetColour() == Black && y < 2 || piece->GetColour() == White))
+        if (x > 3 && (piece->Colour == Black && y < 2 || piece->Colour == White))
 			CheckMove(piece, x - 1, y + 1);
-        if (x > 3 && (piece->GetColour() == White && y > 7 || piece->GetColour() == Black))
+        if (x > 3 && (piece->Colour == White && y > 7 || piece->Colour == Black))
             CheckMove(piece, x - 1, y - 1);
         break;
 	case Rook:
@@ -92,14 +86,14 @@ void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, South);
 		break;
 	case Elephant:
-		if ((piece->GetColour() == White && y > 5) || piece->GetColour() == Black)
+        if ((piece->Colour == White && y > 5) || piece->Colour == Black)
 		{
 			if (GetData(x - 1, y - 1) == nullptr)
 				CheckMove(piece, x - 2, y - 2);
 			if (GetData(x + 1, y - 1) == nullptr)
 				CheckMove(piece, x + 2, y - 2);
 		}
-		if ((piece->GetColour() == Black && y < 4) || piece->GetColour() == White)
+        if ((piece->Colour == Black && y < 4) || piece->Colour == White)
 		{
 			if (GetData(x - 1, y + 1) == nullptr)
 				CheckMove(piece, x - 2, y + 2);
@@ -108,7 +102,7 @@ void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		break;
 	case Pawn:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y + 1);
 			if (y >= 5)
@@ -176,7 +170,7 @@ void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direct
 				CheckDirectionInc(x, y, direction);
 			} 
 			while (GetData(x, y) == nullptr && InBounds(x, y, direction));
-			if (CheckPosition(x, y) && GetData(x, y) != nullptr && GetData(x, y)->GetColour() != piece->GetColour())
+            if (CheckPosition(x, y) && GetData(x, y) != nullptr && GetData(x, y)->Colour != piece->Colour)
 			{
 				CheckMove(piece, x, y);
 			}
@@ -189,13 +183,13 @@ void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direct
 bool XiangqiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	for (int& _pieceFile : _pieceFiles) _pieceFile = -1;
-	const PieceColour pieceColour = GetData(oldX, oldY)->GetColour();
-	const PieceType pieceType = GetData(oldX, oldY)->GetType();
+    const PieceColour pieceColour = GetData(oldX, oldY)->Colour;
+    const PieceType pieceType = GetData(oldX, oldY)->Type;
 	int pieceCount = 0;
 	for (int index = 0; index < _height; index++)
 	{
 		const Piece* p = GetData(oldX, index);
-		if (p != nullptr && p->GetColour() == pieceColour && p->GetType() == pieceType)
+        if (p != nullptr && p->Colour == pieceColour && p->Type == pieceType)
 		{
 			_pieceFiles[pieceCount] = index;
 			pieceCount++;
@@ -315,7 +309,7 @@ bool XiangqiBoard::AreTwoKingsLookingOnEachOther()
 std::string XiangqiBoard::GetStringCode(int x, int y) const
 {
     if (GetData(x, y) == nullptr) return "";
-    PieceType pieceType = GetData(x, y)->GetType();
+    PieceType pieceType = GetData(x, y)->Type;
     switch (pieceType)
     {
     case King:

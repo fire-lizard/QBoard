@@ -7,7 +7,6 @@
 #include <vector>
 #include "Common.h"
 #include "Board.h"
-#include "ShogiPiece.h"
 
 class ShogiVariantBoard : public Board
 {

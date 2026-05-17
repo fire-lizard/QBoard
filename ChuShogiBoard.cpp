@@ -19,7 +19,7 @@ void ChuShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
@@ -37,16 +37,11 @@ Board* ChuShogiBoard::Clone()
 		for (int j = 0; j < GetHeight(); j++)
 		{
 			const Piece *p = GetData(i, j);
-			cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
 	return cb;
-}
-
-Piece* ChuShogiBoard::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return new ShogiPiece(pieceType, pieceColour);
 }
 
 void ChuShogiBoard::Promote(int x, int y, PieceType pt)
@@ -60,7 +55,7 @@ void ChuShogiBoard::Promote(Piece *piece, PieceType pt)
     {
         piece->IsPromoted = true;
         PieceType pieceType = None;
-        switch (piece->GetType())
+        switch (piece->Type)
         {
         case DragonKing:
             pieceType = Eagle;
@@ -121,7 +116,7 @@ void ChuShogiBoard::Promote(Piece *piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->SetType(pieceType);
+            piece->Type = pieceType;
         }
     }
 }
@@ -133,12 +128,12 @@ bool ChuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	const Piece* dp = GetData(newX, newY);
 	if (_wasLionCapturedByNonLion)
 	{
-		if (ap != nullptr && ap->GetType() != Lion && dp != nullptr && dp->GetType() == Lion)
+        if (ap != nullptr && ap->Type != Lion && dp != nullptr && dp->Type == Lion)
 		{
 			return false;
 		}
 	}
-	_wasLionCapturedByNonLion = ap != nullptr && ap->GetType() != Lion && dp != nullptr && dp->GetType() == Lion;
+    _wasLionCapturedByNonLion = ap != nullptr && ap->Type != Lion && dp != nullptr && dp->Type == Lion;
 	return Board::Move(oldX, oldY, newX, newY, cl);
 }
 
@@ -154,7 +149,7 @@ void ChuShogiBoard::CheckNullMove(int x, int y)
 void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 {
 	_moves.clear();
-	switch (piece->GetType())
+    switch (piece->Type)
 	{
 	case King:
 	case Prince:
@@ -256,7 +251,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, South);
 		break;
 	case Lance:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, North);
 		}
@@ -294,7 +289,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y);
 		CheckMove(piece, x - 1, y - 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y + 1);
 		}
@@ -310,7 +305,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y);
 		CheckMove(piece, x - 1, y - 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y - 1);
 		}
@@ -325,7 +320,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x, y + 1);
 		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x - 1, y);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y + 1);
 			CheckMove(piece, x + 1, y + 1);
@@ -341,7 +336,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x + 1, y - 1);
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y - 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y + 1);
 		}
@@ -353,7 +348,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 	case Copper:
 		CheckMove(piece, x, y + 1);
 		CheckMove(piece, x, y - 1);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y + 1);
 			CheckMove(piece, x + 1, y + 1);
@@ -377,7 +372,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckMove(piece, x, y - 1);
 		break;
 	case Pawn:
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y + 1);
 		}
@@ -393,7 +388,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, East);
 		CheckDirection(piece, x, y, South);
 		CheckDirection(piece, x, y, West);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x + 1, y + 1);
 			CheckMove(piece, x - 1, y + 1);
@@ -421,7 +416,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 		CheckDirection(piece, x, y, SouthWest);
 		CheckDirection(piece, x, y, NorthWest);
 		CheckDirection(piece, x, y, NorthEast);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckMove(piece, x, y + 1);
 			CheckMove(piece, x, y + 2);
@@ -463,7 +458,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 	case WhiteHorse:
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, South);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, NorthEast);
 			CheckDirection(piece, x, y, NorthWest);
@@ -477,7 +472,7 @@ void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
 	case Whale:
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, South);
-		if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, SouthEast);
 			CheckDirection(piece, x, y, SouthWest);
@@ -498,12 +493,12 @@ bool ChuShogiBoard::DoubleMove(int x1, int y1, int x2, int y2, int x3, int y3)
 	if (x1 == x3 && y1 == y3 || std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x3 && t.second == y3;}))
 	{
 		// Lion capture rule #1
-		if ((abs(x1 - x3) == 2 || abs(y1 - y3) == 2) && GetData(x3, y3) != nullptr && GetData(x3, y3)->GetType() == Lion)
+        if ((abs(x1 - x3) == 2 || abs(y1 - y3) == 2) && GetData(x3, y3) != nullptr && GetData(x3, y3)->Type == Lion)
 		{
 			const std::vector<std::pair<int, int>> lionDefenders = GetDefenders(x3, y3);
 			if (!lionDefenders.empty())
 			{
-				if (GetData(x2, y2) == nullptr || GetData(x2, y2)->GetType() != Pawn && GetData(x2, y2)->GetType() != GoBetween)
+                if (GetData(x2, y2) == nullptr || GetData(x2, y2)->Type != Pawn && GetData(x2, y2)->Type != GoBetween)
 				{
 					return false;
 				}

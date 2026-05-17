@@ -22,9 +22,9 @@ void ToriShogiBoard::Initialize()
             if (_initialSetup[j][i] != None)
             {
                 if (j != 3)
-                    SetData(i, j, new ShogiPiece(_initialSetup[j][i], j < 3 ? Black : White));
+                    SetData(i, j, new Piece(_initialSetup[j][i], j < 3 ? Black : White));
                 else
-                    SetData(i, j, new ShogiPiece(_initialSetup[j][i], i < 3 ? Black : White));
+                    SetData(i, j, new Piece(_initialSetup[j][i], i < 3 ? Black : White));
             }
             else
             {
@@ -42,7 +42,7 @@ Board* ToriShogiBoard::Clone()
         for (int j = 0; j < GetHeight(); j++)
         {
             const Piece* p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->GetType(), p->GetColour()) : nullptr);
+            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
         }
     }
     for (const auto& capturedPiece : _capturedPieces)
@@ -63,13 +63,13 @@ void ToriShogiBoard::Promote(Piece *piece, PieceType pt)
     if (piece != nullptr)
     {
         piece->IsPromoted = true;
-        switch (piece->GetType())
+        switch (piece->Type)
         {
         case Falcon:
-            piece->SetType(Eagle);
+            piece->Type = Eagle;
             break;
         case Pawn:
-            piece->SetType(Goose);
+            piece->Type = Goose;
             break;
         default:
             break;
@@ -80,7 +80,7 @@ void ToriShogiBoard::Promote(Piece *piece, PieceType pt)
 void ToriShogiBoard::GetMoves(Piece* piece, int x, int y)
 {
     _moves.clear();
-    switch (piece->GetType())
+    switch (piece->Type)
     {
     case Falcon:
         CheckMove(piece, x + 1, y + 1);
@@ -89,7 +89,7 @@ void ToriShogiBoard::GetMoves(Piece* piece, int x, int y)
         CheckMove(piece, x - 1, y + 1);
         CheckMove(piece, x - 1, y);
         CheckMove(piece, x - 1, y - 1);
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckMove(piece, x, y + 1);
         }
@@ -107,7 +107,7 @@ void ToriShogiBoard::GetMoves(Piece* piece, int x, int y)
         CheckMove(piece, x - 1, y - 1);
         break;
     case Pheasant:
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckMove(piece, x, y + 2);
             CheckMove(piece, x + 1, y - 1);
@@ -121,7 +121,7 @@ void ToriShogiBoard::GetMoves(Piece* piece, int x, int y)
         }
         break;
     case LeftQuail:
-        if (piece->GetColour() == White)
+        if (piece->Colour == White)
         {
             CheckDirection(piece, x, y, South);
             CheckDirection(piece, x, y, NorthEast);
@@ -135,7 +135,7 @@ void ToriShogiBoard::GetMoves(Piece* piece, int x, int y)
         }
         break;
     case RightQuail:
-        if (piece->GetColour() == White)
+        if (piece->Colour == White)
         {
             CheckDirection(piece, x, y, South);
             CheckDirection(piece, x, y, NorthWest);
@@ -151,7 +151,7 @@ void ToriShogiBoard::GetMoves(Piece* piece, int x, int y)
     case Eagle:
         CheckMove(piece, x + 1, y);
         CheckMove(piece, x - 1, y);
-        if (piece->GetColour() == White)
+        if (piece->Colour == White)
         {
             CheckDirection(piece, x, y, SouthWest);
             CheckDirection(piece, x, y, SouthEast);
@@ -173,7 +173,7 @@ void ToriShogiBoard::GetMoves(Piece* piece, int x, int y)
         }
         break;
     case Goose:
-        if (piece->GetColour() == Black)
+        if (piece->Colour == Black)
         {
             CheckMove(piece, x, y - 2);
             CheckMove(piece, x + 2, y + 2);
@@ -195,7 +195,7 @@ void ToriShogiBoard::GetMoves(Piece* piece, int x, int y)
 std::string ToriShogiBoard::GetStringCode(int x, int y) const
 {
     if (GetData(x, y) == nullptr) return "";
-    PieceType pieceType = GetData(x, y)->GetType();
+    PieceType pieceType = GetData(x, y)->Type;
     switch (pieceType)
     {
     case King:
