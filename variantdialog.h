@@ -14,19 +14,19 @@ class VariantDialog : public QDialog
 
 public:
     explicit VariantDialog(QWidget *parent = nullptr);
-    ~VariantDialog();
-    QString GetVariant();
+    ~VariantDialog() override;
+    QString GetVariant() const;
 
 private slots:
     void on_variantList_itemDoubleClicked(QListWidgetItem *item);
 
-    void on_allGamesRadioButton_toggled(bool checked);
+    void on_allGamesRadioButton_toggled(bool checked) const;
 
-    void on_chessGamesRadioButton_toggled(bool checked);
+    void on_chessGamesRadioButton_toggled(bool checked) const;
 
-    void on_shogiGamesRadioButton_toggled(bool checked);
+    void on_shogiGamesRadioButton_toggled(bool checked) const;
 
-    void on_otherGamesRadioButton_toggled(bool checked);
+    void on_otherGamesRadioButton_toggled(bool checked) const;
 
 private:
     Ui::VariantDialog *ui;

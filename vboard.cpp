@@ -1290,7 +1290,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		{
             for (int index = 0; index < 4; index++)
 			{
-				std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+				std::for_each(_moves.begin(), _moves.end(), [this, x, y](std::pair<int, int> t)
 				{
                     EngineOutputHandler::CalculateCheck(_board, _currentPlayer, _moves, x, y, t.first, t.second);
 				});
@@ -1298,14 +1298,14 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
         if (_gameVariant == Xiangqi || (_gameVariant == Janggi && dynamic_cast<XiangqiBoard*>(_board)->AreTwoKingsLookingOnEachOther()))
         {
-            std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+            std::for_each(_moves.begin(), _moves.end(), [this, x, y](std::pair<int, int> t)
             {
                 EngineOutputHandler::CalculateXiangqiCheck(_board, _moves, x, y, t.first, t.second);
             });
         }
         if (_gameVariant == OmegaChess)
         {
-            std::for_each(_moves.begin(), _moves.end(), [=](std::pair<int, int> t)
+            std::for_each(_moves.begin(), _moves.end(), [this](std::pair<int, int> t)
             {
                 if (t.second == 0 && t.first >= 1 && t.first <= _board->GetWidth() - 2 ||
                     t.second == _board->GetHeight() - 1 && t.first >= 1 && t.first <= _board->GetWidth() - 2 ||
@@ -1353,7 +1353,7 @@ char VBoard::ChessPieceChar(PieceType chessPiece)
     }
 }
 
-char VBoard::CheckPromotion(const Piece *p, int x, int y)
+char VBoard::CheckPromotion(const Piece *p, int x, int y) const
 {
     char promotion = ' ';
     if (_gameVariant == GrandeAcedrex)

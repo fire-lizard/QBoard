@@ -19,7 +19,7 @@ QTableWidget * EngineManager::GetEngineTable() const
 	return ui->engineTable;
 }
 
-void EngineManager::SetImageInCell(int row, int col, const QString& imagePath)
+void EngineManager::SetImageInCell(int row, int col, const QString& imagePath) const
 {
     QSize size = QSize(100, 50);
     QWidget* container = new QWidget();

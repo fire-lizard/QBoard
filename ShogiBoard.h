@@ -13,7 +13,7 @@ public:
     void Promote(Piece *piece, PieceType pt) override;
     void GetMoves(Piece *piece, int x, int y) override;
 	virtual void SetDrops(bool hasDrops);
-	void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture);
+	virtual void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture);
 	std::string GetPSN();
 	std::string GetCSA();
 	std::string GetKIF();

@@ -159,7 +159,7 @@ void KoShogiBoard::Promote(Piece *piece, PieceType pt)
     }
 }
 
-void KoShogiBoard::Demote(int x, int y)
+void KoShogiBoard::Demote(int x, int y) const
 {
     if (GetData(x, y) != nullptr)
     {
@@ -194,7 +194,7 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	if (GetData(oldX, oldY) != nullptr && IsMovePossible(newX, newY))
 	{
         auto pieces = GetEnemyPiecesAround(newX, newY, GetData(oldX, oldY)->Colour);
-        if (std::any_of(pieces.begin(), pieces.end(), [=](std::pair<int, int> t) {return GetData(t.first, t.second)->Type == PoisonFlame;}))
+        if (std::any_of(pieces.begin(), pieces.end(), [this](std::pair<int, int> t) {return GetData(t.first, t.second)->Type == PoisonFlame;}))
 		{
 			delete GetData(oldX, oldY);
 			SetData(oldX, oldY, nullptr);

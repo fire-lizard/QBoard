@@ -35,7 +35,7 @@ private slots:
 
     void on_toolButton_2_clicked();
 
-    void on_gameVariant_textChanged(const QString &arg1);
+    void on_gameVariant_textChanged(const QString &arg1) const;
 
 private:
     Ui::AddEngineDialog *ui;

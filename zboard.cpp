@@ -27,7 +27,7 @@ void ZBoard::Fill(int count, PieceType *pieces)
     }
 }
 
-PieceType ZBoard::GetChosenPiece()
+PieceType ZBoard::GetChosenPiece() const
 {
     return _chosenPiece;
 }

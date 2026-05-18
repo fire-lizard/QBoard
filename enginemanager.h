@@ -67,7 +67,7 @@ public:
     explicit EngineManager(QWidget *parent = nullptr);
     ~EngineManager() override;
 	QTableWidget* GetEngineTable() const;
-    void SetImageInCell(int row, int col, const QString& imagePath);
+    void SetImageInCell(int row, int col, const QString& imagePath) const;
     static QString GameVariantToString(GameVariant variant);
     static GameVariant StringToGameVariant(const QString& str);
     static EngineProtocol StringToEngineProtocol(const QString& str);

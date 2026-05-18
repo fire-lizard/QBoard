@@ -69,7 +69,7 @@ PieceType PromotionDialog::GetChosenPiece() const
     return _chosenPiece;
 }
 
-void PromotionDialog::SetEnabled(PieceType pieceType, bool isEnabled)
+void PromotionDialog::SetEnabled(PieceType pieceType, bool isEnabled) const
 {
     if (pieceType == Rook) ui->toolButton->setEnabled(isEnabled);
     if (pieceType == Knight) ui->toolButton_2->setEnabled(isEnabled);

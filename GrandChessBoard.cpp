@@ -196,7 +196,7 @@ bool GrandChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
     const PieceType pieceType = GetData(oldX, oldY)->Type;
     const PieceColour pieceColour = GetData(oldX, oldY)->Colour;
     const PieceType destPieceType = GetData(newX, newY) != nullptr ? GetData(newX, newY)->Type : None;
-    const bool result = Board::Move(oldX, oldY, newX, newY, cl);
+    const bool result = ChessBoard::Move(oldX, oldY, newX, newY, cl);
     if (result && GetData(newX, newY) != nullptr)
     {
         if (destPieceType != None && destPieceType != Pawn)

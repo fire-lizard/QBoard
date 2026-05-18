@@ -58,9 +58,9 @@ public:
 
 	void on_actionNetwork_Manager_triggered();
 
-	void slot_update_white_player_time();
+	void slot_update_white_player_time() const;
 
-	void slot_update_black_player_time();
+	void slot_update_black_player_time() const;
 
 private:
 	void closeEvent(QCloseEvent *) override;

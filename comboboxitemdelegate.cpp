@@ -13,7 +13,7 @@ QWidget* ComboBoxItemDelegate::createEditor(QWidget* parent, const QStyleOptionV
 	if (index.column() == 1)
 	{
 		QComboBox* cb = new QComboBox(parent);
-        std::for_each(variantMap().begin(), variantMap().end(), [&](QPair<GameVariant, QString> p) {cb->addItem(p.second);});
+        std::for_each(variantMap().begin(), variantMap().end(), [&](const QPair<GameVariant, QString>& p) {cb->addItem(p.second);});
 		return cb;
 	}
 	if (index.column() == 2)

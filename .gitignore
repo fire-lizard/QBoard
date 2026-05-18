@@ -8,8 +8,7 @@ ui_mainwindow.h
 ui_settingsdialog.h
 ui_newgamedialog.h
 ui_promotiondialog.h
-ui_gothicpromotiondialog.h
-ui_januspromotiondialog.h
+ui_variantdialog.h
 /.vs
 /QBoard.pro.user
 /debug

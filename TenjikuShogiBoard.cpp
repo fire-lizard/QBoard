@@ -450,7 +450,7 @@ void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 	// A queue for BFS states (r, c, stepsUsed so far).
 	std::queue<State> q;
 	// Start from the initial position with 0 steps used.
-	q.push({ startR, startC, 0 });
+	q.push({.r = startR, .c = startC, .steps = 0 });
 	visited[startR][startC][0] = true;
 
 	// We'll keep track of all reachable squares in a set to avoid duplicates.
@@ -505,7 +505,7 @@ void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 				else
 				{
 					// It's empty: we can continue from there if we haven't used up all the steps.
-					q.push({ rr, cc, s + 1 });
+					q.push({.r = rr, .c = cc, .steps = s + 1 });
 				}
 			}
 		}

@@ -13,7 +13,7 @@ public:
     explicit ZBoard(QWidget *parent = nullptr, int width = 2, int height = 9);
     void Fill(PieceColour pieceColour, std::vector<std::pair<PieceColour, PieceType>> capturedPieces);
     void Fill(int count, PieceType *pieces);
-    PieceType GetChosenPiece();
+    PieceType GetChosenPiece() const;
     void SetChosenPiece(PieceType chosenPiece);
 
 signals:

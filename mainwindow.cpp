@@ -854,7 +854,7 @@ void MainWindow::StartNewGame(GameVariant newGameVariant) const
     }
 }
 
-void MainWindow::slot_update_white_player_time()
+void MainWindow::slot_update_white_player_time() const
 {
     if (this->ui->vboard->GetTimerState() == true && this->ui->vboard->GetCurrentPlayer() == White)
 	{
@@ -865,7 +865,7 @@ void MainWindow::slot_update_white_player_time()
         ui->player_clock->setStyleSheet(_player_stylesheet);
 }
 
-void MainWindow::slot_update_black_player_time()
+void MainWindow::slot_update_black_player_time() const
 {
     if (this->ui->vboard->GetTimerState() == true && this->ui->vboard->GetCurrentPlayer() == Black)
 	{

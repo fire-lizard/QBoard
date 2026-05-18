@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <QSettings>
 #include <QApplication>
 #include <qstyle.h>
@@ -26,6 +27,6 @@ public:
     static QStringList readFromIniFile(const QString& filePath);
 
 private:
-    static const int _minEngineDepth = 1;
-    static const int _maxEngineDepth = 20;
+    static constexpr int _minEngineDepth = 1;
+    static constexpr int _maxEngineDepth = 20;
 };

@@ -78,7 +78,7 @@ void EngineOutputHandler::CalculateCheck(Board* board, PieceColour pieceColour, 
 	const int kx = location.first;
 	const int ky = location.second;
 	auto opponentMoves = brd->GetAllMoves(pieceColour == White ? Black : White);
-	std::for_each(opponentMoves.begin(), opponentMoves.end(), [&](std::tuple<int, int, int, int> t)
+	std::for_each(opponentMoves.begin(), opponentMoves.end(), [&](const std::tuple<int, int, int, int>& t)
 	{
         if (std::get<2>(t) == kx && std::get<3>(t) == ky)
 		{
@@ -818,7 +818,7 @@ void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceTy
 	}
 }
 
-template <typename T> std::basic_string<T> uppercase(const std::basic_string<T>& s)
+template <typename T> static std::basic_string<T> uppercase(const std::basic_string<T>& s)
 {
 	std::basic_string<T> s2 = s;
 	std::transform(s2.begin(), s2.end(), s2.begin(),
@@ -826,7 +826,7 @@ template <typename T> std::basic_string<T> uppercase(const std::basic_string<T>&
 	return s2;
 }
 
-template <typename T> std::basic_string<T> lowercase(const std::basic_string<T>& s)
+template <typename T> static std::basic_string<T> lowercase(const std::basic_string<T>& s)
 {
 	std::basic_string<T> s2 = s;
 	std::transform(s2.begin(), s2.end(), s2.begin(),

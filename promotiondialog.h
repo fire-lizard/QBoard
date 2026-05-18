@@ -15,7 +15,7 @@ public:
     ~PromotionDialog() override;
 
     PieceType GetChosenPiece() const;
-    void SetEnabled(PieceType pieceType, bool isEnabled);
+    void SetEnabled(PieceType pieceType, bool isEnabled) const;
 
 private slots:
     void on_toolButton_clicked();

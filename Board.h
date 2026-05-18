@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include <vector>
 #include <algorithm>
 #include <utility>
@@ -39,7 +40,7 @@ public:
     Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour);
     std::vector<std::tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
 	std::vector<std::pair<int, int>> Moves() const;
-    std::pair<int, int> GetPieceLocation(PieceType pieceType, PieceColour pieceColour);
+    std::pair<int, int> GetPieceLocation(PieceType pieceType, PieceColour pieceColour) const;
     Piece* GetData(int x, int y) const;
 	void SetData(int x, int y, Piece *p);
     std::string GetFEN() const;

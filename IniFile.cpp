@@ -49,10 +49,10 @@ QStringList IniFile::readFromIniFile(const QString& filePath) {
     result << styleName << gameVariant << pieceStyle << engineOutput << QVariant(highlightMoves).toString();
     result << QVariant(highlightShoots).toString() << QVariant(highlightAttackers).toString();
 	result << QVariant(highlightDefenders).toString() << QVariant(highlightLastMoves).toString();
-    if (whiteEngineDepth < _minEngineDepth) whiteEngineDepth = _minEngineDepth;
-    if (whiteEngineDepth > _maxEngineDepth) whiteEngineDepth = _maxEngineDepth;
-    if (blackEngineDepth < _minEngineDepth) blackEngineDepth = _minEngineDepth;
-    if (blackEngineDepth > _maxEngineDepth) blackEngineDepth = _maxEngineDepth;
+    whiteEngineDepth = std::max(whiteEngineDepth, _minEngineDepth);
+    whiteEngineDepth = std::min(whiteEngineDepth, _maxEngineDepth);
+    blackEngineDepth = std::max(blackEngineDepth, _minEngineDepth);
+    blackEngineDepth = std::min(blackEngineDepth, _maxEngineDepth);
     result << QVariant(timerState).toString() << QVariant(whiteEngineDepth).toString() << QVariant(blackEngineDepth).toString();
     return result;
 }

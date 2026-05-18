@@ -83,10 +83,10 @@ void AddEngineDialog::on_toolButton_2_clicked()
     }
 }
 
-void AddEngineDialog::on_gameVariant_textChanged(const QString &arg1)
+void AddEngineDialog::on_gameVariant_textChanged(const QString &arg1) const
 {
     ui->engineProtocol->clear();
-    GameVariant v = EngineManager::StringToGameVariant(arg1);
+    const GameVariant v = EngineManager::StringToGameVariant(arg1);
     switch (v)
     {
     case Chess:

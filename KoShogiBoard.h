@@ -25,8 +25,8 @@ public:
 	bool IsTaoistPriestCaptured() const;
 
 private:
-    void Demote(int x, int y);
-    void Demote(Piece *piece);
+    void Demote(int x, int y) const;
+	static void Demote(Piece *piece);
     void CheckShoot(const Piece* piece, int x, int y);
 	void CheckPriestMove(const Piece* piece, int x, int y);
 	void CheckShootingDirection(const Piece* piece, int x, int y, Direction direction, int count, bool shootOver);

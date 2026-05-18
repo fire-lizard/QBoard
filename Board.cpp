@@ -269,7 +269,7 @@ bool Board::HasPiece(PieceType pieceType, PieceColour pieceColour) const
 	return false;
 }
 
-std::pair<int, int> Board::GetPieceLocation(PieceType pieceType, PieceColour pieceColour)
+std::pair<int, int> Board::GetPieceLocation(PieceType pieceType, PieceColour pieceColour) const
 {
     int kx = -1, ky = -1;
     for (int i = 0; i < GetWidth(); i++)
