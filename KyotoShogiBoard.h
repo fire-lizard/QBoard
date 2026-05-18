@@ -8,8 +8,7 @@ public:
     ~KyotoShogiBoard() override;
     void Initialize() override;
     Board* Clone() override;
-    void Promote(int x, int y, PieceType pt) override;
-    void Promote(Piece *piece, PieceType pt) override;
+    void Promote(std::optional<Piece>& piece, PieceType pt) override;
 
 private:
 

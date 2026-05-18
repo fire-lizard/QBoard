@@ -19,11 +19,11 @@ void ChuShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
-				SetData(i, j, nullptr);
+				SetData(i, j, std::nullopt);
 			}
 		}
 	}
@@ -36,22 +36,17 @@ Board* ChuShogiBoard::Clone()
 	{
 		for (int j = 0; j < GetHeight(); j++)
 		{
-			const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
+			const std::optional<Piece> p = GetData(i, j);
+            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
 	return cb;
 }
 
-void ChuShogiBoard::Promote(int x, int y, PieceType pt)
+void ChuShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
 {
-    Promote(GetData(x, y), pt);
-}
-
-void ChuShogiBoard::Promote(Piece *piece, PieceType pt)
-{
-    if (piece != nullptr)
+    if (piece != std::nullopt)
     {
         piece->IsPromoted = true;
         PieceType pieceType = None;
@@ -124,16 +119,16 @@ void ChuShogiBoard::Promote(Piece *piece, PieceType pt)
 bool ChuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	// Lion capture rule #2
-	const Piece* ap = GetData(oldX, oldY);
-	const Piece* dp = GetData(newX, newY);
+	const std::optional<Piece> ap = GetData(oldX, oldY);
+	const std::optional<Piece> dp = GetData(newX, newY);
 	if (_wasLionCapturedByNonLion)
 	{
-        if (ap != nullptr && ap->Type != Lion && dp != nullptr && dp->Type == Lion)
+        if (ap != std::nullopt && ap->Type != Lion && dp != std::nullopt && dp->Type == Lion)
 		{
 			return false;
 		}
 	}
-    _wasLionCapturedByNonLion = ap != nullptr && ap->Type != Lion && dp != nullptr && dp->Type == Lion;
+    _wasLionCapturedByNonLion = ap != std::nullopt && ap->Type != Lion && dp != std::nullopt && dp->Type == Lion;
 	return Board::Move(oldX, oldY, newX, newY, cl);
 }
 
@@ -146,7 +141,7 @@ void ChuShogiBoard::CheckNullMove(int x, int y)
 	}
 }
 
-void ChuShogiBoard::GetMoves(Piece *piece, int x, int y)
+void ChuShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
 	_moves.clear();
     switch (piece->Type)
@@ -493,30 +488,25 @@ bool ChuShogiBoard::DoubleMove(int x1, int y1, int x2, int y2, int x3, int y3)
 	if (x1 == x3 && y1 == y3 || std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x3 && t.second == y3;}))
 	{
 		// Lion capture rule #1
-        if ((abs(x1 - x3) == 2 || abs(y1 - y3) == 2) && GetData(x3, y3) != nullptr && GetData(x3, y3)->Type == Lion)
+        if ((abs(x1 - x3) == 2 || abs(y1 - y3) == 2) && GetData(x3, y3) != std::nullopt && GetData(x3, y3)->Type == Lion)
 		{
 			const std::vector<std::pair<int, int>> lionDefenders = GetDefenders(x3, y3);
 			if (!lionDefenders.empty())
 			{
-                if (GetData(x2, y2) == nullptr || GetData(x2, y2)->Type != Pawn && GetData(x2, y2)->Type != GoBetween)
+                if (GetData(x2, y2) == std::nullopt || GetData(x2, y2)->Type != Pawn && GetData(x2, y2)->Type != GoBetween)
 				{
 					return false;
 				}
 			}
 		}
-		if (GetData(x2, y2) != nullptr)
+		if (GetData(x2, y2) != std::nullopt)
 		{
-			delete GetData(x2, y2);
-			SetData(x2, y2, nullptr);
+			SetData(x2, y2, std::nullopt);
 		}
 		if (x1 != x3 || y1 != y3)
 		{
-			if (GetData(x3, y3) != nullptr)
-			{
-				delete GetData(x3, y3);
-			}
 			SetData(x3, y3, GetData(x1, y1));
-			SetData(x1, y1, nullptr);
+			SetData(x1, y1, std::nullopt);
 		}
 		return true;
 	}

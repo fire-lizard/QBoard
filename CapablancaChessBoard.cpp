@@ -18,8 +18,8 @@ Board* CapablancaChessBoard::Clone()
     {
         for (int j = 0; j < GetHeight(); j++)
         {
-            const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
+            const std::optional<Piece> p = GetData(i, j);
+            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
         }
     }
     cb->SetMoveCount(_moveCount);
@@ -45,17 +45,17 @@ void CapablancaChessBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
-                SetData(i, j, nullptr);
+                SetData(i, j, std::nullopt);
             }
         }
     }
 }
 
-void CapablancaChessBoard::GetMoves(Piece *piece, int x, int y)
+void CapablancaChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
     _moves.clear();
     switch (piece->Type)
@@ -72,10 +72,10 @@ void CapablancaChessBoard::GetMoves(Piece *piece, int x, int y)
         // Check castling
         if (!piece->HasMoved)
         {
-            if (GetData(0, y) != nullptr)
+            if (GetData(0, y) != std::nullopt)
             {
-                const Piece* cp = GetData(0, y);
-                if (!cp->HasMoved && cp->Type == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr && GetData(4, y) == nullptr)
+                const std::optional<Piece> cp = GetData(0, y);
+                if (!cp->HasMoved && cp->Type == Rook && GetData(1, y) == std::nullopt && GetData(2, y) == std::nullopt && GetData(3, y) == std::nullopt && GetData(4, y) == std::nullopt)
                 {
                     if ((piece->Colour == White && _wqc == true) || (piece->Colour == Black && _bqc == true))
                     {
@@ -83,10 +83,10 @@ void CapablancaChessBoard::GetMoves(Piece *piece, int x, int y)
                     }
                 }
             }
-            if (GetData(9, y) != nullptr)
+            if (GetData(9, y) != std::nullopt)
             {
-                const Piece* cp = GetData(9, y);
-                if (!cp->HasMoved && cp->Type == Rook && GetData(6, y) == nullptr && GetData(7, y) == nullptr && GetData(8, y) == nullptr)
+                const std::optional<Piece> cp = GetData(9, y);
+                if (!cp->HasMoved && cp->Type == Rook && GetData(6, y) == std::nullopt && GetData(7, y) == std::nullopt && GetData(8, y) == std::nullopt)
                 {
                     if ((piece->Colour == White && _wkc == true) || (piece->Colour == Black && _bkc == true))
                     {

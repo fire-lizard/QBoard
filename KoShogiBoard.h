@@ -14,26 +14,25 @@ public:
 	~KoShogiBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
-    void Promote(int x, int y, PieceType pt) override;
-    void Promote(Piece *piece, PieceType pt) override;
-    void GetMoves(Piece* piece, int x, int y) override;
+    void Promote(std::optional<Piece>& piece, PieceType pt) override;
+    void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
     std::string GetStringCode(int x, int y) const override;
-    std::vector<std::pair<int, int>> GetShoots(const Piece* piece, int x, int y);
+    std::vector<std::pair<int, int>> GetShoots(const std::optional<Piece>& piece, int x, int y);
 	void Shoot(int x, int y);
 	void RemoveShoot(int x, int y);
 	bool IsTaoistPriestCaptured() const;
 
 private:
     void Demote(int x, int y) const;
-	static void Demote(Piece *piece);
-    void CheckShoot(const Piece* piece, int x, int y);
-	void CheckPriestMove(const Piece* piece, int x, int y);
-	void CheckShootingDirection(const Piece* piece, int x, int y, Direction direction, int count, bool shootOver);
+	static void Demote(std::optional<Piece> piece);
+    void CheckShoot(const std::optional<Piece>& piece, int x, int y);
+	void CheckPriestMove(const std::optional<Piece>& piece, int x, int y);
+	void CheckShootingDirection(const std::optional<Piece>& piece, int x, int y, Direction direction, int count, bool shootOver);
 	void getAll5StepPaths(int startR, int startC, PieceColour pieceColour);
 	void dfsFiveSteps(int r, int c, int step, PieceColour pieceColour, std::vector<std::pair<int, int>>& currentPath);
-	std::vector<std::pair<int, int>> getSinglePieceMoves(int r, int c, const std::vector<std::pair<int, int>>& offsets, const Piece* piece) const;
-	void getAllPiece2MoveDestinations(int startR, int startC, const std::vector<std::pair<int, int>>& offsets, const Piece* piece);
+	std::vector<std::pair<int, int>> getSinglePieceMoves(int r, int c, const std::vector<std::pair<int, int>>& offsets, const std::optional<Piece>& piece) const;
+	void getAllPiece2MoveDestinations(int startR, int startC, const std::vector<std::pair<int, int>>& offsets, const std::optional<Piece>& piece);
 
 	std::vector<std::pair<int, int>> _shoots;
 	bool _taoistPriestCaptured = false;

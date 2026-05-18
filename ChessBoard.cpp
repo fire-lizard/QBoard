@@ -18,8 +18,8 @@ Board* ChessBoard::Clone()
 	{
 		for (int j = 0; j < GetHeight(); j++)
 		{
-			const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
+			const std::optional<Piece> p = GetData(i, j);
+            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
@@ -45,24 +45,19 @@ void ChessBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
-				SetData(i, j, nullptr);
+				SetData(i, j, std::nullopt);
 			}
 		}
 	}
 }
 
-void ChessBoard::Promote(int x, int y, PieceType pt)
+void ChessBoard::Promote(std::optional<Piece>& piece, PieceType pt)
 {
-    Promote(GetData(x, y), pt);
-}
-
-void ChessBoard::Promote(Piece *piece, PieceType pt)
-{
-    if (piece != nullptr)
+    if (piece != std::nullopt)
     {
         piece->IsPromoted = true;
         piece->Type = pt;
@@ -107,15 +102,15 @@ void ChessBoard::SetEnPassant(std::string val)
 
 bool ChessBoard::EnemyPawnsAround(int x, int y) const
 {
-	const Piece *fp = x > 0 ? GetData(x - 1, y) : nullptr;
-	const Piece *sp = x < _width - 1 ? GetData(x + 1, y) : nullptr;
+	const std::optional<Piece> fp = x > 0 ? GetData(x - 1, y) : std::nullopt;
+	const std::optional<Piece> sp = x < _width - 1 ? GetData(x + 1, y) : std::nullopt;
 	const PieceColour pieceColour = y == 3 ? White : Black;
-    const bool fpa = (fp != nullptr) && (fp->Type == Pawn) && (fp->Colour == pieceColour);
-    const bool spa = (sp != nullptr) && (sp->Type == Pawn) && (sp->Colour == pieceColour);
+    const bool fpa = (fp != std::nullopt) && (fp->Type == Pawn) && (fp->Colour == pieceColour);
+    const bool spa = (sp != std::nullopt) && (sp->Type == Pawn) && (sp->Colour == pieceColour);
 	return fpa || spa;
 }
 
-void ChessBoard::GetMoves(Piece *piece, int x, int y)
+void ChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
 	_moves.clear();
     switch (piece->Type)
@@ -132,10 +127,10 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 		// Check castling
         if (!piece->HasMoved)
 		{
-			if (GetData(0, y) != nullptr)
+			if (GetData(0, y) != std::nullopt)
 			{
-                const Piece* cp = GetData(0, y);
-                if (!cp->HasMoved && cp->Type == Rook && GetData(1, y) == nullptr && GetData(2, y) == nullptr && GetData(3, y) == nullptr)
+                const std::optional<Piece> cp = GetData(0, y);
+                if (!cp->HasMoved && cp->Type == Rook && GetData(1, y) == std::nullopt && GetData(2, y) == std::nullopt && GetData(3, y) == std::nullopt)
 				{
                     if ((piece->Colour == White && _wqc == true) || (piece->Colour == Black && _bqc == true))
 					{
@@ -143,10 +138,10 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 					}
 				}
 			}
-            if (GetData(_width - 1, y) != nullptr)
+            if (GetData(_width - 1, y) != std::nullopt)
 			{
-                const Piece* cp = GetData(_width - 1, y);
-                if (!cp->HasMoved && cp->Type == Rook && GetData(5, y) == nullptr && GetData(6, y) == nullptr)
+                const std::optional<Piece> cp = GetData(_width - 1, y);
+                if (!cp->HasMoved && cp->Type == Rook && GetData(5, y) == std::nullopt && GetData(6, y) == std::nullopt)
 				{
                     if ((piece->Colour == White && _wkc == true) || (piece->Colour == Black && _bkc == true))
 					{
@@ -175,19 +170,19 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 	case Pawn:
         if (piece->Colour == Black)
 		{
-			if (y == 1 && GetData(x, y + 1) == nullptr && GetData(x, y + 2) == nullptr)
+			if (y == 1 && GetData(x, y + 1) == std::nullopt && GetData(x, y + 2) == std::nullopt)
 			{
 				CheckMove(piece, x, y + 2);
 			}
-			if (y + 1 < _height && GetData(x, y + 1) == nullptr)
+			if (y + 1 < _height && GetData(x, y + 1) == std::nullopt)
 			{
 				CheckMove(piece, x, y + 1);
 			}
-			if (y + 1 < _height && x + 1 < _width && GetData(x + 1, y + 1) != nullptr)
+			if (y + 1 < _height && x + 1 < _width && GetData(x + 1, y + 1) != std::nullopt)
 			{
 				CheckMove(piece, x + 1, y + 1);
 			}
-			if (y + 1 < _height && x - 1 >= 0 && GetData(x - 1, y + 1) != nullptr)
+			if (y + 1 < _height && x - 1 >= 0 && GetData(x - 1, y + 1) != std::nullopt)
 			{
 				CheckMove(piece, x - 1, y + 1);
 			}
@@ -204,19 +199,19 @@ void ChessBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		else
 		{
-            if (y == _height - 2 && GetData(x, y - 1) == nullptr && GetData(x, y - 2) == nullptr)
+            if (y == _height - 2 && GetData(x, y - 1) == std::nullopt && GetData(x, y - 2) == std::nullopt)
 			{
 				CheckMove(piece, x, y - 2);
 			}
-			if (y - 1 >= 0 && GetData(x, y - 1) == nullptr)
+			if (y - 1 >= 0 && GetData(x, y - 1) == std::nullopt)
 			{
 				CheckMove(piece, x, y - 1);
 			}
-			if (y - 1 >= 0 && x + 1 < _width && GetData(x + 1, y - 1) != nullptr)
+			if (y - 1 >= 0 && x + 1 < _width && GetData(x + 1, y - 1) != std::nullopt)
 			{
 				CheckMove(piece, x + 1, y - 1);
 			}
-			if (y - 1 >= 0 && x - 1 >= 0 && GetData(x - 1, y - 1) != nullptr)
+			if (y - 1 >= 0 && x - 1 >= 0 && GetData(x - 1, y - 1) != std::nullopt)
 			{
 				CheckMove(piece, x - 1, y - 1);
 			}
@@ -242,9 +237,9 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
     const PieceType pieceType = GetData(oldX, oldY)->Type;
     const PieceColour pieceColour = GetData(oldX, oldY)->Colour;
-    const PieceType destPieceType = GetData(newX, newY) != nullptr ? GetData(newX, newY)->Type : None;
+    const PieceType destPieceType = GetData(newX, newY) != std::nullopt ? GetData(newX, newY)->Type : None;
 	const bool result = Board::Move(oldX, oldY, newX, newY, cl);
-    if (result && GetData(newX, newY) != nullptr)
+    if (result && GetData(newX, newY) != std::nullopt)
 	{
         GetData(newX, newY)->HasMoved = true;
 		// Castling
@@ -313,17 +308,16 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 			const int number = _ep[1] - 48;
 			if (letter == _ep[0] &&	((pieceColour == White && newY == number - 1) || (pieceColour == Black && newY == number + 2)))
 			{
-				const Piece* p = pieceColour == White ? GetData(newX, number) : GetData(newX, number + 1);
-                if (p != nullptr && p->Type == Pawn && p->Colour != pieceColour)
+				const std::optional<Piece> p = pieceColour == White ? GetData(newX, number) : GetData(newX, number + 1);
+                if (p != std::nullopt && p->Type == Pawn && p->Colour != pieceColour)
 				{
-					delete p;
 					if (pieceColour == White)
 					{
-						SetData(newX, number, nullptr);
+						SetData(newX, number, std::nullopt);
 					}
 					else
 					{
-						SetData(newX, number + 1, nullptr);
+						SetData(newX, number + 1, std::nullopt);
 					}
 				}
 			}

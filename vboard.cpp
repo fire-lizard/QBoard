@@ -47,7 +47,7 @@ void VBoard::paintEvent(QPaintEvent *)
             }
             else if (PossibleMove(i, j) && _highlightMoves)
 			{
-                if (_currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->Type) != std::end(lionPieces))
+                if (_currentPiece != std::nullopt && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->Type) != std::end(lionPieces))
 				{
 					// Lion move highlighting
 					if (_gameVariant == KoShogi && !_lionMovedOnce && EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, i, j))
@@ -69,7 +69,7 @@ void VBoard::paintEvent(QPaintEvent *)
 						const bool lcond8 = !_tcMoves.empty() && 
 							(abs(_tcMoves[_tcMoves.size() - 1].first - i) > 1 || abs(_tcMoves[_tcMoves.size() - 1].second - j) > 1) &&
                             _currentPiece->Type == Thunderclap;
-						if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) != nullptr)
+						if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) != std::nullopt)
 						{
 							painter.setBrush(QColorConstants::Svg::lightpink);
                             painter.setPen(Qt::NoPen);
@@ -77,7 +77,7 @@ void VBoard::paintEvent(QPaintEvent *)
                             painter.setPen(_editorMode ? Qt::magenta : Qt::black);
                             painter.setBrush(Qt::NoBrush);
 						}
-						else if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) == nullptr)
+						else if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) == std::nullopt)
 						{
 							painter.setBrush(QColorConstants::Svg::greenyellow);
                             painter.setPen(Qt::NoPen);
@@ -85,7 +85,7 @@ void VBoard::paintEvent(QPaintEvent *)
                             painter.setPen(_editorMode ? Qt::magenta : Qt::black);
                             painter.setBrush(Qt::NoBrush);
 						}
-						else if (_board->GetData(i, j) != nullptr)
+						else if (_board->GetData(i, j) != std::nullopt)
 						{
 							painter.setBrush(QColorConstants::Svg::hotpink);
                             painter.setPen(Qt::NoPen);
@@ -93,7 +93,7 @@ void VBoard::paintEvent(QPaintEvent *)
                             painter.setPen(_editorMode ? Qt::magenta : Qt::black);
                             painter.setBrush(Qt::NoBrush);
 						}
-						else if (_board->GetData(i, j) == nullptr)
+						else if (_board->GetData(i, j) == std::nullopt)
 						{
 							painter.setBrush(QColorConstants::Svg::lightgreen);
                             painter.setPen(Qt::NoPen);
@@ -105,7 +105,7 @@ void VBoard::paintEvent(QPaintEvent *)
                     else if (_gameVariant != ToriShogi && _gameVariant != GrandeAcedrex &&
                              EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, i, j))
 					{
-						if (_board->GetData(i, j) != nullptr)
+						if (_board->GetData(i, j) != std::nullopt)
 						{
 							painter.setBrush(QColorConstants::Svg::hotpink);
                             if (_gameVariant != KoShogi)
@@ -120,7 +120,7 @@ void VBoard::paintEvent(QPaintEvent *)
                             }
                             painter.setBrush(Qt::NoBrush);
 						}
-						else if (_board->GetData(i, j) == nullptr)
+						else if (_board->GetData(i, j) == std::nullopt)
 						{
 							painter.setBrush(QColorConstants::Svg::lightgreen);
                             if (_gameVariant != KoShogi)
@@ -138,7 +138,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					}
 					else if (i == _oldX && j == _oldY)
 					{
-						if (_board->GetData(i, j) != nullptr)
+						if (_board->GetData(i, j) != std::nullopt)
 						{
 							painter.setBrush(Qt::blue);
                             if (_gameVariant != KoShogi)
@@ -153,7 +153,7 @@ void VBoard::paintEvent(QPaintEvent *)
                             }
                             painter.setBrush(Qt::NoBrush);
 						}
-						else if (_board->GetData(i, j) == nullptr)
+						else if (_board->GetData(i, j) == std::nullopt)
 						{
 							painter.setBrush(Qt::cyan);
                             if (_gameVariant != KoShogi)
@@ -171,7 +171,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					}
 					else
 					{
-						if (_board->GetData(i, j) != nullptr)
+						if (_board->GetData(i, j) != std::nullopt)
 						{
 							painter.setBrush(Qt::red);
                             if (_gameVariant != KoShogi)
@@ -186,7 +186,7 @@ void VBoard::paintEvent(QPaintEvent *)
                             }
                             painter.setBrush(Qt::NoBrush);
 						}
-						else if (_board->GetData(i, j) == nullptr)
+						else if (_board->GetData(i, j) == std::nullopt)
 						{
 							painter.setBrush(Qt::cyan);
                             if (_gameVariant != KoShogi)
@@ -203,17 +203,17 @@ void VBoard::paintEvent(QPaintEvent *)
 						}
 					}
 				}
-                else if (_currentPiece != nullptr && _currentPiece->Type == HeavenlyTetrarch &&
+                else if (_currentPiece != std::nullopt && _currentPiece->Type == HeavenlyTetrarch &&
 					abs(_oldX - i) + abs(_oldY - j) >= 1 && abs(_oldX - i) + abs(_oldY - j) <= 2)
 				{
-					if (_board->GetData(i, j) != nullptr)
+					if (_board->GetData(i, j) != std::nullopt)
 					{
 						painter.setBrush(QColorConstants::Svg::orange);
 						painter.drawRect(rect);
 						painter.setBrush(Qt::NoBrush);
 					}
 				}
-				else if (_board->GetData(i, j) != nullptr)
+				else if (_board->GetData(i, j) != std::nullopt)
 				{
                     if (_board->GetData(i, j)->Colour != _currentPlayer)
 					{
@@ -235,7 +235,7 @@ void VBoard::paintEvent(QPaintEvent *)
                     }
                     painter.setBrush(Qt::NoBrush);
 				}
-				else if (_board->GetData(i, j) == nullptr)
+				else if (_board->GetData(i, j) == std::nullopt)
 				{
 					painter.setBrush(Qt::cyan);
                     if (_gameVariant != KoShogi && _gameVariant != Xiangqi && _gameVariant != Janggi)
@@ -381,10 +381,10 @@ void VBoard::paintEvent(QPaintEvent *)
 	{
 		for (int j = 0; j < _board->GetHeight(); j++)
 		{
-			Piece *p = _board->GetData(i, j);
-			if (p != nullptr)
+			std::optional<Piece> p = _board->GetData(i, j);
+			if (p != std::nullopt)
 			{
-                GraphicsManager::DrawPiece(painter, p, _gameVariant, _pieceStyle, w, h, i, j);
+                GraphicsManager::DrawPiece(painter, p.value(), _gameVariant, _pieceStyle, w, h, i, j);
 			}
 		}
 	}
@@ -434,7 +434,7 @@ void VBoard::FinishMove(int x, int y)
 	_currentPlayer = _currentPlayer == White ? Black : White;
 	_statusBar->setStyleSheet("QStatusBar { color : black; }");
     _statusBar->showMessage(_currentPlayer == White ? _gameVariant == Xiangqi || _gameVariant == Janggi ? "Red move" : "White move" : "Black move");
-	_currentPiece = nullptr;
+	_currentPiece = std::nullopt;
 	_oldX = -1;
 	_oldY = -1;
 	_moves.clear();
@@ -466,17 +466,16 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	const int h = this->size().height() / _board->GetHeight();
     const int x = static_cast<int>(event->x()) / w;
     const int y = static_cast<int>(event->y()) / h;
-	Piece* p = _board->GetData(x, y);
+	std::optional<Piece> p = _board->GetData(x, y);
 	if (_editorMode)
 	{
-		delete p;
 		if (_chosenPiece == None)
 		{
-			_board->SetData(x, y, nullptr);
+			_board->SetData(x, y, std::nullopt);
 		}
 		else
 		{
-			Piece* newPiece = _board->CreatePiece(_chosenPiece, _chosenColour);
+			std::optional<Piece> newPiece = _board->CreatePiece(_chosenPiece, _chosenColour);
 			if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), _chosenPiece) != std::end(_promotedPieces))
 			{
                 if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi)
@@ -493,20 +492,20 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	if (_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black ||
 		_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White) return;
 	const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
-    const bool isLionPiece = _currentPiece != nullptr && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->Type) != std::end(lionPieces);
-	const bool isShootingPiece = _gameVariant == KoShogi && _currentPiece != nullptr &&
+    const bool isLionPiece = _currentPiece != std::nullopt && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->Type) != std::end(lionPieces);
+	const bool isShootingPiece = _gameVariant == KoShogi && _currentPiece != std::nullopt &&
         std::find(std::begin(ShootingPieces), std::end(ShootingPieces), _currentPiece->Type) != std::end(ShootingPieces);
 	// Castling check
     if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess ||
          _gameVariant == JanusChess || _gameVariant == ChancellorChess || _gameVariant == ModernChess ||
          _gameVariant == OmegaChess) &&
-        _currentPiece != nullptr && _currentPiece->Type == King && !_currentPiece->HasMoved &&
-        p != nullptr && p->Colour == _currentPlayer && p->Type == Rook && !p->HasMoved && _board->IsMovePossible(x, y))
+        _currentPiece != std::nullopt && _currentPiece->Type == King && !_currentPiece->HasMoved &&
+        p != std::nullopt && p->Colour == _currentPlayer && p->Type == Rook && !p->HasMoved && _board->IsMovePossible(x, y))
 	{
         if (_gameVariant == Chess || _gameVariant == ChancellorChess || _gameVariant == ModernChess)
         {
-            _board->SetData(x, y, nullptr);
-            _board->SetData(4, y, nullptr);
+            _board->SetData(x, y, std::nullopt);
+            _board->SetData(4, y, std::nullopt);
             _board->SetData(x == 0 ? 2 : 6, y, _currentPiece);
             _board->SetData(x == 0 ? 3 : 5, y, p);
             if (engine != nullptr && engine->IsActive())
@@ -516,8 +515,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
         }
         else if (_gameVariant == OmegaChess)
         {
-            _board->SetData(x, y, nullptr);
-            _board->SetData(6, y, nullptr);
+            _board->SetData(x, y, std::nullopt);
+            _board->SetData(6, y, std::nullopt);
             _board->SetData(x == 2 ? 4 : 8, y, _currentPiece);
             _board->SetData(x == 2 ? 5 : 7, y, p);
             if (engine != nullptr && engine->IsActive())
@@ -527,8 +526,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
         }
         else
         {
-            _board->SetData(x, y, nullptr);
-            _board->SetData(5, y, nullptr);
+            _board->SetData(x, y, std::nullopt);
+            _board->SetData(5, y, std::nullopt);
             _board->SetData(x == 0 ? 2 : 8, y, _currentPiece);
             _board->SetData(x == 0 ? 3 : 7, y, p);
             if (engine != nullptr && engine->IsActive())
@@ -542,7 +541,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	// Null move
 	else if ((_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||
 		_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi) &&
-        _currentPiece != nullptr && p != nullptr && p->Colour == _currentPlayer &&
+        _currentPiece != std::nullopt && p != std::nullopt && p->Colour == _currentPlayer &&
         x == _oldX && y == _oldY && !_lionMovedOnce && _currentPiece->Type != Thunderclap &&
         (isLionPiece || _currentPiece->Type == ViceGeneral || _currentPiece->Type == FireDemon || _currentPiece->Type == HeavenlyTetrarch))
 	{
@@ -556,7 +555,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 	}
 	// Lion move
-    else if (_currentPiece != nullptr && (p == nullptr || p->Colour != _currentPlayer) && !CheckRepetition(_oldX, _oldY, x, y))
+    else if (_currentPiece != std::nullopt && (p == std::nullopt || p->Colour != _currentPlayer) && !CheckRepetition(_oldX, _oldY, x, y))
 	{
 		if (isLionPiece && !_lionMovedOnce && EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y))
 		{
@@ -688,7 +687,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
                     _currentPiece->Type == BuddhistSpirit || _currentPiece->Type == FreeEagle))
 			{
 				// Lion capture rule #1
-				if (_gameVariant == ChuShogi && _board->GetData(x, y) != nullptr &&
+				if (_gameVariant == ChuShogi && _board->GetData(x, y) != std::nullopt &&
                     _currentPiece->Type == Lion && _board->GetData(x, y)->Type == Lion &&
 					(abs(_oldX - x) == 2 || abs(_oldY - y) == 2))
 				{
@@ -704,7 +703,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
-					CheckPromotion(p, y);
+					CheckPromotion(p, x, y);
 					FinishMove(x, y);
 				}
 			}
@@ -712,7 +711,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
                 (_currentPiece->Type == LionDog || _currentPiece->Type == FuriousFiend ||
                     _currentPiece->Type == GreatElephant || _currentPiece->Type == TeachingKing))
 			{
-				if (p != nullptr)
+				if (p != std::nullopt)
 				{
 					_lionFirstMove = { x, y };
 					_lionMovedOnce = true;
@@ -733,7 +732,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
-					CheckPromotion(p, y);
+					CheckPromotion(p, x, y);
 					FinishMove(x, y);
 				}
 			}
@@ -747,7 +746,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
-					CheckPromotion(p, y);
+					CheckPromotion(p, x, y);
 					FinishMove(x, y);
 				}
 			}
@@ -762,7 +761,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
-					CheckPromotion(p, y);
+					CheckPromotion(p, x, y);
 					FinishMove(x, y);
 				}
 			}
@@ -789,7 +788,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
                 abs(_oldX - x) == 1 && abs(_oldY - y) == 1) && _currentPiece->Type == DoublePhoenix)
 			{
 			}
-			else if (_gameVariant == KoShogi && _board->GetData(x, y) == nullptr)
+			else if (_gameVariant == KoShogi && _board->GetData(x, y) == std::nullopt)
 			{
 				_lionFirstMove = { x, y };
 				_lionMovedOnce = true;
@@ -871,7 +870,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				}
 				this->repaint();
 			}
-			else if (PossibleMove(x, y) && _board->GetData(x, y) == nullptr)
+			else if (PossibleMove(x, y) && _board->GetData(x, y) == std::nullopt)
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
@@ -879,7 +878,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y);
 					}
-					CheckPromotion(p, y);
+					CheckPromotion(p, x, y);
 					FinishMove(x, y);
 				}
 			}
@@ -1013,7 +1012,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
 								_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 						}
-						CheckPromotion(p, y);
+						CheckPromotion(p, x, y);
 						FinishMove(x, y);
 					}
 				}
@@ -1036,7 +1035,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 									_lionSecondMove.first, _board->GetHeight() - _lionSecondMove.second,
 									x, _board->GetHeight() - y);
 							}
-							CheckPromotion(p, y);
+							CheckPromotion(p, x, y);
 							FinishMove(x, y);
 						}
 					}
@@ -1049,7 +1048,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 								std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
 									_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 							}
-							CheckPromotion(p, y);
+							CheckPromotion(p, x, y);
 							FinishMove(x, y);
 						}
 					}
@@ -1065,7 +1064,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 								std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
 									_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 							}
-							CheckPromotion(p, y);
+							CheckPromotion(p, x, y);
 							FinishMove(x, y);
 						}
 					}
@@ -1160,7 +1159,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
 							_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 					}
-					CheckPromotion(p, y);
+					CheckPromotion(p, x, y);
 					FinishMove(x, y);
 				}
 			}
@@ -1218,7 +1217,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 		else if (_board->Move(_oldX, _oldY, x, y))
 		{
-            const char promotion = _gameVariant != GrandeAcedrex ? CheckPromotion(p, y) : CheckPromotion(p, x, y);
+            const char promotion = CheckPromotion(p, x, y);
 			if (engine != nullptr && engine->IsActive())
 			{
                 if (_gameVariant == Xiangqi || _gameVariant == Janggi || _gameVariant == GrandChess)
@@ -1228,9 +1227,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				else
 					engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
 			}
-			if (_board->GetData(x, y) != nullptr)
+			if (_board->GetData(x, y) != std::nullopt)
 			{
-                EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->BaseType, _oldX, _oldY, x, y, promotion, p != nullptr ? 'x' : ' ');
+                EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->BaseType, _oldX, _oldY, x, y, promotion, p != std::nullopt ? 'x' : ' ');
 			}
 			FinishMove(x, y);
 		}
@@ -1275,7 +1274,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			FinishMove(x, y);
 		}
 	}
-    else if (p != nullptr && p->Colour == _currentPlayer)
+    else if (p != std::nullopt && p->Colour == _currentPlayer)
 	{
 		_currentPiece = _board->GetData(x, y);
 		_oldX = x;
@@ -1353,56 +1352,50 @@ char VBoard::ChessPieceChar(PieceType chessPiece)
     }
 }
 
-char VBoard::CheckPromotion(const Piece *p, int x, int y) const
-{
-    char promotion = ' ';
-    if (_gameVariant == GrandeAcedrex)
-    {
-        if (_currentPiece->Type == Pawn &&
-            ((y == 11 && _currentPiece->Colour == Black) ||
-            (y == 0 && _currentPiece->Colour == White)))
-        {
-            switch (x)
-            {
-            case 0:
-            case 11:
-                promotion = 'r';
-                _board->Promote(_currentPiece, Rook);
-                break;
-            case 1:
-            case 10:
-                promotion = 'l';
-                _board->Promote(_currentPiece, Lion);
-                break;
-            case 2:
-            case 9:
-                promotion = 'u';
-                _board->Promote(_currentPiece, Unicorn);
-                break;
-            case 3:
-            case 8:
-                promotion = 'g';
-                _board->Promote(_currentPiece, Giraffe);
-                break;
-            case 4:
-            case 7:
-                promotion = 'c';
-                _board->Promote(_currentPiece, Bishop);
-                break;
-            default:
-                promotion = 'a';
-                _board->Promote(_currentPiece, Aanca);
-                break;
-            }
-        }
-    }
-    return promotion;
-}
-
-char VBoard::CheckPromotion(const Piece *p, int y)
+char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 {
 	char promotion = ' ';
-    if (_gameVariant == GrandChess)
+	if (_gameVariant == GrandeAcedrex)
+	{
+		if (_currentPiece->Type == Pawn &&
+			((y == 11 && _currentPiece->Colour == Black) ||
+				(y == 0 && _currentPiece->Colour == White)))
+		{
+			switch (x)
+			{
+			case 0:
+			case 11:
+				promotion = 'r';
+				_board->Promote(x, y, Rook);
+				break;
+			case 1:
+			case 10:
+				promotion = 'l';
+				_board->Promote(x, y, Lion);
+				break;
+			case 2:
+			case 9:
+				promotion = 'u';
+				_board->Promote(x, y, Unicorn);
+				break;
+			case 3:
+			case 8:
+				promotion = 'g';
+				_board->Promote(x, y, Giraffe);
+				break;
+			case 4:
+			case 7:
+				promotion = 'c';
+				_board->Promote(x, y, Bishop);
+				break;
+			default:
+				promotion = 'a';
+				_board->Promote(x, y, Aanca);
+				break;
+			}
+		}
+	}
+	else if (_gameVariant == GrandChess)
     {
         GrandChessBoard* gcBoard = dynamic_cast<GrandChessBoard*>(_board);
         auto capturedPieces = gcBoard->GetCapturedPieces(_currentPlayer == White ? Black : White);
@@ -1423,13 +1416,13 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             {
                 const PieceType pt = pd->GetChosenPiece();
                 promotion = ChessPieceChar(pt);
-                _board->Promote(_currentPiece, pt);
+                _board->Promote(x, y, pt);
                 gcBoard->RemoveCapturedPiece(pt, _currentPlayer);
             }
             else if (y == 9 || y == 0)
             {
                 promotion = ChessPieceChar(capturedPieces[0]);
-                _board->Promote(_currentPiece, capturedPieces[0]);
+                _board->Promote(x, y, capturedPieces[0]);
                 gcBoard->RemoveCapturedPiece(capturedPieces[0], _currentPlayer);
             }
         }
@@ -1445,12 +1438,12 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             {
                 const PieceType pt = pd->GetChosenPiece();
                 promotion = ChessPieceChar(pt);
-                _board->Promote(_currentPiece, pt);
+                _board->Promote(x, y, pt);
             }
             else
             {
                 promotion = 'q';
-                _board->Promote(_currentPiece, Queen);
+                _board->Promote(x, y, Queen);
             }
         }
     }
@@ -1480,12 +1473,12 @@ char VBoard::CheckPromotion(const Piece *p, int y)
             {
                 const PieceType pt = pd->GetChosenPiece();
                 promotion = ChessPieceChar(pt);
-                _board->Promote(_currentPiece, pt);
+                _board->Promote(x, y, pt);
             }
             else
             {
                 promotion = 'q';
-                _board->Promote(_currentPiece, Queen);
+                _board->Promote(x, y, Queen);
             }
         }
     }
@@ -1496,7 +1489,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
                 (y == 0 && _currentPiece->Colour == White)))
 		{
 			promotion = 'q';
-            _board->Promote(_currentPiece, None);
+            _board->Promote(x, y, None);
 		}
 	}
 	else if (_gameVariant == Makruk)
@@ -1506,7 +1499,7 @@ char VBoard::CheckPromotion(const Piece *p, int y)
                 (y <= 2 && _currentPiece->Colour == White)))
 		{
 			promotion = 'q';
-            _board->Promote(_currentPiece, None);
+            _board->Promote(x, y, None);
 		}
 	}
     else if (_gameVariant == KyotoShogi)
@@ -1514,39 +1507,39 @@ char VBoard::CheckPromotion(const Piece *p, int y)
         if (_currentPiece->Type != King)
         {
             promotion = '+';
-            _board->Promote(_currentPiece, None);
+            _board->Promote(x, y, None);
         }
     }
     else if (_gameVariant == DaiDaiShogi)
 	{
-        if (!_currentPiece->IsPromoted && p != nullptr &&
+        if (!_currentPiece->IsPromoted && p != std::nullopt &&
 			std::find(std::begin(UnpromotablePieces),
 				std::end(UnpromotablePieces),
                 _currentPiece->Type) == std::end(UnpromotablePieces))
 		{
 			promotion = '+';
-            _board->Promote(_currentPiece, None);
+            _board->Promote(x, y, None);
 		}
 	}
 	else if (_gameVariant == MakaDaiDaiShogi)
 	{
         if (_currentPiece->Type != Queen && _currentPiece->Type != DragonKing &&
-            _currentPiece->Type != DragonHorse && !_currentPiece->IsPromoted && p != nullptr)
+            _currentPiece->Type != DragonHorse && !_currentPiece->IsPromoted && p != std::nullopt)
 		{
             if (p->BaseType == Deva)
 			{
 				promotion = '+';
-                _board->Promote(_currentPiece, TeachingKing);
+                _board->Promote(x, y, TeachingKing);
 			}
             else if (p->BaseType == DarkSpirit)
 			{
 				promotion = '+';
-                _board->Promote(_currentPiece, BuddhistSpirit);
+                _board->Promote(x, y, BuddhistSpirit);
 			}
             else if (p->IsPromoted || AskForPromotion())
 			{
 				promotion = '+';
-                _board->Promote(_currentPiece, None);
+                _board->Promote(x, y, None);
 			}
 			else
 			{
@@ -1561,19 +1554,19 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 		{
 		}
         else if (_currentPiece->Type != King && _currentPiece->Type != Lion &&
-            _currentPiece->Type != Bishop && !_currentPiece->IsPromoted && p != nullptr)
+            _currentPiece->Type != Bishop && !_currentPiece->IsPromoted && p != std::nullopt)
 		{
             if (p->Type == King || p->Type == Prince || p->Type == MiddleTroop || p->Type == Flag || p->Type == Drum)
 			{
 				promotion = '+';
-                _board->Promote(_currentPiece, None);
+                _board->Promote(x, y, None);
 			}
             else if (std::find(std::begin(StepMovers), std::end(StepMovers), _currentPiece->Type) != std::end(StepMovers))
 			{
                 if (p->Type == Lion || p->Type == RisingDragon || p->Type == RoamingAssault || p->Type == Thunderclap)
 				{
 					promotion = '+';
-                    _board->Promote(_currentPiece, None);
+                    _board->Promote(x, y, None);
 				}
 			}
             else if (_currentPiece->Type == Knight)
@@ -1581,13 +1574,13 @@ char VBoard::CheckPromotion(const Piece *p, int y)
                 if (p->Type == FrankishCannon)
 				{
 					promotion = '+';
-                    _board->Promote(_currentPiece, None);
+                    _board->Promote(x, y, None);
 				}
 			}
             else if (p->IsPromoted || AskForPromotion())
 			{
 				promotion = '+';
-                _board->Promote(_currentPiece, None);
+                _board->Promote(x, y, None);
 			}
 			else
 			{
@@ -1599,18 +1592,17 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 				const auto aguards = EngineOutputHandler::GetPieceLocations(_board, AdvanceGuard, _currentPlayer);
 				for (const auto& aguard : aguards)
 				{
-                    _board->Promote(aguard.first, aguard.second, None);
+                    _board->Promote(aguard.first, aguard.second);
 				}
 				const auto rguards = EngineOutputHandler::GetPieceLocations(_board, RearGuard, _currentPlayer);
 				for (const auto& rguard : rguards)
 				{
-                    _board->Promote(rguard.first, rguard.second, None);
+                    _board->Promote(rguard.first, rguard.second);
 				}
 				const auto pfLocations = EngineOutputHandler::GetPieceLocations(_board, PoisonFlame, _currentPlayer == White ? Black : White);
 				for (const auto& pfLocation : pfLocations)
 				{
-					delete _board->GetData(pfLocation.first, pfLocation.second);
-					_board->SetData(pfLocation.first, pfLocation.second, nullptr);
+					_board->SetData(pfLocation.first, pfLocation.second, std::nullopt);
 				}
 			}
 		}
@@ -1621,26 +1613,26 @@ char VBoard::CheckPromotion(const Piece *p, int y)
 		const bool pcond1 = EngineOutputHandler::CanBePromoted(_currentPiece, _gameVariant, _oldY, y);
 		const bool pcond2 = (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi) &&
 			EngineOutputHandler::IsInsidePromotionZone(_gameVariant, _currentPlayer, _oldY) &&
-			EngineOutputHandler::IsInsidePromotionZone(_gameVariant, _currentPlayer, y) && p != nullptr;
+			EngineOutputHandler::IsInsidePromotionZone(_gameVariant, _currentPlayer, y) && p != std::nullopt;
 		const bool pcond3 = _gameVariant == ChuShogi && pt == Pawn &&
             ((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) || (y == 0 && _currentPiece->Colour == White));
 		if (pcond1 || pcond2 || pcond3)
 		{
             if (_gameVariant == ToriShogi)
             {
-                _board->Promote(_currentPiece, None);
+                _board->Promote(x, y, None);
             }
             else if (((pt == Pawn && _gameVariant != ChuShogi && _gameVariant != HeianDaiShogi) || (pt == Knight && _gameVariant != HeianDaiShogi) ||
                       (pt == Lance && _gameVariant != HeianDaiShogi)) &&
                 ((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) || (y == 0 && _currentPiece->Colour == White)))
 			{
-                _board->Promote(_currentPiece, None);
+                _board->Promote(x, y, None);
 			}
             else if (!_currentPiece->IsPromoted)
 			{
 				if (AskForPromotion())
 				{
-                    _board->Promote(_currentPiece, None);
+                    _board->Promote(x, y, None);
 					promotion = '+';
 				}
 				else
@@ -1666,8 +1658,8 @@ bool VBoard::event(QEvent* event)
 		{
 			_px = x;
 			_py = y;
-			const Piece* p = _board->GetData(x, y);
-			if (p != nullptr)
+			const std::optional<Piece> p = _board->GetData(x, y);
+			if (p != std::nullopt)
 			{
 				_attackers = _board->GetAttackers(x, y);
 				_defenders = _board->GetDefenders(x, y);
@@ -1709,7 +1701,7 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	{
 		_blackEngine->SetActive(false);
 	}
-	_currentPiece = nullptr;
+	_currentPiece = std::nullopt;
 	_moves.clear();
 	_shoots.clear();
 	_attackers.clear();
@@ -2534,24 +2526,22 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		{
 			if (selectedAction->text() == "Promote")
 			{
-                if (_board->GetData(x, y) != nullptr && !_board->GetData(x, y)->IsPromoted)
+                if (_board->GetData(x, y) != std::nullopt && !_board->GetData(x, y)->IsPromoted)
 				{
-                    _board->Promote(x, y, None);
+                    _board->Promote(x, y);
 				}
 				return;
 			}
 			_chosenColour = qobject_cast<QMenu*>(selectedAction->parent()->parent())->title() == "White" ? White : Black;
             _chosenPiece = StringManager::Description2PieceType(_gameVariant, selectedAction->text().toStdString());
 
-			const Piece* p = _board->GetData(x, y);
-			delete p;
 			if (_chosenPiece == None)
 			{
-				_board->SetData(x, y, nullptr);
+				_board->SetData(x, y, std::nullopt);
 			}
 			else
 			{
-				Piece* newPiece = _board->CreatePiece(_chosenPiece, _chosenColour);
+				std::optional<Piece> newPiece = _board->CreatePiece(_chosenPiece, _chosenColour);
 				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), _chosenPiece) != std::end(_promotedPieces))
 				{
                     if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != GrandeAcedrex)
@@ -2593,7 +2583,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
                 ? (parts[0] + " " + parts[1]).toStdString() : parts[0].toStdString();
         const PieceType newPiece = StringManager::Description2PieceType(_gameVariant, longStringCode);
 
-		if (_board->GetData(x, y) != nullptr)
+		if (_board->GetData(x, y) != std::nullopt)
 		{
 			QMessageBox mb(QMessageBox::Warning, "Illegal drop", "Square is already occupied",
 				QMessageBox::Ok, this);
@@ -2609,8 +2599,8 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				mb.exec();
 				return;
 			}
-			const Piece* kp = _currentPlayer == White ? _board->GetData(x, y - 1) : _board->GetData(x, y + 1);
-            if (kp != nullptr && kp->Type == King && kp->Colour != _currentPlayer && _gameVariant != YariShogi)
+			const std::optional<Piece> kp = _currentPlayer == White ? _board->GetData(x, y - 1) : _board->GetData(x, y + 1);
+            if (kp != std::nullopt && kp->Type == King && kp->Colour != _currentPlayer && _gameVariant != YariShogi)
 			{
 				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot check king by the pawn drop",
 					QMessageBox::Ok, this);
@@ -2619,8 +2609,8 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			}
 			for (int index = 0; index < _board->GetHeight(); index++)
 			{
-				const Piece* p = _board->GetData(x, index);
-                if (p != nullptr && p->Type == Pawn && p->Colour == _currentPlayer)
+				const std::optional<Piece> p = _board->GetData(x, index);
+                if (p != std::nullopt && p->Type == Pawn && p->Colour == _currentPlayer)
 				{
 					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place second pawn on the same column",
 						QMessageBox::Ok, this);

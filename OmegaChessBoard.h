@@ -8,7 +8,7 @@ public:
     ~OmegaChessBoard() override;
     void Initialize() override;
     Board* Clone() override;
-    void GetMoves(Piece* piece, int x, int y) override;
+    void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
     bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
     std::string GetStringCode(int x, int y) const override;
 

@@ -8,7 +8,7 @@ public:
     ~EuroShogiBoard() override;
     void Initialize() override;
     Board* Clone() override;
-    void GetMoves(Piece *piece, int x, int y) override;
+    void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
 
 private:
 

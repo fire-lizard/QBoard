@@ -26,11 +26,11 @@ void ShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
-				SetData(i, j, nullptr);
+				SetData(i, j, std::nullopt);
 			}
 		}
 	}
@@ -43,8 +43,8 @@ Board* ShogiBoard::Clone()
 	{
 		for (int j = 0; j < GetHeight(); j++)
 		{
-			const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
+			const std::optional<Piece> p = GetData(i, j);
+            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
 		}
 	}
 	for (const auto& capturedPiece: _capturedPieces)
@@ -55,14 +55,9 @@ Board* ShogiBoard::Clone()
 	return cb;
 }
 
-void ShogiBoard::Promote(int x, int y, PieceType pt)
+void ShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
 {
-    Promote(GetData(x, y), pt);
-}
-
-void ShogiBoard::Promote(Piece *piece, PieceType pt)
-{
-    if (piece != nullptr)
+    if (piece != std::nullopt)
     {
         piece->IsPromoted = true;
         PieceType pieceType = None;
@@ -99,7 +94,7 @@ void ShogiBoard::Promote(Piece *piece, PieceType pt)
     }
 }
 
-void ShogiBoard::GetMoves(Piece *piece, int x, int y)
+void ShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
 	_moves.clear();
     switch (piece->Type)
@@ -287,7 +282,7 @@ void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 	_csa += y1 == '*' ? "00" : std::to_string(_width - x1) + std::to_string(y1 + 1);
 	_csa += std::to_string(_width - x2);
 	_csa += std::to_string(y2 + 1);
-    _csa += _pieceToCSA.at(promotion != '+' || GetData(x2, y2) == nullptr ? pieceType : GetData(x2, y2)->Type);
+    _csa += _pieceToCSA.at(promotion != '+' || GetData(x2, y2) == std::nullopt ? pieceType : GetData(x2, y2)->Type);
 	_csa += ",T1\n";
 	// KIF
 	_kif += "  " + std::to_string(_moveCount) + " "; // Add move number

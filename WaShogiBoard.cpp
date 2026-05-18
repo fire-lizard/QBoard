@@ -22,11 +22,11 @@ void WaShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
-				SetData(i, j, nullptr);
+				SetData(i, j, std::nullopt);
 			}
 		}
 	}
@@ -39,8 +39,8 @@ Board* WaShogiBoard::Clone()
 	{
 		for (int j = 0; j < GetHeight(); j++)
 		{
-			const Piece* p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
+			const std::optional<Piece> p = GetData(i, j);
+            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
 		}
 	}
 	for (const auto& capturedPiece : _capturedPieces)
@@ -51,14 +51,9 @@ Board* WaShogiBoard::Clone()
 	return cb;
 }
 
-void WaShogiBoard::Promote(int x, int y, PieceType pt)
+void WaShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
 {
-    Promote(GetData(x, y), pt);
-}
-
-void WaShogiBoard::Promote(Piece *piece, PieceType pt)
-{
-    if (piece != nullptr)
+    if (piece != std::nullopt)
     {
         piece->IsPromoted = true;
         PieceType pieceType = None;
@@ -166,7 +161,7 @@ std::string WaShogiBoard::formatEnumCounts(const std::vector<PieceType>& enumLis
 	return result.str();
 }
 
-void WaShogiBoard::GetMoves(Piece* piece, int x, int y)
+void WaShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
 	_moves.clear();
     switch (piece->Type)
@@ -402,7 +397,7 @@ std::string WaShogiBoard::GetPGN()
 
 std::string WaShogiBoard::GetStringCode(int x, int y) const
 {
-    if (GetData(x, y) == nullptr) return "";
+    if (GetData(x, y) == std::nullopt) return "";
     PieceType pieceType = GetData(x, y)->Type;
     PieceType basePieceType = GetData(x, y)->BaseType;
     switch (pieceType)

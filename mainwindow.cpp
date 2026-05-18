@@ -215,9 +215,7 @@ void MainWindow::on_actionClear_triggered() const
 		{
 			for (int j = 0; j < height; j++)
 			{
-				const Piece* p = board->GetData(i, j);
-				delete p;
-				board->SetData(i, j, nullptr);
+				board->SetData(i, j, std::nullopt);
 			}
 		}
 		if (!ui->vboard->GetEditorMode())

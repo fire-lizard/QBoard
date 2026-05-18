@@ -83,8 +83,7 @@ private:
 	void mousePressEvent(QMouseEvent *event) override;
 
 	bool CheckRepetition(int oldX, int oldY, int newX, int newY);
-    char CheckPromotion(const Piece* p, int x, int y) const;
-    char CheckPromotion(const Piece* p, int y);
+    char CheckPromotion(const std::optional<Piece>& p, int x, int y);
 	bool PossibleMove(int x, int y) const;
 	bool PossibleShoot(int x, int y) const;
 	bool AskForPromotion();
@@ -97,7 +96,7 @@ private:
 	PieceColour _currentPlayer = White;
 	PieceStyle _pieceStyle = European;
 	EngineOutput _engineOutput = Concise;
-	Piece *_currentPiece;
+	std::optional<Piece> _currentPiece;
 	int _oldX = -1;
 	int _oldY = -1;
 	int _px = -1;

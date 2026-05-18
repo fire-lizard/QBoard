@@ -11,10 +11,9 @@ void Board::Clear()
 	{
 		for (int j = 0; j < _height; j++)
 		{
-			if (GetData(i, j) != nullptr)
+			if (GetData(i, j) != std::nullopt)
 			{
-				delete GetData(i, j);
-				SetData(i, j, nullptr);
+				SetData(i, j, std::nullopt);
 			}
 		}
 	}
@@ -25,16 +24,16 @@ std::vector<std::pair<int, int>> Board::Moves() const
 	return _moves;
 }
 
-Piece* Board::GetData(int x, int y) const
+std::optional<Piece> Board::GetData(int x, int y) const
 {
     if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
     {
         return _data[x][y];
     }
-    return nullptr;
+    return std::nullopt;
 }
 
-void Board::SetData(int x, int y, Piece *p)
+void Board::SetData(int x, int y, const std::optional<Piece>& p)
 {
     if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
     {
@@ -60,7 +59,7 @@ std::string Board::GetFEN() const
 	{
 		for (int i = 0; i < _width; i++)
 		{
-			if (GetData(i, j) != nullptr)
+			if (GetData(i, j) != std::nullopt)
 			{
 				if (emptySquares > 0)
 				{
@@ -138,38 +137,38 @@ void Board::CheckDirectionInc(int &x, int &y, Direction direction)
 	}
 }
 
-void Board::CheckMove(const Piece *piece, int x, int y)
+void Board::CheckMove(const std::optional<Piece>& piece, int x, int y)
 {
 	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
 	{
-        if (GetData(x, y) == nullptr || GetData(x, y)->Colour != piece->Colour)
+        if (GetData(x, y) == std::nullopt || GetData(x, y)->Colour != piece->Colour)
 		{
 			_moves.emplace_back(x, y);
 		}
 	}
 }
 
-void Board::CheckDirection(const Piece *piece, int x, int y, Direction direction)
+void Board::CheckDirection(const std::optional<Piece>& piece, int x, int y, Direction direction)
 {
 	while (InBounds(x, y, direction))
 	{
 		CheckDirectionInc(x, y, direction);
 		CheckMove(piece, x, y);
-		if (GetData(x, y) != nullptr)
+		if (GetData(x, y) != std::nullopt)
 		{
 			break;
 		}
 	}
 }
 
-void Board::CheckDirection(const Piece* piece, int x, int y, Direction direction, int count)
+void Board::CheckDirection(const std::optional<Piece>& piece, int x, int y, Direction direction, int count)
 {
 	int i = 0;
 	while (InBounds(x, y, direction) && i < count)
 	{
 		CheckDirectionInc(x, y, direction);
 		CheckMove(piece, x, y);
-		if (GetData(x, y) != nullptr)
+		if (GetData(x, y) != std::nullopt)
 		{
 			break;
 		}
@@ -205,12 +204,8 @@ bool Board::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	if (std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}) || !cl)
 	{
-		if (GetData(newX, newY) != nullptr)
-		{
-			delete GetData(newX, newY);
-		}
 		SetData(newX, newY, GetData(oldX, oldY));
-		SetData(oldX, oldY, nullptr);
+		SetData(oldX, oldY, std::nullopt);
 		return true;
 	}
 	return false;
@@ -227,9 +222,16 @@ void Board::RemoveMoves()
 	_moves.clear();
 }
 
-Piece* Board::CreatePiece(PieceType pieceType, PieceColour pieceColour)
+void Board::Promote(int x, int y, PieceType pt)
 {
-    return new Piece(pieceType, pieceColour);
+    std::optional<Piece> piece = GetData(x, y);
+    Promote(piece, pt);
+    SetData(x, y, piece);
+}
+
+std::optional<Piece> Board::CreatePiece(PieceType pieceType, PieceColour pieceColour)
+{
+    return Piece(pieceType, pieceColour);
 }
 
 std::vector<std::tuple<int, int, int, int>> Board::GetAllMoves(PieceColour pieceColour)
@@ -239,7 +241,7 @@ std::vector<std::tuple<int, int, int, int>> Board::GetAllMoves(PieceColour piece
 	{
 		for (int j = 0; j < _height; j++)
 		{
-            if (GetData(i, j) != nullptr && GetData(i, j)->Colour == pieceColour)
+            if (GetData(i, j) != std::nullopt && GetData(i, j)->Colour == pieceColour)
 			{
 				GetMoves(GetData(i, j), i, j);
 				for_each(_moves.begin(), _moves.end(), [&](std::pair<int, int> p) {result.emplace_back(i, j, p.first, p.second);});
@@ -260,7 +262,7 @@ bool Board::HasPiece(PieceType pieceType, PieceColour pieceColour) const
 	{
 		for (int j = 0; j < _height; j++)
 		{
-            if (GetData(i, j) != nullptr && GetData(i, j)->Type == pieceType && GetData(i, j)->Colour == pieceColour)
+            if (GetData(i, j) != std::nullopt && GetData(i, j)->Type == pieceType && GetData(i, j)->Colour == pieceColour)
 			{
 				return true;
 			}
@@ -276,8 +278,8 @@ std::pair<int, int> Board::GetPieceLocation(PieceType pieceType, PieceColour pie
     {
         for (int j = 0; j < GetHeight(); j++)
         {
-            const Piece* p = GetData(i, j);
-            if (p != nullptr && p->BaseType == pieceType && p->Colour == pieceColour)
+            const std::optional<Piece> p = GetData(i, j);
+            if (p != std::nullopt && p->BaseType == pieceType && p->Colour == pieceColour)
             {
                 kx = i;
                 ky = j;
@@ -293,11 +295,11 @@ std::pair<int, int> Board::GetPieceLocation(PieceType pieceType, PieceColour pie
 std::vector<std::pair<int, int>> Board::GetAttackers(int x, int y)
 {
 	std::vector<std::pair<int, int>> vec;
-	if (GetData(x, y) != nullptr)
+	if (GetData(x, y) != std::nullopt)
 	{
         const PieceColour pieceColour = GetData(x, y)->Colour;
 		Board* board = this->Clone();
-		board->SetData(x, y, nullptr);
+		board->SetData(x, y, std::nullopt);
 		const auto opponentMoves = board->GetAllMoves(pieceColour == White ? Black : White);
 		for (auto tpl : opponentMoves)
 		{
@@ -314,11 +316,11 @@ std::vector<std::pair<int, int>> Board::GetAttackers(int x, int y)
 std::vector<std::pair<int, int>> Board::GetDefenders(int x, int y)
 {
 	std::vector<std::pair<int, int>> vec;
-	if (GetData(x, y) != nullptr)
+	if (GetData(x, y) != std::nullopt)
 	{
         const PieceColour pieceColour = GetData(x, y)->Colour;
 		Board* board = this->Clone();
-		board->SetData(x, y, nullptr);
+		board->SetData(x, y, std::nullopt);
 		const auto playerMoves = board->GetAllMoves(pieceColour);
 		for (auto tpl : playerMoves)
 		{
@@ -349,7 +351,7 @@ bool Board::operator != (const std::string& fen) const
 
 std::string Board::GetStringCode(int x, int y) const
 {
-    if (GetData(x, y) == nullptr) return "";
+    if (GetData(x, y) == std::nullopt) return "";
     PieceType pieceType = GetData(x, y)->Type;
     PieceType basePieceType = GetData(x, y)->BaseType;
     switch (pieceType)

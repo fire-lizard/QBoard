@@ -17,14 +17,13 @@ public:
 	~TenjikuShogiBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
-    void Promote(int x, int y, PieceType pieceType) override;
-    void Promote(Piece *piece, PieceType pt) override;
-    void GetMoves(Piece* piece, int x, int y) override;
+    void Promote(std::optional<Piece>& piece, PieceType pt) override;
+    void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 
 private:
-	void CheckJump(const Piece* piece, int x, int y, Direction direction);
-	void CheckIgui(const Piece* piece, int x, int y);
+	void CheckJump(const std::optional<Piece>& piece, int x, int y, Direction direction);
+	void CheckIgui(const std::optional<Piece>& piece, int x, int y);
 	void GetPossibleMoves(int x, int y);
 
 	PieceType _jumpingPieces[4] = { GreatGeneral, ViceGeneral, BishopGeneral, RookGeneral };

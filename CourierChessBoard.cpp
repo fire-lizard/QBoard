@@ -18,8 +18,8 @@ Board* CourierChessBoard::Clone()
     {
         for (int j = 0; j < GetHeight(); j++)
         {
-            const Piece* p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
+            const std::optional<Piece> p = GetData(i, j);
+            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
         }
     }
     cb->SetMoveCount(_moveCount);
@@ -36,17 +36,17 @@ void CourierChessBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
-                SetData(i, j, nullptr);
+                SetData(i, j, std::nullopt);
             }
         }
     }
 }
 
-void CourierChessBoard::GetMoves(Piece* piece, int x, int y)
+void CourierChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
     _moves.clear();
     switch (piece->Type)
@@ -81,7 +81,7 @@ void CourierChessBoard::GetMoves(Piece* piece, int x, int y)
 
 std::string CourierChessBoard::GetStringCode(int x, int y) const
 {
-    if (GetData(x, y) == nullptr) return "";
+    if (GetData(x, y) == std::nullopt) return "";
     PieceType pieceType = GetData(x, y)->Type;
     switch (pieceType)
     {

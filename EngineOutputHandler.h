@@ -28,8 +28,8 @@ public:
     static void CalculateXiangqiCheck(Board* board, std::vector<std::pair<int, int>>& moves, int oldX, int oldY, int newX, int newY);
     static std::vector<std::pair<int, int>> GetPieceLocations(const Board* board, PieceType pieceType, PieceColour pieceColour);
 	static bool IsInsidePromotionZone(GameVariant gameVariant, PieceColour pieceColour, int y);
-	static bool CanBePromoted(const Piece* piece, GameVariant gameVariant, int oldY, int newY);
-	static bool IsLionMove(const Piece* piece, int x1, int y1, int x2, int y2);
+	static bool CanBePromoted(const std::optional<Piece>& piece, GameVariant gameVariant, int oldY, int newY);
+	static bool IsLionMove(const std::optional<Piece>& piece, int x1, int y1, int x2, int y2);
     static void RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<std::string> moves);
 	static void RemoveMove(std::vector<std::pair<int, int>>& moves, int x, int y);
 };

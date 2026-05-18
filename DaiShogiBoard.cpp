@@ -19,11 +19,11 @@ void DaiShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new Piece(_initialSetup[j][i], j < 7 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 7 ? Black : White));
 			}
 			else
 			{
-				SetData(i, j, nullptr);
+				SetData(i, j, std::nullopt);
 			}
 		}
 	}
@@ -36,22 +36,17 @@ Board* DaiShogiBoard::Clone()
 	{
 		for (int j = 0; j < GetHeight(); j++)
 		{
-			const Piece* p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
+			const std::optional<Piece> p = GetData(i, j);
+            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
 	return cb;
 }
 
-void DaiShogiBoard::Promote(int x, int y, PieceType pt)
+void DaiShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
 {
-    Promote(GetData(x, y), pt);
-}
-
-void DaiShogiBoard::Promote(Piece *piece, PieceType pt)
-{
-    if (piece != nullptr)
+    if (piece != std::nullopt)
     {
         piece->IsPromoted = true;
         PieceType pieceType = None;
@@ -78,7 +73,7 @@ void DaiShogiBoard::Promote(Piece *piece, PieceType pt)
     }
 }
 
-void DaiShogiBoard::GetMoves(Piece* piece, int x, int y)
+void DaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
 	_moves.clear();
     switch (piece->Type)
@@ -177,14 +172,14 @@ void DaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 	}
 }
 
-void DaiShogiBoard::CheckLionDirection(const Piece* piece, int x, int y, Direction direction, int count)
+void DaiShogiBoard::CheckLionDirection(const std::optional<Piece>& piece, int x, int y, Direction direction, int count)
 {
 	int i = 0;
 	while (InBounds(x, y, direction) && i < count)
 	{
 		CheckDirectionInc(x, y, direction);
 		CheckMove(piece, x, y);
-        if (GetData(x, y) != nullptr && GetData(x, y)->Colour == piece->Colour)
+        if (GetData(x, y) != std::nullopt && GetData(x, y)->Colour == piece->Colour)
 		{
 			break;
 		}
@@ -204,7 +199,7 @@ std::vector<std::pair<int, int>> DaiShogiBoard::GetEnemyPiecesAround(int x, int 
 	{
 		int i = x + direction[0];
 		int j = y + direction[1];
-        if (i < 0 || i > _width - 1 || j < 0 || j > _height - 1 || GetData(i, j) == nullptr || GetData(i, j)->Colour == pieceColour)
+        if (i < 0 || i > _width - 1 || j < 0 || j > _height - 1 || GetData(i, j) == std::nullopt || GetData(i, j)->Colour == pieceColour)
 		{
 			continue;
 		}

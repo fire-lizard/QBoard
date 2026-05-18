@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <optional>
 #include <algorithm>
 #include <utility>
 #include <tuple>
@@ -29,20 +30,20 @@ public:
 	virtual ~Board();
 	virtual void Initialize() = 0;
 	virtual Board* Clone() = 0;
-    virtual void Promote(int x, int y, PieceType pt) = 0;
-    virtual void Promote(Piece *piece, PieceType pt) = 0;
-    virtual void GetMoves(Piece *piece, int x, int y) = 0;
+    virtual void Promote(std::optional<Piece>& piece, PieceType pt) = 0;
+    virtual void GetMoves(const std::optional<Piece>& piece, int x, int y) = 0;
     virtual bool Move(int oldX, int oldY, int newX, int newY, bool cl = true);
     virtual std::string GetStringCode(int x, int y) const;
     void Clear();
 	void RemoveMove(int x, int y);
 	void RemoveMoves();
-    Piece* CreatePiece(PieceType pieceType, PieceColour pieceColour);
+	void Promote(int x, int y, PieceType pt = None);
+	std::optional<Piece> CreatePiece(PieceType pieceType, PieceColour pieceColour);
     std::vector<std::tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
 	std::vector<std::pair<int, int>> Moves() const;
     std::pair<int, int> GetPieceLocation(PieceType pieceType, PieceColour pieceColour) const;
-    Piece* GetData(int x, int y) const;
-	void SetData(int x, int y, Piece *p);
+	std::optional<Piece> GetData(int x, int y) const;
+	void SetData(int x, int y, const std::optional<Piece>& p);
     std::string GetFEN() const;
 	void SetFEN(std::string fen);
 	int GetWidth() const;
@@ -58,9 +59,9 @@ public:
 	bool operator != (const std::string& fen) const;
 
 protected:
-	void CheckMove(const Piece *piece, int x, int y);
-	void CheckDirection(const Piece *piece, int x, int y, Direction direction);
-	void CheckDirection(const Piece* piece, int x, int y, Direction direction, int count);
+	void CheckMove(const std::optional<Piece>& piece, int x, int y);
+	void CheckDirection(const std::optional<Piece>& piece, int x, int y, Direction direction);
+	void CheckDirection(const std::optional<Piece>& piece, int x, int y, Direction direction, int count);
 	bool InBounds(int x, int y, Direction direction) const;
 	static void CheckDirectionInc(int &x, int &y, Direction direction);
 
@@ -69,5 +70,5 @@ protected:
 	int _width = -1;
 	int _height = -1;
 	int _moveCount = 0;
-	Piece* _data[19][19];
+	std::optional<Piece> _data[19][19];
 };

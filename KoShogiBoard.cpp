@@ -20,11 +20,11 @@ void KoShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new Piece(_initialSetup[j][i], j < 8 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 8 ? Black : White));
 			}
 			else
 			{
-				SetData(i, j, nullptr);
+				SetData(i, j, std::nullopt);
 			}
 		}
 	}
@@ -37,22 +37,17 @@ Board* KoShogiBoard::Clone()
 	{
 		for (int j = 0; j < GetHeight(); j++)
 		{
-			const Piece* p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
+			const std::optional<Piece> p = GetData(i, j);
+            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
 	return cb;
 }
 
-void KoShogiBoard::Promote(int x, int y, PieceType pt)
+void KoShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
 {
-    Promote(GetData(x, y), pt);
-}
-
-void KoShogiBoard::Promote(Piece *piece, PieceType pt)
-{
-    if (piece != nullptr)
+    if (piece != std::nullopt)
     {
         piece->IsPromoted = true;
         PieceType pieceType = None;
@@ -161,16 +156,16 @@ void KoShogiBoard::Promote(Piece *piece, PieceType pt)
 
 void KoShogiBoard::Demote(int x, int y) const
 {
-    if (GetData(x, y) != nullptr)
+    if (GetData(x, y) != std::nullopt)
     {
         GetData(x, y)->IsPromoted = false;
         GetData(x, y)->Type = GetData(x, y)->BaseType;
     }
 }
 
-void KoShogiBoard::Demote(Piece *piece)
+void KoShogiBoard::Demote(std::optional<Piece> piece)
 {
-    if (piece != nullptr)
+    if (piece != std::nullopt)
     {
         piece->IsPromoted = false;
         piece->Type = piece->BaseType;
@@ -186,34 +181,32 @@ void KoShogiBoard::RemoveShoot(int x, int y)
 bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	// Gun carriage and Chariot of the Gods cannot capture a heavenly fortress by displacement.
-	Piece* sp = GetData(oldX, oldY);
-    if (sp != nullptr && (sp->Type == CannonCarriage || sp->Type == DivineCarriage) && GetData(newX, newY) != nullptr && GetData(newX, newY)->Type == FreeBoar)
+	std::optional<Piece> sp = GetData(oldX, oldY);
+    if (sp != std::nullopt && (sp->Type == CannonCarriage || sp->Type == DivineCarriage) && GetData(newX, newY) != std::nullopt && GetData(newX, newY)->Type == FreeBoar)
 	{
 		return false;
 	}
-	if (GetData(oldX, oldY) != nullptr && IsMovePossible(newX, newY))
+	if (GetData(oldX, oldY) != std::nullopt && IsMovePossible(newX, newY))
 	{
         auto pieces = GetEnemyPiecesAround(newX, newY, GetData(oldX, oldY)->Colour);
         if (std::any_of(pieces.begin(), pieces.end(), [this](std::pair<int, int> t) {return GetData(t.first, t.second)->Type == PoisonFlame;}))
 		{
-			delete GetData(oldX, oldY);
-			SetData(oldX, oldY, nullptr);
-			if (GetData(newX, newY) != nullptr)
+			SetData(oldX, oldY, std::nullopt);
+			if (GetData(newX, newY) != std::nullopt)
 			{
-				delete GetData(newX, newY);
-				SetData(newX, newY, nullptr);
+				SetData(newX, newY, std::nullopt);
 			}
 			return true;
 		}
 		// Poison Flame moves
         if (GetData(oldX, oldY)->Type == PoisonFlame)
 		{
-			for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {delete GetData(p.first, p.second); SetData(p.first, p.second, nullptr);});
+			for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {SetData(p.first, p.second, std::nullopt);});
 		}
 	}
 	const bool result = DaiShogiBoard::Move(oldX, oldY, newX, newY, cl);
 	// If the Taoist priest is captured, the drum and banner can no longer promote, and if either or both have already promoted, then they immediately revert.
-    if (result == true && GetData(newX, newY) != nullptr && GetData(newX, newY)->Type == TaoistPriest)
+    if (result == true && GetData(newX, newY) != std::nullopt && GetData(newX, newY)->Type == TaoistPriest)
 	{
 		_taoistPriestCaptured = true;
         const auto raLocation = GetPieceLocation(RoamingAssault, sp->Colour == White ? Black : White);
@@ -228,7 +221,7 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 		}
 	}
 	// Whenever the immaculate light is within 5 intersections of the five-li fog, the fog reverts to a Taoist priest.
-    if (result == true && sp != nullptr && sp->Type == ExtensiveFog)
+    if (result == true && sp != std::nullopt && sp->Type == ExtensiveFog)
 	{
         const auto hlLocation = GetPieceLocation(HolyLight, sp->Colour == White ? Black : White);
 		if (hlLocation.first != -1 && hlLocation.second != -1 && abs(hlLocation.first - newX) <= 5 && abs(hlLocation.second - newY) <= 5)
@@ -236,7 +229,7 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
             Demote(sp);
 		}
 	}
-    else if (result == true && sp != nullptr && sp->Type == HolyLight)
+    else if (result == true && sp != std::nullopt && sp->Type == HolyLight)
 	{
         const auto efLocation = GetPieceLocation(ExtensiveFog, sp->Colour == White ? Black : White);
 		if (efLocation.first != -1 && efLocation.second != -1 && abs(efLocation.first - newX) <= 5 && abs(efLocation.second - newY) <= 5)
@@ -247,7 +240,7 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	return result;
 }
 
-void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
+void KoShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
 	_moves.clear();
     switch (piece->Type)
@@ -530,7 +523,7 @@ void KoShogiBoard::GetMoves(Piece* piece, int x, int y)
 	}
 }
 
-std::vector<std::pair<int, int>> KoShogiBoard::GetShoots(const Piece* piece, int x, int y)
+std::vector<std::pair<int, int>> KoShogiBoard::GetShoots(const std::optional<Piece>& piece, int x, int y)
 {
 	_shoots.clear();
     switch (piece->Type)
@@ -598,15 +591,15 @@ std::vector<std::pair<int, int>> KoShogiBoard::GetShoots(const Piece* piece, int
 	return _shoots;
 }
 
-void KoShogiBoard::CheckPriestMove(const Piece* piece, int x, int y)
+void KoShogiBoard::CheckPriestMove(const std::optional<Piece>& piece, int x, int y)
 {
 	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
 	{
-        if (GetData(x, y) != nullptr && GetData(x, y)->Type != TaoistPriest && GetData(x, y)->Type != SpiritualMonk &&
+        if (GetData(x, y) != std::nullopt && GetData(x, y)->Type != TaoistPriest && GetData(x, y)->Type != SpiritualMonk &&
             GetData(x, y)->Type != ExtensiveFog && GetData(x, y)->Type != HolyLight)
 		{
 		}
-        else if (GetData(x, y) == nullptr || GetData(x, y)->Colour != piece->Colour)
+        else if (GetData(x, y) == std::nullopt || GetData(x, y)->Colour != piece->Colour)
 		{
 			_moves.emplace_back(x, y);
 		}
@@ -615,14 +608,13 @@ void KoShogiBoard::CheckPriestMove(const Piece* piece, int x, int y)
 
 void KoShogiBoard::Shoot(int x, int y)
 {
-	if (GetData(x, y) != nullptr)
+	if (GetData(x, y) != std::nullopt)
 	{
-		delete GetData(x, y);
-		SetData(x, y, nullptr);
+		SetData(x, y, std::nullopt);
 	}
 }
 
-void KoShogiBoard::CheckShoot(const Piece* piece, int x, int y)
+void KoShogiBoard::CheckShoot(const std::optional<Piece>& piece, int x, int y)
 {
     const PieceType pt = piece->Type;
 	// Except for the Taoist priest, spiritual monk, five-li fog or immaculate light, any shooting pieces
@@ -637,7 +629,7 @@ void KoShogiBoard::CheckShoot(const Piece* piece, int x, int y)
 	}
 	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
 	{
-        if (GetData(x, y) != nullptr && GetData(x, y)->Colour != piece->Colour)
+        if (GetData(x, y) != std::nullopt && GetData(x, y)->Colour != piece->Colour)
 		{
             const auto dt = GetData(x, y)->Type;
 			// Longbow and Crossbow cannot shoot a shield, shield unit, chariot, chariot unit, Gun carriage, Chariot of the Gods and heavenly fortress.
@@ -662,13 +654,13 @@ void KoShogiBoard::CheckShoot(const Piece* piece, int x, int y)
 	}
 }
 
-void KoShogiBoard::CheckShootingDirection(const Piece* piece, int x, int y, Direction direction, int count, bool shootOver)
+void KoShogiBoard::CheckShootingDirection(const std::optional<Piece>& piece, int x, int y, Direction direction, int count, bool shootOver)
 {
 	int i = 0;
 	while (InBounds(x, y, direction) && i < count)
 	{
 		CheckDirectionInc(x, y, direction);
-		if (GetData(x, y) != nullptr)
+		if (GetData(x, y) != std::nullopt)
 		{
 			CheckShoot(piece, x, y);
 			if (!shootOver)
@@ -719,7 +711,7 @@ void KoShogiBoard::dfsFiveSteps(int r, int c, int step, PieceColour pieceColour,
 		if (nr < 0 || nr >= N || nc < 0 || nc >= N) {
 			continue;
 		}
-        if (GetData(nr, nc) != nullptr && GetData(nr, nc)->Colour == pieceColour) {
+        if (GetData(nr, nc) != std::nullopt && GetData(nr, nc)->Colour == pieceColour) {
 			continue; // cannot step here
 		}
 
@@ -749,7 +741,7 @@ void KoShogiBoard::getAll5StepPaths(int startR, int startC, PieceColour pieceCol
  * Return all squares a piece can move to in exactly 1 piece move from (r, c).
  * We skip squares with occupant=FRIENDLY (the piece's own color).
  */
-std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c, const std::vector<std::pair<int, int>>& offsets, const Piece *piece) const
+std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c, const std::vector<std::pair<int, int>>& offsets, const std::optional<Piece>& piece) const
 {
 	constexpr int N = 19;
 	std::vector<std::pair<int, int>> result;
@@ -762,14 +754,14 @@ std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c,
 
         if (piece->Type == ExtensiveFog || piece->Type == HolyLight)
 		{
-            if (GetData(rr, cc) != nullptr && GetData(rr, cc)->Type != TaoistPriest && GetData(rr, cc)->Type != SpiritualMonk &&
+            if (GetData(rr, cc) != std::nullopt && GetData(rr, cc)->Type != TaoistPriest && GetData(rr, cc)->Type != SpiritualMonk &&
                 GetData(rr, cc)->Type != ExtensiveFog && GetData(rr, cc)->Type != HolyLight) {
 				continue;
 			}
 		}
 
 		// The piece can land on this square if it's EMPTY or ENEMY
-        if (GetData(rr, cc) != nullptr && GetData(rr, cc)->Colour == piece->Colour) {
+        if (GetData(rr, cc) != std::nullopt && GetData(rr, cc)->Colour == piece->Colour) {
 			continue;
 		}
 
@@ -782,7 +774,7 @@ std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c,
  * Return all possible distinct destination squares after EXACTLY 2 piece moves
  * from the starting position (startR, startC).
  */
-void KoShogiBoard::getAllPiece2MoveDestinations(int startR, int startC, const std::vector<std::pair<int, int>>& offsets, const Piece* piece)
+void KoShogiBoard::getAllPiece2MoveDestinations(int startR, int startC, const std::vector<std::pair<int, int>>& offsets, const std::optional<Piece>& piece)
 {
 	std::set<std::pair<int, int>> destinations;  // use a set to avoid duplicates
 
@@ -813,7 +805,7 @@ bool KoShogiBoard::IsTaoistPriestCaptured() const
 
 std::string KoShogiBoard::GetStringCode(int x, int y) const
 {
-    if (GetData(x, y) == nullptr) return "";
+    if (GetData(x, y) == std::nullopt) return "";
     PieceType pieceType = GetData(x, y)->Type;
     PieceType basePieceType = GetData(x, y)->BaseType;
     switch (pieceType)

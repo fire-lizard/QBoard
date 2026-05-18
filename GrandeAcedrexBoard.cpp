@@ -18,8 +18,8 @@ Board* GrandeAcedrexBoard::Clone()
     {
         for (int j = 0; j < GetHeight(); j++)
         {
-            const Piece* p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
+            const std::optional<Piece> p = GetData(i, j);
+            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
         }
     }
     cb->SetMoveCount(_moveCount);
@@ -36,31 +36,26 @@ void GrandeAcedrexBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
-                SetData(i, j, nullptr);
+                SetData(i, j, std::nullopt);
             }
         }
     }
 }
 
-void GrandeAcedrexBoard::Promote(int x, int y, PieceType pt)
+void GrandeAcedrexBoard::Promote(std::optional<Piece>& piece, PieceType pt)
 {
-    Promote(GetData(x, y), pt);
-}
-
-void GrandeAcedrexBoard::Promote(Piece *piece, PieceType pt)
-{
-    if (piece != nullptr)
+    if (piece != std::nullopt)
     {
         piece->IsPromoted = true;
         piece->Type = pt;
     }
 }
 
-void GrandeAcedrexBoard::GetMoves(Piece* piece, int x, int y)
+void GrandeAcedrexBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
     _moves.clear();
     switch (piece->Type)
@@ -97,22 +92,22 @@ void GrandeAcedrexBoard::GetMoves(Piece* piece, int x, int y)
         CheckMove(piece, x + 1, y - 1);
         CheckMove(piece, x - 1, y + 1);
         CheckMove(piece, x - 1, y - 1);
-        if (GetData(x + 1, y + 1) == nullptr)
+        if (GetData(x + 1, y + 1) == std::nullopt)
         {
             CheckDirection(piece, x + 1, y + 1, North);
             CheckDirection(piece, x + 1, y + 1, East);
         }
-        if (GetData(x + 1, y - 1) == nullptr)
+        if (GetData(x + 1, y - 1) == std::nullopt)
         {
             CheckDirection(piece, x + 1, y - 1, South);
             CheckDirection(piece, x + 1, y - 1, East);
         }
-        if (GetData(x - 1, y + 1) == nullptr)
+        if (GetData(x - 1, y + 1) == std::nullopt)
         {
             CheckDirection(piece, x - 1, y + 1, North);
             CheckDirection(piece, x - 1, y + 1, West);
         }
-        if (GetData(x - 1, y - 1) == nullptr)
+        if (GetData(x - 1, y - 1) == std::nullopt)
         {
             CheckDirection(piece, x - 1, y - 1, South);
             CheckDirection(piece, x - 1, y - 1, West);
@@ -149,42 +144,42 @@ void GrandeAcedrexBoard::GetMoves(Piece* piece, int x, int y)
         CheckDirection(piece, x, y, NorthWest);
         break;
     case Unicorn:
-        if (GetData(x + 1, y + 2) == nullptr)
+        if (GetData(x + 1, y + 2) == std::nullopt)
         {
             CheckMove(piece, x + 1, y + 2);
             CheckDirection(piece, x + 1, y + 2, NorthEast);
         }
-        if (GetData(x - 1, y + 2) == nullptr)
+        if (GetData(x - 1, y + 2) == std::nullopt)
         {
             CheckMove(piece, x - 1, y + 2);
             CheckDirection(piece, x - 1, y + 2, NorthWest);
         }
-        if (GetData(x + 1, y - 2) == nullptr)
+        if (GetData(x + 1, y - 2) == std::nullopt)
         {
             CheckMove(piece, x + 1, y - 2);
             CheckDirection(piece, x + 1, y - 2, SouthEast);
         }
-        if (GetData(x - 1, y - 2) == nullptr)
+        if (GetData(x - 1, y - 2) == std::nullopt)
         {
             CheckMove(piece, x - 1, y - 2);
             CheckDirection(piece, x - 1, y - 2, SouthWest);
         }
-        if (GetData(x + 2, y + 1) == nullptr)
+        if (GetData(x + 2, y + 1) == std::nullopt)
         {
             CheckMove(piece, x + 2, y + 1);
             CheckDirection(piece, x + 2, y + 1, NorthEast);
         }
-        if (GetData(x + 2, y - 1) == nullptr)
+        if (GetData(x + 2, y - 1) == std::nullopt)
         {
             CheckMove(piece, x + 2, y - 1);
             CheckDirection(piece, x + 2, y - 1, SouthEast);
         }
-        if (GetData(x - 2, y + 1) == nullptr)
+        if (GetData(x - 2, y + 1) == std::nullopt)
         {
             CheckMove(piece, x - 2, y + 1);
             CheckDirection(piece, x - 2, y + 1, NorthWest);
         }
-        if (GetData(x - 2, y - 1) == nullptr)
+        if (GetData(x - 2, y - 1) == std::nullopt)
         {
             CheckMove(piece, x - 2, y - 1);
             CheckDirection(piece, x - 2, y - 1, SouthWest);
@@ -208,7 +203,7 @@ bool GrandeAcedrexBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 
 std::string GrandeAcedrexBoard::GetStringCode(int x, int y) const
 {
-    if (GetData(x, y) == nullptr) return "";
+    if (GetData(x, y) == std::nullopt) return "";
     PieceType pieceType = GetData(x, y)->Type;
     switch (pieceType)
     {

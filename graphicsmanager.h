@@ -9,7 +9,7 @@
 class GraphicsManager
 {
 public:
-    static void DrawPiece(QPainter& painter, Piece *p, GameVariant gameVariant, PieceStyle pieceStyle, int w, int h, int i, int j);
+    static void DrawPiece(QPainter& painter, Piece p, GameVariant gameVariant, PieceStyle pieceStyle, int w, int h, int i, int j);
 
 private:
     static QString GetResourcePrefix(GameVariant gameVariant, PieceStyle pieceStyle);

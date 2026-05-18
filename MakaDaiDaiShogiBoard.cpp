@@ -19,11 +19,11 @@ void MakaDaiDaiShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new Piece(_initialSetup[j][i], j < 8 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 8 ? Black : White));
 			}
 			else
 			{
-				SetData(i, j, nullptr);
+				SetData(i, j, std::nullopt);
 			}
 		}
 	}
@@ -36,22 +36,17 @@ Board* MakaDaiDaiShogiBoard::Clone()
 	{
 		for (int j = 0; j < GetHeight(); j++)
 		{
-			const Piece* p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
+			const std::optional<Piece> p = GetData(i, j);
+            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
 	return cb;
 }
 
-void MakaDaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
+void MakaDaiDaiShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
 {
-    Promote(GetData(x, y), pt);
-}
-
-void MakaDaiDaiShogiBoard::Promote(Piece *piece, PieceType pt)
-{
-    if (piece != nullptr)
+    if (piece != std::nullopt)
     {
         piece->IsPromoted = true;
         if (pt != None)
@@ -173,7 +168,7 @@ void MakaDaiDaiShogiBoard::Promote(Piece *piece, PieceType pt)
     }
 }
 
-void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
+void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
 	_moves.clear();
     switch (piece->Type)
@@ -183,8 +178,8 @@ void MakaDaiDaiShogiBoard::GetMoves(Piece* piece, int x, int y)
 		{
 			for (int j = 0; j < GetHeight(); j++)
 			{
-				const Piece* p = GetData(i, j);
-				if (p == nullptr)
+				const std::optional<Piece> p = GetData(i, j);
+				if (p == std::nullopt)
 				{
 					_moves.emplace_back(i, j);
 				}
@@ -850,28 +845,22 @@ bool MakaDaiDaiShogiBoard::TripleMove(int x1, int y1, int x2, int y2, int x3, in
 	{
 		if (x1 != x2 || y1 != y2)
 		{
-			if (GetData(x2, y2) != nullptr)
+			if (GetData(x2, y2) != std::nullopt)
 			{
-				delete GetData(x2, y2);
-				SetData(x2, y2, nullptr);
+				SetData(x2, y2, std::nullopt);
 			}
 		}
 		if (x1 != x3 || y1 != y3)
 		{
-			if (GetData(x3, y3) != nullptr)
+			if (GetData(x3, y3) != std::nullopt)
 			{
-				delete GetData(x3, y3);
-				SetData(x3, y3, nullptr);
+				SetData(x3, y3, std::nullopt);
 			}
 		}
 		if (x1 != x4 || y1 != y4)
 		{
-			if (GetData(x4, y4) != nullptr)
-			{
-				delete GetData(x4, y4);
-			}
 			SetData(x4, y4, GetData(x1, y1));
-			SetData(x1, y1, nullptr);
+			SetData(x1, y1, std::nullopt);
 		}
 		return true;
 	}
@@ -890,14 +879,14 @@ std::vector<std::pair<int, int>> MakaDaiDaiShogiBoard::GetRay(int startR, int st
 		if (r < 0 || r >= n || c < 0 || c >= n) {
 			break;
 		}
-		const Piece* d = GetData(r, c);
-        if (d != nullptr && d->Colour == pieceColour) {
+		const std::optional<Piece> d = GetData(r, c);
+        if (d != std::nullopt && d->Colour == pieceColour) {
 			break;
 		}
 
 		result.emplace_back(r, c);
 
-        if (d != nullptr && d->Colour != pieceColour) {
+        if (d != std::nullopt && d->Colour != pieceColour) {
 			break;
 		}
 	}
@@ -928,7 +917,7 @@ void MakaDaiDaiShogiBoard::GetAllPossibleMoves(int startR, int startC, bool diag
 	//   (Segment1) in direction d1
 	//   (Segment2) in direction d2 (which may be the same as d1 or different)
 
-    const PieceColour pieceColour = GetData(startR, startC) != nullptr ? GetData(startR, startC)->Colour : White;
+    const PieceColour pieceColour = GetData(startR, startC) != std::nullopt ? GetData(startR, startC)->Colour : White;
 
 	for (const auto& d1 : directions) {
 		constexpr int BOARD_SIZE = 19;
@@ -950,7 +939,7 @@ void MakaDaiDaiShogiBoard::GetAllPossibleMoves(int startR, int startC, bool diag
 
 			reachable.insert({ r1, c1 });
 
-			if (GetData(r1, c1) != nullptr) {
+			if (GetData(r1, c1) != std::nullopt) {
 				continue;  // skip second segment
 			}
 

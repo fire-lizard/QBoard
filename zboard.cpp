@@ -55,7 +55,7 @@ void ZBoard::paintEvent(QPaintEvent *)
             painter.drawRect(rect);
             if (_pieces.size() >= index)
             {
-                GraphicsManager::DrawPiece(painter, nullptr, _gameVariant, _pieceStyle, w, h, i, j);
+                GraphicsManager::DrawPiece(painter, Piece(Rook, White), _gameVariant, _pieceStyle, w, h, i, j);
             }
             else break;
             /*Piece *p = _board->GetData(i, j);

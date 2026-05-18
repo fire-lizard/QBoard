@@ -10,7 +10,7 @@ public:
 	~MakrukBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
-	void GetMoves(Piece* piece, int x, int y) override;
+	void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
     std::string GetStringCode(int x, int y) const override;
     void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture) override;
 

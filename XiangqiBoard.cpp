@@ -18,8 +18,8 @@ Board* XiangqiBoard::Clone()
 	{
 		for (int j = 0; j < GetHeight(); j++)
 		{
-			const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
+			const std::optional<Piece> p = GetData(i, j);
+            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
@@ -36,25 +36,21 @@ void XiangqiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 5 ? Black : White));
 			}
 			else
 			{
-				SetData(i, j, nullptr);
+				SetData(i, j, std::nullopt);
 			}
 		}
 	}
 }
 
-void XiangqiBoard::Promote(int x, int y, PieceType pt)
+void XiangqiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
 {
 }
 
-void XiangqiBoard::Promote(Piece *piece, PieceType pt)
-{
-}
-
-void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
+void XiangqiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
 	_moves.clear();
     switch (piece->Type)
@@ -88,16 +84,16 @@ void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 	case Elephant:
         if ((piece->Colour == White && y > 5) || piece->Colour == Black)
 		{
-			if (GetData(x - 1, y - 1) == nullptr)
+			if (GetData(x - 1, y - 1) == std::nullopt)
 				CheckMove(piece, x - 2, y - 2);
-			if (GetData(x + 1, y - 1) == nullptr)
+			if (GetData(x + 1, y - 1) == std::nullopt)
 				CheckMove(piece, x + 2, y - 2);
 		}
         if ((piece->Colour == Black && y < 4) || piece->Colour == White)
 		{
-			if (GetData(x - 1, y + 1) == nullptr)
+			if (GetData(x - 1, y + 1) == std::nullopt)
 				CheckMove(piece, x - 2, y + 2);
-			if (GetData(x + 1, y + 1) == nullptr)
+			if (GetData(x + 1, y + 1) == std::nullopt)
 				CheckMove(piece, x + 2, y + 2);
 		}
 		break;
@@ -122,22 +118,22 @@ void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 		}
 		break;
 	case Knight:
-		if (GetData(x, y + 1) == nullptr)
+		if (GetData(x, y + 1) == std::nullopt)
 		{
 			CheckMove(piece, x + 1, y + 2);
 			CheckMove(piece, x - 1, y + 2);
 		}
-		if (GetData(x + 1, y) == nullptr)
+		if (GetData(x + 1, y) == std::nullopt)
 		{
 			CheckMove(piece, x + 2, y + 1);
 			CheckMove(piece, x + 2, y - 1);
 		}
-		if (GetData(x - 1, y) == nullptr)
+		if (GetData(x - 1, y) == std::nullopt)
 		{
 			CheckMove(piece, x - 2, y + 1);
 			CheckMove(piece, x - 2, y - 1);
 		}
-		if (GetData(x, y - 1) == nullptr)
+		if (GetData(x, y - 1) == std::nullopt)
 		{
 			CheckMove(piece, x + 1, y - 2);
 			CheckMove(piece, x - 1, y - 2);
@@ -154,12 +150,12 @@ void XiangqiBoard::GetMoves(Piece *piece, int x, int y)
 	}
 }
 
-void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direction direction)
+void XiangqiBoard::CheckCannonDirection(const std::optional<Piece>& piece, int x, int y, Direction direction)
 {
 	do
 	{
 		CheckDirectionInc(x, y, direction);
-		if (GetData(x, y) == nullptr)
+		if (GetData(x, y) == std::nullopt)
         {
 			CheckMove(piece, x, y);
         }
@@ -169,8 +165,8 @@ void XiangqiBoard::CheckCannonDirection(const Piece *piece, int x, int y, Direct
 			{
 				CheckDirectionInc(x, y, direction);
 			} 
-			while (GetData(x, y) == nullptr && InBounds(x, y, direction));
-            if (CheckPosition(x, y) && GetData(x, y) != nullptr && GetData(x, y)->Colour != piece->Colour)
+			while (GetData(x, y) == std::nullopt && InBounds(x, y, direction));
+            if (CheckPosition(x, y) && GetData(x, y) != std::nullopt && GetData(x, y)->Colour != piece->Colour)
 			{
 				CheckMove(piece, x, y);
 			}
@@ -188,8 +184,8 @@ bool XiangqiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	int pieceCount = 0;
 	for (int index = 0; index < _height; index++)
 	{
-		const Piece* p = GetData(oldX, index);
-        if (p != nullptr && p->Colour == pieceColour && p->Type == pieceType)
+		const std::optional<Piece> p = GetData(oldX, index);
+        if (p != std::nullopt && p->Colour == pieceColour && p->Type == pieceType)
 		{
 			_pieceFiles[pieceCount] = index;
 			pieceCount++;
@@ -287,7 +283,7 @@ std::string XiangqiBoard::GetWXF()
 	return _wxf;
 }
 
-bool XiangqiBoard::AreTwoKingsLookingOnEachOther()
+bool XiangqiBoard::AreTwoKingsLookingOnEachOther() const
 {
     const auto loc1 = GetPieceLocation(King, Black);
     const auto loc2 = GetPieceLocation(King, White);
@@ -296,7 +292,7 @@ bool XiangqiBoard::AreTwoKingsLookingOnEachOther()
         int step = loc1.second > loc2.second ? -1 : 1;
         for (int index = loc1.second + step; index != loc2.second; index += step)
         {
-            if (GetData(loc1.first, index) != nullptr)
+            if (GetData(loc1.first, index) != std::nullopt)
             {
                 return false;
             }
@@ -308,7 +304,7 @@ bool XiangqiBoard::AreTwoKingsLookingOnEachOther()
 
 std::string XiangqiBoard::GetStringCode(int x, int y) const
 {
-    if (GetData(x, y) == nullptr) return "";
+    if (GetData(x, y) == std::nullopt) return "";
     PieceType pieceType = GetData(x, y)->Type;
     switch (pieceType)
     {

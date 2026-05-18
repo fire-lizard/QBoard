@@ -19,11 +19,11 @@ void TenjikuShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, new Piece(_initialSetup[j][i], j < 7 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 7 ? Black : White));
 			}
 			else
 			{
-				SetData(i, j, nullptr);
+				SetData(i, j, std::nullopt);
 			}
 		}
 	}
@@ -36,22 +36,17 @@ Board* TenjikuShogiBoard::Clone()
 	{
 		for (int j = 0; j < GetHeight(); j++)
 		{
-			const Piece* p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
+			const std::optional<Piece> p = GetData(i, j);
+            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
 		}
 	}
 	cb->SetMoveCount(_moveCount);
 	return cb;
 }
 
-void TenjikuShogiBoard::Promote(int x, int y, PieceType pt)
+void TenjikuShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
 {
-    Promote(GetData(x, y), pt);
-}
-
-void TenjikuShogiBoard::Promote(Piece *piece, PieceType pt)
-{
-    if (piece != nullptr)
+    if (piece != std::nullopt)
     {
         piece->IsPromoted = true;
         PieceType pieceType = None;
@@ -107,7 +102,7 @@ void TenjikuShogiBoard::Promote(Piece *piece, PieceType pt)
     }
 }
 
-void TenjikuShogiBoard::CheckJump(const Piece* piece, int x, int y, Direction direction)
+void TenjikuShogiBoard::CheckJump(const std::optional<Piece>& piece, int x, int y, Direction direction)
 {
 	bool beforeJump = true;
 	while (InBounds(x, y, direction))
@@ -117,7 +112,7 @@ void TenjikuShogiBoard::CheckJump(const Piece* piece, int x, int y, Direction di
 		{
 			CheckMove(piece, x, y);
 		}
-		if (GetData(x, y) != nullptr)
+		if (GetData(x, y) != std::nullopt)
 		{
 			beforeJump = false;
 			CheckMove(piece, x, y);
@@ -131,11 +126,11 @@ void TenjikuShogiBoard::CheckJump(const Piece* piece, int x, int y, Direction di
 	}
 }
 
-void TenjikuShogiBoard::CheckIgui(const Piece* piece, int x, int y)
+void TenjikuShogiBoard::CheckIgui(const std::optional<Piece>& piece, int x, int y)
 {
 	if (x >= 0 && y >= 0 && x <= _width - 1 && y <= _height - 1)
 	{
-        if (GetData(x, y) != nullptr && GetData(x, y)->Colour != piece->Colour)
+        if (GetData(x, y) != std::nullopt && GetData(x, y)->Colour != piece->Colour)
 		{
 			_moves.emplace_back(x, y);
 		}
@@ -149,8 +144,7 @@ bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	{
 		if (std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}))
 		{
-			delete GetData(newX, newY);
-			SetData(newX, newY, nullptr);
+			SetData(newX, newY, std::nullopt);
 			return true;
 		}
 	}
@@ -159,28 +153,26 @@ bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 		if (IsMovePossible(newX, newY))
 		{
             auto pieces = GetEnemyPiecesAround(newX, newY, GetData(oldX, oldY)->Colour);
-            if (std::any_of(pieces.begin(), pieces.end(), [=](std::pair<int, int> t) {return GetData(t.first, t.second)->Type == FireDemon;}))
+            if (std::any_of(pieces.begin(), pieces.end(), [this](std::pair<int, int> t) {return GetData(t.first, t.second)->Type == FireDemon;}))
 			{
-				delete GetData(oldX, oldY);
-				SetData(oldX, oldY, nullptr);
-				if (GetData(newX, newY) != nullptr)
+				SetData(oldX, oldY, std::nullopt);
+				if (GetData(newX, newY) != std::nullopt)
 				{
-					delete GetData(newX, newY);
-					SetData(newX, newY, nullptr);
+					SetData(newX, newY, std::nullopt);
 				}
 				return true;
 			}
 			// Fire Demon moves
             if (GetData(oldX, oldY)->Type == FireDemon)
 			{
-				for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {delete GetData(p.first, p.second); SetData(p.first, p.second, nullptr);});
+				for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {SetData(p.first, p.second, std::nullopt);});
 			}
 		}
 	}
 	return DaiShogiBoard::Move(oldX, oldY, newX, newY, cl);
 }
 
-void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
+void TenjikuShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
 	_moves.clear();
     switch (piece->Type)
@@ -227,12 +219,12 @@ void TenjikuShogiBoard::GetMoves(Piece* piece, int x, int y)
 		CheckDirection(piece, x - 1, y - 1, NorthWest);
 
 		CheckMove(piece, x + 2, y);
-		if (GetData(x + 2, y) == nullptr)
+		if (GetData(x + 2, y) == std::nullopt)
 		{
 			CheckMove(piece, x + 3, y);
 		}
 		CheckMove(piece, x - 2, y);
-		if (GetData(x - 2, y) == nullptr)
+		if (GetData(x - 2, y) == std::nullopt)
 		{
 			CheckMove(piece, x - 3, y);
 		}
@@ -405,11 +397,11 @@ void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 			{
 				board[i + MAX_MOVES][j + MAX_MOVES] = 'W';
 			}
-            else if (GetData(x + i, y + j) != nullptr && GetData(x + i, y + j)->Colour != GetData(x, y)->Colour)
+            else if (GetData(x + i, y + j) != std::nullopt && GetData(x + i, y + j)->Colour != GetData(x, y)->Colour)
 			{
 				board[i + MAX_MOVES][j + MAX_MOVES] = 'W';
 			}
-            else if (GetData(x + i, y + j) != nullptr && GetData(x + i, y + j)->Colour == GetData(x, y)->Colour)
+            else if (GetData(x + i, y + j) != std::nullopt && GetData(x + i, y + j)->Colour == GetData(x, y)->Colour)
 			{
 				board[i + MAX_MOVES][j + MAX_MOVES] = 'B';
 			}

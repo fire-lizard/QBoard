@@ -9,17 +9,16 @@ public:
 	~XiangqiBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
-    void Promote(int x, int y, PieceType pt) override;
-    void Promote(Piece *piece, PieceType pt) override;
-    void GetMoves(Piece *piece, int x, int y) override;
+    void Promote(std::optional<Piece>& piece, PieceType pt) override;
+    void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
     std::string GetStringCode(int x, int y) const override;
 	void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2);
-    bool AreTwoKingsLookingOnEachOther();
+    bool AreTwoKingsLookingOnEachOther() const;
     std::string GetWXF();
 
 protected:
-    virtual void CheckCannonDirection(const Piece *piece, int x, int y, Direction direction);
+    virtual void CheckCannonDirection(const std::optional<Piece>& piece, int x, int y, Direction direction);
 
 private:
 	std::string _wxf;

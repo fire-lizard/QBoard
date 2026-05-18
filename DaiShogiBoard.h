@@ -9,10 +9,9 @@ public:
 	~DaiShogiBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
-    void Promote(int x, int y, PieceType pieceType) override;
-    void Promote(Piece *piece, PieceType pt) override;
-    void GetMoves(Piece* piece, int x, int y) override;
-	void CheckLionDirection(const Piece* piece, int x, int y, Direction direction, int count);
+    void Promote(std::optional<Piece>& piece, PieceType pt) override;
+    void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
+	void CheckLionDirection(const std::optional<Piece>& piece, int x, int y, Direction direction, int count);
 
 protected:
 	std::vector<std::pair<int, int>> GetEnemyPiecesAround(int x, int y, PieceColour pieceColour) const;

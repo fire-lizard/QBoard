@@ -42,8 +42,8 @@ void WbEngine::Edit(const Board* board) const
 	{
 		for (int i = 0; i < board->GetWidth(); i++)
 		{
-			Piece* p = board->GetData(i, j);
-			if (p != nullptr)
+			std::optional<Piece> p = board->GetData(i, j);
+			if (p != std::nullopt)
 			{
 				const char letter = i + 97;
 				const int number = board->GetHeight() - j;

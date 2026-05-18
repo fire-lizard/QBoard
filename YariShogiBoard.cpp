@@ -21,11 +21,11 @@ void YariShogiBoard::Initialize()
         {
             if (_initialSetup[j][i] != None)
             {
-                SetData(i, j, new Piece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 5 ? Black : White));
             }
             else
             {
-                SetData(i, j, nullptr);
+                SetData(i, j, std::nullopt);
             }
         }
     }
@@ -38,8 +38,8 @@ Board* YariShogiBoard::Clone()
     {
         for (int j = 0; j < GetHeight(); j++)
         {
-            const Piece *p = GetData(i, j);
-            cb->SetData(i, j, p != nullptr ? cb->CreatePiece(p->Type, p->Colour) : nullptr);
+            const std::optional<Piece> p = GetData(i, j);
+            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
         }
     }
     for (const auto& capturedPiece: _capturedPieces)
@@ -50,14 +50,9 @@ Board* YariShogiBoard::Clone()
     return cb;
 }
 
-void YariShogiBoard::Promote(int x, int y, PieceType pt)
+void YariShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
 {
-    Promote(GetData(x, y), pt);
-}
-
-void YariShogiBoard::Promote(Piece *piece, PieceType pt)
-{
-    if (piece != nullptr)
+    if (piece != std::nullopt)
     {
         piece->IsPromoted = true;
         PieceType pieceType = None;
@@ -85,7 +80,7 @@ void YariShogiBoard::Promote(Piece *piece, PieceType pt)
     }
 }
 
-void YariShogiBoard::GetMoves(Piece *piece, int x, int y)
+void YariShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
     _moves.clear();
     switch (piece->Type)
