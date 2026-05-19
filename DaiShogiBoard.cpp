@@ -44,13 +44,13 @@ Board* DaiShogiBoard::Clone()
 	return cb;
 }
 
-void DaiShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void DaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
-        piece->IsPromoted = true;
+		_data[x][y]->IsPromoted = true;
         PieceType pieceType = None;
-        switch (piece->Type)
+        switch (_data[x][y]->Type)
         {
         case Iron:
         case Stone:
@@ -63,12 +63,12 @@ void DaiShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
             pieceType = Gold;
             break;
         default:
-            ChuShogiBoard::Promote(piece, pt);
+            ChuShogiBoard::Promote(x, y, pt);
             break;
         }
         if (pieceType != None)
         {
-            piece->Type = pieceType;
+			_data[x][y]->Type = pieceType;
         }
     }
 }

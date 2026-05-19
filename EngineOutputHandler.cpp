@@ -902,16 +902,15 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			{
 				return "Invalid FEN string for this game";
 			}
-            std::optional<Piece> piece = board->CreatePiece(pieceType, c >= 'a' && c <= 'z' ? Black : White);
-			if (promo == "+")
-			{
+			board->SetData(i, j, board->CreatePiece(pieceType, c >= 'a' && c <= 'z' ? Black : White));
+            if (promo == "+")
+            {
                 if (gameVariant != MicroShogi && gameVariant != KyotoShogi)
                 {
-                    board->Promote(piece, None);
+                    board->Promote(i, j);
                 }
-			}
-			board->SetData(i, j, piece);
-			promo = "";
+            }
+            promo = "";
 			k++;
 			i++;
 		}

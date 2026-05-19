@@ -9,7 +9,7 @@ public:
     void Initialize() override;
     Board* Clone() override;
     bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
-    void Promote(std::optional<Piece>& piece, PieceType pt) override;
+    void Promote(int x, int y, PieceType pt = None) override;
 
 private:
 

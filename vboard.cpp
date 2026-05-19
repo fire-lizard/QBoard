@@ -475,15 +475,14 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 		else
 		{
-			std::optional<Piece> newPiece = _board->CreatePiece(_chosenPiece, _chosenColour);
+			_board->SetData(x, y, _board->CreatePiece(_chosenPiece, _chosenColour));
 			if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), _chosenPiece) != std::end(_promotedPieces))
 			{
-                if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi)
-                {
-                    _board->Promote(newPiece, None);
-                }
+				if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi)
+				{
+					_board->Promote(x, y);
+				}
 			}
-			_board->SetData(x, y, newPiece);
 		}
 		repaint();
 		return;
@@ -1489,7 +1488,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
                 (y == 0 && _currentPiece->Colour == White)))
 		{
 			promotion = 'q';
-            _board->Promote(x, y, None);
+            _board->Promote(x, y);
 		}
 	}
 	else if (_gameVariant == Makruk)
@@ -1499,7 +1498,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
                 (y <= 2 && _currentPiece->Colour == White)))
 		{
 			promotion = 'q';
-            _board->Promote(x, y, None);
+            _board->Promote(x, y);
 		}
 	}
     else if (_gameVariant == KyotoShogi)
@@ -1507,7 +1506,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
         if (_currentPiece->Type != King)
         {
             promotion = '+';
-            _board->Promote(x, y, None);
+            _board->Promote(x, y);
         }
     }
     else if (_gameVariant == DaiDaiShogi)
@@ -1518,7 +1517,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
                 _currentPiece->Type) == std::end(UnpromotablePieces))
 		{
 			promotion = '+';
-            _board->Promote(x, y, None);
+            _board->Promote(x, y);
 		}
 	}
 	else if (_gameVariant == MakaDaiDaiShogi)
@@ -1539,7 +1538,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             else if (p->IsPromoted || AskForPromotion())
 			{
 				promotion = '+';
-                _board->Promote(x, y, None);
+                _board->Promote(x, y);
 			}
 			else
 			{
@@ -1559,14 +1558,14 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             if (p->Type == King || p->Type == Prince || p->Type == MiddleTroop || p->Type == Flag || p->Type == Drum)
 			{
 				promotion = '+';
-                _board->Promote(x, y, None);
+                _board->Promote(x, y);
 			}
             else if (std::find(std::begin(StepMovers), std::end(StepMovers), _currentPiece->Type) != std::end(StepMovers))
 			{
                 if (p->Type == Lion || p->Type == RisingDragon || p->Type == RoamingAssault || p->Type == Thunderclap)
 				{
 					promotion = '+';
-                    _board->Promote(x, y, None);
+                    _board->Promote(x, y);
 				}
 			}
             else if (_currentPiece->Type == Knight)
@@ -1574,13 +1573,13 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
                 if (p->Type == FrankishCannon)
 				{
 					promotion = '+';
-                    _board->Promote(x, y, None);
+                    _board->Promote(x, y);
 				}
 			}
             else if (p->IsPromoted || AskForPromotion())
 			{
 				promotion = '+';
-                _board->Promote(x, y, None);
+                _board->Promote(x, y);
 			}
 			else
 			{
@@ -1620,19 +1619,19 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 		{
             if (_gameVariant == ToriShogi)
             {
-                _board->Promote(x, y, None);
+                _board->Promote(x, y);
             }
             else if (((pt == Pawn && _gameVariant != ChuShogi && _gameVariant != HeianDaiShogi) || (pt == Knight && _gameVariant != HeianDaiShogi) ||
                       (pt == Lance && _gameVariant != HeianDaiShogi)) &&
                 ((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) || (y == 0 && _currentPiece->Colour == White)))
 			{
-                _board->Promote(x, y, None);
+                _board->Promote(x, y);
 			}
             else if (!_currentPiece->IsPromoted)
 			{
 				if (AskForPromotion())
 				{
-                    _board->Promote(x, y, None);
+                    _board->Promote(x, y);
 					promotion = '+';
 				}
 				else
@@ -2541,15 +2540,14 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			}
 			else
 			{
-				std::optional<Piece> newPiece = _board->CreatePiece(_chosenPiece, _chosenColour);
+				_board->SetData(x, y, _board->CreatePiece(_chosenPiece, _chosenColour));
 				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), _chosenPiece) != std::end(_promotedPieces))
 				{
-                    if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != GrandeAcedrex)
-                    {
-                        _board->Promote(newPiece, None);
-                    }
+					if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != GrandeAcedrex)
+					{
+						_board->Promote(x, y);
+					}
 				}
-				_board->SetData(x, y, newPiece);
 			}
 		}
 

@@ -53,18 +53,18 @@ Board* ToriShogiBoard::Clone()
     return cb;
 }
 
-void ToriShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void ToriShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
-        piece->IsPromoted = true;
-        switch (piece->Type)
+        _data[x][y]->IsPromoted = true;
+        switch (_data[x][y]->Type)
         {
         case Falcon:
-            piece->Type = Eagle;
+            _data[x][y]->Type = Eagle;
             break;
         case Pawn:
-            piece->Type = Goose;
+            _data[x][y]->Type = Goose;
             break;
         default:
             break;

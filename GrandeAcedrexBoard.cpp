@@ -46,12 +46,12 @@ void GrandeAcedrexBoard::Initialize()
     }
 }
 
-void GrandeAcedrexBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void GrandeAcedrexBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
-        piece->IsPromoted = true;
-        piece->Type = pt;
+        _data[x][y]->IsPromoted = true;
+        _data[x][y]->Type = pt;
     }
 }
 
@@ -196,7 +196,7 @@ bool GrandeAcedrexBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
     const bool result = ShatranjBoard::Move(oldX, oldY, newX, newY, cl);
     if (result)
     {
-        GetData(newX, newY)->HasMoved = true;
+        _data[newX][newY]->HasMoved = true;
     }
     return result;
 }

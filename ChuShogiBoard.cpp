@@ -44,13 +44,13 @@ Board* ChuShogiBoard::Clone()
 	return cb;
 }
 
-void ChuShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void ChuShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
-        piece->IsPromoted = true;
+		_data[x][y]->IsPromoted = true;
         PieceType pieceType = None;
-        switch (piece->Type)
+        switch (_data[x][y]->Type)
         {
         case DragonKing:
             pieceType = Eagle;
@@ -111,7 +111,7 @@ void ChuShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->Type = pieceType;
+			_data[x][y]->Type = pieceType;
         }
     }
 }

@@ -44,14 +44,14 @@ Board* MakaDaiDaiShogiBoard::Clone()
 	return cb;
 }
 
-void MakaDaiDaiShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void MakaDaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
-        piece->IsPromoted = true;
+		_data[x][y]->IsPromoted = true;
         if (pt != None)
         {
-            piece->Type = pt;
+			_data[x][y]->Type = pt;
             return;
         }
         PieceType pieceType = None;
@@ -163,7 +163,7 @@ void MakaDaiDaiShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->Type = pieceType;
+			_data[x][y]->Type = pieceType;
         }
     }
 }

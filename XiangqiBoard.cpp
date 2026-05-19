@@ -46,7 +46,7 @@ void XiangqiBoard::Initialize()
 	}
 }
 
-void XiangqiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void XiangqiBoard::Promote(int x, int y, PieceType pt)
 {
 }
 

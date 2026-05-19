@@ -222,13 +222,6 @@ void Board::RemoveMoves()
 	_moves.clear();
 }
 
-void Board::Promote(int x, int y, PieceType pt)
-{
-    std::optional<Piece> piece = GetData(x, y);
-    Promote(piece, pt);
-    SetData(x, y, piece);
-}
-
 std::optional<Piece> Board::CreatePiece(PieceType pieceType, PieceColour pieceColour)
 {
     return Piece(pieceType, pieceColour);

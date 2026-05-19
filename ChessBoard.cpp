@@ -55,12 +55,12 @@ void ChessBoard::Initialize()
 	}
 }
 
-void ChessBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void ChessBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
-        piece->IsPromoted = true;
-        piece->Type = pt;
+		_data[x][y]->IsPromoted = true;
+		_data[x][y]->Type = pt;
     }
 }
 
@@ -241,7 +241,7 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	const bool result = Board::Move(oldX, oldY, newX, newY, cl);
     if (result && GetData(newX, newY) != std::nullopt)
 	{
-        GetData(newX, newY)->HasMoved = true;
+		_data[newX][newY]->HasMoved = true;
 		// Castling
 		if (pieceType == Rook)
 		{

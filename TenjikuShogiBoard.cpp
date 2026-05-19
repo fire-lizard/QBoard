@@ -44,13 +44,13 @@ Board* TenjikuShogiBoard::Clone()
 	return cb;
 }
 
-void TenjikuShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void TenjikuShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
-        piece->IsPromoted = true;
+		_data[x][y]->IsPromoted = true;
         PieceType pieceType = None;
-        switch (piece->Type)
+        switch (_data[x][y]->Type)
         {
         case BishopGeneral:
             pieceType = ViceGeneral;
@@ -92,12 +92,12 @@ void TenjikuShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
             pieceType = RookGeneral;
             break;
         default:
-            DaiShogiBoard::Promote(piece, pt);
+            DaiShogiBoard::Promote(x, y, pt);
             break;
         }
         if (pieceType != None)
         {
-            piece->Type = pieceType;
+			_data[x][y]->Type = pieceType;
         }
     }
 }

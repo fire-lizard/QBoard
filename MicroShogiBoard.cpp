@@ -56,17 +56,17 @@ bool MicroShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
     const bool result = ShogiVariantBoard::Move(oldX, oldY, newX, newY, cl);
     if (result && destPieceType != None)
     {
-        Board::Promote(newX, newY);
+        Promote(newX, newY);
     }
     return result;
 }
 
-void MicroShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void MicroShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
         PieceType pieceType = None;
-        switch (piece->Type)
+        switch (_data[x][y]->Type)
         {
         case Rook:
             pieceType = Gold;
@@ -97,7 +97,7 @@ void MicroShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->Type = pieceType;
+            _data[x][y]->Type = pieceType;
         }
     }
 }

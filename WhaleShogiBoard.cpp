@@ -50,7 +50,7 @@ Board* WhaleShogiBoard::Clone()
     return cb;
 }
 
-void WhaleShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void WhaleShogiBoard::Promote(int x, int y, PieceType pt)
 {
 }
 

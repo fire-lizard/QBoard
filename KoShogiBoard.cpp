@@ -45,13 +45,13 @@ Board* KoShogiBoard::Clone()
 	return cb;
 }
 
-void KoShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void KoShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
-        piece->IsPromoted = true;
+		_data[x][y]->IsPromoted = true;
         PieceType pieceType = None;
-        switch (piece->Type)
+        switch (_data[x][y]->Type)
         {
         case Kylin:
             pieceType = DoubleKylin;
@@ -149,26 +149,17 @@ void KoShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->Type = pieceType;
+			_data[x][y]->Type = pieceType;
         }
     }
 }
 
-void KoShogiBoard::Demote(int x, int y) const
+void KoShogiBoard::Demote(int x, int y)
 {
-    if (GetData(x, y) != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
-        GetData(x, y)->IsPromoted = false;
-        GetData(x, y)->Type = GetData(x, y)->BaseType;
-    }
-}
-
-void KoShogiBoard::Demote(std::optional<Piece> piece)
-{
-    if (piece != std::nullopt)
-    {
-        piece->IsPromoted = false;
-        piece->Type = piece->BaseType;
+		_data[x][y]->IsPromoted = false;
+		_data[x][y]->Type = GetData(x, y)->BaseType;
     }
 }
 
@@ -226,7 +217,7 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
         const auto hlLocation = GetPieceLocation(HolyLight, sp->Colour == White ? Black : White);
 		if (hlLocation.first != -1 && hlLocation.second != -1 && abs(hlLocation.first - newX) <= 5 && abs(hlLocation.second - newY) <= 5)
 		{
-            Demote(sp);
+            Demote(newX, newY);
 		}
 	}
     else if (result == true && sp != std::nullopt && sp->Type == HolyLight)

@@ -50,12 +50,12 @@ Board* KyotoShogiBoard::Clone()
     return cb;
 }
 
-void KyotoShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void KyotoShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
         PieceType pieceType = None;
-        switch (piece->Type)
+        switch (_data[x][y]->Type)
         {
         case Rook:
             pieceType = Pawn;
@@ -86,7 +86,7 @@ void KyotoShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->Type = pieceType;
+            _data[x][y]->Type = pieceType;
         }
     }
 }

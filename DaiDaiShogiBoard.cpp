@@ -44,15 +44,15 @@ Board* DaiDaiShogiBoard::Clone()
 	return cb;
 }
 
-void DaiDaiShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void DaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece == std::nullopt || std::find(std::begin(UnpromotablePieces), std::end(UnpromotablePieces), piece->Type) != std::end(UnpromotablePieces))
+    if (_data[x][y] == std::nullopt || std::find(std::begin(UnpromotablePieces), std::end(UnpromotablePieces), _data[x][y]->Type) != std::end(UnpromotablePieces))
     {
         return;
     }
-    piece->IsPromoted = true;
+	_data[x][y]->IsPromoted = true;
     PieceType pieceType = None;
-    switch (piece->Type)
+    switch (_data[x][y]->Type)
     {
     case OldKite:
         pieceType = Tengu;
@@ -122,7 +122,7 @@ void DaiDaiShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
     }
     if (pieceType != None)
     {
-        piece->Type = pieceType;
+		_data[x][y]->Type = pieceType;
     }
 }
 

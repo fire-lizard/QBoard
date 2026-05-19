@@ -50,13 +50,13 @@ Board* YariShogiBoard::Clone()
     return cb;
 }
 
-void YariShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void YariShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
-        piece->IsPromoted = true;
+        _data[x][y]->IsPromoted = true;
         PieceType pieceType = None;
-        switch (piece->Type)
+        switch (_data[x][y]->Type)
         {
         case YariKnight:
             pieceType = YariGold;
@@ -75,7 +75,7 @@ void YariShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
         }
         if (pieceType != None)
         {
-            piece->Type = pieceType;
+            _data[x][y]->Type = pieceType;
         }
     }
 }

@@ -9,7 +9,7 @@ public:
 	~XiangqiBoard() override;
 	void Initialize() override;
 	Board* Clone() override;
-    void Promote(std::optional<Piece>& piece, PieceType pt) override;
+    void Promote(int x, int y, PieceType pt = None) override;
     void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
     std::string GetStringCode(int x, int y) const override;

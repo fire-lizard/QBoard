@@ -213,7 +213,7 @@ bool OmegaChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
     const bool result = ChessBoard::Move(oldX, oldY, newX, newY, cl);
     if (result && GetData(newX, newY) != std::nullopt)
     {
-        GetData(newX, newY)->HasMoved = true;
+        _data[newX][newY]->HasMoved = true;
         // Castling
         if (pieceType == Rook)
         {

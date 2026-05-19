@@ -203,7 +203,7 @@ bool GrandChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
         {
             _capturedPieces.emplace_back(pieceColour, destPieceType);
         }
-        GetData(newX, newY)->HasMoved = true;
+        _data[newX][newY]->HasMoved = true;
         // En passant
         if (pieceType == Pawn && abs(oldY - newY) == 2 && EnemyPawnsAround(newX, newY))
         {

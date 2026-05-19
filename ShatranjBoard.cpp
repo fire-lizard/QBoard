@@ -46,12 +46,12 @@ void ShatranjBoard::Initialize()
 	}
 }
 
-void ShatranjBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void ShatranjBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
-        piece->IsPromoted = true;
-        piece->Type = Queen;
+		_data[x][y]->IsPromoted = true;
+		_data[x][y]->Type = Queen;
     }
 }
 void ShatranjBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)

@@ -45,12 +45,12 @@ Board* HeianDaiShogiBoard::Clone()
     return cb;
 }
 
-void HeianDaiShogiBoard::Promote(std::optional<Piece>& piece, PieceType pt)
+void HeianDaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (piece != std::nullopt)
+    if (_data[x][y] != std::nullopt)
     {
-        piece->IsPromoted = true;
-        piece->Type = Gold;
+        _data[x][y]->IsPromoted = true;
+        _data[x][y]->Type = Gold;
     }
 }
 

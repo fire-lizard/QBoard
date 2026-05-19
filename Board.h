@@ -30,14 +30,13 @@ public:
 	virtual ~Board();
 	virtual void Initialize() = 0;
 	virtual Board* Clone() = 0;
-    virtual void Promote(std::optional<Piece>& piece, PieceType pt) = 0;
+    virtual void Promote(int x, int y, PieceType pt = None) = 0;
     virtual void GetMoves(const std::optional<Piece>& piece, int x, int y) = 0;
     virtual bool Move(int oldX, int oldY, int newX, int newY, bool cl = true);
     virtual std::string GetStringCode(int x, int y) const;
     void Clear();
 	void RemoveMove(int x, int y);
 	void RemoveMoves();
-	void Promote(int x, int y, PieceType pt = None);
 	std::optional<Piece> CreatePiece(PieceType pieceType, PieceColour pieceColour);
     std::vector<std::tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
 	std::vector<std::pair<int, int>> Moves() const;
