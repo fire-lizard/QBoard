@@ -18,17 +18,6 @@ public:
 protected:
 	std::string _pgn;
 
-	PieceType _initialSetup[8][8] = {
-		{ Rook, Knight, Bishop, King, Queen, Bishop, Knight, Rook },
-		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
-		{ None, None, None, None, None, None, None, None },
-		{ None, None, None, None, None, None, None, None },
-		{ None, None, None, None, None, None, None, None },
-		{ None, None, None, None, None, None, None, None },
-		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
-		{ Rook, Knight, Bishop, King, Queen, Bishop, Knight, Rook }
-	};
-
 private:
 	const std::map<PieceType, char> _pieceToPGN = {
 		{Pawn, 'P'},
@@ -41,6 +30,17 @@ private:
         {King, 'K'},
         {Champion, 'C'},
         {Wizard, 'W'}
+	};
+
+	PieceType _initialSetup[8][8] = {
+		{ Rook, Knight, Bishop, King, Queen, Bishop, Knight, Rook },
+		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
+		{ None, None, None, None, None, None, None, None },
+		{ None, None, None, None, None, None, None, None },
+		{ None, None, None, None, None, None, None, None },
+		{ None, None, None, None, None, None, None, None },
+		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
+		{ Rook, Knight, Bishop, King, Queen, Bishop, Knight, Rook }
 	};
 };
 

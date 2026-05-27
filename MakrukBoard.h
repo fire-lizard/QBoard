@@ -14,7 +14,15 @@ public:
     std::string GetStringCode(int x, int y) const override;
     void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture) override;
 
-protected:
+private:
+	const std::map<PieceType, char> _pieceToPGN = {
+		{Pawn, 'P'},
+		{Rook, 'R'},
+		{Knight, 'N'},
+		{Silver, 'S'},
+		{Queen, 'M'},
+		{King, 'K'}
+	};
 
 	PieceType _initialSetup[8][8] = {
 		{ Rook, Knight, Silver, Queen, King, Silver, Knight, Rook },
@@ -25,16 +33,6 @@ protected:
 		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
 		{ None, None, None, None, None, None, None, None },
 		{ Rook, Knight, Silver, King, Queen, Silver, Knight, Rook }
-	};
-
-private:
-	const std::map<PieceType, char> _pieceToPGN = {
-		{Pawn, 'P'},
-		{Rook, 'R'},
-		{Knight, 'N'},
-		{Silver, 'S'},
-		{Queen, 'M'},
-		{King, 'K'}
 	};
 };
 

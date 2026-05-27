@@ -10,7 +10,7 @@ public:
     Board* Clone() override;
     void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
 
-protected:
+private:
 
     PieceType _initialSetup[8][10] = {
         { Rook, Knight, Archbishop, Bishop, Queen, King, Bishop, Chancellor, Knight, Rook },

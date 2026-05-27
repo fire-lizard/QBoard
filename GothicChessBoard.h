@@ -9,7 +9,7 @@ public:
     void Initialize() override;
     Board* Clone() override;
 
-protected:
+private:
 
     PieceType _initialSetup[8][10] = {
         { Rook, Knight, Bishop, Queen, Chancellor, King, Archbishop, Bishop, Knight, Rook },

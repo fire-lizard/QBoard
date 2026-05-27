@@ -2113,7 +2113,9 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 		{
             const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
             QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
-			_blackEngine->Move(convertedMoveArray[0], convertedMoveArray[1], convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
+			_blackEngine->Move(moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[0] : convertedMoveArray[0], 
+			                   moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[1] : convertedMoveArray[1], 
+				               convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
 		}
 		else
 		{
@@ -2167,7 +2169,9 @@ void VBoard::blackEngineReadyReadStandardOutput()
 		{
             const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());
             QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());
-			_whiteEngine->Move(convertedMoveArray[0], convertedMoveArray[1], convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
+			_whiteEngine->Move(moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[0] : convertedMoveArray[0], 
+			                   moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[1] : convertedMoveArray[1], 
+				               convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
 		}
 		else
 		{

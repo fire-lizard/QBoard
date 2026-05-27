@@ -15,6 +15,10 @@ public:
     void RemoveCapturedPiece(PieceType p, PieceColour pieceColour);
 
 protected:
+    bool EnemyPawnsAround(int x, int y) const override;
+
+private:
+    std::vector<std::pair<PieceColour, PieceType>> _capturedPieces;
 
     PieceType _initialSetup[10][10] = {
         { Rook, None, None, None, None, None, None, None, None, Rook },
@@ -28,9 +32,4 @@ protected:
         { None, Knight, Bishop, Queen, King, Chancellor, Archbishop, Bishop, Knight, None },
         { Rook, None, None, None, None, None, None, None, None, Rook },
     };
-
-    bool EnemyPawnsAround(int x, int y) const override;
-
-private:
-    std::vector<std::pair<PieceColour, PieceType>> _capturedPieces;
 };

@@ -22,6 +22,17 @@ public:
 
 protected:
 
+    bool _wkc = true;
+	bool _wqc = true;
+	bool _bkc = true;
+	bool _bqc = true;
+	int _halfMoveCount;
+	std::string _ep = "-";
+
+    virtual bool EnemyPawnsAround(int x, int y) const;
+
+private:
+	
 	PieceType _initialSetup[8][8] = {
 		{ Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook },
 		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
@@ -32,13 +43,4 @@ protected:
 		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
 		{ Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook }
 	};
-
-    bool _wkc = true;
-	bool _wqc = true;
-	bool _bkc = true;
-	bool _bqc = true;
-	int _halfMoveCount;
-	std::string _ep = "-";
-
-    virtual bool EnemyPawnsAround(int x, int y) const;
 };
