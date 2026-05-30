@@ -475,7 +475,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 		else
 		{
-			_board->SetData(x, y, _board->CreatePiece(_chosenPiece, _chosenColour));
+			_board->SetData(x, y, std::make_optional<Piece>(_chosenPiece, _chosenColour));
 			if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), _chosenPiece) != std::end(_promotedPieces))
 			{
 				if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi)
@@ -2113,8 +2113,8 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 		{
             const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
             QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
-			_blackEngine->Move(moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[0] : convertedMoveArray[0], 
-			                   moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[1] : convertedMoveArray[1], 
+			_blackEngine->Move(moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[0] : convertedMoveArray[0],
+			                   moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[1] : convertedMoveArray[1],
 				               convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
 		}
 		else
@@ -2169,8 +2169,8 @@ void VBoard::blackEngineReadyReadStandardOutput()
 		{
             const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());
             QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());
-			_whiteEngine->Move(moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[0] : convertedMoveArray[0], 
-			                   moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[1] : convertedMoveArray[1], 
+			_whiteEngine->Move(moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[0] : convertedMoveArray[0],
+			                   moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[1] : convertedMoveArray[1],
 				               convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
 		}
 		else
@@ -2544,7 +2544,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			}
 			else
 			{
-				_board->SetData(x, y, _board->CreatePiece(_chosenPiece, _chosenColour));
+				_board->SetData(x, y, std::make_optional<Piece>(_chosenPiece, _chosenColour));
 				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), _chosenPiece) != std::end(_promotedPieces))
 				{
 					if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != GrandeAcedrex)

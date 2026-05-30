@@ -39,7 +39,7 @@ Board* YariShogiBoard::Clone()
         for (int j = 0; j < GetHeight(); j++)
         {
             const std::optional<Piece> p = GetData(i, j);
-            cb->SetData(i, j, p != std::nullopt ? cb->CreatePiece(p->Type, p->Colour) : std::nullopt);
+            cb->SetData(i, j, p != std::nullopt ? std::make_optional<Piece>(p->Type, p->Colour) : std::nullopt);
         }
     }
     for (const auto& capturedPiece: _capturedPieces)

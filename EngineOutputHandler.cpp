@@ -408,15 +408,14 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     else if (gameVariant == OmegaChess)
     {
         // Castling check
-        if ((moveArray == "g11j11" || moveArray == "g11i11" || moveArray == "g11d8" || moveArray == "g11c11" || moveArray == "g11b11" ||
-             moveArray == "g2j2" || moveArray == "g2i2" || moveArray == "g2d2" || moveArray == "g2c2" || moveArray == "g2b2") &&
-            board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King &&
-            board->GetData(x2 > 5 ? board->GetWidth() - 3 : 2, y2) != std::nullopt &&
-            board->GetData(x2 > 5 ? board->GetWidth() - 3 : 2, y2)->Type == Rook)
+        if (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King)
         {
-            std::optional<Piece> rook = board->GetData(x2 > 5 ? board->GetWidth() - 3 : 2, y2);
-            board->SetData(x2 > 5 ? board->GetWidth() - 3 : 2, y2, board->GetData(x1, y1));
-            board->SetData(6, y1, rook);
+            auto coords = board->FindNearestPiece(x1, y1, x1 < x2 ? East : West);
+            std::optional<Piece> rook = board->GetData(coords.first, coords.second);
+            board->SetData(x1 < x2 ? x1 + 2 : x1 - 2, y2, board->GetData(x1, y1));
+            board->SetData(x1 < x2 ? coords.first - 3 : coords.first + 4, y1, rook);
+            board->SetData(x1, y1, std::nullopt);
+            board->SetData(coords.first, coords.second, std::nullopt);
             dynamic_cast<ChessBoard*>(board)->WriteCastling(x1 == board->GetWidth() - 3 ? "O-O" : "O-O-O");
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, ' ');
         }
@@ -462,19 +461,27 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     else if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants))
 	{
 		// Castling check
-        if ((moveArray == "e8g8" || moveArray == "e8h8" || moveArray == "e8c8" || moveArray == "e8b8" || moveArray == "e8a8" ||
-             moveArray == "e1g1" || moveArray == "e1h1" || moveArray == "e1c1" || moveArray == "e1b1" || moveArray == "e1a1" ||
-             moveArray == "e9h9" || moveArray == "e9i9" || moveArray == "e9c9" || moveArray == "e9b9" || moveArray == "e9a9" ||
-             moveArray == "e9g9" || moveArray == "e1i1" ||
-             moveArray == "f8i8" || moveArray == "f8j8" || moveArray == "f8c8" || moveArray == "f8b8" || moveArray == "f8a8" ||
-             moveArray == "f1i1" || moveArray == "f1j1" || moveArray == "f1c1" || moveArray == "f1b1" || moveArray == "f1a1") &&
-            board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King &&
-            board->GetData(x2 > 5 ? board->GetWidth() - 1 : 0, y2) != std::nullopt &&
-            board->GetData(x2 > 5 ? board->GetWidth() - 1 : 0, y2)->Type == Rook)
+        if (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King)
 		{
-            std::optional<Piece> rook = board->GetData(x2 > 5 ? board->GetWidth() - 1 : 0, y2);
-            board->SetData(x2 > 5 ? board->GetWidth() - 1 : 0, y2, board->GetData(x1, y1));
-            board->SetData(board->GetWidth() == 10 ? 5 : 4, y1, rook);
+            auto coords = board->FindNearestPiece(x1, y1, x1 < x2 ? East : West);
+        	std::optional<Piece> rook = board->GetData(coords.first, coords.second);
+            if (gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess)
+            {
+                board->SetData(x1 < x2 ? x1 + 4 : x1 - 3, y2, board->GetData(x1, y1));
+                board->SetData(x1 < x2 ? coords.first - 2 : coords.first + 2, y1, rook);
+            }
+            else if (gameVariant == ChancellorChess || gameVariant == ModernChess)
+            {
+                board->SetData(x1 < x2 ? x1 + 2 : x1 - 2, y2, board->GetData(x1, y1));
+                board->SetData(x1 < x2 ? coords.first - 3 : coords.first + 3, y1, rook);
+            }
+            else
+            {
+                board->SetData(x1 < x2 ? x1 + 2 : x1 - 2, y2, board->GetData(x1, y1));
+                board->SetData(x1 < x2 ? coords.first - 2 : coords.first + 3, y1, rook);
+            }
+            board->SetData(x1, y1, std::nullopt);
+            board->SetData(coords.first, coords.second, std::nullopt);
             dynamic_cast<ChessBoard*>(board)->WriteCastling(x1 == board->GetWidth() - 1 ? "O-O" : "O-O-O");
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, ' ');
 		}
@@ -902,7 +909,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			{
 				return "Invalid FEN string for this game";
 			}
-			board->SetData(i, j, board->CreatePiece(pieceType, c >= 'a' && c <= 'z' ? Black : White));
+			board->SetData(i, j, std::make_optional<Piece>(pieceType, c >= 'a' && c <= 'z' ? Black : White));
             if (promo == "+")
             {
                 if (gameVariant != MicroShogi && gameVariant != KyotoShogi)

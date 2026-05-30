@@ -37,10 +37,9 @@ public:
     void Clear();
 	void RemoveMove(int x, int y);
 	void RemoveMoves();
-	std::optional<Piece> CreatePiece(PieceType pieceType, PieceColour pieceColour);
     std::vector<std::tuple<int, int, int, int>> GetAllMoves(PieceColour pieceColour);
 	std::vector<std::pair<int, int>> Moves() const;
-    std::pair<int, int> GetPieceLocation(PieceType pieceType, PieceColour pieceColour) const;
+	std::pair<int, int> GetPieceLocation(PieceType pieceType, PieceColour pieceColour) const;
 	std::optional<Piece> GetData(int x, int y) const;
 	void SetData(int x, int y, const std::optional<Piece>& p);
     std::string GetFEN() const;
@@ -50,6 +49,7 @@ public:
 	int MoveCount() const;
 	void SetMoveCount(int moveCount);
 	bool CheckPosition(int x, int y) const;
+	std::pair<int, int> FindNearestPiece(int x, int y, Direction direction) const;
 	bool HasPiece(PieceType pieceType, PieceColour pieceColour) const;
 	std::vector<std::pair<int, int>> GetAttackers(int x, int y);
 	std::vector<std::pair<int, int>> GetDefenders(int x, int y);

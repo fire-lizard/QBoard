@@ -222,11 +222,6 @@ void Board::RemoveMoves()
 	_moves.clear();
 }
 
-std::optional<Piece> Board::CreatePiece(PieceType pieceType, PieceColour pieceColour)
-{
-    return Piece(pieceType, pieceColour);
-}
-
 std::vector<std::tuple<int, int, int, int>> Board::GetAllMoves(PieceColour pieceColour)
 {
 	std::vector<std::tuple<int, int, int, int>> result;
@@ -247,6 +242,19 @@ std::vector<std::tuple<int, int, int, int>> Board::GetAllMoves(PieceColour piece
 bool Board::CheckPosition(int x, int y) const
 {
 	return y < _height && y >= 0 && x < _width && x >= 0;
+}
+
+std::pair<int, int> Board::FindNearestPiece(int x, int y, Direction direction) const
+{
+    while (InBounds(x, y, direction))
+    {
+        CheckDirectionInc(x, y, direction);
+        if (GetData(x, y) != std::nullopt)
+        {
+            return {x, y};
+        }
+    }
+    return {-1, -1};
 }
 
 bool Board::HasPiece(PieceType pieceType, PieceColour pieceColour) const
@@ -400,7 +408,7 @@ std::string Board::GetStringCode(int x, int y) const
     case FlyingOx:
         return "+V";
     case FreeBoar:
-        if (basePieceType == AngryBoar) return "+A"; else return "+M";
+        return basePieceType == AngryBoar ? "+A" : "+M";
     case FlyingStag:
         return "+T";
     case WhiteHorse:
