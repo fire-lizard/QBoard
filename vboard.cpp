@@ -501,7 +501,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
         _currentPiece != std::nullopt && _currentPiece->Type == King && !_currentPiece->HasMoved &&
         p != std::nullopt && p->Colour == _currentPlayer && p->Type == Rook && !p->HasMoved && _board->IsMovePossible(x, y))
 	{
-        if (_gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == JanusChess)
+        if (_gameVariant == JanusChess)
         {
 			_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 4 : _oldX - 3, _oldY, false);
 			_board->Move(x, y, _oldX < x ? x - 2 : x + 2, y, false);
@@ -510,6 +510,15 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 3 : _oldX - 3, _board->GetHeight() - y, ' ');
 			}
         }
+		else if (_gameVariant == CapablancaChess || _gameVariant == GothicChess)
+		{
+			_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 3 : _oldX - 3, _oldY, false);
+			_board->Move(x, y, _oldX < x ? x - 2 : x + 3, y, false);
+			if (engine != nullptr && engine->IsActive())
+			{
+				engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 3 : _oldX - 3, _board->GetHeight() - y, ' ');
+			}
+		}
 		else if (_gameVariant == ChancellorChess || _gameVariant == ModernChess)
 		{
 			_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _oldY, false);
@@ -1313,38 +1322,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	}
 }
 
-char VBoard::ChessPieceChar(PieceType chessPiece)
-{
-    if (chessPiece == Bishop)
-    {
-        return 'b';
-    }
-    else if (chessPiece == Knight)
-    {
-        return 'n';
-    }
-    else if (chessPiece == Rook)
-    {
-        return 'r';
-    }
-    else if (chessPiece == Archbishop)
-    {
-        return 'a';
-    }
-    else if (chessPiece == Chancellor || chessPiece == Champion)
-    {
-        return 'c';
-    }
-    else if (chessPiece == Wizard)
-    {
-        return 'w';
-    }
-    else
-    {
-        return 'q';
-    }
-}
-
 char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 {
 	char promotion = ' ';
@@ -1408,13 +1385,13 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             if (pd->exec() == QDialog::Accepted)
             {
                 const PieceType pt = pd->GetChosenPiece();
-                promotion = ChessPieceChar(pt);
+                promotion = EngineOutputHandler::ChessPieceChar(pt);
                 _board->Promote(x, y, pt);
                 gcBoard->RemoveCapturedPiece(pt, _currentPlayer);
             }
             else if (y == 9 || y == 0)
             {
-                promotion = ChessPieceChar(capturedPieces[0]);
+                promotion = EngineOutputHandler::ChessPieceChar(capturedPieces[0]);
                 _board->Promote(x, y, capturedPieces[0]);
                 gcBoard->RemoveCapturedPiece(capturedPieces[0], _currentPlayer);
             }
@@ -1430,7 +1407,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             if (pd->exec() == QDialog::Accepted)
             {
                 const PieceType pt = pd->GetChosenPiece();
-                promotion = ChessPieceChar(pt);
+                promotion = EngineOutputHandler::ChessPieceChar(pt);
                 _board->Promote(x, y, pt);
             }
             else
@@ -1465,7 +1442,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             if (pd->exec() == QDialog::Accepted)
             {
                 const PieceType pt = pd->GetChosenPiece();
-                promotion = ChessPieceChar(pt);
+                promotion = EngineOutputHandler::ChessPieceChar(pt);
                 _board->Promote(x, y, pt);
             }
             else

@@ -32,5 +32,6 @@ public:
 	static bool IsLionMove(const std::optional<Piece>& piece, int x1, int y1, int x2, int y2);
     static void RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<std::string> moves);
 	static void RemoveMove(std::vector<std::pair<int, int>>& moves, int x, int y);
+	static char ChessPieceChar(PieceType chessPiece);
 };
 

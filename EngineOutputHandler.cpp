@@ -368,7 +368,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
         y2--;
         if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
         {
-            const bool isPromoted = (y2 == 0 || y2 == board->GetHeight() - 1) && board->GetData(x1, y1)->Type == Pawn &&
+            const bool isPromoted = (y2 <= 2 || y2 >= board->GetHeight() - 3) && board->GetData(x1, y1)->Type == Pawn &&
                 (moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
                  moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c');
             board->GetMoves(board->GetData(x1, y1), x1, y1);
@@ -784,6 +784,38 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             }
         }
 	}
+}
+
+char EngineOutputHandler::ChessPieceChar(PieceType chessPiece)
+{
+    if (chessPiece == Bishop)
+    {
+        return 'b';
+    }
+    else if (chessPiece == Knight)
+    {
+        return 'n';
+    }
+    else if (chessPiece == Rook)
+    {
+        return 'r';
+    }
+    else if (chessPiece == Archbishop)
+    {
+        return 'a';
+    }
+    else if (chessPiece == Chancellor || chessPiece == Champion)
+    {
+        return 'c';
+    }
+    else if (chessPiece == Wizard)
+    {
+        return 'w';
+    }
+    else
+    {
+        return 'q';
+    }
 }
 
 void EngineOutputHandler::ReadStandardError(const QByteArray& buf, QTextEdit* textEdit)
