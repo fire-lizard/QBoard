@@ -501,40 +501,34 @@ void VBoard::mousePressEvent(QMouseEvent* event)
         _currentPiece != std::nullopt && _currentPiece->Type == King && !_currentPiece->HasMoved &&
         p != std::nullopt && p->Colour == _currentPlayer && p->Type == Rook && !p->HasMoved && _board->IsMovePossible(x, y))
 	{
-        if (_gameVariant == Chess || _gameVariant == ChancellorChess || _gameVariant == ModernChess)
+        if (_gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == JanusChess)
         {
-            _board->SetData(x, y, std::nullopt);
-            _board->SetData(4, y, std::nullopt);
-            _board->SetData(x == 0 ? 2 : 6, y, _currentPiece);
-            _board->SetData(x == 0 ? 3 : 5, y, p);
+			_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 4 : _oldX - 3, _oldY, false);
+			_board->Move(x, y, _oldX < x ? x - 2 : x + 2, y, false);
             if (engine != nullptr && engine->IsActive())
             {
-                engine->Move(_oldX, _board->GetHeight() - _oldY, x == _board->GetWidth() - 1 ? 6 : 2, _board->GetHeight() - y, ' ');
-            }
+				engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 3 : _oldX - 3, _board->GetHeight() - y, ' ');
+			}
         }
-        else if (_gameVariant == OmegaChess)
-        {
-            _board->SetData(x, y, std::nullopt);
-            _board->SetData(6, y, std::nullopt);
-            _board->SetData(x == 2 ? 4 : 8, y, _currentPiece);
-            _board->SetData(x == 2 ? 5 : 7, y, p);
-            if (engine != nullptr && engine->IsActive())
-            {
-                engine->Move(_oldX, _board->GetHeight() - _oldY, x == 9 ? 8 : 2, _board->GetHeight() - y, ' ');
-            }
-        }
+		else if (_gameVariant == ChancellorChess || _gameVariant == ModernChess)
+		{
+			_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _oldY, false);
+			_board->Move(x, y, _oldX < x ? x - 3 : x + 3, y, false);
+			if (engine != nullptr && engine->IsActive())
+			{
+				engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _board->GetHeight() - y, ' ');
+			}
+		}
         else
         {
-            _board->SetData(x, y, std::nullopt);
-            _board->SetData(5, y, std::nullopt);
-            _board->SetData(x == 0 ? 2 : 8, y, _currentPiece);
-            _board->SetData(x == 0 ? 3 : 7, y, p);
-            if (engine != nullptr && engine->IsActive())
+			_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _oldY, false);
+			_board->Move(x, y, _oldX < x ? x - 2 : x + 3, y, false);
+			if (engine != nullptr && engine->IsActive())
             {
-                engine->Move(_oldX, _board->GetHeight() - _oldY, x == 9 ? 8 : 2, _board->GetHeight() - y, ' ');
+				engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _board->GetHeight() - y, ' ');
             }
         }
-        dynamic_cast<ChessBoard*>(_board)->WriteCastling(x == _board->GetWidth() - 1 ? "O-O" : "O-O-O");
+		dynamic_cast<ChessBoard*>(_board)->WriteCastling(x == _board->GetWidth() - 1 ? "O-O" : "O-O-O");
 		FinishMove(x, y);
 	}
 	// Null move
