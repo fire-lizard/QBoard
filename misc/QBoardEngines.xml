@@ -1,45 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Engines>
-    <Engine EngineName="Fruit" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Fruit 2.2.1/Fruit2.2.1.exe" EngineOptions=""/>
-    <Engine EngineName="Komodo" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Komodo 14.1/komodo-14.1-64bit.exe" EngineOptions=""/>
-    <Engine EngineName="Stockfish" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Stockfish 10/stockfish_10_x64.exe" EngineOptions=""/>
-    <Engine EngineName="Pulsar" GameVariant="Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Pulsar/pulsar2009-9b.exe" EngineOptions=""/>
-    <Engine EngineName="Fairy-Max" GameVariant="Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/fmax.exe" EngineOptions=""/>
-    <Engine EngineName="Pulsar" GameVariant="Shatranj" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Pulsar/pulsar2009-9b.exe" EngineOptions=""/>
-    <Engine EngineName="ShaMax" GameVariant="Shatranj" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/ShaMax.exe" EngineOptions=""/>
-    <Engine EngineName="HaChu" GameVariant="Makruk" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
-    <Engine EngineName="Fairy-Max" GameVariant="Makruk" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/fmax.exe" EngineOptions=""/>
     <Engine EngineName="Binghewusi" GameVariant="Xiangqi" EngineProtocol="UCCI" EnginePath="engines/UCCI/Binghewusi/Binghewusi.exe" EngineOptions=""/>
-    <Engine EngineName="XQWLight" GameVariant="Xiangqi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/XQWL/XQWLight.exe" EngineOptions=""/>
-    <Engine EngineName="haqikid" GameVariant="Xiangqi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaQi/haqikid.exe" EngineOptions=""/>
-    <Engine EngineName="MaxQi" GameVariant="Xiangqi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/MaxQi.exe" EngineOptions=""/>
+    <Engine EngineName="crazywa" GameVariant="Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>
+    <Engine EngineName="crazywa" GameVariant="Kyoto Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>
+    <Engine EngineName="crazywa" GameVariant="Mini Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>
+    <Engine EngineName="crazywa" GameVariant="Judkins Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>
+    <Engine EngineName="crazywa" GameVariant="Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>
+    <Engine EngineName="crazywa" GameVariant="CrazyWa" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>
     <Engine EngineName="Fairy-Max" GameVariant="Capablanca Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/fmax.exe" EngineOptions=""/>
     <Engine EngineName="Fairy-Max" GameVariant="Gothic Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/fmax.exe" EngineOptions=""/>
     <Engine EngineName="Fairy-Max" GameVariant="Janus Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/fmax.exe" EngineOptions=""/>
     <Engine EngineName="Fairy-Max" GameVariant="Courier Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/fmax.exe" EngineOptions=""/>
     <Engine EngineName="Fairy-Max" GameVariant="Grande Acedrex" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/fmax.exe" EngineOptions=""/>
-    <Engine EngineName="Laramie V3" GameVariant="Shogi" EngineProtocol="USI" EnginePath="engines/USI/LaramieV3/LaramieV3.exe" EngineOptions=""/>
-    <Engine EngineName="Shokidoki" GameVariant="Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
-    <Engine EngineName="crazywa" GameVariant="Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>
-    <Engine EngineName="Shokidoki" GameVariant="Mini Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
-    <Engine EngineName="crazywa" GameVariant="Mini Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>
-    <Engine EngineName="Nebiyu" GameVariant="Mini Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
-    <Engine EngineName="Shokidoki" GameVariant="Judkins Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
-    <Engine EngineName="crazywa" GameVariant="Judkins Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>
-    <Engine EngineName="Nebiyu" GameVariant="Judkins Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
-    <Engine EngineName="Shokidoki" GameVariant="Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
-    <Engine EngineName="Shokidoki" GameVariant="Euro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
-    <Engine EngineName="crazywa" GameVariant="CrazyWa" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/crazywa.exe" EngineOptions=""/>
-    <Engine EngineName="HaChu" GameVariant="Sho Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
-    <Engine EngineName="HaChu" GameVariant="Wa Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
-    <Engine EngineName="HaChu" GameVariant="Chu Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
-    <Engine EngineName="HaChu" GameVariant="Dai Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
-    <Engine EngineName="whale_shogi" GameVariant="Whale Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Other/whale_shogi.exe" EngineOptions=""/>
-    <Engine EngineName="fairy-stockfish" GameVariant="Yari Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="Fairy-Max" GameVariant="Makruk" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/fmax.exe" EngineOptions=""/>
+    <Engine EngineName="fairy-stockfish" GameVariant="Capablanca Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="fairy-stockfish" GameVariant="Gothic Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="fairy-stockfish" GameVariant="Janus Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Chancellor Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Modern Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Grand Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Shatar" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Janggi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="fairy-stockfish" GameVariant="Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="fairy-stockfish" GameVariant="Euro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="fairy-stockfish" GameVariant="Yari Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="Fruit" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Fruit 2.2.1/Fruit2.2.1.exe" EngineOptions=""/>
+    <Engine EngineName="HaChu" GameVariant="Shatranj" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
+    <Engine EngineName="HaChu" GameVariant="Makruk" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
+    <Engine EngineName="HaChu" GameVariant="Sho Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
+    <Engine EngineName="HaChu" GameVariant="Wa Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
+    <Engine EngineName="HaChu" GameVariant="Chu Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
+    <Engine EngineName="HaChu" GameVariant="Dai Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
+    <Engine EngineName="haqikid" GameVariant="Xiangqi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaQi/haqikid.exe" EngineOptions=""/>
+    <Engine EngineName="Komodo" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Komodo 14.1/komodo-14.1-64bit.exe" EngineOptions=""/>
+    <Engine EngineName="Laramie V3" GameVariant="Shogi" EngineProtocol="USI" EnginePath="engines/USI/LaramieV3/LaramieV3.exe" EngineOptions=""/>
+    <Engine EngineName="Nebiyu" GameVariant="Capablanca Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
+    <Engine EngineName="Nebiyu" GameVariant="Gothic Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
+    <Engine EngineName="Nebiyu" GameVariant="Grand Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
+    <Engine EngineName="Nebiyu" GameVariant="Mini Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
+    <Engine EngineName="Nebiyu" GameVariant="Judkins Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
+    <Engine EngineName="Pulsar" GameVariant="Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Pulsar/pulsar2009-9b.exe" EngineOptions=""/>
+    <Engine EngineName="Pulsar" GameVariant="Shatranj" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Pulsar/pulsar2009-9b.exe" EngineOptions=""/>
+    <Engine EngineName="Shokidoki" GameVariant="Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
+    <Engine EngineName="Shokidoki" GameVariant="Mini Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
+    <Engine EngineName="Shokidoki" GameVariant="Judkins Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
+    <Engine EngineName="Shokidoki" GameVariant="Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
+    <Engine EngineName="Shokidoki" GameVariant="Euro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
+    <Engine EngineName="SjaakII" GameVariant="Grand Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Omega Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
+    <Engine EngineName="SjaakII" GameVariant="Micro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
+    <Engine EngineName="SjaakII" GameVariant="Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
+    <Engine EngineName="SjaakII" GameVariant="Euro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
+    <Engine EngineName="SjaakII" GameVariant="Sho Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
+    <Engine EngineName="Stockfish" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Stockfish 10/stockfish_10_x64.exe" EngineOptions=""/>
+    <Engine EngineName="whale_shogi" GameVariant="Whale Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Other/whale_shogi.exe" EngineOptions=""/>
+    <Engine EngineName="XQWLight" GameVariant="Xiangqi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/XQWL/XQWLight.exe" EngineOptions=""/>
 </Engines>

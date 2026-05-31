@@ -769,7 +769,10 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                     || ((gameVariant == WaShogi || gameVariant == CrazyWa) && (y2 <= 2 || y2 >= 8) && moveArray[ms - 1] == '+'));
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
 			board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->BaseType, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
+            if (board->GetData(x2, y2) != std::nullopt)
+            {
+                AddMove(board, gameVariant, board->GetData(x2, y2)->BaseType, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
+            }
             if (engine->GetType() == USI)
             {
                 engine->AddMove(board->GetWidth() - x1, y1, board->GetWidth() - x2, y2, isPromoted ? moveArray[ms - 1] : ' ');
