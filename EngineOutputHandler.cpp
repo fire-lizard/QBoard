@@ -659,6 +659,27 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                     break;
                 }
             }
+            else if (gameVariant == YariShogi)
+            {
+                switch (moveArray[0])
+                {
+                case 'N':
+                    newPiece = YariKnight;
+                    break;
+                case 'R':
+                    newPiece = YariRook;
+                    break;
+                case 'B':
+                    newPiece = YariBishop;
+                    break;
+                case 'P':
+                    newPiece = Pawn;
+                    break;
+                default:
+                    newPiece = None;
+                    break;
+                }
+            }
             else if (gameVariant == CrazyWa)
 			{
                 switch (moveArray[0])
