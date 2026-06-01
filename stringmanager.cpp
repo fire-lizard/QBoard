@@ -706,22 +706,37 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
     if (gameVariant == WaShogi || gameVariant == CrazyWa)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-            {"O", Lance},
+            {"K", King},
+        	{"O", Lance},
+            {"+O", PloddingOx},
             {"P", Pawn},
+            {"+P", Tokin},
             {"S", SideMover},
+            {"+S", Rook},
             {"H", LiberatedHorse},
+            {"+H", HeavenlyHorse},
             {"L", SwoopingOwl},
+            {"+L", CloudEagle},
             {"E", CloudEagle},
             {"U", StruttingCrow},
+            {"+U", FlyingFalcon},
             {"F", FlyingFalcon},
+            {"+F", TenaciousFalcon},
             {"C", FlyingCock},
+            {"+C", RaidingFalcon},
             {"G", FlyingGoose},
+            {"+G", SideMover},
             {"M", ClimbingMonkey},
+            {"+M", Silver},
             {"V", Silver},
+            {"+V", Elephant},
             {"D", Dog},
+            {"+D", Gold},
             {"W", Gold},
+            {"+W", BearEyes},
             {"R", RunningRabbit},
-            {"X", TreacherousFox},
+            {"+R", TreacherousFox},
+            {"X", TreacherousFox}
         };
 
         const auto it = codeToPieceType.find(stringCode);
@@ -767,7 +782,10 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
             {"Y",     YariRook},
             {"B",     YariBishop},
             {"G",     YariGold},
-            {"S",     YariSilver}
+            {"S",     YariSilver},
+            {"R",     Rook},
+            {"P",     Pawn},
+            {"K",     King}
         };
 
         const auto it = codeToPieceType.find(stringCode);

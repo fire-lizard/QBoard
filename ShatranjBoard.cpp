@@ -134,6 +134,19 @@ void ShatranjBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 	}
 }
 
+std::string ShatranjBoard::GetStringCode(int x, int y) const
+{
+	if (GetData(x, y) == std::nullopt) return "";
+	PieceType pieceType = GetData(x, y)->Type;
+	switch (pieceType)
+	{
+	case Knight:
+		return "N";
+	default:
+		return Board::GetStringCode(x, y);
+	}
+}
+
 void ShatranjBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture)
 {
 	if (_moveCount % 2 == 0)

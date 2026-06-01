@@ -789,7 +789,8 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                     || ((gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == YariShogi) && (y2 <= 2 || y2 >= 6) && moveArray[ms - 1] == '+')
                     || ((gameVariant == WaShogi || gameVariant == CrazyWa) && (y2 <= 2 || y2 >= 8) && moveArray[ms - 1] == '+'));
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
-			board->Move(x1, y1, x2, y2, false);
+            auto destPiece = board->GetData(x2, y2);
+			bool result = board->Move(x1, y1, x2, y2, false);
             if (board->GetData(x2, y2) != std::nullopt)
             {
                 AddMove(board, gameVariant, board->GetData(x2, y2)->BaseType, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
@@ -802,7 +803,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             {
                 engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
             }
-			if (isPromoted)
+			if (isPromoted || gameVariant == KyotoShogi || (gameVariant == MicroShogi && result && destPiece != std::nullopt))
 			{
                 board->Promote(x2, y2);
             }

@@ -96,6 +96,6 @@ std::string CourierChessBoard::GetStringCode(int x, int y) const
     case Queen:
         return "F";
     default:
-        return Board::GetStringCode(x, y);
+        return ShatranjBoard::GetStringCode(x, y);
     }
 }

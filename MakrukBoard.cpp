@@ -109,6 +109,6 @@ std::string MakrukBoard::GetStringCode(int x, int y) const
     case Silver:
         return "S";
     default:
-        return Board::GetStringCode(x, y);
+        return ShatranjBoard::GetStringCode(x, y);
     }
 }

@@ -25,8 +25,6 @@
     <Engine EngineName="fairy-stockfish" GameVariant="Nightrider Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Shatar" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Janggi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
-    <Engine EngineName="fairy-stockfish" GameVariant="Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
-    <Engine EngineName="fairy-stockfish" GameVariant="Euro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Yari Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="Fruit" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Fruit 2.2.1/Fruit2.2.1.exe" EngineOptions=""/>
     <Engine EngineName="HaChu" GameVariant="Makruk" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
@@ -53,9 +51,7 @@
     <Engine EngineName="SjaakII" GameVariant="Omega Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Nightrider Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Shatar" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
-    <Engine EngineName="SjaakII" GameVariant="Micro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
-    <Engine EngineName="SjaakII" GameVariant="Euro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Yari Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Sho Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="Stockfish" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Stockfish 10/stockfish_10_x64.exe" EngineOptions=""/>
