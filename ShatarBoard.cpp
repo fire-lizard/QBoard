@@ -67,16 +67,6 @@ void ShatarBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
         CheckDirection(piece, x, y, SouthEast);
         CheckDirection(piece, x, y, SouthWest);
         break;
-    case Knight:
-        if (GetData(x + 1, y + 2) == std::nullopt || GetData(x + 1, y + 2)->Type != King) CheckMove(piece, x + 1, y + 2);
-        if (GetData(x - 1, y + 2) == std::nullopt || GetData(x - 1, y + 2)->Type != King) CheckMove(piece, x - 1, y + 2);
-        if (GetData(x + 2, y + 1) == std::nullopt || GetData(x + 2, y + 1)->Type != King) CheckMove(piece, x + 2, y + 1);
-        if (GetData(x + 2, y - 1) == std::nullopt || GetData(x + 2, y - 1)->Type != King) CheckMove(piece, x + 2, y - 1);
-        if (GetData(x - 2, y + 1) == std::nullopt || GetData(x - 2, y + 1)->Type != King) CheckMove(piece, x - 2, y + 1);
-        if (GetData(x - 2, y - 1) == std::nullopt || GetData(x - 2, y - 1)->Type != King) CheckMove(piece, x - 2, y - 1);
-        if (GetData(x + 1, y - 2) == std::nullopt || GetData(x + 1, y - 2)->Type != King) CheckMove(piece, x + 1, y - 2);
-        if (GetData(x - 1, y - 2) == std::nullopt || GetData(x - 1, y - 2)->Type != King) CheckMove(piece, x - 1, y - 2);
-        break;
     case Pawn:
         if (piece->Colour == Black)
         {

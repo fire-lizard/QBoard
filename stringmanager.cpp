@@ -189,6 +189,7 @@ std::string StringManager::PieceType2Description(PieceType pieceType)
     case Chancellor:           return "Chancellor";
     case Champion:             return "Champion";
     case Wizard:               return "Wizard";
+    case Nightrider:           return "Nightrider";
     case Aanca:                return "Aanca";
     case Crocodile:            return "Crocodile";
     case Giraffe:              return "Giraffe";
@@ -474,6 +475,7 @@ PieceType StringManager::Description2PieceType(const std::string& description)
     if (description == "Chancellor")         return Chancellor;
     if (description == "Champion")           return Champion;
     if (description == "Wizard")             return Wizard;
+    if (description == "Nightrider")         return Nightrider;
     if (description == "Aanca")              return Aanca;
     if (description == "Crocodile")          return Crocodile;
     if (description == "Giraffe")            return Giraffe;
@@ -1031,6 +1033,11 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
     {
         if (stringCode == "C") return Champion;
         else if (stringCode == "W") return Wizard;
+        else return StringCode2PieceType(Shatranj, stringCode);
+    }
+    else if (gameVariant == NightriderChess)
+    {
+        if (stringCode == "N") return Nightrider;
         else return StringCode2PieceType(Shatranj, stringCode);
     }
     else

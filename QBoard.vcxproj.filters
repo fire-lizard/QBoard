@@ -224,6 +224,9 @@
     <ClCompile Include="zboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NightriderChessBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -403,6 +406,9 @@
     <QtMoc Include="zboard.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <ClInclude Include="NightriderChessBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include=".\QBoard_resource.rc" />
@@ -1203,6 +1209,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\BlackMarshall.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\BlackNightrider.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\BlackPawn.png">
@@ -6456,6 +6465,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\WhiteMarshall.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\WhiteNightrider.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_tnk\WhiteP.png">

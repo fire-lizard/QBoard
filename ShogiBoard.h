@@ -11,6 +11,7 @@ public:
 	Board* Clone() override;
     void Promote(int x, int y, PieceType pt = None) override;
     void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
+	std::string GetStringCode(int x, int y) const override;
 	virtual void SetDrops(bool hasDrops);
 	virtual void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture);
 	std::string GetPSN();

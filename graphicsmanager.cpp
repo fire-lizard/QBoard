@@ -88,6 +88,7 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
     case JanusChess:
     case GrandChess:
     case OmegaChess:
+    case NightriderChess:
     case CourierChess:
     case ChancellorChess:
     case ModernChess:
@@ -225,6 +226,7 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     case JanusChess:
     case GrandChess:
     case OmegaChess:
+    case NightriderChess:
     case CourierChess:
     case ChancellorChess:
     case ModernChess:
@@ -306,6 +308,7 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     case JanusChess:
     case GrandChess:
     case OmegaChess:
+    case NightriderChess:
     case CourierChess:
     case ChancellorChess:
     case ModernChess:
@@ -423,6 +426,8 @@ QString GraphicsManager::GetImageFileName(PieceColour pieceColour, PieceType pie
     case Wizard:
     case Sage:
         return colour + "Wizard.png";
+    case Nightrider:
+        return colour + "Nightrider.png";
     case Schleich:
         return colour + "Hat.png";
     case Courier:

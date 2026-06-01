@@ -816,7 +816,7 @@ char EngineOutputHandler::ChessPieceChar(PieceType chessPiece)
     {
         return 'b';
     }
-    else if (chessPiece == Knight)
+    else if (chessPiece == Knight || chessPiece == Nightrider)
     {
         return 'n';
     }

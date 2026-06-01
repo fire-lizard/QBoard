@@ -239,6 +239,19 @@ void ShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 	}
 }
 
+std::string ShogiBoard::GetStringCode(int x, int y) const
+{
+	if (GetData(x, y) == std::nullopt) return "";
+	PieceType pieceType = GetData(x, y)->Type;
+	switch (pieceType)
+	{
+	case Knight:
+		return "N";
+	default:
+		return Board::GetStringCode(x, y);
+	}
+}
+
 void ShogiBoard::SetDrops(bool hasDrops)
 {
 	_hasDrops = hasDrops;

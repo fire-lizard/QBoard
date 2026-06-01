@@ -29,7 +29,8 @@ private:
         {Queen, 'Q'},
         {King, 'K'},
         {Champion, 'C'},
-        {Wizard, 'W'}
+        {Wizard, 'W'},
+		{Nightrider, 'N'}
 	};
 
 	PieceType _initialSetup[8][8] = {

@@ -497,7 +497,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	// Castling check
     if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess ||
          _gameVariant == JanusChess || _gameVariant == ChancellorChess || _gameVariant == ModernChess ||
-         _gameVariant == OmegaChess) &&
+         _gameVariant == OmegaChess || _gameVariant == NightriderChess) &&
         _currentPiece != std::nullopt && _currentPiece->Type == King && !_currentPiece->HasMoved &&
         p != std::nullopt && p->Colour == _currentPlayer && p->Type == Rook && !p->HasMoved && _board->IsMovePossible(x, y))
 	{
@@ -1698,7 +1698,10 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
     case OmegaChess:
         _board = new OmegaChessBoard();
         break;
-    case CourierChess:
+	case NightriderChess:
+		_board = new NightriderChessBoard();
+		break;
+	case CourierChess:
         _board = new CourierChessBoard();
         break;
     case ChancellorChess:
@@ -2229,7 +2232,15 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
                 blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
             }
         }
-        else if (_gameVariant == CourierChess)
+		else if (_gameVariant == NightriderChess)
+		{
+			for (auto& ChessPiece : NightriderChessPieces)
+			{
+				whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
+				blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
+			}
+		}
+		else if (_gameVariant == CourierChess)
         {
             for (auto& ChessPiece : CourierChessPieces)
             {

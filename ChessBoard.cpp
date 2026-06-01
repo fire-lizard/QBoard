@@ -339,6 +339,19 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	return result;
 }
 
+std::string ChessBoard::GetStringCode(int x, int y) const
+{
+	if (GetData(x, y) == std::nullopt) return "";
+	PieceType pieceType = GetData(x, y)->Type;
+	switch (pieceType)
+	{
+	case Knight:
+		return "N";
+	default:
+		return Board::GetStringCode(x, y);
+	}
+}
+
 int ChessBoard::HalfMoveCount() const
 {
 	return _halfMoveCount;

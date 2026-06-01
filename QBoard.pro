@@ -30,6 +30,7 @@ SOURCES += main.cpp\
     KyotoShogiBoard.cpp \
     MicroShogiBoard.cpp \
     ModernChessBoard.cpp \
+    NightriderChessBoard.cpp \
     OmegaChessBoard.cpp \
     ShatarBoard.cpp \
     ToriShogiBoard.cpp \
@@ -94,6 +95,7 @@ HEADERS  += mainwindow.h \
     KyotoShogiBoard.h \
     MicroShogiBoard.h \
     ModernChessBoard.h \
+    NightriderChessBoard.h \
     OmegaChessBoard.h \
     Logger.h \
     ShatarBoard.h \

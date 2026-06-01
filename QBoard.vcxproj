@@ -239,6 +239,7 @@
     <ClCompile Include="MicroShogiBoard.cpp" />
     <ClCompile Include="MiniShogiBoard.cpp" />
     <ClCompile Include="ModernChessBoard.cpp" />
+    <ClCompile Include="NightriderChessBoard.cpp" />
     <ClCompile Include="OmegaChessBoard.cpp" />
     <ClCompile Include="QianhongEngine.cpp" />
     <ClCompile Include="ShatarBoard.cpp" />
@@ -301,6 +302,7 @@
     <ClInclude Include="MicroShogiBoard.h" />
     <ClInclude Include="MiniShogiBoard.h" />
     <ClInclude Include="ModernChessBoard.h" />
+    <ClInclude Include="NightriderChessBoard.h" />
     <ClInclude Include="OmegaChessBoard.h" />
     <ClInclude Include="QianhongEngine.h" />
     <ClInclude Include="ShatarBoard.h" />
@@ -600,6 +602,7 @@
     <None Include="images\BlackMarshall.png" />
     <None Include="images_dai\BlackMarshall.png" />
     <None Include="images_jap\BlackMarshall.png" />
+    <None Include="images\BlackNightrider.png" />
     <None Include="images\BlackPawn.png" />
     <None Include="images_dai\BlackPawn.png" />
     <None Include="images_eur2\BlackPawn.png" />
@@ -2351,6 +2354,7 @@
     <None Include="images\WhiteMarshall.png" />
     <None Include="images_dai\WhiteMarshall.png" />
     <None Include="images_jap\WhiteMarshall.png" />
+    <None Include="images\WhiteNightrider.png" />
     <None Include="images_tnk\WhiteP.png" />
     <None Include="images_tnk\WhitePFlip.png" />
     <None Include="images\WhitePawn.png" />

@@ -329,6 +329,6 @@ std::string OmegaChessBoard::GetStringCode(int x, int y) const
     case Wizard:
         return "W";
     default:
-        return Board::GetStringCode(x, y);
+        return ChessBoard::GetStringCode(x, y);
     }
 }
