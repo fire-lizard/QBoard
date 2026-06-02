@@ -64,6 +64,12 @@ void PromotionDialog::on_toolButton_8_clicked()
     accept();
 }
 
+void PromotionDialog::on_toolButton_9_clicked()
+{
+    _chosenPiece = Nightrider;
+    accept();
+}
+
 PieceType PromotionDialog::GetChosenPiece() const
 {
     return _chosenPiece;
@@ -79,4 +85,5 @@ void PromotionDialog::SetEnabled(PieceType pieceType, bool isEnabled) const
     if (pieceType == Chancellor) ui->toolButton_6->setEnabled(isEnabled);
     if (pieceType == Champion) ui->toolButton_7->setEnabled(isEnabled);
     if (pieceType == Wizard) ui->toolButton_8->setEnabled(isEnabled);
+    if (pieceType == Nightrider) ui->toolButton_9->setEnabled(isEnabled);
 }

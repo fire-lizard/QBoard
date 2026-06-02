@@ -66,7 +66,7 @@ std::string Board::GetFEN() const
 					fen.append(std::to_string(emptySquares));
 					emptySquares = 0;
 				}
-                std::string sc = GetStringCode(i, j);
+				std::string sc = GetStringCode(i, j);
                 if (GetData(i, j)->Colour == Black)
 				{
 					std::transform(sc.begin(), sc.end(), sc.begin(), [](const char v) { return static_cast<char>(std::tolower(v)); });
@@ -368,7 +368,7 @@ std::string Board::GetStringCode(int x, int y) const
     case DragonKing:
         if (basePieceType == Rook) return "+R"; else if (basePieceType == FlyingDragon) return "+F'"; else return "D";
     case DragonHorse:
-        if (basePieceType == Bishop) return "+B"; else if (basePieceType == CatSword) return "+Z'"; else return "H";
+        if (basePieceType == Bishop) return "+B"; else if (basePieceType == CatSword) return "+Z"; else return "H";
     case Rook:
         return basePieceType == Gold ? "+G": "R";
     case Bishop:
@@ -526,7 +526,7 @@ std::string Board::GetStringCode(int x, int y) const
     case GreatElephant:
         return "+N!";
     case LionDog:
-        return basePieceType == WesternBarbarian ? "+B'" : "N!'";
+        return basePieceType == WesternBarbarian ? "+B'" : "N!";
     case WesternBarbarian:
         return "B'";
     case EasternBarbarian:

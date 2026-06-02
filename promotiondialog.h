@@ -34,6 +34,8 @@ private slots:
 
     void on_toolButton_8_clicked();
 
+    void on_toolButton_9_clicked();
+
 private:
     Ui::PromotionDialog *ui;
 

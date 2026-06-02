@@ -813,32 +813,23 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 
 char EngineOutputHandler::ChessPieceChar(PieceType chessPiece)
 {
-    if (chessPiece == Bishop)
+    switch (chessPiece)
     {
-        return 'b';
-    }
-    else if (chessPiece == Knight || chessPiece == Nightrider)
-    {
-        return 'n';
-    }
-    else if (chessPiece == Rook)
-    {
+    case Rook:
         return 'r';
-    }
-    else if (chessPiece == Archbishop)
-    {
+    case Knight:
+    case Nightrider:
+        return 'n';
+    case Bishop:
+        return 'b';
+    case Archbishop:
         return 'a';
-    }
-    else if (chessPiece == Chancellor || chessPiece == Champion)
-    {
+    case Chancellor:
+    case Champion:
         return 'c';
-    }
-    else if (chessPiece == Wizard)
-    {
+    case Wizard:
         return 'w';
-    }
-    else
-    {
+    default:
         return 'q';
     }
 }
@@ -967,12 +958,9 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 				return "Invalid FEN string for this game";
 			}
 			board->SetData(i, j, std::make_optional<Piece>(pieceType, c >= 'a' && c <= 'z' ? Black : White));
-            if (promo == "+")
+            if (promo == "+" && gameVariant != MicroShogi && gameVariant != KyotoShogi)
             {
-                if (gameVariant != MicroShogi && gameVariant != KyotoShogi)
-                {
-                    board->Promote(i, j);
-                }
+                board->Promote(i, j);
             }
             promo = "";
 			k++;

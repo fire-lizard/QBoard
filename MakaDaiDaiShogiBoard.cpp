@@ -54,7 +54,7 @@ void MakaDaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
 			_data[x][y]->Type = pt;
             return;
         }
-        PieceType pieceType = None;
+        PieceType pieceType = _data[x][y]->Type;
         switch (pieceType)
         {
         case King:

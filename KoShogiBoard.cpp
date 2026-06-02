@@ -156,11 +156,110 @@ void KoShogiBoard::Promote(int x, int y, PieceType pt)
 
 void KoShogiBoard::Demote(int x, int y)
 {
-    if (_data[x][y] != std::nullopt)
-    {
+	if (_data[x][y] != std::nullopt)
+	{
 		_data[x][y]->IsPromoted = false;
-		_data[x][y]->Type = GetData(x, y)->BaseType;
-    }
+		PieceType pieceType = None;
+		switch (_data[x][y]->Type)
+		{
+		case DoubleKylin:
+			pieceType = Kylin;
+			break;
+		case DoublePhoenix:
+			pieceType = Phoenix;
+			break;
+		case DragonKing:
+			pieceType = Elephant;
+			break;
+		case FlyingStag:
+			pieceType = Gold;
+			break;
+		case CompanyCommander:
+			pieceType = Silver;
+			break;
+		case ViceCommissioner:
+			pieceType = Leopard;
+			break;
+		case PoisonFlame:
+			pieceType = Copper;
+			break;
+		case ExtensiveFog:
+			pieceType = TaoistPriest;
+			break;
+		case HolyLight:
+			pieceType = SpiritualMonk;
+			break;
+		case SkywardNet:
+			pieceType = AdvanceGuard;
+			break;
+		case Prince:
+			pieceType = MiddleTroop;
+			break;
+		case Thunderclap:
+			pieceType = Drum;
+			break;
+		case RoamingAssault:
+			pieceType = Flag;
+			break;
+		case DragonHorse:
+			pieceType = Tiger;
+			break;
+		case RisingDragon:
+			pieceType = Queen;
+			break;
+		case WingedTiger:
+			pieceType = DragonKing;
+			break;
+		case FlyingHawk:
+			pieceType = DragonHorse;
+			break;
+		case EarthwardNet:
+			pieceType = RearGuard;
+			break;
+		case DivineCarriage:
+			pieceType = FrankishCannon;
+			break;
+		case LongbowKnight:
+			pieceType = Longbow;
+			break;
+		case CrossbowKnight:
+			pieceType = Crossbow;
+			break;
+		case CannonCarriage:
+			pieceType = Cannon;
+			break;
+		case KnightCaptain:
+			pieceType = Knight;
+			break;
+		case WingedHorse:
+			pieceType = KnightCaptain;
+			break;
+		case VerticalMover:
+			pieceType = Pawn;
+			break;
+		case ShieldCaptain:
+			pieceType = CatSword;
+			break;
+		case FreeBoar:
+			pieceType = ShieldCaptain;
+			break;
+		case Rook:
+			pieceType = Chariot;
+			break;
+		case Queen:
+			pieceType = Rook;
+			break;
+		case FlyingOx:
+			pieceType = _data[x][y]->BaseType;
+			break;
+		default:
+			break;
+		}
+		if (pieceType != None)
+		{
+			_data[x][y]->Type = pieceType;
+		}
+	}
 }
 
 void KoShogiBoard::RemoveShoot(int x, int y)

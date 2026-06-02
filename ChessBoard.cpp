@@ -59,7 +59,6 @@ void ChessBoard::Promote(int x, int y, PieceType pt)
 {
     if (_data[x][y] != std::nullopt)
     {
-		_data[x][y]->IsPromoted = true;
 		_data[x][y]->Type = pt;
     }
 }

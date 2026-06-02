@@ -1382,7 +1382,8 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             pd->SetEnabled(Chancellor, std::find(std::begin(capturedPieces), std::end(capturedPieces), Chancellor) != std::end(capturedPieces));
             pd->SetEnabled(Champion, false);
             pd->SetEnabled(Wizard, false);
-            if (pd->exec() == QDialog::Accepted)
+			pd->SetEnabled(Nightrider, false);
+			if (pd->exec() == QDialog::Accepted)
             {
                 const PieceType pt = pd->GetChosenPiece();
                 promotion = EngineOutputHandler::ChessPieceChar(pt);
@@ -1404,7 +1405,8 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             (y == 1 && _currentPiece->Colour == White)))
         {
             PromotionDialog* pd = new PromotionDialog(this);
-            if (pd->exec() == QDialog::Accepted)
+			pd->SetEnabled(Nightrider, false);
+			if (pd->exec() == QDialog::Accepted)
             {
                 const PieceType pt = pd->GetChosenPiece();
                 promotion = EngineOutputHandler::ChessPieceChar(pt);
@@ -1426,7 +1428,8 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             PromotionDialog* pd = new PromotionDialog(this);
             pd->SetEnabled(Champion, false);
             pd->SetEnabled(Wizard, false);
-            if (_gameVariant == Chess)
+			pd->SetEnabled(Nightrider, _gameVariant == NightriderChess);
+			if (_gameVariant == Chess || _gameVariant == NightriderChess)
             {
                 pd->SetEnabled(Archbishop, false);
                 pd->SetEnabled(Chancellor, false);
