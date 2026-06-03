@@ -33,5 +33,7 @@ public:
     static void RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<std::string> moves);
 	static void RemoveMove(std::vector<std::pair<int, int>>& moves, int x, int y);
 	static char ChessPieceChar(PieceType chessPiece);
+	template <typename T> static std::basic_string<T> lowercase(const std::basic_string<T>& s);
+	template <typename T> static std::basic_string<T> uppercase(const std::basic_string<T>& s);
 };
 

@@ -790,7 +790,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                     || ((gameVariant == WaShogi || gameVariant == CrazyWa) && (y2 <= 2 || y2 >= 8) && moveArray[ms - 1] == '+'));
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
             auto destPiece = board->GetData(x2, y2);
-			bool result = board->Move(x1, y1, x2, y2, false);
+			board->Move(x1, y1, x2, y2, false);
             if (board->GetData(x2, y2) != std::nullopt)
             {
                 AddMove(board, gameVariant, board->GetData(x2, y2)->BaseType, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
@@ -803,7 +803,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             {
                 engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
             }
-			if (isPromoted || gameVariant == KyotoShogi || (gameVariant == MicroShogi && result && destPiece != std::nullopt))
+			if (isPromoted || gameVariant == KyotoShogi || (gameVariant == MicroShogi && destPiece != std::nullopt))
 			{
                 board->Promote(x2, y2);
             }
@@ -861,7 +861,7 @@ void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceTy
 	}
 }
 
-template <typename T> static std::basic_string<T> uppercase(const std::basic_string<T>& s)
+template <typename T> std::basic_string<T> EngineOutputHandler::uppercase(const std::basic_string<T>& s)
 {
 	std::basic_string<T> s2 = s;
 	std::transform(s2.begin(), s2.end(), s2.begin(),
@@ -869,7 +869,7 @@ template <typename T> static std::basic_string<T> uppercase(const std::basic_str
 	return s2;
 }
 
-template <typename T> static std::basic_string<T> lowercase(const std::basic_string<T>& s)
+template <typename T> std::basic_string<T> EngineOutputHandler::lowercase(const std::basic_string<T>& s)
 {
 	std::basic_string<T> s2 = s;
 	std::transform(s2.begin(), s2.end(), s2.begin(),
@@ -922,13 +922,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
             isDigit = false;
             std::string stringCode(1, c);
 			PieceType pieceType;
-            if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi ||
-                gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == EuroShogi || gameVariant == HeianShogi ||
-                gameVariant == HeianDaiShogi || gameVariant == ToriShogi || gameVariant == WaShogi || gameVariant == CrazyWa || gameVariant == ChuShogi)
-			{
-                pieceType = StringManager::StringCode2PieceType(gameVariant, promo + uppercase(stringCode));
-			}
-            else if (gameVariant == DaiShogi || gameVariant == TenjikuShogi || gameVariant == YariShogi ||
+            if (gameVariant == DaiShogi || gameVariant == TenjikuShogi || gameVariant == YariShogi ||
 				gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
 			{
 				if (k < fen.size() - 1 && (fen[k + 1] == '\'' || fen[k + 1] == '!' || fen[k + 1] == '~'))
@@ -936,19 +930,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 					k++;
 					stringCode.push_back(fen[k].toLatin1());
 				}
-                if (gameVariant == YariShogi)
-                {
-                    pieceType = StringManager::StringCode2PieceType(gameVariant, uppercase(stringCode));
-                }
-                else
-				{
-                    pieceType = StringManager::StringCode2PieceType(gameVariant, promo + uppercase(stringCode));
-                }
 			}
-            else
-            {
-                pieceType = StringManager::StringCode2PieceType(gameVariant, uppercase(stringCode));
-            }
+            pieceType = StringManager::StringCode2PieceType(gameVariant, uppercase(stringCode));
             if (pieceType == None)
 			{
 				return "Invalid character found in the FEN string at position " + QString::number(k);

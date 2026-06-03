@@ -66,7 +66,7 @@ Name: "engines\WinBoard\HaQi"; Description: "HaQiKid 1.8a"; Types: full custom
 Name: "engines\WinBoard\XQWL"; Description: "XQWLight 0.6"; Types: full custom
 Name: "engines\WinBoard\Shokidoki"; Description: "Shokidoki"; Types: full custom
 Name: "engines\WinBoard\HaChu"; Description: "HaChu 0.21b"; Types: full custom
-Name: "engines\WinBoard\CrazyWa"; Description: "CrazyWa 1.0.4"; Types: full custom
+Name: "engines\WinBoard\CrazyWa"; Description: "CrazyWa 1.0.5"; Types: full custom
 Name: "engines\WinBoard\Other"; Description: "Other"; Types: full custom
 
 [Types]
