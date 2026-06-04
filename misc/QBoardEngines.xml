@@ -23,7 +23,6 @@
     <Engine EngineName="fairy-stockfish" GameVariant="Modern Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Grand Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Nightrider Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
-    <Engine EngineName="fairy-stockfish" GameVariant="Shatar" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Janggi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Yari Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="Fruit" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Fruit 2.2.1/Fruit2.2.1.exe" EngineOptions=""/>
@@ -43,6 +42,7 @@
     <Engine EngineName="Nebiyu" GameVariant="Judkins Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
     <Engine EngineName="Pulsar" GameVariant="Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Pulsar/pulsar2009-9b.exe" EngineOptions=""/>
     <Engine EngineName="Pulsar" GameVariant="Shatranj" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Pulsar/pulsar2009-9b.exe" EngineOptions=""/>
+    <Engine EngineName="shatar" GameVariant="Shatar" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Other/shatar.exe" EngineOptions=""/>
     <Engine EngineName="Shokidoki" GameVariant="Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
     <Engine EngineName="Shokidoki" GameVariant="Mini Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
     <Engine EngineName="Shokidoki" GameVariant="Judkins Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
@@ -51,7 +51,6 @@
     <Engine EngineName="SjaakII" GameVariant="Grand Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Omega Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Nightrider Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
-    <Engine EngineName="SjaakII" GameVariant="Shatar" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Yari Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Sho Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
