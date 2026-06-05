@@ -155,6 +155,8 @@ inline PieceType GrandeAcedrexPieces[] = { King, Aanca, Giraffe, Crocodile, Unic
 
 inline PieceType ShatranjPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn };
 
+inline PieceType ShatarPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn };
+
 inline PieceType MakrukPieces[] = { King, Queen, Silver, Knight, Rook, Pawn };
 
 inline PieceType XiangqiPieces[] = { King, Silver, Elephant, Knight, Rook, Cannon, Pawn };
@@ -267,6 +269,6 @@ inline char SHOSHOGIFEN[] = "lnsgkgsnl/1r2e2b1/ppppppppp/9/9/9/PPPPPPPPP/1B2E2R1
 
 inline char SHATRANJFEN[] = "rnbkqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBKQBNR";
 
-inline char SHATARFEN[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBKQBNR";
+inline char SHATARFEN[] = "rnbjkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBJKBNR";
 
 inline char MAKRUKFEN[] = "rnsmksnr/8/pppppppp/8/8/PPPPPPPP/8/RNSKMSNR";

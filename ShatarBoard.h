@@ -10,6 +10,7 @@ public:
     Board* Clone() override;
     void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
     void SetEvalMode(bool evalMode);
+    std::string GetStringCode(int x, int y) const override;
 
 private:
     void CheckKnightMove(const std::optional<Piece>& piece, int x, int y);
@@ -19,12 +20,12 @@ private:
 
     PieceType _initialSetup[8][8] = {
         { Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook },
-        { Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
+        { Pawn, Pawn, Pawn, None, Pawn, Pawn, Pawn, Pawn },
         { None, None, None, None, None, None, None, None },
+        { None, None, None, Pawn, None, None, None, None },
+        { None, None, None, Pawn, None, None, None, None },
         { None, None, None, None, None, None, None, None },
-        { None, None, None, None, None, None, None, None },
-        { None, None, None, None, None, None, None, None },
-        { Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
+        { Pawn, Pawn, Pawn, None, Pawn, Pawn, Pawn, Pawn },
         { Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook }
     };
 };

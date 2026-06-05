@@ -1455,7 +1455,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             }
         }
     }
-    else if (_gameVariant == Shatranj || _gameVariant == Shatar || _gameVariant == CourierChess)
+    else if (_gameVariant == Shatranj || _gameVariant == CourierChess)
 	{
         if (_currentPiece->Type == Pawn &&
             ((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) ||
@@ -1465,6 +1465,16 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             _board->Promote(x, y);
 		}
 	}
+	else if (_gameVariant == Shatar)
+	{
+		if (_currentPiece->Type == Pawn &&
+			((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) ||
+				(y == 0 && _currentPiece->Colour == White)))
+		{
+			promotion = 'j';
+			_board->Promote(x, y);
+		}
+		}
 	else if (_gameVariant == Makruk)
 	{
         if (_currentPiece->Type == Pawn &&
@@ -2275,12 +2285,20 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
                 blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(GrandeAcedrexPiece)));
             }
         }
-        else if (_gameVariant == Shatranj || _gameVariant == Shatar)
+        else if (_gameVariant == Shatranj)
 		{
 			for (auto& ShatranjPiece : ShatranjPieces)
 			{
                 whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShatranjPiece)));
                 blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShatranjPiece)));
+			}
+		}
+		else if (_gameVariant == Shatar)
+		{
+			for (auto& ShatarPiece : ShatarPieces)
+			{
+				whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShatarPiece)));
+				blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShatarPiece)));
 			}
 		}
 		else if (_gameVariant == Makruk)

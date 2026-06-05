@@ -888,7 +888,7 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 				switch (ui->vboard->GetGameVariant())
 				{
                 case MicroShogi:
-                    engine->StartGame("microshogi");
+                    engine->StartGame("micro_shogi");
                     break;
                 case KyotoShogi:
                     engine->StartGame("5x5+4_shogi");
@@ -900,7 +900,7 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 					engine->StartGame("6x6+6_shogi");
 					break;
                 case WhaleShogi:
-                    engine->StartGame("whaleshogi");
+                    engine->StartGame("whale_shogi");
                     break;
                 case ToriShogi:
                     engine->StartGame("7x7+6_shogi");

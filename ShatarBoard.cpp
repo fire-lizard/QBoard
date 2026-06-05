@@ -179,3 +179,16 @@ void ShatarBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
         break;
     }
 }
+
+std::string ShatarBoard::GetStringCode(int x, int y) const
+{
+    if (GetData(x, y) == std::nullopt) return "";
+    PieceType pieceType = GetData(x, y)->Type;
+    switch (pieceType)
+    {
+    case Queen:
+        return "J";
+    default:
+        return ShatranjBoard::GetStringCode(x, y);
+    }
+}
