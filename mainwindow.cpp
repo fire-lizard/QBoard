@@ -533,9 +533,7 @@ void MainWindow::on_actionSave_triggered()
 			}
 			str += "\n\n";
 			QFile file(fileName);
-			const QIODevice::OpenMode flags = fileDialog.selectedNameFilter() == "FEN Files (*.fen)" ?
-				QIODevice::WriteOnly | QIODevice::Text : QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text;
-			file.open(flags);
+			file.open(QIODevice::WriteOnly | QIODevice::Text);
 			file.write(str);
 			file.close();
 		}
@@ -572,9 +570,7 @@ void MainWindow::on_actionSave_triggered()
 			}
 			str += "\n\n";
 			QFile file(fileName);
-			const QIODevice::OpenMode flags = fileDialog.selectedNameFilter() == "FEN Files (*.fen)" ?
-				QIODevice::WriteOnly | QIODevice::Text : QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text;
-			file.open(flags);
+			file.open(QIODevice::WriteOnly | QIODevice::Text);
 			file.write(str);
 			file.close();
 		}
@@ -698,10 +694,17 @@ void MainWindow::on_actionSave_triggered()
 			}
 			str += "\n\n";
 			QFile file(fileName);
-			const QIODevice::OpenMode flags = fileDialog.selectedNameFilter() == "FEN Files (*.fen)" ?
-				QIODevice::WriteOnly | QIODevice::Text : QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text;
-			file.open(flags);
-			file.write(str);
+			file.open(QIODevice::WriteOnly | QIODevice::Text);
+			if (fileDialog.selectedNameFilter() == "KIF Files (*.kif)" || fileDialog.selectedNameFilter() == "KI2 Files (*.ki2)")
+			{
+				QTextStream out(&file);
+				out.setCodec("UTF-8");
+				out << str;
+			}
+			else
+			{
+				file.write(str);
+			}
 			file.close();
 		}
 	}

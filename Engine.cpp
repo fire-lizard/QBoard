@@ -1,5 +1,7 @@
 #include "Engine.h"
 
+#include <utility>
+
 Engine::Engine()
 {
 }
@@ -81,4 +83,16 @@ void Engine::WriteToProcess(QByteArray buf) const
 std::vector<QByteArray> Engine::Moves() const
 {
 	return _moves;
+}
+
+QByteArray Engine::AddMove(QByteArray moveStr)
+{
+	_moves.push_back(moveStr);
+	return moveStr;
+}
+
+void Engine::Move(QByteArray moveStr)
+{
+	_textEdit->setText("");
+	WriteToProcess(AddMove(std::move(moveStr)) + "\n");
 }

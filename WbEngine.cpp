@@ -110,6 +110,16 @@ void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char 
     WriteToProcess(AddMove(x1, y1, x2, y2, x3, y3, x4, y4) + "\n");
 }
 
+QByteArray WbEngine::AddMove(QByteArray moveStr)
+{
+	if (_usermove)
+	{
+		moveStr = "usermove " + moveStr;
+	}
+	_moves.push_back(moveStr);
+	return moveStr;
+}
+
 QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
 {
 	QByteArray moveStr;

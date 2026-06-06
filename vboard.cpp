@@ -537,7 +537,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _board->GetHeight() - y, ' ');
             }
         }
-		dynamic_cast<ChessBoard*>(_board)->WriteCastling(x == _board->GetWidth() - 1 ? "O-O" : "O-O-O");
+		dynamic_cast<ChessBoard*>(_board)->WriteCastling(x > _oldX ? "O-O" : "O-O-O");
 		FinishMove(x, y);
 	}
 	// Null move
@@ -2096,7 +2096,11 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	{
         const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _whiteEngine->GetType(), _gameVariant);
 		if (moveArray.isEmpty()) return;
-		if (moveArray.size() < 8)
+		if (moveArray.contains("O-O"))
+		{
+			_blackEngine->Move(moveArray);
+		}
+		else if (moveArray.size() < 8)
 		{
             const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
             QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
@@ -2152,7 +2156,11 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	{
         const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _blackEngine->GetType(), _gameVariant);
 		if (moveArray.isEmpty()) return;
-		if (moveArray.size() < 8)
+		if (moveArray.contains("O-O"))
+		{
+			_whiteEngine->Move(moveArray);
+		}
+		else if (moveArray.size() < 8)
 		{
             const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());
             QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());

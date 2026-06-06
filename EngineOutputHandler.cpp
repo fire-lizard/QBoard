@@ -144,7 +144,11 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 	{
 		if (engineProtocol == XBoard ? part.startsWith("move ") : part.startsWith("bestmove "))
 		{
-			if (engineProtocol == USI)
+			if (part.contains("O-O"))
+			{
+				result = part.contains("O-O-O") ? "O-O-O" : "O-O";
+			}
+			else if (engineProtocol == USI)
 			{
 				QRegularExpressionMatch match = _sgusre.match(part);
 				if (match.hasMatch())
@@ -292,18 +296,39 @@ QByteArray EngineOutputHandler::MoveToByteArray(Move m, EngineProtocol enginePro
 	return result;
 }
 
+Move EngineOutputHandler::CastlingToMove(const QByteArray& c, GameVariant gameVariant, PieceColour currentPlayer)
+{
+    QByteArray result;
+	if (gameVariant == OmegaChess)
+    {
+        result = currentPlayer == Black ? c == "O-O-O" ? "g11e11" : "g11i11" : c == "O-O-O" ? "g1e1" : "g1i1";
+        return ByteArrayToMove(result, XBoard, 12, 12);
+    }
+    if (gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess)
+    {
+        result = currentPlayer == Black ? c == "O-O-O" ? "f10c10" : "f10j10" : c == "O-O-O" ? "f1c1" : "f1j1";
+        return ByteArrayToMove(result, XBoard, 10, 8);
+    }
+    if (gameVariant == ChancellorChess || gameVariant == ModernChess)
+    {
+        result = currentPlayer == Black ? c == "O-O-O" ? "e10c10" : "e10g10" : c == "O-O-O" ? "e1c1" : "e1g1";
+        return ByteArrayToMove(result, XBoard, 9, 9);
+    }
+    result = currentPlayer == Black ? c == "O-O-O" ? "e8c8" : "e8g8" : c == "O-O-O" ? "e1c1" : "e1g1";
+    return ByteArrayToMove(result, XBoard, 8, 8);
+}
+
 void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::shared_ptr<Engine>& engine, Board * board, QTextEdit * textEdit,
 	GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer)
 {
 	if (engine->GetType() == XBoard)
 	{
-		const QString str = QString(buf);
-		if (str.contains("setboard=0")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("setboard", false);
-		if (str.contains("setboard=1")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("setboard", true);
-		if (str.contains("memory=0")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("memory", false);
-		if (str.contains("memory=1")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("memory", true);
-		if (str.contains("usermove=0")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("usermove", false);
-		if (str.contains("usermove=1")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("usermove", true);
+		if (buf.contains("setboard=0")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("setboard", false);
+		if (buf.contains("setboard=1")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("setboard", true);
+		if (buf.contains("memory=0")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("memory", false);
+		if (buf.contains("memory=1")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("memory", true);
+		if (buf.contains("usermove=0")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("usermove", false);
+		if (buf.contains("usermove=1")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("usermove", true);
 	}
 	const QByteArray moveArray = ExtractMove(buf, engine->GetType(), gameVariant);
     if (std::any_of(buf.begin(), buf.end(), [=](char t) {return isprint(t);}))
@@ -311,7 +336,9 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
         textEdit->setText(engineOutput == Verbose ? buf : moveArray);
     }
 	if (moveArray.isEmpty()) return;
-    const Move m = ByteArrayToMove(moveArray, engine->GetType(), board->GetWidth(), board->GetHeight());
+    const Move m = moveArray.contains("O-O") ?
+        CastlingToMove(moveArray, gameVariant, currentPlayer) :
+        ByteArrayToMove(moveArray, engine->GetType(), board->GetWidth(), board->GetHeight());
 	int x1 = m.x1;
 	int y1 = m.y1;
 	int x2 = m.x2;
@@ -416,7 +443,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             board->SetData(x1 < x2 ? coords.first - 3 : coords.first + 4, y1, rook);
             board->SetData(x1, y1, std::nullopt);
             board->SetData(coords.first, coords.second, std::nullopt);
-            dynamic_cast<ChessBoard*>(board)->WriteCastling(x1 == board->GetWidth() - 3 ? "O-O" : "O-O-O");
+            dynamic_cast<ChessBoard*>(board)->WriteCastling(x2 > x1 ? "O-O" : "O-O-O");
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, ' ');
         }
         else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
@@ -461,7 +488,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     else if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants))
 	{
 		// Castling check
-        if (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King)
+        if (moveArray.contains("O-O") || (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King))
 		{
             auto coords = board->FindNearestPiece(x1, y1, x1 < x2 ? East : West);
         	std::optional<Piece> rook = board->GetData(coords.first, coords.second);
@@ -482,8 +509,15 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             }
             board->SetData(x1, y1, std::nullopt);
             board->SetData(coords.first, coords.second, std::nullopt);
-            dynamic_cast<ChessBoard*>(board)->WriteCastling(x1 == board->GetWidth() - 1 ? "O-O" : "O-O-O");
-            engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, ' ');
+            dynamic_cast<ChessBoard*>(board)->WriteCastling(x2 > x1 ? "O-O" : "O-O-O");
+            if (moveArray.contains("O-O"))
+            {
+                engine->AddMove(moveArray);
+            }
+            else
+            {
+                engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, ' ');
+            }
 		}
 		else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{

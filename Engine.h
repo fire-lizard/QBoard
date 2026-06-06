@@ -19,7 +19,9 @@ public:
     QProcess* GetProcess() const;
 	void WriteToProcess(QByteArray buf) const;
 	std::vector<QByteArray> Moves() const;
-    virtual void SetEngineDepth(int engineDepth);
+	virtual QByteArray AddMove(QByteArray moveStr);
+	virtual void Move(QByteArray moveStr);
+	virtual void SetEngineDepth(int engineDepth);
     virtual void SetFEN(std::string fen) = 0;
 	virtual EngineProtocol GetType() = 0;
 	virtual void StartGame(QString variant = "") = 0;
