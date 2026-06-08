@@ -49,10 +49,10 @@
     <Engine EngineName="Shokidoki" GameVariant="Euro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Capablanca Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Gothic Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
-    <Engine EngineName="SjaakII" GameVariant="Chancellor Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Grand Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Omega Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Nightrider Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
+    <Engine EngineName="SjaakII" GameVariant="Courier Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Micro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Yari Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
