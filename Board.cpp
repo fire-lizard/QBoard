@@ -69,7 +69,7 @@ std::string Board::GetFEN() const
 				std::string sc = GetStringCode(i, j);
                 if (GetData(i, j)->Colour == Black)
 				{
-					std::transform(sc.begin(), sc.end(), sc.begin(), [](const char v) { return static_cast<char>(std::tolower(v)); });
+					std::ranges::transform(sc, sc.begin(), [](const char v) { return static_cast<char>(std::tolower(v)); });
 				}
 				fen.append(sc);
 			}
@@ -202,7 +202,7 @@ bool Board::InBounds(int x, int y, Direction direction) const
 
 bool Board::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
-	if (std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}) || !cl)
+	if (std::ranges::any_of(_moves, [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}) || !cl)
 	{
 		SetData(newX, newY, GetData(oldX, oldY));
 		SetData(oldX, oldY, std::nullopt);
@@ -213,7 +213,7 @@ bool Board::Move(int oldX, int oldY, int newX, int newY, bool cl)
 
 void Board::RemoveMove(int x, int y)
 {
-	const auto it = std::remove_if(_moves.begin(), _moves.end(), [=](const auto& p) { return p.first == x && p.second == y; });
+	const auto it = std::ranges::remove_if(_moves, [=](const auto& p) { return p.first == x && p.second == y; }).begin();
 	_moves.erase(it, _moves.end());
 }
 
@@ -232,7 +232,7 @@ std::vector<std::tuple<int, int, int, int>> Board::GetAllMoves(PieceColour piece
             if (GetData(i, j) != std::nullopt && GetData(i, j)->Colour == pieceColour)
 			{
 				GetMoves(GetData(i, j), i, j);
-				for_each(_moves.begin(), _moves.end(), [&](std::pair<int, int> p) {result.emplace_back(i, j, p.first, p.second);});
+				std::ranges::for_each(_moves, [&](std::pair<int, int> p) {result.emplace_back(i, j, p.first, p.second);});
 			}
 		}
 	}
@@ -337,7 +337,7 @@ std::vector<std::pair<int, int>> Board::GetDefenders(int x, int y)
 
 bool Board::IsMovePossible(int x, int y)
 {
-	return std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x && t.second == y;});
+	return std::ranges::any_of(_moves, [=](std::pair<int, int> t) {return t.first == x && t.second == y;});
 }
 
 bool Board::operator == (const std::string& fen) const

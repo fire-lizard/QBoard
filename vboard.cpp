@@ -25,7 +25,7 @@ void VBoard::paintEvent(QPaintEvent *)
 		for (int j = 0; j < _board->GetHeight(); j++)
 		{
 			QRect rect(i * w, j * h, w, h);
-			if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair<int, int>(i, j)) != std::end(_tcMoves) ||
+			if (std::ranges::find(_tcMoves, std::pair(i, j)) != std::end(_tcMoves) ||
 				_lionFirstMove.first == i && _lionFirstMove.second == j || _lionSecondMove.first == i && _lionSecondMove.second == j ||
 				_firstShoot.first == i && _firstShoot.second == j)
 			{
@@ -47,7 +47,7 @@ void VBoard::paintEvent(QPaintEvent *)
             }
             else if (PossibleMove(i, j) && _highlightMoves)
 			{
-                if (_currentPiece != std::nullopt && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->Type) != std::end(lionPieces))
+                if (_currentPiece != std::nullopt && std::ranges::find(lionPieces, _currentPiece->Type) != std::end(lionPieces))
 				{
 					// Lion move highlighting
 					if (_gameVariant == KoShogi && !_lionMovedOnce && EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, i, j))
@@ -251,7 +251,7 @@ void VBoard::paintEvent(QPaintEvent *)
                     painter.setBrush(Qt::NoBrush);
 				}
 			}
-			else if (std::any_of(_shoots.begin(), _shoots.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}) && _highlightShoots)
+			else if (std::ranges::any_of(_shoots, [=](std::pair<int, int> t) {return t.first == i && t.second == j;}) && _highlightShoots)
 			{
 				painter.setBrush(QColorConstants::Svg::violet);
                 painter.setPen(Qt::NoPen);
@@ -259,7 +259,7 @@ void VBoard::paintEvent(QPaintEvent *)
                 painter.setPen(_editorMode ? Qt::magenta : Qt::black);
                 painter.setBrush(Qt::NoBrush);
 			}
-			else if (std::any_of(_attackers.begin(), _attackers.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}) && _highlightAttackers)
+			else if (std::ranges::any_of(_attackers, [=](std::pair<int, int> t) {return t.first == i && t.second == j;}) && _highlightAttackers)
 			{
 				painter.setBrush(QColorConstants::Svg::salmon);
                 if (_gameVariant != KoShogi)
@@ -274,7 +274,7 @@ void VBoard::paintEvent(QPaintEvent *)
                 }
                 painter.setBrush(Qt::NoBrush);
 			}
-			else if (std::any_of(_defenders.begin(), _defenders.end(), [=](std::pair<int, int> t) {return t.first == i && t.second == j;}) && _highlightDefenders)
+			else if (std::ranges::any_of(_defenders, [=](std::pair<int, int> t) {return t.first == i && t.second == j;}) && _highlightDefenders)
 			{
 				painter.setBrush(QColorConstants::Svg::aquamarine);
                 if (_gameVariant != KoShogi)
@@ -320,7 +320,7 @@ void VBoard::paintEvent(QPaintEvent *)
                 painter.setBrush(Qt::NoBrush);
 			}
 			// En Passant square highlighting
-            else if ((std::find(std::begin(chessVariants), std::end(chessVariants), _gameVariant) != std::end(chessVariants)) &&
+            else if ((std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants)) &&
                 dynamic_cast<ChessBoard*>(_board)->GetEnPassant() != "-" &&	dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[0] - 97 == i &&
                 (_currentPlayer == White && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 48 == j ||
                  _currentPlayer == Black && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - (_gameVariant == ChancellorChess || _gameVariant == ModernChess ? 46 : 47) == j))
@@ -331,8 +331,9 @@ void VBoard::paintEvent(QPaintEvent *)
 			}
             else
 			{
-                if (std::find(std::begin(chessVariants), std::end(chessVariants), _gameVariant) != std::end(chessVariants) || _gameVariant == CourierChess ||
-                        _gameVariant == GrandeAcedrex || _gameVariant == Shatranj || _gameVariant == Makruk || _gameVariant == Shatar)
+                if (std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants) || _gameVariant == CourierChess ||
+					_gameVariant == GrandeAcedrex || _gameVariant == Shatranj || _gameVariant == Makruk || _gameVariant == Shatar ||
+					_gameVariant == Sittuyin)
 				{
 					if ((i + j) % 2 != 0)
 						painter.setBrush(Qt::gray);
@@ -464,8 +465,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	if (event->button() != Qt::MouseButton::LeftButton) return;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
-    const int x = static_cast<int>(event->x()) / w;
-    const int y = static_cast<int>(event->y()) / h;
+    const int x = static_cast<int>(event->position().x()) / w;
+    const int y = static_cast<int>(event->position().y()) / h;
 	std::optional<Piece> p = _board->GetData(x, y);
 	if (_editorMode)
 	{
@@ -476,7 +477,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		else
 		{
 			_board->SetData(x, y, std::make_optional<Piece>(_chosenPiece, _chosenColour));
-			if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), _chosenPiece) != std::end(_promotedPieces))
+			if (std::ranges::find(_promotedPieces, _chosenPiece) != std::end(_promotedPieces))
 			{
 				if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi)
 				{
@@ -491,9 +492,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	if (_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black ||
 		_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White) return;
 	const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
-    const bool isLionPiece = _currentPiece != std::nullopt && std::find(std::begin(lionPieces), std::end(lionPieces), _currentPiece->Type) != std::end(lionPieces);
+    const bool isLionPiece = _currentPiece != std::nullopt && std::ranges::find(lionPieces, _currentPiece->Type) != std::end(lionPieces);
 	const bool isShootingPiece = _gameVariant == KoShogi && _currentPiece != std::nullopt &&
-        std::find(std::begin(ShootingPieces), std::end(ShootingPieces), _currentPiece->Type) != std::end(ShootingPieces);
+        std::ranges::find(ShootingPieces, _currentPiece->Type) != std::end(ShootingPieces);
 	// Castling check
     if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess ||
          _gameVariant == JanusChess || _gameVariant == ChancellorChess || _gameVariant == ModernChess ||
@@ -568,7 +569,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
                 abs(_tcMoves[_tcMoves.size() - 1].second - y) > 1) && _currentPiece->Type == Thunderclap)
 			{
 			}
-            else if (std::find(std::begin(_tcMoves), std::end(_tcMoves), std::pair<int, int>(x, y)) != std::end(_tcMoves))
+            else if (std::ranges::find(_tcMoves, std::pair(x, y)) != std::end(_tcMoves))
 			{
 			}
             else if (_currentPiece->Type == Thunderclap && PossibleMove(x, y))
@@ -1291,31 +1292,31 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		{
             for (int index = 0; index < 4; index++)
 			{
-				std::for_each(_moves.begin(), _moves.end(), [this, x, y](std::pair<int, int> t)
+				std::ranges::for_each(_moves, [this, x, y](std::pair<int, int> t)
 				{
-                    EngineOutputHandler::CalculateCheck(_board, _currentPlayer, _moves, x, y, t.first, t.second);
+					EngineOutputHandler::CalculateCheck(_board, _currentPlayer, _moves, x, y, t.first, t.second);
 				});
 			}
 		}
         if (_gameVariant == Xiangqi || (_gameVariant == Janggi && dynamic_cast<XiangqiBoard*>(_board)->AreTwoKingsLookingOnEachOther()))
         {
-            std::for_each(_moves.begin(), _moves.end(), [this, x, y](std::pair<int, int> t)
+            std::ranges::for_each(_moves, [this, x, y](std::pair<int, int> t)
             {
-                EngineOutputHandler::CalculateXiangqiCheck(_board, _moves, x, y, t.first, t.second);
+	            EngineOutputHandler::CalculateXiangqiCheck(_board, _moves, x, y, t.first, t.second);
             });
         }
         if (_gameVariant == OmegaChess)
         {
-            std::for_each(_moves.begin(), _moves.end(), [this](std::pair<int, int> t)
+            std::ranges::for_each(_moves, [this](std::pair<int, int> t)
             {
-                if (t.second == 0 && t.first >= 1 && t.first <= _board->GetWidth() - 2 ||
-                    t.second == _board->GetHeight() - 1 && t.first >= 1 && t.first <= _board->GetWidth() - 2 ||
-                    t.first == 0 && t.second >= 1 && t.second <= _board->GetHeight() - 2 ||
-                    t.first == _board->GetWidth() - 1 && t.second >= 1 && t.second <= _board->GetHeight() - 2)
-                {
-                    _board->RemoveMove(t.first, t.second);
-                    EngineOutputHandler::RemoveMove(_moves, t.first, t.second);
-                }
+	            if (t.second == 0 && t.first >= 1 && t.first <= _board->GetWidth() - 2 ||
+		            t.second == _board->GetHeight() - 1 && t.first >= 1 && t.first <= _board->GetWidth() - 2 ||
+		            t.first == 0 && t.second >= 1 && t.second <= _board->GetHeight() - 2 ||
+		            t.first == _board->GetWidth() - 1 && t.second >= 1 && t.second <= _board->GetHeight() - 2)
+	            {
+		            _board->RemoveMove(t.first, t.second);
+		            EngineOutputHandler::RemoveMove(_moves, t.first, t.second);
+	            }
             });
         }
         this->repaint();
@@ -1374,12 +1375,12 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             (y <= 2 && _currentPiece->Colour == White)))
         {
             PromotionDialog* pd = new PromotionDialog(this);
-            pd->SetEnabled(Rook, std::find(std::begin(capturedPieces), std::end(capturedPieces), Rook) != std::end(capturedPieces));
-            pd->SetEnabled(Knight, std::find(std::begin(capturedPieces), std::end(capturedPieces), Knight) != std::end(capturedPieces));
-            pd->SetEnabled(Bishop, std::find(std::begin(capturedPieces), std::end(capturedPieces), Bishop) != std::end(capturedPieces));
-            pd->SetEnabled(Queen, std::find(std::begin(capturedPieces), std::end(capturedPieces), Queen) != std::end(capturedPieces));
-            pd->SetEnabled(Archbishop, std::find(std::begin(capturedPieces), std::end(capturedPieces), Archbishop) != std::end(capturedPieces));
-            pd->SetEnabled(Chancellor, std::find(std::begin(capturedPieces), std::end(capturedPieces), Chancellor) != std::end(capturedPieces));
+            pd->SetEnabled(Rook, std::ranges::find(capturedPieces, Rook) != std::end(capturedPieces));
+            pd->SetEnabled(Knight, std::ranges::find(capturedPieces, Knight) != std::end(capturedPieces));
+            pd->SetEnabled(Bishop, std::ranges::find(capturedPieces, Bishop) != std::end(capturedPieces));
+            pd->SetEnabled(Queen, std::ranges::find(capturedPieces, Queen) != std::end(capturedPieces));
+            pd->SetEnabled(Archbishop, std::ranges::find(capturedPieces, Archbishop) != std::end(capturedPieces));
+            pd->SetEnabled(Chancellor, std::ranges::find(capturedPieces, Chancellor) != std::end(capturedPieces));
             pd->SetEnabled(Champion, false);
             pd->SetEnabled(Wizard, false);
 			pd->SetEnabled(Nightrider, false);
@@ -1419,7 +1420,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             }
         }
     }
-    else if (std::find(std::begin(chessVariants), std::end(chessVariants), _gameVariant) != std::end(chessVariants))
+    else if (std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants))
     {
         if (_currentPiece->Type == Pawn &&
             ((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) ||
@@ -1474,7 +1475,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 			promotion = 'j';
 			_board->Promote(x, y);
 		}
-		}
+	}
 	else if (_gameVariant == Makruk)
 	{
         if (_currentPiece->Type == Pawn &&
@@ -1485,7 +1486,17 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             _board->Promote(x, y);
 		}
 	}
-    else if (_gameVariant == KyotoShogi)
+	else if (_gameVariant == Sittuyin)
+	{
+		if (_currentPiece->Type == Pawn &&
+			((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) ||
+				(y == 0 && _currentPiece->Colour == White)))
+		{
+			promotion = 'f';
+			_board->Promote(x, y);
+		}
+	}
+	else if (_gameVariant == KyotoShogi)
     {
         if (_currentPiece->Type != King)
         {
@@ -1496,9 +1507,8 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
     else if (_gameVariant == DaiDaiShogi)
 	{
         if (!_currentPiece->IsPromoted && p != std::nullopt &&
-			std::find(std::begin(UnpromotablePieces),
-				std::end(UnpromotablePieces),
-                _currentPiece->Type) == std::end(UnpromotablePieces))
+			std::ranges::find(UnpromotablePieces,
+			                  _currentPiece->Type) == std::end(UnpromotablePieces))
 		{
 			promotion = '+';
             _board->Promote(x, y);
@@ -1544,7 +1554,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 				promotion = '+';
                 _board->Promote(x, y);
 			}
-            else if (std::find(std::begin(StepMovers), std::end(StepMovers), _currentPiece->Type) != std::end(StepMovers))
+            else if (std::ranges::find(StepMovers, _currentPiece->Type) != std::end(StepMovers))
 			{
                 if (p->Type == Lion || p->Type == RisingDragon || p->Type == RoamingAssault || p->Type == Thunderclap)
 				{
@@ -1590,7 +1600,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 			}
 		}
 	}
-	else if (std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) != std::end(shogiVariants))
+	else if (std::ranges::find(shogiVariants, _gameVariant) != std::end(shogiVariants))
 	{
         const PieceType pt = _currentPiece->Type;
 		const bool pcond1 = EngineOutputHandler::CanBePromoted(_currentPiece, _gameVariant, _oldY, y);
@@ -1630,13 +1640,13 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 
 bool VBoard::event(QEvent* event)
 {
-	if (event->type() == QEvent::HoverMove && std::find(std::begin(shogiVariants), std::end(shogiVariants), _gameVariant) != std::end(shogiVariants))
+	if (event->type() == QEvent::HoverMove && std::ranges::find(shogiVariants, _gameVariant) != std::end(shogiVariants))
 	{
 		const QHoverEvent* hoverEvent = dynamic_cast<QHoverEvent*>(event);
 		const int w = this->size().width() / _board->GetWidth();
 		const int h = this->size().height() / _board->GetHeight();
-        const int x = static_cast<int>(hoverEvent->pos().x()) / w;
-        const int y = static_cast<int>(hoverEvent->pos().y()) / h;
+        const int x = static_cast<int>(hoverEvent->position().x()) / w;
+        const int y = static_cast<int>(hoverEvent->position().y()) / h;
 		if (x < _board->GetWidth() && y < _board->GetHeight() && (x != _px || y != _py))
 		{
 			_px = x;
@@ -1808,7 +1818,10 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
     case Shatar:
         _board = new ShatarBoard();
         break;
-    }
+	case Sittuyin:
+		_board = new SittuyinBoard();
+		break;
+	}
     this->setFixedSize(_board->GetWidth() * s + 1, _board->GetHeight() * s + 1);
 	if (this->_window != nullptr)
 	{
@@ -1872,12 +1885,12 @@ void VBoard::SetGroupBox(QGroupBox* groupBox)
 
 bool VBoard::PossibleMove(int x, int y) const
 {
-	return std::any_of(_moves.begin(), _moves.end(), [x, y](const std::pair<int, int>& p) {return p.first == x && p.second == y;});
+	return std::ranges::any_of(_moves, [x, y](const std::pair<int, int>& p) {return p.first == x && p.second == y;});
 }
 
 bool VBoard::PossibleShoot(int x, int y) const
 {
-	return std::any_of(_shoots.begin(), _shoots.end(), [x, y](const std::pair<int, int> t) {return t.first == x && t.second == y;});
+	return std::ranges::any_of(_shoots, [x, y](const std::pair<int, int> t) {return t.first == x && t.second == y;});
 }
 
 void VBoard::SetMainWindow(QMainWindow *window)
@@ -1925,7 +1938,7 @@ void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 {
 	if (editorMode)
 	{
-        if (std::find(std::begin(chessVariants), std::end(chessVariants), _gameVariant) != std::end(chessVariants))
+        if (std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants))
 		{
 			dynamic_cast<ChessBoard*>(_board)->SetCastling("-");
 			dynamic_cast<ChessBoard*>(_board)->SetEnPassant("-");
@@ -2317,7 +2330,15 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
                 blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(MakrukPiece)));
 			}
 		}
-        else if (_gameVariant == Xiangqi || _gameVariant == Janggi)
+		else if (_gameVariant == Sittuyin)
+		{
+			for (auto& SittuyinPiece : SittuyinPieces)
+			{
+				whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(SittuyinPiece)));
+				blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(SittuyinPiece)));
+			}
+		}
+		else if (_gameVariant == Xiangqi || _gameVariant == Janggi)
 		{
 			for (auto& XiangqiPiece : XiangqiPieces)
 			{
@@ -2425,7 +2446,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		{
 			for (auto& WaShogiPiece : WaShogiPieces)
 			{
-				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), WaShogiPiece) != std::end(_promotedPieces))
+				if (std::ranges::find(_promotedPieces, WaShogiPiece) != std::end(_promotedPieces))
 				{
 					whitePromoted->addAction(QString::fromStdString(StringManager::WaShogiPieceType2Description(WaShogiPiece)));
 					blackPromoted->addAction(QString::fromStdString(StringManager::WaShogiPieceType2Description(WaShogiPiece)));
@@ -2441,7 +2462,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		{
 			for (auto& ChuShogiPiece : ChuShogiPieces)
 			{
-				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), ChuShogiPiece) != std::end(_promotedPieces))
+				if (std::ranges::find(_promotedPieces, ChuShogiPiece) != std::end(_promotedPieces))
 				{
 					whitePromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(ChuShogiPiece)));
 					blackPromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(ChuShogiPiece)));
@@ -2457,7 +2478,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		{
 			for (auto& DaiShogiPiece : DaiShogiPieces)
 			{
-				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), DaiShogiPiece) != std::end(_promotedPieces))
+				if (std::ranges::find(_promotedPieces, DaiShogiPiece) != std::end(_promotedPieces))
 				{
 					whitePromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(DaiShogiPiece)));
 					blackPromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(DaiShogiPiece)));
@@ -2473,7 +2494,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		{
 			for (auto& TenjikuShogiPiece : TenjikuShogiPieces)
 			{
-				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), TenjikuShogiPiece) != std::end(_promotedPieces))
+				if (std::ranges::find(_promotedPieces, TenjikuShogiPiece) != std::end(_promotedPieces))
 				{
 					whitePromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(TenjikuShogiPiece)));
 					blackPromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(TenjikuShogiPiece)));
@@ -2489,7 +2510,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		{
 			for (auto& DaiDaiShogiPiece : DaiDaiShogiPieces)
 			{
-				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), DaiDaiShogiPiece) != std::end(_promotedPieces))
+				if (std::ranges::find(_promotedPieces, DaiDaiShogiPiece) != std::end(_promotedPieces))
 				{
 					whitePromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(DaiDaiShogiPiece)));
 					blackPromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(DaiDaiShogiPiece)));
@@ -2505,7 +2526,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		{
 			for (auto& MakaDaiDaiShogiPiece : MakaDaiDaiShogiPieces)
 			{
-				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), MakaDaiDaiShogiPiece) != std::end(_promotedPieces))
+				if (std::ranges::find(_promotedPieces, MakaDaiDaiShogiPiece) != std::end(_promotedPieces))
 				{
 					whitePromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(MakaDaiDaiShogiPiece)));
 					blackPromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(MakaDaiDaiShogiPiece)));
@@ -2521,7 +2542,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		{
 			for (auto& KoShogiPiece : KoShogiPieces)
 			{
-				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), KoShogiPiece) != std::end(_promotedPieces))
+				if (std::ranges::find(_promotedPieces, KoShogiPiece) != std::end(_promotedPieces))
 				{
 					whitePromoted->addAction(QString::fromStdString(StringManager::KoShogiPieceType2Description(KoShogiPiece)));
 					blackPromoted->addAction(QString::fromStdString(StringManager::KoShogiPieceType2Description(KoShogiPiece)));
@@ -2556,7 +2577,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			else
 			{
 				_board->SetData(x, y, std::make_optional<Piece>(_chosenPiece, _chosenColour));
-				if (std::find(std::begin(_promotedPieces), std::end(_promotedPieces), _chosenPiece) != std::end(_promotedPieces))
+				if (std::ranges::find(_promotedPieces, _chosenPiece) != std::end(_promotedPieces))
 				{
 					if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != GrandeAcedrex)
 					{

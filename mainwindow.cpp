@@ -467,8 +467,9 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionSave_triggered()
 {
 	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
-    if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) ||
-            gameVariant == GrandeAcedrex || gameVariant == Shatranj || gameVariant == Makruk || gameVariant == Shatar)
+    if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants) ||
+		gameVariant == GrandeAcedrex || gameVariant == Shatranj || gameVariant == Makruk ||
+		gameVariant == Shatar || gameVariant == Sittuyin)
 	{
 		QFileDialog fileDialog(this);
 		fileDialog.setNameFilter("FEN Files (*.fen);;PGN Files (*.pgn)");
@@ -480,13 +481,13 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-                if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants))
+                if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
 				{
 					QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
 					QString hmStr = QString::number(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->HalfMoveCount());
                     QString clStr = gameVariant != GrandChess ?
                                 QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetCastling()) : "-";
-                    QString epStr = std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) ?
+                    QString epStr = std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants) ?
                                 QString::fromStdString(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->GetEnPassant()) : "-";
 					str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 					str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
@@ -698,7 +699,7 @@ void MainWindow::on_actionSave_triggered()
 			if (fileDialog.selectedNameFilter() == "KIF Files (*.kif)" || fileDialog.selectedNameFilter() == "KI2 Files (*.ki2)")
 			{
 				QTextStream out(&file);
-				out.setCodec("UTF-8");
+				out.setEncoding(QStringConverter::Utf8);
 				out << str;
 			}
 			else
@@ -965,7 +966,10 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
                 case Shatar:
                     engine->StartGame("shatar");
                     break;
-                case Chess:
+				case Sittuyin:
+					engine->StartGame("sittuyin");
+					break;
+				case Chess:
 					engine->StartGame("normal");
 					break;
                 case CapablancaChess:

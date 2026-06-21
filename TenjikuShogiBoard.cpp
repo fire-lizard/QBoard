@@ -118,7 +118,7 @@ void TenjikuShogiBoard::CheckJump(const std::optional<Piece>& piece, int x, int 
 			CheckMove(piece, x, y);
             PieceType pieceType = GetData(x, y)->Type;
             if (pieceType == King || piece->Type == pieceType || pieceType == GreatGeneral
-				|| std::find(std::begin(_jumpingPieces), std::end(_jumpingPieces), pieceType) != std::end(_jumpingPieces))
+				|| std::ranges::find(_jumpingPieces, pieceType) != std::end(_jumpingPieces))
 			{
 				break;
 			}
@@ -142,7 +142,7 @@ bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	// Heavenly Tetrach moves
     if (GetData(oldX, oldY)->Type == HeavenlyTetrarch && abs(oldX - newX) <= 1 && abs(oldY - newY) <= 1 && (oldX != newX || oldY != newY))
 	{
-		if (std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}))
+		if (std::ranges::any_of(_moves, [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}))
 		{
 			SetData(newX, newY, std::nullopt);
 			return true;
@@ -153,7 +153,7 @@ bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 		if (IsMovePossible(newX, newY))
 		{
             auto pieces = GetEnemyPiecesAround(newX, newY, GetData(oldX, oldY)->Colour);
-            if (std::any_of(pieces.begin(), pieces.end(), [this](std::pair<int, int> t) {return GetData(t.first, t.second)->Type == FireDemon;}))
+            if (std::ranges::any_of(pieces, [this](std::pair<int, int> t) {return GetData(t.first, t.second)->Type == FireDemon;}))
 			{
 				SetData(oldX, oldY, std::nullopt);
 				if (GetData(newX, newY) != std::nullopt)
@@ -165,7 +165,7 @@ bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 			// Fire Demon moves
             if (GetData(oldX, oldY)->Type == FireDemon)
 			{
-				for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {SetData(p.first, p.second, std::nullopt);});
+				std::ranges::for_each(pieces, [&](std::pair<int, int> p) {SetData(p.first, p.second, std::nullopt);});
 			}
 		}
 	}
@@ -428,13 +428,13 @@ void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 	// We will do a BFS.
 	// visited[r][c][stepsUsed] = true if that state has been visited.
 	bool visited[BOARD_SIZE][BOARD_SIZE][4];
-	for (int r = 0; r < BOARD_SIZE; r++)
+	for (auto& r : visited)
 	{
-		for (int c = 0; c < BOARD_SIZE; c++)
+		for (auto& c : r)
 		{
-			for (int s = 0; s < 4; s++)
+			for (bool& s : c)
 			{
-				visited[r][c][s] = false;
+				s = false;
 			}
 		}
 	}

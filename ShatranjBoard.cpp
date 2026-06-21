@@ -54,6 +54,7 @@ void ShatranjBoard::Promote(int x, int y, PieceType pt)
 		_data[x][y]->Type = Queen;
     }
 }
+
 void ShatranjBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
 	_moves.clear();

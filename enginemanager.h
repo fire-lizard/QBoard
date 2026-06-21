@@ -35,6 +35,7 @@ namespace {
             {Shatranj,        "Shatranj"},
             {Shatar,          "Shatar"},
             {Makruk,          "Makruk"},
+            {Sittuyin,        "Sittuyin"},
             {Shogi,           "Shogi"},
             {MicroShogi,      "Micro Shogi"},
             {KyotoShogi,      "Kyoto Shogi"},

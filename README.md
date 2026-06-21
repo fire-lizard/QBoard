@@ -38,6 +38,7 @@
      * Makruk
      * Shatranj
      * Shatar
+     * Sittuyin
 
 # Supported Engine Protocols:
 

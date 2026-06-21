@@ -1,7 +1,5 @@
 #include "Engine.h"
 
-#include <utility>
-
 Engine::Engine()
 {
 }
@@ -73,7 +71,7 @@ QProcess* Engine::GetProcess() const
 
 void Engine::WriteToProcess(QByteArray buf) const
 {
-    if (std::any_of(buf.begin(), buf.end(), [=](char t) {return isprint(t);}))
+    if (std::ranges::any_of(buf, [=](char t) {return isprint(t);}))
     {
         _textEdit->append(buf);
         _process->write(buf);

@@ -78,9 +78,9 @@ void EngineOutputHandler::CalculateCheck(Board* board, PieceColour pieceColour, 
 	const int kx = location.first;
 	const int ky = location.second;
 	auto opponentMoves = brd->GetAllMoves(pieceColour == White ? Black : White);
-	std::for_each(opponentMoves.begin(), opponentMoves.end(), [&](const std::tuple<int, int, int, int>& t)
+	std::ranges::for_each(opponentMoves, [&](const std::tuple<int, int, int, int>& t)
 	{
-        if (std::get<2>(t) == kx && std::get<3>(t) == ky)
+		if (std::get<2>(t) == kx && std::get<3>(t) == ky)
 		{
 			board->RemoveMove(newX, newY);
 			RemoveMove(moves, newX, newY);
@@ -331,7 +331,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		if (buf.contains("usermove=1")) std::dynamic_pointer_cast<WbEngine>(engine)->SetOption("usermove", true);
 	}
 	const QByteArray moveArray = ExtractMove(buf, engine->GetType(), gameVariant);
-    if (std::any_of(buf.begin(), buf.end(), [=](char t) {return isprint(t);}))
+    if (std::ranges::any_of(buf, [=](char t) {return isprint(t);}))
     {
         textEdit->setText(engineOutput == Verbose ? buf : moveArray);
     }
@@ -343,7 +343,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	int y1 = m.y1;
 	int x2 = m.x2;
 	int y2 = m.y2;
-    const int ms = moveArray.size();
+    const long long ms = moveArray.size();
     if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi ||
 		gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
 	{
@@ -485,7 +485,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             }
         }
     }
-    else if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants))
+    else if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
 	{
 		// Castling check
         if (moveArray.contains("O-O") || (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King))
@@ -599,7 +599,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             }
         }
     }
-    else if (gameVariant == Shatranj || gameVariant == Shatar || gameVariant == CourierChess)
+    else if (gameVariant == Shatranj || gameVariant == Shatar || gameVariant == Sittuyin || gameVariant == CourierChess)
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{
@@ -875,8 +875,8 @@ void EngineOutputHandler::ReadStandardError(const QByteArray& buf, QTextEdit* te
 
 void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3)
 {
-    if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants) ||
-            gameVariant == Shatranj || gameVariant == Shatar)
+    if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants) ||
+		gameVariant == Shatranj || gameVariant == Shatar || gameVariant == Sittuyin)
 	{
 		dynamic_cast<ShatranjBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
@@ -984,7 +984,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			i++;
 		}
 	} while ((i < w || j < h - 1) && k < fen.size());
-    if (std::find(std::begin(chessVariants), std::end(chessVariants), gameVariant) != std::end(chessVariants))
+    if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
 	{
 		ChessBoard* cb = dynamic_cast<ChessBoard*>(board);
 		if (parts.size() >= 3)

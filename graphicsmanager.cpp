@@ -108,6 +108,7 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
     case Chess:
     case Shatranj:
     case Shatar:
+    case Sittuyin:
         if (pieceStyle == European)
         {
             painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
@@ -200,6 +201,7 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     case Chess:
     case Shatranj:
     case Shatar:
+    case Sittuyin:
         if (pieceStyle == European) return ":/pieces_eur/images/";
         if (pieceStyle == Mnemonic) return ":/pieces_eur/images_eur/";
         return ":/pieces_eur2/images_eur2/";
@@ -298,6 +300,7 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     case ModernChess:
     case Shatranj:
     case Shatar:
+    case Sittuyin:
     case GrandeAcedrex:
         imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
         break;

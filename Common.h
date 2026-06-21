@@ -13,8 +13,9 @@ enum GameFormat
 enum GameVariant
 {
     Chess, CapablancaChess, GothicChess, JanusChess, ChancellorChess, ModernChess, GrandChess, OmegaChess, NightriderChess, CourierChess,
-	GrandeAcedrex, Xiangqi, Janggi, Shatar, Shatranj, Makruk, Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi,
-	EuroShogi, YariShogi, HeianShogi, ShoShogi, WaShogi, CrazyWa, ChuShogi, HeianDaiShogi, DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi
+	GrandeAcedrex, Xiangqi, Janggi, Shatar, Shatranj, Makruk, Sittuyin, Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi, WhaleShogi,
+	ToriShogi, EuroShogi, YariShogi, HeianShogi, ShoShogi, WaShogi, CrazyWa, ChuShogi, HeianDaiShogi, DaiShogi, TenjikuShogi, DaiDaiShogi,
+	MakaDaiDaiShogi, KoShogi
 };
 
 enum PieceColour
@@ -156,6 +157,8 @@ inline PieceType GrandeAcedrexPieces[] = { King, Aanca, Giraffe, Crocodile, Unic
 inline PieceType ShatranjPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn };
 
 inline PieceType ShatarPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn };
+
+inline PieceType SittuyinPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn };
 
 inline PieceType MakrukPieces[] = { King, Queen, Silver, Knight, Rook, Pawn };
 

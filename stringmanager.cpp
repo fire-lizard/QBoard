@@ -1063,6 +1063,12 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         if (stringCode == "J") return Queen;
         return StringCode2PieceType(Shatranj, stringCode);
     }
+    else if (gameVariant == Sittuyin)
+    {
+        if (stringCode == "S") return Bishop;
+        if (stringCode == "F") return Queen;
+        return StringCode2PieceType(Shatranj, stringCode);
+    }
     else
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {

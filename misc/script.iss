@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QBoard"
-#define MyAppVersion "1.1.1"
+#define MyAppVersion "1.1.2"
 #define MyAppPublisher "Fire Lizard Software"
 #define MyAppURL "https://github.com/fire-lizard/QBoard"
 #define MyAppExeName "QBoard.exe"
@@ -79,13 +79,18 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Components: main
-Source: "libgcc_s_seh-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
-Source: "libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
-Source: "libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
-Source: "Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
-Source: "Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
-Source: "Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
-Source: "Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
+Source: "msvcp140.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
+Source: "msvcp140_1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
+Source: "msvcp140_2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
+Source: "vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
+Source: "vcruntime140_1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
+;Source: "libgcc_s_seh-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
+;Source: "libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
+;Source: "libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
+Source: "Qt6Core.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
+Source: "Qt6Gui.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
+Source: "Qt6Network.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
+Source: "Qt6Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main
 Source: "docs\*"; DestDir: "{app}\docs"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: docs
 Source: "engines\*"; DestDir: "{app}\engines"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines
 Source: "engines\UCCI\*"; DestDir: "{app}\engines\UCCI"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\UCCI

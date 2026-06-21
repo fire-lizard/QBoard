@@ -48,7 +48,7 @@ std::string ShogiVariantBoard::formatEnumCounts(const std::vector<PieceType>& en
     };
 
     // Define the required order of pieces
-    const std::vector<PieceType> order = { Rook, Bishop, Gold, Silver, Knight, Lance, Pawn };
+    const std::vector order = { Rook, Bishop, Gold, Silver, Knight, Lance, Pawn };
 
 	// Count occurrences of each piece
 	std::unordered_map<PieceType, int> counts;
@@ -85,7 +85,7 @@ std::string ShogiVariantBoard::CapturedPieceString()
 	// The pieces are always listed in the order rook, bishop, gold, silver, knight, lance, pawn
 	const std::string wstr = formatEnumCounts(GetCapturedPieces(White));
 	std::string bstr = formatEnumCounts(GetCapturedPieces(Black));
-	std::transform(bstr.begin(), bstr.end(), bstr.begin(), [](const char v) { return static_cast<char>(std::tolower(v)); });
+	std::ranges::transform(bstr, bstr.begin(), [](const char v) { return static_cast<char>(std::tolower(v)); });
 	return wstr + bstr;
 }
 

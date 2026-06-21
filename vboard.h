@@ -28,6 +28,7 @@
 #include "WaShogiBoard.h"
 #include "TenjikuShogiBoard.h"
 #include "MakrukBoard.h"
+#include "SittuyinBoard.h"
 #include "promotiondialog.h"
 #include "EngineOutputHandler.h"
 #include "graphicsmanager.h"

@@ -33,6 +33,7 @@ SOURCES += main.cpp\
     NightriderChessBoard.cpp \
     OmegaChessBoard.cpp \
     ShatarBoard.cpp \
+    SittuyinBoard.cpp \
     ToriShogiBoard.cpp \
     EuroShogiBoard.cpp \
     WhaleShogiBoard.cpp \
@@ -99,6 +100,7 @@ HEADERS  += mainwindow.h \
     OmegaChessBoard.h \
     Logger.h \
     ShatarBoard.h \
+    SittuyinBoard.h \
     ToriShogiBoard.h \
     EuroShogiBoard.h \
     WhaleShogiBoard.h \

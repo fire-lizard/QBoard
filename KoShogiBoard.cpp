@@ -264,7 +264,7 @@ void KoShogiBoard::Demote(int x, int y)
 
 void KoShogiBoard::RemoveShoot(int x, int y)
 {
-	const auto it = std::remove_if(_shoots.begin(), _shoots.end(), [=](const auto& p) { return p.first == x && p.second == y; });
+	const auto it = std::ranges::remove_if(_shoots, [=](const auto& p) { return p.first == x && p.second == y; }).begin();
 	_shoots.erase(it, _shoots.end());
 }
 
@@ -279,7 +279,7 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	if (GetData(oldX, oldY) != std::nullopt && IsMovePossible(newX, newY))
 	{
         auto pieces = GetEnemyPiecesAround(newX, newY, GetData(oldX, oldY)->Colour);
-        if (std::any_of(pieces.begin(), pieces.end(), [this](std::pair<int, int> t) {return GetData(t.first, t.second)->Type == PoisonFlame;}))
+        if (std::ranges::any_of(pieces, [this](std::pair<int, int> t) {return GetData(t.first, t.second)->Type == PoisonFlame;}))
 		{
 			SetData(oldX, oldY, std::nullopt);
 			if (GetData(newX, newY) != std::nullopt)
@@ -291,7 +291,7 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 		// Poison Flame moves
         if (GetData(oldX, oldY)->Type == PoisonFlame)
 		{
-			for_each(pieces.begin(), pieces.end(), [&](std::pair<int, int> p) {SetData(p.first, p.second, std::nullopt);});
+			std::ranges::for_each(pieces, [&](std::pair<int, int> p) {SetData(p.first, p.second, std::nullopt);});
 		}
 	}
 	const bool result = DaiShogiBoard::Move(oldX, oldY, newX, newY, cl);

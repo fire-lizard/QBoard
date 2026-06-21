@@ -46,7 +46,7 @@ Board* DaiDaiShogiBoard::Clone()
 
 void DaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (_data[x][y] == std::nullopt || std::find(std::begin(UnpromotablePieces), std::end(UnpromotablePieces), _data[x][y]->Type) != std::end(UnpromotablePieces))
+    if (_data[x][y] == std::nullopt || std::ranges::find(UnpromotablePieces, _data[x][y]->Type) != std::end(UnpromotablePieces))
     {
         return;
     }

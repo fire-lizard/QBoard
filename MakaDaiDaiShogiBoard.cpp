@@ -841,7 +841,7 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
 
 bool MakaDaiDaiShogiBoard::TripleMove(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
 {
-	if (x1 == x4 && y1 == y4 || std::any_of(_moves.begin(), _moves.end(), [=](std::pair<int, int> t) {return t.first == x4 && t.second == y4;}))
+	if (x1 == x4 && y1 == y4 || std::ranges::any_of(_moves, [=](std::pair<int, int> t) {return t.first == x4 && t.second == y4;}))
 	{
 		if (x1 != x2 || y1 != y2)
 		{
