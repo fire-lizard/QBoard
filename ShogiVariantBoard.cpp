@@ -1,41 +1,6 @@
 #include "ShogiVariantBoard.h"
 
-void ShogiVariantBoard::PlacePiece(PieceType pieceType, PieceColour pieceColour, int x, int y)
-{
-    SetData(x, y, Piece(pieceType, pieceColour));
-}
-
-std::vector<PieceType> ShogiVariantBoard::GetCapturedPieces(PieceColour pieceColour)
-{
-	std::vector<PieceType> result;
-	for (auto& capturedPiece : _capturedPieces)
-	{
-		if (capturedPiece.first == pieceColour)
-		{
-			result.emplace_back(capturedPiece.second);
-		}
-	}
-	return result;
-}
-
-void ShogiVariantBoard::AddCapturedPiece(PieceType p, PieceColour pieceColour)
-{
-	_capturedPieces.emplace_back(pieceColour, p);
-}
-
-void ShogiVariantBoard::RemoveCapturedPiece(PieceType p, PieceColour pieceColour)
-{
-	for (size_t index = 0; index < _capturedPieces.size(); index++)
-	{
-		if (_capturedPieces[index].first == pieceColour && _capturedPieces[index].second == p)
-		{
-			_capturedPieces.erase(_capturedPieces.begin() + index);
-			break;
-		}
-	}
-}
-
-std::string ShogiVariantBoard::formatEnumCounts(const std::vector<PieceType>& enumList) 
+std::string ShogiVariantBoard::formatEnumCounts(const std::vector<PieceType>& enumList)
 {
     static const std::unordered_map<PieceType, std::string> pieceTypeToCode = {
         {Rook, "R"},

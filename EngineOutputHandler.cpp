@@ -135,7 +135,8 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 {
     const QRegularExpression _csre = QRegularExpression(R"(([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrqac])?)");
     const QRegularExpression _cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])(\+)?)");
-	const QRegularExpression _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
+    const QRegularExpression _stre = QRegularExpression(R"(([RNSFKa-h])(\@|[1-8])([a-h])([1-8])(f)?)");
+    const QRegularExpression _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
     const QRegularExpression _sgxbre = QRegularExpression(R"(([RBGSNLPFCWKHDYa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
     const QRegularExpression _sgusre = QRegularExpression(R"(([RBGSNLPFCWKHDY1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");
 	QByteArray result;
@@ -202,7 +203,24 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 					if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
 				}
 			}
-			else
+            else if (gameVariant == Sittuyin)
+            {
+                QRegularExpressionMatch match = _stre.match(part);
+                if (match.hasMatch())
+                {
+                    QString firstLetter = match.captured(1);
+                    QString firstDigit = match.captured(2);
+                    QString secondLetter = match.captured(3);
+                    QString secondDigit = match.captured(4);
+                    QString promotionChar = match.captured(5);
+                    result.push_back(firstLetter[0].toLatin1());
+                    result.push_back(firstDigit[0].toLatin1());
+                    result.push_back(secondLetter[0].toLatin1());
+                    result.push_back(secondDigit[0].toLatin1());
+                    if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+                }
+            }
+            else
 			{
                 QRegularExpressionMatch match = gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi ||
                         gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi ||
@@ -601,7 +619,35 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     }
     else if (gameVariant == Shatranj || gameVariant == Shatar || gameVariant == Sittuyin || gameVariant == CourierChess)
 	{
-		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
+        if (gameVariant == Sittuyin && moveArray[1] == '@')
+        {
+            PieceType newPiece;
+            switch (moveArray[0])
+            {
+            case 'K':
+                newPiece = King;
+                break;
+            case 'F':
+                newPiece = Queen;
+                break;
+            case 'S':
+                newPiece = Bishop;
+                break;
+            case 'N':
+                newPiece = Knight;
+                break;
+            case 'R':
+                newPiece = Rook;
+                break;
+            default:
+                newPiece = None;
+                break;
+            }
+            board->SetData(x2, y2, Piece(newPiece, currentPlayer));
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, moveArray[0], moveArray[1], x2, board->GetHeight() - y2, ' ', ' ');
+            engine->AddMove(moveArray[0], moveArray[1], x2, board->GetHeight() - y2, ' ');
+        }
+    	else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{
             const bool isPromoted = board->GetData(x1, y1)->Type == Pawn && (y2 == 0 || y2 == board->GetHeight() - 1);
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
@@ -801,7 +847,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                     break;
                 }
             }
-			dynamic_cast<ShogiVariantBoard*>(board)->PlacePiece(newPiece, currentPlayer, x2, y2);
+            board->SetData(x2, y2, Piece(newPiece, currentPlayer));
             AddMove(board, gameVariant, board->GetData(x2, y2)->Type, moveArray[0], moveArray[1], x2, board->GetHeight() - y2, ' ', ' ');
             if (engine->GetType() == USI)
             {

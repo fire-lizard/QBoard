@@ -36,7 +36,7 @@ void SittuyinBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-				SetData(i, j, Piece(_initialSetup[j][i], j < 5 ? Black : White));
+				SetData(i, j, Piece(_initialSetup[j][i], j < 4 ? Black : White));
 			}
 			else
 			{
@@ -44,6 +44,24 @@ void SittuyinBoard::Initialize()
 			}
 		}
 	}
+	_capturedPieces = {
+		{White, Rook},
+		{White, Rook},
+		{Black, Rook},
+		{Black, Rook},
+		{White, Knight},
+		{White, Knight},
+		{Black, Knight},
+		{Black, Knight},
+		{White, Bishop},
+		{White, Bishop},
+		{Black, Bishop},
+		{Black, Bishop},
+		{White, Queen},
+		{Black, Queen},
+		{White, King},
+		{Black, King}
+	};
 }
 
 void SittuyinBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
@@ -68,5 +86,20 @@ void SittuyinBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 	default:
 		ShatranjBoard::GetMoves(piece, x, y);
 		break;
+	}
+}
+
+std::string SittuyinBoard::GetStringCode(int x, int y) const
+{
+	if (GetData(x, y) == std::nullopt) return "";
+	PieceType pieceType = GetData(x, y)->Type;
+	switch (pieceType)
+	{
+	case Queen:
+		return "F";
+	case Bishop:
+		return "S";
+	default:
+		return ShatranjBoard::GetStringCode(x, y);
 	}
 }

@@ -408,7 +408,7 @@ void VBoard::FinishMove(int x, int y)
 		_whiteMoves.push_back(_board->GetFEN());
 		if (!_board->HasPiece(King, Black) &&
 			(!_board->HasPiece(MiddleTroop, Black) || !_board->HasPiece(Flag, White)) &&
-			!_board->HasPiece(Prince, Black))
+			!_board->HasPiece(Prince, Black) && _gameVariant != Sittuyin)
 		{
 			QMessageBox::information(this, "Game over", "White wins by eliminating Black King");
 		}
@@ -422,7 +422,7 @@ void VBoard::FinishMove(int x, int y)
 		_blackMoves.push_back(_board->GetFEN());
 		if (!_board->HasPiece(King, White) &&
 			(!_board->HasPiece(MiddleTroop, White) || !_board->HasPiece(Flag, White)) &&
-			!_board->HasPiece(Prince, White))
+			!_board->HasPiece(Prince, White) && _gameVariant != Sittuyin)
 		{
 			QMessageBox::information(this, "Game over", "Black wins by eliminating White King");
 		}
@@ -462,6 +462,7 @@ void VBoard::CancelLionMove()
 
 void VBoard::mousePressEvent(QMouseEvent* event)
 {
+	if (_gameVariant == Sittuyin && !dynamic_cast<SittuyinBoard*>(_board)->GetCapturedPieces(_currentPlayer).empty()) return;
 	if (event->button() != Qt::MouseButton::LeftButton) return;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
@@ -2592,14 +2593,14 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 	}
 
     if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != Shogi && _gameVariant != MiniShogi &&
-            _gameVariant != JudkinShogi && _gameVariant != WhaleShogi && _gameVariant != ToriShogi &&
-            _gameVariant != EuroShogi && _gameVariant != YariShogi && _gameVariant != CrazyWa) return;
+		_gameVariant != JudkinShogi && _gameVariant != WhaleShogi && _gameVariant != ToriShogi &&
+        _gameVariant != EuroShogi && _gameVariant != YariShogi && _gameVariant != CrazyWa && _gameVariant != Sittuyin) return;
 	if ((_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black) ||
 		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;
 
 	QMenu menu(this);
 
-	const auto cps = dynamic_cast<ShogiVariantBoard*>(_board)->GetCapturedPieces(_currentPlayer);
+	const auto cps = dynamic_cast<CaptureBoard*>(_board)->GetCapturedPieces(_currentPlayer);
 	for (const auto cp : cps)
 	{
         const std::string str = StringManager::PieceType2Description(_gameVariant, cp);
@@ -2624,56 +2625,91 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			mb.exec();
 			return;
 		}
-		if (newPiece == Pawn)
+		if (std::ranges::find(shogiVariants, _gameVariant) != std::end(shogiVariants))
 		{
-			if ((_currentPlayer == White && y == 0) || (_currentPlayer == Black && y == _board->GetHeight() - 1))
+			if (newPiece == Pawn)
 			{
-				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place pawn on the last row",
-					QMessageBox::Ok, this);
-				mb.exec();
-				return;
-			}
-			const std::optional<Piece> kp = _currentPlayer == White ? _board->GetData(x, y - 1) : _board->GetData(x, y + 1);
-            if (kp != std::nullopt && kp->Type == King && kp->Colour != _currentPlayer && _gameVariant != YariShogi)
-			{
-				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot check king by the pawn drop",
-					QMessageBox::Ok, this);
-				mb.exec();
-				return;
-			}
-			for (int index = 0; index < _board->GetHeight(); index++)
-			{
-				const std::optional<Piece> p = _board->GetData(x, index);
-                if (p != std::nullopt && p->Type == Pawn && p->Colour == _currentPlayer)
+				if ((_currentPlayer == White && y == 0) || (_currentPlayer == Black && y == _board->GetHeight() - 1))
 				{
-					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place second pawn on the same column",
+					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place pawn on the last row",
+						QMessageBox::Ok, this);
+					mb.exec();
+					return;
+				}
+				const std::optional<Piece> kp = _currentPlayer == White ? _board->GetData(x, y - 1) : _board->GetData(x, y + 1);
+				if (kp != std::nullopt && kp->Type == King && kp->Colour != _currentPlayer && _gameVariant != YariShogi)
+				{
+					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot check king by the pawn drop",
+						QMessageBox::Ok, this);
+					mb.exec();
+					return;
+				}
+				for (int index = 0; index < _board->GetHeight(); index++)
+				{
+					const std::optional<Piece> p = _board->GetData(x, index);
+					if (p != std::nullopt && p->Type == Pawn && p->Colour == _currentPlayer)
+					{
+						QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place second pawn on the same column",
+							QMessageBox::Ok, this);
+						mb.exec();
+						return;
+					}
+				}
+			}
+			else if (newPiece == Lance)
+			{
+				if ((_currentPlayer == White && y == 0) || (_currentPlayer == Black && y == _board->GetHeight() - 1))
+				{
+					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place lance on the last row",
+						QMessageBox::Ok, this);
+					mb.exec();
+					return;
+				}
+			}
+			else if (newPiece == Knight)
+			{
+				if ((_currentPlayer == White && y <= 1) || (_currentPlayer == Black && y >= _board->GetHeight() - 2))
+				{
+					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place knight on the last two rows",
 						QMessageBox::Ok, this);
 					mb.exec();
 					return;
 				}
 			}
 		}
-		else if (newPiece == Lance)
+		if (_gameVariant == Sittuyin)
 		{
-			if ((_currentPlayer == White && y == 0) || (_currentPlayer == Black && y == _board->GetHeight() - 1))
+			if (newPiece == Rook)
 			{
-				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place lance on the last row",
-					QMessageBox::Ok, this);
-				mb.exec();
-				return;
+				if ((_currentPlayer == White && y != _board->GetHeight() - 1) || (_currentPlayer == Black && y != 0))
+				{
+					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "Rook can be placed only on the last row",
+						QMessageBox::Ok, this);
+					mb.exec();
+					return;
+				}
+			}
+			else
+			{
+				bool isValidCell;
+				if (_currentPlayer == White)
+				{
+					isValidCell = y >= _board->GetHeight() - 2 || (y == _board->GetHeight() - 3 && x > 3);
+				}
+				else
+				{
+					isValidCell = y <= 1 || (y == 2 && x <= 3);
+				}
+				if (!isValidCell)
+				{
+					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "Piece cannot be placed on this square",
+						QMessageBox::Ok, this);
+					mb.exec();
+					return;
+				}
 			}
 		}
-		else if (newPiece == Knight)
-		{
-			if ((_currentPlayer == White && y <= 1) || (_currentPlayer == Black && y >= _board->GetHeight() - 2))
-			{
-				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place knight on the last two rows",
-					QMessageBox::Ok, this);
-				mb.exec();
-				return;
-			}
-		}
-		dynamic_cast<ShogiVariantBoard*>(_board)->PlacePiece(newPiece, _currentPlayer, x, y);
+		_board->SetData(x, y, Piece(newPiece, _currentPlayer));
         const char sc = _board->GetStringCode(x, y)[0];
 		const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
 		if (engine != nullptr && engine->IsActive())
@@ -2684,7 +2720,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				engine->Move(sc, '@', x, _board->GetHeight() - y, ' ');
 		}
 		EngineOutputHandler::AddMove(_board, _gameVariant, newPiece, sc, '*', x, y, ' ', ' ');
-		dynamic_cast<ShogiVariantBoard*>(_board)->RemoveCapturedPiece(newPiece, _currentPlayer);
+		dynamic_cast<CaptureBoard*>(_board)->RemoveCapturedPiece(newPiece, _currentPlayer);
 		FinishMove(x, y);
 	}
 }

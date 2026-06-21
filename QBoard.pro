@@ -17,6 +17,7 @@ macx-clang {
 }
 
 SOURCES += main.cpp\
+    CaptureBoard.cpp \
     CapablancaChessBoard.cpp \
     ChancellorChessBoard.cpp \
     CourierChessBoard.cpp \
@@ -85,6 +86,7 @@ HEADERS  += mainwindow.h \
     ChessBoard.h \
     ChuShogiBoard.h \
     Common.h \
+    CaptureBoard.h \
     CourierChessBoard.h \
     GothicChessBoard.h \
     GrandChessBoard.h \

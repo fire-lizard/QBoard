@@ -1,6 +1,8 @@
 #pragma once
+#include "CaptureBoard.h"
 #include "ShatranjBoard.h"
-class SittuyinBoard : public ShatranjBoard
+
+class SittuyinBoard : public ShatranjBoard, public CaptureBoard
 {
 public:
 	SittuyinBoard();
@@ -8,6 +10,8 @@ public:
 	void Initialize() override;
 	Board* Clone() override;
 	void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
+	std::string GetStringCode(int x, int y) const override;
+
 private:
 
 	PieceType _initialSetup[8][8] = {
