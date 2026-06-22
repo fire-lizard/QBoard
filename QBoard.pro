@@ -23,6 +23,7 @@ SOURCES += main.cpp\
     CourierChessBoard.cpp \
     GothicChessBoard.cpp \
     GrandChessBoard.cpp \
+    MusketeerChessBoard.cpp \
     GrandeAcedrexBoard.cpp \
     HeianDaiShogiBoard.cpp \
     HeianShogiBoard.cpp \
@@ -90,6 +91,7 @@ HEADERS  += mainwindow.h \
     CourierChessBoard.h \
     GothicChessBoard.h \
     GrandChessBoard.h \
+    MusketeerChessBoard.h \
     GrandeAcedrexBoard.h \
     HeianDaiShogiBoard.h \
     HeianShogiBoard.h \

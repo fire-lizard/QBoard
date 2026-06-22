@@ -233,6 +233,9 @@
     <ClCompile Include="CaptureBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MusketeerChessBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -419,6 +422,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CaptureBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MusketeerChessBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -861,6 +867,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\BlackArchbishop.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\BlackAxe.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\BlackBishop.png">
@@ -1407,6 +1416,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_jap\BlackSword.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\BlackTower.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\BlackUnicorn.png">
@@ -6107,6 +6119,9 @@
     <None Include="images_jap\WhiteArchbishop.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="images\WhiteAxe.png">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="images\WhiteBishop.png">
       <Filter>Resource Files</Filter>
     </None>
@@ -6675,6 +6690,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images_daidai\WhiteTigerFlip.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="images\WhiteTower.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="images\WhiteUnicorn.png">

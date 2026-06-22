@@ -524,7 +524,9 @@ void MainWindow::on_actionSave_triggered()
                     chessVariant = "[Variant \"chancellor\"]\n\n";
                 else if (gameVariant == ModernChess)
                     chessVariant = "[Variant \"modern\"]\n\n";
-                else if (gameVariant == CourierChess)
+				else if (gameVariant == MusketeerChess)
+					chessVariant = "[Variant \"musketeer\"]\n\n";
+				else if (gameVariant == CourierChess)
                     chessVariant = "[Variant \"courier\"]\n\n";
                 else if (gameVariant == GrandeAcedrex)
                     chessVariant = "[Variant \"grande acedrex\"]\n\n";
@@ -999,7 +1001,10 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
                 case ModernChess:
                     engine->StartGame("modern");
                     break;
-                case GrandeAcedrex:
+				case MusketeerChess:
+					engine->StartGame("musketeer");
+					break;
+				case GrandeAcedrex:
                     engine->StartGame("grande-acedrex");
                     break;
                 }

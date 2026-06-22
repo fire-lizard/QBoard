@@ -196,6 +196,8 @@ std::string StringManager::PieceType2Description(PieceType pieceType)
     case Sage:                 return "Sage";
     case Schleich:             return "Schleich";
     case Courier:              return "Courier";
+    case Fortress:             return "Fortress";
+    case Spider:               return "Spider";
     case YariKnight:           return "Yari Knight";
     case YariRook:             return "Yari Rook";
     case YariBishop:           return "Yari Bishop";
@@ -482,6 +484,8 @@ PieceType StringManager::Description2PieceType(const std::string& description)
     if (description == "Sage")               return Sage;
     if (description == "Schleich")           return Schleich;
     if (description == "Courier")            return Courier;
+    if (description == "Fortress")           return Fortress;
+    if (description == "Spider")             return Spider;
     if (description == "Yari Knight")        return YariKnight;
     if (description == "Yari Rook")          return YariRook;
     if (description == "Yari Bishop")        return YariBishop;
@@ -1056,6 +1060,20 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
     else if (gameVariant == NightriderChess)
     {
         if (stringCode == "N") return Nightrider;
+        return StringCode2PieceType(Shatranj, stringCode);
+    }
+    else if (gameVariant == MusketeerChess)
+    {
+    	if (stringCode == "L") return Leopard;
+        if (stringCode == "C") return Cannon;
+        if (stringCode == "U") return Unicorn;
+        if (stringCode == "D") return FlyingDragon;
+        if (stringCode == "M") return Chancellor;
+        if (stringCode == "A") return Archbishop;
+        if (stringCode == "E") return Elephant;
+        if (stringCode == "H") return Eagle;
+        if (stringCode == "F") return Fortress;
+        if (stringCode == "S") return Spider;
         return StringCode2PieceType(Shatranj, stringCode);
     }
     else if (gameVariant == Shatar)

@@ -92,6 +92,7 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
     case CourierChess:
     case ChancellorChess:
     case ModernChess:
+    case MusketeerChess:
     case GrandeAcedrex:
         painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
         break;
@@ -217,6 +218,7 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     case CourierChess:
     case ChancellorChess:
     case ModernChess:
+    case MusketeerChess:
     case GrandeAcedrex:
         return ":/pieces_eur/images/";
     }
@@ -298,6 +300,7 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     case CourierChess:
     case ChancellorChess:
     case ModernChess:
+    case MusketeerChess:
     case Shatranj:
     case Shatar:
     case Sittuyin:
@@ -419,6 +422,10 @@ QString GraphicsManager::GetImageFileName(PieceColour pieceColour, PieceType pie
         return colour + "Hat.png";
     case Courier:
         return colour + "Pegasus.png";
+    case Fortress:
+        return colour + "Tower.png";
+    case Spider:
+        return colour + "Axe.png";
     default:
         return "";
     }

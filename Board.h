@@ -54,6 +54,7 @@ public:
 	std::vector<std::pair<int, int>> GetAttackers(int x, int y);
 	std::vector<std::pair<int, int>> GetDefenders(int x, int y);
 	bool IsMovePossible(int x, int y);
+	bool IsSquareUnderAttack(int x, int y, PieceColour pieceColour);
 	bool operator == (const std::string& fen) const;
 	bool operator != (const std::string& fen) const;
 

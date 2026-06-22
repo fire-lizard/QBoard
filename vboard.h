@@ -15,6 +15,7 @@
 #include "OmegaChessBoard.h"
 #include "NightriderChessBoard.h"
 #include "CourierChessBoard.h"
+#include "MusketeerChessBoard.h"
 #include "GrandeAcedrexBoard.h"
 #include "JanggiBoard.h"
 #include "ShatarBoard.h"

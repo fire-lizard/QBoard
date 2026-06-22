@@ -11,6 +11,7 @@
      * Omega Chess
      * Nightrider Chess
      * Courier Chess
+     * Musketeer Chess
      * Grande Acedrex
   2. Shogi Variants
      * Shogi

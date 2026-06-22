@@ -340,6 +340,13 @@ bool Board::IsMovePossible(int x, int y)
 	return std::ranges::any_of(_moves, [=](std::pair<int, int> t) {return t.first == x && t.second == y;});
 }
 
+bool Board::IsSquareUnderAttack(int x, int y, PieceColour pieceColour)
+{
+    auto opponentMoves = GetAllMoves(pieceColour == White ? Black : White);
+    return std::ranges::any_of(opponentMoves, [&](const std::tuple<int, int, int, int>& t) 
+        { return std::get<2>(t) == x && std::get<3>(t) == y; });
+}
+
 bool Board::operator == (const std::string& fen) const
 {
 	return this->GetFEN() == fen;

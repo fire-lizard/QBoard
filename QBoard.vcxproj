@@ -240,6 +240,7 @@
     <ClCompile Include="MicroShogiBoard.cpp" />
     <ClCompile Include="MiniShogiBoard.cpp" />
     <ClCompile Include="ModernChessBoard.cpp" />
+    <ClCompile Include="MusketeerChessBoard.cpp" />
     <ClCompile Include="NightriderChessBoard.cpp" />
     <ClCompile Include="OmegaChessBoard.cpp" />
     <ClCompile Include="QianhongEngine.cpp" />
@@ -305,6 +306,7 @@
     <ClInclude Include="MicroShogiBoard.h" />
     <ClInclude Include="MiniShogiBoard.h" />
     <ClInclude Include="ModernChessBoard.h" />
+    <ClInclude Include="MusketeerChessBoard.h" />
     <ClInclude Include="NightriderChessBoard.h" />
     <ClInclude Include="OmegaChessBoard.h" />
     <ClInclude Include="QianhongEngine.h" />
@@ -486,6 +488,7 @@
     <None Include="images\BlackArchbishop.png" />
     <None Include="images_dai\BlackArchbishop.png" />
     <None Include="images_jap\BlackArchbishop.png" />
+    <None Include="images\BlackAxe.png" />
     <None Include="images\BlackBishop.png" />
     <None Include="images_dai\BlackBishop.png" />
     <None Include="images_eur2\BlackBishop.png" />
@@ -668,6 +671,7 @@
     <None Include="images\BlackSword.png" />
     <None Include="images_dai\BlackSword.png" />
     <None Include="images_jap\BlackSword.png" />
+    <None Include="images\BlackTower.png" />
     <None Include="images\BlackUnicorn.png" />
     <None Include="images_dai\BlackUnicorn.png" />
     <None Include="images_jap\BlackUnicorn.png" />
@@ -2234,6 +2238,7 @@
     <None Include="images\WhiteArchbishop.png" />
     <None Include="images_dai\WhiteArchbishop.png" />
     <None Include="images_jap\WhiteArchbishop.png" />
+    <None Include="images\WhiteAxe.png" />
     <None Include="images\WhiteBishop.png" />
     <None Include="images_dai\WhiteBishop.png" />
     <None Include="images_eur2\WhiteBishop.png" />
@@ -2424,6 +2429,7 @@
     <None Include="images_jap\WhiteSword.png" />
     <None Include="images_daidai\WhiteTiger.png" />
     <None Include="images_daidai\WhiteTigerFlip.png" />
+    <None Include="images\WhiteTower.png" />
     <None Include="images\WhiteUnicorn.png" />
     <None Include="images_dai\WhiteUnicorn.png" />
     <None Include="images_jap\WhiteUnicorn.png" />

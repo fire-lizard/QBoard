@@ -140,6 +140,7 @@
     <qresource prefix="/pieces_eur">
         <file>images/BlackAdvisor.png</file>
         <file>images/BlackArchbishop.png</file>
+        <file>images/BlackAxe.png</file>
         <file>images/BlackBishop.png</file>
         <file>images/BlackCamel.png</file>
         <file>images/BlackCanon.png</file>
@@ -169,11 +170,13 @@
         <file>images/BlackQueen.png</file>
         <file>images/BlackRook.png</file>
         <file>images/BlackSword.png</file>
+        <file>images/BlackTower.png</file>
         <file>images/BlackUnicorn.png</file>
         <file>images/BlackViking.png</file>
         <file>images/BlackWizard.png</file>
         <file>images/WhiteAdvisor.png</file>
         <file>images/WhiteArchbishop.png</file>
+        <file>images/WhiteAxe.png</file>
         <file>images/WhiteBishop.png</file>
         <file>images/WhiteCamel.png</file>
         <file>images/WhiteCanon.png</file>
@@ -203,6 +206,7 @@
         <file>images/WhiteQueen.png</file>
         <file>images/WhiteRook.png</file>
         <file>images/WhiteSword.png</file>
+        <file>images/WhiteTower.png</file>
         <file>images/WhiteUnicorn.png</file>
         <file>images/WhiteViking.png</file>
         <file>images/WhiteWizard.png</file>

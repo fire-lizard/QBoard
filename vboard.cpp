@@ -499,7 +499,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	// Castling check
     if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess ||
          _gameVariant == JanusChess || _gameVariant == ChancellorChess || _gameVariant == ModernChess ||
-         _gameVariant == OmegaChess || _gameVariant == NightriderChess) &&
+         _gameVariant == OmegaChess || _gameVariant == NightriderChess || _gameVariant == MusketeerChess) &&
         _currentPiece != std::nullopt && _currentPiece->Type == King && !_currentPiece->HasMoved &&
         p != std::nullopt && p->Colour == _currentPlayer && p->Type == Rook && !p->HasMoved && _board->IsMovePossible(x, y))
 	{
@@ -1734,7 +1734,10 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
     case ModernChess:
         _board = new ModernChessBoard();
         break;
-    case GrandeAcedrex:
+	case MusketeerChess:
+		_board = new MusketeerChessBoard();
+		break;
+	case GrandeAcedrex:
         _board = new GrandeAcedrexBoard();
         break;
     case Shogi:
@@ -2299,7 +2302,15 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
                 blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
             }
         }
-        else if (_gameVariant == GrandeAcedrex)
+		else if (_gameVariant == MusketeerChess)
+		{
+			for (auto& ChessPiece : MusketeerChessPieces)
+			{
+				whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
+				blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
+			}
+		}
+		else if (_gameVariant == GrandeAcedrex)
         {
             for (auto& GrandeAcedrexPiece : GrandeAcedrexPieces)
             {

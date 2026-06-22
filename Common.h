@@ -13,9 +13,9 @@ enum GameFormat
 enum GameVariant
 {
     Chess, CapablancaChess, GothicChess, JanusChess, ChancellorChess, ModernChess, GrandChess, OmegaChess, NightriderChess, CourierChess,
-	GrandeAcedrex, Xiangqi, Janggi, Shatar, Shatranj, Makruk, Sittuyin, Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi, WhaleShogi,
-	ToriShogi, EuroShogi, YariShogi, HeianShogi, ShoShogi, WaShogi, CrazyWa, ChuShogi, HeianDaiShogi, DaiShogi, TenjikuShogi, DaiDaiShogi,
-	MakaDaiDaiShogi, KoShogi
+	MusketeerChess, GrandeAcedrex, Xiangqi, Janggi, Shatar, Shatranj, Makruk, Sittuyin, Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi,
+	WhaleShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi, ShoShogi, WaShogi, CrazyWa, ChuShogi, HeianDaiShogi, DaiShogi, TenjikuShogi,
+	DaiDaiShogi, MakaDaiDaiShogi, KoShogi
 };
 
 enum PieceColour
@@ -79,7 +79,9 @@ enum PieceType
     // Grande Acedrex Pieces
     Aanca, Giraffe, Crocodile,
     // Courier Chess Pieces
-    Sage, Schleich, Courier
+    Sage, Schleich, Courier,
+	// Musketeer Chess Pieces
+	Fortress, Spider
 };
 
 enum Direction
@@ -87,7 +89,8 @@ enum Direction
 	NorthWest, North, NorthEast, East, SouthEast, South, SouthWest, West
 };
 
-inline GameVariant chessVariants[] = { Chess, CapablancaChess, GothicChess, JanusChess, GrandChess, OmegaChess, NightriderChess, ChancellorChess, ModernChess };
+inline GameVariant chessVariants[] = { Chess, CapablancaChess, GothicChess, JanusChess, GrandChess, OmegaChess, NightriderChess,
+	                                   ChancellorChess, ModernChess, MusketeerChess };
 
 inline GameVariant shogiVariants[] = { MicroShogi, KyotoShogi, Shogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi,
                                        ChuShogi, HeianDaiShogi, DaiShogi, ShoShogi, WaShogi, CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi };
@@ -151,6 +154,9 @@ inline PieceType OmegaChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn,
 inline PieceType NightriderChessPieces[] = { King, Queen, Bishop, Nightrider, Rook, Pawn };
 
 inline PieceType CourierChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn, Sage, Schleich, Courier };
+
+inline PieceType MusketeerChessPieces[] = {	King, Queen, Bishop, Knight, Rook, Pawn, Chancellor, Archbishop,
+											Leopard, Cannon, Unicorn, FlyingDragon, Elephant, Eagle, Fortress, Spider };
 
 inline PieceType GrandeAcedrexPieces[] = { King, Aanca, Giraffe, Crocodile, Unicorn, Lion, Rook, Pawn };
 

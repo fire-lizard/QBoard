@@ -23,6 +23,7 @@
     <Engine EngineName="fairy-stockfish" GameVariant="Modern Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Grand Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Nightrider Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
+    <Engine EngineName="fairy-stockfish" GameVariant="Musketeer Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Shatar" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Sittuyin" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="fairy-stockfish" GameVariant="Janggi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
