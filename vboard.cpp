@@ -102,7 +102,7 @@ void VBoard::paintEvent(QPaintEvent *)
                             painter.setBrush(Qt::NoBrush);
 						}
 					}
-                    else if (_gameVariant != ToriShogi && _gameVariant != GrandeAcedrex &&
+                    else if (_gameVariant != ToriShogi && _gameVariant != GrandeAcedrex && _gameVariant != MusketeerChess &&
                              EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, i, j))
 					{
 						if (_board->GetData(i, j) != std::nullopt)
@@ -480,7 +480,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			_board->SetData(x, y, std::make_optional<Piece>(_chosenPiece, _chosenColour));
 			if (std::ranges::find(_promotedPieces, _chosenPiece) != std::end(_promotedPieces))
 			{
-				if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi)
+				if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi &&
+					_gameVariant != GrandeAcedrex && _gameVariant != MusketeerChess)
 				{
 					_board->Promote(x, y);
 				}
@@ -2591,7 +2592,8 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				_board->SetData(x, y, std::make_optional<Piece>(_chosenPiece, _chosenColour));
 				if (std::ranges::find(_promotedPieces, _chosenPiece) != std::end(_promotedPieces))
 				{
-					if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != GrandeAcedrex)
+					if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi &&
+						_gameVariant != GrandeAcedrex && _gameVariant != MusketeerChess)
 					{
 						_board->Promote(x, y);
 					}

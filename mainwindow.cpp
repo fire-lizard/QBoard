@@ -215,7 +215,10 @@ void MainWindow::on_actionClear_triggered() const
 		{
 			for (int j = 0; j < height; j++)
 			{
-				board->SetData(i, j, std::nullopt);
+				if (board->GetData(i, j) != std::nullopt && board->GetData(i, j)->Type != King)
+				{
+					board->SetData(i, j, std::nullopt);
+				}
 			}
 		}
 		if (!ui->vboard->GetEditorMode())

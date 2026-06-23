@@ -75,10 +75,42 @@ void MusketeerChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int
 		CheckDirection(piece, x, y, NorthWest, 2);
 		break;
 	case Cannon:
-		CapablancaChessBoard::GetMoves(piece, x, y);
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x - 1, y - 1);
+
+		CheckMove(piece, x + 2, y);
+		CheckMove(piece, x, y + 2);
+		CheckMove(piece, x, y - 2);
+		CheckMove(piece, x - 2, y);
+		CheckMove(piece, x + 2, y + 1);
+		CheckMove(piece, x + 2, y - 1);
+		CheckMove(piece, x - 2, y + 1);
+		CheckMove(piece, x - 2, y - 1);
 		break;
 	case Unicorn:
-		CapablancaChessBoard::GetMoves(piece, x, y);
+		CheckMove(piece, x + 1, y + 2);
+		CheckMove(piece, x - 1, y + 2);
+		CheckMove(piece, x + 2, y + 1);
+		CheckMove(piece, x + 2, y - 1);
+		CheckMove(piece, x - 2, y + 1);
+		CheckMove(piece, x - 2, y - 1);
+		CheckMove(piece, x + 1, y - 2);
+		CheckMove(piece, x - 1, y - 2);
+
+		CheckMove(piece, x + 1, y + 3);
+		CheckMove(piece, x - 1, y + 3);
+		CheckMove(piece, x + 3, y + 1);
+		CheckMove(piece, x + 3, y - 1);
+		CheckMove(piece, x - 3, y + 1);
+		CheckMove(piece, x - 3, y - 1);
+		CheckMove(piece, x + 1, y - 3);
+		CheckMove(piece, x - 1, y - 3);
 		break;
 	case FlyingDragon:
 		CheckMove(piece, x + 1, y + 2);
@@ -118,10 +150,37 @@ void MusketeerChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int
 		CheckMove(piece, x - 2, y - 2);
 		break;
 	case Eagle:
-		CapablancaChessBoard::GetMoves(piece, x, y);
+		CheckMove(piece, x + 2, y + 2);
+		CheckMove(piece, x + 2, y);
+		CheckMove(piece, x + 2, y - 2);
+		CheckMove(piece, x, y + 2);
+		CheckMove(piece, x, y - 2);
+		CheckMove(piece, x - 2, y + 2);
+		CheckMove(piece, x - 2, y);
+		CheckMove(piece, x - 2, y - 2);
+
+		CheckMove(piece, x + 3, y + 3);
+		CheckMove(piece, x + 3, y);
+		CheckMove(piece, x + 3, y - 3);
+		CheckMove(piece, x, y + 3);
+		CheckMove(piece, x, y - 3);
+		CheckMove(piece, x - 3, y + 3);
+		CheckMove(piece, x - 3, y);
+		CheckMove(piece, x - 3, y - 3);
 		break;
 	case Fortress:
-		CapablancaChessBoard::GetMoves(piece, x, y);
+		CheckMove(piece, x + 1, y + 2);
+		CheckMove(piece, x - 1, y + 2);
+		CheckMove(piece, x + 1, y - 2);
+		CheckMove(piece, x - 1, y - 2);
+		CheckMove(piece, x + 2, y);
+		CheckMove(piece, x, y + 2);
+		CheckMove(piece, x, y - 2);
+		CheckMove(piece, x - 2, y);
+		CheckDirection(piece, x, y, NorthEast, 3);
+		CheckDirection(piece, x, y, SouthEast, 3);
+		CheckDirection(piece, x, y, SouthWest, 3);
+		CheckDirection(piece, x, y, NorthWest, 3);
 		break;
 	case Spider:
 		CheckMove(piece, x + 1, y + 2);

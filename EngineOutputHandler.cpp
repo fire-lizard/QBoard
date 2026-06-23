@@ -921,7 +921,10 @@ void EngineOutputHandler::ReadStandardError(const QByteArray& buf, QTextEdit* te
 
 void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3)
 {
-    if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants) ||
+    if (gameVariant == MusketeerChess)
+    {
+    }
+	else if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants) ||
 		gameVariant == Shatranj || gameVariant == Shatar || gameVariant == Sittuyin)
 	{
 		dynamic_cast<ShatranjBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
