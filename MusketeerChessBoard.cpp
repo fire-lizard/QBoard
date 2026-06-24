@@ -204,6 +204,9 @@ void MusketeerChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int
 		CapablancaChessBoard::GetMoves(piece, x, y);
 		break;
 	}
+	auto moves_to_remove =
+		std::ranges::remove_if(_moves, [](const auto& m) { return m.second == 0 || m.second == 9; });
+	_moves.erase(moves_to_remove.begin(), moves_to_remove.end());
 }
 
 bool MusketeerChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)

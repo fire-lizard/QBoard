@@ -338,7 +338,12 @@ void VBoard::paintEvent(QPaintEvent *)
 					if ((i + j) % 2 != 0)
 						painter.setBrush(Qt::gray);
 				}
-                if (_gameVariant != KoShogi && _gameVariant != Xiangqi && _gameVariant != Janggi)
+				if (_gameVariant == MusketeerChess)
+				{
+					if (j == 0 || j == _board->GetHeight() - 1)
+						painter.setBrush(QColorConstants::Svg::wheat);
+				}
+				if (_gameVariant != KoShogi && _gameVariant != Xiangqi && _gameVariant != Janggi)
                 {
                     painter.drawRect(rect);
                 }
@@ -506,42 +511,76 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	{
         if (_gameVariant == JanusChess)
         {
-			_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 4 : _oldX - 3, _oldY, false);
-			_board->Move(x, y, _oldX < x ? x - 2 : x + 2, y, false);
-            if (engine != nullptr && engine->IsActive())
-            {
-				engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 3 : _oldX - 3, _board->GetHeight() - y, ' ');
+			if (_board->IsSquareUnderAttack(_oldX < x ? _oldX + 4 : _oldX - 3, _oldY, _currentPlayer))
+			{
+				QMessageBox::warning(this, "Warning", "Castling destination square is under attack.");
+			}
+			else
+			{
+				_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 4 : _oldX - 3, _oldY, false);
+				_board->Move(x, y, _oldX < x ? x - 2 : x + 2, y, false);
+				if (engine != nullptr && engine->IsActive())
+				{
+					engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 3 : _oldX - 3, _board->GetHeight() - y, ' ');
+				}
+				dynamic_cast<ChessBoard*>(_board)->WriteCastling(x > _oldX ? "O-O" : "O-O-O");
+				FinishMove(x, y);
 			}
         }
 		else if (_gameVariant == CapablancaChess || _gameVariant == GothicChess)
 		{
-			_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 3 : _oldX - 3, _oldY, false);
-			_board->Move(x, y, _oldX < x ? x - 2 : x + 3, y, false);
-			if (engine != nullptr && engine->IsActive())
+			if (_board->IsSquareUnderAttack(_oldX < x ? _oldX + 3 : _oldX - 3, _oldY, _currentPlayer))
 			{
-				engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 3 : _oldX - 3, _board->GetHeight() - y, ' ');
+				QMessageBox::warning(this, "Warning", "Castling destination square is under attack.");
+			}
+			else
+			{
+				_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 3 : _oldX - 3, _oldY, false);
+				_board->Move(x, y, _oldX < x ? x - 2 : x + 3, y, false);
+				if (engine != nullptr && engine->IsActive())
+				{
+					engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 3 : _oldX - 3, _board->GetHeight() - y, ' ');
+				}
+				dynamic_cast<ChessBoard*>(_board)->WriteCastling(x > _oldX ? "O-O" : "O-O-O");
+				FinishMove(x, y);
 			}
 		}
 		else if (_gameVariant == ChancellorChess || _gameVariant == ModernChess)
 		{
-			_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _oldY, false);
-			_board->Move(x, y, _oldX < x ? x - 3 : x + 3, y, false);
-			if (engine != nullptr && engine->IsActive())
+			if (_board->IsSquareUnderAttack(_oldX < x ? _oldX + 2 : _oldX - 2, _oldY, _currentPlayer))
 			{
-				engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _board->GetHeight() - y, ' ');
+				QMessageBox::warning(this, "Warning", "Castling destination square is under attack.");
+			}
+			else
+			{
+				_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _oldY, false);
+				_board->Move(x, y, _oldX < x ? x - 3 : x + 3, y, false);
+				if (engine != nullptr && engine->IsActive())
+				{
+					engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _board->GetHeight() - y, ' ');
+				}
+				dynamic_cast<ChessBoard*>(_board)->WriteCastling(x > _oldX ? "O-O" : "O-O-O");
+				FinishMove(x, y);
 			}
 		}
         else
         {
-			_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _oldY, false);
-			_board->Move(x, y, _oldX < x ? x - 2 : x + 3, y, false);
-			if (engine != nullptr && engine->IsActive())
-            {
-				engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _board->GetHeight() - y, ' ');
-            }
+			if (_board->IsSquareUnderAttack(_oldX < x ? _oldX + 2 : _oldX - 2, _oldY, _currentPlayer))
+			{
+				QMessageBox::warning(this, "Warning", "Castling destination square is under attack.");
+			}
+			else
+			{
+				_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _oldY, false);
+				_board->Move(x, y, _oldX < x ? x - 2 : x + 3, y, false);
+				if (engine != nullptr && engine->IsActive())
+				{
+					engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _board->GetHeight() - y, ' ');
+				}
+				dynamic_cast<ChessBoard*>(_board)->WriteCastling(x > _oldX ? "O-O" : "O-O-O");
+				FinishMove(x, y);
+			}
         }
-		dynamic_cast<ChessBoard*>(_board)->WriteCastling(x > _oldX ? "O-O" : "O-O-O");
-		FinishMove(x, y);
 	}
 	// Null move
 	else if ((_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||

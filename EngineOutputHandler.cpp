@@ -262,36 +262,36 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 
 Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol engineProtocol, int width, int height)
 {
-	int x1, y1, x2, y2;
+	int oldX, oldY, newX, newY;
 	if (engineProtocol == Qianhong)
 	{
-		x1 = moveArray[0] - 65;
-        y1 = height - moveArray[1];
-		x2 = moveArray[2] - 65;
-        y2 = height - moveArray[3];
+        oldX = moveArray[0] - 65;
+        oldY = height - moveArray[1];
+        newX = moveArray[2] - 65;
+        newY = height - moveArray[3];
 	}
 	else if (engineProtocol == USI)
 	{
-		x1 = width - moveArray[0] + 48;
-		y1 = moveArray[1] - 97;
-		x2 = width - moveArray[2] + 48;
-		y2 = moveArray[3] - 97;
+        oldX = width - moveArray[0] + 48;
+        oldY = moveArray[1] - 97;
+        newX = width - moveArray[2] + 48;
+		newY = moveArray[3] - 97;
 	}
     else if (width >= 10 || (width != 9 && height >= 10))
 	{
-		x1 = moveArray[0] - 97;
-        y1 = height - moveArray[1];
-		x2 = moveArray[2] - 97;
-        y2 = height - moveArray[3];
+        oldX = moveArray[0] - 97;
+        oldY = height - moveArray[1];
+        newX = moveArray[2] - 97;
+        newY = height - moveArray[3];
 	}
     else
 	{
-		x1 = moveArray[0] - 97;
-		y1 = height - moveArray[1] + 48;
-		x2 = moveArray[2] - 97;
-		y2 = height - moveArray[3] + 48;
+        oldX = moveArray[0] - 97;
+        oldY = height - moveArray[1] + 48;
+        newX = moveArray[2] - 97;
+		newY = height - moveArray[3] + 48;
 	}
-	return {x1, y1, x2, y2};
+	return {.x1 = oldX, .y1 = oldY, .x2 = newX, .y2 = newY};
 }
 
 QByteArray EngineOutputHandler::MoveToByteArray(Move m, EngineProtocol engineProtocol, int width, int height)
