@@ -135,6 +135,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 {
     const QRegularExpression _csre = QRegularExpression(R"(([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrqac])?)");
     const QRegularExpression _cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])(\+)?)");
+	const QRegularExpression _mcre = QRegularExpression(R"(([a-h])([1-8])([a-h])([1-8])([nbrqlcudmaehfs])?)");
     const QRegularExpression _stre = QRegularExpression(R"(([RNSFKa-h])(\@|[1-8])([a-h])([1-8])(f)?)");
     const QRegularExpression _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
     const QRegularExpression _sgxbre = QRegularExpression(R"(([RBGSNLPFCWKHDYa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
@@ -203,9 +204,9 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 					if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
 				}
 			}
-            else if (gameVariant == Sittuyin)
+            else if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
             {
-                QRegularExpressionMatch match = _stre.match(part);
+            	QRegularExpressionMatch match = gameVariant == Sittuyin ? _stre.match(part) : _mcre.match(part);
                 if (match.hasMatch())
                 {
                     QString firstLetter = match.captured(1);
@@ -277,7 +278,7 @@ Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol e
         newX = width - moveArray[2] + 48;
 		newY = moveArray[3] - 97;
 	}
-    else if (width >= 10 || (width != 9 && height >= 10))
+    else if (width >= 10 || (width != 8 && width != 9 && height >= 10))
 	{
         oldX = moveArray[0] - 97;
         oldY = height - moveArray[1];
@@ -505,7 +506,12 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     }
     else if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
 	{
-		// Castling check
+		if (gameVariant == MusketeerChess)
+		{
+            y1--;
+            y2--;
+		}
+    	// Castling check
         if (moveArray.contains("O-O") || (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King))
 		{
             auto coords = board->FindNearestPiece(x1, y1, x1 < x2 ? East : West);
@@ -649,7 +655,8 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
         }
     	else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{
-            const bool isPromoted = board->GetData(x1, y1)->Type == Pawn && (y2 == 0 || y2 == board->GetHeight() - 1);
+            // TODO: Sittuyin promotion
+    		const bool isPromoted = board->GetData(x1, y1)->Type == Pawn && (y2 == 0 || y2 == board->GetHeight() - 1);
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
 			board->Move(x1, y1, x2, y2, false);

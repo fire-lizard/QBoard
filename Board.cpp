@@ -1,4 +1,9 @@
 #include "Board.h"
+//#define DEBUG_ENGINE_MOVES
+#ifdef DEBUG_ENGINE_MOVES
+#include "Logger.h"
+#include "stringmanager.h"
+#endif
 
 Board::~Board()
 {
@@ -202,7 +207,16 @@ bool Board::InBounds(int x, int y, Direction direction) const
 
 bool Board::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
-	if (std::ranges::any_of(_moves, [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}) || !cl)
+#ifdef DEBUG_ENGINE_MOVES
+	if (!std::ranges::any_of(_moves, [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}))
+    {
+        QString s1 = GetData(oldX, oldY).has_value() ? (GetData(oldX, oldY)->Colour == White ? "White " : "Black ") + QString::fromStdString(StringManager::PieceType2Description(GetData(oldX, oldY)->Type)) : "(Empty)";
+        QString s2 = GetData(newX, newY).has_value() ? (GetData(oldX, oldY)->Colour == White ? "White " : "Black ") + QString::fromStdString(StringManager::PieceType2Description(GetData(newX, newY)->Type)) : "(Empty)";
+        QString s3 = QString(static_cast<char>(oldX + 97)) + QString::number(oldY) + QString(static_cast<char>(newX + 97)) + QString::number(newY);
+        Logger::writeToLog(s3 + " : " + s1 + "->" + s2);
+    }
+#endif
+    if (std::ranges::any_of(_moves, [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}) || !cl)
 	{
 		SetData(newX, newY, GetData(oldX, oldY));
 		SetData(oldX, oldY, std::nullopt);

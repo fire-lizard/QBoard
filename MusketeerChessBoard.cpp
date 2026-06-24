@@ -200,6 +200,23 @@ void MusketeerChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int
 		CheckDirection(piece, x, y, SouthWest, 2);
 		CheckDirection(piece, x, y, NorthWest, 2);
 		break;
+	case Pawn:
+		CapablancaChessBoard::GetMoves(piece, x, y);
+		if (piece->Colour == Black)
+		{
+			if (y == 2 && GetData(x, y + 1) == std::nullopt && GetData(x, y + 2) == std::nullopt)
+			{
+				CheckMove(piece, x, y + 2);
+			}
+		}
+		else
+		{
+			if (y == _height - 3 && GetData(x, y - 1) == std::nullopt && GetData(x, y - 2) == std::nullopt)
+			{
+				CheckMove(piece, x, y - 2);
+			}
+		}
+		break;
 	default:
 		CapablancaChessBoard::GetMoves(piece, x, y);
 		break;

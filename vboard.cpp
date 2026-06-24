@@ -1264,7 +1264,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
             const char promotion = CheckPromotion(p, x, y);
 			if (engine != nullptr && engine->IsActive())
 			{
-                if (_gameVariant == Xiangqi || _gameVariant == Janggi || _gameVariant == GrandChess)
+                if (_gameVariant == Xiangqi || _gameVariant == Janggi || _gameVariant == GrandChess || _gameVariant == MusketeerChess)
 					engine->Move(_oldX, _board->GetHeight() - _oldY - 1, x, _board->GetHeight() - y - 1, promotion);
                 else if (engine->GetType() == USI)
 					engine->Move(_board->GetWidth() - _oldX, _oldY, _board->GetWidth() - x, y, promotion);
@@ -1529,6 +1529,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 	}
 	else if (_gameVariant == Sittuyin)
 	{
+		// TODO: Sittuyin promotion
 		if (_currentPiece->Type == Pawn &&
 			((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) ||
 				(y == 0 && _currentPiece->Colour == White)))
