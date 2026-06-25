@@ -52,7 +52,7 @@ Board* KyotoShogiBoard::Clone()
 
 void KyotoShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (_data[x][y] != std::nullopt)
+    if (GetData(x, y) != std::nullopt)
     {
         PieceType pieceType = None;
         switch (_data[x][y]->Type)

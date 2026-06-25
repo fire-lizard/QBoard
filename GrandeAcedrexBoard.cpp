@@ -48,7 +48,7 @@ void GrandeAcedrexBoard::Initialize()
 
 void GrandeAcedrexBoard::Promote(int x, int y, PieceType pt)
 {
-    if (_data[x][y] != std::nullopt)
+    if (GetData(x, y) != std::nullopt)
     {
         _data[x][y]->Type = pt;
     }
@@ -223,6 +223,6 @@ std::string GrandeAcedrexBoard::GetStringCode(int x, int y) const
     case Pawn:
         return "P";
     default:
-        return Board::GetStringCode(x, y);
+        return ShatranjBoard::GetStringCode(x, y);
     }
 }

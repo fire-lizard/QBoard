@@ -16,12 +16,16 @@ struct Piece
         Colour = pieceColour;
         IsPromoted = false;
         HasMoved = false;
+		CanBePromoted = false;
     }
     PieceType BaseType;
     PieceType Type;
     PieceColour Colour;
     bool IsPromoted;
-    bool HasMoved;
+    // Used by Chess and its variants
+	bool HasMoved;
+	// Used by Sittuyin
+	bool CanBePromoted;
 };
 
 class Board

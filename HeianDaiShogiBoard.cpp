@@ -47,7 +47,7 @@ Board* HeianDaiShogiBoard::Clone()
 
 void HeianDaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (_data[x][y] != std::nullopt)
+    if (GetData(x, y) != std::nullopt)
     {
         _data[x][y]->IsPromoted = true;
         _data[x][y]->Type = Gold;

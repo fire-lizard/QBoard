@@ -52,7 +52,7 @@ Board* YariShogiBoard::Clone()
 
 void YariShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (_data[x][y] != std::nullopt)
+    if (GetData(x, y) != std::nullopt)
     {
         _data[x][y]->IsPromoted = true;
         PieceType pieceType = None;

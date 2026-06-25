@@ -63,7 +63,7 @@ bool MicroShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 
 void MicroShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (_data[x][y] != std::nullopt)
+    if (GetData(x, y) != std::nullopt)
     {
         PieceType pieceType = None;
         switch (_data[x][y]->Type)
