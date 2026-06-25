@@ -212,7 +212,7 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="CapablancaChessBoard.cpp" />
-    <ClCompile Include="CaptureBoard.cpp" />
+    <ClCompile Include="PieceStorage.cpp" />
     <ClCompile Include="ChancellorChessBoard.cpp" />
     <ClCompile Include="ChessBoard.cpp" />
     <ClCompile Include="ChuShogiBoard.cpp" />
@@ -276,7 +276,7 @@
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="CapablancaChessBoard.h" />
-    <ClInclude Include="CaptureBoard.h" />
+    <ClInclude Include="PieceStorage.h" />
     <ClInclude Include="ChancellorChessBoard.h" />
     <ClInclude Include="ChessBoard.h" />
     <ClInclude Include="ChuShogiBoard.h" />

@@ -227,7 +227,7 @@
     <ClCompile Include="SittuyinBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CaptureBoard.cpp">
+    <ClCompile Include="PieceStorage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MusketeerChessBoard.cpp">
@@ -415,7 +415,7 @@
     <ClInclude Include="SittuyinBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CaptureBoard.h">
+    <ClInclude Include="PieceStorage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MusketeerChessBoard.h">

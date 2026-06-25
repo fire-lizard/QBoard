@@ -7,7 +7,7 @@
 #include "Common.h"
 #include "stringmanager.h"
 
-class CaptureBoard
+class PieceStorage
 {
 public:
 	std::vector<PieceType> GetCapturedPieces(PieceColour pieceColour);

@@ -1,9 +1,9 @@
 ﻿#pragma once
 #include <map>
 #include "Board.h"
-#include "CaptureBoard.h"
+#include "PieceStorage.h"
 
-class ShogiBoard : public Board, public CaptureBoard
+class ShogiBoard : public Board, public PieceStorage
 {
 public:
 	ShogiBoard();

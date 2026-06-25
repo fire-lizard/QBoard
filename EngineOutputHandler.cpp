@@ -1057,17 +1057,17 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 	{
 		if (parts.size() >= 3)
 		{
-			CaptureBoard* cb = dynamic_cast<CaptureBoard*>(board);
+			PieceStorage* cps = dynamic_cast<PieceStorage*>(board);
 			k = 0;
 			do
 			{
 				if (parts[2][k] >= 'a' && parts[2][k] <= 'z')
 				{
-                    cb->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
+                    cps->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
 				}
 				else if (parts[2][k] >= 'A' && parts[2][k] <= 'Z')
 				{
-                    cb->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, std::string(1, parts[2][k].toLatin1())), White);
+                    cps->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, std::string(1, parts[2][k].toLatin1())), White);
 				}
 				k++;
 			} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z')));

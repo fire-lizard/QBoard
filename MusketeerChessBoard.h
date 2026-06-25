@@ -1,8 +1,8 @@
 #pragma once
-#include "CaptureBoard.h"
+#include "PieceStorage.h"
 #include "CapablancaChessBoard.h"
 
-class MusketeerChessBoard : public CapablancaChessBoard, public CaptureBoard
+class MusketeerChessBoard : public CapablancaChessBoard, public PieceStorage
 {
 public:
 	MusketeerChessBoard();

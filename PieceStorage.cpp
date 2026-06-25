@@ -1,6 +1,6 @@
-#include "CaptureBoard.h"
+#include "PieceStorage.h"
 
-std::vector<PieceType> CaptureBoard::GetCapturedPieces(PieceColour pieceColour)
+std::vector<PieceType> PieceStorage::GetCapturedPieces(PieceColour pieceColour)
 {
 	std::vector<PieceType> result;
 	for (auto& capturedPiece : _capturedPieces)
@@ -13,12 +13,12 @@ std::vector<PieceType> CaptureBoard::GetCapturedPieces(PieceColour pieceColour)
 	return result;
 }
 
-void CaptureBoard::AddCapturedPiece(PieceType p, PieceColour pieceColour)
+void PieceStorage::AddCapturedPiece(PieceType p, PieceColour pieceColour)
 {
 	_capturedPieces.emplace_back(pieceColour, p);
 }
 
-void CaptureBoard::RemoveCapturedPiece(PieceType p, PieceColour pieceColour)
+void PieceStorage::RemoveCapturedPiece(PieceType p, PieceColour pieceColour)
 {
 	for (size_t index = 0; index < _capturedPieces.size(); index++)
 	{
@@ -30,7 +30,7 @@ void CaptureBoard::RemoveCapturedPiece(PieceType p, PieceColour pieceColour)
 	}
 }
 
-std::string CaptureBoard::CapturedPieceString(GameVariant gameVariant)
+std::string PieceStorage::CapturedPieceString(GameVariant gameVariant)
 {
 	if (_capturedPieces.empty())
 	{
@@ -43,7 +43,7 @@ std::string CaptureBoard::CapturedPieceString(GameVariant gameVariant)
 	return wstr + bstr;
 }
 
-std::string CaptureBoard::formatEnumCounts(GameVariant gameVariant, PieceColour pieceColour)
+std::string PieceStorage::formatEnumCounts(GameVariant gameVariant, PieceColour pieceColour)
 {
 	auto orderData = StringManager::GetOrderData(gameVariant);
 	auto enumList = GetCapturedPieces(pieceColour);

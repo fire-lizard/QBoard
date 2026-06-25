@@ -2650,7 +2650,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 
 	QMenu menu(this);
 
-	const auto cps = dynamic_cast<CaptureBoard*>(_board)->GetCapturedPieces(_currentPlayer);
+	const auto cps = dynamic_cast<PieceStorage*>(_board)->GetCapturedPieces(_currentPlayer);
 	for (const auto cp : cps)
 	{
         const std::string str = StringManager::PieceType2Description(_gameVariant, cp);
@@ -2770,7 +2770,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				engine->Move(sc, '@', x, _board->GetHeight() - y, ' ');
 		}
 		EngineOutputHandler::AddMove(_board, _gameVariant, newPiece, sc, '*', x, y, ' ', ' ');
-		dynamic_cast<CaptureBoard*>(_board)->RemoveCapturedPiece(newPiece, _currentPlayer);
+		dynamic_cast<PieceStorage*>(_board)->RemoveCapturedPiece(newPiece, _currentPlayer);
 		FinishMove(x, y);
 	}
 }

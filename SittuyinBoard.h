@@ -1,8 +1,8 @@
 #pragma once
-#include "CaptureBoard.h"
+#include "PieceStorage.h"
 #include "ShatranjBoard.h"
 
-class SittuyinBoard : public ShatranjBoard, public CaptureBoard
+class SittuyinBoard : public ShatranjBoard, public PieceStorage
 {
 public:
 	SittuyinBoard();
