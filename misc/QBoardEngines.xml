@@ -55,6 +55,7 @@
     <Engine EngineName="SjaakII" GameVariant="Nightrider Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Musketeer Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish-largeboard_x86-64.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Courier Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
+    <Engine EngineName="SjaakII" GameVariant="Shatar" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Micro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Yari Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>

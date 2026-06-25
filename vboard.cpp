@@ -1497,7 +1497,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             }
         }
     }
-    else if (_gameVariant == Shatranj || _gameVariant == CourierChess)
+    else if (_gameVariant == Shatranj)
 	{
         if (_currentPiece->Type == Pawn &&
             ((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) ||
@@ -1507,6 +1507,16 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             _board->Promote(x, y);
 		}
 	}
+	else if (_gameVariant == CourierChess)
+	{
+		if (_currentPiece->Type == Pawn &&
+			((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) ||
+				(y == 0 && _currentPiece->Colour == White)))
+		{
+			promotion = 'f';
+			_board->Promote(x, y);
+		}
+		}
 	else if (_gameVariant == Shatar)
 	{
 		if (_currentPiece->Type == Pawn &&
@@ -1523,7 +1533,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             ((y >= 5 && _currentPiece->Colour == Black) ||
                 (y <= 2 && _currentPiece->Colour == White)))
 		{
-			promotion = 'q';
+			promotion = _currentPlayer == White ? 'M' : 'm';
             _board->Promote(x, y);
 		}
 	}

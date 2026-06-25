@@ -156,7 +156,7 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 	}
     if (promotion == 'n' || promotion == 'b' || promotion == 'r' || promotion == 'q' ||
 		promotion == 'j' || promotion == 'f' || promotion == 'a' || promotion == 'c' ||
-		promotion == 'w' || promotion == '+')
+		promotion == 'w' || promotion == 'm' || promotion == 'M' || promotion == '+')
 	{
 		moveStr.push_back(promotion);
 	}

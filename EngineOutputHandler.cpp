@@ -133,7 +133,7 @@ std::vector<std::pair<int, int>> EngineOutputHandler::GetPieceLocations(const Bo
 
 QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant)
 {
-    const QRegularExpression _csre = QRegularExpression(R"(([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrqac])?)");
+    const QRegularExpression _csre = QRegularExpression(R"(([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrqfjacwmM])?)");
     const QRegularExpression _cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])(\+)?)");
 	const QRegularExpression _mcre = QRegularExpression(R"(([a-h])([1-8])([a-h])([1-8])([nbrqlcudmaehfs])?)");
     const QRegularExpression _stre = QRegularExpression(R"(([RNSFKa-h])(\@|[1-8])([a-h])([1-8])(f)?)");
@@ -655,13 +655,12 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
         }
     	else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{
-            // TODO: Sittuyin promotion
-    		const bool isPromoted = board->GetData(x1, y1)->Type == Pawn && (y2 == 0 || y2 == board->GetHeight() - 1);
+    		const bool isPromoted = moveArray[ms - 1] == 'f' || moveArray[ms - 1] == 'j' || moveArray[ms - 1] == 'q';
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
 			board->Move(x1, y1, x2, y2, false);
             AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2, ' ', ct != None ? 'x' : ' ');
-			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
+			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[ms - 1] : ' ');
 			if (isPromoted)
 			{
                 board->Promote(x2, y2);
@@ -672,12 +671,12 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{
-            const bool isPromoted = board->GetData(x1, y1)->Type == Pawn && (y2 <= 2 || y2 >= board->GetHeight() - 3);
+            const bool isPromoted = moveArray[ms - 1] == 'm' || moveArray[ms - 1] == 'M';
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
 			board->Move(x1, y1, x2, y2, false);
             AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2, ' ', ct != None ? 'x' : ' ');
-			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
+			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[ms - 1] : ' ');
 			if (isPromoted)
 			{
                 board->Promote(x2, y2);
