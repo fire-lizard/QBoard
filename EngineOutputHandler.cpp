@@ -962,6 +962,7 @@ template <typename T> std::basic_string<T> EngineOutputHandler::lowercase(const 
 
 QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant)
 {
+    if (gameVariant == Sittuyin) dynamic_cast<SittuyinBoard*>(board)->ClearPiecesInHand();
 	QStringList parts = QString(str).trimmed().split(' ', Qt::SkipEmptyParts);
 	QString fen = parts[0];
 	board->Clear();
@@ -1059,18 +1060,31 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 		{
 			PieceStorage* cps = dynamic_cast<PieceStorage*>(board);
 			k = 0;
+            int c = 1;
 			do
 			{
-				if (parts[2][k] >= 'a' && parts[2][k] <= 'z')
+                if (parts[2][k] >= '1' && parts[2][k] <= '9')
+                {
+                    c = QString(parts[2][k]).toInt();
+                }
+                else if (parts[2][k] >= 'a' && parts[2][k] <= 'z')
 				{
-                    cps->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
-				}
+                    for (int index = 0; index < c; index++)
+                    {
+                        cps->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
+                    }
+                    c = 1;
+                }
 				else if (parts[2][k] >= 'A' && parts[2][k] <= 'Z')
 				{
-                    cps->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, std::string(1, parts[2][k].toLatin1())), White);
+                    for (int index = 0; index < c; index++)
+                    {
+                        cps->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, std::string(1, parts[2][k].toLatin1())), White);
+                    }
+                    c = 1;
 				}
 				k++;
-			} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z')));
+			} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z') || (parts[2][k] >= '1' && parts[2][k] <= '9')));
 		}
 	}
 	return "";

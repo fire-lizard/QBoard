@@ -7,6 +7,7 @@
 #include "XiangqiBoard.h"
 #include "ShogiBoard.h"
 #include "MakrukBoard.h"
+#include "SittuyinBoard.h"
 
 struct Move
 {
