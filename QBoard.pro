@@ -52,7 +52,6 @@ SOURCES += main.cpp\
     variantdialog.cpp \
     vboard.cpp \
     IniFile.cpp \
-    ShogiVariantBoard.cpp \
     ShogiBoard.cpp \
     XiangqiBoard.cpp \
     Engine.cpp \
@@ -116,7 +115,6 @@ HEADERS  += mainwindow.h \
     variantdialog.h \
     vboard.h \
     IniFile.h \
-    ShogiVariantBoard.h \
     ShogiBoard.h \
     XiangqiBoard.h \
     Engine.h \

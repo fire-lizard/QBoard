@@ -111,56 +111,6 @@ void WaShogiBoard::Promote(int x, int y, PieceType pt)
     }
 }
 
-std::string WaShogiBoard::formatEnumCounts(const std::vector<PieceType>& enumList)
-{
-    static const std::unordered_map<PieceType, std::string> pieceTypeToCode = {
-        { King,           "K"  },
-        { Lance,          "O"  },
-        { Pawn,           "P"  },
-        { SideMover,      "S"  },
-        { LiberatedHorse, "H"  },
-        { SwoopingOwl,    "L"  },
-        { CloudEagle,     "E"  },
-        { StruttingCrow,  "U"  },
-        { FlyingFalcon,   "F"  },
-        { FlyingCock,     "C"  },
-        { FlyingGoose,    "G"  },
-        { ClimbingMonkey, "M"  },
-        { Silver,         "V"  },
-        { Dog,            "D"  },
-        { Gold,           "W"  },
-        { RunningRabbit,  "R"  },
-        { TreacherousFox, "X"  }
-    };
-
-    const std::vector<PieceType> order = { Rook, SideMover, Gold, Silver, LiberatedHorse, Lance, Pawn, SwoopingOwl, CloudEagle, StruttingCrow,
-                                           FlyingFalcon, FlyingCock, FlyingGoose, ClimbingMonkey, Dog, RunningRabbit, TreacherousFox };
-
-	// Count occurrences of each piece
-	std::unordered_map<PieceType, int> counts;
-	for (const auto& piece : enumList)
-	{
-		counts[piece]++;
-	}
-
-	std::ostringstream result;
-
-	for (const auto& piece : order) {
-        const auto it = pieceTypeToCode.find(piece);
-        if (it != pieceTypeToCode.end())
-        {
-            if (counts[piece] > 1) {
-                result << counts[piece] << it->second; // Add count + first letter
-            }
-            else if (counts[piece] == 1) {
-                result << it->second; // Add just the first letter
-            }
-        }
-	}
-
-	return result.str();
-}
-
 void WaShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
 	_moves.clear();

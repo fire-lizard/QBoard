@@ -11,9 +11,6 @@ public:
     void Promote(int x, int y, PieceType pt = None) override;
     void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
 
-protected:
-    std::string formatEnumCounts(const std::vector<PieceType>& enumList) override;
-
 private:
 
     PieceType _initialSetup[9][7] = {

@@ -36,7 +36,6 @@
     <Engine EngineName="haqikid" GameVariant="Xiangqi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaQi/haqikid.exe" EngineOptions=""/>
     <Engine EngineName="Komodo" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Komodo 14.1/komodo-14.1-64bit.exe" EngineOptions=""/>
     <Engine EngineName="Laramie V3" GameVariant="Shogi" EngineProtocol="USI" EnginePath="engines/USI/LaramieV3/LaramieV3.exe" EngineOptions=""/>
-    <Engine EngineName="KingSlayer-Aramis" GameVariant="Musketeer Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/KingSlayer-Aramis/KingSlayer-Aramis.exe" EngineOptions=""/>
     <Engine EngineName="Nebiyu" GameVariant="Capablanca Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
     <Engine EngineName="Nebiyu" GameVariant="Gothic Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
     <Engine EngineName="Nebiyu" GameVariant="Grand Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
@@ -51,7 +50,6 @@
     <Engine EngineName="Shokidoki" GameVariant="Euro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Capablanca Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Gothic Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
-    <Engine EngineName="SjaakII" GameVariant="Chancellor Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Grand Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Omega Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Nightrider Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>

@@ -3,6 +3,19 @@
 #ifdef DEBUG_ENGINE_MOVES
 #include "Logger.h"
 #include "stringmanager.h"
+namespace
+{
+    void LogMove(const Board* board, int oldX, int oldY, int newX, int newY)
+    {
+        if (!std::ranges::any_of(board->Moves(), [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}))
+        {
+            QString s1 = board->GetData(oldX, oldY).has_value() ? (board->GetData(oldX, oldY)->Colour == White ? "White " : "Black ") + QString::fromStdString(StringManager::PieceType2Description(board->GetData(oldX, oldY)->Type)) : "(Empty)";
+            QString s2 = board->GetData(newX, newY).has_value() ? (board->GetData(oldX, oldY)->Colour == White ? "White " : "Black ") + QString::fromStdString(StringManager::PieceType2Description(board->GetData(newX, newY)->Type)) : "(Empty)";
+            QString s3 = QString(static_cast<char>(oldX + 97)) + QString::number(oldY) + QString(static_cast<char>(newX + 97)) + QString::number(newY);
+            Logger::writeToLog(s3 + " : " + s1 + "->" + s2);
+        }
+    }
+}
 #endif
 
 Board::~Board()
@@ -208,13 +221,7 @@ bool Board::InBounds(int x, int y, Direction direction) const
 bool Board::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 #ifdef DEBUG_ENGINE_MOVES
-	if (!std::ranges::any_of(_moves, [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}))
-    {
-        QString s1 = GetData(oldX, oldY).has_value() ? (GetData(oldX, oldY)->Colour == White ? "White " : "Black ") + QString::fromStdString(StringManager::PieceType2Description(GetData(oldX, oldY)->Type)) : "(Empty)";
-        QString s2 = GetData(newX, newY).has_value() ? (GetData(oldX, oldY)->Colour == White ? "White " : "Black ") + QString::fromStdString(StringManager::PieceType2Description(GetData(newX, newY)->Type)) : "(Empty)";
-        QString s3 = QString(static_cast<char>(oldX + 97)) + QString::number(oldY) + QString(static_cast<char>(newX + 97)) + QString::number(newY);
-        Logger::writeToLog(s3 + " : " + s1 + "->" + s2);
-    }
+    LogMove(this, oldX, oldY, newX, newY);
 #endif
     if (std::ranges::any_of(_moves, [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}) || !cl)
 	{

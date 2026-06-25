@@ -1529,10 +1529,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 	}
 	else if (_gameVariant == Sittuyin)
 	{
-		// TODO: Sittuyin promotion
-		if (_currentPiece->Type == Pawn &&
-			((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) ||
-				(y == 0 && _currentPiece->Colour == White)))
+		if (_currentPiece->Type == Pawn && (x == y || x == _board->GetHeight() - y) && !_board->HasPiece(Queen, _currentPlayer))
 		{
 			promotion = 'f';
 			_board->Promote(x, y);

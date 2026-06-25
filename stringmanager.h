@@ -16,6 +16,7 @@ public:
     static std::string ToriShogiPieceType2Description(PieceType pieceType);
     static std::string WaShogiPieceType2Description(PieceType pieceType);
     static std::string WhaleShogiPieceType2Description(PieceType pieceType);
+    static std::pair<std::unordered_map<PieceType, std::string>, std::vector<PieceType>> GetOrderData(GameVariant gameVariant);
 private:
     static PieceType Description2PieceType(const std::string& description);
     static PieceType KoShogiDescription2PieceType(const std::string& description);

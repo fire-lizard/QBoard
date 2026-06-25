@@ -247,7 +247,6 @@
     <ClCompile Include="ShatarBoard.cpp" />
     <ClCompile Include="ShatranjBoard.cpp" />
     <ClCompile Include="ShogiBoard.cpp" />
-    <ClCompile Include="ShogiVariantBoard.cpp" />
     <ClCompile Include="SittuyinBoard.cpp" />
     <ClCompile Include="TenjikuShogiBoard.cpp" />
     <ClCompile Include="ToriShogiBoard.cpp" />
@@ -313,7 +312,6 @@
     <ClInclude Include="ShatarBoard.h" />
     <ClInclude Include="ShatranjBoard.h" />
     <ClInclude Include="ShogiBoard.h" />
-    <ClInclude Include="ShogiVariantBoard.h" />
     <ClInclude Include="SittuyinBoard.h" />
     <ClInclude Include="TenjikuShogiBoard.h" />
     <ClInclude Include="ToriShogiBoard.h" />

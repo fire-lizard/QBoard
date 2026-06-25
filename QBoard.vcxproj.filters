@@ -149,9 +149,6 @@
     <ClCompile Include="ShogiBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShogiVariantBoard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TenjikuShogiBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -341,9 +338,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShogiBoard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShogiVariantBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TenjikuShogiBoard.h">

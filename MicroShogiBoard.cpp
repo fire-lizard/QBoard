@@ -53,7 +53,7 @@ Board* MicroShogiBoard::Clone()
 bool MicroShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
     const PieceType destPieceType = GetData(newX, newY) != std::nullopt ? GetData(newX, newY)->Type : None;
-    const bool result = ShogiVariantBoard::Move(oldX, oldY, newX, newY, cl);
+    const bool result = ShogiBoard::Move(oldX, oldY, newX, newY, cl);
     if (result && destPieceType != None)
     {
         Promote(newX, newY);

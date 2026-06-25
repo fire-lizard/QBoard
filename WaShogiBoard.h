@@ -16,9 +16,6 @@ public:
     void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture) override;
 	std::string GetPGN();
 
-protected:
-	std::string formatEnumCounts(const std::vector<PieceType>& enumList) override;
-
 private:
 	std::string _pgn;
 

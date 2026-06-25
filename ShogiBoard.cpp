@@ -239,6 +239,26 @@ void ShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 	}
 }
 
+bool ShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
+{
+	if (GetData(oldX, oldY) != std::nullopt)
+	{
+		PieceColour pieceColour = GetData(oldX, oldY)->Colour;
+		PieceType pt = GetData(newX, newY) != std::nullopt && GetData(newX, newY)->Colour != GetData(oldX, oldY)->Colour ? GetData(newX, newY)->BaseType : None;
+		const bool result = Board::Move(oldX, oldY, newX, newY, cl);
+		if (result && pt != None && pt != Porpoise)
+		{
+			_capturedPieces.emplace_back(pieceColour, pt);
+		}
+		else if (result && pt == Porpoise)
+		{
+			_capturedPieces.emplace_back(pieceColour, DragonKing);
+		}
+		return result;
+	}
+	return false;
+}
+
 std::string ShogiBoard::GetStringCode(int x, int y) const
 {
 	if (GetData(x, y) == std::nullopt) return "";
@@ -272,7 +292,7 @@ void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 	// PSN
 	_moveCount++;
 	_psn += std::to_string(_moveCount) + ".";
-	if (y1 == '*')
+	if (y1 == '*' || y1 == '@')
 	{
 		_psn.push_back(static_cast<char>(x1));
 		_psn.push_back(static_cast<char>(y1));

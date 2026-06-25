@@ -67,7 +67,6 @@ Name: "engines\WinBoard\XQWL"; Description: "XQWLight 0.6"; Types: full custom
 Name: "engines\WinBoard\Shokidoki"; Description: "Shokidoki"; Types: full custom
 Name: "engines\WinBoard\HaChu"; Description: "HaChu 0.21b"; Types: full custom
 Name: "engines\WinBoard\CrazyWa"; Description: "CrazyWa 1.0.5"; Types: full custom
-Name: "engines\WinBoard\KingSlayerAramis"; Description: "KingSlayer-Aramis 0.8"; Types: full custom
 Name: "engines\WinBoard\Other"; Description: "Other"; Types: full custom
 
 [Types]
@@ -113,7 +112,6 @@ Source: "engines\WinBoard\XQWL\*"; DestDir: "{app}\engines\WinBoard\XQWL"; Flags
 Source: "engines\WinBoard\Shokidoki\*"; DestDir: "{app}\engines\WinBoard\Shokidoki"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\Shokidoki
 Source: "engines\WinBoard\HaChu\*"; DestDir: "{app}\engines\WinBoard\HaChu"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\HaChu
 Source: "engines\WinBoard\CrazyWa\*"; DestDir: "{app}\engines\WinBoard\CrazyWa"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\CrazyWa
-Source: "engines\WinBoard\KingSlayer-Aramis\*"; DestDir: "{app}\engines\WinBoard\KingSlayer-Aramis"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\KingSlayerAramis
 Source: "engines\WinBoard\Other\*"; DestDir: "{app}\engines\WinBoard\Other"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\Other
 Source: "platforms\*"; DestDir: "{app}\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: main
 Source: "styles\*"; DestDir: "{app}\styles"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: main

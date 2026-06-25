@@ -484,7 +484,14 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-                if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
+				if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
+				{
+					QString cpStr = QString::fromStdString(dynamic_cast<CaptureBoard*>(ui->vboard->GetBoard())->CapturedPieceString(gameVariant));
+					str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
+					str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
+					str += cpStr.toLatin1();
+				}
+				else if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
 				{
 					QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
 					QString hmStr = QString::number(dynamic_cast<ChessBoard*>(ui->vboard->GetBoard())->HalfMoveCount());
@@ -603,7 +610,7 @@ void MainWindow::on_actionSave_triggered()
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
 				QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
-				QString cpStr = QString::fromStdString(dynamic_cast<ShogiVariantBoard*>(ui->vboard->GetBoard())->CapturedPieceString());
+				QString cpStr = QString::fromStdString(dynamic_cast<CaptureBoard*>(ui->vboard->GetBoard())->CapturedPieceString(gameVariant));
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
 				if (gameVariant != ShoShogi && gameVariant != WaShogi)

@@ -1675,3 +1675,68 @@ std::string StringManager::PieceType2GHCode(GameVariant gameVariant, PieceType p
         return "";
     }
 }
+
+std::pair<std::unordered_map<PieceType, std::string>, std::vector<PieceType>> StringManager::GetOrderData(GameVariant gameVariant)
+{
+    switch (gameVariant)
+    {
+    case WhaleShogi:
+        return { {
+        {GreyWhale, "G"},
+        {DragonKing, "K"},
+        {Narwhal, "N"},
+        {Humpback, "H"},
+        {BlueWhale, "B"},
+        {Pawn, "D"}
+    }, { GreyWhale, DragonKing, Narwhal, Humpback, BlueWhale, Pawn } };
+    case ToriShogi:
+        return { {
+        {Falcon, "F"},
+        {Crane, "C"},
+        {Pheasant, "P"},
+        {LeftQuail, "L"},
+        {RightQuail, "R"},
+        {Pawn, "S"}
+    }, { Falcon, Crane, Pheasant, LeftQuail, RightQuail, Pawn } };
+    case YariShogi:
+        return { {
+        {YariKnight, "R"},
+        {YariRook, "B"},
+        {YariBishop, "L"},
+        {Pawn, "P"}
+    }, { YariKnight, YariRook, YariBishop, Pawn } };
+    case CrazyWa:
+        return { {
+        { King,           "K"  },
+        { Lance,          "O"  },
+        { Pawn,           "P"  },
+        { SideMover,      "S"  },
+        { LiberatedHorse, "H"  },
+        { SwoopingOwl,    "L"  },
+        { CloudEagle,     "E"  },
+        { StruttingCrow,  "U"  },
+        { FlyingFalcon,   "F"  },
+        { FlyingCock,     "C"  },
+        { FlyingGoose,    "G"  },
+        { ClimbingMonkey, "M"  },
+        { Silver,         "V"  },
+        { Dog,            "D"  },
+        { Gold,           "W"  },
+        { RunningRabbit,  "R"  },
+        { TreacherousFox, "X"  }
+        }, { Rook, SideMover, Gold, Silver, LiberatedHorse, Lance, Pawn, SwoopingOwl, CloudEagle, StruttingCrow,
+                FlyingFalcon, FlyingCock, FlyingGoose, ClimbingMonkey, Dog, RunningRabbit, TreacherousFox } };
+    	default:
+        return { {
+        {King, "K"},
+        {Queen, "Q"},
+        {Rook, "R"},
+        {Bishop, "B"},
+        {Lance, "L"},
+        {Silver, "S"},
+        {Gold, "G"},
+        {Knight, "N"},
+        {Pawn, "P"}
+    }, { King, Queen, Rook, Bishop, Gold, Silver, Knight, Lance, Pawn } };
+    }
+}

@@ -370,7 +370,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		{
             if (ms < 8)
 			{
-                const bool isPromoted = moveArray[ms - 1] == '+' && (y2 <= 3 || y2 >= 8);
+                const bool isPromoted = moveArray[ms - 1] == '+';
 				board->GetMoves(board->GetData(x1, y1), x1, y1);
 				board->SetData(x2, y2, board->GetData(x1, y1));
 				board->SetData(x1, y1, std::nullopt);
@@ -414,9 +414,9 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
         y2--;
         if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
         {
-            const bool isPromoted = (y2 <= 2 || y2 >= board->GetHeight() - 3) && board->GetData(x1, y1)->Type == Pawn &&
-                (moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
-                 moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c');
+            const bool isPromoted =
+                moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
+                moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c';
             board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
@@ -467,9 +467,9 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
         }
         else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
         {
-            const bool isPromoted = (y2 == 1 || y2 == board->GetHeight() - 2) && board->GetData(x1, y1)->Type == Pawn &&
-                (moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
-                 moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'c' || moveArray[ms - 1] == 'w');
+            const bool isPromoted =
+                moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
+                moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'c' || moveArray[ms - 1] == 'w';
             board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
@@ -545,9 +545,9 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		}
 		else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{
-            const bool isPromoted = (y2 == 0 || y2 == board->GetHeight() - 1) && board->GetData(x1, y1)->Type == Pawn &&
-                (moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r' ||
-                 moveArray[4] == 'q' || moveArray[4] == 'a' || moveArray[4] == 'c');
+            const bool isPromoted =
+                moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r' ||
+                moveArray[4] == 'q' || moveArray[4] == 'a' || moveArray[4] == 'c';
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
 			board->Move(x1, y1, x2, y2, false);
@@ -586,9 +586,9 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     {
         if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
         {
-            const bool isPromoted = (y2 == 0 || y2 == board->GetHeight() - 1) && board->GetData(x1, y1)->Type == Pawn &&
-                (moveArray[ms - 1] == 'u' || moveArray[ms - 1] == 'l' || moveArray[ms - 1] == 'r' ||
-                 moveArray[ms - 1] == 'g' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c');
+            const bool isPromoted =
+                moveArray[ms - 1] == 'u' || moveArray[ms - 1] == 'l' || moveArray[ms - 1] == 'r' ||
+                moveArray[ms - 1] == 'g' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c';
             board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
@@ -867,14 +867,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		}
 		else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{
-            const bool isPromoted =
-                ((gameVariant == MiniShogi && (y2 == 0 || y2 == 4) && moveArray[ms - 1] == '+')
-                    || (gameVariant == JudkinShogi && (y2 == 0 || y2 == 5) && moveArray[ms - 1] == '+')
-                    || (gameVariant == ToriShogi && (y2 <= 1 || y2 >= 5) && moveArray[ms - 1] == '+')
-                    || ((gameVariant == EuroShogi || gameVariant == HeianShogi) && (y2 <= 2 || y2 >= 5) && moveArray[ms - 1] == '+')
-                    || (gameVariant == HeianDaiShogi && (y2 <= 2 || y2 >= 10) && moveArray[ms - 1] == '+')
-                    || ((gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == YariShogi) && (y2 <= 2 || y2 >= 6) && moveArray[ms - 1] == '+')
-                    || ((gameVariant == WaShogi || gameVariant == CrazyWa) && (y2 <= 2 || y2 >= 8) && moveArray[ms - 1] == '+'));
+            const bool isPromoted = moveArray[ms - 1] == '+';
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
             auto destPiece = board->GetData(x2, y2);
 			board->Move(x1, y1, x2, y2, false);
@@ -1060,21 +1053,21 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 		}
 	}
     if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
-            gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi)
+        gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == Sittuyin)
 	{
 		if (parts.size() >= 3)
 		{
-			ShogiVariantBoard* svb = dynamic_cast<ShogiVariantBoard*>(board);
+			CaptureBoard* cb = dynamic_cast<CaptureBoard*>(board);
 			k = 0;
 			do
 			{
 				if (parts[2][k] >= 'a' && parts[2][k] <= 'z')
 				{
-                    svb->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
+                    cb->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
 				}
 				else if (parts[2][k] >= 'A' && parts[2][k] <= 'Z')
 				{
-                    svb->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, std::string(1, parts[2][k].toLatin1())), White);
+                    cb->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, std::string(1, parts[2][k].toLatin1())), White);
 				}
 				k++;
 			} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z')));

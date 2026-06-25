@@ -12,9 +12,6 @@ public:
     void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
     std::string GetStringCode(int x, int y) const override;
 
-protected:
-    std::string formatEnumCounts(const std::vector<PieceType>& enumList) override;
-
 private:
 
     PieceType _initialSetup[7][7] = {
