@@ -77,11 +77,21 @@ QSlider* SettingsDialog::GetBlackEngineDepth() const
     return ui->engine1DepthHorizontalSlider;
 }
 
+QSpinBox* SettingsDialog::GetWhiteEngineTime() const
+{
+	return ui->engine1TimeSpinBox;
+}
+
+QSpinBox* SettingsDialog::GetBlackEngineTime() const
+{
+	return ui->engine2TimeSpinBox;
+}
+
 void SettingsDialog::on_toolButton_clicked()
 {
     VariantDialog* vd = new VariantDialog(this);
     vd->exec();
-    if (vd->result() == QDialog::Accepted)
+    if (vd->result() == Accepted)
     {
         ui->variantsLineEdit->setText(vd->GetVariant());
     }

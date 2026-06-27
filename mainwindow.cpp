@@ -66,7 +66,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         this->ui->vboard->SetTimerState(QVariant(settings[9]).toBool());
         _whiteEngineDepth = QVariant(settings[10]).toInt();
         _blackEngineDepth = QVariant(settings[11]).toInt();
-        this->ui->vboard->GetBoard()->Initialize();
+		_whiteEngineTime = QVariant(settings[12]).toInt();
+		_blackEngineTime = QVariant(settings[13]).toInt();
+		this->ui->vboard->GetBoard()->Initialize();
         this->ui->statusBar->showMessage(settings[1] == "Xiangqi" || settings[1] == "Janggi" ? "Red move" : "White move");
 		this->ui->vboard->repaint();
 	}
@@ -83,7 +85,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         configRecord.timerState = this->ui->vboard->GetTimerState();
         configRecord.whiteEngineDepth = _whiteEngineDepth;
         configRecord.blackEngineDepth = _blackEngineDepth;
-        IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, configRecord);
+		configRecord.whiteEngineTime = _whiteEngineTime;
+		configRecord.blackEngineTime = _blackEngineTime;
+		IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, configRecord);
     }
 }
 
@@ -113,7 +117,9 @@ void MainWindow::on_actionSettings_triggered()
     settingsDialog->GetTimerState()->setChecked(this->ui->vboard->GetTimerState());
     settingsDialog->GetWhiteEngineDepth()->setValue(_whiteEngineDepth);
     settingsDialog->GetBlackEngineDepth()->setValue(_blackEngineDepth);
-    settingsDialog->exec();
+	settingsDialog->GetWhiteEngineTime()->setValue(_whiteEngineTime);
+	settingsDialog->GetBlackEngineTime()->setValue(_blackEngineTime);
+	settingsDialog->exec();
 	if (settingsDialog->result() == QDialog::Accepted)
 	{
 		QApplication::setStyle(settingsDialog->GetStyles()->itemText(settingsDialog->GetStyles()->currentIndex()));
@@ -143,7 +149,23 @@ void MainWindow::on_actionSettings_triggered()
                 _blackEngine->SetEngineDepth(_blackEngineDepth);
             }
         }
-        if (pieceStyle != this->ui->vboard->GetPieceStyle())
+		if (_whiteEngineTime != settingsDialog->GetWhiteEngineTime()->value())
+		{
+			_whiteEngineTime = settingsDialog->GetWhiteEngineTime()->value();
+			if (_whiteEngine != nullptr && _whiteEngine->IsActive())
+			{
+				_whiteEngine->SetEngineTime(_whiteEngineTime);
+			}
+		}
+		if (_blackEngineTime != settingsDialog->GetBlackEngineTime()->value())
+		{
+			_blackEngineTime = settingsDialog->GetBlackEngineTime()->value();
+			if (_blackEngine != nullptr && _blackEngine->IsActive())
+			{
+				_blackEngine->SetEngineTime(_blackEngineTime);
+			}
+		}
+		if (pieceStyle != this->ui->vboard->GetPieceStyle())
 		{
 			this->ui->vboard->SetPieceStyle(pieceStyle);
 			this->ui->vboard->repaint();
@@ -175,7 +197,9 @@ void MainWindow::on_actionSettings_triggered()
         configRecord.timerState = timerState;
         configRecord.whiteEngineDepth = _whiteEngineDepth;
         configRecord.blackEngineDepth = _blackEngineDepth;
-        IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, configRecord);
+		configRecord.whiteEngineTime = _whiteEngineTime;
+		configRecord.blackEngineTime = _blackEngineTime;
+		IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, configRecord);
     }
 }
 
@@ -356,7 +380,8 @@ void MainWindow::on_actionNew_game_triggered()
 				break;
 			}
             _blackEngine->SetEngineDepth(_blackEngineDepth);
-            _blackEngine->SetTextEdit(ui->textEdit_2);
+			_blackEngine->SetEngineTime(_blackEngineTime);
+			_blackEngine->SetTextEdit(ui->textEdit_2);
             _blackEngine->SetActive(true);
             LoadEngine(_blackEngine, _blackEngineExe, _blackEngineOptions, Black);
 		}
@@ -384,7 +409,8 @@ void MainWindow::on_actionNew_game_triggered()
 				break;
 			}
             _whiteEngine->SetEngineDepth(_whiteEngineDepth);
-            _whiteEngine->SetTextEdit(ui->textEdit);
+			_whiteEngine->SetEngineTime(_whiteEngineTime);
+			_whiteEngine->SetTextEdit(ui->textEdit);
             _whiteEngine->SetActive(true);
             LoadEngine(_whiteEngine, _whiteEngineExe, _whiteEngineOptions, White);
 		}

@@ -62,9 +62,10 @@ public:
 
 	void slot_update_black_player_time() const;
 
-private:
-	void closeEvent(QCloseEvent *) override;
+protected:
+	void closeEvent(QCloseEvent*) override;
 
+private:
     void LoadEngine(const std::shared_ptr<Engine>& engine, const QString& engineExe, const QString& engineOptions, PieceColour player);
 
     void StopEngine(std::shared_ptr<Engine> engine) const;
@@ -85,13 +86,15 @@ private:
     QString _whiteEngineOptions = "";
     QString _whiteEngineName = "";
     int _whiteEngineDepth = 10;
-    EngineProtocol _whiteEngineProtocol = XBoard;
+	int _whiteEngineTime = 10;
+	EngineProtocol _whiteEngineProtocol = XBoard;
 	std::shared_ptr<Engine> _blackEngine = nullptr;
 	QString _blackEngineExe = "";
     QString _blackEngineOptions = "";
     QString _blackEngineName = "";
     int _blackEngineDepth = 10;
-    EngineProtocol _blackEngineProtocol = XBoard;
+	int _blackEngineTime = 10;
+	EngineProtocol _blackEngineProtocol = XBoard;
 	QTimer* _whiteTimer = nullptr;
 	QTimer* _blackTimer = nullptr;
     QString _player_stylesheet;

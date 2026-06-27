@@ -3,6 +3,7 @@
 #include <QStyleFactory>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QSpinBox>
 #include "variantdialog.h"
 
 namespace Ui {
@@ -28,6 +29,8 @@ public:
     QCheckBox* GetTimerState() const;
     QSlider*   GetWhiteEngineDepth() const;
     QSlider*   GetBlackEngineDepth() const;
+	QSpinBox*  GetWhiteEngineTime() const;
+	QSpinBox*  GetBlackEngineTime() const;
 
 	private slots:
 

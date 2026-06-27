@@ -8,6 +8,7 @@ public:
 	WbEngine();
 	~WbEngine() override;
     void SetEngineDepth(int engineDepth) override;
+	void SetEngineTime(int engineTime) override;
     void SetFEN(std::string fen) override;
 	void SetMemory(int memorySize);
 	EngineProtocol GetType() override;
@@ -16,6 +17,7 @@ public:
 	void Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion = ' ') override;
 	void Move(signed char x1, signed char y1, signed char x2, signed char y2, signed char x3, signed char y3);
 	void Move(signed char x1, signed char y1, signed char x2, signed char y2, signed char x3, signed char y3, signed char x4, signed char y4);
+	void SendString(const QByteArray& str) const;
 	QByteArray AddMove(QByteArray moveStr) override;
 	QByteArray AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion = ' ') override;
 	QByteArray AddMove(signed char x1, signed char y1, signed char x2, signed char y2, signed char x3, signed char y3);

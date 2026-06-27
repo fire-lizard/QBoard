@@ -19,6 +19,8 @@ public:
     bool timerState;
     int  whiteEngineDepth;
     int  blackEngineDepth;
+    int  whiteEngineTime;
+    int  blackEngineTime;
 };
 
 class IniFile {
@@ -29,4 +31,6 @@ public:
 private:
     static constexpr int _minEngineDepth = 1;
     static constexpr int _maxEngineDepth = 20;
+    static constexpr int _minEngineTime = 1;
+    static constexpr int _maxEngineTime = 30;
 };

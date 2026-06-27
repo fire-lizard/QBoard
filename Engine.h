@@ -17,13 +17,15 @@ public:
 	QTextEdit* GetTextEdit() const;
 	void SetTextEdit(QTextEdit* textEdit);
     int  GetEngineDepth() const;
-    QProcess* GetProcess() const;
+	int  GetEngineTime() const;
+	QProcess* GetProcess() const;
 	void WriteToProcess(QByteArray buf) const;
 	std::vector<QByteArray> Moves() const;
 	virtual QByteArray AddMove(QByteArray moveStr);
 	virtual void Move(QByteArray moveStr);
 	virtual void SetEngineDepth(int engineDepth);
-    virtual void SetFEN(std::string fen) = 0;
+	virtual void SetEngineTime(int engineTime);
+	virtual void SetFEN(std::string fen) = 0;
 	virtual EngineProtocol GetType() = 0;
 	virtual void StartGame(QString variant = "") = 0;
 	virtual void Move() = 0;
@@ -34,7 +36,8 @@ protected:
 	mutable std::unique_ptr<QProcess> _process = nullptr;
 	QTextEdit *_textEdit;
     int  _engineDepth = 10;
-    bool _isActive = false;
+	int  _engineTime = 10;
+	bool _isActive = false;
 	std::vector<QByteArray> _moves;
 	std::string _fen;
 };

@@ -16,7 +16,7 @@ struct Piece
         Colour = pieceColour;
         IsPromoted = false;
         HasMoved = false;
-		CanBePromoted = false;
+		CanBePromoted = true;
     }
     PieceType BaseType;
     PieceType Type;

@@ -18,6 +18,8 @@ void IniFile::writeToIniFile(const QString& filePath, const ConfigRecord& config
     settings.setValue("TimerState", configRecord.timerState);
     settings.setValue("Engine1Depth", configRecord.whiteEngineDepth);
     settings.setValue("Engine2Depth", configRecord.blackEngineDepth);
+    settings.setValue("Engine1Time", configRecord.whiteEngineTime);
+    settings.setValue("Engine2Time", configRecord.blackEngineTime);
     settings.endGroup();
 
 	// Sync the changes explicitly (optional)
@@ -42,6 +44,8 @@ QStringList IniFile::readFromIniFile(const QString& filePath) {
     const bool timerState = settings.value("TimerState", true).toBool();
     int whiteEngineDepth = settings.value("Engine1Depth", 10).toInt();
     int blackEngineDepth = settings.value("Engine2Depth", 10).toInt();
+    int whiteEngineTime = settings.value("Engine1Time", 10).toInt();
+    int blackEngineTime = settings.value("Engine2Time", 10).toInt();
     settings.endGroup();
 
     // Return values
@@ -53,6 +57,12 @@ QStringList IniFile::readFromIniFile(const QString& filePath) {
     whiteEngineDepth = std::min(whiteEngineDepth, _maxEngineDepth);
     blackEngineDepth = std::max(blackEngineDepth, _minEngineDepth);
     blackEngineDepth = std::min(blackEngineDepth, _maxEngineDepth);
-    result << QVariant(timerState).toString() << QVariant(whiteEngineDepth).toString() << QVariant(blackEngineDepth).toString();
+    whiteEngineTime = std::max(whiteEngineTime, _minEngineTime);
+    whiteEngineTime = std::min(whiteEngineTime, _maxEngineTime);
+    blackEngineTime = std::max(blackEngineTime, _minEngineTime);
+    blackEngineTime = std::min(blackEngineTime, _maxEngineTime);
+    result << QVariant(timerState).toString();
+	result << QVariant(whiteEngineDepth).toString() << QVariant(blackEngineDepth).toString();
+    result << QVariant(whiteEngineTime).toString() << QVariant(blackEngineTime).toString();
     return result;
 }

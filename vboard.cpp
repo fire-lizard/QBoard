@@ -2138,6 +2138,25 @@ bool VBoard::CheckRepetition(int oldX, int oldY, int newX, int newY)
 	return false;
 }
 
+void VBoard::ReportInfo(const QString& buf, const QString& infoStr, QTextEdit* textEdit, LogLevel logLevel)
+{
+	QString str = buf.mid(buf.indexOf(infoStr) + QString(infoStr).length()).trimmed();
+	switch (logLevel)
+	{
+	case LogLevel::Info:
+		QMessageBox::information(this, "Information", str);
+		break;
+	case LogLevel::Warning:
+		QMessageBox::warning(this, "Warning", str);
+		break;
+	case LogLevel::Error:
+		QMessageBox::critical(this, "Error", str);
+		break;
+	}
+	Logger::writeToLog(str, logLevel);
+	textEdit->setText(buf);
+}
+
 void VBoard::whiteEngineReadyReadStandardOutput()
 {
 	if (_whiteEngine == nullptr || !_whiteEngine->IsActive()) return;
@@ -2145,15 +2164,47 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	const QByteArray buf = p->readAllStandardOutput();
 	if (buf.contains("Illegal move"))
 	{
-        QMessageBox::critical(this, "Error", "Illegal move");
-        if (!_whiteEngine->Moves().empty())
-        {
-            Logger::writeToLog("Illegal move " + _whiteEngine->Moves()[_whiteEngine->Moves().size() - 1], LogLevel::Warning);
-        }
+		ReportInfo(buf, "Illegal move", _textEdit2, LogLevel::Error);
         EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _whiteMoves);
         this->repaint();
         this->_statusBar->showMessage("Black move");
 		_currentPlayer = Black;
+		return;
+	}
+	if (buf.contains("tellusererror"))
+	{
+		ReportInfo(buf, "tellusererror", _textEdit2, LogLevel::Error);
+		return;
+	}
+	if (buf.contains("telluser"))
+	{
+		ReportInfo(buf, "telluser", _textEdit2, LogLevel::Info);
+		return;
+	}
+	if (buf.contains("tellall"))
+	{
+		ReportInfo(buf, "tellall", _textEdit2, LogLevel::Info);
+		return;
+	}
+	if (buf.contains("tellopponent"))
+	{
+		ReportInfo(buf, "tellopponent", _textEdit2, LogLevel::Info);
+		return;
+	}
+	if (buf.contains("askuser"))
+	{
+		if (_whiteEngine->GetType() != XBoard) return;
+		QString str = buf.mid(buf.indexOf("askuser") + QString("askuser").length()).trimmed();
+		QStringList parts = str.split(' ');
+		if (parts.size() < 2) return;
+		const QString& reptag = parts.first();
+		const QString& message = parts.sliced(1).join(' ');
+		bool ok;
+		QString text = QInputDialog::getText(this, message, reptag, QLineEdit::Normal,	"", &ok);
+		if (ok)
+		{
+			dynamic_cast<WbEngine*>(_whiteEngine.get())->SendString((reptag + " " + text).toLatin1());
+		}
 		return;
 	}
 	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, White);
@@ -2205,15 +2256,47 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	const QByteArray buf = p->readAllStandardOutput();
 	if (buf.contains("Illegal move"))
 	{
-		QMessageBox::critical(this, "Error", "Illegal move");
-        if (!_blackEngine->Moves().empty())
-        {
-            Logger::writeToLog("Illegal move " + _blackEngine->Moves()[_blackEngine->Moves().size() - 1], LogLevel::Warning);
-        }
-        EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _blackMoves);
+		ReportInfo(buf, "Illegal move", _textEdit, LogLevel::Error);
+		EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _blackMoves);
         this->repaint();
         this->_statusBar->showMessage(_gameVariant == Xiangqi || _gameVariant == Janggi ? "Red move" : "White move");
 		_currentPlayer = White;
+		return;
+	}
+	if (buf.contains("tellusererror"))
+	{
+		ReportInfo(buf, "tellusererror", _textEdit, LogLevel::Error);
+		return;
+	}
+	if (buf.contains("telluser"))
+	{
+		ReportInfo(buf, "telluser", _textEdit, LogLevel::Info);
+		return;
+	}
+	if (buf.contains("tellall"))
+	{
+		ReportInfo(buf, "tellall", _textEdit, LogLevel::Info);
+		return;
+	}
+	if (buf.contains("tellopponent"))
+	{
+		ReportInfo(buf, "tellopponent", _textEdit, LogLevel::Info);
+		return;
+	}
+	if (buf.contains("askuser"))
+	{
+		if (_blackEngine->GetType() != XBoard) return;
+		QString str = buf.mid(buf.indexOf("askuser") + QString("askuser").length()).trimmed();
+		QStringList parts = str.split(' ');
+		if (parts.size() < 2) return;
+		const QString& reptag = parts.first();
+		const QString& message = parts.sliced(1).join(' ');
+		bool ok;
+		QString text = QInputDialog::getText(this, message, reptag, QLineEdit::Normal, "", &ok);
+		if (ok)
+		{
+			dynamic_cast<WbEngine*>(_blackEngine.get())->SendString((reptag + " " + text).toLatin1());
+		}
 		return;
 	}
 	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, Black);

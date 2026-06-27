@@ -64,6 +64,16 @@ void Engine::SetEngineDepth(int engineDepth)
     _engineDepth = engineDepth;
 }
 
+int Engine::GetEngineTime() const
+{
+	return _engineTime;
+}
+
+void Engine::SetEngineTime(int engineTime)
+{
+	_engineTime = engineTime;
+}
+
 QProcess* Engine::GetProcess() const
 {
 	return _process.get();

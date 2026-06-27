@@ -23,6 +23,15 @@ void WbEngine::SetEngineDepth(int engineDepth)
     }
 }
 
+void WbEngine::SetEngineTime(int engineTime)
+{
+	_engineTime = engineTime;
+	if (_process != nullptr && _process->processId() > 0 && _process->state() != QProcess::ProcessState::NotRunning)
+	{
+		WriteToProcess("st " + QByteArray::number(_engineTime) + "\n");
+	}
+}
+
 void WbEngine::SetFEN(std::string fen)
 {
 	_fen = std::move(fen);
@@ -70,13 +79,17 @@ void WbEngine::StartGame(QString variant)
 	_moves.clear();
     WriteToProcess("xboard\n");
     WriteToProcess("protover\n");
-    WriteToProcess("new\n");
 	if (variant != "")
 	{
         const QString str = "variant " + variant + "\n";
         WriteToProcess(str.toLatin1());
 	}
+	else
+	{
+		WriteToProcess("new\n");
+	}
     WriteToProcess("sd " + QByteArray::number(_engineDepth) + "\n");
+	WriteToProcess("st " + QByteArray::number(_engineTime) + "\n");
 }
 
 void WbEngine::SetMemory(int memorySize)
@@ -108,6 +121,11 @@ void WbEngine::Move(signed char x1, signed char y1, signed char x2, signed char 
 {
 	_textEdit->setText("");
     WriteToProcess(AddMove(x1, y1, x2, y2, x3, y3, x4, y4) + "\n");
+}
+
+void WbEngine::SendString(const QByteArray& str) const
+{
+	WriteToProcess(str + "\n");
 }
 
 QByteArray WbEngine::AddMove(QByteArray moveStr)

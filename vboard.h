@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QGroupBox>
+#include <QInputDialog>
 #include "mainwindow.h"
 #include "DaiDaiShogiBoard.h"
 #include "KoShogiBoard.h"
@@ -80,11 +81,11 @@ protected:
 
 	bool event(QEvent* event) override;
 
+	void paintEvent(QPaintEvent*) override;
+
+	void mousePressEvent(QMouseEvent* event) override;
+
 private:
-	void paintEvent(QPaintEvent *) override;
-
-	void mousePressEvent(QMouseEvent *event) override;
-
 	bool CheckRepetition(int oldX, int oldY, int newX, int newY);
     char CheckPromotion(const std::optional<Piece>& p, int x, int y);
 	bool PossibleMove(int x, int y) const;
@@ -92,6 +93,7 @@ private:
 	bool AskForPromotion();
 	void FinishMove(int x, int y);
 	void CancelLionMove();
+	void ReportInfo(const QString& buf, const QString& infoStr, QTextEdit* textEdit, LogLevel logLevel);
 
 	Board *_board;
 	Board *_editorBoard = nullptr;
