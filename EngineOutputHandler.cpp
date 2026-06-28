@@ -146,7 +146,11 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 	{
 		if (engineProtocol == XBoard ? part.startsWith("move ") : part.startsWith("bestmove "))
 		{
-			if (part.contains("O-O"))
+            if (part.contains("@@@@"))
+            {
+                result = "@@@@";
+            }
+            else if (part.contains("O-O"))
 			{
 				result = part.contains("O-O-O") ? "O-O-O" : "O-O";
 			}
@@ -546,8 +550,8 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{
             const bool isPromoted =
-                moveArray[4] == 'n' || moveArray[4] == 'b' || moveArray[4] == 'r' ||
-                moveArray[4] == 'q' || moveArray[4] == 'a' || moveArray[4] == 'c';
+                moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
+                moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c';
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
 			board->Move(x1, y1, x2, y2, false);

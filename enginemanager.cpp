@@ -7,6 +7,8 @@ EngineManager::EngineManager(QWidget *parent) : QDialog(parent), ui(new Ui::Engi
 	ComboBoxItemDelegate* cbid = new ComboBoxItemDelegate(ui->engineTable);
 	ui->engineTable->setItemDelegate(cbid);
 	ui->engineTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->engineTable->setColumnHidden(3, true);
+    ui->engineTable->setColumnHidden(4, true);
 }
 
 EngineManager::~EngineManager()
@@ -45,7 +47,7 @@ void EngineManager::on_toolButton_clicked()
 {
 	AddEngineDialog *addEngineDialog = new AddEngineDialog(this);
 	addEngineDialog->exec();
-	if (addEngineDialog->result() == QDialog::Accepted)
+	if (addEngineDialog->result() == Accepted)
 	{
 		const QString engineName = addEngineDialog->GetEngineName()->text();
         const QString gameName = addEngineDialog->GetGameVariant()->text();
@@ -122,7 +124,7 @@ void EngineManager::on_toolButton_2_clicked()
 	addEngineDialog->SetEnginePath(ui->engineTable->item(currentRow, 3)->text());
     addEngineDialog->SetEngineOptions(ui->engineTable->item(currentRow, 4)->text());
     addEngineDialog->exec();
-	if (addEngineDialog->result() == QDialog::Accepted)
+	if (addEngineDialog->result() == Accepted)
 	{
 		const QString engineName = addEngineDialog->GetEngineName()->text();
         const QString gameName = addEngineDialog->GetGameVariant()->text();

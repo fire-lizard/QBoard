@@ -77,7 +77,7 @@ void AddEngineDialog::on_toolButton_2_clicked()
 {
     VariantDialog* vd = new VariantDialog(this);
     vd->exec();
-    if (vd->result() == QDialog::Accepted)
+    if (vd->result() == Accepted)
     {
         ui->gameVariant->setText(vd->GetVariant());
     }

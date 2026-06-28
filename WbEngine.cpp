@@ -79,14 +79,11 @@ void WbEngine::StartGame(QString variant)
 	_moves.clear();
     WriteToProcess("xboard\n");
     WriteToProcess("protover\n");
+	WriteToProcess("new\n");
 	if (variant != "")
 	{
         const QString str = "variant " + variant + "\n";
         WriteToProcess(str.toLatin1());
-	}
-	else
-	{
-		WriteToProcess("new\n");
 	}
     WriteToProcess("sd " + QByteArray::number(_engineDepth) + "\n");
 	WriteToProcess("st " + QByteArray::number(_engineTime) + "\n");
