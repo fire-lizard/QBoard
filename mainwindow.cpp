@@ -206,7 +206,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-    aboutStr.append("<center>QBoard 1.1.2<br/>");
+    aboutStr.append("<center>QBoard 1.1.3<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
@@ -459,7 +459,9 @@ void MainWindow::on_actionOpen_triggered()
 		file.open(QIODevice::ReadOnly | QIODevice::Text);
 		const QByteArray str = file.readAll();
 		file.close();
-        QList<QByteArray> parts = str.split(' ');
+        QList<QByteArray> parts = this->ui->vboard->GetGameVariant() != Sittuyin ?
+			str.split(' ') : 
+			QString(str).replace('[', ' ').replace(']', ' ').toLatin1().split(' ');
         if (parts.contains("w")) this->ui->vboard->SetCurrentPlayer(White);
         else if (parts.contains("b")) this->ui->vboard->SetCurrentPlayer(Black);
         Board* board = this->ui->vboard->GetBoard();
@@ -510,12 +512,22 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-				if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
+				if (gameVariant == Sittuyin)
 				{
-					QString cpStr = QString::fromStdString(dynamic_cast<PieceStorage*>(ui->vboard->GetBoard())->CapturedPieceString(gameVariant));
-					str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
+					auto* stb = dynamic_cast<SittuyinBoard*>(ui->vboard->GetBoard());
+					auto pieceCodes = StringManager::GetOrderData(Sittuyin).first;
+					QString cpStr;
+					for (auto& capturedPiece : stb->GetCapturedPieces(White))
+					{
+						cpStr += pieceCodes[capturedPiece];
+					}
+					for (auto& capturedPiece : stb->GetCapturedPieces(Black))
+					{
+						cpStr.append(static_cast<char>(std::tolower(pieceCodes[capturedPiece][0])));
+					}
+					str = QByteArray::fromStdString(stb->GetFEN());
+					str += "[" + cpStr.toLatin1() + "]";
 					str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
-					str += cpStr.toLatin1();
 				}
 				else if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
 				{

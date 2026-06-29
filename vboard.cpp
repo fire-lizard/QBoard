@@ -1539,7 +1539,10 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 	}
 	else if (_gameVariant == Sittuyin)
 	{
-		if (_currentPiece->Type == Pawn && (x == y || x == _board->GetHeight() - y) && !_board->HasPiece(Queen, _currentPlayer))
+		if (_currentPiece->Type == Pawn &&
+			(x == y + 1 || x == _board->GetHeight() - y - 1) &&
+			(y <= 3 && _currentPlayer == White || y >= 4 && _currentPlayer == Black) &&
+			!_board->HasPiece(Queen, _currentPlayer))
 		{
 			promotion = 'f';
 			_board->Promote(x, y);
@@ -2140,20 +2143,19 @@ bool VBoard::CheckRepetition(int oldX, int oldY, int newX, int newY)
 
 void VBoard::ReportInfo(const QString& buf, const QString& infoStr, QTextEdit* textEdit, LogLevel logLevel)
 {
-	QString str = buf.mid(buf.indexOf(infoStr) + QString(infoStr).length()).trimmed();
 	switch (logLevel)
 	{
 	case LogLevel::Info:
-		QMessageBox::information(this, "Information", str);
+		QMessageBox::information(this, infoStr, buf);
 		break;
 	case LogLevel::Warning:
-		QMessageBox::warning(this, "Warning", str);
+		QMessageBox::warning(this, infoStr, buf);
 		break;
 	case LogLevel::Error:
-		QMessageBox::critical(this, "Error", str);
+		QMessageBox::critical(this, infoStr, buf);
 		break;
 	}
-	Logger::writeToLog(str, logLevel);
+	Logger::writeToLog(buf, logLevel);
 	textEdit->setText(buf);
 }
 

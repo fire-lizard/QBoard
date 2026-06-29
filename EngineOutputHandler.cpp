@@ -133,136 +133,169 @@ std::vector<std::pair<int, int>> EngineOutputHandler::GetPieceLocations(const Bo
 
 QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant)
 {
-    const QRegularExpression _csre = QRegularExpression(R"(([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrqfjacwmM])?)");
-    const QRegularExpression _cwre = QRegularExpression(R"(([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])(\+)?)");
-	const QRegularExpression _mcre = QRegularExpression(R"(([a-h])([1-8])([a-h])([1-8])([nbrqlcudmaehfs])?)");
-    const QRegularExpression _stre = QRegularExpression(R"(([RNSFKa-h])(\@|[1-8])([a-h])([1-8])(f)?)");
-    const QRegularExpression _qhre = QRegularExpression(R"(([A-I])([0-9])(\-)([A-I])([0-9]))");
-    const QRegularExpression _sgxbre = QRegularExpression(R"(([RBGSNLPFCWKHDYa-o])(\*|@|[1-9])([a-o])([1-9])(\+)?)");
-    const QRegularExpression _sgusre = QRegularExpression(R"(([RBGSNLPFCWKHDY1-9])(\*|@|[a-o])([1-9])([a-o])(\+)?)");
-	QByteArray result;
-	QStringList parts = QString(buf).trimmed().split(QRegularExpression("[\r\n]+"), Qt::SkipEmptyParts);
-	for (auto& part : parts)
-	{
-		if (engineProtocol == XBoard ? part.startsWith("move ") : part.startsWith("bestmove "))
-		{
-            if (part.contains("@@@@"))
-            {
-                result = "@@@@";
-            }
-            else if (part.contains("O-O"))
-			{
-				result = part.contains("O-O-O") ? "O-O-O" : "O-O";
-			}
-			else if (engineProtocol == USI)
-			{
-				QRegularExpressionMatch match = _sgusre.match(part);
-				if (match.hasMatch())
-				{
-					QString firstDigit = match.captured(1);
-					QString firstLetter = match.captured(2);
-					QString secondDigit = match.captured(3);
-					QString secondLetter = match.captured(4);
-					QString promotionChar = match.captured(5);
-					result.push_back(firstDigit[0].toLatin1());
-					result.push_back(firstLetter[0].toLatin1());
-					result.push_back(secondDigit[0].toLatin1());
-					result.push_back(secondLetter[0].toLatin1());
-					if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
-				}
-			}
-			else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == WaShogi || gameVariant == TenjikuShogi ||
-                     gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi || gameVariant == HeianDaiShogi ||
-                     gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == GrandChess ||
-                     gameVariant == OmegaChess || gameVariant == CourierChess || gameVariant == GrandeAcedrex)
-			{
-				QRegularExpressionMatch match = _csre.match(part);
-				if (match.hasMatch())
-				{
-					QString firstLetter = match.captured(1);
-					QString firstDigit = match.captured(2);
-					QString secondLetter = match.captured(3);
-					QString secondDigit = match.captured(4);
-					QString promotionChar = match.captured(5);
-					result.push_back(firstLetter[0].toLatin1());
-					result.push_back(static_cast<signed char>(firstDigit.toInt()));
-					result.push_back(secondLetter[0].toLatin1());
-					result.push_back(static_cast<signed char>(secondDigit.toInt()));
-					if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
-				}
-			}
-			else if (gameVariant == CrazyWa)
-			{
-				QRegularExpressionMatch match = _cwre.match(part);
-				if (match.hasMatch())
-				{
-					QString firstLetter = match.captured(1);
-					QString firstDigit = match.captured(2);
-					QString secondLetter = match.captured(3);
-					QString secondDigit = match.captured(4);
-					QString promotionChar = match.captured(5);
-					result.push_back(firstLetter[0].toLatin1());
-					result.push_back(firstDigit == '@' ? firstDigit[0].toLatin1() : static_cast<signed char>(firstDigit.toInt()));
-					result.push_back(secondLetter[0].toLatin1());
-					result.push_back(static_cast<signed char>(secondDigit.toInt()));
-					if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
-				}
-			}
-            else if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
-            {
-            	QRegularExpressionMatch match = gameVariant == Sittuyin ? _stre.match(part) : _mcre.match(part);
-                if (match.hasMatch())
-                {
-                    QString firstLetter = match.captured(1);
-                    QString firstDigit = match.captured(2);
-                    QString secondLetter = match.captured(3);
-                    QString secondDigit = match.captured(4);
-                    QString promotionChar = match.captured(5);
-                    result.push_back(firstLetter[0].toLatin1());
-                    result.push_back(firstDigit[0].toLatin1());
-                    result.push_back(secondLetter[0].toLatin1());
-                    result.push_back(secondDigit[0].toLatin1());
-                    if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
-                }
-            }
-            else
-			{
-                QRegularExpressionMatch match = gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi ||
-                        gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi ||
-                        gameVariant == HeianShogi
-					? _sgxbre.match(part) : _csre.match(part);
-				if (match.hasMatch())
-				{
-					QString firstLetter = match.captured(1);
-					QString firstDigit = match.captured(2);
-					QString secondLetter = match.captured(3);
-					QString secondDigit = match.captured(4);
-					QString promotionChar = match.captured(5);
-					result.push_back(firstLetter[0].toLatin1());
-					result.push_back(firstDigit[0].toLatin1());
-					result.push_back(secondLetter[0].toLatin1());
-					result.push_back(secondDigit[0].toLatin1());
-					if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
-				}
-			}
-		}
-		else if (engineProtocol == Qianhong)
-		{
-			QRegularExpressionMatch match = _qhre.match(part);
-			if (match.hasMatch())
-			{
-				QString firstLetter = match.captured(1);
-				QString firstDigit = match.captured(2);
-				QString secondLetter = match.captured(4);
-				QString secondDigit = match.captured(5);
-				result.push_back(firstLetter[0].toLatin1());
-				result.push_back(static_cast<signed char>(firstDigit.toInt()));
-				result.push_back(secondLetter[0].toLatin1());
-				result.push_back(static_cast<signed char>(secondDigit.toInt()));
-			}
-		}
-	}
-	return result;
+    const QString _xbre = R"(^move ([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrqfjacwmM])?)";
+    QByteArray result;
+    if (engineProtocol == USI)
+    {
+        const QString _usre = R"(^bestmove ([RBGSNLP1-9])(\*|[a-i])([1-9])([a-i])(\+)?)";
+        QRegularExpression regexp = QRegularExpression(_usre, QRegularExpression::MultilineOption);
+    	QRegularExpressionMatch match = regexp.match(buf);
+        if (match.hasMatch())
+        {
+            QString firstDigit = match.captured(1);
+            QString firstLetter = match.captured(2);
+            QString secondDigit = match.captured(3);
+            QString secondLetter = match.captured(4);
+            QString promotionChar = match.captured(5);
+            result.push_back(firstDigit[0].toLatin1());
+            result.push_back(firstLetter[0].toLatin1());
+            result.push_back(secondDigit[0].toLatin1());
+            result.push_back(secondLetter[0].toLatin1());
+            if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+        }
+    }
+    else if (engineProtocol == UCI || engineProtocol == UCCI)
+    {
+        const QString _ucre = R"(^bestmove ([a-i])([0-9])([a-i])([0-9])([nbrq])?)";
+        QRegularExpression regexp = QRegularExpression(_ucre, QRegularExpression::MultilineOption);
+        QRegularExpressionMatch match = regexp.match(buf);
+        if (match.hasMatch())
+        {
+            QString firstLetter = match.captured(1);
+            QString firstDigit = match.captured(2);
+            QString secondLetter = match.captured(3);
+            QString secondDigit = match.captured(4);
+            QString promotionChar = match.captured(5);
+            result.push_back(firstLetter[0].toLatin1());
+            result.push_back(firstDigit[0].toLatin1());
+            result.push_back(secondLetter[0].toLatin1());
+            result.push_back(secondDigit[0].toLatin1());
+            if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+        }
+    }
+    else if (engineProtocol == Qianhong)
+    {
+        const QString _qhre = R"(([A-I])([0-9])(\-)([A-I])([0-9]))";
+        QRegularExpression regexp = QRegularExpression(_qhre, QRegularExpression::MultilineOption);
+        QRegularExpressionMatch match = regexp.match(buf);
+        if (match.hasMatch())
+        {
+            QString firstLetter = match.captured(1);
+            QString firstDigit = match.captured(2);
+            QString secondLetter = match.captured(4);
+            QString secondDigit = match.captured(5);
+            result.push_back(firstLetter[0].toLatin1());
+            result.push_back(static_cast<signed char>(firstDigit.toInt()));
+            result.push_back(secondLetter[0].toLatin1());
+            result.push_back(static_cast<signed char>(secondDigit.toInt()));
+        }
+    }
+    else if (gameVariant == WaShogi || gameVariant == HeianDaiShogi || gameVariant == CapablancaChess ||
+			 gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == GrandChess ||
+			 gameVariant == OmegaChess || gameVariant == CourierChess || gameVariant == GrandeAcedrex)
+    {
+        QRegularExpression regexp = QRegularExpression(_xbre, QRegularExpression::MultilineOption);
+        QRegularExpressionMatch match = regexp.match(buf);
+        if (match.hasMatch())
+        {
+            QString firstLetter = match.captured(1);
+            QString firstDigit = match.captured(2);
+            QString secondLetter = match.captured(3);
+            QString secondDigit = match.captured(4);
+            QString promotionChar = match.captured(5);
+            result.push_back(firstLetter[0].toLatin1());
+            result.push_back(static_cast<signed char>(firstDigit.toInt()));
+            result.push_back(secondLetter[0].toLatin1());
+            result.push_back(static_cast<signed char>(secondDigit.toInt()));
+            if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+        }
+    }
+    else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi ||
+			 gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
+    {
+        const QString _csre = R"(^move ([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])(\+)?)";
+        QRegularExpression regexp = QRegularExpression(_csre, QRegularExpression::MultilineOption);
+        QRegularExpressionMatchIterator it = regexp.globalMatch(buf);
+        while (it.hasNext())
+        {
+            QRegularExpressionMatch match = it.next();
+        	QString firstLetter = match.captured(1);
+            QString firstDigit = match.captured(2);
+            QString secondLetter = match.captured(3);
+            QString secondDigit = match.captured(4);
+            QString promotionChar = match.captured(5);
+            result.push_back(firstLetter[0].toLatin1());
+            result.push_back(static_cast<signed char>(firstDigit.toInt()));
+            result.push_back(secondLetter[0].toLatin1());
+            result.push_back(static_cast<signed char>(secondDigit.toInt()));
+            if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+        }
+    }
+    else if (gameVariant == CrazyWa)
+    {
+        const QString _cwre = R"(^move ([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])(\+)?)";
+        QRegularExpression regexp = QRegularExpression(_cwre, QRegularExpression::MultilineOption);
+        QRegularExpressionMatch match = regexp.match(buf);
+        if (match.hasMatch())
+        {
+            QString firstLetter = match.captured(1);
+            QString firstDigit = match.captured(2);
+            QString secondLetter = match.captured(3);
+            QString secondDigit = match.captured(4);
+            QString promotionChar = match.captured(5);
+            result.push_back(firstLetter[0].toLatin1());
+            result.push_back(firstDigit == '@' ? firstDigit[0].toLatin1() : static_cast<signed char>(firstDigit.toInt()));
+            result.push_back(secondLetter[0].toLatin1());
+            result.push_back(static_cast<signed char>(secondDigit.toInt()));
+            if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+        }
+    }
+    else if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
+    {
+        const QString _mcre = R"(^move ([a-h])([1-8])([a-h])([1-8])([nbrqlcudmaehfs])?)";
+        const QString _stre = R"(^move ([RNSFKa-h])(\@|[1-8])([a-h])([1-8])(f)?)";
+        QRegularExpression regexp = gameVariant == Sittuyin ?
+    		QRegularExpression(_stre, QRegularExpression::MultilineOption) : 
+    		QRegularExpression(_mcre, QRegularExpression::MultilineOption);
+        QRegularExpressionMatch match = regexp.match(buf);
+        if (match.hasMatch())
+        {
+            QString firstLetter = match.captured(1);
+            QString firstDigit = match.captured(2);
+            QString secondLetter = match.captured(3);
+            QString secondDigit = match.captured(4);
+            QString promotionChar = match.captured(5);
+            result.push_back(firstLetter[0].toLatin1());
+            result.push_back(firstDigit[0].toLatin1());
+            result.push_back(secondLetter[0].toLatin1());
+            result.push_back(secondDigit[0].toLatin1());
+            if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+        }
+    }
+    else
+    {
+        const QString _sgre = R"(^move ([RBGSNLPFCWKHDYa-i])(@|[1-9])([a-i])([1-9])(\+)?)";
+        QRegularExpression regexp = gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi ||
+            gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi ||
+            gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == HeianShogi ?
+				QRegularExpression(_sgre, QRegularExpression::MultilineOption) :
+    			QRegularExpression(_xbre, QRegularExpression::MultilineOption);
+        QRegularExpressionMatch match = regexp.match(buf);
+        if (match.hasMatch())
+        {
+            QString firstLetter = match.captured(1);
+            QString firstDigit = match.captured(2);
+            QString secondLetter = match.captured(3);
+            QString secondDigit = match.captured(4);
+            QString promotionChar = match.captured(5);
+            result.push_back(firstLetter[0].toLatin1());
+            result.push_back(firstDigit[0].toLatin1());
+            result.push_back(secondLetter[0].toLatin1());
+            result.push_back(secondDigit[0].toLatin1());
+            if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+        }
+    }
+    return result;
 }
 
 Move EngineOutputHandler::ByteArrayToMove(QByteArray moveArray, EngineProtocol engineProtocol, int width, int height)
@@ -965,8 +998,16 @@ template <typename T> std::basic_string<T> EngineOutputHandler::lowercase(const 
 
 QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant)
 {
-    if (gameVariant == Sittuyin) dynamic_cast<SittuyinBoard*>(board)->ClearPiecesInHand();
-	QStringList parts = QString(str).trimmed().split(' ', Qt::SkipEmptyParts);
+    QStringList parts;
+    if (gameVariant == Sittuyin)
+    {
+        dynamic_cast<SittuyinBoard*>(board)->ClearPiecesInHand();
+        parts = QString(str).trimmed().replace('[', ' ').replace(']', ' ').split(' ');
+    }
+    else
+    {
+        parts = QString(str).trimmed().split(' ', Qt::SkipEmptyParts);
+    }
 	QString fen = parts[0];
 	board->Clear();
 	const int w = board->GetWidth();
@@ -1057,7 +1098,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 		}
 	}
     if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
-        gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == Sittuyin)
+        gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi)
 	{
 		if (parts.size() >= 3)
 		{
@@ -1074,7 +1115,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 				{
                     for (int index = 0; index < c; index++)
                     {
-                        cps->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, parts[2][k].toLatin1()))), Black);
+                        PieceType pt = StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, parts[2][k].toLatin1())));
+                    	if (pt != None) cps->AddCapturedPiece(pt, Black);
                     }
                     c = 1;
                 }
@@ -1082,7 +1124,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 				{
                     for (int index = 0; index < c; index++)
                     {
-                        cps->AddCapturedPiece(StringManager::StringCode2PieceType(gameVariant, std::string(1, parts[2][k].toLatin1())), White);
+                        PieceType pt = StringManager::StringCode2PieceType(gameVariant, std::string(1, parts[2][k].toLatin1()));
+                        if (pt != None) cps->AddCapturedPiece(pt, White);
                     }
                     c = 1;
 				}
@@ -1090,7 +1133,29 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z') || (parts[2][k] >= '1' && parts[2][k] <= '9')));
 		}
 	}
-	return "";
+    if (gameVariant == Sittuyin)
+    {
+        if (parts.size() >= 2)
+        {
+            PieceStorage* cps = dynamic_cast<PieceStorage*>(board);
+            k = 0;
+            do
+            {
+                if (parts[1][k] >= 'a' && parts[1][k] <= 'z')
+                {
+                    PieceType pt = StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, parts[1][k].toLatin1())));
+                	if (pt != None) cps->AddCapturedPiece(pt, Black);
+                }
+                else if (parts[1][k] >= 'A' && parts[1][k] <= 'Z')
+                {
+                    PieceType pt = StringManager::StringCode2PieceType(gameVariant, std::string(1, parts[1][k].toLatin1()));
+                    if (pt != None) cps->AddCapturedPiece(pt, White);
+                }
+                k++;
+            } while (k < parts[1].size() && ((parts[1][k] >= 'a' && parts[1][k] <= 'z') || (parts[1][k] >= 'A' && parts[1][k] <= 'Z')));
+        }
+    }
+    return "";
 }
 
 bool EngineOutputHandler::IsInsidePromotionZone(GameVariant gameVariant, PieceColour pieceColour, int y)
