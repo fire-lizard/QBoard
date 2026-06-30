@@ -11,7 +11,6 @@ public:
 	Board* Clone() override;
 	void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
 	std::string GetStringCode(int x, int y) const override;
-	void ClearPiecesInHand();
 
 private:
 

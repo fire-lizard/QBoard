@@ -30,6 +30,11 @@ void PieceStorage::RemoveCapturedPiece(PieceType p, PieceColour pieceColour)
 	}
 }
 
+void PieceStorage::ClearCapturedPieces()
+{
+	_capturedPieces.clear();
+}
+
 std::string PieceStorage::CapturedPieceString(GameVariant gameVariant)
 {
 	if (_capturedPieces.empty())

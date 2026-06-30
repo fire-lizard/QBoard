@@ -2738,7 +2738,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 	}
 
     if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != Shogi && _gameVariant != MiniShogi &&
-		_gameVariant != JudkinShogi && _gameVariant != WhaleShogi && _gameVariant != ToriShogi &&
+		_gameVariant != JudkinShogi && _gameVariant != WhaleShogi && _gameVariant != ToriShogi && _gameVariant != MusketeerChess &&
         _gameVariant != EuroShogi && _gameVariant != YariShogi && _gameVariant != CrazyWa && _gameVariant != Sittuyin) return;
 	if ((_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black) ||
 		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;

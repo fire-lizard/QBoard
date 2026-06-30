@@ -999,9 +999,9 @@ template <typename T> std::basic_string<T> EngineOutputHandler::lowercase(const 
 QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant)
 {
     QStringList parts;
-    if (gameVariant == Sittuyin)
+    if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
     {
-        dynamic_cast<SittuyinBoard*>(board)->ClearPiecesInHand();
+        dynamic_cast<PieceStorage*>(board)->ClearCapturedPieces();
         parts = QString(str).trimmed().replace('[', ' ').replace(']', ' ').split(' ');
     }
     else
@@ -1133,7 +1133,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z') || (parts[2][k] >= '1' && parts[2][k] <= '9')));
 		}
 	}
-    if (gameVariant == Sittuyin)
+    if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
     {
         if (parts.size() >= 2)
         {

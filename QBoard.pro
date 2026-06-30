@@ -6,7 +6,7 @@
 
 QT       += widgets core gui network
 
-CONFIG   += C++20
+CONFIG   += c++20
 
 TARGET = QBoard
 TEMPLATE = app

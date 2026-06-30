@@ -226,11 +226,6 @@ void MusketeerChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int
 	_moves.erase(moves_to_remove.begin(), moves_to_remove.end());
 }
 
-bool MusketeerChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
-{
-	return CapablancaChessBoard::Move(oldX, oldY, newX, newY, cl);
-}
-
 std::string MusketeerChessBoard::GetStringCode(int x, int y) const
 {
 	if (GetData(x, y) == std::nullopt) return "";

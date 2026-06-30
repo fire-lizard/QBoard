@@ -13,6 +13,7 @@ public:
 	std::vector<PieceType> GetCapturedPieces(PieceColour pieceColour);
 	void AddCapturedPiece(PieceType p, PieceColour pieceColour);
 	void RemoveCapturedPiece(PieceType p, PieceColour pieceColour);
+	void ClearCapturedPieces();
 	std::string CapturedPieceString(GameVariant gameVariant);
 
 protected:

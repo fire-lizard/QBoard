@@ -459,9 +459,10 @@ void MainWindow::on_actionOpen_triggered()
 		file.open(QIODevice::ReadOnly | QIODevice::Text);
 		const QByteArray str = file.readAll();
 		file.close();
-        QList<QByteArray> parts = this->ui->vboard->GetGameVariant() != Sittuyin ?
-			str.split(' ') : 
-			QString(str).replace('[', ' ').replace(']', ' ').toLatin1().split(' ');
+        QList<QByteArray> parts =
+			this->ui->vboard->GetGameVariant() != Sittuyin && this->ui->vboard->GetGameVariant() != MusketeerChess ?
+				str.split(' ') : 
+				QString(str).replace('[', ' ').replace(']', ' ').toLatin1().split(' ');
         if (parts.contains("w")) this->ui->vboard->SetCurrentPlayer(White);
         else if (parts.contains("b")) this->ui->vboard->SetCurrentPlayer(Black);
         Board* board = this->ui->vboard->GetBoard();
@@ -512,10 +513,10 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-				if (gameVariant == Sittuyin)
+				if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
 				{
-					auto* stb = dynamic_cast<SittuyinBoard*>(ui->vboard->GetBoard());
-					auto pieceCodes = StringManager::GetOrderData(Sittuyin).first;
+					auto* stb = dynamic_cast<PieceStorage*>(ui->vboard->GetBoard());
+					auto pieceCodes = StringManager::GetOrderData(gameVariant).first;
 					QString cpStr;
 					for (auto& capturedPiece : stb->GetCapturedPieces(White))
 					{
@@ -525,7 +526,7 @@ void MainWindow::on_actionSave_triggered()
 					{
 						cpStr.append(static_cast<char>(std::tolower(pieceCodes[capturedPiece][0])));
 					}
-					str = QByteArray::fromStdString(stb->GetFEN());
+					str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 					str += "[" + cpStr.toLatin1() + "]";
 					str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
 				}

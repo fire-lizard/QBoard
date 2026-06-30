@@ -103,8 +103,3 @@ std::string SittuyinBoard::GetStringCode(int x, int y) const
 		return ShatranjBoard::GetStringCode(x, y);
 	}
 }
-
-void SittuyinBoard::ClearPiecesInHand()
-{
-	_capturedPieces.clear();
-}
