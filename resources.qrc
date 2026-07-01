@@ -2500,41 +2500,22 @@
         <file>images_eur3/WhiteRook.png</file>
     </qresource>
     <qresource prefix="/pieces_sha">
-        <file>images_sha/3d_bbishop.png</file>
-        <file>images_sha/3d_bguard.png</file>
-        <file>images_sha/3d_bhorse.png</file>
-        <file>images_sha/3d_bking.png</file>
-        <file>images_sha/3d_bpawn.png</file>
-        <file>images_sha/3d_bqueen.png</file>
-        <file>images_sha/3d_brook.png</file>
-        <file>images_sha/3d_wbishop.png</file>
-        <file>images_sha/3d_wguard.png</file>
-        <file>images_sha/3d_whorse.png</file>
-        <file>images_sha/3d_wking.png</file>
-        <file>images_sha/3d_wpawn.png</file>
-        <file>images_sha/3d_wqueen.png</file>
-        <file>images_sha/3d_wrook.png</file>
-        <file>images_sha/ba35.png</file>
-        <file>images_sha/bb35.png</file>
-        <file>images_sha/bk35.png</file>
-        <file>images_sha/bn35.png</file>
-        <file>images_sha/bp35.png</file>
-        <file>images_sha/bpz35.png</file>
-        <file>images_sha/bq35.png</file>
-        <file>images_sha/br35.png</file>
-        <file>images_sha/wa35.png</file>
-        <file>images_sha/wb35.png</file>
-        <file>images_sha/wk35.png</file>
-        <file>images_sha/wn35.png</file>
-        <file>images_sha/wp35.png</file>
-        <file>images_sha/wpz35.png</file>
-        <file>images_sha/wq35.png</file>
-        <file>images_sha/wr35.png</file>
+        <file>images_sha/BlackBishop.png</file>
+        <file>images_sha/BlackGuard.png</file>
+        <file>images_sha/BlackKing.png</file>
+        <file>images_sha/BlackKnight.png</file>
+        <file>images_sha/BlackPawn.png</file>
+        <file>images_sha/BlackQueen.png</file>
+        <file>images_sha/BlackRook.png</file>
+        <file>images_sha/WhiteBishop.png</file>
+        <file>images_sha/WhiteGuard.png</file>
+        <file>images_sha/WhiteKing.png</file>
+        <file>images_sha/WhiteKnight.png</file>
+        <file>images_sha/WhitePawn.png</file>
+        <file>images_sha/WhiteQueen.png</file>
+        <file>images_sha/WhiteRook.png</file>
     </qresource>
     <qresource prefix="/pieces_sit">
-        <file>images_sit/bb35.png</file>
-        <file>images_sit/be35.png</file>
-        <file>images_sit/bk35.png</file>
         <file>images_sit/BlackBishop.png</file>
         <file>images_sit/BlackElephant.png</file>
         <file>images_sit/BlackKing.png</file>
@@ -2542,19 +2523,6 @@
         <file>images_sit/BlackPawn.png</file>
         <file>images_sit/BlackQueen.png</file>
         <file>images_sit/BlackRook.png</file>
-        <file>images_sit/bn35.png</file>
-        <file>images_sit/bp35.png</file>
-        <file>images_sit/bpz35.png</file>
-        <file>images_sit/bq35.png</file>
-        <file>images_sit/br35.png</file>
-        <file>images_sit/rb35.png</file>
-        <file>images_sit/re35.png</file>
-        <file>images_sit/rk35.png</file>
-        <file>images_sit/rn35.png</file>
-        <file>images_sit/rp35.png</file>
-        <file>images_sit/rpz35.png</file>
-        <file>images_sit/rq35.png</file>
-        <file>images_sit/rr35.png</file>
         <file>images_sit/t_be.png</file>
         <file>images_sit/t_bg.png</file>
         <file>images_sit/t_bh.png</file>
@@ -2574,5 +2542,19 @@
         <file>images_sit/WhitePawn.png</file>
         <file>images_sit/WhiteQueen.png</file>
         <file>images_sit/WhiteRook.png</file>
+    </qresource>
+    <qresource prefix="/pieces_mak2">
+        <file>images_mak2/BlackAdvisor.png</file>
+        <file>images_mak2/BlackKing.png</file>
+        <file>images_mak2/BlackKnight.png</file>
+        <file>images_mak2/BlackPawn.png</file>
+        <file>images_mak2/BlackQueen.png</file>
+        <file>images_mak2/BlackRook.png</file>
+        <file>images_mak2/WhiteAdvisor.png</file>
+        <file>images_mak2/WhiteKing.png</file>
+        <file>images_mak2/WhiteKnight.png</file>
+        <file>images_mak2/WhitePawn.png</file>
+        <file>images_mak2/WhiteQueen.png</file>
+        <file>images_mak2/WhiteRook.png</file>
     </qresource>
 </RCC>
