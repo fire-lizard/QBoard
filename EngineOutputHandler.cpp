@@ -133,11 +133,19 @@ std::vector<std::pair<int, int>> EngineOutputHandler::GetPieceLocations(const Bo
 
 QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtocol engineProtocol, GameVariant gameVariant)
 {
-    const QString _xbre = R"(^move ([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrqfjacwmM])?)";
+    // Handling Castling
+	if (engineProtocol == XBoard && std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
+    {
+        QStringList parts = QString(buf).trimmed().split(QRegularExpression("[\r\n]+"), Qt::SkipEmptyParts);
+        if (std::ranges::any_of(parts, [](const QString& str) {return str == "move O-O-O";}))
+            return "O-O-O";
+        if (std::ranges::any_of(parts, [](const QString& str) {return str == "move O-O";}))
+            return "O-O";
+    }
     QByteArray result;
     if (engineProtocol == USI)
     {
-        const QString _usre = R"(^bestmove ([RBGSNLP1-9])(\*|[a-i])([1-9])([a-i])(\+)?)";
+    	const QString _usre = R"(^bestmove ([RBGSNLP1-9])(\*|[a-i])([1-9])([a-i])(\+)?)";
         QRegularExpression regexp = QRegularExpression(_usre, QRegularExpression::MultilineOption);
     	QRegularExpressionMatch match = regexp.match(buf);
         if (match.hasMatch())
@@ -194,7 +202,8 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 			 gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == GrandChess ||
 			 gameVariant == OmegaChess || gameVariant == CourierChess || gameVariant == GrandeAcedrex)
     {
-        QRegularExpression regexp = QRegularExpression(_xbre, QRegularExpression::MultilineOption);
+        const QString _bbre = R"(^move ([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrqfjacwmM])?)";
+        QRegularExpression regexp = QRegularExpression(_bbre, QRegularExpression::MultilineOption);
         QRegularExpressionMatch match = regexp.match(buf);
         if (match.hasMatch())
         {
@@ -213,22 +222,31 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
     else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi ||
 			 gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
     {
-        const QString _csre = R"(^move ([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])(\+)?)";
-        QRegularExpression regexp = QRegularExpression(_csre, QRegularExpression::MultilineOption);
-        QRegularExpressionMatchIterator it = regexp.globalMatch(buf);
-        while (it.hasNext())
+        // Handling Null Move
+        QStringList parts = QString(buf).trimmed().split(QRegularExpression("[\r\n]+"), Qt::SkipEmptyParts);
+        if (std::ranges::any_of(parts, [](const QString& str) {return str == "move @@@@";}))
         {
-            QRegularExpressionMatch match = it.next();
-        	QString firstLetter = match.captured(1);
-            QString firstDigit = match.captured(2);
-            QString secondLetter = match.captured(3);
-            QString secondDigit = match.captured(4);
-            QString promotionChar = match.captured(5);
-            result.push_back(firstLetter[0].toLatin1());
-            result.push_back(static_cast<signed char>(firstDigit.toInt()));
-            result.push_back(secondLetter[0].toLatin1());
-            result.push_back(static_cast<signed char>(secondDigit.toInt()));
-            if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+            result = "@@@@";
+        }
+        else
+        {
+            const QString _csre = R"(^move ([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])(\+)?)";
+            QRegularExpression regexp = QRegularExpression(_csre, QRegularExpression::MultilineOption);
+            QRegularExpressionMatchIterator it = regexp.globalMatch(buf);
+            while (it.hasNext())
+            {
+                QRegularExpressionMatch match = it.next();
+                QString firstLetter = match.captured(1);
+                QString firstDigit = match.captured(2);
+                QString secondLetter = match.captured(3);
+                QString secondDigit = match.captured(4);
+                QString promotionChar = match.captured(5);
+                result.push_back(firstLetter[0].toLatin1());
+                result.push_back(static_cast<signed char>(firstDigit.toInt()));
+                result.push_back(secondLetter[0].toLatin1());
+                result.push_back(static_cast<signed char>(secondDigit.toInt()));
+                if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+            }
         }
     }
     else if (gameVariant == CrazyWa)
@@ -275,6 +293,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
     else
     {
         const QString _sgre = R"(^move ([RBGSNLPFCWKHDYa-i])(@|[1-9])([a-i])([1-9])(\+)?)";
+        const QString _xbre = R"(^move ([a-i])([0-9])([a-i])([0-9])([+nbrqfjacwmM])?)";
         QRegularExpression regexp = gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi ||
             gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi ||
             gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == HeianShogi ?

@@ -118,9 +118,13 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         {
             painter.drawPixmap(i * w + w / 10, j * h + h / 10, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
-        else
+        else if (pieceStyle == Asian)
         {
             painter.drawPixmap(i * w + w / 20, j * h, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
+        else
+        {
+            painter.drawPixmap(i * w + w / 6, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
         break;
     case Xiangqi:
@@ -205,7 +209,8 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     case Sittuyin:
         if (pieceStyle == European) return ":/pieces_eur/images/";
         if (pieceStyle == Mnemonic) return ":/pieces_eur/images_eur/";
-        return ":/pieces_eur2/images_eur2/";
+        if (pieceStyle == Asian) return ":/pieces_eur2/images_eur2/";
+        return ":/pieces_eur3/images_eur3/";
     case Makruk:
         if (pieceStyle == European) return ":/pieces_eur/images/";
         return ":/pieces_mak/images_mak/";
