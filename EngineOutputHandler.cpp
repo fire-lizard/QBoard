@@ -268,37 +268,31 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
             if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
         }
     }
-    else if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
+    else
     {
         const QString _mcre = R"(^move ([a-h])([1-8])([a-h])([1-8])([nbrqlcudmaehfs])?)";
         const QString _stre = R"(^move ([RNSFKa-h])(\@|[1-8])([a-h])([1-8])(f)?)";
-        QRegularExpression regexp = gameVariant == Sittuyin ?
-    		QRegularExpression(_stre, QRegularExpression::MultilineOption) : 
-    		QRegularExpression(_mcre, QRegularExpression::MultilineOption);
-        QRegularExpressionMatch match = regexp.match(buf);
-        if (match.hasMatch())
-        {
-            QString firstLetter = match.captured(1);
-            QString firstDigit = match.captured(2);
-            QString secondLetter = match.captured(3);
-            QString secondDigit = match.captured(4);
-            QString promotionChar = match.captured(5);
-            result.push_back(firstLetter[0].toLatin1());
-            result.push_back(firstDigit[0].toLatin1());
-            result.push_back(secondLetter[0].toLatin1());
-            result.push_back(secondDigit[0].toLatin1());
-            if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
-        }
-    }
-    else
-    {
         const QString _sgre = R"(^move ([RBGSNLPFCWKHDYa-i])(@|[1-9])([a-i])([1-9])(\+)?)";
         const QString _xbre = R"(^move ([a-i])([0-9])([a-i])([0-9])([+nbrqfjacwmM])?)";
-        QRegularExpression regexp = gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi ||
-            gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi ||
-            gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == HeianShogi ?
-				QRegularExpression(_sgre, QRegularExpression::MultilineOption) :
-    			QRegularExpression(_xbre, QRegularExpression::MultilineOption);
+        QRegularExpression regexp;
+        if (gameVariant == Sittuyin)
+        {
+            regexp = QRegularExpression(_stre, QRegularExpression::MultilineOption);
+        }
+        else if (gameVariant == MusketeerChess)
+        {
+            regexp = QRegularExpression(_mcre, QRegularExpression::MultilineOption);
+        }
+        else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi ||
+				 gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi ||
+				 gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == HeianShogi)
+        {
+            regexp = QRegularExpression(_sgre, QRegularExpression::MultilineOption);
+        }
+    	else
+        {
+             regexp = QRegularExpression(_xbre, QRegularExpression::MultilineOption);
+        }
         QRegularExpressionMatch match = regexp.match(buf);
         if (match.hasMatch())
         {

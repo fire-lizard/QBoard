@@ -1461,7 +1461,28 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             }
         }
     }
-    else if (std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants))
+	else if (_gameVariant == MusketeerChess)
+	{
+		if (_currentPiece->Type == Pawn &&
+			((y == 8 && _currentPiece->Colour == Black) ||
+			(y == 1 && _currentPiece->Colour == White)))
+		{
+			PromotionDialog* pd = new PromotionDialog(this);
+			pd->SetEnabled(Nightrider, false);
+			if (pd->exec() == QDialog::Accepted)
+			{
+				const PieceType pt = pd->GetChosenPiece();
+				promotion = EngineOutputHandler::ChessPieceChar(pt);
+				_board->Promote(x, y, pt);
+			}
+			else
+			{
+				promotion = 'q';
+				_board->Promote(x, y, Queen);
+			}
+		}
+	}
+	else if (std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants))
     {
         if (_currentPiece->Type == Pawn &&
             ((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) ||
