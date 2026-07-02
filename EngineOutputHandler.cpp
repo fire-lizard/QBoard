@@ -940,6 +940,23 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	}
 }
 
+int EngineOutputHandler::GetEnPassantRank(GameVariant gameVariant, PieceColour pieceColour, const char y)
+{
+	switch (gameVariant)
+	{
+    case ChancellorChess:
+    case ModernChess:
+        return pieceColour == Black ? 5 : 3;
+    case GrandChess:
+    case MusketeerChess:
+        return pieceColour == Black ? 5 : 4;
+	case OmegaChess:
+        return pieceColour == Black ? (y == '5' ? 6 : 7) : (y == '5' ? 5 : 4);
+	default:
+        return pieceColour == Black ? 4 : 3;
+	}
+}
+
 char EngineOutputHandler::ChessPieceChar(PieceType chessPiece)
 {
     switch (chessPiece)

@@ -33,6 +33,7 @@ public:
 	static bool IsLionMove(const std::optional<Piece>& piece, int x1, int y1, int x2, int y2);
     static void RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<std::string> moves);
 	static void RemoveMove(std::vector<std::pair<int, int>>& moves, int x, int y);
+	static int  GetEnPassantRank(GameVariant gameVariant, PieceColour pieceColour, char y);
 	static char ChessPieceChar(PieceType chessPiece);
 
 private:
@@ -40,4 +41,3 @@ private:
 	template <typename T> static std::basic_string<T> lowercase(const std::basic_string<T>& s);
 	template <typename T> static std::basic_string<T> uppercase(const std::basic_string<T>& s);
 };
-

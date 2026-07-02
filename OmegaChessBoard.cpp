@@ -279,7 +279,7 @@ bool OmegaChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
             _ep = "";
             const char letter = newX + 97;
             _ep.push_back(letter);
-            _ep.append(oldY == _height - 3 ? "5" : "5");
+            _ep.append("5");
         }
         else if (pieceType == Pawn && _ep != "-")
         {

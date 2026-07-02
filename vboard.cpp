@@ -320,10 +320,9 @@ void VBoard::paintEvent(QPaintEvent *)
                 painter.setBrush(Qt::NoBrush);
 			}
 			// En Passant square highlighting
-            else if ((std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants)) &&
-                dynamic_cast<ChessBoard*>(_board)->GetEnPassant() != "-" &&	dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[0] - 97 == i &&
-                (_currentPlayer == White && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - 48 == j ||
-                 _currentPlayer == Black && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1] - (_gameVariant == ChancellorChess || _gameVariant == ModernChess ? 46 : 47) == j))
+            else if (std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants) &&
+					 dynamic_cast<ChessBoard*>(_board)->GetEnPassant() != "-" && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[0] - 97 == i &&
+					 EngineOutputHandler::GetEnPassantRank(_gameVariant, _currentPlayer, dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[1]) == j)
 			{
 				painter.setBrush(Qt::blue);
 				painter.drawRect(rect);
