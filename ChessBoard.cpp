@@ -99,6 +99,28 @@ void ChessBoard::SetEnPassant(std::string val)
 	_ep = std::move(val);
 }
 
+void ChessBoard::GetEnPassantMoves(Piece piece, int x, int y)
+{
+	if (piece.Colour == Black)
+	{
+		const int letter = _ep[0] - 97;
+		const int number = _ep[1] - 48;
+		if (abs(x - letter) == 1 && y == number + 1)
+		{
+			CheckMove(piece, letter, number + 2);
+		}
+	}
+	else
+	{
+		const int letter = _ep[0] - 97;
+		const int number = _ep[1] - 48;
+		if (abs(x - letter) == 1 && y == number)
+		{
+			CheckMove(piece, letter, number - 1);
+		}
+	}
+}
+
 bool ChessBoard::EnemyPawnsAround(int x, int y) const
 {
 	const std::optional<Piece> fp = x > 0 ? GetData(x - 1, y) : std::nullopt;
@@ -188,12 +210,7 @@ void ChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 			// En passant
 			if (_ep != "-")
 			{
-				const int letter = _ep[0] - 97;
-				const int number = _ep[1] - 48;
-				if (abs(x - letter) == 1 && y == number + 1)
-				{
-					CheckMove(piece, letter, number + 2);
-				}
+				GetEnPassantMoves(piece.value(), x, y);
 			}
 		}
 		else
@@ -217,12 +234,7 @@ void ChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 			// En passant
 			if (_ep != "-")
 			{
-				const int letter = _ep[0] - 97;
-				const int number = _ep[1] - 48;
-				if (abs(x - letter) == 1 && y == number)
-				{
-					CheckMove(piece, letter, number - 1);
-				}
+				GetEnPassantMoves(piece.value(), x, y);
 			}
 		}
 		break;

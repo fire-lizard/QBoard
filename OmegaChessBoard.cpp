@@ -157,12 +157,7 @@ void OmegaChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
             // En passant
             if (_ep != "-")
             {
-                const int letter = _ep[0] - 97;
-                const int number = _ep[1] - 48;
-                if (abs(x - letter) == 1 && y == number + 1)
-                {
-                    CheckMove(piece, letter, number + 2);
-                }
+                GetEnPassantMoves(piece.value(), x, y);
             }
         }
         else
@@ -190,12 +185,7 @@ void OmegaChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
             // En passant
             if (_ep != "-")
             {
-                const int letter = _ep[0] - 97;
-                const int number = _ep[1] - 48;
-                if (abs(x - letter) == 1 && y == number)
-                {
-                    CheckMove(piece, letter, number - 1);
-                }
+                GetEnPassantMoves(piece.value(), x, y);
             }
         }
         break;
@@ -280,27 +270,6 @@ bool OmegaChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
             const char letter = newX + 97;
             _ep.push_back(letter);
             _ep.append("5");
-        }
-        else if (pieceType == Pawn && _ep != "-")
-        {
-            const char letter = newX + 97;
-            const int number = _ep[1] - 48;
-            if (letter == _ep[0] &&	((pieceColour == White && newY == number - 1) || (pieceColour == Black && newY == number + 2)))
-            {
-                const std::optional<Piece> p = pieceColour == White ? GetData(newX, number) : GetData(newX, number + 1);
-                if (p != std::nullopt && p->Type == Pawn && p->Colour != pieceColour)
-                {
-                    if (pieceColour == White)
-                    {
-                        SetData(newX, number, std::nullopt);
-                    }
-                    else
-                    {
-                        SetData(newX, number + 1, std::nullopt);
-                    }
-                }
-            }
-            _ep = "-";
         }
         else
         {

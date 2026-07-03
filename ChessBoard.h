@@ -21,6 +21,8 @@ public:
 	void SetEnPassant(std::string val);
 
 protected:
+	void GetEnPassantMoves(Piece piece, int x, int y);
+	virtual bool EnemyPawnsAround(int x, int y) const;
 
     bool _wkc = true;
 	bool _wqc = true;
@@ -28,8 +30,6 @@ protected:
 	bool _bqc = true;
 	int _halfMoveCount;
 	std::string _ep = "-";
-
-    virtual bool EnemyPawnsAround(int x, int y) const;
 
 private:
 	
