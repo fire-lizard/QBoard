@@ -262,14 +262,14 @@ bool OmegaChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
             _ep = "";
             const char letter = newX + 97;
             _ep.push_back(letter);
-            _ep.append(oldY == _height - 3 ? "6" : "4");
+            _ep.append(oldY == 2 ? "8" : "5");
         }
         else if (pieceType == Pawn && abs(oldY - newY) == 3 && EnemyPawnsAround(newX, newY))
         {
             _ep = "";
             const char letter = newX + 97;
             _ep.push_back(letter);
-            _ep.append("5");
+            _ep.append(oldY == 2 ? "7" : "6");
         }
         else
         {

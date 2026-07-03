@@ -101,22 +101,46 @@ void ChessBoard::SetEnPassant(std::string val)
 
 void ChessBoard::GetEnPassantMoves(Piece piece, int x, int y)
 {
-	if (piece.Colour == Black)
+	if (_height == 12)
 	{
-		const int letter = _ep[0] - 97;
-		const int number = _ep[1] - 48;
-		if (abs(x - letter) == 1 && y == number + 1)
+		if (piece.Colour == Black)
 		{
-			CheckMove(piece, letter, number + 2);
+			const int letter = _ep[0] - 97;
+			const int number = _ep[1] - 48;
+			if (abs(x - letter) == 1 && y == 7 ? number + 2 : number)
+			{
+				CheckMove(piece, letter, y == 7 ? number + 3 : number + 1);
+			}
+		}
+		else
+		{
+			const int letter = _ep[0] - 97;
+			const int number = _ep[1] - 48;
+			if (abs(x - letter) == 1 && y == _height - number)
+			{
+				CheckMove(piece, letter, _height - number - 1);
+			}
 		}
 	}
 	else
 	{
-		const int letter = _ep[0] - 97;
-		const int number = _ep[1] - 48;
-		if (abs(x - letter) == 1 && y == number)
+		if (piece.Colour == Black)
 		{
-			CheckMove(piece, letter, number - 1);
+			const int letter = _ep[0] - 97;
+			const int number = _ep[1] - 48;
+			if (abs(x - letter) == 1 && y == number + 1)
+			{
+				CheckMove(piece, letter, number + 2);
+			}
+		}
+		else
+		{
+			const int letter = _ep[0] - 97;
+			const int number = _ep[1] - 48;
+			if (abs(x - letter) == 1 && y == _height - number + 1)
+			{
+				CheckMove(piece, letter, _height - number);
+			}
 		}
 	}
 }
@@ -311,24 +335,46 @@ bool ChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 			_ep = "";
 			const char letter = newX + 97;
 			_ep.push_back(letter);
-            _ep.append(oldY == _height - 3 ? "6" : "3");
+            _ep.append(oldY == 1 ? "6" : "3");
 		}
 		else if (pieceType == Pawn && _ep != "-")
 		{
 			const char letter = newX + 97;
-			const int number = _ep[1] - 48;
-			if (letter == _ep[0] &&	((pieceColour == White && newY == number - 1) || (pieceColour == Black && newY == number + 2)))
+			if (_height == 12)
 			{
-				const std::optional<Piece> p = pieceColour == White ? GetData(newX, number) : GetData(newX, number + 1);
-                if (p != std::nullopt && p->Type == Pawn && p->Colour != pieceColour)
+				const int number = _ep[1] - 48;
+				if (letter == _ep[0] && ((pieceColour == White && newY == _height - number - 1) || (pieceColour == Black && newY == (newY == 7 ? number + 1 : number + 3))))
 				{
-					if (pieceColour == White)
+					const std::optional<Piece> p = pieceColour == White ? GetData(newX, _height - number) : GetData(newX, newY == 7 ? number : number + 2);
+					if (p != std::nullopt && p->Type == Pawn && p->Colour != pieceColour)
 					{
-						SetData(newX, number, std::nullopt);
+						if (pieceColour == White)
+						{
+							SetData(newX, _height - number, std::nullopt);
+						}
+						else
+						{
+							SetData(newX, newY == 7 ? number : number + 2, std::nullopt);
+						}
 					}
-					else
+				}
+			}
+			else
+			{
+				const int number = pieceColour == Black && _height == 9 ? _ep[1] - 47 : _ep[1] - 48;
+				if (letter == _ep[0] && ((pieceColour == White && newY == _height - number) || (pieceColour == Black && newY == number + 2)))
+				{
+					const std::optional<Piece> p = pieceColour == White ? GetData(newX, _height - number + 1) : GetData(newX, number + 1);
+					if (p != std::nullopt && p->Type == Pawn && p->Colour != pieceColour)
 					{
-						SetData(newX, number + 1, std::nullopt);
+						if (pieceColour == White)
+						{
+							SetData(newX, _height - number + 1, std::nullopt);
+						}
+						else
+						{
+							SetData(newX, number + 1, std::nullopt);
+						}
 					}
 				}
 			}

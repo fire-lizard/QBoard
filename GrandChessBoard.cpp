@@ -200,7 +200,7 @@ bool GrandChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
             _ep = "";
             const char letter = newX + 97;
             _ep.push_back(letter);
-            _ep.append(oldY == 6 ? "7" : "4");
+            _ep.append(oldY == 2 ? "7" : "4");
         }
         else
         {

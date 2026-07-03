@@ -951,8 +951,8 @@ int EngineOutputHandler::GetEnPassantRank(GameVariant gameVariant, PieceColour p
     case MusketeerChess:
         return pieceColour == Black ? 5 : 4;
 	case OmegaChess:
-        return pieceColour == Black ? (y == '5' ? 6 : 7) : (y == '5' ? 5 : 4);
-	default:
+        return y - 48 + ('6' - y) * 2;
+    default:
         return pieceColour == Black ? 4 : 3;
 	}
 }

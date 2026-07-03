@@ -224,7 +224,7 @@ bool ChancellorChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
             _ep = "";
             const char letter = newX + 97;
             _ep.push_back(letter);
-            _ep.append(oldY == _height - 3 ? "7" : "3");
+            _ep.append(oldY == 1 ? "7" : "3");
         }
         else
         {
