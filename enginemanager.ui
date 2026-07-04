@@ -57,6 +57,11 @@
    </column>
    <column>
     <property name="text">
+     <string>Game</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
      <string>Protocol</string>
     </property>
    </column>

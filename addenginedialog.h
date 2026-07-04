@@ -20,16 +20,22 @@ public:
     explicit AddEngineDialog(QWidget *parent = nullptr);
     ~AddEngineDialog() override;
 	QLineEdit* GetEngineName() const;
+    QLineEdit* GetGameVariant() const;
 	QComboBox* GetEngineProtocol() const;
 	QLineEdit* GetEnginePath() const;
     QLineEdit* GetEngineOptions() const;
     void SetEngineName(const QString &engineName) const;
+    void SetGameVariant(const QString& gameVariant) const;
     void SetEngineProtocol(const QString& engineProtocol) const;
 	void SetEnginePath(const QString& enginePath) const;
     void SetEngineOptions(const QString& engineOptions) const;
 
 private slots:
     void on_toolButton_clicked();
+
+    void on_toolButton_2_clicked();
+
+    void on_gameVariant_textChanged(const QString &arg1) const;
 
 private:
     Ui::AddEngineDialog *ui;

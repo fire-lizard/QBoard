@@ -1,9 +1,11 @@
 #include "addenginedialog.h"
 #include "ui_addenginedialog.h"
 
-AddEngineDialog::AddEngineDialog(QWidget* parent) : QDialog(parent), ui(new Ui::AddEngineDialog)
+AddEngineDialog::AddEngineDialog(QWidget *parent) : QDialog(parent), ui(new Ui::AddEngineDialog)
 {
     ui->setupUi(this);
+    ui->gameVariant->setText("Chess");
+    ui->gameVariant->setStyleSheet("QLineEdit { background: rgb(0, 223, 223); selection-background-color: rgb(223, 99, 0); }");
 }
 
 AddEngineDialog::~AddEngineDialog()
@@ -14,6 +16,11 @@ AddEngineDialog::~AddEngineDialog()
 QLineEdit * AddEngineDialog::GetEngineName() const
 {
 	return ui->engineName;
+}
+
+QLineEdit * AddEngineDialog::GetGameVariant() const
+{
+	return ui->gameVariant;
 }
 
 QComboBox * AddEngineDialog::GetEngineProtocol() const
@@ -34,6 +41,11 @@ QLineEdit * AddEngineDialog::GetEngineOptions() const
 void AddEngineDialog::SetEngineName(const QString& engineName) const
 {
 	ui->engineName->setText(engineName);
+}
+
+void AddEngineDialog::SetGameVariant(const QString& gameVariant) const
+{
+    ui->gameVariant->setText(gameVariant);
 }
 
 void AddEngineDialog::SetEngineProtocol(const QString& engineProtocol) const
@@ -59,4 +71,38 @@ void AddEngineDialog::on_toolButton_clicked()
     const QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", "Programs (*)");
 #endif
 	ui->enginePath->setText(fileName);
+}
+
+void AddEngineDialog::on_toolButton_2_clicked()
+{
+    VariantDialog* vd = new VariantDialog(this);
+    vd->exec();
+    if (vd->result() == Accepted)
+    {
+        ui->gameVariant->setText(vd->GetVariant());
+    }
+}
+
+void AddEngineDialog::on_gameVariant_textChanged(const QString &arg1) const
+{
+    ui->engineProtocol->clear();
+    const GameVariant v = EngineManager::StringToGameVariant(arg1);
+    switch (v)
+    {
+    case Chess:
+        ui->engineProtocol->addItem("UCI");
+        break;
+    case Xiangqi:
+        ui->engineProtocol->addItem("UCCI");
+        ui->engineProtocol->addItem("Qianhong");
+        break;
+    case Shogi:
+    case MiniShogi:
+    case JudkinShogi:
+        ui->engineProtocol->addItem("USI");
+        break;
+    default:
+        break;
+    }
+    ui->engineProtocol->addItem("XBoard");
 }

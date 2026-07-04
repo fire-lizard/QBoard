@@ -300,18 +300,20 @@ void MainWindow::on_actionNew_game_triggered()
 
                 // Read attributes
                 QString engineName;
+                GameVariant gameVariant = Chess;
                 EngineProtocol engineProtocol;
                 QString enginePath;
                 QString engineOptions;
                 foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
                     if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
+                    if (attr.name().toString() == "GameVariant") gameVariant = EngineManager::StringToGameVariant(attr.value().toString());
                     if (attr.name().toString() == "EngineProtocol") engineProtocol = EngineManager::StringToEngineProtocol(attr.value().toString());
                     if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
                     if (attr.name().toString() == "EngineOptions") engineOptions = attr.value().toString();
                 }
-                if (engineName != "" && enginePath != "")
+                if (engineName != "" && enginePath != "" && gameVariant == this->ui->vboard->GetGameVariant())
                 {
-                    _engines.emplace_back(engineName, engineProtocol, enginePath, engineOptions);
+                    _engines.emplace_back(engineName, gameVariant, engineProtocol, enginePath, engineOptions);
                 }
             }
         }
@@ -338,22 +340,22 @@ void MainWindow::on_actionNew_game_triggered()
 
 		if (bpSelectedIndex > 0)
         {
-            const std::tuple<QString, EngineProtocol, QString, QString> tpl = _engines[bpSelectedIndex - 1];
+            const std::tuple<QString, GameVariant, EngineProtocol, QString, QString> tpl = _engines[bpSelectedIndex - 1];
 			_blackEngineName = std::get<0>(tpl);
-			_blackEngineProtocol = std::get<1>(tpl);
-			_blackEngineExe = std::get<2>(tpl);
-            _blackEngineOptions = std::get<3>(tpl);
+			_blackEngineProtocol = std::get<2>(tpl);
+			_blackEngineExe = std::get<3>(tpl);
+            _blackEngineOptions = std::get<4>(tpl);
         }
         else
 			_blackEngineExe = "";
 
 		if (wpSelectedIndex > 0)
 		{
-            const std::tuple<QString, EngineProtocol, QString, QString> tpl = _engines[wpSelectedIndex - 1];
+            const std::tuple<QString, GameVariant, EngineProtocol, QString, QString> tpl = _engines[wpSelectedIndex - 1];
 			_whiteEngineName = std::get<0>(tpl);
-			_whiteEngineProtocol = std::get<1>(tpl);
-			_whiteEngineExe = std::get<2>(tpl);
-            _whiteEngineOptions = std::get<3>(tpl);
+			_whiteEngineProtocol = std::get<2>(tpl);
+			_whiteEngineExe = std::get<3>(tpl);
+            _whiteEngineOptions = std::get<4>(tpl);
         }
 		else
 			_whiteEngineExe = "";
@@ -1115,11 +1117,13 @@ void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engin
 
 			// Read attributes
 			QString engineName;
+			QString gameVariant;
 			QString engineProtocol;
 			QString enginePath;
             QString engineOptions;
 			foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
 				if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
+				if (attr.name().toString() == "GameVariant") gameVariant = attr.value().toString();
 				if (attr.name().toString() == "EngineProtocol") engineProtocol = attr.value().toString();
 				if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
                 if (attr.name().toString() == "EngineOptions") engineOptions = attr.value().toString();
@@ -1129,25 +1133,26 @@ void MainWindow::readXmlUsingStream(const QString& fileName, QTableWidget *engin
 				engineTable->insertRow(engineTable->rowCount());
 				const int currentRow = engineTable->rowCount() - 1;
 				engineTable->setItem(currentRow, 0, new QTableWidgetItem(engineName));
-				engineTable->setItem(currentRow, 1, new QTableWidgetItem(engineProtocol));
-				engineTable->setItem(currentRow, 2, new QTableWidgetItem(enginePath));
-                engineTable->setItem(currentRow, 3, new QTableWidgetItem(engineOptions));
+				engineTable->setItem(currentRow, 1, new QTableWidgetItem(gameVariant));
+				engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
+				engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
+                engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineOptions));
                 QDir engineDir = QFileInfo(enginePath).dir();
                 if (QFile::exists(engineDir.filePath("logo.bmp")))
                 {
-                    reinterpret_cast<EngineManager*>(engineTable->parent())->SetImageInCell(currentRow, 4, engineDir.filePath("logo.bmp"));
+                    reinterpret_cast<EngineManager*>(engineTable->parent())->SetImageInCell(currentRow, 5, engineDir.filePath("logo.bmp"));
                 }
                 else if (QFile::exists(engineDir.filePath("logo.png")))
                 {
-                    reinterpret_cast<EngineManager*>(engineTable->parent())->SetImageInCell(currentRow, 4, engineDir.filePath("logo.png"));
+                    reinterpret_cast<EngineManager*>(engineTable->parent())->SetImageInCell(currentRow, 5, engineDir.filePath("logo.png"));
                 }
                 else if (QFile::exists(engineDir.filePath("logo.jpg")))
                 {
-                    reinterpret_cast<EngineManager*>(engineTable->parent())->SetImageInCell(currentRow, 4, engineDir.filePath("logo.jpg"));
+                    reinterpret_cast<EngineManager*>(engineTable->parent())->SetImageInCell(currentRow, 5, engineDir.filePath("logo.jpg"));
                 }
                 else if (QFile::exists(engineDir.filePath("logo.gif")))
                 {
-                    reinterpret_cast<EngineManager*>(engineTable->parent())->SetImageInCell(currentRow, 4, engineDir.filePath("logo.gif"));
+                    reinterpret_cast<EngineManager*>(engineTable->parent())->SetImageInCell(currentRow, 5, engineDir.filePath("logo.gif"));
                 }
             }
 		}
@@ -1185,9 +1190,10 @@ void MainWindow::createXmlFromTable(const QString& fileName, const QTableWidget*
 	{
 		writer.writeStartElement("Engine");
 		writer.writeAttribute("EngineName", engineTable->item(index, 0)->text());
-		writer.writeAttribute("EngineProtocol", engineTable->item(index, 1)->text());
-		writer.writeAttribute("EnginePath", engineTable->item(index, 2)->text());
-        writer.writeAttribute("EngineOptions", engineTable->item(index, 3)->text());
+		writer.writeAttribute("GameVariant", engineTable->item(index, 1)->text());
+		writer.writeAttribute("EngineProtocol", engineTable->item(index, 2)->text());
+		writer.writeAttribute("EnginePath", engineTable->item(index, 3)->text());
+        writer.writeAttribute("EngineOptions", engineTable->item(index, 4)->text());
         writer.writeEndElement();
 	}
 
