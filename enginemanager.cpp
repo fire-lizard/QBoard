@@ -4,11 +4,10 @@
 EngineManager::EngineManager(QWidget *parent) : QDialog(parent), ui(new Ui::EngineManager)
 {
 	ui->setupUi(this);
-	ComboBoxItemDelegate* cbid = new ComboBoxItemDelegate(ui->engineTable);
-	ui->engineTable->setItemDelegate(cbid);
-	ui->engineTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+	ui->engineTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+	ui->engineTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->engineTable->setColumnHidden(2, true);
     ui->engineTable->setColumnHidden(3, true);
-    ui->engineTable->setColumnHidden(4, true);
 }
 
 EngineManager::~EngineManager()
@@ -50,7 +49,6 @@ void EngineManager::on_toolButton_clicked()
 	if (addEngineDialog->result() == Accepted)
 	{
 		const QString engineName = addEngineDialog->GetEngineName()->text();
-        const QString gameName = addEngineDialog->GetGameVariant()->text();
 		const QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
 		const QString enginePath = addEngineDialog->GetEnginePath()->text();
         const QString engineOptions = addEngineDialog->GetEngineOptions()->text();
@@ -59,18 +57,17 @@ void EngineManager::on_toolButton_clicked()
 			ui->engineTable->insertRow(ui->engineTable->rowCount());
 			const int currentRow = ui->engineTable->rowCount() - 1;
 			ui->engineTable->setItem(currentRow, 0, new QTableWidgetItem(engineName));
-			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(gameName));
-			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
-			ui->engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
-            ui->engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineOptions));
+			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(engineProtocol));
+			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(enginePath));
+            ui->engineTable->setItem(currentRow, 3, new QTableWidgetItem(engineOptions));
             QDir engineDir = QFileInfo(enginePath).dir();
             if (QFile::exists(engineDir.filePath("logo.bmp")))
             {
-                SetImageInCell(currentRow, 5, engineDir.filePath("logo.bmp"));
+                SetImageInCell(currentRow, 4, engineDir.filePath("logo.bmp"));
             }
             else if (QFile::exists(engineDir.filePath("logo.png")))
             {
-                SetImageInCell(currentRow, 5, engineDir.filePath("logo.png"));
+                SetImageInCell(currentRow, 4, engineDir.filePath("logo.png"));
             }
         }
         else
@@ -119,41 +116,38 @@ void EngineManager::on_toolButton_2_clicked()
 	if (currentRow == -1) return;
 	AddEngineDialog *addEngineDialog = new AddEngineDialog(this);
 	addEngineDialog->SetEngineName(ui->engineTable->item(currentRow, 0)->text());
-    addEngineDialog->SetGameVariant(ui->engineTable->item(currentRow, 1)->text());
-    addEngineDialog->SetEngineProtocol(ui->engineTable->item(currentRow, 2)->text());
-	addEngineDialog->SetEnginePath(ui->engineTable->item(currentRow, 3)->text());
-    addEngineDialog->SetEngineOptions(ui->engineTable->item(currentRow, 4)->text());
+    addEngineDialog->SetEngineProtocol(ui->engineTable->item(currentRow, 1)->text());
+	addEngineDialog->SetEnginePath(ui->engineTable->item(currentRow, 2)->text());
+    addEngineDialog->SetEngineOptions(ui->engineTable->item(currentRow, 3)->text());
     addEngineDialog->exec();
 	if (addEngineDialog->result() == Accepted)
 	{
 		const QString engineName = addEngineDialog->GetEngineName()->text();
-        const QString gameName = addEngineDialog->GetGameVariant()->text();
 		const QString engineProtocol = addEngineDialog->GetEngineProtocol()->currentText();
 		const QString enginePath = addEngineDialog->GetEnginePath()->text();
         const QString engineOptions = addEngineDialog->GetEngineOptions()->text();
         if (engineName != "" && enginePath != "")
 		{
 			ui->engineTable->setItem(currentRow, 0, new QTableWidgetItem(engineName));
-			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(gameName));
-			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(engineProtocol));
-			ui->engineTable->setItem(currentRow, 3, new QTableWidgetItem(enginePath));
-            ui->engineTable->setItem(currentRow, 4, new QTableWidgetItem(engineOptions));
+			ui->engineTable->setItem(currentRow, 1, new QTableWidgetItem(engineProtocol));
+			ui->engineTable->setItem(currentRow, 2, new QTableWidgetItem(enginePath));
+            ui->engineTable->setItem(currentRow, 3, new QTableWidgetItem(engineOptions));
             QDir engineDir = QFileInfo(enginePath).dir();
             if (QFile::exists(engineDir.filePath("logo.bmp")))
             {
-                SetImageInCell(currentRow, 5, engineDir.filePath("logo.bmp"));
+                SetImageInCell(currentRow, 4, engineDir.filePath("logo.bmp"));
             }
             else if (QFile::exists(engineDir.filePath("logo.png")))
             {
-                SetImageInCell(currentRow, 5, engineDir.filePath("logo.png"));
+                SetImageInCell(currentRow, 4, engineDir.filePath("logo.png"));
             }
             else if (QFile::exists(engineDir.filePath("logo.jpg")))
             {
-                SetImageInCell(currentRow, 5, engineDir.filePath("logo.jpg"));
+                SetImageInCell(currentRow, 4, engineDir.filePath("logo.jpg"));
             }
             else if (QFile::exists(engineDir.filePath("logo.gif")))
             {
-                SetImageInCell(currentRow, 5, engineDir.filePath("logo.gif"));
+                SetImageInCell(currentRow, 4, engineDir.filePath("logo.gif"));
             }
         }
         else

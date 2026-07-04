@@ -5,7 +5,6 @@
 #include <QTableWidget>
 #include <QHBoxLayout>
 #include <QLabel>
-#include "comboboxitemdelegate.h"
 #include "addenginedialog.h"
 #include "Common.h"
 
@@ -18,7 +17,7 @@ namespace {
 
     const QList<Pair>& variantMap()
     {
-        static const QList<Pair> map = {
+        static const QList<Pair> _variantMap = {
             {Chess,           "Chess"},
             {CapablancaChess, "Capablanca Chess"},
             {GothicChess,     "Gothic Chess"},
@@ -58,7 +57,7 @@ namespace {
             {MakaDaiDaiShogi, "Maka Dai Dai Shogi"},
             {KoShogi,         "Ko Shogi"}
         };
-        return map;
+        return _variantMap;
     }
 }
 

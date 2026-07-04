@@ -103,5 +103,5 @@ private:
 	QString _settingsDir;
 	QString _settingsFileName = "QBoard.ini";
 	QString _enginesListFileName = "QBoardEngines.xml";
-    std::vector<std::tuple<QString, GameVariant, EngineProtocol, QString, QString>> _engines;
+    std::vector<std::tuple<QString, EngineProtocol, QString, QString>> _engines;
 };

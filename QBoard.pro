@@ -74,7 +74,6 @@ SOURCES += main.cpp\
     Communications.cpp \
     enginemanager.cpp \
     networkmanager.cpp \
-    comboboxitemdelegate.cpp \
     newgamedialog.cpp \
     addenginedialog.cpp \
     zboard.cpp
@@ -137,7 +136,6 @@ HEADERS  += mainwindow.h \
     Communications.h \
     enginemanager.h \
     networkmanager.h \
-    comboboxitemdelegate.h \
     newgamedialog.h \
     addenginedialog.h \
     zboard.h
