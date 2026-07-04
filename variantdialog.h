@@ -15,7 +15,7 @@ class VariantDialog : public QDialog
 public:
     explicit VariantDialog(QWidget *parent = nullptr);
     ~VariantDialog() override;
-    QString GetVariant() const;
+    QListWidget* GetVariant() const;
 
 private slots:
     void on_variantList_itemDoubleClicked(QListWidgetItem *item);

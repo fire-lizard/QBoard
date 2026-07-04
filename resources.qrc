@@ -2257,6 +2257,38 @@
         <file>images_chi2/rking.png</file>
         <file>images_chi2/rpawn.png</file>
     </qresource>
+    <qresource prefix="/pieces_chi3">
+        <file>images_chi3/badvisor.png</file>
+        <file>images_chi3/bcannon.png</file>
+        <file>images_chi3/bchariot.png</file>
+        <file>images_chi3/belephant.png</file>
+        <file>images_chi3/bhorse.png</file>
+        <file>images_chi3/bking.png</file>
+        <file>images_chi3/bpawn.png</file>
+        <file>images_chi3/radvisor.png</file>
+        <file>images_chi3/rcannon.png</file>
+        <file>images_chi3/rchariot.png</file>
+        <file>images_chi3/relephant.png</file>
+        <file>images_chi3/rhorse.png</file>
+        <file>images_chi3/rking.png</file>
+        <file>images_chi3/rpawn.png</file>
+    </qresource>
+    <qresource prefix="/pieces_chi4">
+        <file>images_chi4/badvisor.png</file>
+        <file>images_chi4/bcannon.png</file>
+        <file>images_chi4/bchariot.png</file>
+        <file>images_chi4/belephant.png</file>
+        <file>images_chi4/bhorse.png</file>
+        <file>images_chi4/bking.png</file>
+        <file>images_chi4/bpawn.png</file>
+        <file>images_chi4/radvisor.png</file>
+        <file>images_chi4/rcannon.png</file>
+        <file>images_chi4/rchariot.png</file>
+        <file>images_chi4/relephant.png</file>
+        <file>images_chi4/rhorse.png</file>
+        <file>images_chi4/rking.png</file>
+        <file>images_chi4/rpawn.png</file>
+    </qresource>
     <qresource prefix="/pieces_xia">
         <file>images_xia/badvisor.png</file>
         <file>images_xia/bcannon.png</file>

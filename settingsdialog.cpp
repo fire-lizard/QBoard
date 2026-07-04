@@ -93,6 +93,6 @@ void SettingsDialog::on_toolButton_clicked()
     vd->exec();
     if (vd->result() == Accepted)
     {
-        ui->variantsLineEdit->setText(vd->GetVariant());
+        ui->variantsLineEdit->setText(vd->GetVariant()->currentItem()->text());
     }
 }

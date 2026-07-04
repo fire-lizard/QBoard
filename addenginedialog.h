@@ -4,6 +4,7 @@
 #include <QFileDialog>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QProcess>
 #include "Common.h"
 #include "enginemanager.h"
 #include "variantdialog.h"
@@ -30,12 +31,17 @@ public:
 	void SetEnginePath(const QString& enginePath) const;
     void SetEngineOptions(const QString& engineOptions) const;
 
+private:
+    QStringList GetVariantList() const;
+
 private slots:
     void on_toolButton_clicked();
 
     void on_toolButton_2_clicked();
 
-    void on_gameVariant_textChanged(const QString &arg1) const;
+    void on_toolButton_3_clicked() const;
+
+    void on_engineProtocol_currentIndexChanged(int index) const;
 
 private:
     Ui::AddEngineDialog *ui;

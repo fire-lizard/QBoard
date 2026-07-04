@@ -98,24 +98,44 @@ EngineProtocol EngineManager::StringToEngineProtocol(const QString& str)
 	return XBoard;
 }
 
-GameVariant EngineManager::StringToGameVariant(const QString& str)
+GameVariant EngineManager::StringToGameVariant(const QString& variantName)
 {
     for (const auto& p : variantMap())
     {
-        if (p.second == str)
+        if (p.second == variantName)
             return p.first;
     }
     return Chess;
 }
 
-QString EngineManager::GameVariantToString(GameVariant variant)
+QString EngineManager::GameVariantToString(GameVariant gameVariant)
 {
     for (const auto& p : variantMap())
     {
-        if (p.first == variant)
+        if (p.first == gameVariant)
             return p.second;
     }
     return "Chess";
+}
+
+std::optional<GameVariant> EngineManager::ShortStringToGameVariant(const QString& variantName)
+{
+    for (const auto& p : engineMap())
+    {
+        if (p.second == variantName)
+            return p.first;
+    }
+    return std::nullopt;
+}
+
+QString EngineManager::GameVariantToShortString(GameVariant gameVariant)
+{
+    for (const auto& p : engineMap())
+    {
+        if (p.first == gameVariant)
+            return p.second;
+    }
+    return "normal";
 }
 
 void EngineManager::on_toolButton_2_clicked()
@@ -203,4 +223,3 @@ void EngineManager::on_engineTable_cellDoubleClicked(int row, int column)
 {
     on_toolButton_2_clicked();
 }
-

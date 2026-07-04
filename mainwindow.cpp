@@ -300,20 +300,20 @@ void MainWindow::on_actionNew_game_triggered()
 
                 // Read attributes
                 QString engineName;
-                GameVariant gameVariant = Chess;
+				QString gameVariant;
                 EngineProtocol engineProtocol;
                 QString enginePath;
                 QString engineOptions;
                 foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
                     if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
-                    if (attr.name().toString() == "GameVariant") gameVariant = EngineManager::StringToGameVariant(attr.value().toString());
+                    if (attr.name().toString() == "GameVariant") gameVariant = attr.value().toString();
                     if (attr.name().toString() == "EngineProtocol") engineProtocol = EngineManager::StringToEngineProtocol(attr.value().toString());
                     if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
                     if (attr.name().toString() == "EngineOptions") engineOptions = attr.value().toString();
                 }
-                if (engineName != "" && enginePath != "" && gameVariant == this->ui->vboard->GetGameVariant())
+                if (engineName != "" && enginePath != "" && gameVariant.contains(EngineManager::GameVariantToString(this->ui->vboard->GetGameVariant())))
                 {
-                    _engines.emplace_back(engineName, gameVariant, engineProtocol, enginePath, engineOptions);
+                	_engines.emplace_back(engineName, this->ui->vboard->GetGameVariant(), engineProtocol, enginePath, engineOptions);
                 }
             }
         }
@@ -942,123 +942,7 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 		{
 			if (engine->GetType() == XBoard)
 			{
-				switch (ui->vboard->GetGameVariant())
-				{
-                case MicroShogi:
-                    engine->StartGame("micro_shogi");
-                    break;
-                case KyotoShogi:
-                    engine->StartGame("5x5+4_shogi");
-                    break;
-                case MiniShogi:
-					engine->StartGame("5x5+5_shogi");
-					break;
-				case JudkinShogi:
-					engine->StartGame("6x6+6_shogi");
-					break;
-                case WhaleShogi:
-                    engine->StartGame("whale_shogi");
-                    break;
-                case ToriShogi:
-                    engine->StartGame("7x7+6_shogi");
-                    break;
-                case EuroShogi:
-                    engine->StartGame("8x8+5_shogi");
-                    break;
-                case YariShogi:
-                    engine->StartGame("yarishogi");
-                    break;
-                case HeianShogi:
-                    engine->StartGame("heian");
-                    break;
-                case HeianDaiShogi:
-                    engine->StartGame("heiandai");
-                    break;
-                case ShoShogi:
-					engine->StartGame("sho");
-					break;
-				case WaShogi:
-					engine->StartGame("washogi");
-					break;
-				case CrazyWa:
-					engine->StartGame("crazywa");
-					break;
-				case ChuShogi:
-					engine->StartGame("chu");
-					break;
-				case DaiShogi:
-					engine->StartGame("dai");
-					break;
-				case TenjikuShogi:
-					engine->StartGame("tenjiku");
-					break;
-                case DaiDaiShogi:
-                    engine->StartGame("daidai");
-                    break;
-                case MakaDaiDaiShogi:
-                    engine->StartGame("maka");
-                    break;
-                case KoShogi:
-                    engine->StartGame("ko");
-                    break;
-                case Shogi:
-					engine->StartGame("shogi");
-					break;
-				case Shatranj:
-					engine->StartGame("shatranj");
-					break;
-				case Makruk:
-					engine->StartGame("makruk");
-					break;
-				case Xiangqi:
-					engine->StartGame("xiangqi");
-					break;
-                case Janggi:
-                    engine->StartGame("janggi");
-                    break;
-                case Shatar:
-                    engine->StartGame("shatar");
-                    break;
-				case Sittuyin:
-					engine->StartGame("sittuyin");
-					break;
-				case Chess:
-					engine->StartGame("normal");
-					break;
-                case CapablancaChess:
-                    engine->StartGame("capablanca");
-                    break;
-                case GothicChess:
-                    engine->StartGame("gothic");
-                    break;
-                case JanusChess:
-                    engine->StartGame("janus");
-                    break;
-                case GrandChess:
-                    engine->StartGame("grand");
-                    break;
-                case OmegaChess:
-                    engine->StartGame("omega");
-                    break;
-				case NightriderChess:
-					engine->StartGame("nightrider");
-					break;
-				case CourierChess:
-                    engine->StartGame("courier");
-                    break;
-                case ChancellorChess:
-                    engine->StartGame("chancellor");
-                    break;
-                case ModernChess:
-                    engine->StartGame("modern");
-                    break;
-				case MusketeerChess:
-					engine->StartGame("musketeer");
-					break;
-				case GrandeAcedrex:
-                    engine->StartGame("grande-acedrex");
-                    break;
-                }
+				engine->StartGame(EngineManager::GameVariantToShortString(ui->vboard->GetGameVariant()));
                 if (engineExe.toLower().contains("hachu"))
 				{
 					std::dynamic_pointer_cast<WbEngine>(engine)->SetMemory(_engineMemorySize);

@@ -78,7 +78,7 @@ void WbEngine::StartGame(QString variant)
 {
 	_moves.clear();
     WriteToProcess("xboard\n");
-    WriteToProcess("protover\n");
+    WriteToProcess("protover 2\n");
 	WriteToProcess("new\n");
 	if (variant != "")
 	{

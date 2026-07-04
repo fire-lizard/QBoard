@@ -7,6 +7,7 @@ VariantDialog::VariantDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     std::ranges::for_each(variantMap(), [&](const QPair<GameVariant, QString>& p) {ui->variantList->addItem(p.second);});
+    ui->variantList->setStyleSheet(R"(QListWidget::item:selected { background-color: #0078D7; color: white; })");
 }
 
 VariantDialog::~VariantDialog()
@@ -14,9 +15,9 @@ VariantDialog::~VariantDialog()
     delete ui;
 }
 
-QString VariantDialog::GetVariant() const
+QListWidget* VariantDialog::GetVariant() const
 {
-    return ui->variantList->currentItem()->text();
+    return ui->variantList;
 }
 
 void VariantDialog::on_variantList_itemDoubleClicked(QListWidgetItem *item)

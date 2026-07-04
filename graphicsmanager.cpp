@@ -159,7 +159,9 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
         if (pieceStyle == European) return ":/pieces_eur/images/";
         if (pieceStyle == Mnemonic) return ":/pieces_xia/images_xia/";
         if (pieceStyle == Asian) return ":/pieces_chi/images_chi/";
-        return ":/pieces_chi2/images_chi2/";
+        if (pieceStyle == Asian2) return ":/pieces_chi2/images_chi2/";
+        if (pieceStyle == Asian3) return ":/pieces_chi3/images_chi3/";
+        return ":/pieces_chi4/images_chi4/";
     case MicroShogi:
     case KyotoShogi:
         return ":/pieces_kyo/images_kyo/";
