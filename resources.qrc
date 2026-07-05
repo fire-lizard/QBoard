@@ -2531,6 +2531,20 @@
         <file>images_eur3/WhiteQueen.png</file>
         <file>images_eur3/WhiteRook.png</file>
     </qresource>
+    <qresource prefix="/pieces_eur4">
+        <file>images_eur4/BlackBishop.png</file>
+        <file>images_eur4/BlackKing.png</file>
+        <file>images_eur4/BlackKnight.png</file>
+        <file>images_eur4/BlackPawn.png</file>
+        <file>images_eur4/BlackQueen.png</file>
+        <file>images_eur4/BlackRook.png</file>
+        <file>images_eur4/WhiteBishop.png</file>
+        <file>images_eur4/WhiteKing.png</file>
+        <file>images_eur4/WhiteKnight.png</file>
+        <file>images_eur4/WhitePawn.png</file>
+        <file>images_eur4/WhiteQueen.png</file>
+        <file>images_eur4/WhiteRook.png</file>
+    </qresource>
     <qresource prefix="/pieces_sha">
         <file>images_sha/BlackBishop.png</file>
         <file>images_sha/BlackGuard.png</file>

@@ -53,6 +53,25 @@ void MusketeerChessBoard::Initialize()
 			}
 		}
 	}
+	_capturedPieces = {
+		{White, Chancellor},
+		{Black, Chancellor},
+		{White, Archbishop},
+		{Black, Archbishop},
+		{White, Leopard},
+		{Black, Leopard},
+		{White, Cannon},
+		{Black, Cannon},
+		{White, Unicorn},
+		{Black, Unicorn},
+		{White, FlyingDragon},
+		{Black, FlyingDragon},
+		{White, Elephant},
+		{Black, Elephant},
+		{White, Eagle},
+		{Black, Eagle}
+	};
+	PiecesToPlace = 4;
 }
 
 bool MusketeerChessBoard::EnemyPawnsAround(int x, int y) const

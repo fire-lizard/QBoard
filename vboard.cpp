@@ -467,6 +467,7 @@ void VBoard::CancelLionMove()
 void VBoard::mousePressEvent(QMouseEvent* event)
 {
 	if (_gameVariant == Sittuyin && !dynamic_cast<SittuyinBoard*>(_board)->GetCapturedPieces(_currentPlayer).empty()) return;
+	if (_gameVariant == MusketeerChess && dynamic_cast<MusketeerChessBoard*>(_board)->PiecesToPlace > 0) return;
 	if (event->button() != Qt::MouseButton::LeftButton) return;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
@@ -2779,7 +2780,8 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 	if (selectedAction != nullptr)
 	{
 		QStringList parts = selectedAction->text().split(' ', Qt::SkipEmptyParts);
-        const std::string longStringCode = _gameVariant == WhaleShogi || _gameVariant == ToriShogi || _gameVariant == CrazyWa
+        const auto longStringCode = _gameVariant == WhaleShogi || _gameVariant == ToriShogi ||
+        							_gameVariant == CrazyWa || selectedAction->text() == "Flying Dragon"
                 ? (parts[0] + " " + parts[1]).toStdString() : parts[0].toStdString();
         const PieceType newPiece = StringManager::Description2PieceType(_gameVariant, longStringCode);
 
@@ -2848,7 +2850,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 			{
 				if ((_currentPlayer == White && y != _board->GetHeight() - 1) || (_currentPlayer == Black && y != 0))
 				{
-					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "Rook can be placed only on the last row",
+					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "Rook can only be placed on the first row",
 						QMessageBox::Ok, this);
 					mb.exec();
 					return;
@@ -2874,10 +2876,34 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				}
 			}
 		}
+		if (_gameVariant == MusketeerChess)
+		{
+			if ((_currentPlayer == White && y != _board->GetHeight() - 1) || (_currentPlayer == Black && y != 0))
+			{
+				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "Pieces can only be placed on the first row",
+					QMessageBox::Ok, this);
+				mb.exec();
+				return;
+			}
+			if ((x == _board->GetWidth() - 1 || x == 0) && _board->GetData(4, y) != std::nullopt)
+			{
+				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "Piece cannot be places on Rook file because another piece has been placed on the King file",
+					QMessageBox::Ok, this);
+				mb.exec();
+				return;
+			}
+			if (x == 4 && (_board->GetData(_board->GetWidth() - 1, y) != std::nullopt || _board->GetData(0, y) != std::nullopt))
+			{
+				QMessageBox mb(QMessageBox::Warning, "Illegal drop", "Piece cannot be places on King file because another piece has been placed on the Rook file",
+					QMessageBox::Ok, this);
+				mb.exec();
+				return;
+			}
+		}
 		_board->SetData(x, y, Piece(newPiece, _currentPlayer));
         const char sc = _board->GetStringCode(x, y)[0];
 		const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
-		if (engine != nullptr && engine->IsActive())
+		if (engine != nullptr && engine->IsActive() && _gameVariant != MusketeerChess)
 		{
             if (engine->GetType() == USI)
 				engine->Move(sc, '*', _board->GetWidth() - x, y, ' ');
@@ -2886,6 +2912,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		}
 		EngineOutputHandler::AddMove(_board, _gameVariant, newPiece, sc, '*', x, y, ' ', ' ');
 		dynamic_cast<PieceStorage*>(_board)->RemoveCapturedPiece(newPiece, _currentPlayer);
+		if (_gameVariant == MusketeerChess) dynamic_cast<MusketeerChessBoard*>(_board)->PiecesToPlace--;
 		FinishMove(x, y);
 	}
 }

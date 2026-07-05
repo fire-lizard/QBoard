@@ -130,9 +130,13 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         {
             painter.drawPixmap(i * w + w / 3.25, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
-        else
+        else if (gameVariant == Sittuyin || gameVariant == Shatar)
         {
             painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
+        else
+        {
+            painter.drawPixmap(i * w + w / 12, j * h + h / 12, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
         break;
     case Xiangqi:
@@ -221,8 +225,9 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
         if (pieceStyle == Mnemonic) return ":/pieces_eur/images_eur/";
         if (pieceStyle == Asian) return ":/pieces_eur2/images_eur2/";
         if (pieceStyle == Asian2) return ":/pieces_eur3/images_eur3/";
-        if (pieceStyle == Asian3) return ":/pieces_sit/images_sit/";
-        return gameVariant == Sittuyin ? ":/pieces_sit/images_sit/" : ":/pieces_sha/images_sha/";
+        if (pieceStyle == Asian3 || gameVariant == Sittuyin) return ":/pieces_sit/images_sit/";
+        if (gameVariant == Shatar) return ":/pieces_sha/images_sha/";
+        return ":/pieces_eur4/images_eur4/";
     case Makruk:
         if (pieceStyle == European) return ":/pieces_eur/images/";
         if (pieceStyle == Mnemonic) return ":/pieces_mak2/images_mak2/";

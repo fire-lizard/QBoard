@@ -311,7 +311,8 @@ void MainWindow::on_actionNew_game_triggered()
                     if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
                     if (attr.name().toString() == "EngineOptions") engineOptions = attr.value().toString();
                 }
-                if (engineName != "" && enginePath != "" && gameVariant.contains(EngineManager::GameVariantToString(this->ui->vboard->GetGameVariant())))
+				QStringList variants = gameVariant.split(',');
+            	if (engineName != "" && enginePath != "" && variants.contains(EngineManager::GameVariantToString(this->ui->vboard->GetGameVariant())))
                 {
                 	_engines.emplace_back(engineName, this->ui->vboard->GetGameVariant(), engineProtocol, enginePath, engineOptions);
                 }
