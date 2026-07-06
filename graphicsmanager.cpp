@@ -68,7 +68,7 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         {
             painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
         }
-        else if (pieceStyle == Asian3 && gameVariant == DaiShogi)
+        else if ((pieceStyle == Asian || pieceStyle == Asian3) && gameVariant == DaiShogi)
         {
             painter.drawPixmap(i * w + w / 6, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
@@ -79,9 +79,18 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         break;
     case WaShogi:
     case CrazyWa:
-        painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+        if (pieceStyle == European || pieceStyle == Mnemonic)
+        {
+            painter.drawPixmap(i * w + w / 6, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
+        else
+        {
+            painter.drawPixmap(i * w + w / 4, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
         break;
     case TenjikuShogi:
+        painter.drawPixmap(i * w + w / 6, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
+        break;
     case DaiDaiShogi:
     case CapablancaChess:
     case GothicChess:
@@ -130,7 +139,7 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         {
             painter.drawPixmap(i * w + w / 3.25, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
-        else if (gameVariant == Sittuyin || gameVariant == Shatar)
+        else if (pieceStyle == European || gameVariant == Sittuyin || gameVariant == Shatar)
         {
             painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
@@ -159,85 +168,85 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     switch (gameVariant)
     {
     case Xiangqi:
-        if (pieceStyle == European) return ":/pieces_eur/images/";
-        if (pieceStyle == Mnemonic) return ":/pieces_xia/images_xia/";
-        if (pieceStyle == Asian) return ":/pieces_chi/images_chi/";
-        if (pieceStyle == Asian2) return ":/pieces_chi2/images_chi2/";
-        if (pieceStyle == Asian3) return ":/pieces_chi3/images_chi3/";
-        return ":/pieces_chi4/images_chi4/";
+        if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
+        if (pieceStyle == Mnemonic) return ":/pieces_xia/images/images_xia/";
+        if (pieceStyle == Asian) return ":/pieces_chi/images/images_chi/";
+        if (pieceStyle == Asian2) return ":/pieces_chi2/images/images_chi2/";
+        if (pieceStyle == Asian3) return ":/pieces_chi3/images/images_chi3/";
+        return ":/pieces_chi4/images/images_chi4/";
     case Janggi:
-        if (pieceStyle == European) return ":/pieces_eur/images/";
-        if (pieceStyle == Mnemonic) return ":/pieces_kor2/images_kor2/";
-        if (pieceStyle == Asian) return ":/pieces_kor/images_kor/";
-        if (pieceStyle == Asian2) return ":/pieces_kor3/images_kor3/";
-        if (pieceStyle == Asian3) return ":/pieces_kor4/images_kor4/";
-        return ":/pieces_kor5/images_kor5/";
+        if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
+        if (pieceStyle == Mnemonic) return ":/pieces_kor2/images/images_kor2/";
+        if (pieceStyle == Asian) return ":/pieces_kor/images/images_kor/";
+        if (pieceStyle == Asian2) return ":/pieces_kor3/images/images_kor3/";
+        if (pieceStyle == Asian3) return ":/pieces_kor4/images/images_kor4/";
+        return ":/pieces_kor5/images/images_kor5/";
     case MicroShogi:
     case KyotoShogi:
-        return ":/pieces_kyo/images_kyo/";
+        return ":/pieces_kyo/images/images_kyo/";
     case Shogi:
     case ShoShogi:
     case MiniShogi:
     case JudkinShogi:
     case EuroShogi:
-        if (pieceStyle == European) return ":/pieces_eur/images/";
-        if (pieceStyle == Mnemonic) return ":/pieces_sho2/images_sho2/";
-        if (pieceStyle == Asian) return ":/pieces_sho/images_sho/";
-        if (pieceStyle == Asian2) return ":/pieces_sho3/images_sho3/";
-        return ":/pieces_maka2/images_maka2/";
+        if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
+        if (pieceStyle == Mnemonic) return ":/pieces_sho2/images/images_sho2/";
+        if (pieceStyle == Asian) return ":/pieces_sho/images/images_sho/";
+        if (pieceStyle == Asian2) return ":/pieces_sho3/images/images_sho3/";
+        return ":/pieces_maka2/images/images_maka2/";
     case WhaleShogi:
-        return ":/pieces_wha/images_wha/";
+        return ":/pieces_wha/images/images_wha/";
     case ToriShogi:
-        if (pieceStyle == European || pieceStyle == Asian) return ":/pieces_tori/images_tori/";
-        if (pieceStyle == Mnemonic) return ":/pieces_torim/images_torim/";
-        return ":/pieces_torik/images_torik/";
+        if (pieceStyle == European || pieceStyle == Asian) return ":/pieces_tori/images/images_tori/";
+        if (pieceStyle == Mnemonic) return ":/pieces_torim/images/images_torim/";
+        return ":/pieces_torik/images/images_torik/";
     case YariShogi:
-        if (pieceStyle == European) return ":/pieces_yam/images_yam/";
-        if (pieceStyle == Mnemonic) return ":/pieces_ptg/images_ptg/";
-        return ":/pieces_yak/images_yak/";
+        if (pieceStyle == European) return ":/pieces_yam/images/images_yam/";
+        if (pieceStyle == Mnemonic) return ":/pieces_ptg/images/images_ptg/";
+        return ":/pieces_yak/images/images_yak/";
     case ChuShogi:
-        if (pieceStyle == Asian) return ":/pieces_tnk/images_tnk/";
-        if (pieceStyle == Asian2) return ":/pieces_maka2/images_maka2/";
-        if (pieceStyle == Asian3) return ":/pieces_knj/images_knj/";
-        if (pieceStyle == Asian4) return ":/pieces_jap/images_jap/";
-        if (pieceStyle == Mnemonic) return ":/pieces_chu/images_chu/";
-        return ":/pieces_eur/images/";
+        if (pieceStyle == Asian) return ":/pieces_tnk/images/images_tnk/";
+        if (pieceStyle == Asian2) return ":/pieces_maka2/images/images_maka2/";
+        if (pieceStyle == Asian3) return ":/pieces_knj/images/images_knj/";
+        if (pieceStyle == Asian4) return ":/pieces_jap/images/images_jap/";
+        if (pieceStyle == Mnemonic) return ":/pieces_chu/images/images_chu/";
+        return ":/pieces_eur/images/images_gen/";
     case DaiShogi:
     case HeianShogi:
     case HeianDaiShogi:
-        if (pieceStyle == Asian) return ":/pieces_tnk/images_tnk/";
-        if (pieceStyle == Asian2 || pieceStyle == Asian4) return ":/pieces_maka2/images_maka2/";
-        if (pieceStyle == Asian3) return ":/pieces_dai/images_dai/";
-        return ":/pieces_eur/images/";
+        if (pieceStyle == Asian) return ":/pieces_tnk/images/images_tnk/";
+        if (pieceStyle == Asian2 || pieceStyle == Asian4) return ":/pieces_maka2/images/images_maka2/";
+        if (pieceStyle == Asian3) return ":/pieces_dai/images/images_dai/";
+        return ":/pieces_eur/images/images_gen/";
     case TenjikuShogi:
-        return isAsianStyle ? ":/pieces_tnk/images_tnk/" : ":/pieces_ten/images_ten/";
+        return isAsianStyle ? ":/pieces_tnk/images/images_tnk/" : ":/pieces_ten/images/images_ten/";
     case WaShogi:
     case CrazyWa:
-        return isAsianStyle ? ":/pieces_wa2/images_wa2/" : ":/pieces_wa/images_wa/";
+        return isAsianStyle ? ":/pieces_wa2/images/images_wa2/" : ":/pieces_wa/images/images_wa/";
     case DaiDaiShogi:
-        return ":/pieces_dd/images_daidai/";
+        return ":/pieces_dd/images/images_daidai/";
     case MakaDaiDaiShogi:
-        return pieceStyle == Asian ? ":/pieces_mdd/images_maka/" : ":/pieces_maka2/images_maka2/";
+        return pieceStyle == Asian ? ":/pieces_mdd/images/images_maka/" : ":/pieces_maka2/images/images_maka2/";
     case KoShogi:
-        if (pieceStyle == Asian) return ":/pieces_ko/images_ko/";
-        if (isAsianStyle) return ":/pieces_kok/images_kok/";
-        if (pieceStyle == Mnemonic) return ":/pieces_km/images_kom/";
-        return ":/pieces_kow/images_kow/";
+        if (pieceStyle == Asian) return ":/pieces_ko/images/images_ko/";
+        if (isAsianStyle) return ":/pieces_kok/images/images_kok/";
+        if (pieceStyle == Mnemonic) return ":/pieces_km/images/images_kom/";
+        return ":/pieces_kow/images/images_kow/";
     case Chess:
     case Shatranj:
     case Shatar:
     case Sittuyin:
-        if (pieceStyle == European) return ":/pieces_eur/images/";
-        if (pieceStyle == Mnemonic) return ":/pieces_eur/images_eur/";
-        if (pieceStyle == Asian) return ":/pieces_eur2/images_eur2/";
-        if (pieceStyle == Asian2) return ":/pieces_eur3/images_eur3/";
-        if (pieceStyle == Asian3 || gameVariant == Sittuyin) return ":/pieces_sit/images_sit/";
-        if (gameVariant == Shatar) return ":/pieces_sha/images_sha/";
-        return ":/pieces_eur4/images_eur4/";
+        if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
+        if (pieceStyle == Mnemonic) return ":/pieces_eur/images/images_eur/";
+        if (pieceStyle == Asian) return ":/pieces_eur2/images/images_eur2/";
+        if (pieceStyle == Asian2) return ":/pieces_eur3/images/images_eur3/";
+        if (pieceStyle == Asian3 || gameVariant == Sittuyin) return ":/pieces_sit/images/images_sit/";
+        if (gameVariant == Shatar) return ":/pieces_sha/images/images_sha/";
+        return ":/pieces_eur4/images/images_eur4/";
     case Makruk:
-        if (pieceStyle == European) return ":/pieces_eur/images/";
-        if (pieceStyle == Mnemonic) return ":/pieces_mak2/images_mak2/";
-        return ":/pieces_mak/images_mak/";
+        if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
+        if (pieceStyle == Mnemonic) return ":/pieces_mak2/images/images_mak2/";
+        return ":/pieces_mak/images/images_mak/";
     case CapablancaChess:
     case GothicChess:
     case JanusChess:
@@ -249,7 +258,7 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     case ModernChess:
     case MusketeerChess:
     case GrandeAcedrex:
-        return ":/pieces_eur/images/";
+        return ":/pieces_eur/images/images_gen/";
     }
     return "";
 }

@@ -11,7 +11,7 @@ CONFIG   += c++20
 TARGET = QBoard
 TEMPLATE = app
 
-win32:RC_ICONS += toolbar/QBoard.ico
+win32:RC_ICONS += images/toolbar/QBoard.ico
 macx-clang {
     ICON = toolbar/QBoard.icns
 }

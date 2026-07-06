@@ -95,7 +95,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/Add.png</normaloff>:/toolbar_icons/toolbar/Add.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/Add.png</normaloff>:/toolbar_icons/images/toolbar/Add.png</iconset>
    </property>
   </widget>
   <widget class="QToolButton" name="toolButton_2">
@@ -112,7 +112,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/Edit.png</normaloff>:/toolbar_icons/toolbar/Edit.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/Edit.png</normaloff>:/toolbar_icons/images/toolbar/Edit.png</iconset>
    </property>
   </widget>
   <widget class="QToolButton" name="toolButton_3">
@@ -129,7 +129,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/Remove.png</normaloff>:/toolbar_icons/toolbar/Remove.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/Remove.png</normaloff>:/toolbar_icons/images/toolbar/Remove.png</iconset>
    </property>
   </widget>
  </widget>

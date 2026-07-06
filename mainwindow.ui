@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/toolbar_icons/toolbar/QBoard.ico</normaloff>:/toolbar_icons/toolbar/QBoard.ico</iconset>
+    <normaloff>:/toolbar_icons/images/toolbar/QBoard.ico</normaloff>:/toolbar_icons/images/toolbar/QBoard.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="VBoard" name="vboard" native="true">
@@ -152,7 +152,7 @@
   <action name="actionPlace">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/Place.png</normaloff>:/toolbar_icons/toolbar/Place.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/Place.png</normaloff>:/toolbar_icons/images/toolbar/Place.png</iconset>
    </property>
    <property name="text">
     <string>Editor mode</string>
@@ -161,7 +161,7 @@
   <action name="actionClear">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/Clear.png</normaloff>:/toolbar_icons/toolbar/Clear.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/Clear.png</normaloff>:/toolbar_icons/images/toolbar/Clear.png</iconset>
    </property>
    <property name="text">
     <string>Clear board</string>
@@ -170,7 +170,7 @@
   <action name="actionSettings">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/Settings.png</normaloff>:/toolbar_icons/toolbar/Settings.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/Settings.png</normaloff>:/toolbar_icons/images/toolbar/Settings.png</iconset>
    </property>
    <property name="text">
     <string>Settings</string>
@@ -179,7 +179,7 @@
   <action name="actionAbout">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/About.png</normaloff>:/toolbar_icons/toolbar/About.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/About.png</normaloff>:/toolbar_icons/images/toolbar/About.png</iconset>
    </property>
    <property name="text">
     <string>About</string>
@@ -188,7 +188,7 @@
   <action name="actionExit">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/Exit.png</normaloff>:/toolbar_icons/toolbar/Exit.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/Exit.png</normaloff>:/toolbar_icons/images/toolbar/Exit.png</iconset>
    </property>
    <property name="text">
     <string>Exit</string>
@@ -197,7 +197,7 @@
   <action name="actionNew_game">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/New.png</normaloff>:/toolbar_icons/toolbar/New.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/New.png</normaloff>:/toolbar_icons/images/toolbar/New.png</iconset>
    </property>
    <property name="text">
     <string>New game</string>
@@ -206,7 +206,7 @@
   <action name="actionOpen">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/Open.png</normaloff>:/toolbar_icons/toolbar/Open.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/Open.png</normaloff>:/toolbar_icons/images/toolbar/Open.png</iconset>
    </property>
    <property name="text">
     <string>Open</string>
@@ -215,7 +215,7 @@
   <action name="actionSave">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/Save.png</normaloff>:/toolbar_icons/toolbar/Save.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/Save.png</normaloff>:/toolbar_icons/images/toolbar/Save.png</iconset>
    </property>
    <property name="text">
     <string>Save</string>
@@ -224,7 +224,7 @@
   <action name="actionStop_game">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/Stop.png</normaloff>:/toolbar_icons/toolbar/Stop.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/Stop.png</normaloff>:/toolbar_icons/images/toolbar/Stop.png</iconset>
    </property>
    <property name="text">
     <string>Stop game</string>
@@ -236,7 +236,7 @@
   <action name="actionEngine_Manager">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/Table.png</normaloff>:/toolbar_icons/toolbar/Table.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/Table.png</normaloff>:/toolbar_icons/images/toolbar/Table.png</iconset>
    </property>
    <property name="text">
     <string>Engine Manager</string>
@@ -248,7 +248,7 @@
   <action name="actionNetwork_Manager">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/toolbar_icons/toolbar/Network.png</normaloff>:/toolbar_icons/toolbar/Network.png</iconset>
+     <normaloff>:/toolbar_icons/images/toolbar/Network.png</normaloff>:/toolbar_icons/images/toolbar/Network.png</iconset>
    </property>
    <property name="text">
     <string>Network Manager</string>

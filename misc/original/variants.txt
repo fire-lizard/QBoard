@@ -1,0 +1,3451 @@
+#  Sjaak, a program for playing chess variants
+#  Copyright (C) 2011, 2014  Evert Glebbeek
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# This is a variant description file for Sjaak.
+# It can be used to configure Sjaak to play a chess variant by specifying the movement mode of the pieces.
+# Empty lines and anything following a # character are ignored.
+
+# To define a variant, begin a line with "Variant: <name>", then follow on subsequent lines with descriptions
+# of the board, the pieces used and their movement, and other rules used in the variant.
+# There are a number of examples below, but first we'll go into some background.
+
+# THE BOARD AND ZONES
+#
+# The board size is specified by (files)x(ranks), for instance
+#  Board: 8x8
+# defines a standard chess board. There are some limits on the size of a board: the number of files
+# and ranks needs to be smaller than 16 and the total size of the board needs to be less than 128
+# squares.
+# For some of the rules, it's necessary to identify a part of the board. This is done by defining a "zone",
+# which lists the squares on the board that are part of that zone.
+# For instance:
+#  Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+#  Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+# defines the 8th rank (rank8) of the board.
+# Files are identified by letters, "a" being the first. Ranks are labelled by numbers, starting at "1".
+# The square "a1" is in the lower-left hand side of the board.
+# Two special zones, "empty" and "all", are pre-defined. As the names indicate, "empty" corresponds to an
+# empty board while "all" corresponds to the entire board.
+#
+# It's possible to exclude certain regions of the board. Moves are never generated from or to these squares:
+#  Exclude: g1,h1,g2,h2,g3,h3,g4,h4,g5,h5,g6,h6,a7,b7,c7,d7,e7,f7,g7,h7,a8,b8,c8,d8,e8,f8,g8,h8
+# excludes the last two rows and the rightmost files on the board, effectively reducing the board to 6x6.
+#
+# For some games, the victory (or drawing!) condition can be to occupy a specific region of the board.
+# This is referred to here as "capture the flag". To enable this, a special zone has to be defined for each
+# player, WhiteFlag for white and BlackFlag for black:
+#  WhiteFlag: e1
+#  BlackFlag: e8
+# The game ends when white captures and holds all black flags and vice versa.
+
+# PIECES
+#
+# Piece descriptions start with a "Piece:" line. On following lines the piece move and special properties can
+# be defined.
+
+# MOVEMENT TYPES
+#
+# In order to define new variants, it is important to know how to specify the movement of the pieces.
+# Sjaak distinguishes three types of moves:
+#
+# Sliders  - move along a ray direction until they encounter another piece or the edge of the board
+# Leapers  - perform single steps to specified target squares
+# Steppers - perform single (repeated) steps in a particular board direction
+#
+# Each of these moves treats the board in a slightly different way, and so the description of moves for each
+# is different:
+#
+# Sliders move along a ray, either horizontal (H), vertical (V), diagonal (D) or anti-diaginal (A).
+# Examples:
+#  slide (H,V)         - describes a chess rook
+#  slide (A,D)         - describes a bishop
+#  slide (H,V,A,D)     - describes a queen
+#
+# Leaper moves can become complicated, but in their simplest form they just specify the step-vector, which is
+# then mirrored to give a total of up to 8 target squares.
+# Examples:
+#  leap (2,1)          - describes a knight
+#  leap (1,2)          - alternative description of a knight
+#  leap (1,1)          - describes a ferz
+#  leap (2,2)          - an elephant
+#  leap (1,0)          - a wazir
+#  leap (2,0)          - a dabbabah
+# The complications begin when a piece is a compound leaper, meaning it can choose between different leaper
+# moves. For instance, a king can move as a ferz, or as a wazir:
+#  leap (1,0)|(1,1)    - a king
+# However, a leaper can also be a two-step leaper, which first moves as one type of leaper and then again as
+# another type of leaper:
+#  leap (1,0)+(1,1)    - move as a wazir first and then as a ferz
+# Typically, this is useful to define lame leapers by also specifying a mask:
+#  leap ((1,0)+(1,1)) & (1,2)
+# describes a piece that moves first as a wazir (only to empty squares) and then again as a ferz. However,
+# the final destination must be a square that could have been reached by a knight. In other words, this
+# describes a piece that moves like a knight, but can be blocked. A Xiangqi horse.
+#
+# For steppers, board directions are indicated by compass points, so "north" (the side of the board where
+# black starts out), "south" (where white starts), "east" (the king-side, the direction of the H-file) and
+# "west" (towards the A-file).
+# Steppers are intended to be asymmetric (the move description is for white and mirrored for black),
+#  step N              - describes a piece that moves one square "north", a white pawn
+#  step S              - describes a piece that moves one square "south", a black pawn
+# Optionally, the direction can be prefixed with a number (1-7):
+#  step 2N             - the initial double step of a white pawn.
+# Steppers are normally used to define pawns, and a number of pawn-specific evaluation terms are only
+# activated for pieces that are defined as stepper moves. Steppers also have their moves generated in bulk,
+# one direction at a time (as opposed to one piece at a time), which impacts performance.
+#
+# Finally, there are two variations to the three above movement types: hoppers and asymmetric leapers.
+#
+# Hoppers are sliders that need to jump over another piece before they can move.
+#  hop (H,V)           - describes the capture move of a cannon in Xiangqi
+# Currently, capture is replacement only. It is not possible (yet) to define a piece that captures by leaping
+# over its victim.
+#
+# Asymmetric leapers are leapers that, as the name implies, move differently for white and black.
+# Their syntax is similar to that of normal leapers, but instead of specifying the movement vector, it's
+# necessary to specify each step:
+#  aleap (0,1)         - a piece that moves one square north for white and one square south for black (like a pawn)
+#  aleap (1,1)|(1,-1)|(-1,-1)|(-1,1)|(0,1) - a Makruk elephant or silver general
+#  aleap (1,1)|(-1,1)|(1,0)|(-1,0)|(0,1)|(0,-1) - a gold general
+
+# MOVES AND CAPTURES
+#
+# A piece can have more than one movement type defined for it, simply by specifying them one after the other
+# on separate lines:
+#
+#  Move: slide (H,V,A,D)
+#  Move: leap (1,2)
+#
+# defines the move for an Amazon. The move types must be different on each line, or the result will be
+# undefined.
+# If a capture move is not specified, it is assumed to be the same as the normal move. To disable captures for
+# a particular piece type, specify "none":
+#
+#  Capture: none     # Piece cannot capture
+
+# SPECIAL MOVES (DOUBLE PUSHES)
+#
+# For pieces that can perform special moves, it's necessary to specify both the move and the location on the
+# board where they can make the special move. This is done by defining a zone and then referencing it from the
+# piece description:
+#  Special: rank2, rank7, step 2N
+# defines the initial double step for a white pawn (on rank 2) and a black pawn (on rank 7).
+# Special moves currently cannot be captures, and do not depend on whether the piece has moved or not.
+
+# INITIAL MOVES (DOUBLE PUSHES, ALTERNATIVE)
+#
+# Initial moves are moves that can only be made by a piece that has not moved yet.
+#  Initial: step 2N
+# defines the initial double step for a white pawn (on rank 2) and a black pawn (on rank 7).
+# Initial moves currently cannot be captures, and must be "step" moves.
+
+# SPECIAL MOVES (CASTLING)
+#
+# Castling is a special move where two friendly pieces move. It is only possible if neither of the two pieces
+# has moved already. All squares between the initial and final positions of the two pieces must be empty
+# (apart from the two pieces themselves).
+# If the primary castling piece is royal, then all squares between the king's initial and final position must
+# be "safe".
+# To define a castling move, specify the (default) starting position of the king, the king's destination
+# square and the secondary's (default) starting position. The secondary's destination square is derived from
+# the king's move: if the king moves to the king-side (east side) of the board, the secondary moves to the
+# left of the king. If the king moves to the queen-side (west side) of the board the secondary moves to the
+# right of the king.
+# It is possible to specify multiple destination squares for the king in a comma-separated list. This defines
+# a flexible form of castling where the king is allowed to move to any of the given destination squares.
+# Example:
+#
+#  Castle: white e1-g1 with h1     # Canonical king-side castling
+#  Castle: white e1-c1 with a1     # Canonical queen-side castling
+#  Castle: white e1-c1,b1 with a1  # Queen-side castling, either 2-step or 3-step
+#
+# To define FRC-style castling, simply define the "standard" castling rule (which provide the destination
+# square for the king and the default location of the rook). The FRC rule will be based on this
+# and the actual specified position of the king and rook in the startup FEN.
+# Behaviour is undefined if all squares are not on one rank.
+
+# RESTRICTING MOVEMENT
+#
+# It is possible to restrict the movement options of a piece by specifying the locations it is allowed to move
+# to:
+#  Zone: white_palace = d1,e1,f1, d2,e2,f2, d3,e3,f3
+#  Zone: black_palace = d8,e8,f8, d9,e9,f9, d10,e10,f10
+#
+#  Piece: King
+#  Move: leap (0,1)
+#  Symbol: "K", "K,k"
+#  Flags: royal
+#  Prison: white_palace, black_palace
+# Defines the XiangQi king, which is only allowed to move inside the palace.
+#
+# Alternatively, it is possible to mark squares as unpassable by particular pieces:
+#  Zone: white_centre = e4,d4
+#  Zone: black_centre = e5,d5
+#
+#  Piece: Rook
+#  Move: slide (H, V)
+#  Symbol: "R", "R,r"
+#  Block: white_centre, black_centre
+# defines a rook that cannot move to the centre (e4/d4 for white, e5/d5 for black).
+
+# DROPS
+#
+# For variants that include drops, the default rule is that pieces in-hand may be dropped anywhere on the
+# board, as long as pieces are allowed to move from their new location. You can override this:
+#  Drop zone: all, all
+# allows pieces to be dropped everywhere, while
+#  Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+#  Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+#
+#  Drop zone: rank1, rank8
+# restricts drops to the (own) back rank.
+# Specifying the drop zone in this way implicitly sets the "drop_dead" piece property (see below).
+
+# PROMOTIONS
+#
+# Pieces promote as soon as they reach their promotion zone, to one of the possible promotion choices:
+#  Promotion: rank8, rank1, "QRBN"
+# defines the promotion for a white pawn on rank 8 and for a black pawn on rank 1.
+# A promotion choice of "+" is treated in a special way: if the piece
+# symbol is "P" and it has promotion choice "+", then the piece will be
+# promoted to a piece with symbol "+P". It is your responsibility to make
+# sure that this piece is defined in the game!
+# If capture/drop rules are used, pieces that have a symbol that starts
+# with "+" will be demoted when captured.
+# Example:
+#  Piece: Queen
+#  Move: slide (D,A,H,V)
+#  Symbol: "+P", "+P,+p"
+#
+#  Piece: Pawn
+#  Move: step N
+#  Capture: step NE,NW
+#  Special: rank2, rank7, step 2N
+#  Symbol: " ", "P,p"
+#  Flags: set_ep,take_ep
+#  Promotion: rank8, rank1, "+"
+#
+# This example defines a Queen that will demote to Pawn when captured, and
+# a Pawn whose only promotion choice is the Queen (+P).
+# By default, promotion is mandatory if the piece has no legal moves from a given square, otherwise it is
+# optional. You can override this rule by specifying the optional promotion zone explicitly:
+#  Optional promotion: empty, empty
+# makes all promotions for this piece type mandatory.
+
+# PIECE PROPERTIES
+#
+# Pieces can have a number of special properties, listed on a "Flags:" line. Multiple properties can be
+# specified in one line, separated by a comma. The following properties can be specified:
+#
+#  royal          This is a royal piece: the game is lost if a side were to lose all royal pieces.
+#  set_ep         This piece sets the "en-passant" capture square when it makes a special move.
+#  take_ep        This piece type can capture on the "en-passant" square.
+#  drop_no_check  This piece may not be dropped to give check.
+#  drop_no_mate   This piece may not be dropped to give mate (it may give check).
+#  drop_one_file  This piece may not be dropped on a file that already contains a friendly piece of the same type.
+#  drop_dead      This piece may be dropped even where it cannot move.
+#  no_mate        This piece may not deliver mate. It may deliver check.
+#  shak           This piece delivers a special "shak" check.
+#  assimilate     Pieces that capture this piece promote to this piece.
+#  no_retaliate   After capturing a piece with this flag, your own pieces with the flag may not becaptured the next turn.
+#  endangered     This piece may not capture another endangered piece if that piece is protected.
+#  iron           This piece may not be captured at all.
+#  capture_flag   This piece may "capture the flag". By default, all pieces may do this.
+
+# LIMIT THE NUMBER OF PIECES
+#
+# It is possible to limit the number of pieces of a particular type (by promotion) by specifying that number
+# in a "Max: number" or "Max: white,black" line:
+#  Max: 2
+# allows only two of this piece type for white and for black. You can set a different number for white and for
+# black. Pass 0 to leave this at the default (whch is 1 for royal pieces and unlimited for all other piece
+# types).
+
+# EXTRA RULES AND VICTORY CONDITIONS
+#
+# It's possible to specify a number of extra rule options or game-ending conditions.
+# End-of-game scores can be any of "win", "loss", "draw" or "illegal".
+# The following game-ending conditions can be defined:
+#
+#  checkmate         The enemy royal piece is under attack and cannot avoid being captured (win, loss or draw, normally win)
+#  stalemate         The enemy cannot make any legal moves (win, loss or draw, normally draw)
+#  repeatN           The game is declared a draw if a position occurs for the Nth time (win, loss or draw, normally draw and N = 3)
+#                    Set N=0 to disable any special treatment for repetitions.
+#  perpetual         As repeatN, but refers to in-check positions. If not specified defaults to "repeat" (win, loss, draw or repeat).
+#  loneking          Triggered if a side has a lone king remaining and baring rules are in effect (win, loss or draw, normally loss)
+#  nopieces          Triggered if the side-to-move has no pieces left (win, loss or draw, normally loss).
+#  captureanyflag    Triggered when capturing any flag (win, loss or draw, normally win).
+#  captureallflags   Triggered when capturing all flags (win, loss or draw, normally win).
+#  movecountdraw     After the specified number of reversible moves, the game is declared a draw. Set to 0 to disable.
+#
+# Examples (these are the defaults):
+#  Rule: checkmate = win
+#  Rule: stalemate = draw
+#  Rule: repeat3 = draw
+#  Rule: movecountdraw = 50
+#
+# The following special rules can be defined:
+#
+#  taboo                The kings may not share a ray with no pieces between them
+#  keep capture         Captured pieces are held in your hand (rather than just disappearing)
+#  return capture       Captured pieces are returned to their owner's hand
+#  forced capture       You must make a capture if you can
+#  duplecheck           If a side has more than one king, he is assumed to be in check if all of them are attacked.
+#  check any king       If there are multiple kings, attacking any one of them counts as check.
+#                       Without either of the last two rules a side with more than one king can never be in check.
+#  allow pickup         As a move you can take one of your non-royal pieces from the board into your hand.
+#  allow drops          As a move you may place a piece from your hand on the board.
+#  force drops          If you have a piece in-hand you must place one on the board.
+#  gate drops           You may "gate" pieces from your hand when first moving a back-rank piece.
+#  promote here         A piece that is in the promomotion zone may promote without making a move.
+#  promote drop         A piece that is dropped in the promomotion zone may promote immediately.
+#  special init         Special moves are only allowed if the piece has not moved before.
+#  bare rule            If you have a bare king, you have one turn to bare your opponent's king in turn.
+#  chase rule           Xiangqi-style chases are not allowed.
+#  shak rule            Checkmate can only be given if a chain of checks leading to it contains at least one "shak" check.
+#  en-passant check     Sliding royals can be checked "en-passant", that is, they cannot slide through check.
+#  quiet promotion      Promotion moves must be "quiet" moves.
+#  promote by move      A piece in the promotion zone can promote and move immediately as the new piece.
+#  promote by capture   A piece in the promotion zone can promote only if it captures an enemy piece
+
+
+# PIECE NAMES AND SYMBOLS
+#
+# Pieces can be assigned names and symbols.
+# The piece name property is given on the "Piece:" line. It is an arbitrary
+# string with no special meaning; SjaakII uses this when asked to list the
+# rules and dump the internal board representation, but it is otherwise
+# purely cosmetic.
+# The piece symbol is set using the "Symbol:" property:
+#  Symbol: "N", "N,n"
+# The first string ("N") is used for the output of moves in standard
+# algebraic notation (SAN), for instance "Nf3". The second string ("N,n")
+# identifies the symbol by which the piece is identified in a FEN string,
+# first for white and then for black. Normally, the black character is just
+# the lower case version of the white character, which is in upper case,
+# but Sjaak doesn't require this. The SAN character is normally the same as
+# the white symbol, but again this is not required.
+# There are two special symbols that have meaning when defining piece
+# symbols:
+# If a piece symbol starts with "+", say "+P", then this piece will demote to
+# "P" when captured, and a piece "P" will promote to this piece (if it has
+# promotion choice "+").
+# If a piece symbol ends with "~", say "Q~", then this piece will demote to
+# whichever piece type promotes to "Q~". Make sure that there is a piece
+# type that lists "Q~" as a promotion option!
+
+# PIECE VISUALISATION (XBOARD/WINBOARD)
+#
+# You can specify the piece graphic that is used by XBoard/WinBoard to represent the pieces in your variant.
+# XBoard (4.8) uses a string of 44 (2x22) or more (4.9+) characters in length. To use the N-th image you
+# simply have to replace the N-th character in the string with the symbol you assigned to the piece. The first
+# set of characters are for white, the last set are for black. The last character listed is always the King.
+# The default value of the string is "PNBRQFEACWMOHIJGDVLSUKpnbrqfeacwmohijgdvlsuk", where the characters
+# represent the following pieces:
+#   1 P=Pawn
+#   2 N=Knight
+#   3 B=Bishop
+#   4 R=Rook
+#   5 Q=Queen
+#   6 F=Ferz
+#   7 E=Alfil
+#   8 A=Archbishop
+#   9 C=Chancellor
+#  10 W=Wazir
+#  11 M=Man
+#  12 O=Cannon
+#  13 H=Nightrider
+#  14 I=Dragon Horse
+#  15 J=Dragon King
+#  16 G=Grasshopper
+#  17 D=Alternative Chancellor image
+#  18 V=Falcon
+#  19 L=Lance (or Amazon/Berolina pawn)
+#  20 S=Snake
+#  21 U=Unicorn
+# For XBoard 4.9 and later:
+#  22 L!=Lion
+#  23 W!=Wolf 
+#  24 C'=Camel 
+#  25 Z'=Zebra 
+#  26 Z=Wizard 
+#  27 L'=Amazon (Lance duplicat without Pawn character) 
+#  28 minor Lion (Lion duplicat without trading restriction) 
+#
+# After this follows the "promoted sequence", which is paired against the normal series:
+#  p1 +P=Tokin (turban without ornament) 
+#  p2 +N=Claw 
+#  p3 +B=flat mitre without cross 
+#  p4 +R=roofed Rook without battlements 
+#  p5 +Q=turban with circle ornament (+L in Shogi) 
+#  p6 +F=Sword without stripe 
+#  p7 +E=alternate King (not visually different and still royal) 
+#  p8 +A=alternate Queen (not visually different) 
+#  p9 +C=alternate Lion (not visually different, still untradable) 
+# p10 +W=Rook without battlements 
+# p11 +M=lying sword without stripe 
+# p12 +O=Dolphin 
+# p13 +H=Sword 
+# p14 +I=Leopard 
+# p15 +J=lying sword 
+# p16 +G=turban with star ornament 
+# p17 +D=narrow Queen crown 
+# p18 +V=lying narrow Queen crown 
+# p19 +L=Knight (not visually different) 
+# p20 +S=Elephant (not visually different) 
+# p21 +U=Bishop without cross 
+# p22 +L!=Gnu 
+# p23 +W!=Viking helmet 
+# p24 +C'=Iron General (simple helmet) 
+# p25 +Z'=Champion (hoplit helmet) 
+# p26 +Z=Tower 
+# p27 +L'=Flying Dragon 
+# And finally at the end,
+# xxx K=King 
+#
+# If you do not use a particular bitmap, simply put "." in its place. Example:
+#  XBoard pieces: "PNBRQFEACWMOHIJGDVLSUKpnbrqfeacwmohijgdvlsuk"
+# When specifying the string, you can write both "XBoard" and "WinBoard".
+
+
+
+#############################################################
+# Example: duplicate the definition for standard FIDE chess #
+#############################################################
+Variant: FIDE Chess (8x8)                                      # Name with which the variant can be selected
+Board: 8x8                                                     # Board size
+FEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"    # Startup FEN, pieces defined below
+XBoard pieces: "PNBRQKpnbrqk"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8                          # Special regions on the board, used below
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white e1-g1 with h1
+Castle: white e1-c1 with a1
+Castle: black e8-g8 with h8
+Castle: black e8-c8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Initial: step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "QRBN"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+############################################################################################
+# Example: wolves and Sheep. The wolves try to corner the sheep, the sheep tries to escape #
+############################################################################################
+Variant: Wolves and Sheep (8x8)
+Board: 8x8
+FEN: "1w1w1w1w/8/8/8/8/8/8/4S3 w - -"
+XBoard pieces: ".....W...S.................w...s............"
+BlackFlag: a8,b8,c8,d8,e8,f8,g8,h8
+
+Piece: Sheep
+Move: leap (1,1)
+Capture: none
+Symbol: "S", "S,s"
+
+Piece: Wolf
+Move: aleap (1,1)|(-1,1)
+Capture: none
+Symbol: "W", "W,w"
+
+Rule: captureanyflag = win
+Rule: stalemate = win
+
+
+
+###########################
+# Maharaja and the Sepoys #
+###########################
+Variant: Maharaja
+Board: 8x8
+FEN: "rnbqkbnr/pppppppp/8/8/8/8/8/4M3/ w KQkq -"
+XBoard pieces: ".........M............pnbrq................k"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 32
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 32
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 50
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 95
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: black e8-g8 with h8
+Castle: black e8-c8 with a8
+
+Piece: Maharaja
+Move: slide (D,A,H,V)
+Move: leap (2,1)
+Symbol: "M", "M,m"
+Flags: royal
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "QRBN"
+Value: 10
+
+
+
+
+
+######################################################
+# Peasant Revolt (Pritchard 2007, chessvariants.org) #
+######################################################
+Variant: Peasant's Revolt (8x8)
+Board: 8x8
+FEN: "1nn1k1n1/4p3/8/8/8/8/PPPPPPPP/4K3 w - -"
+XBoard pieces: "PNBRQKpnbrqk"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 250
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Symbol: " ", "P,p"
+Promotion: rank8, rank1, "QRBN"
+Value: 100
+
+
+
+
+###################################
+# Corridor Chess (Pritchard 2007) #
+###################################
+Variant: Corridor Chess (8x8)
+Board: 8x8
+FEN: "1nrqkrn1/2b2b2/1pppppp1/8/8/1PPPPPP1/2B2B2/1NRQKRN1 w - -"
+XBoard pieces: "PNBRQKpnbrqk"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Symbol: " ", "P,p"
+Promotion: rank8, rank1, "QRBN"
+Value: 100
+
+
+
+
+############################################################
+# Legan's chess (http://en.wikipedia.org/wiki/Legan_chess) #
+############################################################
+Variant: Legan's Chess (8x8)
+Board: 8x8
+FEN: "knbrp3/bqpp4/npp5/rp1p3P/p3P1PR/5PPN/4PPQB/3PRBNK w - -"
+XBoard pieces: "PNBRQKpnbrqk"
+Zone: white_promo = a5,a6,a7,a8,b8,c8,d8
+Zone: black_promo = e1,f1,g1,h1,h2,h3,h4
+
+# Define the pieces
+Piece: Knight                                                  # New piece and its name
+Move: leap (2,1)                                               # Movement type
+Symbol: "N", "N,n"                                             # Symbol used for SAN and symbols used in FEN
+Value: 320                                                     # Piece value, used by evaluation
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+
+Piece: Pawn
+Move: step NW
+Capture: step N,W
+Symbol: " ", "P,p"
+Promotion: white_promo, black_promo, "QRBN"
+Value: 100
+
+
+
+
+##################################
+# Diamond Chess (Pritchard 2007) #
+##################################
+Variant: Diamond Chess (8x8)
+Board: 8x8
+FEN: "krbp4/rqnp4/nbpp4/pppp4/4PPPP/4PPBN/4PNQR/4PBRK w - -"
+XBoard pieces: "PNBRQKpnbrqk"
+Zone: white_promo = a1,a2,a3,a4,a5,a6,a7,a8,b8,c8,d8,e8,f8,g8,h8
+Zone: black_promo = a1,b1,c1,d1,e1,f1,g1,h1,h2,h3,h4,h5,h6,h7,h8
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+
+Piece: Pawn
+Move: step NW
+Capture: step N,W
+Symbol: " ", "P,p"
+Promotion: white_promo, black_promo, "QRBN"
+Value: 100
+
+
+
+
+###################################
+# Diagonal Chess (Pritchard 2007) #
+###################################
+Variant: Diagonal Chess (8x8)
+Board: 8x8
+FEN: "4pnrk/4pbpr/4pbqn/4pppp/PPPP4/NQBP4/RPBP4/KRNP4 w - -"
+XBoard pieces: "PNBRQKpnbrqk"
+Zone: white_promo = h1,h2,h3,h4,h5,h6,h7,a8,b8,c8,d8,e8,f8,g8,h8
+Zone: black_promo = a1,b1,c1,d1,e1,f1,g1,h1,a2,a3,a4,a5,a6,a7,a8
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+
+Piece: Pawn
+Move: step NE
+Capture: step N,E
+Symbol: " ", "P,p"
+Promotion: white_promo, black_promo, "QRBN"
+Value: 100
+
+
+
+
+#################################
+# Corner Chess (Pritchard 2007) #
+#################################
+Variant: Corner Chess (8x8)
+Board: 8x8
+FEN: "kbp2pbq/nrp2prn/pp4pp/8/8/PP4PP/NRP2PRN/QBP2PBK w - -"
+XBoard pieces: "PNBRQKpnbrqk"
+Zone: white_promo = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: black_promo = a1,b1,c1,d1,e1,f1,g1,h1
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+
+Piece: Pawn
+Move: step NE,NW
+Capture: step N
+Symbol: " ", "P,p"
+Promotion: white_promo, black_promo, "QRBN"
+Value: 100
+
+
+
+############################################################################
+# A variant of Shatranj with dabbabah's, supposedly from 9th century India #
+############################################################################
+Variant: Ninth Century Indian Chess (8x8)
+Board: 8x8
+FEN: "dnrkfrnd/pppppppp/8/8/8/8/PPPPPPPP/DNRKFRND w - -"
+XBoard pieces: "PN.R.F........D......Kpn.r.f........d......k"     # Use the "crowned rook" for the dabbabah
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Dabbabah
+Move: leap (2,0)
+Symbol: "D", "D,d"
+Value: 200
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Ferz
+Move: leap (1,1)
+Symbol: "F", "F,f"
+Value: 150
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Symbol: " ", "P,p"
+Promotion: rank8, rank1, "F"
+Value: 100
+
+Rule: stalemate = win      # The stale-mated player wins (!)
+Rule: loneking = loss
+
+
+
+
+###########################################################################
+# Troitzky chess                                                          #
+# http://www.chessvariants.org/index/msdisplay.php?itemid=MPtroitzkychess #
+###########################################################################
+Variant: Troitzky Chess (10x10)
+Board: 10x10
+FEN: "****qk****/**rnbbnr**/*pppppppp*/*8*/10/10/*8*/*PPPPPPPP*/**RNBBNR**/****QK**** w - -"
+XBoard pieces: "PNBRQKpnbrqk"
+Zone: white_promotion = a6,b8,c9,d9,e10,f10,g9,h9,i8,j6
+Zone: black_promotion = a5,b3,c2,d2,e1,f1,g2,h2,i3,j5
+Zone: rank8 = b8,c8,d8,e8,f8,g8,h8,i8
+Zone: rank3 = b3,c3,d3,e3,f3,g3,h3,i3
+Exclude: a1,b1,c1,d1,g1,h1,i1,j1,a2,b2,i2,j2,a3,j3,a4,j4
+Exclude: a10,b10,c10,d10,g10,h10,i10,j10,a9,b9,i9,j9,a8,j8,a7,j7
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white f2-e1 with e1
+Castle: white f2-f1 with f1
+Castle: black f9-e10 with e10
+Castle: black f9-f10 with f10
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank3, rank8, step 2N
+Symbol: " ", "P,p"
+Promotion: white_promotion, black_promotion, "QRBN"
+Value: 100
+
+
+
+###########################################################################
+# Troitzky chess, Byway setup                                             #
+# http://www.chessvariants.org/index/msdisplay.php?itemid=MPtroitzkychess #
+###########################################################################
+Variant: Troitzky Chess Byway (10x10)
+Board: 10x10
+FEN: "****rr****/**nbqkbn**/*pppppppp*/*8*/10/10/*8*/*PPPPPPPP*/**NBQKBN**/****RR**** w KQkq -"
+XBoard pieces: "PNBRQKpnbrqk"
+Zone: white_promotion = a6,b8,c9,d9,e10,f10,g9,h9,i8,j6
+Zone: black_promotion = a5,b3,c2,d2,e1,f1,g2,h2,i3,j5
+Zone: rank8 = b8,c8,d8,e8,f8,g8,h8,i8
+Zone: rank3 = b3,c3,d3,e3,f3,g3,h3,i3
+Exclude: a1,b1,c1,d1,g1,h1,i1,j1,a2,b2,i2,j2,a3,j3,a4,j4
+Exclude: a10,b10,c10,d10,g10,h10,i10,j10,a9,b9,i9,j9,a8,j8,a7,j7
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white f2-e1 with e1
+Castle: white f2-f1 with f1
+Castle: black f9-e10 with e10
+Castle: black f9-f10 with f10
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank3, rank8, step 2N
+Symbol: " ", "P,p"
+Promotion: white_promotion, black_promotion, "QRBN"
+Value: 100
+
+
+
+##########################################
+# Twilight Chess, with drops and pickups #
+##########################################
+Variant: Twilight Chess (8x8)
+Board: 8x8
+FEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"
+XBoard pieces: "PNBRQKpnbrqk"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white e1-g1 with h1
+Castle: white e1-c1 with a1
+Castle: black e8-g8 with h8
+Castle: black e8-c8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "QRBN"
+Value: 100
+
+Rule: allow pickup, allow drops
+
+
+
+##################
+# Judkins' Shogi #
+##################
+Variant: Judkins' Shogi (6x6)
+Board: 6x6
+FEN: "rbnsgk/5p/6/6/P5/KGSNBR"
+XBoard pieces: "PNBR.S...G.++++.+Kpnbr.s...g.++++.+k"
+XBoard parent: "shogi"
+Zone: white_promotion = a5,b5,c5,d5,e5,f5,a6,b6,c6,d6,e6,f6
+Zone: black_promotion = a2,b2,c2,d2,e2,f2,a1,b1,c1,d1,e1,f1
+
+# Define the pieces
+Piece: Knight
+Move: aleap (1,2)|(-1,2)
+Symbol: "N", "N,n"
+Promotion: white_promotion, black_promotion, "+"
+Value: 250
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Promotion: white_promotion, black_promotion, "+"
+Value: 575
+
+Piece: Silver general
+Move: aleap (0,1)|(1,1)|(1,-1)|(-1,-1)|(-1,1)
+Symbol: "S", "S,s"
+Promotion: white_promotion, black_promotion, "+"
+Value: 375
+
+Piece: Gold general
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "G", "G,g"
+Value: 450
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Promotion: white_promotion, black_promotion, "+"
+Value: 650
+
+Piece: Pawn
+Move: step N
+Symbol: "P", "P,p"
+Promotion: white_promotion, black_promotion, "+"
+Flags: drop_no_mate, drop_one_file
+Value: 80
+
+Piece: Promoted Knight
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "+N", "+N,+n"
+Value: 500
+
+Piece: Dragon Horse
+Move: slide (D,A)
+Move: leap (1, 0)
+Symbol: "+B", "+B,+b"
+Value: 825
+
+Piece: Promoted Silver
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "+S", "+S,+s"
+Value: 490
+
+Piece: Dragon King
+Move: slide (H,V)
+Move: leap (1, 1)
+Symbol: "+R", "+R,+r"
+Value: 950
+
+Piece: Promoted Pawn
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "+P", "+P,+p"
+Value: 530
+
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+
+Rule: keep capture, allow drops
+Rule: repeat4 = draw
+Rule: perpetual = illegal
+
+
+
+###################################################################
+# Omicron chess: omega chess on a smaller board (2 ranks deleted) #
+###################################################################
+Variant: Omicron Chess (12x10)
+Board: 12x10
+FEN: "w**********w/*crnbqkbnrc*/*pppppppppp*/*10*/*10*/*10*/*10*/*PPPPPPPPPP*/*CRNBQKBNRC*/W**********W w KQkq -"
+XBoard pieces: "PNBRQ..C.W...........Kpnbrq..c.w...........k"
+
+Exclude: b1,c1,d1,e1,f1,g1,h1,i1,j1,k1
+Exclude: b10,c10,d10,e10,f10,g10,h10,i10,j10,k10
+Exclude: a2,a3,a4,a5,a6,a7,a8,a9
+Exclude: l2,l3,l4,l5,l6,l7,l8,l9
+Zone: white_promotion = b9,c9,d9,e9,f9,g9,h9,i9,j9,k9;
+Zone: black_promotion = b2,c2,d2,e2,f2,g2,h2,i2,j2,k2;
+Zone: rank3 = b3,c3,d3,e3,f3,g3,h3,i3,j3,k3;
+Zone: rank8 = b8,c8,d8,e8,f8,g8,h8,i8,j8,k8;
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 250
+
+Piece: Champion
+Move: leap (0,1)|(0,2)|(2,2)
+Symbol: "C", "C,c"
+Value: 375
+
+Piece: Wizard
+Move: leap (1,1)|(1,3)
+Symbol: "W", "W,w"
+Value: 350
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 400
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 600
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white g2-i2 with j2
+Castle: white g2-e2 with c2
+Castle: black g9-i9 with h9
+Castle: black g9-e9 with j9
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank3, rank8, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: white_promotion, black_promotion, "QRBNWC"
+Value: 100
+
+
+
+#############
+# EuroShogi #
+#############
+Variant: EuroShogi (8x8)
+Board: 8x8
+FEN: "1nbgkgn1/1r4b1/pppppppp/8/8/PPPPPPPP/1B4R1/1NGKGBN1[-] w 0 1"
+XBoard pieces: "PNBR.....G.++++Kpnbr.....g.++++k"
+XBoard parent: "shogi"
+Zone: white_promotion = a8,b8,c8,d8,e8,f8,g8,h8,a7,b7,c7,d7,e7,f7,g7,h7,a6,b6,c6,d6,e6,f6,g6,h6
+Zone: black_promotion = a3,b3,c3,d3,e3,f3,g3,h3,a2,b2,c2,d2,e2,f2,g2,h2,a1,b1,c1,d1,e1,f1,g1,h1
+
+# Define the pieces
+Piece: Knight
+Move: aleap (1,2)|(-1,2)|(1,0)|(-1,0)
+Symbol: "N", "N,n"
+Promotion: white_promotion, black_promotion, "+"
+Optional promotion: empty, empty
+Value: 250
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Promotion: white_promotion, black_promotion, "+"
+Optional promotion: empty, empty
+Value: 575
+
+Piece: Gold general
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "G", "G,g"
+Value: 450
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Promotion: white_promotion, black_promotion, "+"
+Optional promotion: empty, empty
+Value: 650
+
+Piece: Pawn
+Move: step N
+Symbol: "P", "P,p"
+Promotion: white_promotion, black_promotion, "+"
+Optional promotion: empty, empty
+Flags: drop_no_mate, drop_one_file
+Value: 80
+
+Piece: Promoted Knight
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "+N", "+N,+n"
+Value: 500
+
+Piece: Dragon Horse
+Move: slide (D,A)
+Move: leap (1, 0)
+Symbol: "+B", "+B,+b"
+Value: 825
+
+Piece: Dragon King
+Move: slide (H,V)
+Move: leap (1, 1)
+Symbol: "+R", "+R,+r"
+Value: 950
+
+Piece: Promoted Pawn
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "+P", "+P,+p"
+Value: 530
+
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+
+Rule: keep capture, allow drops
+Rule: repeat4 = draw
+
+
+
+#############
+# YariShogi #
+#############
+Variant: YariShogi (7x9)
+Board: 7x9
+FEN: "rnnkbbr/7/ppppppp/7/7/7/PPPPPPP/7/RBBKNNR[-] w 0 1"
+XBoard pieces: "PNBR.......++++Kpnbr.......++++k"
+XBoard parent: "shogi"
+Zone: white_promotion = a9,b9,c9,d9,e9,f9,g9,a8,b8,c8,d8,e8,f8,g8,a7,b7,c7,d7,e7,f7,g7
+Zone: black_promotion = a3,b3,c3,d3,e3,f3,g3,a2,b2,c2,d2,e2,f2,g2,a1,b1,c1,d1,e1,f1,g1
+
+# Define the pieces
+Piece: YariKnight
+Move: aleap (1,2)|(-1,2)
+Move: step 9N
+Symbol: "N", "N,n"
+Promotion: white_promotion, black_promotion, "+"
+Value: 300
+
+Piece: YariBishop
+Move: aleap (1,1)|(-1,1)
+Move: step 9N
+Symbol: "B", "B,b"
+Promotion: white_promotion, black_promotion, "+"
+Value: 400
+
+Piece: YariRook
+Move: slide (H)
+Move: step 9N
+Symbol: "R", "R,r"
+Promotion: white_promotion, black_promotion, "+"
+Value: 550
+
+Piece: Pawn
+Move: step N
+Symbol: "P", "P,p"
+Promotion: white_promotion, black_promotion, "+"
+Flags: drop_no_mate, drop_one_file
+Value: 80
+
+Piece: YariSilver
+Move: aleap (0,1)|(1,1)|(-1,1)
+Move: step 9S
+Symbol: "+P", "+P,+p"
+Value: 375
+
+Piece: YariGoldKnight
+Move: aleap (0,1)|(1,1)|(-1,1)|(0,1)|(0,-1)
+Move: step 9S
+Symbol: "+N", "+N,+n"
+Value: 425
+
+Piece: YariGoldBishop
+Move: aleap (0,1)|(1,1)|(-1,1)|(0,1)|(0,-1)
+Move: step 9S
+Symbol: "+B", "+B,+b"
+Value: 425
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "+R", "+R,+r"
+Value: 650
+
+Piece: General
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+
+Rule: keep capture, allow drops
+Rule: repeat4 = draw
+Rule: perpetual = loss
+
+
+
+#################
+# Goro Goro Shogi #
+#################
+Variant: GoroGoro Shogi (5x6)
+Board: 5x6
+FEN: "sgkgs/5/1ppp1/1PPP1/5/SGKGS[-] w 0 1"
+XBoard pieces: "P....S...G.+....+Kp....s...g.+....+k"
+XBoard parent: "shogi"
+Zone: white_promotion = a5,b5,c5,d5,e5,a6,b6,c6,d6,e6
+Zone: black_promotion = a2,b2,c2,d2,e2,a1,b1,c1,d1,e1
+
+# Define the pieces
+Piece: Silver general
+Move: aleap (0,1)|(1,1)|(1,-1)|(-1,-1)|(-1,1)
+Symbol: "S", "S,s"
+Promotion: white_promotion, black_promotion, "+"
+Value: 375
+
+Piece: Gold general
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "G", "G,g"
+Value: 450
+
+Piece: Pawn
+Move: step N
+Symbol: "P", "P,p"
+Promotion: white_promotion, black_promotion, "+"
+Flags: drop_no_mate, drop_one_file
+Value: 80
+
+Piece: Promoted Silver
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "+S", "+S,+s"
+Value: 490
+
+Piece: Promoted Pawn
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "+P", "+P,+p"
+Value: 530
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+
+Rule: keep capture, allow drops
+Rule: repeat4 = draw
+Rule: perpetual = loss
+
+
+
+#######################################
+# Goro Goro Shogi Knight & Lance Drop #
+#######################################
+Variant: GoroGoroNL Shogi (5x6)
+Board: 5x6
+FEN: "sgkgs/5/1ppp1/1PPP1/5/SGKGS[NLnl] w 0 1"
+XBoard pieces: "PN..LS...G.++..++Kpn..ls...g.++..++k"
+XBoard parent: "shogi"
+Zone: white_promotion = a5,b5,c5,d5,e5,a6,b6,c6,d6,e6
+Zone: black_promotion = a2,b2,c2,d2,e2,a1,b1,c1,d1,e1
+
+# Define the pieces
+
+Piece: Silver general
+Move: aleap (0,1)|(1,1)|(1,-1)|(-1,-1)|(-1,1)
+Symbol: "S", "S,s"
+Promotion: white_promotion, black_promotion, "+"
+Value: 375
+
+Piece: Gold general
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "G", "G,g"
+Value: 450
+
+Piece: Pawn
+Move: step N
+Symbol: "P", "P,p"
+Promotion: white_promotion, black_promotion, "+"
+Flags: drop_no_mate, drop_one_file
+Value: 80
+
+Piece: Knight
+Move: aleap (1,2)|(-1,2)
+Symbol: "N", "N,n"
+Promotion: white_promotion, black_promotion, "+"
+Value: 250
+
+Piece: Lance
+Move: step 5N
+Symbol: "L", "L,l"
+Promotion: white_promotion, black_promotion, "+"
+Value: 250
+
+Piece: Promoted Silver
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "+S", "+S,+s"
+Value: 490
+
+Piece: Promoted Pawn
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "+P", "+P,+p"
+Value: 530
+
+Piece: Promoted Knight
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "+N", "+N,+n"
+Value: 500
+
+Piece: Promoted Lance
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Symbol: "+L", "+L,+l"
+Value: 480
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+
+Rule: keep capture, allow drops
+Rule: repeat4 = draw
+Rule: perpetual = loss
+
+
+
+###############################
+# Ouk Chatrang, per Pritchard #
+###############################
+Variant: Cambodian (Ouk Chatrang)
+Board: 8x8
+FEN: "rnsmksnr/8/pppppppp/8/8/PPPPPPPP/8/RNSKMSNR w DEde - 0 1"
+XBoard pieces: "PN.R.M....SKpn.r.m....sk"
+XBoard parent: "makruk"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank6 = a6,b6,c6,d6,e6,f6,g6,h6
+Zone: rank3 = a3,b3,c3,d3,e3,f3,g3,h3
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 325
+
+Piece: Silver general
+Move: aleap (0,1)|(1,1)|(1,-1)|(-1,-1)|(-1,1)
+Symbol: "S", "S,s"
+Value: 275
+
+Piece: Met
+Move: leap (1,1)
+Special: rank1, rank8, aleap (-1,1)|(1,1) | (0,2)
+Symbol: "M", "M,m"
+Value: 150
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Special: rank1, rank8, aleap (-1,1)|(0,1)|(1,1)|(-1,0)|(1,0) | (-2,1)|(2,)
+Symbol: "K", "K,k"
+Flags: royal
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Symbol: " ", "P,p"
+Promotion: rank6, rank3, "M"
+Optional promotion: empty, empty
+Value: 80
+
+Rule: special init
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+
+##########################################################
+# Mini XiangQi, http://mlwi.magix.net/bg/minixiangqi.htm #
+##########################################################
+Variant: Mini Xiangqi
+Board: 7x7
+FEN: "rchkhcr/p1ppp1p/7/7/7/P1PPP1P/RCHKHCR w 0 1"
+XBoard pieces: "PH.R.....K.C.ph.r.....k.c."
+XBoard parent: "xiangqi"
+Zone: palace = c1,d1,e1,c2,d2,e2,c3,d3,e3,c5,d5,e5,c6,d6,e6,c7,d7,e7
+
+Piece: Knight
+Move: leap (1,0)+(1,1)&(2,1)
+Symbol: "H", "H,h"
+Value: 400
+
+Piece: Cannon
+Move: slide (H,V)
+Capture: hop (H,V)
+Symbol: "C", "C,c"
+Value: 450
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 950
+
+Piece: King
+Move: leap (0,1)
+Prison: palace, palace
+Symbol: "K", "K,k"
+Flags: royal
+
+Piece: Pawn
+Move: aleap (1,0)|(0,1)|(-1,0)
+Symbol: "P", "P,p"
+Value: 200
+
+Rule: taboo, chase rule
+Rule: checkmate = win
+Rule: stalemate = win
+Rule: repeat3 = draw
+
+
+
+#####################################################################################
+# Elven chess, http://www.chessvariants.org/index/msdisplay.php?itemid=MSelvenchess #
+# This is an XBoard standard variant under the name "elven", so "XBoard pieces" and #
+# "XBoard parent" are not needed.                                                   #
+#####################################################################################
+Variant: Elven (Chu) Chess
+Board: 10x10
+
+FEN: "r3k4r/mnb+rql+bbnm/pppppppppp/10/10/10/10/PPPPPPPPPP/MNB+BLQ+RBNM/R4K3R w KQkq - 0 1"
+#XBoard pieces: "PNBRQ.....M.+++......LKpnbrq.....m.+++......lk"
+#XBoard parent: elven
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8,i8,j8
+Zone: rank3 = a3,b3,c3,d3,e3,f3,g3,h3,i3,j3
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 300
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 350
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white f1-i1 with j1
+Castle: white f1-c1 with a1
+Castle: black f10-i10 with j10
+Castle: black f10-c10 with a10
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank3, rank8, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank3, "QRBN"
+Value: 100
+
+Piece: Dwarf
+Move: leap (0,1)|(1,1)
+Symbol: "M", "M,m"
+Value: 300
+
+Piece: Elf
+Move: slide (D,A)
+Move: leap (0,1)
+Symbol: "+B", "+B,+b"
+Value: 525
+
+Piece: Goblin
+Move: slide (H,V)
+Move: leap (1,1)
+Symbol: "+R", "+R,+r"
+Value: 725
+
+Piece: Warlock
+Move: leap ((0,1)|(1,1))+((0,1)|(1,1))
+Flags: no_retaliate,endangered
+Symbol: "L", "L,l"
+Value: 1500
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+
+####################
+# Example: 3-check #
+####################
+Variant: 3check (8x8)
+Board: 8x8
+FEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"
+XBoard pieces: "PNBRQKpnbrqk"
+XBoard parent: "3check"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white e1-g1 with h1
+Castle: white e1-c1 with a1
+Castle: black e8-g8 with h8
+Castle: black e8-c8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "QRBN"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+Rule: check3 = win
+
+
+
+####################
+# Might Lion Chess #
+####################
+Variant: Lion (8x8, Mighty Lion)
+Board: 8x8
+
+FEN: "rlbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RLBQKBNR w KQkq - 0 1"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8                          # Special regions on the board, used below
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 300
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 350
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white e1-g1 with h1
+Castle: white e1-c1 with a1
+Castle: black e8-g8 with h8
+Castle: black e8-c8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "QRBN"
+Value: 100
+
+Piece: Lion
+Move: leap ((0,1)|(1,1))+((0,1)|(1,1))
+Flags: no_retaliate,endangered
+Symbol: "L", "L,l"
+Value: 1500
+
+####################
+# Chancellor Chess #
+####################
+Variant: Chancellor (8x8)
+Board: 8x8
+FEN: "rnbckbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBCKBNR w KQkq -"
+XBoard pieces: "PNBR............CKpnbr............ck"
+XBoard parent: "fairy"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Chancellor
+Move: leap (2,1)
+Move: slide (H,V)
+Symbol: "C", "C,c"
+Value: 875
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white e1-g1 with h1
+Castle: white e1-c1 with a1
+Castle: black e8-g8 with h8
+Castle: black e8-c8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "CRBN"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+################
+# Amazon Chess #
+################
+Variant: Amazon (8x8)
+Board: 8x8
+FEN: "rnbakbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBAKBNR w KQkq -"
+XBoard pieces: "PNBR..............AKpnbr..............ak"
+XBoard parent: "fairy"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Amazon
+Move: leap (2,1)
+Move: slide (D,A,H,V)
+Symbol: "A", "A,a"
+Value: 1200
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white e1-g1 with h1
+Castle: white e1-c1 with a1
+Castle: black e8-g8 with h8
+Castle: black e8-c8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "ARBN"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+################
+# Musketeerish #
+################
+Variant: Musketeer
+Board: 8x8
+FEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR[EAMCHDULeamchdul] w KGFDCBQkgfdcbq -"
+XBoard pieces: "PNBRQ.EAM..CLF.S.HD.UKpnbrqfeam..cl....hdsuk"
+FEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR[CLcl] w KGFDCBQkgfdcbq -"
+XBoard pieces: "PNBRQ......CL........Kpnbrq......cl........k"
+XBoard parent: "seirawan"
+
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: Dragon
+Move: slide (D,A,H,V)
+Move: leap (2,1)
+Symbol: "D", "D,d"
+Value: 1200
+
+Piece: Chancellor
+Move: slide (H,V)
+Move: leap (2,1)
+Symbol: "M", "M,m"
+Value: 875
+
+Piece: Archbishop
+Move: slide (A,D)
+Move: leap (2,1)
+Symbol: "A", "A,a"
+Value: 825
+
+Piece: Elephant
+Move: leap (2,0)|(2,2)|(1,1)|(1,0)
+Symbol: "E", "E,e"
+Value: 500
+
+Piece: Hawk
+Move: leap (2,0)|(2,2)|(3,3)|(3,0)
+Symbol: "H", "H,h"
+Value: 425
+
+Piece: Leopard
+Move: leap (2,1)
+Move: step 2NE,2NW,2SE,2SW
+Symbol: "L", "L,l"
+Value: 500
+
+Piece: Cannon
+Move: aleap (2,0)|(-2,0)|(0,2)|(0,-2)|(1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(1,-1)|(-1,1)|(-1,-1)|(2,1)|(2,-1)|(-2,1)|(-2,-1)
+Symbol: "C", "C,c"
+Value: 500
+
+Piece: Unicorn
+Move: leap (2,1)|(3,1)
+Symbol: "U", "U,u"
+Value: 425
+
+Piece: Fortress
+Move: aleap (1,2)|(-1,2)|(1,-2)|(-1,-2)|(2,0)|(-2,0)|(0,2)|(0,-2)
+Move: step 3NE,3NW,3SE,3SW
+Symbol: "F", "F,f"
+Value: 700
+
+Piece: Spider
+Move: leap (1,2)|(0,2)
+Move: step 2NE,2NW,2SE,2SW
+Symbol: "S", "S,s"
+Value: 800
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white e1-g1 with h1
+Castle: white e1-c1 with a1
+Castle: black e8-g8 with h8
+Castle: black e8-c8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "CLQRBN"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+Rule: gate drops
+
+
+
+#################################################
+# Archer/Spanish chess. Supposedly from 1739    #
+# See http://www.quadibloc.com/chess/ch0502.htm #
+#################################################
+Variant: Spanish archer (10x8)
+Board: 10x8
+FEN: "rnbaqkabnr/pppppppppp/10/10/10/10/PPPPPPPPPP/RNBAQKABNR w KQkq -"
+XBoard pieces: "PNBRQ.........AKpnbrq.........ak"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8,i8,j8
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7,i7,j7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2,i2,j2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1,i1,j1
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Archer
+Move: step 9N,9SE,9SW
+Symbol: "A", "A,a"
+Value: 400
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white f1-i1 with j1
+Castle: white f1-c1 with a1
+Castle: black f8-i8 with j8
+Castle: black f8-c8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "QARBN"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+
+###################################################################################
+# Enlarged and Improved Chess                                                     #
+# http://www.quadibloc.com/chess/ch0502.htm                                       #
+# http://www.chess10x10.com/10x10-chess-variants-Enlarged-and-Improved-Chess.html #
+###################################################################################
+Variant: Enlarged and improved chess
+Board: 10x10
+FEN: "rnbgqkgbnr/ppppeepppp/4pp4/10/10/10/10/4PP4/PPPPEEPPPP/RNBGQKGBNR w KQkq -"
+XBoard pieces: "PNBRQ........EGKpnbrq........egk"
+Zone: rank10 = a10,b10,c10,d10,e10,f10,g10,h10,i10,j10
+Zone: rank9 = a9,b9,c9,d9,e9,f9,g9,h9,i9,j9
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2,i2,j2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1,i1,j1
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Guard
+Move: slide (H,V)
+Capture: slide (D,A)
+Symbol: "G", "G,g"
+Value: 400
+
+Piece: Ensign
+Move: slide (D,A)
+Capture: slide (H,V)
+Symbol: "E", "E,e"
+Value: 450
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white f1-i1 with j1
+Castle: white f1-c1 with a1
+Castle: black f8-i8 with j8
+Castle: black f8-c8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank9, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank10, rank1, "QEGRBN"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+
+#####################################################
+# Diana Chess                                       #
+# http://www.chessvariants.com/small.dir/diana.html #
+#####################################################
+Variant: diana
+Board: 6x6
+FEN: "rbnkbr/pppppp/6/6/PPPPPP/RBNKBR w - -"
+XBoard pieces: "PNBR.Kpnbr.k"
+Zone: rank6 = a6,b6,c6,d6,e6,f6
+Zone: rank1 = a1,b1,c1,d1,e1,f1
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 575
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 600
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 650
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+# Castling: does not work correctly in XBoard, which cannot place the king correctly
+Castle: white d1-f1 with f1
+Castle: white d1-a1 with a1
+Castle: black d8-f8 with f8
+Castle: black d8-a8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank6, rank1, "RBN"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+
+####################################################
+# Sherwin's Chess                                  #
+# http://talkchess.com/forum/viewtopic.php?t=58943 #
+####################################################
+Variant: Sherwin's Chess
+Board: 8x8
+FEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"
+XBoard pieces: "PNBRQKpnbrqk"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+# Define the pieces
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white e1-g1 with h1
+Castle: white e1-c1 with a1
+Castle: black e8-g8 with h8
+Castle: black e8-c8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "QRBN"
+Optional promotion: empty, rank2, "N"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+
+##################################
+# Viceroy Chess                  #
+# http://elajedrezdelvirrey.com/ #
+##################################
+Variant: Viceroy
+Board: 8x8
+FEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"
+XBoard pieces: "PNBRQ.....VKpnbrq.....vk"
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rook8 = a8,h8
+Zone: knight8 = b8,g8
+Zone: bishop8 = c8,f8
+Zone: queen8 = d8
+Zone: viceroy8 = e8
+Zone: rook1 = a1,h1
+Zone: knight1 = b1,g1
+Zone: bishop1 = c1,f1
+Zone: queen1 = d1
+Zone: viceroy1 = e1
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white e1-g1 with h1
+Castle: white e1-c1 with a1
+Castle: black e8-g8 with h8
+Castle: black e8-c8 with a8
+
+Piece: Viceroy
+Move: leap (0,1)|(1,1)
+Symbol: "V", "V,v"
+Value: 250
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rook8, rook1, "R"
+Promotion: knight8, knight1, "N"
+Promotion: bishop8, bishop1, "B"
+Promotion: queen8, queen1, "Q"
+Promotion: viceroy8, viceroy1, "V"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+
+#############################################################
+# Chaturanga                                                #
+# http://www.chessvariants.com/old.dir/chaturanga.html      #
+# http://www.chessvariants.com/historic.dir/chaturanga.html #
+#############################################################
+Variant: chaturanga
+Board: 8x8
+FEN: "rnekfenr/pppppppp/8/8/8/8/PPPPPPPP/RNEFKENR w Ed"
+XBoard pieces: "PN.R.FEKpn.r.fek"
+XBoard parent: "shatranj"
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rook8 = a8,h8
+Zone: knight8 = b8,g8
+Zone: bishop8 = c8,f8
+Zone: queen8 = e8
+Zone: pawn8 = d8
+Zone: rook1 = a1,h1
+Zone: knight1 = b1,g1
+Zone: bishop1 = c1,f1
+Zone: queen1 = d1
+Zone: pawn1 = e1
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 600
+Max: 2
+
+Piece: Elephant
+Move: leap (2,2)
+Symbol: "E", "E,e"
+Value: 150
+Max: 2
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 1000
+Max: 2
+
+Piece: Ferz
+Move: leap (1,1)
+Symbol: "F", "F,f"
+Value: 250
+Max: 1
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Special: pawn1, pawn8, leap (2,1)
+Symbol: "K", "K,k"
+Flags: royal
+Max: 1
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Symbol: " ", "P,p"
+Promotion: rook8, rook1, "R"
+Promotion: knight8, knight1, "N"
+Promotion: bishop8, bishop1, "E"
+Promotion: queen8, queen1, "F"
+Promotion: pawn8, pawn1, "K"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = win
+Rule: repeat3 = draw
+Rule: bare rule
+Rule: special init
+
+
+
+##############################################################################################
+# Some form of suicide chess                                                                 #
+# Piece values from http://www.ke.tu-darmstadt.de/publications/papers/ICGA-ChessVariants.pdf #
+##############################################################################################
+Variant: suicide
+Board: 8x8
+FEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - -"
+XBoard pieces: "PNBRQKpnbrqk"
+XBoard parent: "suicide"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: -320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: -450
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: -500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: -480
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Value: -300
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "KQRBN"
+Value: -250
+
+Rule: stalemate = loss
+Rule: nopieces = win
+Rule: repeat3 = draw
+Rule: forced capture
+
+
+
+###################################################################
+# Roman Chess                                                     #
+# http://www.chess10x10.com/10x10-chess-variants-Roman-Chess.html #
+###################################################################
+Variant: roman
+Board: 10x10
+FEN: "rnabqkbanr/pppppppppp/10/10/10/10/10/10/PPPPPPPPPP/RNABQKBANR w KQkq -"
+XBoard pieces: "PNBRQ.....AKpnbrq.....ak"
+Zone: rank9 = a9,b9,c9,d9,e9,f9,g9,h9,i9,j9
+Zone: rank10 = a10,b10,c10,d10,e10,f10,g10,h10,i10,j10
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1,i1,h1
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2,i2,h2
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 300
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white f1-i1 with j1
+Castle: white f1-c1 with a1
+Castle: black f10-i10 with j10
+Castle: black f10-c10 with a10
+
+Piece: Archer
+Move: leap (0,1)|(1,1)
+Symbol: "A", "A,a"
+Value: 275
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank9, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank10, rank1, "RNABQ"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+
+########################################################################
+# Schoolbook Chess                                                     #
+# http://www.chessvariants.com/index/msdisplay.php?itemid=MSschoolbook #
+########################################################################
+Variant: Schoolbook (10x8)
+Board: 10x8
+FEN: "rqnbakbncr/pppppppppp/10/10/10/10/PPPPPPPPPP/RQNBAKBNCR w KQkq -"
+XBoard pieces: "PNBRQ..ACKpnbrq..ack"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8,i8,j8
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7,i7,j7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2,i2,j2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1,i1,j1
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 275
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 350
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 475
+
+Piece: Chancellor
+Move: leap (2,1)
+Move: slide (H,V)
+Symbol: "C", "C,c"
+Value: 875
+
+Piece: Archbishop
+Move: leap (2,1)
+Move: slide (D,A)
+Symbol: "A", "A,a"
+Value: 825
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white f1-i1,h1    with j1
+Castle: white f1-c1,b1,d1 with a1
+Castle: black f8-i8,h8    with j8
+Castle: black f8-c8,b8,d8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "QACRBN"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+
+################################
+# Supercapablanca Chess        #
+# Pritchard, CECV section 14.1 #
+################################
+Variant: supercapablanca (12x8)
+Board: 12x8
+FEN: "rnbacqkgabnr/pppppppppppp/12/12/12/12/PPPPPPPPPPPP/RNBACQKGABNR w KQkq -"
+XBoard pieces: "PNBRQ..AC......GKpnbrq..ac......gk"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8,i8,j8,k8,l8
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7,i7,j7,k7,l7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2,i2,j2,k2,l2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 275
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 350
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 475
+
+Piece: Chancellor
+Move: leap (2,1)
+Move: slide (H,V)
+Symbol: "C", "C,c"
+Value: 875
+
+Piece: Archbishop
+Move: leap (2,1)
+Move: slide (D,A)
+Symbol: "A", "A,a"
+Value: 825
+
+Piece: General
+Move: leap (2,1)
+Move: slide (D,A,H,V)
+Symbol: "G", "G,g"
+Value: 1200
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Special: rank1, rank8, leap (2,1)
+Castle: white g1-i1,j1,k1 with l1
+Castle: white g1-e1,d1,c1 with a1
+Castle: black g8-i8,j8,k8 with l8
+Castle: black g8-e8,d8,c8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "GQACRBN"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+Rule: special init
+
+
+
+##########################################################
+# Wildebeest Chess                                       #
+# http://www.chessvariants.com/large.dir/wildebeest.html #
+##########################################################
+Variant: Wildebeest (11x10)
+Board: 11x10
+FEN: "rnccgkqbbnr/ppppppppppp/11/11/11/11/11/11/PPPPPPPPPPP/RNBBQKGCCNR w KQkq - 0 1"
+XBoard pieces: "PNBRQ...................C......GKpnbrq...................c......gk"
+Zone: rank10 = a10,b10,c10,d10,e10,f10,g10,h10,i10,j10,k10
+Zone: rank9 = a9,b9,c9,d9,e9,f9,g9,h9,i9,j9,k9
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8,i8,j8,k8
+Zone: rank3 = a3,b3,c3,d3,e3,f3,g3,h3,i3,j3,k3
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2,i2,j2,k2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 275
+
+Piece: Camel
+Move: leap (3,1)
+Symbol: "C", "C,c"
+Value: 225
+
+Piece: Gnu
+Move: leap (2,1)|(3,1)
+Symbol: "G", "G,g"
+Value: 700
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 350
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 475
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white f1-g1,h1,i1,j1 with k1
+Castle: white f1-e1,d1,c1,b1 with a1
+Castle: black f10-g10,h10,i10,j10 with k10
+Castle: black f10-e10,d10,c10,b10 with a10
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Initial: step 3N
+Special: rank3, rank8, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank10, rank1, "GQCRBN"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+
+####################### 
+# WaShogi, with drops # 
+####################### 
+Variant: Wa-Shogi-drop (11x11) 
+Board: 11x11 
+FEN: "hmlcvkwgudo/1e3s3f1/ppprpppxppp/3p3p3/11/11/11/3P3P3/PPPXPPPRPPP/1F3S3E1/ODUGWKVCLMH w 0 1"
+XBoard pieces: "P..^S^FV..^LW^OH.F.^R.E....R...D.GOL^M..^H.M.C.^CU.^W/.......^V.^P.^U..^DS.^GXKp..^s^fv..^lw^oh.f.^r.e....r...d.gol^m..^h.m.c.^cu.^w/.......^v.^p.^u..^ds.^gxk"
+XBoard parent:  "chu" 
+Zone: white_promotion = a11,b11,c11,d11,e11,f11,g11,h11,i11,j11,k11,a10,b10,c10,d10,e10,f10,g10,h10,i10,j10,k10,a9,b9,c9,d9,e9,f9,g9,h9,i9,j9,k9
+Zone: black_promotion = a3,b3,c3,d3,e3,f3,g3,h3,i3,j3,k3,a2,b2,c2,d2,e2,f2,g2,h2,i2,j2,k2,a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1 
+
+# crane King, K=King 
+# cloud Eagle, E
+# flying Falcon F promotes to *Tenacious Falcon 
+# Swallows wings, S promotes to *Gliding Swallow 
+# treacherous foX, X
+# running Rabbit, R promotes to *Treacherous fox 
+# violent Wolf, W promotes to *Bear's Eyes 
+# Violent stag, V promotes to *Roaming Boar 
+# flying Goose, G promotes to *Swallow's Wings 
+# flying Cock, C promotes to *Raiding Falcon 
+# strUtting crow, U promotes to *Flying Falcon 
+# swooping owL, L promotes to *Cloud Eagle 
+# blind Dog, D promotes to *Violent Wolf 
+# climbing Monkey, M promotes to *Violent Stag 
+# liberated Horse, H promotes to  *Heavenly Horse 
+# Oxcart, O promotes to *Plodding Ox 
+# sparrow Pawn, P=Pawn promotes to *Golden Bird 
+
+Piece: Crane King 
+Symbol: "K", "K,k" 
+Move: leap (0,1)|(1,1) 
+Flags: royal 
+
+Piece: Cloud Eagle 
+Symbol: "E", "E,e" 
+Move: slide (V) 
+Move: step W,E,SW,SE,3NW,3NE 
+Value: 850 
+
+Piece: Treacherous Fox 
+Symbol: "X", "X,x" 
+Move: aleap (1,1)|(2,2)|(-1,1)|(-2,2)|(1,-1)|(2,-2)|(-1,-1)|(-2,-2)|(0,1)|(0,2)|(0,-1)|(0,-2)
+Value: 750 
+
+Piece: Flying Falcon 
+Symbol: "F", "F,f" 
+Move: slide (D,A) 
+Move: step N 
+Promotion: white_promotion, black_promotion, "+" 
+Value: 600 
+
+Piece: Tenacious Falcon 
+Symbol: "+F", "+F,+f" 
+Move: slide (V,A,D) 
+Move: step W,E 
+Value: 700 
+
+Piece: Running Rabbit 
+Symbol: "R", "R,r" 
+Move: step NE,NW,SE,S,SW,10N
+Promotion: white_promotion, black_promotion, "+" 
+Value: 400 
+
+Piece: Promoted Running Rabbit 
+Symbol: "+R", "+R,+r" 
+Move: aleap (1,1)|(2,2)|(-1,1)|(-2,2)|(1,-1)|(2,-2)|(-1,-1)|(-2,-2)|(0,1)|(0,2)|(0,-1)|(0,-2)
+Value: 750 
+
+Piece: Violent Wolf 
+Symbol: "W", "W,w" 
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Promotion: white_promotion, black_promotion, "+" 
+Value: 400 
+
+Piece: Bears Eyes 
+Symbol: "+W", "+W,+w" 
+Move: leap (0,1)|(1,1) 
+
+Piece: Violent Stag 
+Symbol: "V", "V,v" 
+Move: aleap (0,1)|(1,1)|(1,-1)|(-1,-1)|(-1,1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Roaming Boar 
+Symbol: "+V", "+V,+v" 
+Move: aleap (1,0)|(-1,0)|(0,1)|(1,1)|(-1,1)|(-1,-1)|(1,-1)
+
+Piece: Blind Dog 
+Symbol: "D", "D,d" 
+Move: aleap (-1,1)|(1,1)|(-1,0)|(1,0)|(0,-1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Promoted Blind Dog 
+Symbol: "+D", "+D,+d" 
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+
+Piece: Climbing Monkey 
+Symbol: "M", "M,m" 
+Move: aleap (-1,1)|(0,1)|(1,1)|(0,-1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Promoted Climbing Monkey 
+Symbol: "+M", "+M,+m" 
+Move: aleap (0,1)|(1,1)|(1,-1)|(-1,-1)|(-1,1)
+
+Piece: Flying Goose 
+Symbol: "G", "G,g" 
+Move: aleap (-1,1)|(0,1)|(1,1)|(0,-1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Promoted Flying Goose 
+Symbol: "+G", "+G,+g" 
+Move: slide (H) 
+Move: aleap (0,1)|(0,-1)
+
+Piece: Flying Cock 
+Symbol: "C", "C,c" 
+Move: aleap (-1,1)|(-1,0)|(1,1)|(1,0)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Raiding Falcon 
+Symbol: "+C", "+C,+c" 
+Move: aleap (-1,1)|(-1,0)|(1,1)|(1,0)
+Move: slide (V)
+
+Piece: Swallows Wings 
+Symbol: "S", "S,s" 
+Move: slide (H) 
+Move: aleap (0,1)|(0,-1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Gliding Swallow 
+Symbol: "+S", "+S,+s" 
+Move: slide (H,V)
+
+Piece: Strutting Crow 
+Symbol: "U", "U,u" 
+Move: aleap (-1,-1)|(1,-1)|(0,1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Promoted Strutting Cow 
+Symbol: "+U", "+U,+u" 
+Move: slide (D,A) 
+Move: step N 
+
+Piece: Swooping Owl 
+Symbol: "L", "L,l" 
+Move: aleap (-1,-1)|(1,-1)|(0,1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Cloud Eagle (Promoted Swooping Owl) 
+Symbol: "+L", "+L,+l" 
+Move: slide (V) 
+Move: step W,E,SW,SE,3NW,3NE 
+
+Piece: Liberated Horse 
+Symbol: "H", "H,h" 
+Move: step 10N,2S 
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Heavenly Horse 
+Symbol: "+H", "+H,+h" 
+Move: aleap (1,2)|(-1,2)|(1,-2)|(-1,-2) 
+
+Piece: Oxcart 
+Symbol: "O", "O,o" 
+Move: step 10N 
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Plodding Ox (Promoted Oxcart) 
+Symbol: "+O", "+O,+o" 
+Move: leap (0,1)|(1,1) 
+
+Piece: Sparrow Pawn 
+Symbol: "P", "P,p" 
+Move: step N
+Promotion: white_promotion, black_promotion, "+" 
+Flags: drop_no_mate, drop_one_file 
+Value: 80 
+
+Piece: Golden Bird (Promoted Sparrow Pawn)
+Symbol: "+P", "+P,+p" 
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1) 
+Value: 450 
+
+Rule: keep capture, allow drops 
+Rule: repeat4 = draw 
+Rule: perpetual4 = loss 
+
+
+
+########################## 
+# WaShogi, without drops # 
+########################## 
+Variant: Wa-Shogi (11x11) 
+Board: 11x11 
+FEN: "hmlcvkwgudo/1e3s3f1/ppprpppxppp/3p3p3/11/11/11/3P3P3/PPPXPPPRPPP/1F3S3E1/ODUGWKVCLMH w 0 1"
+XBoard pieces: "P..^S^FV..^LW^OH.F.^R.E....R...D.GOL^M..^H.M.C.^CU.^W/.......^V.^P.^U..^DS.^GXKp..^s^fv..^lw^oh.f.^r.e....r...d.gol^m..^h.m.c.^cu.^w/.......^v.^p.^u..^ds.^gxk"
+XBoard parent:  "chu" 
+Zone: white_promotion = a11,b11,c11,d11,e11,f11,g11,h11,i11,j11,k11,a10,b10,c10,d10,e10,f10,g10,h10,i10,j10,k10,a9,b9,c9,d9,e9,f9,g9,h9,i9,j9,k9
+Zone: black_promotion = a3,b3,c3,d3,e3,f3,g3,h3,i3,j3,k3,a2,b2,c2,d2,e2,f2,g2,h2,i2,j2,k2,a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1 
+
+# crane King, K=King 
+# cloud Eagle, E
+# flying Falcon F promotes to *Tenacious Falcon 
+# Swallows wings, S promotes to *Gliding Swallow 
+# treacherous foX, X
+# running Rabbit, R promotes to *Treacherous fox 
+# violent Wolf, W promotes to *Bear's Eyes 
+# Violent stag, V promotes to *Roaming Boar 
+# flying Goose, G promotes to *Swallow's Wings 
+# flying Cock, C promotes to *Raiding Falcon 
+# strUtting crow, U promotes to *Flying Falcon 
+# swooping owL, L promotes to *Cloud Eagle 
+# blind Dog, D promotes to *Violent Wolf 
+# climbing Monkey, M promotes to *Violent Stag 
+# liberated Horse, H promotes to  *Heavenly Horse 
+# Oxcart, O promotes to *Plodding Ox 
+# sparrow Pawn, P=Pawn promotes to *Golden Bird 
+
+Piece: Crane King 
+Symbol: "K", "K,k" 
+Move: leap (0,1)|(1,1) 
+Flags: royal 
+
+Piece: Cloud Eagle 
+Symbol: "E", "E,e" 
+Move: slide (V) 
+Move: step W,E,SW,SE,3NW,3NE 
+Value: 850 
+
+Piece: Treacherous Fox 
+Symbol: "X", "X,x" 
+Move: aleap (1,1)|(2,2)|(-1,1)|(-2,2)|(1,-1)|(2,-2)|(-1,-1)|(-2,-2)|(0,1)|(0,2)|(0,-1)|(0,-2)
+Value: 750 
+
+Piece: Flying Falcon 
+Symbol: "F", "F,f" 
+Move: slide (D,A) 
+Move: step N 
+Promotion: white_promotion, black_promotion, "+" 
+Value: 600 
+
+Piece: Tenacious Falcon 
+Symbol: "+F", "+F,+f" 
+Move: slide (V,A,D) 
+Move: step W,E 
+Value: 700 
+
+Piece: Running Rabbit 
+Symbol: "R", "R,r" 
+Move: step NE,NW,SE,S,SW,10N
+Promotion: white_promotion, black_promotion, "+" 
+Value: 400 
+
+Piece: Promoted Running Rabbit 
+Symbol: "+R", "+R,+r" 
+Move: aleap (1,1)|(2,2)|(-1,1)|(-2,2)|(1,-1)|(2,-2)|(-1,-1)|(-2,-2)|(0,1)|(0,2)|(0,-1)|(0,-2)
+Value: 750 
+
+Piece: Violent Wolf 
+Symbol: "W", "W,w" 
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Promotion: white_promotion, black_promotion, "+" 
+Value: 400 
+
+Piece: Bears Eyes 
+Symbol: "+W", "+W,+w" 
+Move: leap (0,1)|(1,1) 
+
+Piece: Violent Stag 
+Symbol: "V", "V,v" 
+Move: aleap (0,1)|(1,1)|(1,-1)|(-1,-1)|(-1,1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Roaming Boar 
+Symbol: "+V", "+V,+v" 
+Move: aleap (1,0)|(-1,0)|(0,1)|(1,1)|(-1,1)|(-1,-1)|(1,-1)
+
+Piece: Blind Dog 
+Symbol: "D", "D,d" 
+Move: aleap (-1,1)|(1,1)|(-1,0)|(1,0)|(0,-1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Promoted Blind Dog 
+Symbol: "+D", "+D,+d" 
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+
+Piece: Climbing Monkey 
+Symbol: "M", "M,m" 
+Move: aleap (-1,1)|(0,1)|(1,1)|(0,-1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Promoted Climbing Monkey 
+Symbol: "+M", "+M,+m" 
+Move: aleap (0,1)|(1,1)|(1,-1)|(-1,-1)|(-1,1)
+
+Piece: Flying Goose 
+Symbol: "G", "G,g" 
+Move: aleap (-1,1)|(0,1)|(1,1)|(0,-1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Promoted Flying Goose 
+Symbol: "+G", "+G,+g" 
+Move: slide (H) 
+Move: aleap (0,1)|(0,-1)
+
+Piece: Flying Cock 
+Symbol: "C", "C,c" 
+Move: aleap (-1,1)|(-1,0)|(1,1)|(1,0)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Raiding Falcon 
+Symbol: "+C", "+C,+c" 
+Move: aleap (-1,1)|(-1,0)|(1,1)|(1,0)
+Move: slide (V)
+
+Piece: Swallows Wings 
+Symbol: "S", "S,s" 
+Move: slide (H) 
+Move: aleap (0,1)|(0,-1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Gliding Swallow 
+Symbol: "+S", "+S,+s" 
+Move: slide (H,V)
+
+Piece: Strutting Crow 
+Symbol: "U", "U,u" 
+Move: aleap (-1,-1)|(1,-1)|(0,1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Promoted Strutting Cow 
+Symbol: "+U", "+U,+u" 
+Move: slide (D,A) 
+Move: step N 
+
+Piece: Swooping Owl 
+Symbol: "L", "L,l" 
+Move: aleap (-1,-1)|(1,-1)|(0,1)
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Cloud Eagle (Promoted Swooping Owl) 
+Symbol: "+L", "+L,+l" 
+Move: slide (V) 
+Move: step W,E,SW,SE,3NW,3NE 
+
+Piece: Liberated Horse 
+Symbol: "H", "H,h" 
+Move: step 10N,2S 
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Heavenly Horse 
+Symbol: "+H", "+H,+h" 
+Move: aleap (1,2)|(-1,2)|(1,-2)|(-1,-2) 
+
+Piece: Oxcart 
+Symbol: "O", "O,o" 
+Move: step 10N 
+Promotion: white_promotion, black_promotion, "+" 
+
+Piece: Plodding Ox (Promoted Oxcart) 
+Symbol: "+O", "+O,+o" 
+Move: leap (0,1)|(1,1) 
+
+Piece: Sparrow Pawn 
+Symbol: "P", "P,p" 
+Move: step N
+Promotion: white_promotion, black_promotion, "+" 
+Flags: drop_no_mate, drop_one_file 
+Value: 80 
+
+Piece: Golden Bird (Promoted Sparrow Pawn)
+Symbol: "+P", "+P,+p" 
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1) 
+Value: 450 
+
+Rule: repeat4 = draw 
+Rule: perpetual4 = loss 
+
+
+
+######################################################################
+# Theban Chess, http://www.talkchess.com/forum/viewtopic.php?t=52277 #
+######################################################################
+Variant: Theban
+Board: 8x8
+FEN: "1p6/2p3kn/3p2pp/4pppp/5ppp/8/PPPPPPPP/PPPPPPKN w - - 0 1"
+XBoard pieces: "PNBRQKpnbrqk"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Special: rank2, rank7, step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "QRBN"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+
+####################
+# Nightrider chess #
+####################
+Variant: Nightrider (8x8)
+Board: 8x8
+FEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -"
+XBoard pieces: "P.BRQ.......NKp.brq.......nk"
+Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8
+Zone: rank7 = a7,b7,c7,d7,e7,f7,g7,h7
+Zone: rank2 = a2,b2,c2,d2,e2,f2,g2,h2
+Zone: rank1 = a1,b1,c1,d1,e1,f1,g1,h1
+
+Piece: Nightrider
+Move: ride (2,1)
+Symbol: "N", "N,n"
+Value: 550
+
+Piece: Bishop
+Move: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Value: 950
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Flags: royal
+Castle: white e1-g1 with h1
+Castle: white e1-c1 with a1
+Castle: black e8-g8 with h8
+Castle: black e8-c8 with a8
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Initial: step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank8, rank1, "QRBN"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+
+
+
+#######################################################
+# Caissa Britannia                                    #
+# http://www.chessvariants.com/large.dir/british.html #
+#######################################################
+Variant: Caissa Britannia (10x10)
+Board: 10x10
+FEN: "drubqkburd/1l6l1/pppppppppp/10/10/10/10/PPPPPPPPPP/1L6L1/DRUBQKBURD[NNNNNNNNNNnnnnnnnnnn] w - - 0 1"
+XBoard parent: "grand"
+XBoard pieces: "PNBRQ...............U.........D.LKpnbrq...............u.........d.lk"
+Zone: rank10 = a10,b10,c10,d10,e10,f10,g10,h10,i10,j10
+Zone: rank1  = a1,b1,c1,d1,e1,f1,g1,h1,i1,j1
+
+Piece: Knight
+Move: leap (2,1)
+Symbol: "N", "N,n"
+Value: 320
+
+Piece: Unicorn
+Move: slide (D,A)
+Move: ride (2,1)
+Symbol: "U", "U,u"
+Value: 925
+Max: 2
+
+Piece: Dragon
+Move: ride (0,2)|(2,2)
+Symbol: "D", "D,d"
+Value: 300
+Max: 2
+
+Piece: Lion
+Move: slide (A,D,H,V)
+Capture: hop (A,D,H,V)
+Symbol: "L", "L,l"
+Value: 475
+Max: 2
+
+Piece: Bishop
+Move: slide (D,A)
+Move: leap (1,0)
+Capture: slide (D,A)
+Symbol: "B", "B,b"
+Value: 325
+Max: 2
+
+Piece: Rook
+Move: slide (H,V)
+Symbol: "R", "R,r"
+Value: 500
+Max: 2
+
+Piece: Queen
+Move: slide (D,A,H,V)
+Symbol: "Q", "Q,q"
+Flags: royal
+
+Piece: King
+Move: leap (0,1)|(1,1)
+Symbol: "K", "K,k"
+Value: 250
+Max: 2
+
+Piece: Pawn
+Move: step N
+Capture: step NE,NW
+Initial: step 2N
+Symbol: " ", "P,p"
+Flags: set_ep,take_ep
+Promotion: rank10, rank1, "RBNUDKL"
+Value: 100
+
+Rule: checkmate = win
+Rule: stalemate = draw
+Rule: repeat3 = draw
+Rule: en-passant check
+
+
+
+######################################################
+# Kyoto Shogi, with promotion/demotion on every move #
+######################################################
+Variant: Kyoto Shogi
+Board: 5x5
+XBoard pieces: "P^G^S^P.....GS.......^T...TKp^g^s^p.....gs.......^t...tk"
+XBoard parent: "shogi"
+FEN: "pgkst/5/5/5/TSKGP w 0 1"
+
+Piece: King
+Move: leap (0,1)|(1,1) 
+Symbol: "K", "K,k" 
+Flags: royal 
+
+Piece: Pawn 
+Symbol: "P", "P,p" 
+Move: step N 
+Promotion: all, all, "+" 
+Optional promotion: empty, empty
+Flags: drop_dead
+
+Piece: Rook 
+Symbol: "+P", "+P,+p" 
+Move: slide (H,V) 
+Promotion: all, all, "P" 
+Demotion: "P" 
+Optional promotion: empty, empty
+
+Piece: Tokin
+Symbol: "T", "T,t" 
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Promotion: all, all, "+" 
+Optional promotion: empty, empty
+
+Piece: Lance
+Symbol: "+T", "+T,+t"
+Move: step 5N
+Promotion: all, all, "T"
+Demotion: "T"
+Optional promotion: empty, empty
+Flags: drop_dead
+
+Piece: Silver general
+Symbol: "S", "S,s"
+Move: aleap (0,1)|(1,1)|(1,-1)|(-1,-1)|(-1,1)
+Promotion: all, all, "+"
+Optional promotion: empty, empty
+
+Piece: Bishop
+Symbol: "+S", "+S,+s"
+Move: slide (D,A)
+Promotion: all, all, "S"
+Demotion: "S"
+Optional promotion: empty, empty
+
+Piece: Gold general
+Symbol: "G", "G,g"
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Promotion: all, all, "+"
+Optional promotion: empty, empty
+
+Piece: Knight
+Symbol: "+G", "+G,+g"
+Move: aleap (1,2)|(-1,2)
+Promotion: all, all, "G"
+Demotion: "G"
+Optional promotion: empty, empty
+Flags: drop_dead
+
+Rule: keep capture, allow drops, promote drop
+Rule: repeat4 = draw 
+Rule: perpetual = loss 
+
+
+
+#########################################################
+# Micro Shogi, with promotion/demotion on every capture #
+#########################################################
+Variant: Micro Shogi
+Board: 4x5
+XBoard pieces: "P^G^S^P.....GS.......^T...TKp^g^s^p.....gs.......^t...tk"
+XBoard parent: "shogi"
+FEN: "kbgs/p3/4/3P/SGBK w 0 1"
+
+Piece: King
+Move: leap (0,1)|(1,1) 
+Symbol: "K", "K,k" 
+Flags: royal 
+
+Piece: Pawn 
+Symbol: "P", "P,p" 
+Move: step N 
+Promotion: all, all, "+" 
+Optional promotion: empty, empty
+Flags: drop_dead
+
+Piece: Rook 
+Symbol: "+G", "+G,+G" 
+Move: slide (H,V) 
+Promotion: all, all, "G" 
+Demotion: "G" 
+Optional promotion: empty, empty
+
+Piece: Tokin
+Symbol: "+B", "+B,+b" 
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Promotion: all, all, "B" 
+Demotion: "B" 
+Optional promotion: empty, empty
+
+Piece: Lance
+Symbol: "+S", "+S,+s"
+Move: step 5N
+Promotion: all, all, "S"
+Demotion: "S"
+Optional promotion: empty, empty
+Flags: drop_dead
+
+Piece: Silver general
+Symbol: "S", "S,s"
+Move: aleap (0,1)|(1,1)|(1,-1)|(-1,-1)|(-1,1)
+Promotion: all, all, "+"
+Optional promotion: empty, empty
+
+Piece: Bishop
+Symbol: "B", "B,b"
+Move: slide (D,A)
+Promotion: all, all, "+"
+Optional promotion: empty, empty
+
+Piece: Gold general
+Symbol: "G", "G,g"
+Move: aleap (1,0)|(-1,0)|(0,1)|(0,-1)|(1,1)|(-1,1)
+Promotion: all, all, "+"
+Optional promotion: empty, empty
+
+Piece: Knight
+Symbol: "+P", "+P,+p"
+Move: aleap (1,2)|(-1,2)
+Promotion: all, all, "P"
+Demotion: "P"
+Optional promotion: empty, empty
+Flags: drop_dead
+
+Rule: keep capture, allow drops, promote drop, promote by capture
+Rule: repeat4 = draw 
+Rule: perpetual = loss 
+
