@@ -30,4 +30,5 @@ private:
     static QString GetWhaleShogiImageFileName(PieceColour pieceColour, PieceType pieceType);
     static QString GetYariShogiImageFileName(PieceColour pieceColour, PieceType pieceType);
     static QString GetSittuyinImageFileName(PieceColour pieceColour, PieceType pieceType);
+    static QString GetJanggiImageFileName(PieceColour pieceColour, PieceType pieceType);
 };

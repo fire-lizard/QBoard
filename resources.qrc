@@ -2603,4 +2603,84 @@
         <file>images_mak2/WhiteQueen.png</file>
         <file>images_mak2/WhiteRook.png</file>
     </qresource>
+    <qresource prefix="/pieces_kor">
+        <file>images_kor/badvisor.png</file>
+        <file>images_kor/bcannon.png</file>
+        <file>images_kor/bchariot.png</file>
+        <file>images_kor/belephant.png</file>
+        <file>images_kor/bhorse.png</file>
+        <file>images_kor/bking.png</file>
+        <file>images_kor/bpawn.png</file>
+        <file>images_kor/radvisor.png</file>
+        <file>images_kor/rcannon.png</file>
+        <file>images_kor/rchariot.png</file>
+        <file>images_kor/relephant.png</file>
+        <file>images_kor/rhorse.png</file>
+        <file>images_kor/rking.png</file>
+        <file>images_kor/rpawn.png</file>
+    </qresource>
+    <qresource prefix="/pieces_kor2">
+        <file>images_kor2/badvisor.png</file>
+        <file>images_kor2/bcannon.png</file>
+        <file>images_kor2/bchariot.png</file>
+        <file>images_kor2/belephant.png</file>
+        <file>images_kor2/bhorse.png</file>
+        <file>images_kor2/bking.png</file>
+        <file>images_kor2/bpawn.png</file>
+        <file>images_kor2/radvisor.png</file>
+        <file>images_kor2/rcannon.png</file>
+        <file>images_kor2/rchariot.png</file>
+        <file>images_kor2/relephant.png</file>
+        <file>images_kor2/rhorse.png</file>
+        <file>images_kor2/rking.png</file>
+        <file>images_kor2/rpawn.png</file>
+    </qresource>
+    <qresource prefix="/pieces_kor3">
+        <file>images_kor3/Cho Sa.png</file>
+        <file>images_kor3/Cho Po.png</file>
+        <file>images_kor3/Cho Cha.png</file>
+        <file>images_kor3/Cho Sang.png</file>
+        <file>images_kor3/Cho Ma.png</file>
+        <file>images_kor3/Cho Gung.png</file>
+        <file>images_kor3/Cho Jol.png</file>
+        <file>images_kor3/Han Sa.png</file>
+        <file>images_kor3/Han Po.png</file>
+        <file>images_kor3/Han Cha.png</file>
+        <file>images_kor3/Han Sang.png</file>
+        <file>images_kor3/Han Ma.png</file>
+        <file>images_kor3/Han Gung.png</file>
+        <file>images_kor3/Han Jol.png</file>
+    </qresource>
+    <qresource prefix="/pieces_kor4">
+        <file>images_kor4/Cho Sa.png</file>
+        <file>images_kor4/Cho Po.png</file>
+        <file>images_kor4/Cho Cha.png</file>
+        <file>images_kor4/Cho Sang.png</file>
+        <file>images_kor4/Cho Ma.png</file>
+        <file>images_kor4/Cho Gung.png</file>
+        <file>images_kor4/Cho Jol.png</file>
+        <file>images_kor4/Han Sa.png</file>
+        <file>images_kor4/Han Po.png</file>
+        <file>images_kor4/Han Cha.png</file>
+        <file>images_kor4/Han Sang.png</file>
+        <file>images_kor4/Han Ma.png</file>
+        <file>images_kor4/Han Gung.png</file>
+        <file>images_kor4/Han Jol.png</file>
+    </qresource>
+    <qresource prefix="/pieces_kor5">
+        <file>images_kor5/Cho Sa.png</file>
+        <file>images_kor5/Cho Po.png</file>
+        <file>images_kor5/Cho Cha.png</file>
+        <file>images_kor5/Cho Sang.png</file>
+        <file>images_kor5/Cho Ma.png</file>
+        <file>images_kor5/Cho Gung.png</file>
+        <file>images_kor5/Cho Jol.png</file>
+        <file>images_kor5/Han Sa.png</file>
+        <file>images_kor5/Han Po.png</file>
+        <file>images_kor5/Han Cha.png</file>
+        <file>images_kor5/Han Sang.png</file>
+        <file>images_kor5/Han Ma.png</file>
+        <file>images_kor5/Han Gung.png</file>
+        <file>images_kor5/Han Jol.png</file>
+    </qresource>
 </RCC>

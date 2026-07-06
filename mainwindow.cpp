@@ -210,6 +210,9 @@ void MainWindow::on_actionAbout_triggered()
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Makruk graphics by Vuthy Tan<br/>");
+	aboutStr.append("Janggi graphics by Jun Koo Hea<br/>");
+	aboutStr.append("Chess graphics by Chess Wizard<br/>");
+	aboutStr.append("Xiangqi graphics by Xiangqi Wizard<br/>");
 	aboutStr.append("Shatar and Sittuyin graphics by Mats Winther<br/>");
 	aboutStr.append("Wa Shogi Mnemonic graphics by Ilya V. Novikov<br/>");
 	aboutStr.append("Ko Shogi graphics by TKR101010 (from Deviantart)<br/>");

@@ -159,13 +159,19 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     switch (gameVariant)
     {
     case Xiangqi:
-    case Janggi:
         if (pieceStyle == European) return ":/pieces_eur/images/";
         if (pieceStyle == Mnemonic) return ":/pieces_xia/images_xia/";
         if (pieceStyle == Asian) return ":/pieces_chi/images_chi/";
         if (pieceStyle == Asian2) return ":/pieces_chi2/images_chi2/";
         if (pieceStyle == Asian3) return ":/pieces_chi3/images_chi3/";
         return ":/pieces_chi4/images_chi4/";
+    case Janggi:
+        if (pieceStyle == European) return ":/pieces_eur/images/";
+        if (pieceStyle == Mnemonic) return ":/pieces_kor2/images_kor2/";
+        if (pieceStyle == Asian) return ":/pieces_kor/images_kor/";
+        if (pieceStyle == Asian2) return ":/pieces_kor3/images_kor3/";
+        if (pieceStyle == Asian3) return ":/pieces_kor4/images_kor4/";
+        return ":/pieces_kor5/images_kor5/";
     case MicroShogi:
     case KyotoShogi:
         return ":/pieces_kyo/images_kyo/";
@@ -254,9 +260,13 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     switch (gameVariant)
     {
     case Xiangqi:
-    case Janggi:
         imageFileName = pieceStyle == European ?
             GetImageFileName(pieceColour, pieceType, isPromoted) : GetXiangqiImageFileName(pieceColour, pieceType);
+        break;
+    case Janggi:
+        if (pieceStyle == European) imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Mnemonic || pieceStyle == Asian) imageFileName = GetXiangqiImageFileName(pieceColour, pieceType);
+        else imageFileName = GetJanggiImageFileName(pieceColour, pieceType);
         break;
     case MicroShogi:
     case KyotoShogi:
@@ -1437,7 +1447,7 @@ QString GraphicsManager::GetWaShogiImageFileName(PieceStyle pieceStyle, PieceCol
 
 QString GraphicsManager::GetToriShogiImageFileName(PieceStyle pieceStyle, PieceColour pieceColour, PieceType pieceType)
 {
-    if (pieceStyle == European || pieceStyle == Mnemonic)
+    if (pieceStyle == European)
     {
         QString colour = pieceColour == White ? "B" : "W";
         switch (pieceType)
@@ -1537,6 +1547,31 @@ QString GraphicsManager::GetSittuyinImageFileName(PieceColour pieceColour, Piece
         return colour + "g.png";
     case Pawn:
         return colour + "p.png";
+    default:
+        return "";
+    }
+}
+
+
+QString GraphicsManager::GetJanggiImageFileName(PieceColour pieceColour, PieceType pieceType)
+{
+    QString colour = pieceColour == White ? "Han " : "Cho ";
+    switch (pieceType)
+    {
+    case King:
+        return colour + "Gung.png";
+    case Rook:
+        return colour + "Cha.png";
+    case Cannon:
+        return colour + "Po.png";
+    case Elephant:
+        return colour + "Sang.png";
+    case Silver:
+        return colour + "Sa.png";
+    case Pawn:
+        return colour + "Jol.png";
+    case Knight:
+        return colour + "Ma.png";
     default:
         return "";
     }
