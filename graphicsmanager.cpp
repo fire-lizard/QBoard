@@ -149,10 +149,35 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         }
         break;
     case Xiangqi:
-    case Janggi:
         if (pieceStyle == European || pieceStyle == Asian)
         {
             painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
+        else if (pieceStyle == Asian3)
+        {
+            painter.drawPixmap(i * w + w / 10, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
+        else if (pieceStyle == Asian4)
+        {
+            painter.drawPixmap(i * w + w / 8, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
+        else
+        {
+            painter.drawPixmap(i * w + w / 6, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
+        break;
+    case Janggi:
+        if (pieceStyle == European)
+        {
+            painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
+        else if (pixmap.size().width() < 32)
+        {
+            painter.drawPixmap(i * w + w / 3.25, j * h + h / 3.25, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
+        else if (pieceStyle == Asian2 || pieceStyle == Asian3 || pieceStyle == Asian4)
+        {
+            painter.drawPixmap(i * w + w / 4.5, j * h + h / 4.5, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
         else
         {

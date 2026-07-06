@@ -77,6 +77,14 @@ void EngineManager::on_toolButton_clicked()
             {
                 SetImageInCell(currentRow, 5, engineDir.filePath("logo.png"));
             }
+            else if (QFile::exists(engineDir.filePath("logo.jpg")))
+            {
+                SetImageInCell(currentRow, 5, engineDir.filePath("logo.jpg"));
+            }
+            else if (QFile::exists(engineDir.filePath("logo.gif")))
+            {
+                SetImageInCell(currentRow, 5, engineDir.filePath("logo.gif"));
+            }
         }
         else
         {

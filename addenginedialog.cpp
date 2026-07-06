@@ -66,7 +66,7 @@ void AddEngineDialog::SetEngineOptions(const QString& engineOptions) const
 void AddEngineDialog::on_toolButton_clicked()
 {
 #ifdef Q_OS_WIN
-    const QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", "Programs (*.exe)");
+    const QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", "Programs (*.exe *.bat)");
 #else
     const QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", "Programs (*)");
 #endif
