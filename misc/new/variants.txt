@@ -3488,7 +3488,7 @@ Piece: Pawn
 Move: step N
 Symbol: "P", "P,p"
 Promotion: white_promotion, black_promotion, "+"
-Value: 80                                            \
+Value: 80
 
 
 Piece: King

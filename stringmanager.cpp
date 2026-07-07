@@ -10,18 +10,15 @@ std::string StringManager::PieceType2Description(GameVariant gameVariant, PieceT
     {
         return WaShogiPieceType2Description(pieceType);
     }
-    else if (gameVariant == ToriShogi)
+    if (gameVariant == ToriShogi)
     {
         return ToriShogiPieceType2Description(pieceType);
     }
-    else if (gameVariant == WhaleShogi)
+    if (gameVariant == WhaleShogi)
     {
         return WhaleShogiPieceType2Description(pieceType);
     }
-    else
-    {
-        return PieceType2Description(pieceType);
-    }
+    return PieceType2Description(pieceType);
 }
 
 PieceType StringManager::Description2PieceType(GameVariant gameVariant, const std::string& description)
@@ -30,22 +27,19 @@ PieceType StringManager::Description2PieceType(GameVariant gameVariant, const st
     {
         return KoShogiDescription2PieceType(description);
     }
-    else if (gameVariant == WaShogi || gameVariant == CrazyWa)
+    if (gameVariant == WaShogi || gameVariant == CrazyWa)
     {
         return WaShogiDescription2PieceType(description);
     }
-    else if (gameVariant == ToriShogi)
+    if (gameVariant == ToriShogi)
     {
         return ToriShogiDescription2PieceType(description);
     }
-    else if (gameVariant == WhaleShogi)
+    if (gameVariant == WhaleShogi)
     {
         return WhaleShogiDescription2PieceType(description);
     }
-    else
-    {
-        return Description2PieceType(description);
-    }
+    return Description2PieceType(description);
 }
 
 std::string StringManager::PieceType2Description(PieceType pieceType)
@@ -635,7 +629,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : None;
     }
-    else if (gameVariant == KoShogi)
+    if (gameVariant == KoShogi)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             {"K",   King},
@@ -707,7 +701,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : None;
     }
-    else if (gameVariant == WaShogi || gameVariant == CrazyWa)
+    if (gameVariant == WaShogi || gameVariant == CrazyWa)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             {"K", King},
@@ -746,7 +740,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : None;
     }
-    else if (gameVariant == ToriShogi)
+    if (gameVariant == ToriShogi)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             {"K", King},
@@ -763,7 +757,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : None;
     }
-    else if (gameVariant == WhaleShogi)
+    if (gameVariant == WhaleShogi)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             {"W", King},
@@ -779,7 +773,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : None;
     }
-    else if (gameVariant == YariShogi)
+    if (gameVariant == YariShogi)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             {"N",     YariKnight},
@@ -795,7 +789,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : None;
     }
-    else if (gameVariant == ChuShogi)
+    if (gameVariant == ChuShogi)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             {"K", King},
@@ -842,7 +836,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : None;
     }
-    else if (gameVariant == DaiShogi)
+    if (gameVariant == DaiShogi)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             {"J", Iron},
@@ -868,7 +862,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : StringCode2PieceType(ChuShogi, stringCode);
     }
-    else if (gameVariant == TenjikuShogi)
+    if (gameVariant == TenjikuShogi)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             {"D'", Dog},
@@ -899,7 +893,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : StringCode2PieceType(DaiShogi, stringCode);
     }
-    else if (gameVariant == DaiDaiShogi)
+    if (gameVariant == DaiDaiShogi)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             { "J'",   Tengu },
@@ -951,7 +945,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : StringCode2PieceType(MakaDaiDaiShogi, stringCode);
     }
-    else if (gameVariant == MakaDaiDaiShogi)
+    if (gameVariant == MakaDaiDaiShogi)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             { "+P",   Pawn },
@@ -1020,12 +1014,12 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : StringCode2PieceType(DaiShogi, stringCode);
     }
-    else if (gameVariant == Makruk)
+    if (gameVariant == Makruk)
     {
         if (stringCode == "M") return Queen;
         return StringCode2PieceType(Shatranj, stringCode);
     }
-    else if (gameVariant == GrandeAcedrex)
+    if (gameVariant == GrandeAcedrex)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             {"A", Aanca},
@@ -1038,7 +1032,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : StringCode2PieceType(Shatranj, stringCode);
     }
-    else if (gameVariant == CourierChess)
+    if (gameVariant == CourierChess)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             {"E", Bishop},
@@ -1051,18 +1045,18 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : StringCode2PieceType(Shatranj, stringCode);
     }
-    else if (gameVariant == OmegaChess)
+    if (gameVariant == OmegaChess)
     {
         if (stringCode == "C") return Champion;
         if (stringCode == "W") return Wizard;
         return StringCode2PieceType(Shatranj, stringCode);
     }
-    else if (gameVariant == NightriderChess)
+    if (gameVariant == NightriderChess)
     {
         if (stringCode == "N") return Nightrider;
         return StringCode2PieceType(Shatranj, stringCode);
     }
-    else if (gameVariant == MusketeerChess)
+    if (gameVariant == MusketeerChess)
     {
     	if (stringCode == "L") return Leopard;
         if (stringCode == "C") return Cannon;
@@ -1076,44 +1070,41 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         if (stringCode == "S") return Spider;
         return StringCode2PieceType(Shatranj, stringCode);
     }
-    else if (gameVariant == Shatar)
+    if (gameVariant == Shatar)
     {
         if (stringCode == "J") return Queen;
         return StringCode2PieceType(Shatranj, stringCode);
     }
-    else if (gameVariant == Sittuyin)
+    if (gameVariant == Sittuyin)
     {
         if (stringCode == "S") return Bishop;
         if (stringCode == "F") return Queen;
         return StringCode2PieceType(Shatranj, stringCode);
     }
-    else
-    {
-        static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-            {"K", King},
-            {"Q", Queen},
-            {"R", Rook},
-            {"B", Bishop},
-            {"N", Knight},
-            {"A", Archbishop},
-            {"C", Chancellor},
-            {"P", Pawn},
-            {"+L", PromotedLance},
-            {"+S", PromotedSilver},
-            {"+N", PromotedKnight},
-            {"+R", DragonKing},
-            {"+B", DragonHorse},
-            {"L", Lance},
-            {"E", Elephant},
-            {"G", Gold},
-            {"S", Silver},
-            {"+P", Tokin},
-            {"+E", Prince}
-        };
+    static const std::unordered_map<std::string, PieceType> codeToPieceType = {
+        {"K", King},
+        {"Q", Queen},
+        {"R", Rook},
+        {"B", Bishop},
+        {"N", Knight},
+        {"A", Archbishop},
+        {"C", Chancellor},
+        {"P", Pawn},
+        {"+L", PromotedLance},
+        {"+S", PromotedSilver},
+        {"+N", PromotedKnight},
+        {"+R", DragonKing},
+        {"+B", DragonHorse},
+        {"L", Lance},
+        {"E", Elephant},
+        {"G", Gold},
+        {"S", Silver},
+        {"+P", Tokin},
+        {"+E", Prince}
+    };
 
-        const auto it = codeToPieceType.find(stringCode);
-        return it != codeToPieceType.end() ? it->second : None;
-    }
+    const auto it = codeToPieceType.find(stringCode);
+    return it != codeToPieceType.end() ? it->second : None;
 }
 
 std::string StringManager::PieceType2KanjiCode(GameVariant gameVariant, PieceType pieceType, PieceColour pieceColour)
@@ -1140,7 +1131,7 @@ std::string StringManager::PieceType2KanjiCode(GameVariant gameVariant, PieceTyp
             return "";
         }
     }
-    else if (gameVariant == KoShogi)
+    if (gameVariant == KoShogi)
     {
         switch (pieceType)
         {
@@ -1320,7 +1311,7 @@ std::string StringManager::PieceType2KanjiCode(GameVariant gameVariant, PieceTyp
             return "";
         }
     }
-    else if (gameVariant == ToriShogi)
+    if (gameVariant == ToriShogi)
     {
         switch (pieceType)
         {
@@ -1345,10 +1336,8 @@ std::string StringManager::PieceType2KanjiCode(GameVariant gameVariant, PieceTyp
             return "";
         }
     }
-    else
+    switch (pieceType)
     {
-        switch (pieceType)
-        {
         case King:
             return pieceColour == White ? "王" : "玉";
         case Prince:
@@ -1613,7 +1602,6 @@ std::string StringManager::PieceType2KanjiCode(GameVariant gameVariant, PieceTyp
             return "火";
         default:
             return "";
-        }
     }
 }
 

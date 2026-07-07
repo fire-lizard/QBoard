@@ -110,3 +110,24 @@ void HeianDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int 
         break;
     }
 }
+
+std::string HeianDaiShogiBoard::GetStringCode(int x, int y) const
+{
+    if (GetData(x, y) == std::nullopt) return "";
+    PieceType pieceType = GetData(x, y)->Type;
+    switch (pieceType)
+    {
+    case Copper:
+        return "W";
+    case Iron:
+        return "C";
+    case FlyingDragon:
+        return "B";
+    case Knight:
+        return "N";
+    case Tiger:
+        return "F";
+    default:
+        return DaiShogiBoard::GetStringCode(x, y);
+    }
+}

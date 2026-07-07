@@ -240,7 +240,7 @@ inline char YARISHOGIFEN[] = "ynnkbby/7/ppppppp/7/7/7/PPPPPPP/7/YBBKNNY w";
 
 inline char HEIANSHOGIFEN[] = "lnsgkgsnl/9/ppppppppp/9/9/PPPPPPPPP/9/LNSGKGSNL w";
 
-inline char HEIANDAISHOGIFEN[] = "lyjcsgkgscjyl/af'2t1m1t2f'a/ppppppppppppp/6i6/13/13/13/13/13/6I6/PPPPPPPPPPPPP/AF'2T1M1T2F'A/LYJCSGKGSCJYL w";
+inline char HEIANDAISHOGIFEN[] = "lncwsgkgswcnl/ab2f1m1f2ba/ppppppppppppp/6i6/13/13/13/13/13/6I6/PPPPPPPPPPPPP/AB2F1M1F2BA/LNCWSGKGSWCNL w";
 
 inline char WASHOGIFEN[] = "hmlcvkwgudo/1e3s3f1/ppprpppxppp/3p3p3/11/11/11/3P3P3/PPPXPPPRPPP/1F3S3E1/ODUGWKVCLMH w";
 

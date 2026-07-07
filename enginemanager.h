@@ -97,7 +97,7 @@ namespace {
 		{WaShogi,           "washogi"},
 		{CrazyWa,           "crazywa"},
 		{ChuShogi,          "chu"},
-		{HeianDaiShogi,     "heiandai_shogi"},
+		{HeianDaiShogi,     "heian_dai_shogi"},
 		{DaiShogi,          "dai"},
 		{TenjikuShogi,      "tenjiku"},
 		{DaiDaiShogi,       "daidai"},
