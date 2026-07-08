@@ -8,6 +8,7 @@
 #include "ShogiBoard.h"
 #include "MakrukBoard.h"
 #include "SittuyinBoard.h"
+#include "TenjikuShogiBoard.h"
 
 struct Move
 {
@@ -37,6 +38,7 @@ public:
 	static char ChessPieceChar(PieceType chessPiece);
 
 private:
+	static QString SetFenToTenjikuBoard(Board* board, const QByteArray& str);
 	static Move CastlingToMove(const QByteArray& c, GameVariant gameVariant, PieceColour currentPlayer);
 	template <typename T> static std::basic_string<T> lowercase(const std::basic_string<T>& s);
 	template <typename T> static std::basic_string<T> uppercase(const std::basic_string<T>& s);

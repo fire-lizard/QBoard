@@ -12,8 +12,6 @@ public:
     void Promote(int x, int y, PieceType pt = None) override;
     void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
 	void CheckLionDirection(const std::optional<Piece>& piece, int x, int y, Direction direction, int count);
-
-protected:
 	std::vector<std::pair<int, int>> GetEnemyPiecesAround(int x, int y, PieceColour pieceColour) const;
 
 private:

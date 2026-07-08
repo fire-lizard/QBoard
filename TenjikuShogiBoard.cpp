@@ -508,3 +508,104 @@ void TenjikuShogiBoard::GetPossibleMoves(int x, int y)
 		_moves.emplace_back(x + reachablePosition.first - MAX_MOVES, y + reachablePosition.second - MAX_MOVES);
 	}
 }
+
+std::string TenjikuShogiBoard::GetStringCode(int x, int y) const
+{
+    if (GetData(x, y) == std::nullopt) return "";
+    PieceType pieceType = GetData(x, y)->Type;
+    switch (pieceType)
+    {
+	case King:
+		return "KI";
+	case Prince:
+		return "CP";
+	case Elephant:
+		return "DE";
+	case Gold:
+		return "GO";
+	case Silver:
+		return "SI";
+	case Copper:
+		return "CO";
+	case Iron:
+		return "IR";
+	case Leopard:
+		return "FL";
+	case Tiger:
+		return "BT";
+	case Pawn:
+		return "PA";
+	case Dog:
+		return "DO";
+	case Lance:
+		return "LA";
+	case Knight:
+		return "KN";
+	case ReverseChariot:
+		return "RC";
+	case SideMover:
+		return "SM";
+	case VerticalMover:
+		return "VM";
+	case Rook:
+		return "RO";
+	case Bishop:
+		return "BI";
+	case DragonHorse:
+		return "DH";
+	case DragonKing:
+		return "DK";
+	case Queen:
+		return "FK";
+	case Kylin:
+		return "KY";
+	case Phoenix:
+		return "PH";
+	case Lion:
+		return "LN";
+	case Unicorn:
+		return "HF";
+	case Eagle:
+		return "SE";
+	case SideSoldier:
+		return "SS";
+	case VerticalSoldier:
+		return "VS";
+	case WaterBuffalo:
+		return "WB";
+	case ChariotSoldier:
+		return "CS";
+	case GreatGeneral:
+		return "GG";
+	case ViceGeneral:
+		return "VG";
+	case RookGeneral:
+		return "RG";
+	case BishopGeneral:
+		return "BG";
+	case FireDemon:
+		return "FD";
+	case FreeEagle:
+		return "FE";
+	case LionHawk:
+		return "LH";
+	case MultiGeneral:
+		return "MG";
+	case FlyingStag:
+		return "FS";
+	case WhiteHorse:
+		return "WH";
+	case Whale:
+		return "WL";
+	case FreeBoar:
+		return "FB";
+	case FlyingOx:
+		return "FO";
+	case HeavenlyTetrarch:
+		return "HT";
+	case Tokin:
+		return "TO";
+    default:
+        return DaiShogiBoard::GetStringCode(x, y);
+    }
+}

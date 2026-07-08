@@ -150,8 +150,6 @@ private:
 	Communications* _comm = nullptr;
 	bool _waitForOtherPlayer = false;
 
-signals:
-
 	public slots :
 
 	void whiteEngineReadyReadStandardOutput();

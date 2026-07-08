@@ -418,6 +418,39 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{
+            if (gameVariant == TenjikuShogi)
+            {
+            	if (board->GetData(x1, y1)->Type == HeavenlyTetrarch && abs(x1 - x2) <= 1 && abs(y1 - y2) <= 1 && (x1 != x2 || y1 != y2))
+                {
+                    if (std::ranges::any_of(board->Moves(), [=](std::pair<int, int> t) {return t.first == x2 && t.second == y2;}))
+                    {
+                        board->SetData(x2, y2, std::nullopt);
+                        return;
+                    }
+                }
+                else
+                {
+                    if (board->IsMovePossible(x2, y2))
+                    {
+                        auto tsb = dynamic_cast<TenjikuShogiBoard*>(board);
+                        auto pieces = tsb->GetEnemyPiecesAround(x2, y2, tsb->GetData(x1, y1)->Colour);
+                        if (std::ranges::any_of(pieces, [&](std::pair<int, int> t) {return tsb->GetData(t.first, t.second)->Type == FireDemon;}))
+                        {
+                            tsb->SetData(x1, y1, std::nullopt);
+                            if (tsb->GetData(x2, y2) != std::nullopt)
+                            {
+                                tsb->SetData(x2, y2, std::nullopt);
+                            }
+                            return;
+                        }
+                        // Fire Demon moves
+                        if (tsb->GetData(x1, y1)->Type == FireDemon)
+                        {
+                            std::ranges::for_each(pieces, [&](std::pair<int, int> p) {tsb->SetData(p.first, p.second, std::nullopt);});
+                        }
+                    }
+                }
+            }
             if (ms < 8)
 			{
                 const bool isPromoted = moveArray[ms - 1] == '+';
@@ -1028,7 +1061,11 @@ template <typename T> std::basic_string<T> EngineOutputHandler::lowercase(const 
 
 QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant)
 {
-    QStringList parts;
+    if (gameVariant == TenjikuShogi)
+    {
+        return SetFenToTenjikuBoard(board, str);
+    }
+	QStringList parts;
     if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
     {
         dynamic_cast<PieceStorage*>(board)->ClearCapturedPieces();
@@ -1185,6 +1222,73 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
             } while (k < parts[1].size() && ((parts[1][k] >= 'a' && parts[1][k] <= 'z') || (parts[1][k] >= 'A' && parts[1][k] <= 'Z')));
         }
     }
+    return "";
+}
+
+QString EngineOutputHandler::SetFenToTenjikuBoard(Board* board, const QByteArray& str)
+{
+    QStringList parts = QString(str).trimmed().split(' ', Qt::SkipEmptyParts);
+    QString fen = parts[0];
+    board->Clear();
+    const int w = board->GetWidth();
+    const int h = board->GetHeight();
+    int i = 0, j = 0, k = 0;
+    bool isDigit = false;
+    std::string promo;
+    do
+    {
+        const char c = fen[k].toLatin1();
+        if (c == '/')
+        {
+            k++;
+            j++;
+            i = 0;
+            isDigit = false;
+        }
+        if (c == '+')
+        {
+            k++;
+            promo = "+";
+            isDigit = false;
+        }
+        else if (c >= '0' && c <= '9')
+        {
+            k++;
+            i += c - 48;
+            if (!isDigit)
+            {
+                isDigit = true;
+            }
+            else
+            {
+                i += c != '0' ? 10 : 9;
+                isDigit = false;
+            }
+        }
+        else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+        {
+            isDigit = false;
+            if (k >= fen.size() - 1) return "Invalid FEN size";
+        	std::string stringCode{c, fen[k + 1].toLatin1()};
+            PieceType pieceType = StringManager::StringCode2PieceType(TenjikuShogi, uppercase(stringCode));
+            if (pieceType == None)
+            {
+                return "Invalid character found in the FEN string at position " + QString::number(k);
+            }
+            if (j == h || i == w)
+            {
+                return "Invalid FEN string for this game";
+            }
+            board->SetData(i, j, std::make_optional<Piece>(pieceType, c >= 'a' && c <= 'z' ? Black : White));
+            if (promo == "+")
+            {
+                board->Promote(i, j);
+            }
+            promo = "";
+            k++;
+            i++;
+        }
+    } while ((i < w || j < h - 1) && k < fen.size());
     return "";
 }
 

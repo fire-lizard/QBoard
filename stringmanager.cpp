@@ -865,6 +865,54 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
     if (gameVariant == TenjikuShogi)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
+            {"KI", King},
+			{"CP", Prince},
+			{"DE", Elephant},
+			{"GO", Gold},
+			{"SI", Silver},
+			{"CO", Copper},
+			{"IR", Iron},
+			{"FL", Leopard},
+			{"BT", Tiger},
+			{"PA", Pawn},
+			{"DO", Dog},
+			{"LA", Lance},
+			{"KN", Knight},
+			{"RC", ReverseChariot},
+			{"SM", SideMover},
+			{"VM", VerticalMover},
+			{"RO", Rook},
+			{"BI", Bishop},
+			{"DH", DragonHorse},
+			{"DK", DragonKing},
+			{"FK", Queen},
+			{"KY", Kylin},
+			{"PH", Phoenix},
+			{"LN", Lion},
+			{"HF", Unicorn},
+			{"SE", Eagle},
+			{"SS", SideSoldier},
+			{"VS", VerticalSoldier},
+			{"WB", WaterBuffalo},
+			{"CS", ChariotSoldier},
+			{"GG", GreatGeneral},
+			{"VG", ViceGeneral},
+			{"RG", RookGeneral},
+			{"BG", BishopGeneral},
+			{"FD", FireDemon},
+			{"FE", FreeEagle},
+			{"LH", LionHawk},
+			{"MG", MultiGeneral},
+			{"FS", FlyingStag},
+			{"WH", WhiteHorse},
+			{"WL", Whale},
+			{"FB", FreeBoar},
+			{"FO", FlyingOx},
+			{"HT", HeavenlyTetrarch},
+			{"TO", Tokin}
+        };
+        
+    	/*static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             {"D'", Dog},
             {"+D'", MultiGeneral},
             {"V!", ViceGeneral},
@@ -888,7 +936,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
             {"+E!", Eagle},
             {"+Q", Queen},
             {"+N", Lion}
-        };
+        };*/
 
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : StringCode2PieceType(DaiShogi, stringCode);
