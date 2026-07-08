@@ -16,8 +16,6 @@ public:
     PieceType GetChosenPiece() const;
     void SetChosenPiece(PieceType chosenPiece);
 
-signals:
-
 private:
     void paintEvent(QPaintEvent *) override;
     void mousePressEvent(QMouseEvent *event) override;

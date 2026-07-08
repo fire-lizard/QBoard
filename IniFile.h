@@ -17,16 +17,20 @@ public:
     bool highlightDefenders;
     bool highlightLastMoves;
     bool timerState;
+    bool useWhiteEngineDepth;
     int  whiteEngineDepth;
+    bool useBlackEngineDepth;
     int  blackEngineDepth;
+    bool useWhiteEngineTime;
     int  whiteEngineTime;
+    bool useBlackEngineTime;
     int  blackEngineTime;
 };
 
 class IniFile {
 public:
     static void writeToIniFile(const QString& filePath, const ConfigRecord& configRecord);
-    static QStringList readFromIniFile(const QString& filePath);
+    static ConfigRecord readFromIniFile(const QString& filePath);
 
 private:
     static constexpr int _minEngineDepth = 1;

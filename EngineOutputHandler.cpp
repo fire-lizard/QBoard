@@ -1285,7 +1285,7 @@ QString EngineOutputHandler::SetFenToTenjikuBoard(Board* board, const QByteArray
                 board->Promote(i, j);
             }
             promo = "";
-            k++;
+            k += 2;
             i++;
         }
     } while ((i < w || j < h - 1) && k < fen.size());

@@ -41,7 +41,7 @@ enum PieceType
     DragonKing, DragonHorse, Gold, Silver, Lance, PromotedLance, PromotedKnight, PromotedSilver, Tokin,
     // Chu Shogi Pieces
     Lion, VerticalMover, SideMover, ReverseChariot, Kylin, Phoenix, Elephant, Prince, Tiger, Copper,
-    Leopard, GoBetween, Eagle, Unicorn, FlyingOx, FreeBoar, FlyingStag, WhiteHorse, Whale,
+    Leopard, GoBetween, Eagle, Falcon, FlyingOx, FreeBoar, FlyingStag, WhiteHorse, Whale,
     // Dai Shogi pieces
 	ViolentOx, FlyingDragon, AngryBoar, CatSword, EvilWolf, Iron, Stone,
 	// Wa Shogi pieces
@@ -71,13 +71,13 @@ enum PieceType
 	// Nightrider Chess Piece
 	Nightrider,
 	// Tori Shogi Pieces
-    Falcon, Crane, Pheasant, LeftQuail, RightQuail, Goose,
+    Crane, Pheasant, LeftQuail, RightQuail, Goose,
     // Whale Shogi Pieces
     GreyWhale, Porpoise, Narwhal, Humpback, BlueWhale,
     // Yari Shogi Pieces
     YariKnight, YariGold, YariSilver, YariBishop, YariRook,
     // Grande Acedrex Pieces
-    Aanca, Giraffe, Crocodile,
+    Aanca, Giraffe, Crocodile, Unicorn,
     // Courier Chess Pieces
     Sage, Schleich, Courier,
 	// Musketeer Chess Pieces

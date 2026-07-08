@@ -67,9 +67,19 @@ QCheckBox* SettingsDialog::GetTimerState() const
     return ui->timerCheckBox;
 }
 
+QCheckBox* SettingsDialog::GetUseWhiteEngineDepth() const
+{
+	return ui->engine1DepthCheckBox;
+}
+
 QSlider* SettingsDialog::GetWhiteEngineDepth() const
 {
     return ui->engine2DepthHorizontalSlider;
+}
+
+QCheckBox* SettingsDialog::GetUseBlackEngineDepth() const
+{
+	return ui->engine2DepthCheckBox;
 }
 
 QSlider* SettingsDialog::GetBlackEngineDepth() const
@@ -77,9 +87,19 @@ QSlider* SettingsDialog::GetBlackEngineDepth() const
     return ui->engine1DepthHorizontalSlider;
 }
 
+QCheckBox* SettingsDialog::GetUseWhiteEngineTime() const
+{
+	return ui->engine1TimeCheckBox;
+}
+
 QSpinBox* SettingsDialog::GetWhiteEngineTime() const
 {
 	return ui->engine1TimeSpinBox;
+}
+
+QCheckBox* SettingsDialog::GetUseBlackEngineTime() const
+{
+	return ui->engine2TimeCheckBox;
 }
 
 QSpinBox* SettingsDialog::GetBlackEngineTime() const

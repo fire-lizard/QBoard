@@ -19,8 +19,6 @@ public:
     QComboBox* GetBlackPlayer() const;
     QLabel* GetWhitePlayerLabel() const;
 
-private slots:
-
 private:
     Ui::NewGameDialog* ui;
 };

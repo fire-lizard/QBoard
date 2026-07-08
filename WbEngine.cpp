@@ -17,7 +17,7 @@ EngineProtocol WbEngine::GetType()
 void WbEngine::SetEngineDepth(int engineDepth)
 {
     _engineDepth = engineDepth;
-    if (_process != nullptr && _process->processId() > 0 && _process->state() != QProcess::ProcessState::NotRunning)
+    if (_process != nullptr && _process->processId() > 0 && _process->state() != QProcess::ProcessState::NotRunning && _useEngineDepth)
     {
         WriteToProcess("sd " + QByteArray::number(_engineDepth) + "\n");
     }
@@ -26,7 +26,7 @@ void WbEngine::SetEngineDepth(int engineDepth)
 void WbEngine::SetEngineTime(int engineTime)
 {
 	_engineTime = engineTime;
-	if (_process != nullptr && _process->processId() > 0 && _process->state() != QProcess::ProcessState::NotRunning)
+	if (_process != nullptr && _process->processId() > 0 && _process->state() != QProcess::ProcessState::NotRunning && _useEngineTime)
 	{
 		WriteToProcess("st " + QByteArray::number(_engineTime) + "\n");
 	}
@@ -85,8 +85,14 @@ void WbEngine::StartGame(QString variant)
         const QString str = "variant " + variant + "\n";
         WriteToProcess(str.toLatin1());
 	}
-    WriteToProcess("sd " + QByteArray::number(_engineDepth) + "\n");
-	WriteToProcess("st " + QByteArray::number(_engineTime) + "\n");
+	if (_useEngineDepth)
+	{
+		WriteToProcess("sd " + QByteArray::number(_engineDepth) + "\n");
+	}
+	if (_useEngineTime)
+	{
+		WriteToProcess("st " + QByteArray::number(_engineTime) + "\n");
+	}
 }
 
 void WbEngine::SetMemory(int memorySize)

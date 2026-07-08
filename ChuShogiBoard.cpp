@@ -56,7 +56,7 @@ void ChuShogiBoard::Promote(int x, int y, PieceType pt)
             pieceType = Eagle;
             break;
         case DragonHorse:
-            pieceType = Unicorn;
+            pieceType = Falcon;
             break;
         case Rook:
             pieceType = DragonKing;
@@ -402,7 +402,7 @@ void ChuShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 			CheckDirection(piece, x, y, NorthEast);
 		}
 		break;
-	case Unicorn:
+	case Falcon:
 		_moves.emplace_back(x, y);
 
 		CheckDirection(piece, x, y, East);

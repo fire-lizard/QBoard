@@ -27,12 +27,16 @@ public:
 	QCheckBox* GetHighlightDefenders() const;
 	QCheckBox* GetHighlightLastMoves() const;
     QCheckBox* GetTimerState() const;
-    QSlider*   GetWhiteEngineDepth() const;
-    QSlider*   GetBlackEngineDepth() const;
+	QCheckBox* GetUseWhiteEngineDepth() const;
+	QSlider*   GetWhiteEngineDepth() const;
+	QCheckBox* GetUseBlackEngineDepth() const;
+	QSlider*   GetBlackEngineDepth() const;
+	QCheckBox* GetUseWhiteEngineTime() const;
 	QSpinBox*  GetWhiteEngineTime() const;
+	QCheckBox* GetUseBlackEngineTime() const;
 	QSpinBox*  GetBlackEngineTime() const;
 
-	private slots:
+private slots:
 
     void on_toolButton_clicked();
 

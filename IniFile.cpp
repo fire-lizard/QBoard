@@ -16,9 +16,13 @@ void IniFile::writeToIniFile(const QString& filePath, const ConfigRecord& config
     settings.setValue("HighlightDefenders", configRecord.highlightDefenders);
     settings.setValue("HighlightLastMoves", configRecord.highlightLastMoves);
     settings.setValue("TimerState", configRecord.timerState);
+    settings.setValue("UseEngine1Depth", configRecord.useWhiteEngineDepth);
     settings.setValue("Engine1Depth", configRecord.whiteEngineDepth);
+    settings.setValue("UseEngine2Depth", configRecord.useBlackEngineDepth);
     settings.setValue("Engine2Depth", configRecord.blackEngineDepth);
+    settings.setValue("UseEngine1Time", configRecord.useWhiteEngineTime);
     settings.setValue("Engine1Time", configRecord.whiteEngineTime);
+    settings.setValue("UseEngine2Time", configRecord.useBlackEngineTime);
     settings.setValue("Engine2Time", configRecord.blackEngineTime);
     settings.endGroup();
 
@@ -26,7 +30,7 @@ void IniFile::writeToIniFile(const QString& filePath, const ConfigRecord& config
 	settings.sync();
 }
 
-QStringList IniFile::readFromIniFile(const QString& filePath) {
+ConfigRecord IniFile::readFromIniFile(const QString& filePath) {
     // Create a QSettings object for the INI file
     QSettings settings(filePath, QSettings::IniFormat);
 
@@ -42,17 +46,28 @@ QStringList IniFile::readFromIniFile(const QString& filePath) {
     const bool highlightDefenders = settings.value("HighlightDefenders", true).toBool();
     const bool highlightLastMoves = settings.value("HighlightLastMoves", true).toBool();
     const bool timerState = settings.value("TimerState", true).toBool();
-    int whiteEngineDepth = settings.value("Engine1Depth", 10).toInt();
-    int blackEngineDepth = settings.value("Engine2Depth", 10).toInt();
-    int whiteEngineTime = settings.value("Engine1Time", 10).toInt();
-    int blackEngineTime = settings.value("Engine2Time", 10).toInt();
+    const bool useWhiteEngineDepth = settings.value("UseEngine1Depth", false).toBool();
+    int  whiteEngineDepth = settings.value("Engine1Depth", 10).toInt();
+    const bool useBlackEngineDepth = settings.value("UseEngine2Depth", false).toBool();
+    int  blackEngineDepth = settings.value("Engine2Depth", 10).toInt();
+    const bool useWhiteEngineTime = settings.value("UseEngine1Time", false).toBool();
+    int  whiteEngineTime = settings.value("Engine1Time", 10).toInt();
+    const bool useBlackEngineTime = settings.value("UseEngine2Time", false).toBool();
+    int  blackEngineTime = settings.value("Engine2Time", 10).toInt();
     settings.endGroup();
 
     // Return values
-    QStringList result;
-    result << styleName << gameVariant << pieceStyle << engineOutput << QVariant(highlightMoves).toString();
-    result << QVariant(highlightShoots).toString() << QVariant(highlightAttackers).toString();
-	result << QVariant(highlightDefenders).toString() << QVariant(highlightLastMoves).toString();
+    ConfigRecord result;
+	result.styleName = styleName;
+    result.gameVariant = gameVariant;
+    result.pieceStyle = pieceStyle;
+    result.engineOutput = engineOutput;
+    result.highlightMoves = highlightMoves;
+    result.highlightShoots = highlightShoots;
+    result.highlightAttackers = highlightAttackers;
+    result.highlightDefenders = highlightDefenders;
+    result.highlightLastMoves = highlightLastMoves;
+    result.timerState = timerState;
     whiteEngineDepth = std::max(whiteEngineDepth, _minEngineDepth);
     whiteEngineDepth = std::min(whiteEngineDepth, _maxEngineDepth);
     blackEngineDepth = std::max(blackEngineDepth, _minEngineDepth);
@@ -61,8 +76,13 @@ QStringList IniFile::readFromIniFile(const QString& filePath) {
     whiteEngineTime = std::min(whiteEngineTime, _maxEngineTime);
     blackEngineTime = std::max(blackEngineTime, _minEngineTime);
     blackEngineTime = std::min(blackEngineTime, _maxEngineTime);
-    result << QVariant(timerState).toString();
-	result << QVariant(whiteEngineDepth).toString() << QVariant(blackEngineDepth).toString();
-    result << QVariant(whiteEngineTime).toString() << QVariant(blackEngineTime).toString();
+    result.useWhiteEngineDepth = useWhiteEngineDepth;
+    result.whiteEngineDepth = whiteEngineDepth;
+    result.useBlackEngineDepth = useBlackEngineDepth;
+    result.blackEngineDepth = blackEngineDepth;
+    result.useWhiteEngineTime = useWhiteEngineTime;
+    result.whiteEngineTime = whiteEngineTime;
+    result.useBlackEngineTime = useBlackEngineTime;
+    result.blackEngineTime = blackEngineTime;
     return result;
 }

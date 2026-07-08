@@ -27,28 +27,28 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	_settingsDir = QStandardPaths::writableLocation(QStandardPaths::StandardLocation::AppDataLocation);
 	if (QFile::exists(_settingsDir + "/" + _settingsFileName))
 	{
-		QStringList settings = IniFile::readFromIniFile(_settingsDir + "/" + _settingsFileName);
-		_currentStyle = settings[0];
+		ConfigRecord settings = IniFile::readFromIniFile(_settingsDir + "/" + _settingsFileName);
+		_currentStyle = settings.styleName;
 		QApplication::setStyle(_currentStyle);
-		this->ui->vboard->SetGameVariant(EngineManager::StringToGameVariant(settings[1]));
+		this->ui->vboard->SetGameVariant(EngineManager::StringToGameVariant(settings.gameVariant));
 		PieceStyle pieceStyle;
-		if (settings[2] == "Mnemonic")
+		if (settings.pieceStyle == "Mnemonic")
 		{
 			pieceStyle = Mnemonic;
 		}
-		else if (settings[2] == "Asian")
+		else if (settings.pieceStyle == "Asian")
 		{
 			pieceStyle = Asian;
 		}
-		else if (settings[2] == "Asian 2")
+		else if (settings.pieceStyle == "Asian 2")
 		{
 			pieceStyle = Asian2;
 		}
-		else if (settings[2] == "Asian 3")
+		else if (settings.pieceStyle == "Asian 3")
 		{
 			pieceStyle = Asian3;
 		}
-		else if (settings[2] == "Asian 4")
+		else if (settings.pieceStyle == "Asian 4")
 		{
 			pieceStyle = Asian4;
 		}
@@ -57,19 +57,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 			pieceStyle = European;
 		}
 		this->ui->vboard->SetPieceStyle(pieceStyle);
-		this->ui->vboard->SetEngineOutput(settings[3] == "Verbose" ? Verbose : Concise);
-		this->ui->vboard->SetHighlightMoves(QVariant(settings[4]).toBool());
-		this->ui->vboard->SetHighlightShoots(QVariant(settings[5]).toBool());
-		this->ui->vboard->SetHighlightAttackers(QVariant(settings[6]).toBool());
-		this->ui->vboard->SetHighlightDefenders(QVariant(settings[7]).toBool());
-		this->ui->vboard->SetHighlightLastMoves(QVariant(settings[8]).toBool());
-        this->ui->vboard->SetTimerState(QVariant(settings[9]).toBool());
-        _whiteEngineDepth = QVariant(settings[10]).toInt();
-        _blackEngineDepth = QVariant(settings[11]).toInt();
-		_whiteEngineTime = QVariant(settings[12]).toInt();
-		_blackEngineTime = QVariant(settings[13]).toInt();
+		this->ui->vboard->SetEngineOutput(settings.engineOutput == "Verbose" ? Verbose : Concise);
+		this->ui->vboard->SetHighlightMoves(settings.highlightMoves);
+		this->ui->vboard->SetHighlightShoots(settings.highlightShoots);
+		this->ui->vboard->SetHighlightAttackers(settings.highlightAttackers);
+		this->ui->vboard->SetHighlightDefenders(settings.highlightDefenders);
+		this->ui->vboard->SetHighlightLastMoves(settings.highlightLastMoves);
+        this->ui->vboard->SetTimerState(settings.timerState);
+		_useWhiteEngineDepth = settings.useWhiteEngineDepth;
+		_whiteEngineDepth = settings.whiteEngineDepth;
+        _useBlackEngineDepth = settings.useBlackEngineDepth;
+		_blackEngineDepth = settings.blackEngineDepth;
+		_useWhiteEngineTime = settings.useWhiteEngineTime;
+		_whiteEngineTime = settings.whiteEngineTime;
+		_useBlackEngineTime = settings.useBlackEngineTime;
+		_blackEngineTime = settings.blackEngineTime;
 		this->ui->vboard->GetBoard()->Initialize();
-        this->ui->statusBar->showMessage(settings[1] == "Xiangqi" || settings[1] == "Janggi" ? "Red move" : "White move");
+        this->ui->statusBar->showMessage(settings.gameVariant == "Xiangqi" || settings.gameVariant == "Janggi" ? "Red move" : "White move");
 		this->ui->vboard->repaint();
 	}
     else
@@ -83,9 +87,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         configRecord.highlightDefenders = true;
         configRecord.highlightLastMoves = false;
         configRecord.timerState = this->ui->vboard->GetTimerState();
-        configRecord.whiteEngineDepth = _whiteEngineDepth;
-        configRecord.blackEngineDepth = _blackEngineDepth;
+        configRecord.useWhiteEngineDepth = _useWhiteEngineDepth;
+		configRecord.whiteEngineDepth = _whiteEngineDepth;
+		configRecord.useBlackEngineDepth = _useBlackEngineDepth;
+		configRecord.blackEngineDepth = _blackEngineDepth;
+		configRecord.useWhiteEngineTime = _useWhiteEngineTime;
 		configRecord.whiteEngineTime = _whiteEngineTime;
+		configRecord.useBlackEngineTime = _useBlackEngineTime;
 		configRecord.blackEngineTime = _blackEngineTime;
 		IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, configRecord);
     }
@@ -115,9 +123,13 @@ void MainWindow::on_actionSettings_triggered()
 	settingsDialog->GetHighlightDefenders()->setChecked(this->ui->vboard->GetHighlightDefenders());
 	settingsDialog->GetHighlightLastMoves()->setChecked(this->ui->vboard->GetHighlightLastMoves());
     settingsDialog->GetTimerState()->setChecked(this->ui->vboard->GetTimerState());
-    settingsDialog->GetWhiteEngineDepth()->setValue(_whiteEngineDepth);
-    settingsDialog->GetBlackEngineDepth()->setValue(_blackEngineDepth);
+    settingsDialog->GetUseWhiteEngineDepth()->setChecked(_useWhiteEngineDepth);
+	settingsDialog->GetWhiteEngineDepth()->setValue(_whiteEngineDepth);
+	settingsDialog->GetUseBlackEngineDepth()->setChecked(_useBlackEngineDepth);
+	settingsDialog->GetBlackEngineDepth()->setValue(_blackEngineDepth);
+	settingsDialog->GetUseWhiteEngineTime()->setChecked(_useWhiteEngineTime);
 	settingsDialog->GetWhiteEngineTime()->setValue(_whiteEngineTime);
+	settingsDialog->GetUseBlackEngineTime()->setChecked(_useBlackEngineTime);
 	settingsDialog->GetBlackEngineTime()->setValue(_blackEngineTime);
 	settingsDialog->exec();
 	if (settingsDialog->result() == QDialog::Accepted)
@@ -133,7 +145,21 @@ void MainWindow::on_actionSettings_triggered()
 		const bool highlightDefenders = settingsDialog->GetHighlightDefenders()->checkState() == Qt::Checked;
 		const bool highlightLastMoves = settingsDialog->GetHighlightLastMoves()->checkState() == Qt::Checked;
         const bool timerState = settingsDialog->GetTimerState()->checkState() == Qt::Checked;
-        if (_whiteEngineDepth != settingsDialog->GetWhiteEngineDepth()->value())
+		_useWhiteEngineDepth = settingsDialog->GetUseWhiteEngineDepth()->checkState() == Qt::Checked;
+		_useBlackEngineDepth = settingsDialog->GetUseBlackEngineDepth()->checkState() == Qt::Checked;
+		_useWhiteEngineTime = settingsDialog->GetUseWhiteEngineTime()->checkState() == Qt::Checked;
+		_useBlackEngineTime = settingsDialog->GetUseBlackEngineTime()->checkState() == Qt::Checked;
+		if (_whiteEngine != nullptr && _whiteEngine->IsActive())
+		{
+			_whiteEngine->UseEngineDepth(_useWhiteEngineDepth);
+			_whiteEngine->UseEngineTime(_useWhiteEngineTime);
+		}
+		if (_blackEngine != nullptr && _blackEngine->IsActive())
+		{
+			_blackEngine->UseEngineDepth(_useBlackEngineDepth);
+			_blackEngine->UseEngineTime(_useBlackEngineTime);
+		}
+		if (_whiteEngineDepth != settingsDialog->GetWhiteEngineDepth()->value())
         {
             _whiteEngineDepth = settingsDialog->GetWhiteEngineDepth()->value();
             if (_whiteEngine != nullptr && _whiteEngine->IsActive())
@@ -195,9 +221,13 @@ void MainWindow::on_actionSettings_triggered()
         configRecord.highlightDefenders = highlightDefenders;
         configRecord.highlightLastMoves = highlightLastMoves;
         configRecord.timerState = timerState;
-        configRecord.whiteEngineDepth = _whiteEngineDepth;
-        configRecord.blackEngineDepth = _blackEngineDepth;
+        configRecord.useWhiteEngineDepth = _useWhiteEngineDepth;
+		configRecord.whiteEngineDepth = _whiteEngineDepth;
+		configRecord.useBlackEngineDepth = _useBlackEngineDepth;
+		configRecord.blackEngineDepth = _blackEngineDepth;
+		configRecord.useWhiteEngineTime = _useWhiteEngineTime;
 		configRecord.whiteEngineTime = _whiteEngineTime;
+		configRecord.useBlackEngineTime = _useBlackEngineTime;
 		configRecord.blackEngineTime = _blackEngineTime;
 		IniFile::writeToIniFile(_settingsDir + "/" + _settingsFileName, configRecord);
     }
@@ -385,7 +415,9 @@ void MainWindow::on_actionNew_game_triggered()
 				_blackEngine = std::make_shared<WbEngine>();
 				break;
 			}
-            _blackEngine->SetEngineDepth(_blackEngineDepth);
+			_blackEngine->UseEngineDepth(_useBlackEngineDepth);
+			_blackEngine->SetEngineDepth(_blackEngineDepth);
+			_blackEngine->UseEngineTime(_useBlackEngineTime);
 			_blackEngine->SetEngineTime(_blackEngineTime);
 			_blackEngine->SetTextEdit(ui->textEdit_2);
             _blackEngine->SetActive(true);
@@ -414,7 +446,9 @@ void MainWindow::on_actionNew_game_triggered()
 				_whiteEngine = std::make_shared<WbEngine>();
 				break;
 			}
-            _whiteEngine->SetEngineDepth(_whiteEngineDepth);
+            _whiteEngine->UseEngineDepth(_useWhiteEngineDepth);
+			_whiteEngine->SetEngineDepth(_whiteEngineDepth);
+			_whiteEngine->UseEngineTime(_useWhiteEngineTime);
 			_whiteEngine->SetEngineTime(_whiteEngineTime);
 			_whiteEngine->SetTextEdit(ui->textEdit);
             _whiteEngine->SetActive(true);

@@ -35,7 +35,7 @@ public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow() override;
 
-	private slots:
+private slots:
 	void on_actionSettings_triggered();
 
 	void on_actionAbout_triggered();
@@ -85,15 +85,19 @@ private:
 	QString _whiteEngineExe = "";
     QString _whiteEngineOptions = "";
     QString _whiteEngineName = "";
-    int _whiteEngineDepth = 10;
-	int _whiteEngineTime = 10;
+	bool _useWhiteEngineDepth = false;
+	int  _whiteEngineDepth = 10;
+	bool _useWhiteEngineTime = false;
+	int  _whiteEngineTime = 10;
 	EngineProtocol _whiteEngineProtocol = XBoard;
 	std::shared_ptr<Engine> _blackEngine = nullptr;
 	QString _blackEngineExe = "";
     QString _blackEngineOptions = "";
     QString _blackEngineName = "";
-    int _blackEngineDepth = 10;
-	int _blackEngineTime = 10;
+	bool _useBlackEngineDepth = false;
+	int  _blackEngineDepth = 10;
+	bool _useBlackEngineTime = false;
+	int  _blackEngineTime = 10;
 	EngineProtocol _blackEngineProtocol = XBoard;
 	QTimer* _whiteTimer = nullptr;
 	QTimer* _blackTimer = nullptr;

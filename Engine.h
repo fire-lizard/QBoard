@@ -16,7 +16,9 @@ public:
 	void SetActive(bool val);
 	QTextEdit* GetTextEdit() const;
 	void SetTextEdit(QTextEdit* textEdit);
-    int  GetEngineDepth() const;
+	void UseEngineDepth(bool useEngineDepth);
+	void UseEngineTime(bool useEngineTime);
+	int  GetEngineDepth() const;
 	int  GetEngineTime() const;
 	QProcess* GetProcess() const;
 	void WriteToProcess(QByteArray buf) const;
@@ -35,7 +37,9 @@ public:
 protected:
 	mutable std::unique_ptr<QProcess> _process = nullptr;
 	QTextEdit *_textEdit;
-    int  _engineDepth = 10;
+	bool _useEngineDepth = false;
+	int  _engineDepth = 10;
+	bool _useEngineTime = false;
 	int  _engineTime = 10;
 	bool _isActive = false;
 	std::vector<QByteArray> _moves;
