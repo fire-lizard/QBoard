@@ -43,7 +43,16 @@ void UciEngine::Move()
 	}
 	moveStr += "\n";
 	WriteToProcess(moveStr);
-    WriteToProcess("go depth " + QByteArray::number(_engineDepth) + " movetime " + QByteArray::number(_engineTime * 1000) + "\n");
+	moveStr = "go";
+	if (_useEngineDepth)
+	{
+		moveStr += " depth " + QByteArray::number(_engineDepth);
+	}
+	if (_useEngineTime)
+	{
+		moveStr += " movetime " + QByteArray::number(_engineTime * 1000);
+	}
+	WriteToProcess(moveStr + "\n");
 }
 
 void UciEngine::Move(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)
@@ -59,7 +68,16 @@ void UciEngine::Move(signed char x1, signed char y1, signed char x2, signed char
 	moveStr += AddMove(x1, y1, x2, y2, promotion);
 	moveStr += "\n";
 	WriteToProcess(moveStr);
-    WriteToProcess("go depth " + QByteArray::number(_engineDepth) + " movetime " + QByteArray::number(_engineTime * 1000) + "\n");
+	moveStr = "go";
+	if (_useEngineDepth)
+	{
+		moveStr += " depth " + QByteArray::number(_engineDepth);
+	}
+	if (_useEngineTime)
+	{
+		moveStr += " movetime " + QByteArray::number(_engineTime * 1000);
+	}
+	WriteToProcess(moveStr + "\n");
 }
 
 QByteArray UciEngine::AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion)

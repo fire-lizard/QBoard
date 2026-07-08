@@ -39,6 +39,10 @@ public:
 private slots:
 
     void on_toolButton_clicked();
+	void on_engine1DepthCheckBox_checkStateChanged(Qt::CheckState state) const;
+	void on_engine2DepthCheckBox_checkStateChanged(Qt::CheckState state) const;
+	void on_engine1TimeCheckBox_checkStateChanged(Qt::CheckState state) const;
+	void on_engine2TimeCheckBox_checkStateChanged(Qt::CheckState state) const;
 
 private:
 	Ui::SettingsDialog *ui;
