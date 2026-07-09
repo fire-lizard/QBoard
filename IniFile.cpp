@@ -16,14 +16,14 @@ void IniFile::writeToIniFile(const QString& filePath, const ConfigRecord& config
     settings.setValue("HighlightDefenders", configRecord.highlightDefenders);
     settings.setValue("HighlightLastMoves", configRecord.highlightLastMoves);
     settings.setValue("TimerState", configRecord.timerState);
-    settings.setValue("UseEngine1Depth", configRecord.useWhiteEngineDepth);
-    settings.setValue("Engine1Depth", configRecord.whiteEngineDepth);
-    settings.setValue("UseEngine2Depth", configRecord.useBlackEngineDepth);
-    settings.setValue("Engine2Depth", configRecord.blackEngineDepth);
-    settings.setValue("UseEngine1Time", configRecord.useWhiteEngineTime);
-    settings.setValue("Engine1Time", configRecord.whiteEngineTime);
-    settings.setValue("UseEngine2Time", configRecord.useBlackEngineTime);
-    settings.setValue("Engine2Time", configRecord.blackEngineTime);
+    settings.setValue("UseEngine1Depth", configRecord.useBlackEngineDepth);
+    settings.setValue("Engine1Depth", configRecord.blackEngineDepth);
+    settings.setValue("UseEngine2Depth", configRecord.useWhiteEngineDepth);
+    settings.setValue("Engine2Depth", configRecord.whiteEngineDepth);
+    settings.setValue("UseEngine1Time", configRecord.useBlackEngineTime);
+    settings.setValue("Engine1Time", configRecord.blackEngineTime);
+    settings.setValue("UseEngine2Time", configRecord.useWhiteEngineTime);
+    settings.setValue("Engine2Time", configRecord.whiteEngineTime);
     settings.endGroup();
 
 	// Sync the changes explicitly (optional)
@@ -46,14 +46,14 @@ ConfigRecord IniFile::readFromIniFile(const QString& filePath) {
     const bool highlightDefenders = settings.value("HighlightDefenders", true).toBool();
     const bool highlightLastMoves = settings.value("HighlightLastMoves", true).toBool();
     const bool timerState = settings.value("TimerState", true).toBool();
-    const bool useWhiteEngineDepth = settings.value("UseEngine1Depth", false).toBool();
-    int  whiteEngineDepth = settings.value("Engine1Depth", 10).toInt();
-    const bool useBlackEngineDepth = settings.value("UseEngine2Depth", false).toBool();
-    int  blackEngineDepth = settings.value("Engine2Depth", 10).toInt();
-    const bool useWhiteEngineTime = settings.value("UseEngine1Time", false).toBool();
-    int  whiteEngineTime = settings.value("Engine1Time", 10).toInt();
-    const bool useBlackEngineTime = settings.value("UseEngine2Time", false).toBool();
-    int  blackEngineTime = settings.value("Engine2Time", 10).toInt();
+    const bool useBlackEngineDepth = settings.value("UseEngine1Depth", false).toBool();
+    int  blackEngineDepth = settings.value("Engine1Depth", 10).toInt();
+    const bool useWhiteEngineDepth = settings.value("UseEngine2Depth", false).toBool();
+    int  whiteEngineDepth = settings.value("Engine2Depth", 10).toInt();
+    const bool useBlackEngineTime = settings.value("UseEngine1Time", false).toBool();
+    int  blackEngineTime = settings.value("Engine1Time", 10).toInt();
+    const bool useWhiteEngineTime = settings.value("UseEngine2Time", false).toBool();
+    int  whiteEngineTime = settings.value("Engine2Time", 10).toInt();
     settings.endGroup();
 
     // Return values
