@@ -128,6 +128,7 @@ private:
 									  FlyingHawk, EarthwardNet, DivineCarriage, LongbowKnight, CrossbowKnight, CannonCarriage, KnightCaptain };
 	PieceColour _chosenColour = White;
 	PieceType _chosenPiece = None;
+	PieceType _musketeerPiece = None;
 	bool _editorMode = false;
 	bool _lionMovedOnce = false;
 	bool _lionMovedTwice = false;

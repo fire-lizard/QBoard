@@ -69,7 +69,11 @@ void MusketeerChessBoard::Initialize()
 		{White, Elephant},
 		{Black, Elephant},
 		{White, Eagle},
-		{Black, Eagle}
+		{Black, Eagle},
+		{White, Fortress},
+		{Black, Fortress},
+		{White, Spider},
+		{Black, Spider}
 	};
 	WhitePiecesToPlace = 2;
 	BlackPiecesToPlace = 2;

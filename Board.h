@@ -17,6 +17,7 @@ struct Piece
         IsPromoted = false;
         HasMoved = false;
 		CanBePromoted = true;
+		CanMove = true;
     }
     PieceType BaseType;
     PieceType Type;
@@ -26,6 +27,8 @@ struct Piece
 	bool HasMoved;
 	// Used by Sittuyin
 	bool CanBePromoted;
+	// Used by Ko Shogi
+	bool CanMove;
 };
 
 class Board

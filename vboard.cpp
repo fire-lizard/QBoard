@@ -1058,7 +1058,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					{
 						if (engine != nullptr && engine->IsActive())
 						{
-							std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
+							std::dynamic_pointer_cast<WbEngine>(engine)->DoubleMove(_oldX, _board->GetHeight() - _oldY,
 								_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 						}
 						CheckPromotion(p, x, y);
@@ -1079,7 +1079,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						{
 							if (engine != nullptr && engine->IsActive())
 							{
-								std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
+								std::dynamic_pointer_cast<WbEngine>(engine)->TripleMove(_oldX, _board->GetHeight() - _oldY,
 									_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second,
 									_lionSecondMove.first, _board->GetHeight() - _lionSecondMove.second,
 									x, _board->GetHeight() - y);
@@ -1094,7 +1094,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						{
 							if (engine != nullptr && engine->IsActive())
 							{
-								std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
+								std::dynamic_pointer_cast<WbEngine>(engine)->DoubleMove(_oldX, _board->GetHeight() - _oldY,
 									_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 							}
 							CheckPromotion(p, x, y);
@@ -1110,7 +1110,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						{
 							if (engine != nullptr && engine->IsActive())
 							{
-								std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
+								std::dynamic_pointer_cast<WbEngine>(engine)->DoubleMove(_oldX, _board->GetHeight() - _oldY,
 									_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 							}
 							CheckPromotion(p, x, y);
@@ -1205,7 +1205,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				{
 					if (engine != nullptr && engine->IsActive())
 					{
-						std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
+						std::dynamic_pointer_cast<WbEngine>(engine)->DoubleMove(_oldX, _board->GetHeight() - _oldY,
 							_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 					}
 					CheckPromotion(p, x, y);
@@ -1289,7 +1289,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		{
 			if (engine != nullptr && engine->IsActive())
 			{
-				std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY,
+				std::dynamic_pointer_cast<WbEngine>(engine)->TripleMove(_oldX, _board->GetHeight() - _oldY,
 					_lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second,
 					_lionSecondMove.first, _board->GetHeight() - _lionSecondMove.second,
 					x, _board->GetHeight() - y);
@@ -1305,7 +1305,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		{
 			if (engine != nullptr && engine->IsActive())
 			{
-				std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
+				std::dynamic_pointer_cast<WbEngine>(engine)->DoubleMove(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 			}
             EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->Type, _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
 			FinishMove(x, y);
@@ -1317,7 +1317,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		{
 			if (engine != nullptr && engine->IsActive())
 			{
-				std::dynamic_pointer_cast<WbEngine>(engine)->Move(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
+				std::dynamic_pointer_cast<WbEngine>(engine)->DoubleMove(_oldX, _board->GetHeight() - _oldY, _lionFirstMove.first, _board->GetHeight() - _lionFirstMove.second, x, _board->GetHeight() - y);
 			}
             EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->Type, _oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, x, y);
 			FinishMove(x, y);
@@ -2254,7 +2254,7 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 		}
 		else
 		{
-			std::dynamic_pointer_cast<WbEngine>(_blackEngine)->Move(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
+			std::dynamic_pointer_cast<WbEngine>(_blackEngine)->DoubleMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
 		}
 	}
 	else 
@@ -2346,7 +2346,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 		}
 		else
 		{
-			std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->Move(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
+			std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->DoubleMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
 		}
 	}
 	else
@@ -2773,11 +2773,19 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 
 	QMenu menu(this);
 
-	const auto cps = dynamic_cast<PieceStorage*>(_board)->GetCapturedPieces(_currentPlayer);
-	for (const auto cp : cps)
+	if (_gameVariant == MusketeerChess && _currentPlayer == Black && _musketeerPiece != None)
 	{
-        const std::string str = StringManager::PieceType2Description(_gameVariant, cp);
+		const std::string str = StringManager::PieceType2Description(_gameVariant, _musketeerPiece);
 		menu.addAction(QString::fromStdString(str));
+	}
+	else
+	{
+		const auto cps = dynamic_cast<PieceStorage*>(_board)->GetCapturedPieces(_currentPlayer);
+		for (const auto cp : cps)
+		{
+			const std::string str = StringManager::PieceType2Description(_gameVariant, cp);
+			menu.addAction(QString::fromStdString(str));
+		}
 	}
 
 	// Execute the menu at the cursor position
@@ -2928,6 +2936,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				{
 					if (_blackEngine != nullptr && _blackEngine->IsActive()) return;
 				}
+				_musketeerPiece = newPiece;
 			}
 			else
 			{
