@@ -311,7 +311,6 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     case MiniShogi:
     case JudkinShogi:
     case EuroShogi:
-    case HeianShogi:
         if (pieceStyle == Mnemonic || pieceStyle == Asian || pieceStyle == Asian2) imageFileName = GetShogiImageFileName(pieceColour, pieceType, isPromoted);
         else if (pieceStyle == Asian3 || pieceStyle == Asian4) imageFileName = GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);
         else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
@@ -327,6 +326,7 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
         imageFileName = GetYariShogiImageFileName(pieceColour, pieceType);
         break;
     case DaiShogi:
+    case HeianShogi:
     case HeianDaiShogi:
         if (pieceStyle == Asian) imageFileName = GetKanjiImageFileName(pieceColour, pieceType, isPromoted);
         else if (pieceStyle == Asian2 || pieceStyle == Asian4) imageFileName = GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);

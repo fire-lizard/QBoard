@@ -13,7 +13,8 @@ public:
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 	std::string GetStringCode(int x, int y) const override;
 
-	int PiecesToPlace = 4;
+	int WhitePiecesToPlace = 2;
+	int BlackPiecesToPlace = 2;
 
 protected:
 	bool EnemyPawnsAround(int x, int y) const override;

@@ -71,7 +71,8 @@ void MusketeerChessBoard::Initialize()
 		{White, Eagle},
 		{Black, Eagle}
 	};
-	PiecesToPlace = 4;
+	WhitePiecesToPlace = 2;
+	BlackPiecesToPlace = 2;
 }
 
 bool MusketeerChessBoard::EnemyPawnsAround(int x, int y) const
@@ -328,10 +329,20 @@ bool MusketeerChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	const PieceType pieceType = GetData(oldX, oldY)->Type;
 	const PieceColour pieceColour = GetData(oldX, oldY)->Colour;
+	bool hasMoved = GetData(oldX, oldY)->HasMoved;
 	const PieceType destPieceType = GetData(newX, newY) != std::nullopt ? GetData(newX, newY)->Type : None;
 	const bool result = CapablancaChessBoard::Move(oldX, oldY, newX, newY, cl);
 	if (result && GetData(newX, newY) != std::nullopt)
 	{
+		// Musketeer Chess piece release
+		if (pieceType == King || pieceType == Queen || pieceType == Bishop || pieceType == Knight || pieceType == Rook)
+		{
+			if (!hasMoved && GetData(oldX, oldY == 1 ? 0 : _height - 1) != std::nullopt)
+			{
+				SetData(oldX, oldY, GetData(oldX, oldY == 1 ? 0 : _height - 1));
+				SetData(oldX, oldY == 1 ? 0 : _height - 1, std::nullopt);
+			}
+		}
 		_data[newX][newY]->HasMoved = true;
 		// Castling
 		if (pieceType == Rook)

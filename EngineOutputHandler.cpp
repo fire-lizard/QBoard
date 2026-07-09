@@ -587,13 +587,108 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             }
         }
     }
+    else if (gameVariant == MusketeerChess)
+    {
+        y1--;
+        y2--;
+        // Castling check
+        if (moveArray.contains("O-O") || (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King))
+        {
+            auto coords = board->FindNearestPiece(x1, y1, x1 < x2 ? East : West);
+            std::optional<Piece> rook = board->GetData(coords.first, coords.second);
+            board->SetData(x1 < x2 ? x1 + 2 : x1 - 2, y2, board->GetData(x1, y1));
+            board->SetData(x1 < x2 ? coords.first - 2 : coords.first + 3, y1, rook);
+            board->SetData(x1, y1, std::nullopt);
+            board->SetData(coords.first, coords.second, std::nullopt);
+            dynamic_cast<ChessBoard*>(board)->WriteCastling(x2 > x1 ? "O-O" : "O-O-O");
+            if (moveArray.contains("O-O"))
+            {
+                engine->AddMove(moveArray);
+            }
+            else
+            {
+                engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, ' ');
+            }
+        }
+        else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
+        {
+            const bool isPromoted =
+                moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
+                moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'm' ||
+                moveArray[ms - 1] == 'l' || moveArray[ms - 1] == 'c' || moveArray[ms - 1] == 'u' ||
+                moveArray[ms - 1] == 'd' || moveArray[ms - 1] == 'e' || moveArray[ms - 1] == 'h' ||
+                moveArray[ms - 1] == 'f' || moveArray[ms - 1] == 's';
+            board->GetMoves(board->GetData(x1, y1), x1, y1);
+            const PieceType ct1 = board->GetData(x1, y1) != std::nullopt ? board->GetData(x1, y1)->Type : None;
+            const PieceType ct2 = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
+            board->Move(x1, y1, x2, y2, false);
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+                isPromoted ? moveArray[ms - 1] : ' ', ct2 != None ? 'x' : ' ');
+            engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
+        	if (isPromoted)
+            {
+                PieceType pt;
+                switch (moveArray[ms - 1])
+                {
+                case 'l':
+                    pt = Leopard;
+                    break;
+                case 'c':
+                    pt = Cannon;
+                    break;
+                case 'u':
+                    pt = Unicorn;
+                    break;
+                case 'd':
+                    pt = FlyingDragon;
+                    break;
+                case 'e':
+                    pt = Elephant;
+                    break;
+                case 'h':
+                    pt = Eagle;
+                    break;
+                case 'f':
+                    pt = Fortress;
+                    break;
+                case 's':
+                    pt = Spider;
+                    break;
+                case 'n':
+                    pt = Knight;
+                    break;
+                case 'b':
+                    pt = Bishop;
+                    break;
+                case 'r':
+                    pt = Rook;
+                    break;
+                case 'q':
+                    pt = Queen;
+                    break;
+                case 'a':
+                    pt = Archbishop;
+                    break;
+                case 'm':
+                    pt = Chancellor;
+                    break;
+                default:
+                    pt = None;
+                    break;
+                }
+                if (ct1 == Pawn && pt != None)
+                {
+                    board->Promote(x2, y2, pt);
+                }
+                else
+                {
+                    board->SetData(x1, y1, Piece(pt, currentPlayer));
+                }
+            }
+        }
+    }
     else if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
 	{
-		if (gameVariant == MusketeerChess)
-		{
-            y1--;
-            y2--;
-		}
     	// Castling check
         if (moveArray.contains("O-O") || (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King))
 		{

@@ -467,12 +467,17 @@ void VBoard::CancelLionMove()
 void VBoard::mousePressEvent(QMouseEvent* event)
 {
 	if (_gameVariant == Sittuyin && !dynamic_cast<SittuyinBoard*>(_board)->GetCapturedPieces(_currentPlayer).empty()) return;
-	if (_gameVariant == MusketeerChess && dynamic_cast<MusketeerChessBoard*>(_board)->PiecesToPlace > 0) return;
 	if (event->button() != Qt::MouseButton::LeftButton) return;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
     const int x = static_cast<int>(event->position().x()) / w;
     const int y = static_cast<int>(event->position().y()) / h;
+	if (_gameVariant == MusketeerChess)
+	{
+		if (_currentPlayer == White && dynamic_cast<MusketeerChessBoard*>(_board)->WhitePiecesToPlace > 0) return;
+		if (_currentPlayer == Black && dynamic_cast<MusketeerChessBoard*>(_board)->BlackPiecesToPlace > 0) return;
+		if (y == 0 || y == _board->GetHeight() - 1) return;
+	}
 	std::optional<Piece> p = _board->GetData(x, y);
 	if (_editorMode)
 	{
@@ -2763,6 +2768,8 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
         _gameVariant != EuroShogi && _gameVariant != YariShogi && _gameVariant != CrazyWa && _gameVariant != Sittuyin) return;
 	if ((_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black) ||
 		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;
+	if (_currentPlayer == White && dynamic_cast<MusketeerChessBoard*>(_board)->WhitePiecesToPlace == 0) return;
+	if (_currentPlayer == Black && dynamic_cast<MusketeerChessBoard*>(_board)->BlackPiecesToPlace == 0) return;
 
 	QMenu menu(this);
 
@@ -2912,7 +2919,25 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		}
 		EngineOutputHandler::AddMove(_board, _gameVariant, newPiece, sc, '*', x, y, ' ', ' ');
 		dynamic_cast<PieceStorage*>(_board)->RemoveCapturedPiece(newPiece, _currentPlayer);
-		if (_gameVariant == MusketeerChess) dynamic_cast<MusketeerChessBoard*>(_board)->PiecesToPlace--;
+		if (_gameVariant == MusketeerChess)
+		{
+			if (_currentPlayer == White)
+			{
+				dynamic_cast<MusketeerChessBoard*>(_board)->WhitePiecesToPlace--;
+				if (dynamic_cast<MusketeerChessBoard*>(_board)->WhitePiecesToPlace >= 0)
+				{
+					if (_blackEngine != nullptr && _blackEngine->IsActive()) return;
+				}
+			}
+			else
+			{
+				dynamic_cast<MusketeerChessBoard*>(_board)->BlackPiecesToPlace--;
+				if (dynamic_cast<MusketeerChessBoard*>(_board)->BlackPiecesToPlace >= 0)
+				{
+					if (_whiteEngine != nullptr && _whiteEngine->IsActive()) return;
+				}
+			}
+		}
 		FinishMove(x, y);
 	}
 }
