@@ -411,8 +411,8 @@ void VBoard::FinishMove(int x, int y)
 		_lastBlackMoveTo = { -1, -1 };
 		_whiteMoves.push_back(_board->GetFEN());
 		if (!_board->HasPiece(King, Black) &&
-			(!_board->HasPiece(MiddleTroop, Black) || !_board->HasPiece(Flag, White)) &&
-			!_board->HasPiece(Prince, Black) && _gameVariant != Sittuyin)
+			(!_board->HasPiece(MiddleTroop, Black) || !_board->HasPiece(Flag, Black)) &&
+			!_board->HasPiece(Prince, Black) && !_board->HasPiece(Emperor, Black) && _gameVariant != Sittuyin)
 		{
 			QMessageBox::information(this, "Game over", "White wins by eliminating Black King");
 		}
@@ -426,7 +426,7 @@ void VBoard::FinishMove(int x, int y)
 		_blackMoves.push_back(_board->GetFEN());
 		if (!_board->HasPiece(King, White) &&
 			(!_board->HasPiece(MiddleTroop, White) || !_board->HasPiece(Flag, White)) &&
-			!_board->HasPiece(Prince, White) && _gameVariant != Sittuyin)
+			!_board->HasPiece(Prince, White) && !_board->HasPiece(Emperor, White) && _gameVariant != Sittuyin)
 		{
 			QMessageBox::information(this, "Game over", "Black wins by eliminating White King");
 		}
@@ -1847,7 +1847,11 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		s = 48;
 		_board = new KoShogiBoard();
 		break;
-    case MicroShogi:
+	case TaiShogi:
+		s = 36;
+		_board = new TaiShogiBoard();
+		break;
+	case MicroShogi:
         _board = new MicroShogiBoard();
         break;
     case KyotoShogi:

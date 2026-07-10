@@ -33,6 +33,7 @@
      * Dai Dai Shogi
      * Maka Dai Dai Shogi
      * Ko Shogi
+     * Tai Shogi
   3. Other Board Games
      * Xiangqi
      * Janggi

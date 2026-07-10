@@ -13,7 +13,7 @@ TEMPLATE = app
 
 win32:RC_ICONS += images/toolbar/QBoard.ico
 macx-clang {
-    ICON = toolbar/QBoard.icns
+    ICON = images/toolbar/QBoard.icns
 }
 
 SOURCES += main.cpp\
@@ -70,6 +70,7 @@ SOURCES += main.cpp\
     DaiDaiShogiBoard.cpp \
     MakaDaiDaiShogiBoard.cpp \
     KoShogiBoard.cpp \
+    TaiShogiBoard.cpp \
     EngineOutputHandler.cpp \
     Communications.cpp \
     enginemanager.cpp \
@@ -132,6 +133,7 @@ HEADERS  += mainwindow.h \
     DaiDaiShogiBoard.h \
     MakaDaiDaiShogiBoard.h \
     KoShogiBoard.h \
+    TaiShogiBoard.h \
     EngineOutputHandler.h \
     Communications.h \
     enginemanager.h \

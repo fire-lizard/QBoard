@@ -55,7 +55,8 @@ namespace {
 			{TenjikuShogi,    "Tenjiku Shogi"},
 			{DaiDaiShogi,     "Dai Dai Shogi"},
 			{MakaDaiDaiShogi, "Maka Dai Dai Shogi"},
-			{KoShogi,         "Ko Shogi"}
+			{KoShogi,         "Ko Shogi"},
+			{TaiShogi,        "Tai Shogi"}
 		};
 		return _variantMap;
 	}
@@ -102,7 +103,8 @@ namespace {
 		{TenjikuShogi,      "tenjiku"},
 		{DaiDaiShogi,       "daidai"},
 		{MakaDaiDaiShogi,   "maka"},
-		{KoShogi,           "ko"}
+		{KoShogi,           "ko"},
+		{TaiShogi,          "tai"}
 		};
 		return _engineMap;
 	}

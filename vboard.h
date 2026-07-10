@@ -6,7 +6,7 @@
 #include <QGroupBox>
 #include <QInputDialog>
 #include "mainwindow.h"
-#include "DaiDaiShogiBoard.h"
+#include "TaiShogiBoard.h"
 #include "KoShogiBoard.h"
 #include "GothicChessBoard.h"
 #include "JanusChessBoard.h"

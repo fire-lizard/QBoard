@@ -92,6 +92,7 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         painter.drawPixmap(i * w + w / 6, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
         break;
     case DaiDaiShogi:
+    case TaiShogi:
     case CapablancaChess:
     case GothicChess:
     case JanusChess:
@@ -257,6 +258,8 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
         if (isAsianStyle) return ":/pieces_kok/images/images_kok/";
         if (pieceStyle == Mnemonic) return ":/pieces_km/images/images_kom/";
         return ":/pieces_kow/images/images_kow/";
+    case TaiShogi:
+        return ":/pieces_tai/images/images_tai/";
     case Chess:
     case Shatranj:
     case Shatar:
@@ -355,6 +358,7 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
         imageFileName = GetWaShogiImageFileName(pieceStyle, pieceColour, pieceType, isPromoted);
         break;
     case DaiDaiShogi:
+    case TaiShogi:
         imageFileName = GetKanjiImageFileName3(pieceColour, pieceType, isPromoted);
         break;
     case Chess:

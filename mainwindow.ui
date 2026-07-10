@@ -77,13 +77,13 @@
      <item row="0" column="1">
       <widget class="QTimeEdit" name="player_clock">
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
        <property name="buttonSymbols">
-        <enum>QAbstractSpinBox::NoButtons</enum>
+        <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
        </property>
        <property name="displayFormat">
         <string>hh:mm:ss</string>
@@ -100,13 +100,13 @@
      <item row="1" column="1">
       <widget class="QTimeEdit" name="opponent_clock">
        <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
        <property name="buttonSymbols">
-        <enum>QAbstractSpinBox::NoButtons</enum>
+        <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
        </property>
        <property name="displayFormat">
         <string>hh:mm:ss</string>
@@ -122,7 +122,7 @@
      <x>0</x>
      <y>0</y>
      <width>1008</width>
-     <height>21</height>
+     <height>33</height>
     </rect>
    </property>
   </widget>
