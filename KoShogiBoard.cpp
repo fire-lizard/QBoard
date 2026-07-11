@@ -774,7 +774,6 @@ void KoShogiBoard::CheckShootingDirection(const std::optional<Piece>& piece, int
  */
 void KoShogiBoard::dfsFiveSteps(int r, int c, int step, PieceColour pieceColour, std::vector<std::pair<int, int>>& currentPath)
 {
-	constexpr int N = 19;
 	const std::vector<std::pair<int, int>> directions =
 	{
 		{ +0, -1 },
@@ -798,7 +797,7 @@ void KoShogiBoard::dfsFiveSteps(int r, int c, int step, PieceColour pieceColour,
 		int nc = c + dir.second;
 
 		// Check bounds
-		if (nr < 0 || nr >= N || nc < 0 || nc >= N) {
+		if (nr < 0 || nr >= _width || nc < 0 || nc >= _width) {
 			continue;
 		}
         if (GetData(nr, nc) != std::nullopt && GetData(nr, nc)->Colour == pieceColour) {
@@ -833,12 +832,11 @@ void KoShogiBoard::getAll5StepPaths(int startR, int startC, PieceColour pieceCol
  */
 std::vector<std::pair<int, int>> KoShogiBoard::getSinglePieceMoves(int r, int c, const std::vector<std::pair<int, int>>& offsets, const std::optional<Piece>& piece) const
 {
-	constexpr int N = 19;
 	std::vector<std::pair<int, int>> result;
 	for (auto& offset : offsets) {
 		int rr = r + offset.first;
 		int cc = c + offset.second;
-		if (rr < 0 || rr >= N || cc < 0 || cc >= N) {
+		if (rr < 0 || rr >= _width || cc < 0 || cc >= _width) {
 			continue;
 		}
 

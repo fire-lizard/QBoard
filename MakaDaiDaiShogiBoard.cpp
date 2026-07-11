@@ -351,10 +351,10 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
 		CheckMove(piece, x + 3, y + 3);
 		break;
 	case Capricorn:
-		GetAllPossibleMoves(x, y, true);
+		GetAllPossibleMoves(x, y, true, false);
 		break;
 	case HookMover:
-		GetAllPossibleMoves(x, y, false);
+		GetAllPossibleMoves(x, y, false, false);
 		break;
 	case Deva:
         if (piece->Colour == White)
@@ -893,15 +893,23 @@ std::vector<std::pair<int, int>> MakaDaiDaiShogiBoard::GetRay(int startR, int st
 	return result;
 }
 
-void MakaDaiDaiShogiBoard::GetAllPossibleMoves(int startR, int startC, bool diagonal)
+void MakaDaiDaiShogiBoard::GetAllPossibleMoves(int startR, int startC, bool diagonal, bool onlyforward)
 {
+	const PieceColour pieceColour = GetData(startR, startC) != std::nullopt ? GetData(startR, startC)->Colour : White;
+
 	std::vector<std::pair<int, int>> directions;
 	if (diagonal)
 	{
-		directions.emplace_back(-1, -1);
-		directions.emplace_back(-1, +1);
-		directions.emplace_back(+1, -1);
-		directions.emplace_back(+1, +1);
+		if (!onlyforward || pieceColour == White)
+		{
+			directions.emplace_back(-1, -1);
+			directions.emplace_back(+1, -1);
+		}
+		if (!onlyforward || pieceColour == Black)
+		{
+			directions.emplace_back(-1, +1);
+			directions.emplace_back(+1, +1);
+		}
 	}
 	else
 	{
@@ -917,16 +925,13 @@ void MakaDaiDaiShogiBoard::GetAllPossibleMoves(int startR, int startC, bool diag
 	//   (Segment1) in direction d1
 	//   (Segment2) in direction d2 (which may be the same as d1 or different)
 
-    const PieceColour pieceColour = GetData(startR, startC) != std::nullopt ? GetData(startR, startC)->Colour : White;
-
 	for (const auto& d1 : directions) {
-		constexpr int BOARD_SIZE = 19;
 		// All squares we can reach in the first segment (in direction d1).
-		auto firstSegment = GetRay(startR, startC, d1.first, d1.second, BOARD_SIZE, pieceColour);
+		auto firstSegment = GetRay(startR, startC, d1.first, d1.second, _width, pieceColour);
 
 		{
 			for (const auto& d2 : directions) {
-				auto secondSegment = GetRay(startR, startC, d2.first, d2.second, BOARD_SIZE, pieceColour);
+				auto secondSegment = GetRay(startR, startC, d2.first, d2.second, _width, pieceColour);
 				for (auto& sq2 : secondSegment) {
 					reachable.insert(sq2);
 				}
@@ -944,7 +949,7 @@ void MakaDaiDaiShogiBoard::GetAllPossibleMoves(int startR, int startC, bool diag
 			}
 
 			for (const auto& d2 : directions) {
-				auto secondSegment = GetRay(r1, c1, d2.first, d2.second, BOARD_SIZE, pieceColour);
+				auto secondSegment = GetRay(r1, c1, d2.first, d2.second, _width, pieceColour);
 				for (auto& sq2 : secondSegment) {
 					reachable.insert(sq2);
 				}

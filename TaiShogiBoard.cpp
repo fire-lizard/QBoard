@@ -189,6 +189,21 @@ void TaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		}
 		break;
 	case Peacock:
+		GetAllPossibleMoves(x, y, true, true);
+		if (piece->Colour == Black)
+		{
+			CheckMove(piece, x + 1, y - 1);
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 2, y - 2);
+			CheckMove(piece, x - 2, y - 2);
+		}
+		else
+		{
+			CheckMove(piece, x + 1, y + 1);
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 2, y + 2);
+			CheckMove(piece, x - 2, y + 2);
+		}
 		break;
 	case FierceEagle:
 		CheckMove(piece, x + 1, y + 1);

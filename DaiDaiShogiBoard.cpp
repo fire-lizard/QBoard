@@ -132,7 +132,7 @@ void DaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
     switch (piece->Type)
 	{
 	case Tengu:
-		GetAllPossibleMoves(x, y, true);
+		GetAllPossibleMoves(x, y, true, false);
 
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x, y + 1);

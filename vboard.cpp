@@ -14,6 +14,7 @@ VBoard::~VBoard()
 void VBoard::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform);
 	painter.setPen(_editorMode ? Qt::magenta : Qt::black);
 	painter.setBrush(Qt::NoBrush);
 
@@ -1582,7 +1583,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             _board->Promote(x, y);
         }
     }
-    else if (_gameVariant == DaiDaiShogi)
+    else if (_gameVariant == DaiDaiShogi || _gameVariant == TaiShogi)
 	{
         if (!_currentPiece->IsPromoted && p != std::nullopt &&
 			std::ranges::find(UnpromotablePieces,

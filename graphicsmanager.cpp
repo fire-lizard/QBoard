@@ -243,8 +243,9 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     case HeianShogi:
     case HeianDaiShogi:
         if (pieceStyle == Asian) return ":/pieces_tnk/images/images_tnk/";
-        if (pieceStyle == Asian2 || pieceStyle == Asian4) return ":/pieces_maka/images/images_maka/";
+        if (pieceStyle == Asian2) return ":/pieces_maka/images/images_maka/";
         if (pieceStyle == Asian3) return ":/pieces_dai/images/images_dai/";
+        if (pieceStyle == Asian4) return ":/pieces_tai/images/images_tai/";
         return ":/pieces_eur/images/images_gen/";
     case TenjikuShogi:
         return isAsianStyle ? ":/pieces_tnk/images/images_tnk/" : ":/pieces_ten/images/images_ten/";
@@ -333,7 +334,8 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     case HeianShogi:
     case HeianDaiShogi:
         if (pieceStyle == Asian) imageFileName = GetKanjiImageFileName(pieceColour, pieceType, isPromoted);
-        else if (pieceStyle == Asian2 || pieceStyle == Asian4) imageFileName = GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Asian2) imageFileName = GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Asian4) imageFileName = GetKanjiImageFileName3(pieceColour, pieceType, isPromoted);
         else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
         break;
     case MakaDaiDaiShogi:

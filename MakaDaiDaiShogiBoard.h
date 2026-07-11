@@ -15,7 +15,7 @@ public:
 	bool TripleMove(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
 
 protected:
-	void GetAllPossibleMoves(int startR, int startC, bool diagonal);
+	void GetAllPossibleMoves(int startR, int startC, bool diagonal, bool onlyforward);
 
 private:
 	std::vector<std::pair<int, int>> GetRay(int startR, int startC, int dr, int dc, int n, PieceColour pieceColour) const;

@@ -159,7 +159,7 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 	{
 		moveStr += "@@@@";
 	}
-	else if (y1 <= 19 || y2 <= 19)
+	else if (y1 <= 25 || y2 <= 25)
 	{
 		moveStr.push_back(static_cast<char>(x1 < 30 ? x1 + 97 : x1));
 		moveStr.push_back(QString::number(y1)[0].toLatin1());
@@ -189,7 +189,7 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 {
 	QByteArray moveStr;
 	moveStr += "usermove ";
-	if (y1 <= 19 || y2 <= 19)
+	if (y1 <= 25 || y2 <= 25)
 	{
 		moveStr.push_back(static_cast<char>(x1 < 30 ? x1 + 97 : x1));
 		moveStr.push_back(QString::number(y1)[0].toLatin1());
@@ -206,7 +206,7 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 		moveStr.push_back(y2);
 	}
 	moveStr.push_back(',');
-	if (y2 <= 19 || y3 <= 19)
+	if (y2 <= 25 || y3 <= 25)
 	{
 		moveStr.push_back(static_cast<char>(x2 < 30 ? x2 + 97 : x2));
 		moveStr.push_back(QString::number(y2)[0].toLatin1());
@@ -230,7 +230,7 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 {
 	QByteArray moveStr;
 	moveStr += "usermove ";
-	if (y1 <= 19 || y2 <= 19)
+	if (y1 <= 25 || y2 <= 25)
 	{
 		moveStr.push_back(static_cast<char>(x1 < 30 ? x1 + 97 : x1));
 		moveStr.push_back(QString::number(y1)[0].toLatin1());
@@ -247,7 +247,7 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 		moveStr.push_back(y2);
 	}
 	moveStr.push_back(',');
-	if (y2 <= 19 || y3 <= 19)
+	if (y2 <= 25 || y3 <= 25)
 	{
 		moveStr.push_back(static_cast<char>(x2 < 30 ? x2 + 97 : x2));
 		moveStr.push_back(QString::number(y2)[0].toLatin1());
@@ -264,7 +264,7 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 		moveStr.push_back(y3);
 	}
 	moveStr.push_back(',');
-	if (y3 <= 19 || y4 <= 19)
+	if (y3 <= 25 || y4 <= 25)
 	{
 		moveStr.push_back(static_cast<char>(x3 < 30 ? x3 + 97 : x3));
 		moveStr.push_back(QString::number(y3)[0].toLatin1());
