@@ -60,6 +60,8 @@ enum PieceType
 	OldMonkey, BlindBear, Wrestler, Guardian, BuddhistSpirit, OldRat, Donkey, Capricorn, HookMover, SideFlier, LeftChariot, RightChariot, Emperor,
 	TeachingKing, FreeGold, FreeSilver, FreeCopper, FreeIron, FreeTile, FreeStone, FreeEarth, FreeGo, FreeTiger, FreeLeopard, FreeSerpent,
 	FreeDragon, FreeWolf, FreeCat, FreeBear, Bat,
+	// Tai Shogi Pieces
+	RamsHeadSoldier, GoldenDeer, SilverHare, VermillionSparrow, TurtleSnake, Soldier, Peacock, FierceEagle, SideDragon,
 	// Ko Shogi Pieces
 	MiddleTroop, Drum, Thunderclap, Flag, RoamingAssault, CompanyCommander, ViceCommissioner, PoisonFlame, DoubleKylin, DoublePhoenix, TaoistPriest,
 	SpiritualMonk, ExtensiveFog, HolyLight, AdvanceGuard, RearGuard, SkywardNet, EarthwardNet, RisingDragon, WingedTiger, FlyingHawk, Chariot, Vanguard,
@@ -123,6 +125,17 @@ inline PieceType DaiDaiShogiPieces[] = { King, Lion, WaterBuffalo, Queen, Dragon
 										 Tengu, NeighboringKing, OldKite, OldRat, PoisonousSnake, PrancingStag, RacingChariot, RushingBird,
 										 SavageTiger, Yaksha, SquareMover, StandardBearer, ViolentBear, WhiteElephant, WhiteTiger,
 										 MountainWitch, WizardStork, Wood, LionDog };
+
+inline PieceType TaiShogiPieces[] = { King, Gold, Silver, Copper, Iron, Tile, Stone, Earth, Elephant, Prince, Tiger, Leopard, CatSword, Lion, Phoenix, Kylin,
+									  EvilWolf, AngryBoar, Queen, DragonHorse, DragonKing, Lance, ReverseChariot, FlyingDragon, Knight, Bishop, Rook, SideMover,
+									  VerticalMover, Pawn, Deva, DarkSpirit, CoiledSerpent, FuriousFiend, RecliningDragon, ChineseCock, OldMonkey, BlindBear,
+									  Wrestler, Guardian, BuddhistSpirit, OldRat, Donkey, Capricorn, HookMover, SideFlier, LeftChariot, RightChariot, Emperor,
+									  TeachingKing, FreeGold, FreeSilver, FreeCopper, FreeIron, FreeTile, FreeStone, FreeEarth, FreeTiger, FreeLeopard, FreeSerpent,
+									  FreeDragon, FreeWolf, FreeCat, FreeBear, FreeGo, Bat, MountainWitch, WizardStork, LionDog, GreatDragon, GoBetween, GoldenBird,
+									  ViolentOx, Yaksha, WaterBuffalo, BlindMonkey, BlueDragon, Dove, EasternBarbarian, WesternBarbarian, SouthernBarbarian, NorthernBarbarian,
+									  EnchantedBadger, EnchantedFox, FragrantElephant, FreeDemon, FreeDreamEater, GreatElephant, HowlingDog, LeftGeneral, RightGeneral, Tengu,
+									  NeighboringKing, OldKite, PoisonousSnake, PrancingStag, RacingChariot, RushingBird, SavageTiger, SquareMover, StandardBearer, ViolentBear,
+									  WhiteElephant, WhiteTiger, Wood, RamsHeadSoldier, GoldenDeer, SilverHare, VermillionSparrow, TurtleSnake, Soldier, Peacock, FierceEagle, SideDragon };
 
 inline PieceType WaShogiPieces[] = { Lance, Dog, StruttingCrow, FlyingGoose, Gold, King, Silver, FlyingCock, SwoopingOwl, ClimbingMonkey, LiberatedHorse,
 									 FlyingFalcon, SideMover, CloudEagle, TreacherousFox, RunningRabbit, Pawn, Tokin, Rook, PloddingOx, HeavenlyHorse,
@@ -268,6 +281,8 @@ inline char MAKADAIDAISHOGIFEN[] = "le'ut'jcsga!kg!gscjt'ue'l/a1z1k!1i!ftetfi!1k
 "u!1y1v'1f's!p!n!r!t!f'1v'1y1u!/rr'mz!vbhdx!qy!dhbvz!ml'r/ppppppppppppppppppp/"
 "5i7i5/19/19/19/19/19/5I7I5/PPPPPPPPPPPPPPPPPPP/RL'MZ!VBHDX!QY!DHBVZ!MR'R/"
 "U!1Y1V'1F'S!P!N!R!T!F'1V'1Y1U!/1O!1A'1L!1WONXW1L!1A'1O!1/A1Z1K!1I!FTETFI!1K!1Z1A/LE'UT'JCSGA!KG!GSCJT'UE'L";
+
+inline char TAISHOGIFEN[] = "";
 
 inline char KOSHOGIFEN[] = "a't'cfsgnexkoengsfcs'a'/r'h1d1q1tlmut1q1d1hr'/bic'l'bic'l'bjbl'c'ibl'c'ib/"
                            "w1y1y1y1y1y1y1y1y1w/1v1p1p1p1v1p1p1p1v1/ru'azazazau'azazazau'r/9v'9/19/19/19/19/19/9V'9/"

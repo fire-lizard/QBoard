@@ -35,7 +35,7 @@ void TaiShogiBoard::Initialize()
 		{
 			if (_initialSetup[j][i] != None)
 			{
-                SetData(i, j, Piece(_initialSetup[j][i], j < 5 ? Black : White));
+                SetData(i, j, Piece(_initialSetup[j][i], j < 12 ? Black : White));
 			}
 			else
 			{
@@ -47,11 +47,24 @@ void TaiShogiBoard::Initialize()
 
 void TaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) != std::nullopt)
-    {
+	if (GetData(x, y) != std::nullopt)
+	{
 		_data[x][y]->IsPromoted = true;
-		_data[x][y]->Type = Queen;
-    }
+		PieceType pieceType = None;
+		switch (_data[x][y]->Type)
+		{
+		case SideDragon:
+			pieceType = Gold;
+			break;
+		default:
+			DaiDaiShogiBoard::Promote(x, y, pt);
+			break;
+		}
+		if (pieceType != None)
+		{
+			_data[x][y]->Type = pieceType;
+		}
+	}
 }
 
 void TaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
@@ -59,6 +72,24 @@ void TaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 	_moves.clear();
     switch (piece->Type)
 	{
+    case RamsHeadSoldier:
+		break;
+	case GoldenDeer:
+		break;
+	case SilverHare:
+		break;
+	case VermillionSparrow:
+		break;
+	case TurtleSnake:
+		break;
+	case Soldier:
+		break;
+	case Peacock:
+		break;
+	case FierceEagle:
+		break;
+	case SideDragon:
+		break;
 	default:
 		DaiDaiShogiBoard::GetMoves(piece, x, y);
 		break;

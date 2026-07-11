@@ -624,6 +624,24 @@ std::string Board::GetStringCode(int x, int y) const
         return "+C!";
     case FireDemon:
         return basePieceType == WaterBuffalo ? "+W!" : "D!";
+    case RamsHeadSoldier:
+        return "Z'";
+    case GoldenDeer:
+        return "S~";
+    case SilverHare:
+        return "T~";
+    case VermillionSparrow:
+        return "U~";
+    case TurtleSnake:
+        return "V~";
+    case Soldier:
+        return "W~";
+    case Peacock:
+        return "X~";
+    case FierceEagle:
+        return "Y~";
+    case SideDragon:
+        return "Z~";
     case Gold:
         switch (basePieceType)
         {

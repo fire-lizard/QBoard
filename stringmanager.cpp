@@ -864,55 +864,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
     }
     if (gameVariant == TenjikuShogi)
     {
-        static const std::unordered_map<std::string, PieceType> codeToPieceType = {
-            {"KI", King},
-			{"CP", Prince},
-			{"DE", Elephant},
-			{"GO", Gold},
-			{"SI", Silver},
-			{"CO", Copper},
-			{"IR", Iron},
-			{"FL", Leopard},
-			{"BT", Tiger},
-			{"PA", Pawn},
-			{"DO", Dog},
-			{"LA", Lance},
-			{"KN", Knight},
-			{"RC", ReverseChariot},
-			{"SM", SideMover},
-			{"VM", VerticalMover},
-			{"RO", Rook},
-			{"BI", Bishop},
-			{"DH", DragonHorse},
-			{"DK", DragonKing},
-			{"FK", Queen},
-			{"KY", Kylin},
-			{"PH", Phoenix},
-			{"LN", Lion},
-			{"HF", Unicorn},
-			{"SE", Eagle},
-			{"SS", SideSoldier},
-			{"VS", VerticalSoldier},
-			{"WB", WaterBuffalo},
-			{"CS", ChariotSoldier},
-			{"GG", GreatGeneral},
-			{"VG", ViceGeneral},
-			{"RG", RookGeneral},
-			{"BG", BishopGeneral},
-			{"FD", FireDemon},
-			{"FE", FreeEagle},
-			{"LH", LionHawk},
-			{"MG", MultiGeneral},
-			{"FS", FlyingStag},
-			{"WH", WhiteHorse},
-			{"WL", Whale},
-			{"FB", FreeBoar},
-			{"FO", FlyingOx},
-			{"HT", HeavenlyTetrarch},
-			{"TO", Tokin}
-        };
-        
-    	/*static const std::unordered_map<std::string, PieceType> codeToPieceType = {
+    	static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             {"D'", Dog},
             {"+D'", MultiGeneral},
             {"V!", ViceGeneral},
@@ -936,7 +888,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
             {"+E!", Eagle},
             {"+Q", Queen},
             {"+N", Lion}
-        };*/
+        };
 
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : StringCode2PieceType(DaiShogi, stringCode);
@@ -1648,6 +1600,24 @@ std::string StringManager::PieceType2KanjiCode(GameVariant gameVariant, PieceTyp
             return "天";
         case FireDemon:
             return "火";
+        case RamsHeadSoldier:
+            return "羊兵";
+        case GoldenDeer:
+            return "金鹿";
+        case SilverHare:
+            return "銀兎";
+        case VermillionSparrow:
+            return "朱雀";
+        case TurtleSnake:
+            return "玄武";
+        case Soldier:
+            return "兵士";
+        case Peacock:
+            return "孔雀";
+        case FierceEagle:
+            return "猛鷲";
+        case SideDragon:
+            return "横龍";
         default:
             return "";
     }

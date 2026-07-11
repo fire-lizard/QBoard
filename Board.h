@@ -77,5 +77,5 @@ protected:
 	int _width = -1;
 	int _height = -1;
 	int _moveCount = 0;
-	std::optional<Piece> _data[19][19];
+	std::optional<Piece> _data[25][25];
 };
