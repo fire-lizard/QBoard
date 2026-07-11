@@ -44,7 +44,7 @@ PieceType StringManager::Description2PieceType(GameVariant gameVariant, const st
 
 std::string StringManager::PieceType2Description(PieceType pieceType)
 {
-    switch (pieceType)
+	switch (pieceType)
     {
     case None:                 return "None";
     case King:                 return "King";
@@ -179,6 +179,15 @@ std::string StringManager::PieceType2Description(PieceType pieceType)
     case FreeCat:              return "Free Cat";
     case FreeBear:             return "Free Bear";
     case Bat:                  return "Bat";
+    case RamHeadSoldier:       return "Ram's Head Soldier";
+    case GoldenDeer:           return "Golden Deer";
+    case SilverHare:           return "Silver Hare";
+    case VermillionSparrow:    return "Vermillion Sparrow";
+    case TurtleSnake:          return "Turtle Snake";
+    case Soldier:              return "Soldier";
+    case Peacock:              return "Peacock";
+    case FierceEagle:          return "Fierce Eagle";
+    case SideDragon:           return "Side Dragon";
     case Archbishop:           return "Archbishop";
     case Chancellor:           return "Chancellor";
     case Champion:             return "Champion";
@@ -467,6 +476,15 @@ PieceType StringManager::Description2PieceType(const std::string& description)
     if (description == "Free Cat")           return FreeCat;
     if (description == "Free Bear")          return FreeBear;
     if (description == "Bat")                return Bat;
+    if (description == "Ram's Head Soldier") return RamHeadSoldier;
+    if (description == "Golden Deer")        return GoldenDeer;
+    if (description == "Silver Hare")        return SilverHare;
+    if (description == "Vermillion Sparrow") return VermillionSparrow;
+    if (description == "Turtle Snake")       return TurtleSnake;
+    if (description == "Soldier")            return Soldier;
+    if (description == "Peacock")            return Peacock;
+    if (description == "Fierce Eagle")       return FierceEagle;
+    if (description == "Side Dragon")        return SideDragon;
     if (description == "Archbishop")         return Archbishop;
     if (description == "Chancellor")         return Chancellor;
     if (description == "Champion")           return Champion;
@@ -1013,6 +1031,24 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
 
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : StringCode2PieceType(DaiShogi, stringCode);
+    }
+    if (gameVariant == TaiShogi)
+    {
+        static const std::unordered_map<std::string, PieceType> codeToPieceType = {
+            { "E!",  Eagle },
+            { "Z'",  RamHeadSoldier },
+            { "S~",  GoldenDeer },
+            { "T~",  SilverHare },
+            { "U~",  VermillionSparrow },
+            { "V~",  TurtleSnake },
+            { "W~",  Soldier },
+            { "X~",  Peacock },
+            { "Y~",  FierceEagle },
+            { "Z~",  SideDragon }
+        };
+
+        const auto it = codeToPieceType.find(stringCode);
+        return it != codeToPieceType.end() ? it->second : StringCode2PieceType(DaiDaiShogi, stringCode);
     }
     if (gameVariant == Makruk)
     {
@@ -1600,7 +1636,7 @@ std::string StringManager::PieceType2KanjiCode(GameVariant gameVariant, PieceTyp
             return "天";
         case FireDemon:
             return "火";
-        case RamsHeadSoldier:
+        case RamHeadSoldier:
             return "羊兵";
         case GoldenDeer:
             return "金鹿";

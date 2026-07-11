@@ -624,7 +624,7 @@ std::string Board::GetStringCode(int x, int y) const
         return "+C!";
     case FireDemon:
         return basePieceType == WaterBuffalo ? "+W!" : "D!";
-    case RamsHeadSoldier:
+    case RamHeadSoldier:
         return "Z'";
     case GoldenDeer:
         return "S~";

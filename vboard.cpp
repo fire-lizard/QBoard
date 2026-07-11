@@ -589,7 +589,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	}
 	// Null move
 	else if ((_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||
-		_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi) &&
+		_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi || _gameVariant == TaiShogi) &&
         _currentPiece != std::nullopt && p != std::nullopt && p->Colour == _currentPlayer &&
         x == _oldX && y == _oldY && !_lionMovedOnce && _currentPiece->Type != Thunderclap &&
         (isLionPiece || _currentPiece->Type == ViceGeneral || _currentPiece->Type == FireDemon || _currentPiece->Type == HeavenlyTetrarch))
@@ -1334,7 +1334,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		_moves = _board->Moves();
 		CancelLionMove();
         if (_gameVariant != ShoShogi && _gameVariant != ChuShogi && _gameVariant != DaiShogi && _gameVariant != TenjikuShogi &&
-            _gameVariant != DaiDaiShogi && _gameVariant != MakaDaiDaiShogi && _gameVariant != KoShogi)
+            _gameVariant != DaiDaiShogi && _gameVariant != MakaDaiDaiShogi && _gameVariant != KoShogi && _gameVariant != TaiShogi)
 		{
             for (int index = 0; index < 4; index++)
 			{
@@ -2400,7 +2400,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		whiteRegular->addAction("None");
 
 		if (_gameVariant == CrazyWa || _gameVariant == WaShogi || _gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||
-			_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi)
+			_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi || _gameVariant == TaiShogi)
 		{
 			menu.addAction("Promote");
 			blackPromoted = blackMenu->addMenu("Promoted");
@@ -2712,7 +2712,23 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 					blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(MakaDaiDaiShogiPiece)));
 				}
 			}
+		}
+		else if (_gameVariant == TaiShogi)
+		{
+			for (auto& TaiShogiPiece : TaiShogiPieces)
+			{
+				if (std::ranges::find(_promotedPieces, TaiShogiPiece) != std::end(_promotedPieces))
+				{
+					whitePromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(TaiShogiPiece)));
+					blackPromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(TaiShogiPiece)));
+				}
+				else
+				{
+					whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(TaiShogiPiece)));
+					blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(TaiShogiPiece)));
+				}
 			}
+		}
 		else if (_gameVariant == KoShogi)
 		{
 			for (auto& KoShogiPiece : KoShogiPieces)

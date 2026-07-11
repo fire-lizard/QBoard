@@ -1049,182 +1049,6 @@
     <file>images/images_tnk/ViolentOx.png</file>
     <file>images/images_tnk/ViolentOxFlip.png</file>
   </qresource>
-  <qresource prefix="/pieces_dd">
-    <file>images/images_daidai/AngryBoar.png</file>
-    <file>images/images_daidai/AngryBoarFlip.png</file>
-    <file>images/images_daidai/Bishop.png</file>
-    <file>images/images_daidai/BishopFlip.png</file>
-    <file>images/images_daidai/BlindMonkey.png</file>
-    <file>images/images_daidai/BlindMonkeyFlip.png</file>
-    <file>images/images_daidai/BlueDragon.png</file>
-    <file>images/images_daidai/BlueDragonFlip.png</file>
-    <file>images/images_daidai/CatSword.png</file>
-    <file>images/images_daidai/CatSword-2.png</file>
-    <file>images/images_daidai/CatSword-2Flip.png</file>
-    <file>images/images_daidai/CatSwordFlip.png</file>
-    <file>images/images_daidai/CopperGeneral.png</file>
-    <file>images/images_daidai/CopperGeneralFlip.png</file>
-    <file>images/images_daidai/Dove.png</file>
-    <file>images/images_daidai/DoveFlip.png</file>
-    <file>images/images_daidai/DoveP.png</file>
-    <file>images/images_daidai/DovePFlip.png</file>
-    <file>images/images_daidai/DragonHorse.png</file>
-    <file>images/images_daidai/DragonHorseFlip.png</file>
-    <file>images/images_daidai/DragonHorseP.png</file>
-    <file>images/images_daidai/DragonHorsePFlip.png</file>
-    <file>images/images_daidai/DragonKing.png</file>
-    <file>images/images_daidai/DragonKingFlip.png</file>
-    <file>images/images_daidai/DragonKingP.png</file>
-    <file>images/images_daidai/DragonKingPFlip.png</file>
-    <file>images/images_daidai/EasternBarbarian.png</file>
-    <file>images/images_daidai/EasternBarbarianFlip.png</file>
-    <file>images/images_daidai/EnchantedBadger.png</file>
-    <file>images/images_daidai/EnchantedBadgerFlip.png</file>
-    <file>images/images_daidai/EnchantedFox.png</file>
-    <file>images/images_daidai/EnchantedFoxFlip.png</file>
-    <file>images/images_daidai/EvilWolf.png</file>
-    <file>images/images_daidai/EvilWolfFlip.png</file>
-    <file>images/images_daidai/FerociousLeopard.png</file>
-    <file>images/images_daidai/FerociousLeopardFlip.png</file>
-    <file>images/images_daidai/FlyingDragon.png</file>
-    <file>images/images_daidai/FlyingDragonFlip.png</file>
-    <file>images/images_daidai/FlyingHorse.png</file>
-    <file>images/images_daidai/FlyingHorseFlip.png</file>
-    <file>images/images_daidai/FragrantElephant.png</file>
-    <file>images/images_daidai/FragrantElephantFlip.png</file>
-    <file>images/images_daidai/FragrantElephantP.png</file>
-    <file>images/images_daidai/FragrantElephantPFlip.png</file>
-    <file>images/images_daidai/FreeDemon.png</file>
-    <file>images/images_daidai/FreeDemonFlip.png</file>
-    <file>images/images_daidai/FreeDemonP.png</file>
-    <file>images/images_daidai/FreeDemonPFlip.png</file>
-    <file>images/images_daidai/FreeDreamEater.png</file>
-    <file>images/images_daidai/FreeDreamEaterFlip.png</file>
-    <file>images/images_daidai/FreeDreamEaterP.png</file>
-    <file>images/images_daidai/FreeDreamEaterPFlip.png</file>
-    <file>images/images_daidai/FuriousFiendP.png</file>
-    <file>images/images_daidai/FuriousFiendPFlip.png</file>
-    <file>images/images_daidai/GoldenBird.png</file>
-    <file>images/images_daidai/GoldenBirdFlip.png</file>
-    <file>images/images_daidai/GoldenBirdP.png</file>
-    <file>images/images_daidai/GoldenBirdPFlip.png</file>
-    <file>images/images_daidai/GoldGeneral.png</file>
-    <file>images/images_daidai/GoldGeneralFlip.png</file>
-    <file>images/images_daidai/GreatDragon.png</file>
-    <file>images/images_daidai/GreatDragonFlip.png</file>
-    <file>images/images_daidai/GreatDragonP.png</file>
-    <file>images/images_daidai/GreatDragonPFlip.png</file>
-    <file>images/images_daidai/GreatElephantP.png</file>
-    <file>images/images_daidai/GreatElephantPFlip.png</file>
-    <file>images/images_daidai/HookMover.png</file>
-    <file>images/images_daidai/HookMoverFlip.png</file>
-    <file>images/images_daidai/HookMoverP.png</file>
-    <file>images/images_daidai/HookMoverPFlip.png</file>
-    <file>images/images_daidai/HowlingDog.png</file>
-    <file>images/images_daidai/HowlingDogFlip.png</file>
-    <file>images/images_daidai/IronGeneral.png</file>
-    <file>images/images_daidai/IronGeneralFlip.png</file>
-    <file>images/images_daidai/King.png</file>
-    <file>images/images_daidai/KingFlip.png</file>
-    <file>images/images_daidai/Kirin.png</file>
-    <file>images/images_daidai/KirinFlip.png</file>
-    <file>images/images_daidai/Lance.png</file>
-    <file>images/images_daidai/LanceFlip.png</file>
-    <file>images/images_daidai/LeftChariot.png</file>
-    <file>images/images_daidai/LeftChariotFlip.png</file>
-    <file>images/images_daidai/LeftGeneral.png</file>
-    <file>images/images_daidai/LeftGeneralFlip.png</file>
-    <file>images/images_daidai/Lion.png</file>
-    <file>images/images_daidai/LionDog.png</file>
-    <file>images/images_daidai/LionDogFlip.png</file>
-    <file>images/images_daidai/LionDogP.png</file>
-    <file>images/images_daidai/LionDogPFlip.png</file>
-    <file>images/images_daidai/LionFlip.png</file>
-    <file>images/images_daidai/LionP.png</file>
-    <file>images/images_daidai/LionPFlip.png</file>
-    <file>images/images_daidai/LongNosedGoblin.png</file>
-    <file>images/images_daidai/LongNosedGoblinFlip.png</file>
-    <file>images/images_daidai/LongNosedGoblinP.png</file>
-    <file>images/images_daidai/LongNosedGoblinPFlip.png</file>
-    <file>images/images_daidai/MountainWitchP.png</file>
-    <file>images/images_daidai/MountainWitchPFlip.png</file>
-    <file>images/images_daidai/NeighborKing.png</file>
-    <file>images/images_daidai/NeighborKingFlip.png</file>
-    <file>images/images_daidai/NorthernBarbarian.png</file>
-    <file>images/images_daidai/NorthernBarbarianFlip.png</file>
-    <file>images/images_daidai/OldKite.png</file>
-    <file>images/images_daidai/OldKiteFlip.png</file>
-    <file>images/images_daidai/OldRat.png</file>
-    <file>images/images_daidai/OldRatFlip.png</file>
-    <file>images/images_daidai/Pawn.png</file>
-    <file>images/images_daidai/PawnFlip.png</file>
-    <file>images/images_daidai/Phoenix.png</file>
-    <file>images/images_daidai/PhoenixFlip.png</file>
-    <file>images/images_daidai/PoisonousSnake.png</file>
-    <file>images/images_daidai/PoisonousSnakeFlip.png</file>
-    <file>images/images_daidai/PrancingStag.png</file>
-    <file>images/images_daidai/PrancingStagFlip.png</file>
-    <file>images/images_daidai/Queen.png</file>
-    <file>images/images_daidai/QueenFlip.png</file>
-    <file>images/images_daidai/QueenP.png</file>
-    <file>images/images_daidai/QueenPFlip.png</file>
-    <file>images/images_daidai/ReverseChariot.png</file>
-    <file>images/images_daidai/ReverseChariotFlip.png</file>
-    <file>images/images_daidai/RightChariot.png</file>
-    <file>images/images_daidai/RightChariotFlip.png</file>
-    <file>images/images_daidai/RightGeneral.png</file>
-    <file>images/images_daidai/RightGeneralFlip.png</file>
-    <file>images/images_daidai/Rook.png</file>
-    <file>images/images_daidai/RookFlip.png</file>
-    <file>images/images_daidai/RushingBird.png</file>
-    <file>images/images_daidai/RushingBirdFlip.png</file>
-    <file>images/images_daidai/SavageTiger.png</file>
-    <file>images/images_daidai/SavageTigerFlip.png</file>
-    <file>images/images_daidai/SheDevil.png</file>
-    <file>images/images_daidai/SheDevil-2.png</file>
-    <file>images/images_daidai/SheDevil-2Flip.png</file>
-    <file>images/images_daidai/SheDevilFlip.png</file>
-    <file>images/images_daidai/SheDevilP.png</file>
-    <file>images/images_daidai/SheDevilPFlip.png</file>
-    <file>images/images_daidai/SideChariot.png</file>
-    <file>images/images_daidai/SideChariotFlip.png</file>
-    <file>images/images_daidai/SideMover.png</file>
-    <file>images/images_daidai/SideMoverFlip.png</file>
-    <file>images/images_daidai/SilverGeneral.png</file>
-    <file>images/images_daidai/SilverGeneralFlip.png</file>
-    <file>images/images_daidai/SouthernBarbarian.png</file>
-    <file>images/images_daidai/SouthernBarbarianFlip.png</file>
-    <file>images/images_daidai/SquareMover.png</file>
-    <file>images/images_daidai/SquareMoverFlip.png</file>
-    <file>images/images_daidai/SquareMoverP.png</file>
-    <file>images/images_daidai/SquareMoverPFlip.png</file>
-    <file>images/images_daidai/StandardBearer.png</file>
-    <file>images/images_daidai/StandardBearerFlip.png</file>
-    <file>images/images_daidai/StandardBearerP.png</file>
-    <file>images/images_daidai/StandardBearerPFlip.png</file>
-    <file>images/images_daidai/StoneGeneral.png</file>
-    <file>images/images_daidai/StoneGeneralFlip.png</file>
-    <file>images/images_daidai/VerticalMover.png</file>
-    <file>images/images_daidai/VerticalMoverFlip.png</file>
-    <file>images/images_daidai/ViolentBear.png</file>
-    <file>images/images_daidai/ViolentBearFlip.png</file>
-    <file>images/images_daidai/ViolentOx.png</file>
-    <file>images/images_daidai/ViolentOxFlip.png</file>
-    <file>images/images_daidai/WaterBuffalo.png</file>
-    <file>images/images_daidai/WaterBuffaloFlip.png</file>
-    <file>images/images_daidai/WesternBarbarian.png</file>
-    <file>images/images_daidai/WesternBarbarianFlip.png</file>
-    <file>images/images_daidai/WhiteElephant.png</file>
-    <file>images/images_daidai/WhiteElephantFlip.png</file>
-    <file>images/images_daidai/WhiteElephantP.png</file>
-    <file>images/images_daidai/WhiteElephantPFlip.png</file>
-    <file>images/images_daidai/WhiteTiger.png</file>
-    <file>images/images_daidai/WhiteTigerFlip.png</file>
-    <file>images/images_daidai/WizardStorkP.png</file>
-    <file>images/images_daidai/WizardStorkPFlip.png</file>
-    <file>images/images_daidai/WoodGeneral.png</file>
-    <file>images/images_daidai/WoodGeneralFlip.png</file>
-  </qresource>
   <qresource prefix="/pieces_ko">
     <file>images/images_ko/AdvanceGuard.png</file>
     <file>images/images_ko/AdvanceGuardF.png</file>
@@ -2584,6 +2408,8 @@
     <file>images/images_tai/EmperorPFlip.png</file>
     <file>images/images_tai/EnchantedBadger.png</file>
     <file>images/images_tai/EnchantedBadgerFlip.png</file>
+    <file>images/images_tai/EnchantedFox.png</file>
+    <file>images/images_tai/EnchantedFoxFlip.png</file>
     <file>images/images_tai/EvilWolf.png</file>
     <file>images/images_tai/EvilWolfFlip.png</file>
     <file>images/images_tai/FerociousLeopard.png</file>
@@ -2596,6 +2422,10 @@
     <file>images/images_tai/FlyingHorseFlip.png</file>
     <file>images/images_tai/FlyingOx.png</file>
     <file>images/images_tai/FlyingOxFlip.png</file>
+    <file>images/images_tai/FragrantElephant.png</file>
+    <file>images/images_tai/FragrantElephantFlip.png</file>
+    <file>images/images_tai/FragrantElephantP.png</file>
+    <file>images/images_tai/FragrantElephantPFlip.png</file>
     <file>images/images_tai/FreeBearP.png</file>
     <file>images/images_tai/FreeBearPFlip.png</file>
     <file>images/images_tai/FreeBoarP.png</file>
@@ -2736,10 +2566,14 @@
     <file>images/images_tai/RookFlip.png</file>
     <file>images/images_tai/RushingBird.png</file>
     <file>images/images_tai/RushingBirdFlip.png</file>
+    <file>images/images_tai/SavageTiger.png</file>
+    <file>images/images_tai/SavageTigerFlip.png</file>
     <file>images/images_tai/SheDevil.png</file>
     <file>images/images_tai/SheDevil-2.png</file>
     <file>images/images_tai/SheDevil-2Flip.png</file>
     <file>images/images_tai/SheDevilFlip.png</file>
+    <file>images/images_tai/SheDevilP.png</file>
+    <file>images/images_tai/SheDevilPFlip.png</file>
     <file>images/images_tai/SideChariot.png</file>
     <file>images/images_tai/SideChariotFlip.png</file>
     <file>images/images_tai/SideDragon.png</file>
@@ -2758,6 +2592,8 @@
     <file>images/images_tai/SoldierFlip.png</file>
     <file>images/images_tai/SouthernBarbarian.png</file>
     <file>images/images_tai/SouthernBarbarianFlip.png</file>
+    <file>images/images_tai/SquareMover.png</file>
+    <file>images/images_tai/SquareMoverFlip.png</file>
     <file>images/images_tai/SquareMoverP.png</file>
     <file>images/images_tai/SquareMoverPFlip.png</file>
     <file>images/images_tai/StandardBearer.png</file>

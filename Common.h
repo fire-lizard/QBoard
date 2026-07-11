@@ -61,7 +61,7 @@ enum PieceType
 	TeachingKing, FreeGold, FreeSilver, FreeCopper, FreeIron, FreeTile, FreeStone, FreeEarth, FreeGo, FreeTiger, FreeLeopard, FreeSerpent,
 	FreeDragon, FreeWolf, FreeCat, FreeBear, Bat,
 	// Tai Shogi Pieces
-	RamsHeadSoldier, GoldenDeer, SilverHare, VermillionSparrow, TurtleSnake, Soldier, Peacock, FierceEagle, SideDragon,
+	RamHeadSoldier, GoldenDeer, SilverHare, VermillionSparrow, TurtleSnake, Soldier, Peacock, FierceEagle, SideDragon,
 	// Ko Shogi Pieces
 	MiddleTroop, Drum, Thunderclap, Flag, RoamingAssault, CompanyCommander, ViceCommissioner, PoisonFlame, DoubleKylin, DoublePhoenix, TaoistPriest,
 	SpiritualMonk, ExtensiveFog, HolyLight, AdvanceGuard, RearGuard, SkywardNet, EarthwardNet, RisingDragon, WingedTiger, FlyingHawk, Chariot, Vanguard,
@@ -135,7 +135,7 @@ inline PieceType TaiShogiPieces[] = { King, Gold, Silver, Copper, Iron, Tile, St
 									  ViolentOx, Yaksha, WaterBuffalo, BlindMonkey, BlueDragon, Dove, EasternBarbarian, WesternBarbarian, SouthernBarbarian, NorthernBarbarian,
 									  EnchantedBadger, EnchantedFox, FragrantElephant, FreeDemon, FreeDreamEater, GreatElephant, HowlingDog, LeftGeneral, RightGeneral, Tengu,
 									  NeighboringKing, OldKite, PoisonousSnake, PrancingStag, RacingChariot, RushingBird, SavageTiger, SquareMover, StandardBearer, ViolentBear,
-									  WhiteElephant, WhiteTiger, Wood, RamsHeadSoldier, GoldenDeer, SilverHare, VermillionSparrow, TurtleSnake, Soldier, Peacock, FierceEagle, SideDragon };
+									  WhiteElephant, WhiteTiger, Wood, RamHeadSoldier, GoldenDeer, SilverHare, VermillionSparrow, TurtleSnake, Soldier, Peacock, FierceEagle, SideDragon };
 
 inline PieceType WaShogiPieces[] = { Lance, Dog, StruttingCrow, FlyingGoose, Gold, King, Silver, FlyingCock, SwoopingOwl, ClimbingMonkey, LiberatedHorse,
 									 FlyingFalcon, SideMover, CloudEagle, TreacherousFox, RunningRabbit, Pawn, Tokin, Rook, PloddingOx, HeavenlyHorse,
@@ -282,7 +282,13 @@ inline char MAKADAIDAISHOGIFEN[] = "le'ut'jcsga!kg!gscjt'ue'l/a1z1k!1i!ftetfi!1k
 "5i7i5/19/19/19/19/19/5I7I5/PPPPPPPPPPPPPPPPPPP/RL'MZ!VBHDX!QY!DHBVZ!MR'R/"
 "U!1Y1V'1F'S!P!N!R!T!F'1V'1Y1U!/1O!1A'1L!1WONXW1L!1A'1O!1/A1Z1K!1I!FTETFI!1K!1Z1A/LE'UT'JCSGA!KG!GSCJT'UE'L";
 
-inline char TAISHOGIFEN[] = "";
+inline char TAISHOGIFEN[] = "lj~+af'j'd~rhdqga!+kg!gqdhrd~j'f'+av~l/az~e!ym'p'by~o'u'sr~+el~su'o'y~bp'm'ye!z~a/"
+"g~+lz'v'zl!t~s~c~tt!r!b~p!s!tc~s~t~l!zv'z'+lg~/w~w!fh'g'k!m!x'x~p~xnoq~x~k'm!k!c'b'fw!w~/"
+"r'u~w'e'ut'jco!i!j!y!ex!j!i!o!cjt'ue'w'k~l'/m~a~e~u!+vmvn~y'i~a'wn!wa'i~y'n~vm+vu!e~a~m~/"
+"ppppppppppppppppppppppppp/7i9i7/25/25/25/25/25/25/25/25/25/7I9I7/PPPPPPPPPPPPPPPPPPPPPPPPP/"
+"M~A~E~U!+VMVN~Y'I~A'WN!WA'I~Y'N~VM+VU!E~A~M~/L'K~W'E'UT'JCO!I!J!X!EY!J!I!O!CJT'UE'W'U~R'/"
+"W~W!FB'C'K!M!K'X~Q~ONXP~X~X'M!K!G'H'FW!W~/G~+LZ'V'ZL!T~S~C~TS!P!B~R!T!TC~S~T~L!ZV'Z'+LG~/"
+"AZ~E!YM'P'BY~O'U'SL~+ER~Y~SU'O'BP'M'YE!Z~A/LV~+AF'J'D~RHDQGA!+KG!GQDHRD~J'F'+AJ~L";
 
 inline char KOSHOGIFEN[] = "a't'cfsgnexkoengsfcs'a'/r'h1d1q1tlmut1q1d1hr'/bic'l'bic'l'bjbl'c'ibl'c'ib/"
                            "w1y1y1y1y1y1y1y1y1w/1v1p1p1p1v1p1p1p1v1/ru'azazazau'azazazau'r/9v'9/19/19/19/19/19/9V'9/"

@@ -220,7 +220,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
         }
     }
     else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi ||
-			 gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
+			 gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi || gameVariant == TaiShogi)
     {
         // Handling Null Move
         QStringList parts = QString(buf).trimmed().split(QRegularExpression("[\r\n]+"), Qt::SkipEmptyParts);
@@ -230,7 +230,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
         }
         else
         {
-            const QString _csre = R"(^move ([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])(\+)?)";
+            const QString _csre = R"(^move ([a-y])(2[0-5]|1[0-9]|[0-9])([a-y])(2[0-5]|1[0-9]|[0-9])(\+)?)";
             QRegularExpression regexp = QRegularExpression(_csre, QRegularExpression::MultilineOption);
             QRegularExpressionMatchIterator it = regexp.globalMatch(buf);
             while (it.hasNext())
@@ -414,7 +414,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	int y2 = m.y2;
     const long long ms = moveArray.size();
     if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi ||
-		gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
+		gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi || gameVariant == TaiShogi)
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{
@@ -1156,10 +1156,6 @@ template <typename T> std::basic_string<T> EngineOutputHandler::lowercase(const 
 
 QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant)
 {
-    if (gameVariant == TenjikuShogi)
-    {
-        return SetFenToTenjikuBoard(board, str);
-    }
 	QStringList parts;
     if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
     {
@@ -1187,7 +1183,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			i = 0;
             isDigit = false;
         }
-		if (c == '+')
+		else if (c == '+')
 		{
 			k++;
 			promo = "+";
@@ -1213,7 +1209,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
             std::string stringCode(1, c);
 			PieceType pieceType;
             if (gameVariant == DaiShogi || gameVariant == TenjikuShogi || gameVariant == YariShogi ||
-				gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi)
+				gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi || gameVariant == TaiShogi)
 			{
 				if (k < fen.size() - 1 && (fen[k + 1] == '\'' || fen[k + 1] == '!' || fen[k + 1] == '~'))
 				{
@@ -1224,11 +1220,11 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
             pieceType = StringManager::StringCode2PieceType(gameVariant, uppercase(stringCode));
             if (pieceType == None)
 			{
-				return "Invalid character found in the FEN string at position " + QString::number(k);
+				return "Unknown character found in the FEN string at position " + QString::number(k);
 			}
 			if (j == h || i == w)
 			{
-				return "Invalid FEN string for this game";
+				return "Incorrent FEN string length for this game";
 			}
 			board->SetData(i, j, std::make_optional<Piece>(pieceType, c >= 'a' && c <= 'z' ? Black : White));
             if (promo == "+" && gameVariant != MicroShogi && gameVariant != KyotoShogi)
@@ -1239,6 +1235,10 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			k++;
 			i++;
 		}
+        else
+        {
+            return "Invalid character found in the FEN string at position " + QString::number(k);
+        }
 	} while ((i < w || j < h - 1) && k < fen.size());
     if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
 	{
@@ -1317,73 +1317,6 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
             } while (k < parts[1].size() && ((parts[1][k] >= 'a' && parts[1][k] <= 'z') || (parts[1][k] >= 'A' && parts[1][k] <= 'Z')));
         }
     }
-    return "";
-}
-
-QString EngineOutputHandler::SetFenToTenjikuBoard(Board* board, const QByteArray& str)
-{
-    QStringList parts = QString(str).trimmed().split(' ', Qt::SkipEmptyParts);
-    QString fen = parts[0];
-    board->Clear();
-    const int w = board->GetWidth();
-    const int h = board->GetHeight();
-    int i = 0, j = 0, k = 0;
-    bool isDigit = false;
-    std::string promo;
-    do
-    {
-        const char c = fen[k].toLatin1();
-        if (c == '/')
-        {
-            k++;
-            j++;
-            i = 0;
-            isDigit = false;
-        }
-        if (c == '+')
-        {
-            k++;
-            promo = "+";
-            isDigit = false;
-        }
-        else if (c >= '0' && c <= '9')
-        {
-            k++;
-            i += c - 48;
-            if (!isDigit)
-            {
-                isDigit = true;
-            }
-            else
-            {
-                i += c != '0' ? 10 : 9;
-                isDigit = false;
-            }
-        }
-        else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-        {
-            isDigit = false;
-            if (k >= fen.size() - 1) return "Invalid FEN size";
-        	std::string stringCode{c, fen[k + 1].toLatin1()};
-            PieceType pieceType = StringManager::StringCode2PieceType(TenjikuShogi, uppercase(stringCode));
-            if (pieceType == None)
-            {
-                return "Invalid character found in the FEN string at position " + QString::number(k);
-            }
-            if (j == h || i == w)
-            {
-                return "Invalid FEN string for this game";
-            }
-            board->SetData(i, j, std::make_optional<Piece>(pieceType, c >= 'a' && c <= 'z' ? Black : White));
-            if (promo == "+")
-            {
-                board->Promote(i, j);
-            }
-            promo = "";
-            k += 2;
-            i++;
-        }
-    } while ((i < w || j < h - 1) && k < fen.size());
     return "";
 }
 

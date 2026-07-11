@@ -1062,6 +1062,8 @@ QString GraphicsManager::GetKanjiImageFileName3(PieceColour pieceColour, PieceTy
         return "NeighborKing" + colour + ".png";
     case Wood:
         return "WoodGeneral" + colour + ".png";
+    case RamHeadSoldier:
+        return "RamHeadSoldier" + colour + ".png";
     default:
         QString desc = QString::fromStdString(StringManager::PieceType2Description(DaiDaiShogi, pieceType));
         desc.replace(" ", "");

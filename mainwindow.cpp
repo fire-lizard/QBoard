@@ -274,7 +274,7 @@ void MainWindow::on_actionClear_triggered() const
 		{
 			for (int j = 0; j < height; j++)
 			{
-				if (board->GetData(i, j) != std::nullopt && board->GetData(i, j)->Type != King)
+				if (board->GetData(i, j) != std::nullopt && board->GetData(i, j)->Type != King && board->GetData(i, j)->Type != Emperor)
 				{
 					board->SetData(i, j, std::nullopt);
 				}
