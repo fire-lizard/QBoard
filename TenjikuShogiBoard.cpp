@@ -85,7 +85,7 @@ void TenjikuShogiBoard::Promote(int x, int y, PieceType pt)
         case Lion:
             pieceType = LionHawk;
             break;
-        case Unicorn:
+        case Falcon:
             pieceType = BishopGeneral;
             break;
         case Eagle:

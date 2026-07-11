@@ -14,7 +14,7 @@ bool EngineOutputHandler::IsLionMove(const std::optional<Piece>& piece, int x1, 
 {
 	if (piece != std::nullopt)
 	{
-        if (piece->Type == Unicorn)
+        if (piece->Type == Falcon)
 		{
             if ((x1 == x2 && y1 - y2 == +1 || x1 == x2 && y1 - y2 == +2) && piece->Colour == White ||
                 (x1 == x2 && y1 - y2 == -1 || x1 == x2 && y1 - y2 == -2) && piece->Colour == Black)
@@ -1199,7 +1199,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
             }
             else
             {
-                i += c != '0' ? 10 : 9;
+                int step = fen[k - 2].toLatin1() - 48;
+            	i += c != '0' ? step * 10 : step * 10 - 1;
                 isDigit = false;
             }
 		}
@@ -1211,7 +1212,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
             if (gameVariant == DaiShogi || gameVariant == TenjikuShogi || gameVariant == YariShogi ||
 				gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi || gameVariant == TaiShogi)
 			{
-				if (k < fen.size() - 1 && (fen[k + 1] == '\'' || fen[k + 1] == '!' || fen[k + 1] == '~'))
+				if (k < fen.size() - 1 && (fen[k + 1] == '\'' || fen[k + 1] == '!' || fen[k + 1] == '~' || fen[k + 1] == '`'))
 				{
 					k++;
 					stringCode.push_back(fen[k].toLatin1());

@@ -120,7 +120,7 @@ private:
 	std::shared_ptr<Engine> _whiteEngine = nullptr;
 	std::shared_ptr<Engine> _blackEngine = nullptr;
 	PieceType _promotedPieces[60] = { Tokin, Prince, PloddingOx, HeavenlyHorse, RaidingFalcon, BearEyes, TenaciousFalcon, HeavenlyTetrarch,
-									  WhiteHorse, Whale, MultiGeneral, FreeBoar, FlyingOx, Eagle, Unicorn, FlyingStag, FuriousFiend, GreatElephant,
+									  WhiteHorse, Whale, MultiGeneral, FreeBoar, FlyingOx, Eagle, Falcon, FlyingStag, FuriousFiend, GreatElephant,
 									  MountainWitch, WizardStork, Emperor, TeachingKing, BuddhistSpirit, FreeGold, FreeSilver, FreeCopper, FreeIron,
 									  FreeTile, FreeStone, FreeEarth, FreeTiger, FreeLeopard, FreeSerpent, FreeDragon, FreeCat, GreatDragon, GoldenBird,
 									  FreeWolf, FreeBear, Bat, FreeGo, DoubleKylin, DoublePhoenix, ViceCommissioner, CompanyCommander,

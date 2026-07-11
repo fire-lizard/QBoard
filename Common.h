@@ -97,7 +97,7 @@ inline GameVariant chessVariants[] = { Chess, CapablancaChess, GothicChess, Janu
 inline GameVariant shogiVariants[] = { MicroShogi, KyotoShogi, Shogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi,
                                        ChuShogi, HeianDaiShogi, DaiShogi, ShoShogi, WaShogi, CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi, TaiShogi };
 
-inline PieceType lionPieces[] = { Lion, Eagle, Unicorn, LionHawk, FreeEagle, LionDog, TeachingKing, BuddhistSpirit,
+inline PieceType lionPieces[] = { Lion, Eagle, Falcon, LionHawk, FreeEagle, LionDog, TeachingKing, BuddhistSpirit,
 								  FuriousFiend, GreatElephant, RoamingAssault, RisingDragon, WingedTiger, FlyingHawk,
 								  Thunderclap, KnightCaptain, WingedHorse, ExtensiveFog, HolyLight, DoubleKylin, DoublePhoenix };
 
@@ -142,15 +142,15 @@ inline PieceType WaShogiPieces[] = { Lance, Dog, StruttingCrow, FlyingGoose, Gol
 									 RaidingFalcon, Elephant, BearEyes, TenaciousFalcon };
 
 inline PieceType ChuShogiPieces[] = { King, Lion, Queen, DragonKing, DragonHorse, Rook, Bishop, VerticalMover, SideMover, ReverseChariot, Lance, Kylin, Phoenix,
-									  Elephant, Tiger, Leopard, Gold, Silver, Copper, GoBetween, Pawn, Tokin, Prince, Eagle, Unicorn, FlyingOx, FreeBoar,
+									  Elephant, Tiger, Leopard, Gold, Silver, Copper, GoBetween, Pawn, Tokin, Prince, Eagle, Falcon, FlyingOx, FreeBoar,
 									  FlyingStag, WhiteHorse, Whale };
 
 inline PieceType DaiShogiPieces[] = { King, Lion, Queen, DragonKing, DragonHorse, Rook, Bishop, VerticalMover, SideMover, ReverseChariot, Lance, Kylin, Phoenix,
 									  Elephant, Tiger, Leopard, Gold, Silver, Copper, GoBetween, Pawn, CatSword, EvilWolf, Iron, Stone, Tokin, Prince,
-									  Eagle, Unicorn, FlyingOx, FreeBoar, FlyingStag, WhiteHorse, Whale, Knight, ViolentOx, FlyingDragon, AngryBoar };
+									  Eagle, Falcon, FlyingOx, FreeBoar, FlyingStag, WhiteHorse, Whale, Knight, ViolentOx, FlyingDragon, AngryBoar };
 
 inline PieceType TenjikuShogiPieces[] = { King, Lion, Queen, DragonKing, DragonHorse, Rook, Bishop, VerticalMover, SideMover, ReverseChariot, Lance, Kylin, Phoenix,
-										  Elephant, Tiger, Leopard, Gold, Silver, Copper, GoBetween, Pawn, Tokin, Prince, Eagle, Unicorn, FlyingOx, FreeBoar,
+										  Elephant, Tiger, Leopard, Gold, Silver, Copper, GoBetween, Pawn, Tokin, Prince, Eagle, Falcon, FlyingOx, FreeBoar,
 										  FlyingStag, WhiteHorse, Whale, Dog, Knight, Iron, ViceGeneral, GreatGeneral, BishopGeneral, RookGeneral, MultiGeneral,
 										  FreeEagle, LionHawk, SideSoldier, VerticalSoldier, ChariotSoldier, WaterBuffalo, HeavenlyTetrarch, FireDemon };
 
@@ -282,13 +282,12 @@ inline char MAKADAIDAISHOGIFEN[] = "le'ut'jcsga!kg!gscjt'ue'l/a1z1k!1i!ftetfi!1k
 "5i7i5/19/19/19/19/19/5I7I5/PPPPPPPPPPPPPPPPPPP/RL'MZ!VBHDX!QY!DHBVZ!MR'R/"
 "U!1Y1V'1F'S!P!N!R!T!F'1V'1Y1U!/1O!1A'1L!1WONXW1L!1A'1O!1/A1Z1K!1I!FTETFI!1K!1Z1A/LE'UT'JCSGA!KG!GSCJT'UE'L";
 
-inline char TAISHOGIFEN[] = "lj~+af'j'd~rhdqga!+kg!gqdhrd~j'f'+av~l/az~e!ym'p'by~o'u'sr~+el~su'o'y~bp'm'ye!z~a/"
-"g~+lz'v'zl!t~s~c~tt!r!b~p!s!tc~s~t~l!zv'z'+lg~/w~w!fh'g'k!m!x'x~p~xnoq~x~k'm!k!c'b'fw!w~/"
-"r'u~w'e'ut'jco!i!j!y!ex!j!i!o!cjt'ue'w'k~l'/m~a~e~u!+vmvn~y'i~a'wn!wa'i~y'n~vm+vu!e~a~m~/"
-"ppppppppppppppppppppppppp/7i9i7/25/25/25/25/25/25/25/25/25/7I9I7/PPPPPPPPPPPPPPPPPPPPPPPPP/"
-"M~A~E~U!+VMVN~Y'I~A'WN!WA'I~Y'N~VM+VU!E~A~M~/L'K~W'E'UT'JCO!I!J!X!EY!J!I!O!CJT'UE'W'U~R'/"
-"W~W!FB'C'K!M!K'X~Q~ONXP~X~X'M!K!G'H'FW!W~/G~+LZ'V'ZL!T~S~C~TS!P!B~R!T!TC~S~T~L!ZV'Z'+LG~/"
-"AZ~E!YM'P'BY~O'U'SL~+ER~Y~SU'O'BP'M'YE!Z~A/LV~+AF'J'D~RHDQGA!+KG!GQDHRD~J'F'+AJ~L";
+inline char TAISHOGIFEN[] = "lj~w`f'j'd~rhdqga!e`g!gqdhrd~j'f'w`v~l/az~e!ym'p'by~o'u'sr~p`l~su'o'y~bp'm'ye!z~a/"
+"g~h`z'v'zl!t~s~c~tt!r!b~p!s!tc~s~t~l!zv'z'h`g~/w~w!fh'g'k!f!m!x'x~p~xnoq~x~k'm!f!k!c'b'fw!w~/"
+"r'u~w'e'ut'jco!i!j!y!ex!j!i!o!cjt'ue'w'k~l'/m~a~e~u!o`mvn~y'i~a'wn!wa'i~y'n~vmo`u!e~a~m~/ppppppppppppppppppppppppp/"
+"7i9i7/25/25/25/25/25/25/25/25/25/7I9I7/PPPPPPPPPPPPPPPPPPPPPPPPP/M~A~E~U!O`MVN~Y'I~A'WN!WA'I~Y'N~VMO`U!E~A~M~/"
+"L'K~W'E'UT'JCO!I!J!X!EY!J!I!O!CJT'UE'W'U~R'/W~W!FB'C'K!F!M!K'X~Q~ONXP~X~X'M!F!K!G'H'FW!W~/G~H`Z'V'ZL!T~S~C~TS!P!B~R!T!TC~S~T~L!ZV'Z'H`G~/"
+"AZ~E!YM'P'BY~O'U'SL~P`R~Y~SU'O'BP'M'YE!Z~A/LV~W`F'J'D~RHDQGA!E`G!GQDHRD~J'F'W`J~L";
 
 inline char KOSHOGIFEN[] = "a't'cfsgnexkoengsfcs'a'/r'h1d1q1tlmut1q1d1hr'/bic'l'bic'l'bjbl'c'ibl'c'ib/"
                            "w1y1y1y1y1y1y1y1y1w/1v1p1p1p1v1p1p1p1v1/ru'azazazau'azazazau'r/9v'9/19/19/19/19/19/9V'9/"

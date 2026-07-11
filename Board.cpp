@@ -367,7 +367,7 @@ std::string Board::GetStringCode(int x, int y) const
     case King:
         return "K";
     case Prince:
-        return "+E";
+        return basePieceType == Elephant ? "+E" : "P`";
     case Lion:
         if (basePieceType == Kylin) return "+O"; else if (basePieceType == EasternBarbarian) return "+C'"; else return "N";
     case Queen:
@@ -410,18 +410,18 @@ std::string Board::GetStringCode(int x, int y) const
         return "+P";
     case Eagle:
         return basePieceType == DragonKing ? "+D": "E!";
-    case Unicorn:
+    case Falcon:
         return basePieceType == DragonHorse ? "+H": "F!";
     case FlyingOx:
-        return "+V";
+        return basePieceType == VerticalMover ? "+V" : "O`";
     case FreeBoar:
         return basePieceType == AngryBoar ? "+A" : "+M";
     case FlyingStag:
         return "+T";
     case WhiteHorse:
-        return "+L";
+        return basePieceType == Lance ? "+L" : "H`";
     case Whale:
-        return "+A";
+        return basePieceType == ReverseChariot ? "+A" : "W`";
     case Iron:
         return "J";
     case Stone:
@@ -441,7 +441,7 @@ std::string Board::GetStringCode(int x, int y) const
     case WaterBuffalo:
         return basePieceType == SideSoldier ? "+S'" : "W!";
     case Emperor:
-        return "+K";
+        return basePieceType == King ? "+K" : "E`";
     case Deva:
         return "A!";
     case DarkSpirit:
@@ -607,7 +607,7 @@ std::string Board::GetStringCode(int x, int y) const
     case GreatGeneral:
         return basePieceType == RookGeneral ? "+R!" : "Q!";
     case BishopGeneral:
-        return basePieceType == Unicorn ? "+F!" : "B!";
+        return basePieceType == Falcon ? "+F!" : "B!";
     case RookGeneral:
         return basePieceType == Eagle ? "+E!" : "R!";
     case FreeEagle:

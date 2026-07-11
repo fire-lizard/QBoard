@@ -842,7 +842,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
             {"P", Pawn},
             {"+P", Tokin},
             {"+D", Eagle},
-            {"+H", Unicorn},
+            {"+H", Falcon},
             {"+V", FlyingOx},
             {"+M", FreeBoar},
             {"+T", FlyingStag},
@@ -900,8 +900,8 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
             {"C!", ChariotSoldier},
             {"+C!", HeavenlyTetrarch},
             {"D!", FireDemon},
-            {"F!", Unicorn},
-            {"+F!", Unicorn},
+            {"F!", Falcon},
+            {"+F!", Falcon},
             {"E!", Eagle},
             {"+E!", Eagle},
             {"+Q", Queen},
@@ -1036,6 +1036,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             { "E!",  Eagle },
+            {" F!",  Falcon },
             { "Z'",  RamHeadSoldier },
             { "S~",  GoldenDeer },
             { "T~",  SilverHare },
@@ -1044,7 +1045,12 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
             { "W~",  Soldier },
             { "X~",  Peacock },
             { "Y~",  FierceEagle },
-            { "Z~",  SideDragon }
+            { "Z~",  SideDragon },
+            { "E`",  Emperor },
+            { "P`",  Prince },
+			{ "O`",  FlyingOx },
+            { "H`",  WhiteHorse },
+            { "W`",  Whale }
         };
 
         const auto it = codeToPieceType.find(stringCode);
@@ -1422,7 +1428,7 @@ std::string StringManager::PieceType2KanjiCode(GameVariant gameVariant, PieceTyp
             return "歩";
         case Eagle:
             return "鷲";
-        case Unicorn:
+        case Falcon:
             return "鷹";
         case FlyingOx:
             return "牛";

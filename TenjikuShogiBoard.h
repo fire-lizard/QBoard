@@ -32,7 +32,7 @@ private:
 	{Lance, Knight, Leopard, Iron, Copper, Silver, Gold, Elephant, King, Gold, Silver, Copper, Iron, Leopard, Knight, Lance},
 	{ReverseChariot, None, ChariotSoldier, ChariotSoldier, None, Tiger, Phoenix, Queen, Lion, Kylin, Tiger, None, ChariotSoldier, ChariotSoldier, None, ReverseChariot},
 	{SideSoldier, VerticalSoldier, Bishop, DragonHorse, DragonKing, WaterBuffalo, FireDemon, FreeEagle, LionHawk, FireDemon, WaterBuffalo, DragonKing, DragonHorse, Bishop, VerticalSoldier, SideSoldier},
-	{SideMover, VerticalMover, Rook, Unicorn, Eagle, BishopGeneral, RookGeneral, ViceGeneral, GreatGeneral, RookGeneral, BishopGeneral, Eagle, Unicorn, Rook, VerticalMover, SideMover},
+	{SideMover, VerticalMover, Rook, Falcon, Eagle, BishopGeneral, RookGeneral, ViceGeneral, GreatGeneral, RookGeneral, BishopGeneral, Eagle, Falcon, Rook, VerticalMover, SideMover},
 	{Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn},
 	{None, None, None, None, Dog, None, None, None, None, None, None, Dog, None, None, None, None},
 	{None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None},
@@ -41,7 +41,7 @@ private:
 	{None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None},
 	{None, None, None, None, Dog, None, None, None, None, None, None, Dog, None, None, None, None},
 	{Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn},
-	{SideMover, VerticalMover, Rook, Unicorn, Eagle, BishopGeneral, RookGeneral, GreatGeneral, ViceGeneral, RookGeneral, BishopGeneral, Eagle, Unicorn, Rook, VerticalMover, SideMover},
+	{SideMover, VerticalMover, Rook, Falcon, Eagle, BishopGeneral, RookGeneral, GreatGeneral, ViceGeneral, RookGeneral, BishopGeneral, Eagle, Falcon, Rook, VerticalMover, SideMover},
 	{SideSoldier, VerticalSoldier, Bishop, DragonHorse, DragonKing, WaterBuffalo, FireDemon, LionHawk, FreeEagle, FireDemon, WaterBuffalo, DragonKing, DragonHorse, Bishop, VerticalSoldier, SideSoldier},
 	{ReverseChariot, None, ChariotSoldier, ChariotSoldier, None, Tiger, Kylin, Lion, Queen, Phoenix, Tiger, None, ChariotSoldier, ChariotSoldier, None, ReverseChariot},
 	{Lance, Knight, Leopard, Iron, Copper, Silver, Gold, King, Elephant, Gold, Silver, Copper, Iron, Leopard, Knight, Lance}

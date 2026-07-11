@@ -802,8 +802,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
             else if (PossibleMove(x, y) && (abs(_oldX - x) == 2 && _oldY - y == 2 && _currentPiece->Type == Eagle && _currentPiece->Colour == White) ||
                 (abs(_oldX - x) == 2 && _oldY - y == -2 && _currentPiece->Type == Eagle && _currentPiece->Colour == Black) ||
-                (_oldX == x && _oldY - y == 2 && _currentPiece->Type == Unicorn && _currentPiece->Colour == White) ||
-                (_oldX == x && _oldY - y == -2 && _currentPiece->Type == Unicorn && _currentPiece->Colour == Black))
+                (_oldX == x && _oldY - y == 2 && _currentPiece->Type == Falcon && _currentPiece->Colour == White) ||
+                (_oldX == x && _oldY - y == -2 && _currentPiece->Type == Falcon && _currentPiece->Colour == Black))
 			{
 				if (_board->Move(_oldX, _oldY, x, y))
 				{
@@ -976,7 +976,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 							_moves.erase(_moves.begin() + index);
 						}
 					}
-                    else if (_currentPiece->Type == Unicorn)
+                    else if (_currentPiece->Type == Falcon)
 					{
 						if (!EngineOutputHandler::IsLionMove(_currentPiece, _oldX, _oldY, x, y) ||
 							abs(_moves[index].first - x) > 1 || abs(_moves[index].second - y) > 1 ||
@@ -1049,7 +1049,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		{
             if (_currentPiece->Type == Lion || _currentPiece->Type == LionHawk ||
                 _currentPiece->Type == BuddhistSpirit || _currentPiece->Type == FreeEagle ||
-                _currentPiece->Type == Unicorn || _currentPiece->Type == Eagle ||
+                _currentPiece->Type == Falcon || _currentPiece->Type == Eagle ||
                 _currentPiece->Type == WingedTiger || _currentPiece->Type == FlyingHawk ||
                 _currentPiece->Type == RisingDragon)
 			{

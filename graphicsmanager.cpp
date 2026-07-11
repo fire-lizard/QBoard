@@ -666,7 +666,7 @@ QString GraphicsManager::GetMnemonicImageFileName(PieceColour pieceColour, Piece
         return "GoBetween" + colour + ".png";
     case Eagle:
         return "Eagle" + colour + ".png";
-    case Unicorn:
+    case Falcon:
         return "Falcon" + colour + ".png";
     case FlyingStag:
         return "Stag" + colour + ".png";
@@ -775,7 +775,7 @@ QString GraphicsManager::GetKanjiImageFileName(PieceColour pieceColour, PieceTyp
         return "Pawn" + colour + ".png";
     case Eagle:
         return "Eagle" + colour + ".png";
-    case Unicorn:
+    case Falcon:
         return "Hawk" + colour + ".png";
     case FlyingOx:
         return "FlyingOx" + colour + ".png";
@@ -890,7 +890,7 @@ QString GraphicsManager::GetKanjiImageFileName2(PieceColour pieceColour, PieceTy
         return "Peshka" + colour + ".png";
     case Eagle:
         return "Parjashij_orjol" + colour + ".png";
-    case Unicorn:
+    case Falcon:
         return "Rogatyj_sokol" + colour + ".png";
     case FlyingOx:
         return "Letajushij_byk" + colour + ".png";
