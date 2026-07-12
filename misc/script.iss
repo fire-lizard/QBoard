@@ -128,6 +128,7 @@ Name: "{autoprograms}\{#MyAppName}\docs\Tenjiku Shogi Reference"; Filename: "{ap
 Name: "{autoprograms}\{#MyAppName}\docs\Dai Dai Shogi Reference"; Filename: "{app}\docs\Dai Dai Shogi Reference.pdf"
 Name: "{autoprograms}\{#MyAppName}\docs\Maka Dai Dai Shogi Reference"; Filename: "{app}\docs\Maka Dai Dai Shogi Reference.pdf"
 Name: "{autoprograms}\{#MyAppName}\docs\Ko Shogi Reference"; Filename: "{app}\docs\Ko Shogi Reference.pdf"
+Name: "{autoprograms}\{#MyAppName}\docs\Tai Shogi Reference"; Filename: "{app}\docs\Tai Shogi Reference.pdf"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
