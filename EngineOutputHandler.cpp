@@ -198,7 +198,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
             result.push_back(static_cast<signed char>(secondDigit.toInt()));
         }
     }
-    else if (gameVariant == WaShogi || gameVariant == HeianDaiShogi || gameVariant == CapablancaChess ||
+    else if (gameVariant == HeianDaiShogi || gameVariant == CapablancaChess ||
 			 gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == GrandChess ||
 			 gameVariant == OmegaChess || gameVariant == CourierChess || gameVariant == GrandeAcedrex)
     {
@@ -863,7 +863,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	}
     else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
              gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi ||
-             gameVariant == HeianShogi || gameVariant == HeianDaiShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
+             gameVariant == HeianShogi || gameVariant == HeianDaiShogi || gameVariant == CrazyWa)
 	{
         if ((gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi ||
              gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == CrazyWa) && (moveArray[1] == '@' || moveArray[1] == '*'))
@@ -1371,7 +1371,7 @@ bool EngineOutputHandler::IsInsidePromotionZone(GameVariant gameVariant, PieceCo
 			return true;
 		}
 	}
-	if (gameVariant == WaShogi || gameVariant == CrazyWa)
+	if (gameVariant == CrazyWa)
 	{
 		if ((y >= 8 && pieceColour == Black) ||
 			(y <= 2 && pieceColour == White))
@@ -1447,7 +1447,7 @@ bool EngineOutputHandler::CanBePromoted(const std::optional<Piece>& piece, GameV
 		{
             return IsInsidePromotionZone(gameVariant, piece->Colour, oldY) || IsInsidePromotionZone(gameVariant, piece->Colour, newY);
 		}
-        if ((gameVariant == WaShogi || gameVariant == CrazyWa) && !piece->IsPromoted &&
+        if (gameVariant == CrazyWa && !piece->IsPromoted &&
             piece->Type != King && piece->Type != CloudEagle && piece->Type != TreacherousFox)
 		{
             return IsInsidePromotionZone(gameVariant, piece->Colour, oldY) || IsInsidePromotionZone(gameVariant, piece->Colour, newY);

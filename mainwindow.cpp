@@ -669,10 +669,10 @@ void MainWindow::on_actionSave_triggered()
 	}
     else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi ||
              gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi ||
-             gameVariant == YariShogi || gameVariant == WaShogi || gameVariant == CrazyWa)
+             gameVariant == YariShogi || gameVariant == CrazyWa)
 	{
 		QFileDialog fileDialog(this);
-		if (gameVariant == CrazyWa || gameVariant == WaShogi)
+		if (gameVariant == CrazyWa)
 		{
 			fileDialog.setNameFilter("FEN Files (*.fen);;PGN Files (*.pgn)");
 		}
@@ -692,7 +692,7 @@ void MainWindow::on_actionSave_triggered()
 				QString cpStr = QString::fromStdString(dynamic_cast<PieceStorage*>(ui->vboard->GetBoard())->CapturedPieceString(gameVariant));
 				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
 				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
-				if (gameVariant != ShoShogi && gameVariant != WaShogi)
+				if (gameVariant != ShoShogi)
 				{
 					str += cpStr.toLatin1();
 					str += " ";

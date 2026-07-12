@@ -77,7 +77,6 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
             painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
         break;
-    case WaShogi:
     case CrazyWa:
         if (pieceStyle == European || pieceStyle == Mnemonic)
         {
@@ -249,7 +248,6 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
         return ":/pieces_eur/images/images_gen/";
     case TenjikuShogi:
         return isAsianStyle ? ":/pieces_tnk/images/images_tnk/" : ":/pieces_ten/images/images_ten/";
-    case WaShogi:
     case CrazyWa:
         return isAsianStyle ? ":/pieces_wa2/images/images_wa2/" : ":/pieces_wa/images/images_wa/";
     case MakaDaiDaiShogi:
@@ -356,7 +354,6 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
         if (pieceStyle == European || pieceStyle == Mnemonic) imageFileName = GetTenjikuShogiImageFileName(pieceColour, pieceType, isPromoted);
         else imageFileName = GetKanjiImageFileName(pieceColour, pieceType, isPromoted);
         break;
-    case WaShogi:
     case CrazyWa:
         imageFileName = GetWaShogiImageFileName(pieceStyle, pieceColour, pieceType, isPromoted);
         break;

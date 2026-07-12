@@ -1882,10 +1882,6 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
     case HeianDaiShogi:
         _board = new HeianDaiShogiBoard();
         break;
-    case WaShogi:
-		_board = new WaShogiBoard();
-		dynamic_cast<ShogiBoard*>(_board)->SetDrops(false);
-		break;
 	case CrazyWa:
 		_board = new WaShogiBoard();
 		break;
@@ -2400,7 +2396,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		blackRegular->addAction("None");
 		whiteRegular->addAction("None");
 
-		if (_gameVariant == CrazyWa || _gameVariant == WaShogi || _gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||
+		if (_gameVariant == CrazyWa || _gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||
 			_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi || _gameVariant == TaiShogi)
 		{
 			menu.addAction("Promote");
@@ -2618,7 +2614,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
                 blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(HeianShogiPiece)));
             }
         }
-        else if (_gameVariant == WaShogi || _gameVariant == CrazyWa)
+        else if (_gameVariant == CrazyWa)
 		{
 			for (auto& WaShogiPiece : WaShogiPieces)
 			{
@@ -2789,8 +2785,8 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
         _gameVariant != EuroShogi && _gameVariant != YariShogi && _gameVariant != CrazyWa && _gameVariant != Sittuyin) return;
 	if ((_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black) ||
 		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;
-	if (_currentPlayer == White && dynamic_cast<MusketeerChessBoard*>(_board)->WhitePiecesToPlace == 0) return;
-	if (_currentPlayer == Black && dynamic_cast<MusketeerChessBoard*>(_board)->BlackPiecesToPlace == 0) return;
+	if (_gameVariant == MusketeerChess && _currentPlayer == White && dynamic_cast<MusketeerChessBoard*>(_board)->WhitePiecesToPlace == 0) return;
+	if (_gameVariant == MusketeerChess && _currentPlayer == Black && dynamic_cast<MusketeerChessBoard*>(_board)->BlackPiecesToPlace == 0) return;
 
 	QMenu menu(this);
 
@@ -2815,12 +2811,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 	// Handle the selected action
 	if (selectedAction != nullptr)
 	{
-		QStringList parts = selectedAction->text().split(' ', Qt::SkipEmptyParts);
-        const auto longStringCode = _gameVariant == WhaleShogi || _gameVariant == ToriShogi ||
-        							_gameVariant == CrazyWa || selectedAction->text() == "Flying Dragon"
-                ? (parts[0] + " " + parts[1]).toStdString() : parts[0].toStdString();
-        const PieceType newPiece = StringManager::Description2PieceType(_gameVariant, longStringCode);
-
+        const PieceType newPiece = StringManager::Description2PieceType(_gameVariant, selectedAction->text().toStdString());
 		if (_board->GetData(x, y) != std::nullopt)
 		{
 			QMessageBox mb(QMessageBox::Warning, "Illegal drop", "Square is already occupied",

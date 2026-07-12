@@ -6,7 +6,7 @@ std::string StringManager::PieceType2Description(GameVariant gameVariant, PieceT
     {
         return KoShogiPieceType2Description(pieceType);
     }
-    if (gameVariant == WaShogi || gameVariant == CrazyWa)
+    if (gameVariant == CrazyWa)
     {
         return WaShogiPieceType2Description(pieceType);
     }
@@ -27,7 +27,7 @@ PieceType StringManager::Description2PieceType(GameVariant gameVariant, const st
     {
         return KoShogiDescription2PieceType(description);
     }
-    if (gameVariant == WaShogi || gameVariant == CrazyWa)
+    if (gameVariant == CrazyWa)
     {
         return WaShogiDescription2PieceType(description);
     }
@@ -719,7 +719,7 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         const auto it = codeToPieceType.find(stringCode);
         return it != codeToPieceType.end() ? it->second : None;
     }
-    if (gameVariant == WaShogi || gameVariant == CrazyWa)
+    if (gameVariant == CrazyWa)
     {
         static const std::unordered_map<std::string, PieceType> codeToPieceType = {
             {"K", King},
@@ -1295,7 +1295,7 @@ std::string StringManager::PieceType2KanjiCode(GameVariant gameVariant, PieceTyp
             return "";
         }
     }
-    if (gameVariant == WaShogi || gameVariant == CrazyWa)
+    if (gameVariant == CrazyWa)
     {
         switch (pieceType)
         {

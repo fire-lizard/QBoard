@@ -14,8 +14,8 @@ enum GameVariant
 {
     Chess, CapablancaChess, GothicChess, JanusChess, ChancellorChess, ModernChess, GrandChess, OmegaChess, NightriderChess, CourierChess,
 	MusketeerChess, GrandeAcedrex, Xiangqi, Janggi, Shatar, Shatranj, Makruk, Sittuyin, Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi,
-	WhaleShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi, ShoShogi, WaShogi, CrazyWa, ChuShogi, HeianDaiShogi, DaiShogi, TenjikuShogi,
-	DaiDaiShogi, MakaDaiDaiShogi, KoShogi, TaiShogi
+	WhaleShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi, ShoShogi, CrazyWa, ChuShogi, HeianDaiShogi, DaiShogi, TenjikuShogi, DaiDaiShogi,
+	MakaDaiDaiShogi, KoShogi, TaiShogi
 };
 
 enum PieceColour
@@ -95,7 +95,7 @@ inline GameVariant chessVariants[] = { Chess, CapablancaChess, GothicChess, Janu
 	                                   ChancellorChess, ModernChess, MusketeerChess };
 
 inline GameVariant shogiVariants[] = { MicroShogi, KyotoShogi, Shogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi,
-                                       ChuShogi, HeianDaiShogi, DaiShogi, ShoShogi, WaShogi, CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi, TaiShogi };
+                                       ChuShogi, HeianDaiShogi, DaiShogi, ShoShogi, CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi, TaiShogi };
 
 inline PieceType lionPieces[] = { Lion, Eagle, Falcon, LionHawk, FreeEagle, LionDog, TeachingKing, BuddhistSpirit,
 								  FuriousFiend, GreatElephant, RoamingAssault, RisingDragon, WingedTiger, FlyingHawk,

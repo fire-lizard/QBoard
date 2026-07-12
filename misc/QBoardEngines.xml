@@ -5,12 +5,12 @@
     <Engine EngineName="Komodo" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Komodo 14.1/komodo-14.1-64bit.exe" EngineOptions=""/>
     <Engine EngineName="Stockfish" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Stockfish 10/stockfish_10_x64.exe" EngineOptions=""/>
     <Engine EngineName="Laramie" GameVariant="Shogi" EngineProtocol="USI" EnginePath="engines/USI/LaramieV3/LaramieV3.exe" EngineOptions=""/>
-    <Engine EngineName="CrazyWa" GameVariant="Shogi,CrazyWa,Kyoto Shogi,Mini Shogi,Judkins Shogi,Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/CrazyWa.exe" EngineOptions=""/>
+    <Engine EngineName="CrazyWa" GameVariant="Shogi,Wa Shogi,Kyoto Shogi,Mini Shogi,Judkins Shogi,Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/CrazyWa.exe" EngineOptions=""/>
     <Engine EngineName="Fairy-Max" GameVariant="Chess,Shatranj,Makruk,Courier Chess,Capablanca Chess,Gothic Chess,Janus Chess,Grande Acedrex,Nightrider Chess" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/fmax.exe" EngineOptions=""/>
     <Engine EngineName="MaxQi" GameVariant="Xiangqi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/MaxQi.exe" EngineOptions=""/>
     <Engine EngineName="ShaMax" GameVariant="Shatranj" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Max/ShaMax.exe" EngineOptions=""/>
     <Engine EngineName="Fairy-Stockfish" GameVariant="Capablanca Chess,Chancellor Chess,Courier Chess,Gothic Chess,Grand Chess,Janggi,Janus Chess,Makruk,Modern Chess,Nightrider Chess,Chess,Shatar,Shatranj,Shogi,Sittuyin,Xiangqi,Yari Shogi,Heian Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Fairy-Stockfish/fairy-stockfish.bat" EngineOptions=""/>
-    <Engine EngineName="HaChu" GameVariant="Chu Shogi,Sho Shogi,Dai Shogi,Shatranj,Makruk,Wa Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
+    <Engine EngineName="HaChu" GameVariant="Chu Shogi,Sho Shogi,Dai Shogi,Shatranj,Makruk" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
     <Engine EngineName="HaQiKid" GameVariant="Xiangqi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaQi/haqikid.exe" EngineOptions=""/>
     <Engine EngineName="Nebiyu" GameVariant="Shogi,Mini Shogi,Judkins Shogi,Chess,Courier Chess,Capablanca Chess,Gothic Chess,Grand Chess,Makruk,Shatranj,Heian Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
     <Engine EngineName="whale_shogi" GameVariant="Whale Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Other/whale_shogi.exe" EngineOptions=""/>
