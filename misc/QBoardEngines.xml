@@ -19,4 +19,5 @@
     <Engine EngineName="SjaakII" GameVariant="Yari Shogi,Chancellor Chess,Musketeer Chess,Nightrider Chess,Micro Shogi,Shatar,Makruk,Shatranj,Capablanca Chess,Gothic Chess,Courier Chess,Grand Chess,Omega Chess,Shogi,Xiangqi,Mini Shogi,Tori Shogi,Sho Shogi,Chess,Heian Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>
     <Engine EngineName="XQWLight" GameVariant="Xiangqi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/XQWL/XQWLight.exe" EngineOptions=""/>
     <Engine EngineName="svengine" GameVariant="Shogi,Micro Shogi,Mini Shogi,Judkins Shogi,Whale Shogi,Tori Shogi,Yari Shogi,Heian Shogi,Sho Shogi,Wa Shogi,Chu Shogi,Heian Dai Shogi,Dai Shogi,Tenjiku Shogi,Dai Dai Shogi,Maka Dai Dai Shogi,Tai Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/svengine/svengine.exe" EngineOptions=""/>
+    <Engine EngineName="koengine" GameVariant="Ko Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/koengine/koshogi.exe" EngineOptions=""/>
 </Engines>

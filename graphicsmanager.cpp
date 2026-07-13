@@ -147,7 +147,18 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         }
         else
         {
-            painter.drawPixmap(i * w + w / 12, j * h + h / 12, pixmap.size().width(), pixmap.size().height(), pixmap);
+            if (p.Type == King)
+            {
+                painter.drawPixmap(i * w + w / 20, j * h + h / 20, pixmap.size().width(), pixmap.size().height(), pixmap);
+            }
+            else if (p.Type == Pawn)
+            {
+                painter.drawPixmap(i * w + w / 20, j * h - h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+            }
+            else
+            {
+                painter.drawPixmap(i * w + w / 20, j * h - h / 20, pixmap.size().width(), pixmap.size().height(), pixmap);
+            }
         }
         break;
     case Xiangqi:

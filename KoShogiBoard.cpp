@@ -262,6 +262,22 @@ void KoShogiBoard::Demote(int x, int y)
 	}
 }
 
+void KoShogiBoard::Immobilize(int x, int y, Direction direction)
+{
+	auto sp = GetData(x, y);
+	if (sp == std::nullopt) return;
+	while (InBounds(x, y, direction))
+	{
+		CheckDirectionInc(x, y, direction);
+		if (GetData(x, y) != std::nullopt)
+		{
+			if (sp->Colour == GetData(x, y)->Colour) break;
+			_data[x][y]->CanMove = false;
+			break;
+		}
+	}
+}
+
 void KoShogiBoard::RemoveShoot(int x, int y)
 {
 	const auto it = std::ranges::remove_if(_shoots, [=](const auto& p) { return p.first == x && p.second == y; }).begin();
@@ -327,13 +343,63 @@ bool KoShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
             Demote(efLocation.first, efLocation.second);
 		}
 	}
+	// Skyward net and Earthward net immobilize all enemy pieces in its ranging directions
+	for (int i = 0; i < _width; i++)
+	{
+		for (int j = 0; j < _height; j++)
+		{
+			if (GetData(i, j) != std::nullopt)
+			{
+				_data[i][j]->CanMove = true;
+			}
+		}
+	}
+	for (int i = 0; i < _width; i++)
+	{
+		for (int j = 0; j < _height; j++)
+		{
+			auto piece = GetData(i, j);
+			if (piece != std::nullopt && (piece->Type == SkywardNet || piece->Type == EarthwardNet))
+			{
+				Immobilize(i, j, West);
+				Immobilize(i, j, East);
+				if (piece->Type == SkywardNet)
+				{
+					if (piece->Colour == Black)
+					{
+						Immobilize(i, j, NorthWest);
+						Immobilize(i, j, NorthEast);
+					}
+					else
+					{
+						Immobilize(i, j, SouthWest);
+						Immobilize(i, j, SouthEast);
+					}
+				}
+				if (piece->Type == EarthwardNet)
+				{
+					if (piece->Colour == Black)
+					{
+						Immobilize(i, j, SouthWest);
+						Immobilize(i, j, SouthEast);
+					}
+					else
+					{
+						Immobilize(i, j, NorthWest);
+						Immobilize(i, j, NorthEast);
+					}
+				}
+			}
+		}
+	}
 	return result;
 }
 
 void KoShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
 	_moves.clear();
-    switch (piece->Type)
+	if (!piece->CanMove) return;
+	switch (piece->Type)
 	{
 	case Pawn:
 		// If the drum is killed, the pawns may no longer move forward.

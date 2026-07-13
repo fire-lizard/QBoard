@@ -25,7 +25,8 @@ public:
 
 private:
     void Demote(int x, int y);
-    void CheckShoot(const std::optional<Piece>& piece, int x, int y);
+	void Immobilize(int x, int y, Direction direction);
+	void CheckShoot(const std::optional<Piece>& piece, int x, int y);
 	void CheckPriestMove(const std::optional<Piece>& piece, int x, int y);
 	void CheckShootingDirection(const std::optional<Piece>& piece, int x, int y, Direction direction, int count, bool shootOver);
 	void getAll5StepPaths(int startR, int startC, PieceColour pieceColour);

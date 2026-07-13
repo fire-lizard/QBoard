@@ -145,7 +145,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
     QByteArray result;
     if (engineProtocol == USI)
     {
-    	const QString _usre = R"(^bestmove ([RBGSNLP1-9])(\*|[a-i])([1-9])([a-i])(\+)?)";
+    	static const QString _usre = R"(^bestmove ([RBGSNLP1-9])(\*|[a-i])([1-9])([a-i])(\+)?)";
         QRegularExpression regexp = QRegularExpression(_usre, QRegularExpression::MultilineOption);
     	QRegularExpressionMatch match = regexp.match(buf);
         if (match.hasMatch())
@@ -164,7 +164,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
     }
     else if (engineProtocol == UCI || engineProtocol == UCCI)
     {
-        const QString _ucre = R"(^bestmove ([a-i])([0-9])([a-i])([0-9])([nbrq])?)";
+        static const QString _ucre = R"(^bestmove ([a-i])([0-9])([a-i])([0-9])([nbrq])?)";
         QRegularExpression regexp = QRegularExpression(_ucre, QRegularExpression::MultilineOption);
         QRegularExpressionMatch match = regexp.match(buf);
         if (match.hasMatch())
@@ -183,7 +183,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
     }
     else if (engineProtocol == Qianhong)
     {
-        const QString _qhre = R"(([A-I])([0-9])(\-)([A-I])([0-9]))";
+        static const QString _qhre = R"(([A-I])([0-9])(\-)([A-I])([0-9]))";
         QRegularExpression regexp = QRegularExpression(_qhre, QRegularExpression::MultilineOption);
         QRegularExpressionMatch match = regexp.match(buf);
         if (match.hasMatch())
@@ -202,7 +202,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 			 gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == GrandChess ||
 			 gameVariant == OmegaChess || gameVariant == CourierChess || gameVariant == GrandeAcedrex)
     {
-        const QString _bbre = R"(^move ([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrqfjacwmM])?)";
+        static const QString _bbre = R"(^move ([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrqfjacwmM])?)";
         QRegularExpression regexp = QRegularExpression(_bbre, QRegularExpression::MultilineOption);
         QRegularExpressionMatch match = regexp.match(buf);
         if (match.hasMatch())
@@ -228,9 +228,31 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
         {
             result = "@@@@";
         }
+        else if (gameVariant == KoShogi)
+        {
+            static const QString _csre = R"(^move ([a-s])(1?[0-9])(x)?([a-s])(1?[0-9])(\+)?)";
+            QRegularExpression regexp = QRegularExpression(_csre, QRegularExpression::MultilineOption);
+            QRegularExpressionMatchIterator it = regexp.globalMatch(buf);
+            while (it.hasNext())
+            {
+                QRegularExpressionMatch match = it.next();
+                QString firstLetter = match.captured(1);
+                QString firstDigit = match.captured(2);
+                QString shootChar = match.captured(4);
+                QString secondLetter = match.captured(4);
+                QString secondDigit = match.captured(5);
+                QString promotionChar = match.captured(6);
+                result.push_back(firstLetter[0].toLatin1());
+                result.push_back(static_cast<signed char>(firstDigit.toInt()));
+                if (!shootChar.isEmpty()) result.push_back(shootChar[0].toLatin1());
+                result.push_back(secondLetter[0].toLatin1());
+                result.push_back(static_cast<signed char>(secondDigit.toInt()));
+                if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+            }
+        }
         else
         {
-            const QString _csre = R"(^move ([a-y])(2[0-5]|1[0-9]|[0-9])([a-y])(2[0-5]|1[0-9]|[0-9])(\+)?)";
+            static const QString _csre = R"(^move ([a-y])(2[0-5]|1?[0-9])([a-y])(2[0-5]|1?[0-9])(\+)?)";
             QRegularExpression regexp = QRegularExpression(_csre, QRegularExpression::MultilineOption);
             QRegularExpressionMatchIterator it = regexp.globalMatch(buf);
             while (it.hasNext())
@@ -248,10 +270,10 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
                 if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
             }
         }
-    }
+        }
     else if (gameVariant == CrazyWa)
     {
-        const QString _cwre = R"(^move ([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])(\+)?)";
+        static const QString _cwre = R"(^move ([PXRFSEODUGWVCLMHa-k])(@|1[0-1]|[0-9])([a-k])(1[0-1]|[0-9])(\+)?)";
         QRegularExpression regexp = QRegularExpression(_cwre, QRegularExpression::MultilineOption);
         QRegularExpressionMatch match = regexp.match(buf);
         if (match.hasMatch())
@@ -270,10 +292,10 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
     }
     else
     {
-        const QString _mcre = R"(^move ([a-h])([1-8])([a-h])([1-8])([nbrqlcudmaehfs])?)";
-        const QString _stre = R"(^move ([RNSFKa-h])(\@|[1-8])([a-h])([1-8])(f)?)";
-        const QString _sgre = R"(^move ([RBGSNLPFCWKHDYa-i])(@|[1-9])([a-i])([1-9])(\+)?)";
-        const QString _xbre = R"(^move ([a-i])([0-9])([a-i])([0-9])([+nbrqfjacwmM])?)";
+        static const QString _mcre = R"(^move ([a-h])([1-8])([a-h])([1-8])([nbrqlcudmaehfs])?)";
+        static const QString _stre = R"(^move ([RNSFKa-h])(\@|[1-8])([a-h])([1-8])(f)?)";
+        static const QString _sgre = R"(^move ([RBGSNLPFCWKHDYa-i])(@|[1-9])([a-i])([1-9])(\+)?)";
+        static const QString _xbre = R"(^move ([a-i])([0-9])([a-i])([0-9])([+nbrqfjacwmM])?)";
         QRegularExpression regexp;
         if (gameVariant == Sittuyin)
         {

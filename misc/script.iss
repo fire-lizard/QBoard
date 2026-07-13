@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QBoard"
-#define MyAppVersion "1.1.5"
+#define MyAppVersion "1.1.6"
 #define MyAppPublisher "Fire Lizard Software"
 #define MyAppURL "https://github.com/fire-lizard/QBoard"
 #define MyAppExeName "QBoard.exe"
@@ -68,6 +68,7 @@ Name: "engines\WinBoard\Shokidoki"; Description: "Shokidoki"; Types: full custom
 Name: "engines\WinBoard\HaChu"; Description: "HaChu 0.21b"; Types: full custom
 Name: "engines\WinBoard\CrazyWa"; Description: "CrazyWa 1.0.5"; Types: full custom
 Name: "engines\WinBoard\svengine"; Description: "ShogiVar 1.55"; Types: full custom
+Name: "engines\WinBoard\koengine"; Description: "Ko Shogi engine"; Types: full custom
 
 [Types]
 Name: "full"; Description: "Full installation"
@@ -113,6 +114,7 @@ Source: "engines\WinBoard\Shokidoki\*"; DestDir: "{app}\engines\WinBoard\Shokido
 Source: "engines\WinBoard\HaChu\*"; DestDir: "{app}\engines\WinBoard\HaChu"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\HaChu
 Source: "engines\WinBoard\CrazyWa\*"; DestDir: "{app}\engines\WinBoard\CrazyWa"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\CrazyWa
 Source: "engines\WinBoard\svengine\*"; DestDir: "{app}\engines\WinBoard\svengine"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\svengine
+Source: "engines\WinBoard\koengine\*"; DestDir: "{app}\engines\WinBoard\koengine"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\WinBoard\koengine
 Source: "platforms\*"; DestDir: "{app}\platforms"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: main
 Source: "styles\*"; DestDir: "{app}\styles"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: main
 Source: "misc\QBoardEngines.xml"; DestDir: "{userappdata}\QBoard"; Flags: ignoreversion; Components: main

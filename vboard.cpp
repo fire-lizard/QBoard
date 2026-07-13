@@ -329,7 +329,14 @@ void VBoard::paintEvent(QPaintEvent *)
 				painter.drawRect(rect);
 				painter.setBrush(Qt::NoBrush);
 			}
-            else
+			// Frozen pieces highlighting
+			else if (_gameVariant == KoShogi && _board->GetData(i, j) != std::nullopt && !_board->GetData(i, j)->CanMove)
+			{
+				painter.setBrush(QColorConstants::Svg::lightsteelblue);
+				painter.drawEllipse(rect);
+				painter.setBrush(Qt::NoBrush);
+			}
+			else
 			{
                 if (std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants) || _gameVariant == CourierChess ||
 					_gameVariant == GrandeAcedrex || _gameVariant == Shatranj || _gameVariant == Makruk || _gameVariant == Shatar ||

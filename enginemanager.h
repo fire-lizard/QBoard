@@ -101,7 +101,7 @@ namespace {
 		{TenjikuShogi,      "tenjiku"},
 		{DaiDaiShogi,       "daidai"},
 		{MakaDaiDaiShogi,   "maka"},
-		{KoShogi,           "ko"},
+		{KoShogi,           "koshogi"},
 		{TaiShogi,          "tai"}
 		};
 		return _engineMap;
