@@ -2,6 +2,7 @@
 QBoard.qtvscr
 QBoard_resource.aps
 ui_addenginedialog.h
+ui_editor.h
 ui_enginemanager.h
 ui_networkmanager.h
 ui_mainwindow.h

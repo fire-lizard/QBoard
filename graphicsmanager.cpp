@@ -141,24 +141,9 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         {
             painter.drawPixmap(i * w + w / 3.25, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
-        else if (pieceStyle == European || gameVariant == Sittuyin || gameVariant == Shatar)
-        {
-            painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
-        }
         else
         {
-            if (p.Type == King)
-            {
-                painter.drawPixmap(i * w + w / 20, j * h + h / 20, pixmap.size().width(), pixmap.size().height(), pixmap);
-            }
-            else if (p.Type == Pawn)
-            {
-                painter.drawPixmap(i * w + w / 20, j * h - h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
-            }
-            else
-            {
-                painter.drawPixmap(i * w + w / 20, j * h - h / 20, pixmap.size().width(), pixmap.size().height(), pixmap);
-            }
+            painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
         break;
     case Xiangqi:
@@ -279,9 +264,8 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
         if (pieceStyle == Mnemonic) return ":/pieces_eur/images/images_eur/";
         if (pieceStyle == Asian) return ":/pieces_eur2/images/images_eur2/";
         if (pieceStyle == Asian2) return ":/pieces_eur3/images/images_eur3/";
-        if (pieceStyle == Asian3 || gameVariant == Sittuyin) return ":/pieces_sit/images/images_sit/";
-        if (gameVariant == Shatar) return ":/pieces_sha/images/images_sha/";
-        return ":/pieces_eur4/images/images_eur4/";
+        if (pieceStyle == Asian3) return ":/pieces_sit/images/images_sit/";
+        return ":/pieces_sha/images/images_sha/";
     case Makruk:
         if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
         if (pieceStyle == Mnemonic) return ":/pieces_mak2/images/images_mak2/";

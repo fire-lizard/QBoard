@@ -212,6 +212,7 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="CapablancaChessBoard.cpp" />
+    <ClCompile Include="editor.cpp" />
     <ClCompile Include="PieceStorage.cpp" />
     <ClCompile Include="ChancellorChessBoard.cpp" />
     <ClCompile Include="ChessBoard.cpp" />
@@ -276,6 +277,7 @@
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="CapablancaChessBoard.h" />
+    <QtMoc Include="editor.h" />
     <ClInclude Include="PieceStorage.h" />
     <ClInclude Include="ChancellorChessBoard.h" />
     <ClInclude Include="ChessBoard.h" />
@@ -340,6 +342,7 @@
   <ItemGroup />
   <ItemGroup>
     <QtUic Include="addenginedialog.ui" />
+    <QtUic Include="editor.ui" />
     <QtUic Include="enginemanager.ui" />
     <QtUic Include="mainwindow.ui" />
     <QtUic Include="networkmanager.ui" />

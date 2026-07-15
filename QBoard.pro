@@ -40,6 +40,7 @@ SOURCES += main.cpp\
     EuroShogiBoard.cpp \
     WhaleShogiBoard.cpp \
     YariShogiBoard.cpp \
+    editor.cpp \
     graphicsmanager.cpp \
     mainwindow.cpp \
     Board.cpp \
@@ -108,6 +109,7 @@ HEADERS  += mainwindow.h \
     EuroShogiBoard.h \
     WhaleShogiBoard.h \
     YariShogiBoard.h \
+    editor.h \
     graphicsmanager.h \
     promotiondialog.h \
     settingsdialog.h \
@@ -143,6 +145,7 @@ HEADERS  += mainwindow.h \
     zboard.h
 
 FORMS    += mainwindow.ui \
+    editor.ui \
     promotiondialog.ui \
     settingsdialog.ui \
     enginemanager.ui \
