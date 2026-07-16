@@ -311,6 +311,9 @@ void ChuShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		break;
 	case Gold:
 	case Tokin:
+	case PromotedLance:
+	case PromotedKnight:
+	case PromotedSilver:
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x, y + 1);
 		CheckMove(piece, x, y - 1);
@@ -476,6 +479,18 @@ void ChuShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		{
 			CheckDirection(piece, x, y, NorthEast);
 			CheckDirection(piece, x, y, NorthWest);
+		}
+		break;
+	case Knight:
+		if (piece->Colour == Black)
+		{
+			CheckMove(piece, x - 1, y + 2);
+			CheckMove(piece, x + 1, y + 2);
+		}
+		else
+		{
+			CheckMove(piece, x - 1, y - 2);
+			CheckMove(piece, x + 1, y - 2);
 		}
 		break;
 	default:

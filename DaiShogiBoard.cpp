@@ -78,18 +78,6 @@ void DaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 	_moves.clear();
     switch (piece->Type)
 	{
-	case Knight:
-        if (piece->Colour == Black)
-		{
-			CheckMove(piece, x - 1, y + 2);
-			CheckMove(piece, x + 1, y + 2);
-		}
-		else
-		{
-			CheckMove(piece, x - 1, y - 2);
-			CheckMove(piece, x + 1, y - 2);
-		}
-		break;
 	case ViolentOx:
 		CheckDirection(piece, x, y, South, 2);
 		CheckDirection(piece, x, y, North, 2);
