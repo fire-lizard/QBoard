@@ -16,9 +16,7 @@ QProcess* Engine::RunProcess(QObject *parentObject, const QString& engineExe, co
 	_process->setProgram(engineExe);
     if (!engineOptions.trimmed().isEmpty())
     {
-        QStringList engineArguments;
-        engineArguments << engineOptions;
-        _process->setArguments(engineArguments);
+        _process->setArguments(QProcess::splitCommand(engineOptions));
     }
     _process->start();
 	return _process.get();

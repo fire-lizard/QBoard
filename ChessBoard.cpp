@@ -107,7 +107,7 @@ void ChessBoard::GetEnPassantMoves(Piece piece, int x, int y)
 		{
 			const int letter = _ep[0] - 97;
 			const int number = _ep[1] - 48;
-			if (abs(x - letter) == 1 && y == 7 ? number + 2 : number)
+			if (abs(x - letter) == 1 && y == (y == 7 ? number + 2 : number))
 			{
 				CheckMove(piece, letter, y == 7 ? number + 3 : number + 1);
 			}

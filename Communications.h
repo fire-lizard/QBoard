@@ -28,7 +28,7 @@ public:
 private:
     QPointer<QTcpSocket> m_client_connection;
     QTcpServer m_listening_socket;
-    static constexpr int s_buffer_size = 2048;
+    mutable QByteArray m_rx_buffer; // accumulates TCP bytes; messages are '\n'-framed FENs
     static QString SocketErrorToString(QAbstractSocket::SocketError error);
     void prepare_connection_status() const;
 

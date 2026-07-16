@@ -238,7 +238,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
                 QRegularExpressionMatch match = it.next();
                 QString firstLetter = match.captured(1);
                 QString firstDigit = match.captured(2);
-                QString shootChar = match.captured(4);
+                QString shootChar = match.captured(3); // group 3 is the optional (x) shoot marker; group 4 is the dest file
                 QString secondLetter = match.captured(4);
                 QString secondDigit = match.captured(5);
                 QString promotionChar = match.captured(6);
@@ -1188,6 +1188,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
     {
         parts = QString(str).trimmed().split(' ', Qt::SkipEmptyParts);
     }
+	if (parts.isEmpty() || parts.first().isEmpty())
+		return "Empty FEN string"; // guard before indexing parts[0]/fen[0]; also avoids wiping the board on junk input
 	QString fen = parts[0];
 	board->Clear();
 	const int w = board->GetWidth();

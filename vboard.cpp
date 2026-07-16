@@ -1990,11 +1990,13 @@ void VBoard::SetMainWindow(QMainWindow *window)
 void VBoard::SetWhiteEngine(std::shared_ptr<Engine> engine)
 {
 	_whiteEngine = std::move(engine);
+	_whiteEngineBuffer.clear();
 }
 
 void VBoard::SetBlackEngine(std::shared_ptr<Engine> engine)
 {
 	_blackEngine = std::move(engine);
+	_blackEngineBuffer.clear();
 }
 
 void VBoard::SetCommunications(Communications* _communications)
@@ -2073,6 +2075,7 @@ void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 			{
 				delete _board;
 				_board = _editorBoard;
+				_editorBoard = nullptr;
 				repaint();
 			}
 		}
@@ -2197,7 +2200,12 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 {
 	if (_whiteEngine == nullptr || !_whiteEngine->IsActive()) return;
 	QProcess* p = dynamic_cast<QProcess*>(sender());
-	const QByteArray buf = p->readAllStandardOutput();
+	if (p == nullptr) return;
+	_whiteEngineBuffer.append(p->readAllStandardOutput());
+	const qsizetype nl = _whiteEngineBuffer.lastIndexOf('\n');
+	if (nl == -1) return; // no complete line yet — wait for the rest
+	const QByteArray buf = _whiteEngineBuffer.left(nl + 1);
+	_whiteEngineBuffer.remove(0, nl + 1);
 	if (buf.contains("Illegal move"))
 	{
 		ReportInfo(buf, "Illegal move", _textEdit2, LogLevel::Error);
@@ -2289,7 +2297,12 @@ void VBoard::blackEngineReadyReadStandardOutput()
 {
 	if (_blackEngine == nullptr || !_blackEngine->IsActive()) return;
 	QProcess *p = dynamic_cast<QProcess*>(sender());
-	const QByteArray buf = p->readAllStandardOutput();
+	if (p == nullptr) return;
+	_blackEngineBuffer.append(p->readAllStandardOutput());
+	const qsizetype nl = _blackEngineBuffer.lastIndexOf('\n');
+	if (nl == -1) return; // no complete line yet — wait for the rest
+	const QByteArray buf = _blackEngineBuffer.left(nl + 1);
+	_blackEngineBuffer.remove(0, nl + 1);
 	if (buf.contains("Illegal move"))
 	{
 		ReportInfo(buf, "Illegal move", _textEdit, LogLevel::Error);

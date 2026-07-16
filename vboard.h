@@ -150,6 +150,10 @@ private:
     bool _timerState = false;
 	Communications* _comm = nullptr;
 	bool _waitForOtherPlayer = false;
+	// Engine stdout arrives in arbitrary pipe chunks; accumulate and only parse whole lines
+	// so a bestmove/move split across two readyRead signals is not silently dropped.
+	QByteArray _whiteEngineBuffer;
+	QByteArray _blackEngineBuffer;
 
 public slots :
 

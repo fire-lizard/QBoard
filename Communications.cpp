@@ -185,7 +185,8 @@ void Communications::send_move(const std::string& fen) const
     if (m_client_connection->state() != QAbstractSocket::ConnectedState)
         return;
 
-    const QByteArray buffer(fen.c_str());
+    QByteArray buffer(fen.c_str());
+    buffer.append('\n'); // frame the message so the peer can detect a complete FEN (FEN never contains '\n')
     QApplication::setOverrideCursor(Qt::WaitCursor);
 
     if (m_client_connection->write(buffer.constData(), buffer.length()) != static_cast<qint64>(buffer.length()))
@@ -401,47 +402,39 @@ void Communications::slot_disconnected(QAbstractSocket::SocketError error) const
 
 void Communications::slot_update_board() const
 {
-    int ntries = 1;
+    if (!m_client_connection || !m_vboard)
+        return;
 
-    while (m_client_connection && ntries <= 5)
+    m_rx_buffer.append(m_client_connection->readAll());
+
+    bool applied = false;
+    qsizetype nl;
+    while ((nl = m_rx_buffer.indexOf('\n')) != -1)
     {
-        QApplication::setOverrideCursor(Qt::WaitCursor);
+        const QByteArray message = m_rx_buffer.left(nl).trimmed();
+        m_rx_buffer.remove(0, nl + 1);
+        if (message.isEmpty())
+            continue; // incomplete/partial data stays buffered; empty frames ignored
 
-        QByteArray buffer(s_buffer_size, 0);
+        // Validate on a throwaway clone first: SetFenToBoard clears the board before parsing,
+        // so a malformed/hostile peer packet must never touch the live board.
+        Board* live = m_vboard->GetBoard();
+        Board* trial = live->Clone();
+        const QString err = EngineOutputHandler::SetFenToBoard(trial, message, m_vboard->GetGameVariant());
+        delete trial;
+        if (!err.isEmpty())
+            continue; // reject; leave the live board and the turn untouched
 
-        if (m_client_connection->read(buffer.data(), buffer.length()) != -1)
-        {
-            QApplication::restoreOverrideCursor();
-
-            if (m_vboard)
-            {
-                EngineOutputHandler::SetFenToBoard(m_vboard->GetBoard(), buffer, m_vboard->GetGameVariant());
-                m_vboard->repaint();
-            }
-
-            break;
-        }
-        else
-            QApplication::restoreOverrideCursor();
-
-        ntries += 1;
+        EngineOutputHandler::SetFenToBoard(live, message, m_vboard->GetGameVariant());
+        applied = true;
     }
 
-    if (m_client_connection)
-        m_client_connection->readAll();
+    if (!applied)
+        return; // nothing valid received yet — do NOT hand over the turn
 
-    if (m_vboard)
-    {
-        if (m_vboard->GetCurrentPlayer() == White)
-        {
-            m_vboard->SetCurrentPlayer(Black);
-        }
-        else
-        {
-            m_vboard->SetCurrentPlayer(White);
-        }
-        m_vboard->SetWaitForOtherPlayer(false);
-    }
+    m_vboard->repaint();
+    m_vboard->SetCurrentPlayer(m_vboard->GetCurrentPlayer() == White ? Black : White);
+    m_vboard->SetWaitForOtherPlayer(false);
 }
 
 void Communications::stop_listening()
