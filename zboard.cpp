@@ -1,40 +1,35 @@
 #include "zboard.h"
 
-ZBoard::ZBoard(QWidget *parent, int width, int height) : QWidget(parent)
+ZBoard::ZBoard(QWidget *parent) : QWidget(parent)
 {
-    _width = width;
-    _height = height;
 }
 
-void ZBoard::Fill(PieceColour pieceColour, std::vector<std::pair<PieceColour, PieceType>> capturedPieces)
+void ZBoard::Fill(std::vector<std::pair<PieceColour, PieceType>> capturedPieces)
 {
     _pieces.clear();
-    for_each(capturedPieces.begin(), capturedPieces.end(), [&](std::pair<PieceColour, PieceType> p)
+    std::ranges::for_each(capturedPieces, [&](std::pair<PieceColour, PieceType> p)
     {
-        if (p.first == pieceColour)
-        {
-            _pieces.emplace_back(p.second);
-        }
+        _pieces.emplace_back(p);
     });
 }
 
-void ZBoard::Fill(int count, PieceType *pieces)
+void ZBoard::Fill(int count, PieceColour pieceColour, PieceType *pieces)
 {
     _pieces.clear();
     for (int index = 0; index < count; index++)
     {
-        _pieces.emplace_back(pieces[index]);
+        _pieces.emplace_back(pieceColour, pieces[index]);
     }
+}
+
+PieceColour ZBoard::GetChosenColour() const
+{
+    return _chosenColour;
 }
 
 PieceType ZBoard::GetChosenPiece() const
 {
     return _chosenPiece;
-}
-
-void ZBoard::SetChosenPiece(PieceType chosenPiece)
-{
-    _chosenPiece = chosenPiece;
 }
 
 void ZBoard::paintEvent(QPaintEvent *)
@@ -53,7 +48,7 @@ void ZBoard::paintEvent(QPaintEvent *)
         {
             QRect rect(i * w, j * h, w, h);
             painter.drawRect(rect);
-            if (_pieces.size() >= index)
+            if (_pieces.size() > index)
             {
                 GraphicsManager::DrawPiece(painter, Piece(Rook, White), _gameVariant, _pieceStyle, w, h, i, j);
             }
@@ -72,8 +67,12 @@ void ZBoard::mousePressEvent(QMouseEvent *event)
     if (event->button() != Qt::MouseButton::LeftButton) return;
     const int w = this->size().width() / _width;
     const int h = this->size().height() / _height;
-    const int x = static_cast<int>(event->x()) / w;
-    const int y = static_cast<int>(event->y()) / h;
+    const int x = static_cast<int>(event->position().x()) / w;
+    const int y = static_cast<int>(event->position().y()) / h;
     unsigned long long index = y * h + x;
-    _chosenPiece = _pieces.size() >= index ? _pieces[index] : None;
+    if (_pieces.size() > index)
+    {
+        _chosenColour = _pieces[index].first;
+        _chosenPiece = _pieces[index].second;
+    }
 }

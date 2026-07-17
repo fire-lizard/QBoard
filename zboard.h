@@ -10,21 +10,23 @@ class ZBoard : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ZBoard(QWidget *parent = nullptr, int width = 2, int height = 9);
-    void Fill(PieceColour pieceColour, std::vector<std::pair<PieceColour, PieceType>> capturedPieces);
-    void Fill(int count, PieceType *pieces);
+    explicit ZBoard(QWidget *parent = nullptr);
+    void Fill(std::vector<std::pair<PieceColour, PieceType>> capturedPieces);
+    void Fill(int count, PieceColour pieceColour, PieceType *pieces);
+    PieceColour GetChosenColour() const;
     PieceType GetChosenPiece() const;
-    void SetChosenPiece(PieceType chosenPiece);
 
-private:
+protected:
     void paintEvent(QPaintEvent *) override;
     void mousePressEvent(QMouseEvent *event) override;
 
-    int _width;
+private:
+	int _width;
     int _height;
-    PieceStyle _pieceStyle;
+    bool _editorMode = true;
+	PieceStyle _pieceStyle;
     GameVariant _gameVariant;
-    bool _editorMode;
-    PieceType _chosenPiece;
-    std::vector<PieceType> _pieces;
+    PieceColour _chosenColour = White;
+    PieceType _chosenPiece = None;
+    std::vector<std::pair<PieceColour, PieceType>> _pieces;
 };

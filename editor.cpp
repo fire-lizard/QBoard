@@ -12,3 +12,8 @@ Editor::~Editor()
 {
     delete ui;
 }
+
+ZBoard* Editor::GetBoard() const
+{
+    return ui->zboard;
+}

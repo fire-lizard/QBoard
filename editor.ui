@@ -11,9 +11,26 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Editor</string>
   </property>
+  <widget class="ZBoard" name="zboard" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>385</width>
+     <height>285</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ZBoard</class>
+   <extends>QWidget</extends>
+   <header>zboard.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

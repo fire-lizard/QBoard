@@ -2029,13 +2029,42 @@ void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 {
 	if (editorMode)
 	{
-        if (std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants))
+		if (std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants))
 		{
 			dynamic_cast<ChessBoard*>(_board)->SetCastling("-");
 			dynamic_cast<ChessBoard*>(_board)->SetEnPassant("-");
 		}
 		delete _editorBoard;
 		_editorBoard = _board->Clone();
+		if (_editor == nullptr)
+		{
+			_editor = new Editor();
+		}
+		int s;
+		switch (_gameVariant)
+		{
+		case DaiShogi:
+			s = 60;
+			break;
+		case TenjikuShogi:
+			s = 56;
+			break;
+		case DaiDaiShogi:
+			s = 52;
+			break;
+		case MakaDaiDaiShogi:
+		case KoShogi:
+			s = 48;
+			break;
+		case TaiShogi:
+			s = 36;
+			break;
+		default:
+			s = 66;
+			break;
+		}
+		_editor->GetBoard()->setFixedSize(_board->GetWidth() * s + 1, _board->GetHeight() * s + 1);
+		_editor->setFixedSize(_editor->GetBoard()->width() + 10, _editor->GetBoard()->height() + 10);
 	}
     else if (!newGameStarted)
 	{
@@ -2079,6 +2108,10 @@ void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 				repaint();
 			}
 		}
+	}
+	if (_editor != nullptr)
+	{
+		_editor->setVisible(editorMode);
 	}
 	_editorMode = editorMode;
 }
