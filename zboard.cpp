@@ -7,6 +7,7 @@ ZBoard::ZBoard(QWidget *parent) : QWidget(parent)
 void ZBoard::Fill(std::vector<std::pair<PieceColour, PieceType>> capturedPieces)
 {
     _pieces.clear();
+    _pieces.emplace_back(White, None);
     std::ranges::for_each(capturedPieces, [&](std::pair<PieceColour, PieceType> p)
     {
         _pieces.emplace_back(p);
@@ -16,10 +17,19 @@ void ZBoard::Fill(std::vector<std::pair<PieceColour, PieceType>> capturedPieces)
 void ZBoard::Fill(int count, PieceColour pieceColour, PieceType *pieces)
 {
     _pieces.clear();
+    _pieces.emplace_back(White, None);
     for (int index = 0; index < count; index++)
     {
         _pieces.emplace_back(pieceColour, pieces[index]);
     }
+}
+
+void ZBoard::Setup(int width, int height, GameVariant gameVariant, PieceStyle pieceStyle)
+{
+    _width = width;
+    _height = height;
+	_gameVariant = gameVariant;
+    _pieceStyle = pieceStyle;
 }
 
 PieceColour ZBoard::GetChosenColour() const
@@ -42,21 +52,35 @@ void ZBoard::paintEvent(QPaintEvent *)
     const int w = s.width() / _width;
     const int h = s.height() / _height;
     unsigned long long index = 0;
+    painter.drawRect(QRect(0, 0, w, h));
     for (int i = 0; i < _width; i++)
     {
         for (int j = 0; j < _height; j++)
         {
-            QRect rect(i * w, j * h, w, h);
-            painter.drawRect(rect);
             if (_pieces.size() > index)
             {
-                GraphicsManager::DrawPiece(painter, Piece(Rook, White), _gameVariant, _pieceStyle, w, h, i, j);
+                QRect rect(j * w, i * h, w, h);
+                painter.drawRect(rect);
+                auto piece = _pieces[index];
+            	GraphicsManager::DrawPiece(painter, Piece(piece.second, Black), _gameVariant, _pieceStyle, w, h, j, i);
             }
             else break;
-            /*Piece *p = _board->GetData(i, j);
-            if (p != nullptr)
+            index++;
+        }
+    }
+    index = 0;
+    for (int i = _width - 1; i >= 0; i--)
+    {
+        for (int j = _height - 1; j >= 0; j--)
+        {
+            if (_pieces.size() > index)
             {
-            }*/
+                QRect rect(j * w, i * h, w, h);
+                painter.drawRect(rect);
+                auto piece = _pieces[index];
+                GraphicsManager::DrawPiece(painter, Piece(piece.second, White), _gameVariant, _pieceStyle, w, h, j, i);
+            }
+            else break;
             index++;
         }
     }

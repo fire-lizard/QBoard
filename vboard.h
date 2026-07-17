@@ -128,8 +128,6 @@ private:
 									  PoisonFlame, ExtensiveFog, HolyLight, SkywardNet, Thunderclap, RoamingAssault, RisingDragon, WingedTiger,
 									  FlyingHawk, EarthwardNet, DivineCarriage, LongbowKnight, CrossbowKnight, CannonCarriage, KnightCaptain };
 	Editor *_editor = nullptr;
-	PieceColour _chosenColour = White;
-	PieceType _chosenPiece = None;
 	PieceType _musketeerPiece = None;
 	bool _editorMode = false;
 	bool _lionMovedOnce = false;

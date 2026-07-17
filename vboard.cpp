@@ -487,16 +487,18 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		if (y == 0 || y == _board->GetHeight() - 1) return;
 	}
 	std::optional<Piece> p = _board->GetData(x, y);
-	if (_editorMode)
+	if (_editorMode && _editor != nullptr)
 	{
-		if (_chosenPiece == None)
+		auto chosenPiece = _editor->GetBoard()->GetChosenPiece();
+		auto chosenColour = _editor->GetBoard()->GetChosenColour();
+		if (chosenPiece == None)
 		{
 			_board->SetData(x, y, std::nullopt);
 		}
 		else
 		{
-			_board->SetData(x, y, std::make_optional<Piece>(_chosenPiece, _chosenColour));
-			if (std::ranges::find(_promotedPieces, _chosenPiece) != std::end(_promotedPieces))
+			_board->SetData(x, y, std::make_optional<Piece>(chosenPiece, chosenColour));
+			if (std::ranges::find(_promotedPieces, chosenPiece) != std::end(_promotedPieces))
 			{
 				if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi &&
 					_gameVariant != GrandeAcedrex && _gameVariant != MusketeerChess)
@@ -2064,7 +2066,113 @@ void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 			break;
 		}
 		_editor->GetBoard()->setFixedSize(_board->GetWidth() * s + 1, _board->GetHeight() * s + 1);
-		_editor->setFixedSize(_editor->GetBoard()->width() + 10, _editor->GetBoard()->height() + 10);
+		_editor->setFixedSize(_editor->GetBoard()->width() + 20, _editor->GetBoard()->height() + 20);
+		_editor->GetBoard()->Setup(_board->GetWidth(), _board->GetHeight(), _gameVariant, _pieceStyle);
+		switch (_gameVariant)
+		{
+		case Chess:
+			_editor->GetBoard()->Fill(std::size(ChessPieces), _currentPlayer, ChessPieces);
+			break;
+		case CapablancaChess:
+		case GothicChess:
+		case GrandChess:
+			_editor->GetBoard()->Fill(std::size(GothicChessPieces), _currentPlayer, GothicChessPieces);
+			break;
+		case JanusChess:
+		case ModernChess:
+			_editor->GetBoard()->Fill(std::size(JanusChessPieces), _currentPlayer, JanusChessPieces);
+			break;
+		case OmegaChess:
+			_editor->GetBoard()->Fill(std::size(OmegaChessPieces), _currentPlayer, OmegaChessPieces);
+			break;
+		case NightriderChess:
+			_editor->GetBoard()->Fill(std::size(NightriderChessPieces), _currentPlayer, NightriderChessPieces);
+			break;
+		case CourierChess:
+			_editor->GetBoard()->Fill(std::size(CourierChessPieces), _currentPlayer, CourierChessPieces);
+			break;
+		case ChancellorChess:
+			_editor->GetBoard()->Fill(std::size(ChancellorChessPieces), _currentPlayer, ChancellorChessPieces);
+			break;
+		case MusketeerChess:
+			_editor->GetBoard()->Fill(std::size(MusketeerChessPieces), _currentPlayer, MusketeerChessPieces);
+			break;
+		case GrandeAcedrex:
+			_editor->GetBoard()->Fill(std::size(GrandeAcedrexPieces), _currentPlayer, GrandeAcedrexPieces);
+			break;
+		case Shogi:
+		case ShoShogi:
+			_editor->GetBoard()->Fill(std::size(ShogiPieces), _currentPlayer, ShogiPieces);
+			break;
+		case ChuShogi:
+			_editor->GetBoard()->Fill(std::size(ChuShogiPieces), _currentPlayer, ChuShogiPieces);
+			break;
+		case DaiShogi:
+			_editor->GetBoard()->Fill(std::size(DaiShogiPieces), _currentPlayer, DaiShogiPieces);
+			break;
+		case TenjikuShogi:
+			_editor->GetBoard()->Fill(std::size(TenjikuShogiPieces), _currentPlayer, TenjikuShogiPieces);
+			break;
+		case DaiDaiShogi:
+			_editor->GetBoard()->Fill(std::size(DaiDaiShogiPieces), _currentPlayer, DaiDaiShogiPieces);
+			break;
+		case MakaDaiDaiShogi:
+			_editor->GetBoard()->Fill(std::size(MakaDaiDaiShogiPieces), _currentPlayer, MakaDaiDaiShogiPieces);
+			break;
+		case KoShogi:
+			_editor->GetBoard()->Fill(std::size(KoShogiPieces), _currentPlayer, KoShogiPieces);
+			break;
+		case TaiShogi:
+			_editor->GetBoard()->Fill(std::size(TaiShogiPieces), _currentPlayer, TaiShogiPieces);
+			break;
+		case MicroShogi:
+		case KyotoShogi:
+			_editor->GetBoard()->Fill(std::size(MicroShogiPieces), _currentPlayer, MicroShogiPieces);
+			break;
+		case MiniShogi:
+			_editor->GetBoard()->Fill(std::size(MiniShogiPieces), _currentPlayer, MiniShogiPieces);
+			break;
+		case JudkinShogi:
+			_editor->GetBoard()->Fill(std::size(JudkinsShogiPieces), _currentPlayer, JudkinsShogiPieces);
+			break;
+		case WhaleShogi:
+			_editor->GetBoard()->Fill(std::size(WhaleShogiPieces), _currentPlayer, WhaleShogiPieces);
+			break;
+		case ToriShogi:
+			_editor->GetBoard()->Fill(std::size(ToriShogiPieces), _currentPlayer, ToriShogiPieces);
+			break;
+		case EuroShogi:
+			_editor->GetBoard()->Fill(std::size(EuroShogiPieces), _currentPlayer, EuroShogiPieces);
+			break;
+		case YariShogi:
+			_editor->GetBoard()->Fill(std::size(YariShogiPieces), _currentPlayer, YariShogiPieces);
+			break;
+		case HeianShogi:
+			_editor->GetBoard()->Fill(std::size(HeianShogiPieces), _currentPlayer, HeianShogiPieces);
+			break;
+		case HeianDaiShogi:
+			_editor->GetBoard()->Fill(std::size(HeianDaiShogiPieces), _currentPlayer, HeianDaiShogiPieces);
+			break;
+		case CrazyWa:
+			_editor->GetBoard()->Fill(std::size(WaShogiPieces), _currentPlayer, WaShogiPieces);
+			break;
+		case Xiangqi:
+		case Janggi:
+			_editor->GetBoard()->Fill(std::size(XiangqiPieces), _currentPlayer, XiangqiPieces);
+			break;
+		case Shatranj:
+			_editor->GetBoard()->Fill(std::size(ShatranjPieces), _currentPlayer, ShatranjPieces);
+			break;
+		case Makruk:
+			_editor->GetBoard()->Fill(std::size(MakrukPieces), _currentPlayer, MakrukPieces);
+			break;
+		case Shatar:
+			_editor->GetBoard()->Fill(std::size(ShatarPieces), _currentPlayer, ShatarPieces);
+			break;
+		case Sittuyin:
+			_editor->GetBoard()->Fill(std::size(SittuyinPieces), _currentPlayer, SittuyinPieces);
+			break;
+		}
 	}
     else if (!newGameStarted)
 	{
@@ -2425,413 +2533,12 @@ void VBoard::blackEngineReadyReadStandardError() const
 
 void VBoard::contextMenuEvent(QContextMenuEvent* event)
 {
+	if (_editorMode) return;
+
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
 	const int x = event->x() / w;
 	const int y = event->y() / h;
-
-	if (_editorMode)
-	{
-		QMenu menu(this);
-
-		// Add Black and White groups
-		QMenu* blackMenu = menu.addMenu("Black");
-		QMenu* whiteMenu = menu.addMenu("White");
-
-		// Create Regular and Promoted submenus for Black
-		QMenu* blackRegular = blackMenu->addMenu("Regular");
-		QMenu* blackPromoted = nullptr;
-
-		// Create Regular and Promoted submenus for White
-		QMenu* whiteRegular = whiteMenu->addMenu("Regular");
-		QMenu* whitePromoted = nullptr;
-
-		blackRegular->addAction("None");
-		whiteRegular->addAction("None");
-
-		if (_gameVariant == CrazyWa || _gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||
-			_gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == KoShogi || _gameVariant == TaiShogi)
-		{
-			menu.addAction("Promote");
-			blackPromoted = blackMenu->addMenu("Promoted");
-			whitePromoted = whiteMenu->addMenu("Promoted");
-			blackPromoted->addAction("None");
-			whitePromoted->addAction("None");
-		}
-
-        if (_gameVariant == Chess)
-		{
-			for (auto& ChessPiece : ChessPieces)
-			{
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-			}
-		}
-        else if (_gameVariant == CapablancaChess || _gameVariant == GothicChess || _gameVariant == GrandChess)
-        {
-            for (auto& ChessPiece : GothicChessPieces)
-            {
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-            }
-        }
-        else if (_gameVariant == OmegaChess)
-        {
-            for (auto& ChessPiece : OmegaChessPieces)
-            {
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-            }
-        }
-		else if (_gameVariant == NightriderChess)
-		{
-			for (auto& ChessPiece : NightriderChessPieces)
-			{
-				whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-				blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-			}
-		}
-		else if (_gameVariant == CourierChess)
-        {
-            for (auto& ChessPiece : CourierChessPieces)
-            {
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-            }
-        }
-        else if (_gameVariant == JanusChess || _gameVariant == ModernChess)
-        {
-            for (auto& ChessPiece : JanusChessPieces)
-            {
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-            }
-        }
-        else if (_gameVariant == ChancellorChess)
-        {
-            for (auto& ChessPiece : ChancellorChessPieces)
-            {
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-            }
-        }
-		else if (_gameVariant == MusketeerChess)
-		{
-			for (auto& ChessPiece : MusketeerChessPieces)
-			{
-				whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-				blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChessPiece)));
-			}
-		}
-		else if (_gameVariant == GrandeAcedrex)
-        {
-            for (auto& GrandeAcedrexPiece : GrandeAcedrexPieces)
-            {
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(GrandeAcedrexPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(GrandeAcedrexPiece)));
-            }
-        }
-        else if (_gameVariant == Shatranj)
-		{
-			for (auto& ShatranjPiece : ShatranjPieces)
-			{
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShatranjPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShatranjPiece)));
-			}
-		}
-		else if (_gameVariant == Shatar)
-		{
-			for (auto& ShatarPiece : ShatarPieces)
-			{
-				whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShatarPiece)));
-				blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShatarPiece)));
-			}
-		}
-		else if (_gameVariant == Makruk)
-		{
-			for (auto& MakrukPiece : MakrukPieces)
-			{
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(MakrukPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(MakrukPiece)));
-			}
-		}
-		else if (_gameVariant == Sittuyin)
-		{
-			for (auto& SittuyinPiece : SittuyinPieces)
-			{
-				whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(SittuyinPiece)));
-				blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(SittuyinPiece)));
-			}
-		}
-		else if (_gameVariant == Xiangqi || _gameVariant == Janggi)
-		{
-			for (auto& XiangqiPiece : XiangqiPieces)
-			{
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(XiangqiPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(XiangqiPiece)));
-			}
-		}
-		else if (_gameVariant == Shogi)
-		{
-			for (auto& ShogiPiece : ShogiPieces)
-			{
-				whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-				blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-			}
-		}
-		else if (_gameVariant == Shogi)
-		{
-			for (auto& ShogiPiece : ShogiPieces)
-			{
-				whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-				blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-			}
-		}
-		else if (_gameVariant == ShoShogi)
-		{
-			for (auto& ShogiPiece : ShoShogiPieces)
-			{
-				whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-				blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-			}
-		}
-        else if (_gameVariant == MicroShogi || _gameVariant == KyotoShogi)
-        {
-            for (auto& ShogiPiece : MicroShogiPieces)
-            {
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-            }
-        }
-        else if (_gameVariant == MiniShogi)
-		{
-			for (auto& ShogiPiece : MiniShogiPieces)
-			{
-				whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-				blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-			}
-		}
-		else if (_gameVariant == JudkinShogi)
-		{
-			for (auto& ShogiPiece : JudkinsShogiPieces)
-			{
-				whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-				blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-			}
-		}
-        else if (_gameVariant == WhaleShogi)
-        {
-            for (auto& WhaleShogiPiece : WhaleShogiPieces)
-            {
-                whiteRegular->addAction(QString::fromStdString(StringManager::WhaleShogiPieceType2Description(WhaleShogiPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::WhaleShogiPieceType2Description(WhaleShogiPiece)));
-            }
-        }
-        else if (_gameVariant == ToriShogi)
-        {
-            for (auto& ToriShogiPiece : ToriShogiPieces)
-            {
-                whiteRegular->addAction(QString::fromStdString(StringManager::ToriShogiPieceType2Description(ToriShogiPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::ToriShogiPieceType2Description(ToriShogiPiece)));
-            }
-        }
-        else if (_gameVariant == EuroShogi)
-        {
-            for (auto& ShogiPiece : EuroShogiPieces)
-            {
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ShogiPiece)));
-            }
-        }
-        else if (_gameVariant == YariShogi)
-        {
-            for (auto& YariShogiPiece : YariShogiPieces)
-            {
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(YariShogiPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(YariShogiPiece)));
-            }
-        }
-        else if (_gameVariant == HeianShogi)
-        {
-            for (auto& HeianShogiPiece : HeianShogiPieces)
-            {
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(HeianShogiPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(HeianShogiPiece)));
-            }
-        }
-        else if (_gameVariant == HeianDaiShogi)
-        {
-            for (auto& HeianShogiPiece : HeianDaiShogiPieces)
-            {
-                whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(HeianShogiPiece)));
-                blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(HeianShogiPiece)));
-            }
-        }
-        else if (_gameVariant == CrazyWa)
-		{
-			for (auto& WaShogiPiece : WaShogiPieces)
-			{
-				if (std::ranges::find(_promotedPieces, WaShogiPiece) != std::end(_promotedPieces))
-				{
-					whitePromoted->addAction(QString::fromStdString(StringManager::WaShogiPieceType2Description(WaShogiPiece)));
-					blackPromoted->addAction(QString::fromStdString(StringManager::WaShogiPieceType2Description(WaShogiPiece)));
-				}
-				else
-				{
-					whiteRegular->addAction(QString::fromStdString(StringManager::WaShogiPieceType2Description(WaShogiPiece)));
-					blackRegular->addAction(QString::fromStdString(StringManager::WaShogiPieceType2Description(WaShogiPiece)));
-				}
-			}
-		}
-		else if (_gameVariant == ChuShogi)
-		{
-			for (auto& ChuShogiPiece : ChuShogiPieces)
-			{
-				if (std::ranges::find(_promotedPieces, ChuShogiPiece) != std::end(_promotedPieces))
-				{
-					whitePromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(ChuShogiPiece)));
-					blackPromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(ChuShogiPiece)));
-				}
-				else
-				{
-					whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChuShogiPiece)));
-					blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(ChuShogiPiece)));
-				}
-			}
-		}
-		else if (_gameVariant == DaiShogi)
-		{
-			for (auto& DaiShogiPiece : DaiShogiPieces)
-			{
-				if (std::ranges::find(_promotedPieces, DaiShogiPiece) != std::end(_promotedPieces))
-				{
-					whitePromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(DaiShogiPiece)));
-					blackPromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(DaiShogiPiece)));
-				}
-				else
-				{
-					whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(DaiShogiPiece)));
-					blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(DaiShogiPiece)));
-				}
-			}
-		}
-		else if (_gameVariant == TenjikuShogi)
-		{
-			for (auto& TenjikuShogiPiece : TenjikuShogiPieces)
-			{
-				if (std::ranges::find(_promotedPieces, TenjikuShogiPiece) != std::end(_promotedPieces))
-				{
-					whitePromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(TenjikuShogiPiece)));
-					blackPromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(TenjikuShogiPiece)));
-				}
-				else
-				{
-					whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(TenjikuShogiPiece)));
-					blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(TenjikuShogiPiece)));
-				}
-			}
-		}
-		else if (_gameVariant == DaiDaiShogi)
-		{
-			for (auto& DaiDaiShogiPiece : DaiDaiShogiPieces)
-			{
-				if (std::ranges::find(_promotedPieces, DaiDaiShogiPiece) != std::end(_promotedPieces))
-				{
-					whitePromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(DaiDaiShogiPiece)));
-					blackPromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(DaiDaiShogiPiece)));
-				}
-				else
-				{
-					whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(DaiDaiShogiPiece)));
-					blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(DaiDaiShogiPiece)));
-				}
-			}
-		}
-		else if (_gameVariant == MakaDaiDaiShogi)
-		{
-			for (auto& MakaDaiDaiShogiPiece : MakaDaiDaiShogiPieces)
-			{
-				if (std::ranges::find(_promotedPieces, MakaDaiDaiShogiPiece) != std::end(_promotedPieces))
-				{
-					whitePromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(MakaDaiDaiShogiPiece)));
-					blackPromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(MakaDaiDaiShogiPiece)));
-				}
-				else
-				{
-					whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(MakaDaiDaiShogiPiece)));
-					blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(MakaDaiDaiShogiPiece)));
-				}
-			}
-		}
-		else if (_gameVariant == TaiShogi)
-		{
-			for (auto& TaiShogiPiece : TaiShogiPieces)
-			{
-				if (std::ranges::find(_promotedPieces, TaiShogiPiece) != std::end(_promotedPieces))
-				{
-					whitePromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(TaiShogiPiece)));
-					blackPromoted->addAction(QString::fromStdString(StringManager::PieceType2Description(TaiShogiPiece)));
-				}
-				else
-				{
-					whiteRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(TaiShogiPiece)));
-					blackRegular->addAction(QString::fromStdString(StringManager::PieceType2Description(TaiShogiPiece)));
-				}
-			}
-		}
-		else if (_gameVariant == KoShogi)
-		{
-			for (auto& KoShogiPiece : KoShogiPieces)
-			{
-				if (std::ranges::find(_promotedPieces, KoShogiPiece) != std::end(_promotedPieces))
-				{
-					whitePromoted->addAction(QString::fromStdString(StringManager::KoShogiPieceType2Description(KoShogiPiece)));
-					blackPromoted->addAction(QString::fromStdString(StringManager::KoShogiPieceType2Description(KoShogiPiece)));
-				}
-				else
-				{
-					whiteRegular->addAction(QString::fromStdString(StringManager::KoShogiPieceType2Description(KoShogiPiece)));
-					blackRegular->addAction(QString::fromStdString(StringManager::KoShogiPieceType2Description(KoShogiPiece)));
-				}
-			}
-        }
-
-		const QAction* selectedAction = menu.exec(event->globalPos());
-
-		if (selectedAction != nullptr)
-		{
-			if (selectedAction->text() == "Promote")
-			{
-                if (_board->GetData(x, y) != std::nullopt && !_board->GetData(x, y)->IsPromoted)
-				{
-                    _board->Promote(x, y);
-				}
-				return;
-			}
-			_chosenColour = qobject_cast<QMenu*>(selectedAction->parent()->parent())->title() == "White" ? White : Black;
-            _chosenPiece = StringManager::Description2PieceType(_gameVariant, selectedAction->text().toStdString());
-
-			if (_chosenPiece == None)
-			{
-				_board->SetData(x, y, std::nullopt);
-			}
-			else
-			{
-				_board->SetData(x, y, std::make_optional<Piece>(_chosenPiece, _chosenColour));
-				if (std::ranges::find(_promotedPieces, _chosenPiece) != std::end(_promotedPieces))
-				{
-					if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi &&
-						_gameVariant != GrandeAcedrex && _gameVariant != MusketeerChess)
-					{
-						_board->Promote(x, y);
-					}
-				}
-			}
-		}
-
-		repaint();
-		return;
-	}
 
     if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != Shogi && _gameVariant != MiniShogi &&
 		_gameVariant != JudkinShogi && _gameVariant != WhaleShogi && _gameVariant != ToriShogi && _gameVariant != MusketeerChess &&
