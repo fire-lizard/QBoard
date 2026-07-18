@@ -201,7 +201,7 @@ inline PieceType WhaleShogiPieces[] = { King, DragonKing, GreyWhale, Porpoise, N
 
 inline PieceType ToriShogiPieces[] = { King, Falcon, Crane, Pheasant, LeftQuail, RightQuail, Pawn, Eagle, Goose };
 
-inline PieceType EuroShogiPieces[] = { King, Gold, Bishop, Knight, Rook, Pawn };
+inline PieceType EuroShogiPieces[] = { King, Gold, Bishop, Knight, PromotedKnight, Rook, Pawn, Tokin, DragonHorse, DragonKing };
 
 inline PieceType YariShogiPieces[] = { King, Rook, Pawn, YariKnight, YariGold, YariSilver, YariBishop, YariRook };
 

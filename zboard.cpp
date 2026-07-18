@@ -26,7 +26,7 @@ void ZBoard::Fill(int count, PieceType *pieces)
 void ZBoard::Setup(int width, int height, GameVariant gameVariant, PieceStyle pieceStyle)
 {
     _width = width;
-    _height = height;
+    _height = gameVariant == MusketeerChess ? 8 : height;
 	_gameVariant = gameVariant;
     _pieceStyle = pieceStyle;
 	switch (_gameVariant)
@@ -146,50 +146,42 @@ void ZBoard::paintEvent(QPaintEvent *)
     QPainter painter(this);
     painter.setRenderHint(QPainter::SmoothPixmapTransform);
     painter.setPen(_editorMode ? Qt::magenta : Qt::black);
-    painter.setBrush(Qt::NoBrush);
 
     const QSize s = this->size();
     const int w = s.width() / _width;
     const int h = s.height() / _height;
-    unsigned long long index = 0;
-    painter.drawRect(QRect(0, 0, w, h));
-    for (int i = 0; i < _width; i++)
-    {
-        for (int j = 0; j < _height; j++)
-        {
-            if (_pieces.size() > index)
-            {
-                QRect rect(j * w, i * h, w, h);
-                painter.drawRect(rect);
-                auto piece = _pieces[index];
-				if (piece.has_value())
+	for (int i = 0; i < _width; i++)
+	{
+		for (int j = 0; j < _height; j++)
+		{
+			unsigned long long index = j * _height + i;
+			if (_pieces.size() > index)
+			{
+				std::optional<Piece> p = _pieces[index];
+				painter.drawRect(i * w, j * h, w, h);
+				if (p != std::nullopt)
 				{
-					GraphicsManager::DrawPiece(painter, Piece(piece->Type, Black), _gameVariant, _pieceStyle, w, h, j, i);
+					GraphicsManager::DrawPiece(painter, Piece(p->Type, Black), _gameVariant, _pieceStyle, w, h, i, j);
 				}
-            }
-            else break;
-            index++;
-        }
-    }
-    index = 0;
-    for (int i = _width - 1; i >= 0; i--)
-    {
-        for (int j = _height - 1; j >= 0; j--)
-        {
-            if (_pieces.size() > index)
-            {
-                QRect rect(j * w, i * h, w, h);
-                painter.drawRect(rect);
-                auto piece = _pieces[index];
-				if (piece.has_value())
+			}
+		}
+	}
+	for (int i = _width - 1; i >= 0 ; i--)
+	{
+		for (int j = _height - 1; j >= 0; j--)
+		{
+			unsigned long long index = j * _height + i;
+			if (_pieces.size() > _width * _height - index - 1)
+			{
+				std::optional<Piece> p = _pieces[_width * _height - index - 1];
+				painter.drawRect(i * w, j * h, w, h);
+				if (p != std::nullopt)
 				{
-					GraphicsManager::DrawPiece(painter, piece.value(), _gameVariant, _pieceStyle, w, h, j, i);
+					GraphicsManager::DrawPiece(painter, p.value(), _gameVariant, _pieceStyle, w, h, i, j);
 				}
-            }
-            else break;
-            index++;
-        }
-    }
+			}
+		}
+	}
 }
 
 void ZBoard::mousePressEvent(QMouseEvent *event)
@@ -200,9 +192,16 @@ void ZBoard::mousePressEvent(QMouseEvent *event)
     const int x = static_cast<int>(event->position().x()) / w;
     const int y = static_cast<int>(event->position().y()) / h;
     unsigned long long index = y * _height + x;
-    if (_pieces.size() > index && _pieces[index].has_value())
+    if (_pieces.size() > index)
     {
-        _chosenPiece = std::make_optional<Piece>(_pieces[index]->Type, Black);
+		if (_pieces[index].has_value())
+		{
+			_chosenPiece = std::make_optional<Piece>(_pieces[index]->Type, Black);
+		}
+		else
+		{
+			_chosenPiece = std::nullopt;
+		}
     }
     else if (_pieces.size() > _width * _height - index - 1)
     {

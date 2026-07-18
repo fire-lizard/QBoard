@@ -364,10 +364,9 @@ void VBoard::paintEvent(QPaintEvent *)
         {
             for (int j = 0; j < _board->GetHeight() - 1; j++)
             {
-                QRect rect(i * w + w / 2, j * h + h / 2, w, h);
                 if (_gameVariant == KoShogi || _gameVariant == Janggi || j != 4)
                 {
-                    painter.drawRect(rect);
+					painter.drawRect(i * w + w / 2, j * h + h / 2, w, h);
                 }
                 if (_gameVariant == KoShogi && (i == 3 || i == 9 || i == 15) && (j == 3 || j == 9 || j == 15))
                 {
@@ -474,13 +473,13 @@ void VBoard::CancelLionMove()
 
 void VBoard::mousePressEvent(QMouseEvent* event)
 {
-	if (_gameVariant == Sittuyin && !dynamic_cast<SittuyinBoard*>(_board)->GetCapturedPieces(_currentPlayer).empty()) return;
+	if (!_editorMode && _gameVariant == Sittuyin && !dynamic_cast<SittuyinBoard*>(_board)->GetCapturedPieces(_currentPlayer).empty()) return;
 	if (event->button() != Qt::MouseButton::LeftButton) return;
 	const int w = this->size().width() / _board->GetWidth();
 	const int h = this->size().height() / _board->GetHeight();
     const int x = static_cast<int>(event->position().x()) / w;
     const int y = static_cast<int>(event->position().y()) / h;
-	if (_gameVariant == MusketeerChess)
+	if (!_editorMode && _gameVariant == MusketeerChess)
 	{
 		if (_currentPlayer == White && dynamic_cast<MusketeerChessBoard*>(_board)->WhitePiecesToPlace > 0) return;
 		if (_currentPlayer == Black && dynamic_cast<MusketeerChessBoard*>(_board)->BlackPiecesToPlace > 0) return;

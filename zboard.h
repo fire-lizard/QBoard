@@ -21,8 +21,8 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
 
 private:
-	int _width = 0;
-    int _height = 0;
+	int _width = 8;
+    int _height = 8;
     bool _editorMode = true;
 	PieceStyle _pieceStyle = European;
     GameVariant _gameVariant = Chess;
