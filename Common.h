@@ -150,8 +150,8 @@ inline PieceType DaiShogiPieces[] = { King, Lion, Queen, DragonKing, DragonHorse
 									  Eagle, Falcon, FlyingOx, FreeBoar, FlyingStag, WhiteHorse, Whale, Knight, ViolentOx, FlyingDragon, AngryBoar };
 
 inline PieceType TenjikuShogiPieces[] = { King, Lion, Queen, DragonKing, DragonHorse, Rook, Bishop, VerticalMover, SideMover, ReverseChariot, Lance, Kylin, Phoenix,
-										  Elephant, Tiger, Leopard, Gold, Silver, Copper, GoBetween, Pawn, Tokin, Prince, Eagle, Falcon, FlyingOx, FreeBoar,
-										  FlyingStag, WhiteHorse, Whale, Dog, Knight, Iron, ViceGeneral, GreatGeneral, BishopGeneral, RookGeneral, MultiGeneral,
+										  Elephant, Tiger, Leopard, Gold, Silver, Copper, Iron, Pawn, Tokin, Prince, Eagle, Falcon, FlyingOx, FreeBoar,
+										  FlyingStag, WhiteHorse, Whale, Dog, Knight, ViceGeneral, GreatGeneral, BishopGeneral, RookGeneral, MultiGeneral,
 										  FreeEagle, LionHawk, SideSoldier, VerticalSoldier, ChariotSoldier, WaterBuffalo, HeavenlyTetrarch, FireDemon };
 
 inline PieceType ChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn };

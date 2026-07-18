@@ -13,7 +13,6 @@
     <Engine EngineName="HaChu" GameVariant="Chu Shogi,Sho Shogi,Dai Shogi,Shatranj,Makruk" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaChu/HaChu.exe" EngineOptions=""/>
     <Engine EngineName="HaQiKid" GameVariant="Xiangqi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/HaQi/haqikid.exe" EngineOptions=""/>
     <Engine EngineName="Nebiyu" GameVariant="Shogi,Mini Shogi,Judkins Shogi,Chess,Courier Chess,Capablanca Chess,Gothic Chess,Grand Chess,Makruk,Shatranj,Heian Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Nebiyu/NebiyuAlien.exe" EngineOptions=""/>
-    <Engine EngineName="whale_shogi" GameVariant="Whale Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Other/whale_shogi.exe" EngineOptions=""/>
     <Engine EngineName="Pulsar" GameVariant="Chess,Shatranj" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Pulsar/pulsar2009-9b.exe" EngineOptions=""/>
     <Engine EngineName="Shokidoki" GameVariant="Shogi,Mini Shogi,Judkins Shogi,Tori Shogi,Euro Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/Shokidoki/sdk.exe" EngineOptions=""/>
     <Engine EngineName="SjaakII" GameVariant="Yari Shogi,Chancellor Chess,Musketeer Chess,Nightrider Chess,Micro Shogi,Shatar,Makruk,Shatranj,Capablanca Chess,Gothic Chess,Courier Chess,Grand Chess,Omega Chess,Shogi,Xiangqi,Mini Shogi,Tori Shogi,Sho Shogi,Chess,Heian Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/SjaakII/SjaakII_win64_MS.exe" EngineOptions=""/>

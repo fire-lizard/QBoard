@@ -443,6 +443,7 @@ QString GraphicsManager::GetImageFileName(PieceColour pieceColour, PieceType pie
         return colour + "Pawn.png";
     case Eagle:
         return colour + "Hawk.png";
+    case Falcon:
     case Unicorn:
         return colour + "Unicorn.png";
     case FlyingOx:

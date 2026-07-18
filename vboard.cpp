@@ -490,17 +490,6 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	{
 		auto chosenPiece = _editor->GetBoard()->GetChosenPiece();
 		_board->SetData(x, y, chosenPiece);
-		if (chosenPiece != std::nullopt)
-		{
-			if (std::ranges::find(_promotedPieces, chosenPiece->Type) != std::end(_promotedPieces))
-			{
-				if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi &&
-					_gameVariant != GrandeAcedrex && _gameVariant != MusketeerChess)
-				{
-					_board->Promote(x, y);
-				}
-			}
-		}
 		repaint();
 		return;
 	}

@@ -15,17 +15,20 @@ void ZBoard::Fill(std::vector<std::pair<PieceColour, PieceType>> capturedPieces)
 
 void ZBoard::Fill(int count, PieceType *pieces)
 {
-    _pieces.clear();
+	auto promotedPieces = GetPromotedPieces();
+	_pieces.clear();
 	_pieces.emplace_back(std::nullopt);
 	for (int index = 0; index < count; index++)
     {
-        _pieces.emplace_back(std::make_optional<Piece>(pieces[index], White));
+		auto piece = std::make_optional<Piece>(pieces[index], White);
+		piece->IsPromoted = std::ranges::find(promotedPieces, piece->Type) != std::end(promotedPieces);
+		_pieces.emplace_back(piece);
     }
 }
 
 void ZBoard::Setup(int width, int height, GameVariant gameVariant, PieceStyle pieceStyle)
 {
-    _width = width;
+    _width = gameVariant == MicroShogi ? 5 : width;
     _height = gameVariant == MusketeerChess ? 8 : height;
 	_gameVariant = gameVariant;
     _pieceStyle = pieceStyle;
@@ -141,6 +144,40 @@ std::optional<Piece> ZBoard::GetChosenPiece() const
     return _chosenPiece;
 }
 
+std::vector<PieceType> ZBoard::GetPromotedPieces() const
+{
+	switch (_gameVariant)
+	{
+	case Shogi:
+	case ShoShogi:
+	case MiniShogi:
+	case JudkinShogi:
+	case EuroShogi:
+		return {Tokin, PromotedKnight, PromotedLance, PromotedSilver, DragonHorse, DragonKing};
+	case CrazyWa:
+		return {TenaciousFalcon, BearEyes, Elephant, RaidingFalcon, Rook, HeavenlyHorse, PloddingOx, Tokin};
+	case ChuShogi:
+	case DaiShogi:
+		return {FlyingStag, FlyingOx, FreeBoar, Whale, WhiteHorse, Prince, Falcon, Eagle, Tokin};
+	case TenjikuShogi:
+		return {Prince, HeavenlyTetrarch, FlyingStag, FlyingOx, FreeBoar, Whale, WhiteHorse, MultiGeneral, Tokin};
+	case DaiDaiShogi:
+		return {GreatElephant, FuriousFiend, MountainWitch, WizardStork};
+	case MakaDaiDaiShogi:
+		return {Emperor, TeachingKing, BuddhistSpirit, FreeGold, FreeSilver, FreeCopper, FreeIron, FreeTile, FreeStone, FreeEarth, FreeGo, Prince,
+		           FreeTiger, FreeLeopard, FreeSerpent, FreeDragon, MountainWitch, WizardStork, FreeCat, FuriousFiend, GoldenBird, GreatDragon, Bat,
+				   FreeWolf, FreeBear, FreeBoar, Tokin};
+	case KoShogi:
+		return {Prince, Thunderclap, RoamingAssault, FlyingStag, CompanyCommander, ViceCommissioner, PoisonFlame, DoubleKylin, DoublePhoenix, ExtensiveFog, HolyLight,
+				   SkywardNet, EarthwardNet, RisingDragon, WingedTiger, FlyingHawk, LongbowKnight, CrossbowKnight, CannonCarriage, DivineCarriage, WingedHorse, FlyingOx,
+				   FreeBoar};
+	case TaiShogi:
+		return {SquareMover, WizardStork, MountainWitch, FragrantElephant, GreatElephant, FuriousFiend, TeachingKing, BuddhistSpirit};
+	default:
+		return {};
+	}
+}
+
 void ZBoard::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
@@ -154,14 +191,23 @@ void ZBoard::paintEvent(QPaintEvent *)
 	{
 		for (int j = 0; j < _height; j++)
 		{
-			unsigned long long index = j * _height + i;
+			unsigned long long index = j * _width + i;
 			if (_pieces.size() > index)
 			{
 				std::optional<Piece> p = _pieces[index];
+				if (_chosenPiece.has_value() && p.has_value() && _chosenPiece->Type == p->Type && _chosenPiece->Colour == Black)
+				{
+					painter.setBrush(QColorConstants::Svg::violet);
+				}
+				else
+				{
+					painter.setBrush(Qt::NoBrush);
+				}
 				painter.drawRect(i * w, j * h, w, h);
 				if (p != std::nullopt)
 				{
-					GraphicsManager::DrawPiece(painter, Piece(p->Type, Black), _gameVariant, _pieceStyle, w, h, i, j);
+					p->Colour = Black;
+					GraphicsManager::DrawPiece(painter, p.value(), _gameVariant, _pieceStyle, w, h, i, j);
 				}
 			}
 		}
@@ -170,10 +216,18 @@ void ZBoard::paintEvent(QPaintEvent *)
 	{
 		for (int j = _height - 1; j >= 0; j--)
 		{
-			unsigned long long index = j * _height + i;
+			unsigned long long index = j * _width + i;
 			if (_pieces.size() > _width * _height - index - 1)
 			{
 				std::optional<Piece> p = _pieces[_width * _height - index - 1];
+				if (_chosenPiece.has_value() && p.has_value() && _chosenPiece->Type == p->Type && _chosenPiece->Colour == p->Colour)
+				{
+					painter.setBrush(QColorConstants::Svg::violet);
+				}
+				else
+				{
+					painter.setBrush(Qt::NoBrush);
+				}
 				painter.drawRect(i * w, j * h, w, h);
 				if (p != std::nullopt)
 				{
@@ -191,12 +245,13 @@ void ZBoard::mousePressEvent(QMouseEvent *event)
     const int h = this->size().height() / _height;
     const int x = static_cast<int>(event->position().x()) / w;
     const int y = static_cast<int>(event->position().y()) / h;
-    unsigned long long index = y * _height + x;
+    unsigned long long index = y * _width + x;
     if (_pieces.size() > index)
     {
 		if (_pieces[index].has_value())
 		{
-			_chosenPiece = std::make_optional<Piece>(_pieces[index]->Type, Black);
+			_chosenPiece = _pieces[index];
+			_chosenPiece->Colour = Black;
 		}
 		else
 		{
@@ -207,4 +262,5 @@ void ZBoard::mousePressEvent(QMouseEvent *event)
     {
         _chosenPiece = _pieces[_width * _height - index - 1];
     }
+	repaint();
 }

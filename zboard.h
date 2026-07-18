@@ -21,6 +21,8 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
 
 private:
+    std::vector<PieceType> GetPromotedPieces() const;
+
 	int _width = 8;
     int _height = 8;
     bool _editorMode = true;
