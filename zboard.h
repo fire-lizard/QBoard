@@ -12,10 +12,9 @@ class ZBoard : public QWidget
 public:
     explicit ZBoard(QWidget *parent = nullptr);
     void Fill(std::vector<std::pair<PieceColour, PieceType>> capturedPieces);
-    void Fill(int count, PieceColour pieceColour, PieceType *pieces);
+    void Fill(int count, PieceType *pieces);
     void Setup(int width, int height, GameVariant gameVariant, PieceStyle pieceStyle);
-    PieceColour GetChosenColour() const;
-    PieceType GetChosenPiece() const;
+    std::optional<Piece> GetChosenPiece() const;
 
 protected:
     void paintEvent(QPaintEvent *) override;
@@ -27,7 +26,6 @@ private:
     bool _editorMode = true;
 	PieceStyle _pieceStyle = European;
     GameVariant _gameVariant = Chess;
-    PieceColour _chosenColour = White;
-    PieceType _chosenPiece = None;
-    std::vector<std::pair<PieceColour, PieceType>> _pieces;
+    std::optional<Piece> _chosenPiece = std::nullopt;
+    std::vector<std::optional<Piece>> _pieces;
 };

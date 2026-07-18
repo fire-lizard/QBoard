@@ -7,20 +7,19 @@ ZBoard::ZBoard(QWidget *parent) : QWidget(parent)
 void ZBoard::Fill(std::vector<std::pair<PieceColour, PieceType>> capturedPieces)
 {
     _pieces.clear();
-    _pieces.emplace_back(White, None);
     std::ranges::for_each(capturedPieces, [&](std::pair<PieceColour, PieceType> p)
     {
-        _pieces.emplace_back(p);
+        _pieces.emplace_back(std::make_optional<Piece>(p.second, p.first));
     });
 }
 
-void ZBoard::Fill(int count, PieceColour pieceColour, PieceType *pieces)
+void ZBoard::Fill(int count, PieceType *pieces)
 {
     _pieces.clear();
-    _pieces.emplace_back(White, None);
-    for (int index = 0; index < count; index++)
+	_pieces.emplace_back(std::nullopt);
+	for (int index = 0; index < count; index++)
     {
-        _pieces.emplace_back(pieceColour, pieces[index]);
+        _pieces.emplace_back(std::make_optional<Piece>(pieces[index], White));
     }
 }
 
@@ -33,116 +32,111 @@ void ZBoard::Setup(int width, int height, GameVariant gameVariant, PieceStyle pi
 	switch (_gameVariant)
 	{
 	case Chess:
-		Fill(std::size(ChessPieces), White, ChessPieces);
+		Fill(std::size(ChessPieces), ChessPieces);
 		break;
 	case CapablancaChess:
 	case GothicChess:
 	case GrandChess:
-		Fill(std::size(GothicChessPieces), White, GothicChessPieces);
+		Fill(std::size(GothicChessPieces), GothicChessPieces);
 		break;
 	case JanusChess:
 	case ModernChess:
-		Fill(std::size(JanusChessPieces), White, JanusChessPieces);
+		Fill(std::size(JanusChessPieces), JanusChessPieces);
 		break;
 	case OmegaChess:
-		Fill(std::size(OmegaChessPieces), White, OmegaChessPieces);
+		Fill(std::size(OmegaChessPieces), OmegaChessPieces);
 		break;
 	case NightriderChess:
-		Fill(std::size(NightriderChessPieces), White, NightriderChessPieces);
+		Fill(std::size(NightriderChessPieces), NightriderChessPieces);
 		break;
 	case CourierChess:
-		Fill(std::size(CourierChessPieces), White, CourierChessPieces);
+		Fill(std::size(CourierChessPieces), CourierChessPieces);
 		break;
 	case ChancellorChess:
-		Fill(std::size(ChancellorChessPieces), White, ChancellorChessPieces);
+		Fill(std::size(ChancellorChessPieces), ChancellorChessPieces);
 		break;
 	case MusketeerChess:
-		Fill(std::size(MusketeerChessPieces), White, MusketeerChessPieces);
+		Fill(std::size(MusketeerChessPieces), MusketeerChessPieces);
 		break;
 	case GrandeAcedrex:
-		Fill(std::size(GrandeAcedrexPieces), White, GrandeAcedrexPieces);
+		Fill(std::size(GrandeAcedrexPieces), GrandeAcedrexPieces);
 		break;
 	case Shogi:
 	case ShoShogi:
-		Fill(std::size(ShogiPieces), White, ShogiPieces);
+		Fill(std::size(ShogiPieces), ShogiPieces);
 		break;
 	case ChuShogi:
-		Fill(std::size(ChuShogiPieces), White, ChuShogiPieces);
+		Fill(std::size(ChuShogiPieces), ChuShogiPieces);
 		break;
 	case DaiShogi:
-		Fill(std::size(DaiShogiPieces), White, DaiShogiPieces);
+		Fill(std::size(DaiShogiPieces), DaiShogiPieces);
 		break;
 	case TenjikuShogi:
-		Fill(std::size(TenjikuShogiPieces), White, TenjikuShogiPieces);
+		Fill(std::size(TenjikuShogiPieces), TenjikuShogiPieces);
 		break;
 	case DaiDaiShogi:
-		Fill(std::size(DaiDaiShogiPieces), White, DaiDaiShogiPieces);
+		Fill(std::size(DaiDaiShogiPieces), DaiDaiShogiPieces);
 		break;
 	case MakaDaiDaiShogi:
-		Fill(std::size(MakaDaiDaiShogiPieces), White, MakaDaiDaiShogiPieces);
+		Fill(std::size(MakaDaiDaiShogiPieces), MakaDaiDaiShogiPieces);
 		break;
 	case KoShogi:
-		Fill(std::size(KoShogiPieces), White, KoShogiPieces);
+		Fill(std::size(KoShogiPieces), KoShogiPieces);
 		break;
 	case TaiShogi:
-		Fill(std::size(TaiShogiPieces), White, TaiShogiPieces);
+		Fill(std::size(TaiShogiPieces), TaiShogiPieces);
 		break;
 	case MicroShogi:
 	case KyotoShogi:
-		Fill(std::size(MicroShogiPieces), White, MicroShogiPieces);
+		Fill(std::size(MicroShogiPieces), MicroShogiPieces);
 		break;
 	case MiniShogi:
-		Fill(std::size(MiniShogiPieces), White, MiniShogiPieces);
+		Fill(std::size(MiniShogiPieces), MiniShogiPieces);
 		break;
 	case JudkinShogi:
-		Fill(std::size(JudkinsShogiPieces), White, JudkinsShogiPieces);
+		Fill(std::size(JudkinsShogiPieces), JudkinsShogiPieces);
 		break;
 	case WhaleShogi:
-		Fill(std::size(WhaleShogiPieces), White, WhaleShogiPieces);
+		Fill(std::size(WhaleShogiPieces), WhaleShogiPieces);
 		break;
 	case ToriShogi:
-		Fill(std::size(ToriShogiPieces), White, ToriShogiPieces);
+		Fill(std::size(ToriShogiPieces), ToriShogiPieces);
 		break;
 	case EuroShogi:
-		Fill(std::size(EuroShogiPieces), White, EuroShogiPieces);
+		Fill(std::size(EuroShogiPieces), EuroShogiPieces);
 		break;
 	case YariShogi:
-		Fill(std::size(YariShogiPieces), White, YariShogiPieces);
+		Fill(std::size(YariShogiPieces), YariShogiPieces);
 		break;
 	case HeianShogi:
-		Fill(std::size(HeianShogiPieces), White, HeianShogiPieces);
+		Fill(std::size(HeianShogiPieces), HeianShogiPieces);
 		break;
 	case HeianDaiShogi:
-		Fill(std::size(HeianDaiShogiPieces), White, HeianDaiShogiPieces);
+		Fill(std::size(HeianDaiShogiPieces), HeianDaiShogiPieces);
 		break;
 	case CrazyWa:
-		Fill(std::size(WaShogiPieces), White, WaShogiPieces);
+		Fill(std::size(WaShogiPieces), WaShogiPieces);
 		break;
 	case Xiangqi:
 	case Janggi:
-		Fill(std::size(XiangqiPieces), White, XiangqiPieces);
+		Fill(std::size(XiangqiPieces), XiangqiPieces);
 		break;
 	case Shatranj:
-		Fill(std::size(ShatranjPieces), White, ShatranjPieces);
+		Fill(std::size(ShatranjPieces), ShatranjPieces);
 		break;
 	case Makruk:
-		Fill(std::size(MakrukPieces), White, MakrukPieces);
+		Fill(std::size(MakrukPieces), MakrukPieces);
 		break;
 	case Shatar:
-		Fill(std::size(ShatarPieces), White, ShatarPieces);
+		Fill(std::size(ShatarPieces), ShatarPieces);
 		break;
 	case Sittuyin:
-		Fill(std::size(SittuyinPieces), White, SittuyinPieces);
+		Fill(std::size(SittuyinPieces), SittuyinPieces);
 		break;
 	}
 }
 
-PieceColour ZBoard::GetChosenColour() const
-{
-    return _chosenColour;
-}
-
-PieceType ZBoard::GetChosenPiece() const
+std::optional<Piece> ZBoard::GetChosenPiece() const
 {
     return _chosenPiece;
 }
@@ -168,7 +162,10 @@ void ZBoard::paintEvent(QPaintEvent *)
                 QRect rect(j * w, i * h, w, h);
                 painter.drawRect(rect);
                 auto piece = _pieces[index];
-            	GraphicsManager::DrawPiece(painter, Piece(piece.second, Black), _gameVariant, _pieceStyle, w, h, j, i);
+				if (piece.has_value())
+				{
+					GraphicsManager::DrawPiece(painter, Piece(piece->Type, Black), _gameVariant, _pieceStyle, w, h, j, i);
+				}
             }
             else break;
             index++;
@@ -184,7 +181,10 @@ void ZBoard::paintEvent(QPaintEvent *)
                 QRect rect(j * w, i * h, w, h);
                 painter.drawRect(rect);
                 auto piece = _pieces[index];
-                GraphicsManager::DrawPiece(painter, Piece(piece.second, White), _gameVariant, _pieceStyle, w, h, j, i);
+				if (piece.has_value())
+				{
+					GraphicsManager::DrawPiece(painter, piece.value(), _gameVariant, _pieceStyle, w, h, j, i);
+				}
             }
             else break;
             index++;
@@ -200,14 +200,12 @@ void ZBoard::mousePressEvent(QMouseEvent *event)
     const int x = static_cast<int>(event->position().x()) / w;
     const int y = static_cast<int>(event->position().y()) / h;
     unsigned long long index = y * _height + x;
-    if (_pieces.size() > index)
+    if (_pieces.size() > index && _pieces[index].has_value())
     {
-        _chosenColour = Black;
-        _chosenPiece = _pieces[index].second;
+        _chosenPiece = std::make_optional<Piece>(_pieces[index]->Type, Black);
     }
     else if (_pieces.size() > _width * _height - index - 1)
     {
-        _chosenColour = White;
-        _chosenPiece = _pieces[_width * _height - index - 1].second;
+        _chosenPiece = _pieces[_width * _height - index - 1];
     }
 }
