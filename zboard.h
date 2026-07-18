@@ -15,6 +15,7 @@ public:
     void Fill(int count, PieceType *pieces);
     void Setup(int width, int height, GameVariant gameVariant, PieceStyle pieceStyle);
     std::optional<Piece> GetChosenPiece() const;
+    static int GetRowCount(GameVariant gameVariant);
 
 protected:
     void paintEvent(QPaintEvent *) override;

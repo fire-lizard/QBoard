@@ -2048,9 +2048,10 @@ void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 			s = 66;
 			break;
 		}
-		_editor->GetBoard()->setFixedSize(_board->GetWidth() * s + 1, _board->GetHeight() * s + 1);
+		const int rowCount = _gameVariant == DaiDaiShogi || _gameVariant == TaiShogi ? 11 : ZBoard::GetRowCount(_gameVariant) * 2 + 1;
+		_editor->GetBoard()->setFixedSize(_board->GetWidth() * s + 1, rowCount * s + 1);
 		_editor->setFixedSize(_editor->GetBoard()->width() + 20, _editor->GetBoard()->height() + 20);
-		_editor->GetBoard()->Setup(_board->GetWidth(), _board->GetHeight(), _gameVariant, _pieceStyle);
+		_editor->GetBoard()->Setup(_board->GetWidth(), rowCount, _gameVariant, _pieceStyle);
 	}
     else if (!newGameStarted)
 	{

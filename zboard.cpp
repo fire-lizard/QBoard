@@ -29,7 +29,7 @@ void ZBoard::Fill(int count, PieceType *pieces)
 void ZBoard::Setup(int width, int height, GameVariant gameVariant, PieceStyle pieceStyle)
 {
     _width = gameVariant == MicroShogi ? 5 : width;
-    _height = gameVariant == MusketeerChess ? 8 : height;
+    _height = height;
 	_gameVariant = gameVariant;
     _pieceStyle = pieceStyle;
 	switch (_gameVariant)
@@ -65,8 +65,10 @@ void ZBoard::Setup(int width, int height, GameVariant gameVariant, PieceStyle pi
 		Fill(std::size(GrandeAcedrexPieces), GrandeAcedrexPieces);
 		break;
 	case Shogi:
-	case ShoShogi:
 		Fill(std::size(ShogiPieces), ShogiPieces);
+		break;
+	case ShoShogi:
+		Fill(std::size(ShoShogiPieces), ShoShogiPieces);
 		break;
 	case ChuShogi:
 		Fill(std::size(ChuShogiPieces), ChuShogiPieces);
@@ -172,9 +174,33 @@ std::vector<PieceType> ZBoard::GetPromotedPieces() const
 				   SkywardNet, EarthwardNet, RisingDragon, WingedTiger, FlyingHawk, LongbowKnight, CrossbowKnight, CannonCarriage, DivineCarriage, WingedHorse, FlyingOx,
 				   FreeBoar};
 	case TaiShogi:
-		return {SquareMover, WizardStork, MountainWitch, FragrantElephant, GreatElephant, FuriousFiend, TeachingKing, BuddhistSpirit};
+		return {SquareMover, WizardStork, MountainWitch, FragrantElephant, GreatElephant, FuriousFiend, TeachingKing, BuddhistSpirit, Bat, FreeGo, FreeBear, FreeCat,
+				   FreeWolf, FreeDragon, FreeSerpent, FreeLeopard, FreeTiger, FreeEarth, FreeStone, FreeTile, FreeIron, FreeCopper, FreeSilver, FreeGold};
 	default:
 		return {};
+	}
+}
+
+int ZBoard::GetRowCount(GameVariant gameVariant)
+{
+	switch (gameVariant)
+	{
+	case MusketeerChess:
+	case MiniShogi:
+	case JudkinShogi:
+	case CrazyWa:
+	case ChuShogi:
+	case DaiShogi:
+	case TenjikuShogi:
+		return 3;
+	case DaiDaiShogi:
+	case MakaDaiDaiShogi:
+	case KoShogi:
+		return 4;
+	case TaiShogi:
+		return 5;
+	default:
+		return 2;
 	}
 }
 
