@@ -168,7 +168,7 @@ std::vector<PieceType> ZBoard::GetPromotedPieces() const
 	case MakaDaiDaiShogi:
 		return {Emperor, TeachingKing, BuddhistSpirit, FreeGold, FreeSilver, FreeCopper, FreeIron, FreeTile, FreeStone, FreeEarth, FreeGo, Prince,
 		           FreeTiger, FreeLeopard, FreeSerpent, FreeDragon, MountainWitch, WizardStork, FreeCat, FuriousFiend, GoldenBird, GreatDragon, Bat,
-				   FreeWolf, FreeBear, FreeBoar, Tokin};
+				   FreeWolf, FreeBear, FreeBoar};
 	case KoShogi:
 		return {Prince, Thunderclap, RoamingAssault, FlyingStag, CompanyCommander, ViceCommissioner, PoisonFlame, DoubleKylin, DoublePhoenix, ExtensiveFog, HolyLight,
 				   SkywardNet, EarthwardNet, RisingDragon, WingedTiger, FlyingHawk, LongbowKnight, CrossbowKnight, CannonCarriage, DivineCarriage, WingedHorse, FlyingOx,

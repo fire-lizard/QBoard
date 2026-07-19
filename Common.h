@@ -114,8 +114,8 @@ inline PieceType MakaDaiDaiShogiPieces[] = { King, Gold, Silver, Copper, Iron, T
 											 RecliningDragon, ChineseCock, OldMonkey, BlindBear, Wrestler, Guardian, BuddhistSpirit, OldRat, Donkey,
 											 Capricorn, HookMover, SideFlier, LeftChariot, RightChariot, Emperor, TeachingKing, FreeGold, FreeSilver,
 											 FreeCopper, FreeIron, FreeTile, FreeStone, FreeEarth, FreeTiger, FreeLeopard, FreeSerpent, FreeDragon,
-											 FreeWolf, FreeCat, FreeBear, FreeGo, Bat, MountainWitch, WizardStork, LionDog, GreatDragon, GoBetween,
-											 GoldenBird, ViolentOx, Yaksha };
+											 FreeWolf, FreeCat, FreeBear, FreeBoar, FreeGo, Bat, MountainWitch, WizardStork, LionDog, GreatDragon,
+	                                         GoBetween, GoldenBird, ViolentOx, Yaksha, BuddhistDevil };
 
 inline PieceType DaiDaiShogiPieces[] = { King, Lion, WaterBuffalo, Queen, DragonHorse, DragonKing, CatSword, FlyingDragon, Phoenix, Kylin, Bishop, Rook,
 										 SideMover, VerticalMover, ReverseChariot, ViolentOx, Lance, AngryBoar, Gold, Silver, Leopard, Copper, Iron,
@@ -124,7 +124,7 @@ inline PieceType DaiDaiShogiPieces[] = { King, Lion, WaterBuffalo, Queen, Dragon
 										 GoldenBird, GreatDragon, GreatElephant, HookMover, HowlingDog, LeftChariot, RightChariot, LeftGeneral, RightGeneral,
 										 Tengu, NeighboringKing, OldKite, OldRat, PoisonousSnake, PrancingStag, RacingChariot, RushingBird,
 										 SavageTiger, Yaksha, SquareMover, StandardBearer, ViolentBear, WhiteElephant, WhiteTiger,
-										 MountainWitch, WizardStork, Wood, LionDog };
+										 MountainWitch, WizardStork, Wood, LionDog, FlyingHorse };
 
 inline PieceType TaiShogiPieces[] = { Emperor, Elephant, Prince, TeachingKing, BuddhistSpirit, Deva, DarkSpirit, Tengu, HookMover, OldKite, PoisonousSnake,
 	GreatElephant, FuriousFiend, LionDog, Lion, EasternBarbarian, WesternBarbarian, SouthernBarbarian, NorthernBarbarian, FragrantElephant, WhiteElephant,
