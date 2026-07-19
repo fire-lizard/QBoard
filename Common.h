@@ -126,16 +126,14 @@ inline PieceType DaiDaiShogiPieces[] = { King, Lion, WaterBuffalo, Queen, Dragon
 										 SavageTiger, Yaksha, SquareMover, StandardBearer, ViolentBear, WhiteElephant, WhiteTiger,
 										 MountainWitch, WizardStork, Wood, LionDog };
 
-inline PieceType TaiShogiPieces[] = { King, Gold, Silver, Copper, Iron, Tile, Stone, Earth, Elephant, Prince, Tiger, Leopard, CatSword, Lion, Phoenix, Kylin,
-									  EvilWolf, AngryBoar, Queen, DragonHorse, DragonKing, Lance, ReverseChariot, FlyingDragon, Knight, Bishop, Rook, SideMover,
-									  VerticalMover, Pawn, Deva, DarkSpirit, CoiledSerpent, FuriousFiend, RecliningDragon, ChineseCock, OldMonkey, BlindBear,
-									  Wrestler, Guardian, BuddhistSpirit, OldRat, Donkey, Capricorn, HookMover, SideFlier, LeftChariot, RightChariot, Emperor,
-									  TeachingKing, FreeGold, FreeSilver, FreeCopper, FreeIron, FreeTile, FreeStone, FreeEarth, FreeTiger, FreeLeopard, FreeSerpent,
-									  FreeDragon, FreeWolf, FreeCat, FreeBear, FreeGo, Bat, MountainWitch, WizardStork, LionDog, GreatDragon, GoBetween, GoldenBird,
-									  ViolentOx, Yaksha, WaterBuffalo, BlindMonkey, BlueDragon, Dove, EasternBarbarian, WesternBarbarian, SouthernBarbarian, NorthernBarbarian,
-									  EnchantedBadger, EnchantedFox, FragrantElephant, FreeDemon, FreeDreamEater, GreatElephant, HowlingDog, LeftGeneral, RightGeneral, Tengu,
-									  NeighboringKing, OldKite, PoisonousSnake, PrancingStag, RacingChariot, RushingBird, SavageTiger, SquareMover, StandardBearer, ViolentBear,
-									  WhiteElephant, WhiteTiger, Wood, RamHeadSoldier, GoldenDeer, SilverHare, VermillionSparrow, TurtleSnake, Soldier, Peacock, FierceEagle, SideDragon };
+inline PieceType TaiShogiPieces[] = { Emperor, Elephant, Prince, TeachingKing, BuddhistSpirit, Deva, DarkSpirit, Tengu, HookMover, OldKite, PoisonousSnake,
+	GreatElephant, FuriousFiend, LionDog, Lion, EasternBarbarian, WesternBarbarian, SouthernBarbarian, NorthernBarbarian, FragrantElephant, WhiteElephant,
+	FreeDreamEater, FreeDemon, WaterBuffalo, RushingBird, Queen, StandardBearer, FlyingHorse, NeighboringKing, MountainWitch, WizardStork, BlindMonkey,
+	ChineseCock, Dove, EnchantedBadger, OldRat, RacingChariot, SquareMover, PrancingStag, GoldenBird, GreatDragon, Phoenix, Kylin, Capricorn, Bishop, Rook,
+	Wrestler, Guardian, BuddhistDevil, Yaksha, FlyingDragon, VerticalMover, SideMover, Knight, Donkey, Falcon, Eagle, FlyingOx, DragonKing, DragonHorse,
+	WhiteHorse, Whale, WhiteTiger, BlueDragon, LeftChariot, RightChariot, ViolentOx, ViolentBear, ReverseChariot, BlindBear, Tiger, Leopard, RecliningDragon,
+	OldMonkey, EvilWolf, CoiledSerpent, AngryBoar, CatSword, LeftGeneral, RightGeneral, Gold, Silver, Copper, Iron, Tile, Stone, Wood, Earth, GoBetween,
+	HowlingDog, Lance, Pawn, RamHeadSoldier, GoldenDeer, SilverHare, VermillionSparrow, TurtleSnake, Soldier, Peacock, FierceEagle, SideDragon };
 
 inline PieceType WaShogiPieces[] = { Lance, Dog, StruttingCrow, FlyingGoose, Gold, King, Silver, FlyingCock, SwoopingOwl, ClimbingMonkey, LiberatedHorse,
 									 FlyingFalcon, SideMover, CloudEagle, TreacherousFox, RunningRabbit, Pawn, Tokin, Rook, PloddingOx, HeavenlyHorse,
