@@ -230,8 +230,8 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
         }
         else if (gameVariant == KoShogi)
         {
-            static const QString _csre = R"(^move ([a-s])(1?[0-9])(x)?([a-s])(1?[0-9])(\+)?)";
-            QRegularExpression regexp = QRegularExpression(_csre, QRegularExpression::MultilineOption);
+            static const QString _ksre = R"(^move ([a-s])(1?[0-9])(x)?([a-s])(1?[0-9])(\+)?)";
+            QRegularExpression regexp = QRegularExpression(_ksre, QRegularExpression::MultilineOption);
             QRegularExpressionMatchIterator it = regexp.globalMatch(buf);
             while (it.hasNext())
             {

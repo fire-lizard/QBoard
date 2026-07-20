@@ -182,7 +182,7 @@ void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
     else
     {
         _kif += std::to_string(_width - x2);
-        _kif += _numberToKanji.at(y2);
+        _kif += _numberToKanji.at(_height - y2);
     }
 	_kif += _pieceToKIF.at(pieceType);
 	if (promotion == '+')
@@ -195,7 +195,7 @@ void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, 
 	_ki2 += (_moveCount + 1) % 2 == 0 ? _senteStr : _goteStr;
 	_ki2 += y1 == '*' ? _dropStr : std::to_string(_width - x1);
 	_ki2 += x2 == _oldX2 && y2 == _oldY2 ? _sameCoordStr : "";
-    _ki2 += x2 == _oldX2 && y2 == _oldY2 ? " " : _numberToKanji.at(y2);
+    _ki2 += x2 == _oldX2 && y2 == _oldY2 ? " " : _numberToKanji.at(_height - y2);
 	_ki2 += _pieceToKIF.at(pieceType);
 	if (promotion == '+')
 	{

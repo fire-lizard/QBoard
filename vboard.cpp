@@ -1618,7 +1618,8 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 		{
 		}
         else if (_currentPiece->Type != King && _currentPiece->Type != Lion &&
-            _currentPiece->Type != Bishop && !_currentPiece->IsPromoted && p != std::nullopt)
+                 _currentPiece->Type != Bishop && !_currentPiece->IsPromoted && p != std::nullopt &&
+			     ((y >= 13 && _currentPiece->Colour == Black) || (y <= 5 && _currentPiece->Colour == White)))
 		{
             if (p->Type == King || p->Type == Prince || p->Type == MiddleTroop || p->Type == Flag || p->Type == Drum)
 			{
@@ -2048,7 +2049,8 @@ void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 			s = 66;
 			break;
 		}
-		const int rowCount = _gameVariant == DaiDaiShogi || _gameVariant == TaiShogi ? 11 : ZBoard::GetRowCount(_gameVariant) * 2 + 1;
+		const int rowCount = _gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == TaiShogi ?
+			11 : ZBoard::GetRowCount(_gameVariant) * 2 + 1;
 		_editor->GetBoard()->setFixedSize(_board->GetWidth() * s + 1, rowCount * s + 1);
 		_editor->setFixedSize(_editor->GetBoard()->width() + 20, _editor->GetBoard()->height() + 20);
 		_editor->GetBoard()->Setup(_board->GetWidth(), rowCount, _gameVariant, _pieceStyle);
