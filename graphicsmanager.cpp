@@ -51,6 +51,16 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
             painter.drawPixmap(i * w + w / 8, j * h + h / 8, 40, 40, pixmap);
         }
         break;
+    case TaiShogi:
+        if (pieceStyle == Asian)
+        {
+            painter.drawPixmap(i * w + w / 10, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
+        else
+        {
+            painter.drawPixmap(i * w + w / 8, j * h + h / 8, 30, 30, pixmap);
+        }
+        break;
     case KoShogi:
         if (pieceStyle != Mnemonic)
         {
@@ -103,9 +113,6 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
     case MusketeerChess:
     case GrandeAcedrex:
         painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
-        break;
-    case TaiShogi:
-        painter.drawPixmap(i * w + w / 10, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
         break;
     case Makruk:
         if (pieceStyle == European)
@@ -248,14 +255,13 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
         return isAsianStyle ? ":/pieces_wa2/images/images_wa2/" : ":/pieces_wa/images/images_wa/";
     case MakaDaiDaiShogi:
     case DaiDaiShogi:
+    case TaiShogi:
         return pieceStyle == Asian ? ":/pieces_tai/images/images_tai/" : ":/pieces_maka/images/images_maka/";
     case KoShogi:
         if (pieceStyle == Asian) return ":/pieces_ko/images/images_ko/";
         if (isAsianStyle) return ":/pieces_kok/images/images_kok/";
         if (pieceStyle == Mnemonic) return ":/pieces_km/images/images_kom/";
         return ":/pieces_kow/images/images_kow/";
-    case TaiShogi:
-        return ":/pieces_tai/images/images_tai/";
     case Chess:
     case Shatranj:
     case Shatar:
@@ -333,6 +339,7 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
         break;
     case MakaDaiDaiShogi:
     case DaiDaiShogi:
+    case TaiShogi:
         imageFileName = pieceStyle == Asian ?
             GetKanjiImageFileName3(pieceColour, pieceType, isPromoted) : GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);
         break;
@@ -352,9 +359,6 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
         break;
     case CrazyWa:
         imageFileName = GetWaShogiImageFileName(pieceStyle, pieceColour, pieceType, isPromoted);
-        break;
-    case TaiShogi:
-        imageFileName = GetKanjiImageFileName3(pieceColour, pieceType, isPromoted);
         break;
     case Chess:
     case CapablancaChess:
@@ -1072,6 +1076,25 @@ QString GraphicsManager::GetKanjiImageFileName2(PieceColour pieceColour, PieceTy
         return "WhiteTiger" + colour + ".png";
     case Wood:
         return "WoodGeneral" + colour + ".png";
+    // Tai Shogi pieces
+    case RamHeadSoldier:
+    	return "RamsHeadSoldier" + colour + ".png";
+    case GoldenDeer:
+        return "GoldenDeer" + colour + ".png";
+    case SilverHare:
+        return "SilverHare" + colour + ".png";
+    case VermillionSparrow:
+        return "VermillionSparrow" + colour + ".png";
+    case TurtleSnake:
+        return "TurtleSnake" + colour + ".png";
+    case Soldier:
+        return "Soldier" + colour + ".png";
+    case Peacock:
+        return "Peacock" + colour + ".png";
+    case FierceEagle:
+        return "FierceEagle" + colour + ".png";
+    case SideDragon:
+        return "SideDragon" + colour + ".png";
     default:
         return "";
     }

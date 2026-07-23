@@ -1426,6 +1426,42 @@
     <file>images/images_kow/wwr.png</file>
   </qresource>
   <qresource prefix="/pieces_maka">
+    <file>images/images_maka/FierceEagle_piece_B_norm.png</file>
+    <file>images/images_maka/FierceEagle_piece_B_prom.png</file>
+    <file>images/images_maka/FierceEagle_piece_W_norm.png</file>
+    <file>images/images_maka/FierceEagle_piece_W_prom.png</file>
+    <file>images/images_maka/GoldenDeer_piece_B_norm.png</file>
+    <file>images/images_maka/GoldenDeer_piece_B_prom.png</file>
+    <file>images/images_maka/GoldenDeer_piece_W_norm.png</file>
+    <file>images/images_maka/GoldenDeer_piece_W_prom.png</file>
+    <file>images/images_maka/Peacock_piece_B_norm.png</file>
+    <file>images/images_maka/Peacock_piece_B_prom.png</file>
+    <file>images/images_maka/Peacock_piece_W_norm.png</file>
+    <file>images/images_maka/Peacock_piece_W_prom.png</file>
+    <file>images/images_maka/RamsHeadSoldier_piece_B_norm.png</file>
+    <file>images/images_maka/RamsHeadSoldier_piece_B_prom.png</file>
+    <file>images/images_maka/RamsHeadSoldier_piece_W_norm.png</file>
+    <file>images/images_maka/RamsHeadSoldier_piece_W_prom.png</file>
+    <file>images/images_maka/SideDragon_piece_B_norm.png</file>
+    <file>images/images_maka/SideDragon_piece_B_prom.png</file>
+    <file>images/images_maka/SideDragon_piece_W_norm.png</file>
+    <file>images/images_maka/SideDragon_piece_W_prom.png</file>
+    <file>images/images_maka/SilverHare_piece_B_norm.png</file>
+    <file>images/images_maka/SilverHare_piece_B_prom.png</file>
+    <file>images/images_maka/SilverHare_piece_W_norm.png</file>
+    <file>images/images_maka/SilverHare_piece_W_prom.png</file>
+    <file>images/images_maka/Soldier_piece_B_norm.png</file>
+    <file>images/images_maka/Soldier_piece_B_prom.png</file>
+    <file>images/images_maka/Soldier_piece_W_norm.png</file>
+    <file>images/images_maka/Soldier_piece_W_prom.png</file>
+    <file>images/images_maka/TurtleSnake_piece_B_norm.png</file>
+    <file>images/images_maka/TurtleSnake_piece_B_prom.png</file>
+    <file>images/images_maka/TurtleSnake_piece_W_norm.png</file>
+    <file>images/images_maka/TurtleSnake_piece_W_prom.png</file>
+    <file>images/images_maka/VermillionSparrow_piece_B_norm.png</file>
+    <file>images/images_maka/VermillionSparrow_piece_B_prom.png</file>
+    <file>images/images_maka/VermillionSparrow_piece_W_norm.png</file>
+    <file>images/images_maka/VermillionSparrow_piece_W_prom.png</file>
     <file>images/images_maka/BlindMonkey_piece_B_norm.png</file>
     <file>images/images_maka/BlindMonkey_piece_B_prom.png</file>
     <file>images/images_maka/BlindMonkey_piece_W_norm.png</file>
