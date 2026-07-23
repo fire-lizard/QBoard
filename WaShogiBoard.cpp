@@ -2,7 +2,6 @@
 
 WaShogiBoard::WaShogiBoard()
 {
-	_hasDrops = true;
 	_width = 11;
 	_height = 11;
 	WaShogiBoard::Initialize();
@@ -306,11 +305,6 @@ void WaShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		ShogiBoard::GetMoves(piece, x, y);
 		break;
 	}
-}
-
-void WaShogiBoard::SetDrops(bool hasDrops)
-{
-	_hasDrops = hasDrops;
 }
 
 void WaShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture)

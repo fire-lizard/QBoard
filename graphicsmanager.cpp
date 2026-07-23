@@ -41,6 +41,7 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
         break;
     case MakaDaiDaiShogi:
+    case DaiDaiShogi:
         if (pieceStyle == Asian)
         {
             painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
@@ -90,7 +91,6 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
     case TenjikuShogi:
         painter.drawPixmap(i * w + w / 6, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
         break;
-    case DaiDaiShogi:
     case CapablancaChess:
     case GothicChess:
     case JanusChess:
@@ -247,13 +247,13 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     case CrazyWa:
         return isAsianStyle ? ":/pieces_wa2/images/images_wa2/" : ":/pieces_wa/images/images_wa/";
     case MakaDaiDaiShogi:
+    case DaiDaiShogi:
         return pieceStyle == Asian ? ":/pieces_tai/images/images_tai/" : ":/pieces_maka/images/images_maka/";
     case KoShogi:
         if (pieceStyle == Asian) return ":/pieces_ko/images/images_ko/";
         if (isAsianStyle) return ":/pieces_kok/images/images_kok/";
         if (pieceStyle == Mnemonic) return ":/pieces_km/images/images_kom/";
         return ":/pieces_kow/images/images_kow/";
-    case DaiDaiShogi:
     case TaiShogi:
         return ":/pieces_tai/images/images_tai/";
     case Chess:
@@ -332,6 +332,7 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
         else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
         break;
     case MakaDaiDaiShogi:
+    case DaiDaiShogi:
         imageFileName = pieceStyle == Asian ?
             GetKanjiImageFileName3(pieceColour, pieceType, isPromoted) : GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);
         break;
@@ -352,7 +353,6 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     case CrazyWa:
         imageFileName = GetWaShogiImageFileName(pieceStyle, pieceColour, pieceType, isPromoted);
         break;
-    case DaiDaiShogi:
     case TaiShogi:
         imageFileName = GetKanjiImageFileName3(pieceColour, pieceType, isPromoted);
         break;
@@ -1007,6 +1007,71 @@ QString GraphicsManager::GetKanjiImageFileName2(PieceColour pieceColour, PieceTy
         return "Perevernutyj_vsadnik" + colour + ".png";
     case PromotedSilver:
         return "Perevernutyj_serebrjanyj_general" + colour + ".png";
+    // Dai Dai Shogi pieces
+    case BlindMonkey:
+        return "BlindMonkey" + colour + ".png";
+    case BlueDragon:
+        return "BlueDragon" + colour + ".png";
+    case Dove:
+        return "Dove" + colour + ".png";
+    case EasternBarbarian:
+        return "EasternBarbarian" + colour + ".png";
+    case WesternBarbarian:
+        return "WesternBarbarian" + colour + ".png";
+    case NorthernBarbarian:
+        return "NorthernBarbarian" + colour + ".png";
+    case SouthernBarbarian:
+        return "SouthernBarbarian" + colour + ".png";
+    case EnchantedBadger:
+        return "EnchantedBadger" + colour + ".png";
+    case EnchantedFox:
+        return "EnchantedFox" + colour + ".png";
+    case FlyingHorse:
+        return "FlyingHorse" + colour + ".png";
+    case FragrantElephant:
+        return "FragrantElephant" + colour + ".png";
+    case FreeDemon:
+        return "FreeDemon" + colour + ".png";
+    case FreeDreamEater:
+        return "FreeDreamEater" + colour + ".png";
+    case GreatElephant:
+        return "GreatElephant" + colour + ".png";
+    case HowlingDog:
+        return "HowlingDog" + colour + ".png";
+    case LeftGeneral:
+        return "LeftGeneral" + colour + ".png";
+    case RightGeneral:
+        return "RightGeneral" + colour + ".png";
+    case NeighboringKing:
+        return "NeighboringKing" + colour + ".png";
+    case OldKite:
+        return "OldKite" + colour + ".png";
+    case PoisonousSnake:
+        return "PoisonousSnake" + colour + ".png";
+    case PrancingStag:
+        return "PrancingStag" + colour + ".png";
+    case RacingChariot:
+        return "RacingChariot" + colour + ".png";
+    case RushingBird:
+        return "RushingBird" + colour + ".png";
+    case SavageTiger:
+        return "SavageTiger" + colour + ".png";
+    case SquareMover:
+        return "SquareMover" + colour + ".png";
+    case StandardBearer:
+        return "StandardBearer" + colour + ".png";
+    case Tengu:
+        return "Tengu" + colour + ".png";
+    case ViolentBear:
+        return "ViolentBear" + colour + ".png";
+    case WaterBuffalo:
+        return "WaterBuffalo" + colour + ".png";
+    case WhiteElephant:
+        return "WhiteElephant" + colour + ".png";
+    case WhiteTiger:
+        return "WhiteTiger" + colour + ".png";
+    case Wood:
+        return "WoodGeneral" + colour + ".png";
     default:
         return "";
     }

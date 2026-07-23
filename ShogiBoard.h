@@ -13,15 +13,12 @@ public:
     void Promote(int x, int y, PieceType pt = None) override;
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 	std::string GetStringCode(int x, int y) const override;
-	virtual void SetDrops(bool hasDrops);
+	void SetDrops(bool hasDrops);
 	virtual void WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture);
 	std::string GetPSN();
 	std::string GetCSA();
 	std::string GetKIF();
 	std::string GetKI2();
-
-protected:
-	bool _hasDrops;
 
 private:
 	std::string _psn;

@@ -2,7 +2,6 @@
 
 ShogiBoard::ShogiBoard()
 {
-	_hasDrops = true;
 	_width = 9;
 	_height = 9;
 	ShogiBoard::Initialize();
@@ -129,8 +128,7 @@ std::string ShogiBoard::GetStringCode(int x, int y) const
 
 void ShogiBoard::SetDrops(bool hasDrops)
 {
-	_hasDrops = hasDrops;
-	if (_hasDrops)
+	if (hasDrops)
 	{
 		_initialSetup[1][4] = None;
 		_initialSetup[7][4] = None;
