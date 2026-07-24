@@ -62,7 +62,11 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         }
         break;
     case KoShogi:
-        if (pieceStyle != Mnemonic)
+        if (pieceStyle == Asian)
+        {
+            painter.drawPixmap(i * w + w / 8, j * h + h / 8, 40, 40, pixmap);
+        }
+        else if (pieceStyle != Mnemonic)
         {
             painter.drawPixmap(i * w + w / 12, j * h + h / 12, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
@@ -1277,7 +1281,7 @@ QString GraphicsManager::GetKoShogiImageFileName(PieceStyle pieceStyle, PieceCol
         default: return "";
         }
     }
-    else if (pieceStyle == Asian || pieceStyle == Mnemonic)
+    else if (pieceStyle == Mnemonic)
     {
         QString colour = pieceColour == White ? "F" : "";
         if (isPromoted && pieceType != King && pieceType != Lion && pieceType != Bishop)
@@ -1326,6 +1330,130 @@ QString GraphicsManager::GetKoShogiImageFileName(PieceStyle pieceStyle, PieceCol
             QString desc = QString::fromStdString(StringManager::PieceType2Description(KoShogi, pieceType));
             desc.replace(" ", "");
             return desc + colour + ".png";
+        }
+    }
+    else if (pieceStyle == Asian)
+    {
+        QString colour = pieceColour == White ? "_piece_B_" : "_piece_W_";
+        colour += isPromoted ? "prom" : "norm";
+        switch (pieceType)
+        {
+        case King:
+            return "General" + colour + ".png";
+        case Rook:
+            return "ChariotUnit" + colour + ".png";
+        case Bishop:
+            return "Elephant" + colour + ".png";
+        case Pawn:
+            return "Pawn" + colour + ".png";
+        case VerticalMover:
+            return "PatrolUnit" + colour + ".png";
+        case CompanyCommander:
+            return "VillageBrigade" + colour + ".png";
+        case ViceCommissioner:
+            return "ViceCommander" + colour + ".png";
+        case PoisonFlame:
+            return "PoisonFlame" + colour + ".png";
+        case RisingDragon:
+            return "DragonAscending" + colour + ".png";
+        case WingedTiger:
+            return "TigerWing" + colour + ".png";
+        case FlyingHawk:
+            return "WarHawk" + colour + ".png";
+        case Chariot:
+            return "Chariot" + colour + ".png";
+        case Vanguard:
+            return "Vanguard" + colour + ".png";
+        case MiddleTroop:
+            return "MiddleTroop" + colour + ".png";
+        case AdvanceGuard:
+            return "AdvanceGuard" + colour + ".png";
+        case RearGuard:
+            return "RearGuard" + colour + ".png";
+        case Drum:
+            return "Drum" + colour + ".png";
+        case Flag:
+            return "Banner" + colour + ".png";
+        case Phoenix:
+            return "StaffOfficer" + colour + ".png";
+        case Kylin:
+            return "Clerk" + colour + ".png";
+        case Thunderclap:
+            return "Thunderclap" + colour + ".png";
+        case RoamingAssault:
+            return "FlagWaver" + colour + ".png";
+        case SpiritualMonk:
+            return "SpiritualMonk" + colour + ".png";
+        case TaoistPriest:
+            return "TaoistPriest" + colour + ".png";
+        case ExtensiveFog:
+            return "FiveLiFog" + colour + ".png";
+        case HolyLight:
+            return "ImmaculateLight" + colour + ".png";
+        case Longbow:
+            return "Longbow" + colour + ".png";
+        case LongbowKnight:
+            return "LongbowCavalryman" + colour + ".png";
+        case Crossbow:
+            return "Crossbow" + colour + ".png";
+        case CrossbowKnight:
+            return "CrossbowCavalryman" + colour + ".png";
+        case Knight:
+            return "Cavalryman" + colour + ".png";
+        case KnightCaptain:
+            return "Cavalry" + colour + ".png";
+        case WingedHorse:
+            return "WingedHorse" + colour + ".png";
+        case Cannon:
+            return "Cannon" + colour + ".png";
+        case FrankishCannon:
+            return "FrankishCannon" + colour + ".png";
+        case CannonCarriage:
+            return "GunCarriage" + colour + ".png";
+        case DivineCarriage:
+            return "ChariotOfTheGods" + colour + ".png";
+        case Gold:
+            return "Aide" + colour + ".png";
+        case Silver:
+            return "Staff" + colour + ".png";
+        case Copper:
+            return "Engineer" + colour + ".png";
+        case CatSword:
+            return "Shield" + colour + ".png";
+        case ShieldCaptain:
+            return "ShieldUnit" + colour + ".png";
+        case Queen:
+            return "Millenary" + colour + ".png";
+        case Leopard:
+            return "ChiefOfStaff" + colour + ".png";
+        case Tiger:
+            return "Sentry" + colour + ".png";
+        case DragonKing:
+            return "Quartermaster" + colour + ".png";
+        case DragonHorse:
+            return "Centuria" + colour + ".png";
+        case Elephant:
+            return "AideDeCamp" + colour + ".png";
+        case SkywardNet:
+            return "SkywardNet" + colour + ".png";
+        case EarthwardNet:
+            return "EarthwardNet" + colour + ".png";
+        case FlyingStag:
+            return "TownBrigade" + colour + ".png";
+        case DoubleKylin:
+            return "MasterAtArms" + colour + ".png";
+        case DoublePhoenix:
+            return "BannerAndDrum" + colour + ".png";
+        case FlyingOx:
+            return "Commissar" + colour + ".png";
+        case FreeBoar:
+            return "HeavenlyFortress" + colour + ".png";
+        case Prince:
+            return "Governor" + colour + ".png";
+        case Lion:
+            return "SumoWrestler" + colour + ".png";
+        default:
+            return "";
         }
     }
     else
