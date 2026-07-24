@@ -40,11 +40,20 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
     case YariShogi:
         painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
         break;
-    case MakaDaiDaiShogi:
     case DaiDaiShogi:
         if (pieceStyle == Asian)
         {
             painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
+        else
+        {
+            painter.drawPixmap(i * w + w / 8, j * h + h / 8, 40, 40, pixmap);
+        }
+        break;
+    case MakaDaiDaiShogi:
+        if (pieceStyle == Asian)
+        {
+            painter.drawPixmap(i * w + w / 6, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
         else
         {
@@ -64,7 +73,7 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
     case KoShogi:
         if (pieceStyle == Asian)
         {
-            painter.drawPixmap(i * w + w / 8, j * h + h / 8, 40, 40, pixmap);
+            painter.drawPixmap(i * w + w / 18, j * h + h / 18, 45, 45, pixmap);
         }
         else if (pieceStyle != Mnemonic)
         {
@@ -1334,8 +1343,15 @@ QString GraphicsManager::GetKoShogiImageFileName(PieceStyle pieceStyle, PieceCol
     }
     else if (pieceStyle == Asian)
     {
-        QString colour = pieceColour == White ? "_piece_B_" : "_piece_W_";
-        colour += isPromoted ? "prom" : "norm";
+        QString colour = pieceColour == White ? "_piece_W_" : "_piece_B_";
+        if (isPromoted && pieceType != King && pieceType != Lion && pieceType != Bishop)
+        {
+            colour += "prom";
+        }
+        else
+        {
+            colour += "norm";
+        }
         switch (pieceType)
         {
         case King:
