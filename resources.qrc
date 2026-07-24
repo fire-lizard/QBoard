@@ -1426,6 +1426,58 @@
     <file>images/images_kow/wwr.png</file>
   </qresource>
   <qresource prefix="/pieces_maka">
+    <file>images/images_maka/BishopGeneral_piece_B_norm.png</file>
+    <file>images/images_maka/BishopGeneral_piece_B_prom.png</file>
+    <file>images/images_maka/BishopGeneral_piece_W_norm.png</file>
+    <file>images/images_maka/BishopGeneral_piece_W_prom.png</file>
+    <file>images/images_maka/ChariotSoldier_piece_B_norm.png</file>
+    <file>images/images_maka/ChariotSoldier_piece_B_prom.png</file>
+    <file>images/images_maka/ChariotSoldier_piece_W_norm.png</file>
+    <file>images/images_maka/ChariotSoldier_piece_W_prom.png</file>
+    <file>images/images_maka/Dog_piece_B_norm.png</file>
+    <file>images/images_maka/Dog_piece_B_prom.png</file>
+    <file>images/images_maka/Dog_piece_W_norm.png</file>
+    <file>images/images_maka/Dog_piece_W_prom.png</file>
+    <file>images/images_maka/FireDemon_piece_B_norm.png</file>
+    <file>images/images_maka/FireDemon_piece_B_prom.png</file>
+    <file>images/images_maka/FireDemon_piece_W_norm.png</file>
+    <file>images/images_maka/FireDemon_piece_W_prom.png</file>
+    <file>images/images_maka/FreeEagle_piece_B_norm.png</file>
+    <file>images/images_maka/FreeEagle_piece_B_prom.png</file>
+    <file>images/images_maka/FreeEagle_piece_W_norm.png</file>
+    <file>images/images_maka/FreeEagle_piece_W_prom.png</file>
+    <file>images/images_maka/GreatGeneral_piece_B_norm.png</file>
+    <file>images/images_maka/GreatGeneral_piece_B_prom.png</file>
+    <file>images/images_maka/GreatGeneral_piece_W_norm.png</file>
+    <file>images/images_maka/GreatGeneral_piece_W_prom.png</file>
+    <file>images/images_maka/HeavenlyTetrarch_piece_B_norm.png</file>
+    <file>images/images_maka/HeavenlyTetrarch_piece_B_prom.png</file>
+    <file>images/images_maka/HeavenlyTetrarch_piece_W_norm.png</file>
+    <file>images/images_maka/HeavenlyTetrarch_piece_W_prom.png</file>
+    <file>images/images_maka/LionHawk_piece_B_norm.png</file>
+    <file>images/images_maka/LionHawk_piece_B_prom.png</file>
+    <file>images/images_maka/LionHawk_piece_W_norm.png</file>
+    <file>images/images_maka/LionHawk_piece_W_prom.png</file>
+    <file>images/images_maka/MultiGeneral_piece_B_norm.png</file>
+    <file>images/images_maka/MultiGeneral_piece_B_prom.png</file>
+    <file>images/images_maka/MultiGeneral_piece_W_norm.png</file>
+    <file>images/images_maka/MultiGeneral_piece_W_prom.png</file>
+    <file>images/images_maka/RookGeneral_piece_B_norm.png</file>
+    <file>images/images_maka/RookGeneral_piece_B_prom.png</file>
+    <file>images/images_maka/RookGeneral_piece_W_norm.png</file>
+    <file>images/images_maka/RookGeneral_piece_W_prom.png</file>
+    <file>images/images_maka/SideSoldier_piece_B_norm.png</file>
+    <file>images/images_maka/SideSoldier_piece_B_prom.png</file>
+    <file>images/images_maka/SideSoldier_piece_W_norm.png</file>
+    <file>images/images_maka/SideSoldier_piece_W_prom.png</file>
+    <file>images/images_maka/VerticalSoldier_piece_B_norm.png</file>
+    <file>images/images_maka/VerticalSoldier_piece_B_prom.png</file>
+    <file>images/images_maka/VerticalSoldier_piece_W_norm.png</file>
+    <file>images/images_maka/VerticalSoldier_piece_W_prom.png</file>
+    <file>images/images_maka/ViceGeneral_piece_B_norm.png</file>
+    <file>images/images_maka/ViceGeneral_piece_B_prom.png</file>
+    <file>images/images_maka/ViceGeneral_piece_W_norm.png</file>
+    <file>images/images_maka/ViceGeneral_piece_W_prom.png</file>
     <file>images/images_maka/FierceEagle_piece_B_norm.png</file>
     <file>images/images_maka/FierceEagle_piece_B_prom.png</file>
     <file>images/images_maka/FierceEagle_piece_W_norm.png</file>

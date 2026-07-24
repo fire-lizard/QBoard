@@ -99,7 +99,14 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         }
         break;
     case TenjikuShogi:
-        painter.drawPixmap(i * w + w / 6, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
+        if (pieceStyle == Asian2)
+        {
+            painter.drawPixmap(i * w + w / 6, j * h + h / 6, 40, 40, pixmap);
+        }
+        else
+        {
+            painter.drawPixmap(i * w + w / 6, j * h + h / 6, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
         break;
     case CapablancaChess:
     case GothicChess:
@@ -250,6 +257,7 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
         if (pieceStyle == Asian4) return ":/pieces_tai/images/images_tai/";
         return ":/pieces_eur/images/images_gen/";
     case TenjikuShogi:
+        if (pieceStyle == Asian2) return ":/pieces_maka/images/images_maka/";
         return isAsianStyle ? ":/pieces_tnk/images/images_tnk/" : ":/pieces_ten/images/images_ten/";
     case CrazyWa:
         return isAsianStyle ? ":/pieces_wa2/images/images_wa2/" : ":/pieces_wa/images/images_wa/";
@@ -355,6 +363,7 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
         break;
     case TenjikuShogi:
         if (pieceStyle == European || pieceStyle == Mnemonic) imageFileName = GetTenjikuShogiImageFileName(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Asian2) imageFileName = GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);
         else imageFileName = GetKanjiImageFileName(pieceColour, pieceType, isPromoted);
         break;
     case CrazyWa:
@@ -1011,6 +1020,33 @@ QString GraphicsManager::GetKanjiImageFileName2(PieceColour pieceColour, PieceTy
         return "Perevernutyj_vsadnik" + colour + ".png";
     case PromotedSilver:
         return "Perevernutyj_serebrjanyj_general" + colour + ".png";
+    // Tenjiku Shogi pieces
+    case BishopGeneral:
+        return "BishopGeneral" + colour + ".png";
+    case ChariotSoldier:
+        return "ChariotSoldier" + colour + ".png";
+    case Dog:
+        return "Dog" + colour + ".png";
+    case FireDemon:
+        return "FireDemon" + colour + ".png";
+    case FreeEagle:
+        return "FreeEagle" + colour + ".png";
+    case GreatGeneral:
+        return "GreatGeneral" + colour + ".png";
+    case HeavenlyTetrarch:
+        return "HeavenlyTetrarch" + colour + ".png";
+    case LionHawk:
+        return "LionHawk" + colour + ".png";
+    case MultiGeneral:
+        return "MultiGeneral" + colour + ".png";
+    case RookGeneral:
+        return "RookGeneral" + colour + ".png";
+    case SideSoldier:
+        return "SideSoldier" + colour + ".png";
+    case VerticalSoldier:
+        return "VerticalSoldier" + colour + ".png";
+    case ViceGeneral:
+        return "ViceGeneral" + colour + ".png";
     // Dai Dai Shogi pieces
     case BlindMonkey:
         return "BlindMonkey" + colour + ".png";
