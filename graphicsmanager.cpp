@@ -71,17 +71,13 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         }
         break;
     case KoShogi:
-        if (pieceStyle == Asian)
+        if (pieceStyle == Mnemonic || pieceStyle == Asian)
         {
             painter.drawPixmap(i * w + w / 18, j * h + h / 18, 45, 45, pixmap);
         }
-        else if (pieceStyle != Mnemonic)
-        {
-            painter.drawPixmap(i * w + w / 12, j * h + h / 12, pixmap.size().width(), pixmap.size().height(), pixmap);
-        }
         else
         {
-            painter.drawPixmap(i * w + w / 20, j * h + h / 20, pixmap.size().width(), pixmap.size().height(), pixmap);
+            painter.drawPixmap(i * w + w / 12, j * h + h / 12, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
         break;
     case ChuShogi:
@@ -1290,58 +1286,7 @@ QString GraphicsManager::GetKoShogiImageFileName(PieceStyle pieceStyle, PieceCol
         default: return "";
         }
     }
-    else if (pieceStyle == Mnemonic)
-    {
-        QString colour = pieceColour == White ? "F" : "";
-        if (isPromoted && pieceType != King && pieceType != Lion && pieceType != Bishop)
-        {
-            colour = "P" + colour;
-        }
-        switch (pieceType)
-        {
-        case Rook:
-            return "ChariotCaptain" + colour + ".png";
-        case VerticalMover:
-            return "PawnCaptain" + colour + ".png";
-        case Knight:
-            return "Knight" + colour + ".png";
-        case FrankishCannon:
-            return "EuropeanCannon" + colour + ".png";
-        case Copper:
-            return "MilitaryEngineer" + colour + ".png";
-        case Queen:
-            return "Chiliarch" + colour + ".png";
-        case Leopard:
-            return "MilitaryOfficer" + colour + ".png";
-        case DragonKing:
-            return "Optio" + colour + ".png";
-        case Elephant:
-            return "Guard" + colour + ".png";
-        case SkywardNet:
-            return "SkyNet" + colour + ".png";
-        case EarthwardNet:
-            return "EarthNet" + colour + ".png";
-        case FlyingStag:
-            return "BattalionCommander" + colour + ".png";
-        case DoubleKylin:
-            return "Strategist" + colour + ".png";
-        case DoublePhoenix:
-            return "Flag-Drum" + colour + ".png";
-        case FlyingOx:
-            return "MilitaryCommissioner" + colour + ".png";
-        case FreeBoar:
-            return "ImperialBase" + colour + ".png";
-        case Prince:
-            return "Marshal" + colour + ".png";
-        case Lion:
-            return "Wrestler" + colour + ".png";
-        default:
-            QString desc = QString::fromStdString(StringManager::PieceType2Description(KoShogi, pieceType));
-            desc.replace(" ", "");
-            return desc + colour + ".png";
-        }
-    }
-    else if (pieceStyle == Asian)
+    else if (pieceStyle == Mnemonic || pieceStyle == Asian)
     {
         QString colour = pieceColour == White ? "_piece_W_" : "_piece_B_";
         if (isPromoted && pieceType != King && pieceType != Lion && pieceType != Bishop)
