@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QBoard"
-#define MyAppVersion "1.1.8"
+#define MyAppVersion "1.1.9"
 #define MyAppPublisher "Fire Lizard Software"
 #define MyAppURL "https://github.com/fire-lizard/QBoard"
 #define MyAppExeName "QBoard.exe"
@@ -53,6 +53,7 @@ Name: "engines\UCCI\Binghewusi"; Description: "Binghewusi 1.2.0.0"; Types: full 
 Name: "engines\UCI"; Description: "UCI engines"; Types: full custom
 Name: "engines\UCI\Fruit"; Description: "Fruit 2.2.1"; Types: full custom
 Name: "engines\UCI\Komodo"; Description: "Komodo 14.1"; Types: full custom
+Name: "engines\UCI\Rybka"; Description: "Rybka 2.3.2a"; Types: full custom
 Name: "engines\UCI\Stockfish"; Description: "Stockfish 10"; Types: full custom
 Name: "engines\USI"; Description: "USI engines"; Types: full custom
 Name: "engines\USI\LaramieV3"; Description: "Laramie V3"; Types: full custom
@@ -99,6 +100,7 @@ Source: "engines\UCCI\Binghewusi\*"; DestDir: "{app}\engines\UCCI\Binghewusi"; F
 Source: "engines\UCI\*"; DestDir: "{app}\engines\UCI"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\UCI
 Source: "engines\UCI\Fruit 2.2.1\*"; DestDir: "{app}\engines\UCI\Fruit 2.2.1"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\UCI\Fruit
 Source: "engines\UCI\Komodo 14.1\*"; DestDir: "{app}\engines\UCI\Komodo 14.1"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\UCI\Komodo
+Source: "engines\UCI\Rybka 2.3.2a\*"; DestDir: "{app}\engines\UCI\Rybka 2.3.2a"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\UCI\Rybka
 Source: "engines\UCI\Stockfish 10\*"; DestDir: "{app}\engines\UCI\Stockfish 10"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\UCI\Stockfish
 Source: "engines\USI\*"; DestDir: "{app}\engines\USI"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\USI
 Source: "engines\USI\LaramieV3\*"; DestDir: "{app}\engines\USI\LaramieV3"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: engines\USI\LaramieV3

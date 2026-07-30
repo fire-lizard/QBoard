@@ -102,7 +102,7 @@ void EngineOutputHandler::CalculateXiangqiCheck(Board* board, std::vector<std::p
     delete brd;
 }
 
-void EngineOutputHandler::RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<std::string> moves)
+void EngineOutputHandler::RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<std::string>& moves)
 {
     if (moves.size() > 1)
     {
@@ -198,7 +198,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
             result.push_back(static_cast<signed char>(secondDigit.toInt()));
         }
     }
-    else if (gameVariant == HeianDaiShogi || gameVariant == CapablancaChess ||
+    else if (gameVariant == CapablancaChess ||
 			 gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == GrandChess ||
 			 gameVariant == OmegaChess || gameVariant == CourierChess || gameVariant == GrandeAcedrex)
     {
@@ -219,7 +219,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
             if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
         }
     }
-    else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi ||
+    else if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi || gameVariant == HeianDaiShogi ||
 			 gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi || gameVariant == TaiShogi)
     {
         // Handling Null Move
@@ -230,24 +230,33 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
         }
         else if (gameVariant == KoShogi)
         {
-            static const QString _ksre = R"(^move ([a-s])(1?[0-9])(x)?([a-s])(1?[0-9])(\+)?)";
+            // One token per move line: step "e6f6[+]", double "f6f7,f7f8[+]" (mid square repeated),
+            // shoot "e6xh6[xk6][+]" (shooter stays). Encoded as file chars + binary rank bytes,
+            // keeping the 'x'/'+' markers and dropping the comma, so a double becomes the same
+            // 8-byte from/mid/mid/to array the multi-leg apply path already handles.
+            static const QString _ksre = R"(^move ([a-s]1?[0-9](?:(?:x[a-s]1?[0-9]){1,2}|[a-s]1?[0-9](?:,[a-s]1?[0-9][a-s]1?[0-9])?)\+?))";
             QRegularExpression regexp = QRegularExpression(_ksre, QRegularExpression::MultilineOption);
-            QRegularExpressionMatchIterator it = regexp.globalMatch(buf);
-            while (it.hasNext())
+            QRegularExpressionMatch match = regexp.match(buf);
+            if (match.hasMatch())
             {
-                QRegularExpressionMatch match = it.next();
-                QString firstLetter = match.captured(1);
-                QString firstDigit = match.captured(2);
-                QString shootChar = match.captured(3); // group 3 is the optional (x) shoot marker; group 4 is the dest file
-                QString secondLetter = match.captured(4);
-                QString secondDigit = match.captured(5);
-                QString promotionChar = match.captured(6);
-                result.push_back(firstLetter[0].toLatin1());
-                result.push_back(static_cast<signed char>(firstDigit.toInt()));
-                if (!shootChar.isEmpty()) result.push_back(shootChar[0].toLatin1());
-                result.push_back(secondLetter[0].toLatin1());
-                result.push_back(static_cast<signed char>(secondDigit.toInt()));
-                if (!promotionChar.isEmpty()) result.push_back(promotionChar[0].toLatin1());
+                const QString token = match.captured(1);
+                for (qsizetype i = 0; i < token.size(); i++)
+                {
+                    const char c = token[i].toLatin1();
+                    if (c >= '0' && c <= '9')
+                    {
+                        int rank = c - '0';
+                        if (i + 1 < token.size() && token[i + 1].isDigit())
+                        {
+                            rank = rank * 10 + (token[++i].toLatin1() - '0');
+                        }
+                        result.push_back(static_cast<signed char>(rank));
+                    }
+                    else if (c != ',')
+                    {
+                        result.push_back(c);
+                    }
+                }
             }
         }
         else
@@ -435,7 +444,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	int x2 = m.x2;
 	int y2 = m.y2;
     const long long ms = moveArray.size();
-    if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi ||
+    if (gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi || gameVariant == HeianDaiShogi ||
 		gameVariant == DaiDaiShogi || gameVariant == MakaDaiDaiShogi || gameVariant == KoShogi || gameVariant == TaiShogi)
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
@@ -473,6 +482,24 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                     }
                 }
             }
+            if (gameVariant == KoShogi && moveArray.contains('x'))
+            {
+                // shoot capture: the shooter stays on (x1,y1); each "xFR" token names a removed victim
+                for (long long i = 2; i + 2 < ms && moveArray[i] == 'x'; i += 3)
+                {
+                    const int vx = moveArray[i + 1] - 97;
+                    const int vy = board->GetHeight() - moveArray[i + 2];
+                    if (board->CheckPosition(vx, vy))
+                    {
+                        board->SetData(vx, vy, std::nullopt);
+                    }
+                }
+                if (moveArray[ms - 1] == '+')
+                {
+                    board->Promote(x1, y1); // stationary in-zone promotion
+                }
+                return; // ponytail: shoot not recorded in the engine's _moves transcript (write-only list, no shoot overload)
+            }
             if (ms < 8)
 			{
                 const bool isPromoted = moveArray[ms - 1] == '+';
@@ -498,6 +525,10 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 				board->SetData(x2, y2, std::nullopt);
                 AddMove(board, gameVariant, board->GetData(x3, y3)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x3, board->GetHeight() - y3);
                 std::dynamic_pointer_cast<WbEngine>(engine)->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x3, board->GetHeight() - y3);
+				if (moveArray[ms - 1] == '+')
+				{
+					board->Promote(x3, y3);
+				}
 			}
 		}
 	}
@@ -885,7 +916,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	}
     else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
              gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi ||
-             gameVariant == HeianShogi || gameVariant == HeianDaiShogi || gameVariant == CrazyWa)
+             gameVariant == HeianShogi || gameVariant == CrazyWa)
 	{
         if ((gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi ||
              gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == CrazyWa) && (moveArray[1] == '@' || moveArray[1] == '*'))
@@ -1500,4 +1531,21 @@ bool EngineOutputHandler::CanBePromoted(const std::optional<Piece>& piece, GameV
 		}
 	}
 	return false;
+}
+
+// svengine emits a multi-leg move as one "move" line per leg (trailing comma on
+// non-final legs) over unbuffered stdout, so the legs can land in different chunks.
+// Hold a trailing "move ...," line until its continuation arrives, or each leg
+// would be applied and relayed as an independent single move.
+qsizetype EngineOutputHandler::CutAtLastCompleteMove(const QByteArray& buffer)
+{
+    const qsizetype nl = buffer.lastIndexOf('\n');
+    if (nl <= 0) return nl;
+    qsizetype end = nl;
+    while (end > 0 && buffer[end - 1] == '\r') end--;
+    if (end == 0) return nl;
+    const qsizetype start = buffer.lastIndexOf('\n', end - 1) + 1;
+    if (end > start && buffer[end - 1] == ',' && buffer.mid(start, 5) == "move ")
+        return start - 1; // -1 when the held line is the whole buffer
+    return nl;
 }

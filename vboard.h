@@ -110,8 +110,7 @@ private:
 	std::vector<std::pair<int, int>> _shoots;
 	std::vector<std::pair<int, int>> _attackers;
 	std::vector<std::pair<int, int>> _defenders;
-	std::vector<std::string> _whiteMoves;
-	std::vector<std::string> _blackMoves;
+	std::vector<std::string> _fenHistory;
 	QStatusBar *_statusBar;
 	QTextEdit *_textEdit;
 	QTextEdit *_textEdit2;

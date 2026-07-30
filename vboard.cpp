@@ -416,7 +416,6 @@ void VBoard::FinishMove(int x, int y)
 		_lastWhiteMoveTo = { x, y };
 		_lastBlackMoveFrom = { -1, -1 };
 		_lastBlackMoveTo = { -1, -1 };
-		_whiteMoves.push_back(_board->GetFEN());
 		if (!_board->HasPiece(King, Black) &&
 			(!_board->HasPiece(MiddleTroop, Black) || !_board->HasPiece(Flag, Black)) &&
 			!_board->HasPiece(Prince, Black) && !_board->HasPiece(Emperor, Black) && _gameVariant != Sittuyin)
@@ -430,7 +429,6 @@ void VBoard::FinishMove(int x, int y)
 		_lastWhiteMoveTo = { -1, -1 };
 		_lastBlackMoveFrom = { _oldX, _oldY };
 		_lastBlackMoveTo = { x, y };
-		_blackMoves.push_back(_board->GetFEN());
 		if (!_board->HasPiece(King, White) &&
 			(!_board->HasPiece(MiddleTroop, White) || !_board->HasPiece(Flag, White)) &&
 			!_board->HasPiece(Prince, White) && !_board->HasPiece(Emperor, White) && _gameVariant != Sittuyin)
@@ -438,6 +436,7 @@ void VBoard::FinishMove(int x, int y)
 			QMessageBox::information(this, "Game over", "Black wins by eliminating White King");
 		}
 	}
+	_fenHistory.push_back(_board->GetFEN());
 	if (_comm && _comm->is_connected_remotely())
 	{
 		_comm->send_move(_board->GetFEN());
@@ -1756,8 +1755,6 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	_lastWhiteMoveTo = { -1, -1 };
 	_lastBlackMoveFrom = { -1, -1 };
 	_lastBlackMoveTo = { -1, -1 };
-	_whiteMoves.clear();
-	_blackMoves.clear();
 	if (_whiteEngine != nullptr)
 	{
 		_whiteEngine->SetActive(false);
@@ -1897,6 +1894,8 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		_board = new SittuyinBoard();
 		break;
 	}
+	_fenHistory.clear();
+	_fenHistory.push_back(_board->GetFEN());
     this->setFixedSize(_board->GetWidth() * s + 1, _board->GetHeight() * s + 1);
 	if (this->_window != nullptr)
 	{
@@ -2171,24 +2170,11 @@ bool VBoard::CheckRepetition(int oldX, int oldY, int newX, int newY)
 	Board *board = _board->Clone();
 	board->Move(oldX, oldY, newX, newY);
 	int repetitions = 0;
-	if (_currentPlayer == White)
+	for (auto& _whiteMove : _fenHistory)
 	{
-		for (auto& _whiteMove : _whiteMoves)
+		if (*board == _whiteMove)
 		{
-			if (*board == _whiteMove)
-			{
-				repetitions++;
-			}
-		}
-	}
-	else
-	{
-		for (auto& _blackMove : _blackMoves)
-		{
-			if (*board == _blackMove)
-			{
-				repetitions++;
-			}
+			repetitions++;
 		}
 	}
 	delete board;
@@ -2224,14 +2210,14 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	QProcess* p = dynamic_cast<QProcess*>(sender());
 	if (p == nullptr) return;
 	_whiteEngineBuffer.append(p->readAllStandardOutput());
-	const qsizetype nl = _whiteEngineBuffer.lastIndexOf('\n');
+	const qsizetype nl = EngineOutputHandler::CutAtLastCompleteMove(_whiteEngineBuffer);
 	if (nl == -1) return; // no complete line yet — wait for the rest
 	const QByteArray buf = _whiteEngineBuffer.left(nl + 1);
 	_whiteEngineBuffer.remove(0, nl + 1);
 	if (buf.contains("Illegal move"))
 	{
 		ReportInfo(buf, "Illegal move", _textEdit2, LogLevel::Error);
-        EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _whiteMoves);
+        EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _fenHistory);
         this->repaint();
         this->_statusBar->showMessage("Black move");
 		_currentPlayer = Black;
@@ -2273,10 +2259,29 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 		}
 		return;
 	}
+	if (buf.contains("resign"))
+	{
+		this->_statusBar->showMessage("Game over");
+		QMessageBox::information(this, "Game over", "White engine resigns - Black wins");
+		return;
+	}
+	if (buf.contains("offer draw"))
+	{
+		this->_statusBar->showMessage("Game over");
+		QMessageBox::information(this, "Draw", "");
+		return;
+	}
+	if (buf.contains("bestmove win"))
+	{
+		this->_statusBar->showMessage("Game over");
+		QMessageBox::information(this, "Game over", "White engine declares a win");
+		return;
+	}
 	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, White);
+	const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _whiteEngine->GetType(), _gameVariant);
+	if (!moveArray.isEmpty()) _fenHistory.push_back(_board->GetFEN());
 	if (_blackEngine != nullptr && _blackEngine->IsActive())
 	{
-        const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _whiteEngine->GetType(), _gameVariant);
 		if (moveArray.isEmpty()) return;
 		if (moveArray.contains("O-O"))
 		{
@@ -2321,14 +2326,14 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	QProcess *p = dynamic_cast<QProcess*>(sender());
 	if (p == nullptr) return;
 	_blackEngineBuffer.append(p->readAllStandardOutput());
-	const qsizetype nl = _blackEngineBuffer.lastIndexOf('\n');
+	const qsizetype nl = EngineOutputHandler::CutAtLastCompleteMove(_blackEngineBuffer);
 	if (nl == -1) return; // no complete line yet — wait for the rest
 	const QByteArray buf = _blackEngineBuffer.left(nl + 1);
 	_blackEngineBuffer.remove(0, nl + 1);
 	if (buf.contains("Illegal move"))
 	{
 		ReportInfo(buf, "Illegal move", _textEdit, LogLevel::Error);
-		EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _blackMoves);
+		EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _fenHistory);
         this->repaint();
         this->_statusBar->showMessage(_gameVariant == Xiangqi || _gameVariant == Janggi ? "Red move" : "White move");
 		_currentPlayer = White;
@@ -2370,10 +2375,29 @@ void VBoard::blackEngineReadyReadStandardOutput()
 		}
 		return;
 	}
+	if (buf.contains("resign"))
+	{
+		this->_statusBar->showMessage("Game over");
+		QMessageBox::information(this, "Game over", "Black engine resigns - White wins");
+		return;
+	}
+	if (buf.contains("offer draw"))
+	{
+		this->_statusBar->showMessage("Game over");
+		QMessageBox::information(this, "Draw", "");
+		return;
+	}
+	if (buf.contains("bestmove win"))
+	{
+		this->_statusBar->showMessage("Game over");
+		QMessageBox::information(this, "Game over", "Black engine declares a win");
+		return;
+	}
 	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, Black);
+	const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _blackEngine->GetType(), _gameVariant);
+	if (!moveArray.isEmpty()) _fenHistory.push_back(_board->GetFEN());
 	if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 	{
-        const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _blackEngine->GetType(), _gameVariant);
 		if (moveArray.isEmpty()) return;
 		if (moveArray.contains("O-O"))
 		{

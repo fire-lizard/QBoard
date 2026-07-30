@@ -3,6 +3,7 @@
     <Engine EngineName="Binghewusi" GameVariant="Xiangqi" EngineProtocol="UCCI" EnginePath="engines/UCCI/Binghewusi/Binghewusi.exe" EngineOptions=""/>
     <Engine EngineName="Fruit" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Fruit 2.2.1/Fruit2.2.1.exe" EngineOptions=""/>
     <Engine EngineName="Komodo" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Komodo 14.1/komodo-14.1-64bit.exe" EngineOptions=""/>
+    <Engine EngineName="Rybka" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Rybka 2.3.2a/Rybkav2.3.2a.mp.x64.exe" EngineOptions=""/>
     <Engine EngineName="Stockfish" GameVariant="Chess" EngineProtocol="UCI" EnginePath="engines/UCI/Stockfish 10/stockfish_10_x64.exe" EngineOptions=""/>
     <Engine EngineName="Laramie" GameVariant="Shogi" EngineProtocol="USI" EnginePath="engines/USI/LaramieV3/LaramieV3.exe" EngineOptions=""/>
     <Engine EngineName="CrazyWa" GameVariant="Shogi,Wa Shogi,Kyoto Shogi,Mini Shogi,Judkins Shogi,Tori Shogi" EngineProtocol="XBoard" EnginePath="engines/WinBoard/CrazyWa/CrazyWa.exe" EngineOptions=""/>
