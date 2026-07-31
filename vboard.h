@@ -93,6 +93,7 @@ private:
 	bool PossibleShoot(int x, int y) const;
 	bool AskForPromotion();
 	void FinishMove(int x, int y);
+	void FinishRelayedMove(const std::optional<Piece>& captured, const std::shared_ptr<Engine>& engine, int x, int y);
 	void CancelLionMove();
 	void ReportInfo(const QString& buf, const QString& infoStr, QTextEdit* textEdit, LogLevel logLevel);
 

@@ -721,7 +721,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 						_board->Move(_oldX, index - 1, x, index);
 					}
 				}
-				FinishMove(x, y);
+				// the sweep is a single displacement as far as the engine is concerned
+				FinishRelayedMove(p, engine, x, y);
 			}
 			else if (PossibleMove(x, y) && (abs(_oldX - x) == 2 || abs(_oldY - y) == 2) &&
                 (_currentPiece->Type == Lion || _currentPiece->Type == LionHawk ||
@@ -1218,8 +1219,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			}
 			else
 			{
+				// nothing to shoot from there, so it is an ordinary move like any other
 				_board->Move(_oldX, _oldY, x, y);
-				FinishMove(x, y);
+				FinishRelayedMove(p, engine, x, y);
 			}
 		}
 		else if (isShootingPiece && _preparedToShoot && PossibleShoot(x, y))
@@ -1253,8 +1255,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 		else if (x == _lionFirstMove.first && y == _lionFirstMove.second && _preparedToShoot)
 		{
+			// the shot was offered and declined by re-clicking the destination: still a move
 			_board->Move(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, false);
-			FinishMove(x, y);
+			FinishRelayedMove(p, engine, x, y);
 		}
 		else if (_board->Move(_oldX, _oldY, x, y))
 		{
@@ -1359,6 +1362,26 @@ void VBoard::mousePressEvent(QMouseEvent* event)
         }
         this->repaint();
 	}
+}
+
+// Finish a plain displacement that was completed outside the main move branch below: promote,
+// tell the engine, record it. Ko Shogi's shooting pieces and the roaming assault each reach
+// FinishMove down a branch of their own, and every one of those dropped the engine relay - the
+// GUI moved the piece and the engine, never told whose turn it now was, simply sat there.
+// `captured` is the destination occupant read before the move; the piece has already moved.
+void VBoard::FinishRelayedMove(const std::optional<Piece>& captured, const std::shared_ptr<Engine>& engine, int x, int y)
+{
+	const char promotion = CheckPromotion(captured, x, y);
+	if (engine != nullptr && engine->IsActive())
+	{
+		engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
+	}
+	if (_board->GetData(x, y) != std::nullopt)
+	{
+		EngineOutputHandler::AddMove(_board, _gameVariant, _board->GetData(x, y)->BaseType, _oldX, _oldY, x, y,
+			promotion, captured != std::nullopt ? 'x' : ' ');
+	}
+	FinishMove(x, y);
 }
 
 char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
@@ -2259,7 +2282,7 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 		}
 		return;
 	}
-	if (buf.contains("resign"))
+	if (buf.contains("bestmove resign"))
 	{
 		this->_statusBar->showMessage("Game over");
 		QMessageBox::information(this, "Game over", "White engine resigns - Black wins");
@@ -2286,6 +2309,10 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 		if (moveArray.contains("O-O"))
 		{
 			_blackEngine->Move(moveArray);
+		}
+		else if (_gameVariant == KoShogi && moveArray.contains('x'))
+		{
+			_blackEngine->Move(EngineOutputHandler::KoShogiShootToText(moveArray));
 		}
 		else if (moveArray.size() < 8)
 		{
@@ -2379,7 +2406,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 		}
 		return;
 	}
-	if (buf.contains("resign"))
+	if (buf.contains("bestmove resign"))
 	{
 		this->_statusBar->showMessage("Game over");
 		QMessageBox::information(this, "Game over", "Black engine resigns - White wins");
@@ -2406,6 +2433,10 @@ void VBoard::blackEngineReadyReadStandardOutput()
 		if (moveArray.contains("O-O"))
 		{
 			_whiteEngine->Move(moveArray);
+		}
+		else if (_gameVariant == KoShogi && moveArray.contains('x'))
+		{
+			_whiteEngine->Move(EngineOutputHandler::KoShogiShootToText(moveArray));
 		}
 		else if (moveArray.size() < 8)
 		{

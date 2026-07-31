@@ -202,7 +202,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
 			 gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == GrandChess ||
 			 gameVariant == OmegaChess || gameVariant == CourierChess || gameVariant == GrandeAcedrex)
     {
-        static const QString _bbre = R"(^move ([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([+nbrqfjacwmM])?)";
+        static const QString _bbre = R"(^move ([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([nbrqfjacwmM])?)";
         QRegularExpression regexp = QRegularExpression(_bbre, QRegularExpression::MultilineOption);
         QRegularExpressionMatch match = regexp.match(buf);
         if (match.hasMatch())
@@ -394,6 +394,28 @@ QByteArray EngineOutputHandler::MoveToByteArray(Move m, EngineProtocol enginePro
 		result.append(height - m.y2);
 	}
 	return result;
+}
+
+// Rebuild the engine's own shoot token ("n3xq6", "e6xh6xk6", trailing '+') from the binary
+// array ExtractMove produced. A shoot is not a from/to move - relaying it through
+// ByteArrayToMove/MoveToByteArray reads the 'x' as a destination file and the victim's file
+// byte as a rank, so "n3xq6" reaches the opponent engine as the unparseable "n3x11".
+QByteArray EngineOutputHandler::KoShogiShootToText(const QByteArray& moveArray)
+{
+	QByteArray text;
+	for (qsizetype i = 0; i < moveArray.size(); i++)
+	{
+		const char c = moveArray[i];
+		if (c == 'x' || c == '+')
+		{
+			text.push_back(c);
+			continue;
+		}
+		if (i + 1 >= moveArray.size()) break; // malformed: file char with no rank byte
+		text.push_back(c);                                            // file a..s
+		text += QByteArray::number(static_cast<int>(moveArray[++i])); // binary rank 1..19
+	}
+	return text;
 }
 
 Move EngineOutputHandler::CastlingToMove(const QByteArray& c, GameVariant gameVariant, PieceColour currentPlayer)
