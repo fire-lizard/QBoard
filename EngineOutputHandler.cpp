@@ -515,19 +515,36 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			}
 			else
 			{
+				// Multi-leg: per-leg from/to pairs with mids repeated, so a double is
+				// [A B B C] and a triple [A B B C C D]. Clear the captured mid squares
+				// before relocating, since the final square may BE a mid (A->B->C->B).
+				const bool triple = ms >= 12;
 				const int x3 = moveArray[6] - 97;
-				const int y3 = board->GetWidth() - moveArray[7];
-				if (x1 != x3 || y1 != y3)
+				const int y3 = board->GetHeight() - moveArray[7];
+				const int x4 = triple ? moveArray[10] - 97 : x3;
+				const int y4 = triple ? board->GetHeight() - moveArray[11] : y3;
+				board->SetData(x2, y2, std::nullopt);
+				if (triple)
 				{
-					board->SetData(x3, y3, board->GetData(x1, y1));
+					board->SetData(x3, y3, std::nullopt);
+				}
+				if (x1 != x4 || y1 != y4)
+				{
+					board->SetData(x4, y4, board->GetData(x1, y1));
 					board->SetData(x1, y1, std::nullopt);
 				}
-				board->SetData(x2, y2, std::nullopt);
-                AddMove(board, gameVariant, board->GetData(x3, y3)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x3, board->GetHeight() - y3);
-                std::dynamic_pointer_cast<WbEngine>(engine)->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x3, board->GetHeight() - y3);
+                AddMove(board, gameVariant, board->GetData(x4, y4)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x4, board->GetHeight() - y4);
+				if (triple)
+				{
+					std::dynamic_pointer_cast<WbEngine>(engine)->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x3, board->GetHeight() - y3, x4, board->GetHeight() - y4);
+				}
+				else
+				{
+					std::dynamic_pointer_cast<WbEngine>(engine)->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x4, board->GetHeight() - y4);
+				}
 				if (moveArray[ms - 1] == '+')
 				{
-					board->Promote(x3, y3);
+					board->Promote(x4, y4);
 				}
 			}
 		}
@@ -1535,17 +1552,22 @@ bool EngineOutputHandler::CanBePromoted(const std::optional<Piece>& piece, GameV
 
 // svengine emits a multi-leg move as one "move" line per leg (trailing comma on
 // non-final legs) over unbuffered stdout, so the legs can land in different chunks.
-// Hold a trailing "move ...," line until its continuation arrives, or each leg
-// would be applied and relayed as an independent single move.
+// Hold the whole trailing run of "move ...," lines until the final leg arrives
+// (a 3-leg move can leave two of them), or each leg would be applied and relayed
+// as an independent single move.
 qsizetype EngineOutputHandler::CutAtLastCompleteMove(const QByteArray& buffer)
 {
-    const qsizetype nl = buffer.lastIndexOf('\n');
-    if (nl <= 0) return nl;
-    qsizetype end = nl;
-    while (end > 0 && buffer[end - 1] == '\r') end--;
-    if (end == 0) return nl;
-    const qsizetype start = buffer.lastIndexOf('\n', end - 1) + 1;
-    if (end > start && buffer[end - 1] == ',' && buffer.mid(start, 5) == "move ")
-        return start - 1; // -1 when the held line is the whole buffer
+    qsizetype nl = buffer.lastIndexOf('\n');
+    while (nl > 0)
+    {
+        qsizetype end = nl;
+        while (end > 0 && buffer[end - 1] == '\r') end--;
+        if (end == 0) break;
+        const qsizetype start = buffer.lastIndexOf('\n', end - 1) + 1;
+        if (end > start && buffer[end - 1] == ',' && buffer.mid(start, 5) == "move ")
+            nl = start - 1; // hold this leg too; -1 when the held run is the whole buffer
+        else
+            break;
+    }
     return nl;
 }

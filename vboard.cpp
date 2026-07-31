@@ -2295,9 +2295,13 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 			                   moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[1] : convertedMoveArray[1],
 				               convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
 		}
-		else
+		else if (moveArray.size() < 12)
 		{
 			std::dynamic_pointer_cast<WbEngine>(_blackEngine)->DoubleMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
+		}
+		else
+		{
+			std::dynamic_pointer_cast<WbEngine>(_blackEngine)->TripleMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7], moveArray[10], moveArray[11]);
 		}
 	}
 	else 
@@ -2411,9 +2415,13 @@ void VBoard::blackEngineReadyReadStandardOutput()
 			                   moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[1] : convertedMoveArray[1],
 				               convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
 		}
-		else
+		else if (moveArray.size() < 12)
 		{
 			std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->DoubleMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
+		}
+		else
+		{
+			std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->TripleMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7], moveArray[10], moveArray[11]);
 		}
 	}
 	else
