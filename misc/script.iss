@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QBoard"
-#define MyAppVersion "1.1.9"
+#define MyAppVersion "1.2.0"
 #define MyAppPublisher "Fire Lizard Software"
 #define MyAppURL "https://github.com/fire-lizard/QBoard"
 #define MyAppExeName "QBoard.exe"

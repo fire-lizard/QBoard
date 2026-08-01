@@ -155,8 +155,10 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 		moveStr.push_back(static_cast<char>(x2 + 97));
 		moveStr.push_back(QString::number(y2)[0].toLatin1());
 	}
-	else if (x1 == x2 && y1 == y2)
+	else if (x1 == x2 && y1 == y2 && promotion == ' ')
 	{
+		// Same square and nothing else to say: a pass. With a promotion piece it is Sittuyin's
+		// in-place promotion instead, which has to keep its coordinates ("d5d5f", not "@@@@f").
 		moveStr += "@@@@";
 	}
 	else if (y1 <= 25 || y2 <= 25)

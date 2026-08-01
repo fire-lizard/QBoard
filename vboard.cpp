@@ -595,6 +595,20 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			FinishMove(x, y);
 		}
 	}
+	// Sittuyin promotion in place: clicking the highlighted square the selected pawn already stands
+	// on replaces it with a General. The pawn does not move, but this is a whole move of its own,
+	// so it goes to the engine as "d5d5f".
+	else if (_gameVariant == Sittuyin && _currentPiece != std::nullopt && x == _oldX && y == _oldY &&
+		PossibleMove(x, y) && dynamic_cast<SittuyinBoard*>(_board)->IsPromotionMove(x, y, x, y))
+	{
+		_board->Promote(x, y);
+		if (engine != nullptr && engine->IsActive())
+		{
+			engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, 'f');
+		}
+		EngineOutputHandler::AddMove(_board, _gameVariant, Pawn, _oldX, _oldY, x, y, 'f', ' ');
+		FinishMove(x, y);
+	}
 	// Lion move
     else if (_currentPiece != std::nullopt && (p == std::nullopt || p->Colour != _currentPlayer) && !CheckRepetition(_oldX, _oldY, x, y))
 	{
@@ -1339,6 +1353,22 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				});
 			}
 		}
+		if (_gameVariant == Sittuyin)
+		{
+			// A promotion may not threaten anything, so drop the promotion moves that would put the
+			// General next to an enemy piece or leave the opponent in check. Ordinary pawn moves
+			// stay: only the promotion carries this restriction.
+			SittuyinBoard* sBoard = dynamic_cast<SittuyinBoard*>(_board);
+			for (int index = static_cast<int>(_moves.size()) - 1; index >= 0; index--)
+			{
+				const std::pair<int, int> t = _moves[index];
+				if (sBoard->IsPromotionMove(x, y, t.first, t.second) && sBoard->PromotionThreatens(x, y, t.first, t.second))
+				{
+					_board->RemoveMove(t.first, t.second);
+					_moves.erase(_moves.begin() + index);
+				}
+			}
+		}
         if (_gameVariant == Xiangqi || (_gameVariant == Janggi && dynamic_cast<XiangqiBoard*>(_board)->AreTwoKingsLookingOnEachOther()))
         {
             std::ranges::for_each(_moves, [this, x, y](std::pair<int, int> t)
@@ -1580,10 +1610,12 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 	}
 	else if (_gameVariant == Sittuyin)
 	{
-		if (_currentPiece->Type == Pawn &&
-			(x == y + 1 || x == _board->GetHeight() - y - 1) &&
-			(y <= 3 && _currentPlayer == White || y >= 4 && _currentPlayer == Black) &&
-			!_board->HasPiece(Queen, _currentPlayer))
+		// A pawn only ever steps diagonally onto an empty square as part of a promotion - its
+		// ordinary diagonal move is a capture - so the shape of the move identifies it on its own.
+		// mousePressEvent offers none but the legal ones, and the pawn has already moved by now,
+		// so there is nothing left to re-check here. Promoting in place never reaches this.
+		if (_currentPiece->Type == Pawn && p == std::nullopt &&
+			abs(x - _oldX) == 1 && abs(y - _oldY) == 1)
 		{
 			promotion = 'f';
 			_board->Promote(x, y);
@@ -2239,8 +2271,11 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	_whiteEngineBuffer.remove(0, nl + 1);
 	if (buf.contains("Illegal move"))
 	{
-		ReportInfo(buf, "Illegal move", _textEdit2, LogLevel::Error);
         EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _fenHistory);
+		// An engine only echoes the move back, which says nothing about why it refused. Report the
+		// position the move was made from as well, so the two boards can be compared afterwards.
+		ReportInfo(buf + "\nPosition: " + QByteArray::fromStdString(_board->GetFEN()) + " b",
+			"Illegal move", _textEdit2, LogLevel::Error);
         this->repaint();
         this->_statusBar->showMessage("Black move");
 		_currentPlayer = Black;
@@ -2363,8 +2398,11 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	_blackEngineBuffer.remove(0, nl + 1);
 	if (buf.contains("Illegal move"))
 	{
-		ReportInfo(buf, "Illegal move", _textEdit, LogLevel::Error);
 		EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _fenHistory);
+		// An engine only echoes the move back, which says nothing about why it refused. Report the
+		// position the move was made from as well, so the two boards can be compared afterwards.
+		ReportInfo(buf + "\nPosition: " + QByteArray::fromStdString(_board->GetFEN()) + " w",
+			"Illegal move", _textEdit, LogLevel::Error);
         this->repaint();
         this->_statusBar->showMessage(_gameVariant == Xiangqi || _gameVariant == Janggi ? "Red move" : "White move");
 		_currentPlayer = White;

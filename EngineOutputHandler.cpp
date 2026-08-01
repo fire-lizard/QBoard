@@ -927,9 +927,11 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		{
     		const bool isPromoted = moveArray[ms - 1] == 'f' || moveArray[ms - 1] == 'j' || moveArray[ms - 1] == 'q';
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
-            const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
+			// Sittuyin promotes in place ("d5d5f"): the piece standing on the destination is the
+			// promoting pawn itself, not a victim.
+            const PieceType ct = (x1 != x2 || y1 != y2) && board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
 			board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2, ' ', ct != None ? 'x' : ' ');
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2, isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[ms - 1] : ' ');
 			if (isPromoted)
 			{

@@ -204,6 +204,10 @@ bool Board::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
     if (std::ranges::any_of(_moves, [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}) || !cl)
 	{
+		// A move onto the piece's own square changes nothing on the board - Sittuyin promotes a
+		// pawn in place that way. Relaying it through the two SetData calls below would delete
+		// the piece, because the source square is cleared after the destination was written.
+		if (oldX == newX && oldY == newY) return true;
 		SetData(newX, newY, GetData(oldX, oldY));
 		SetData(oldX, oldY, std::nullopt);
 		return true;
