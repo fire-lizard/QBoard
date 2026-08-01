@@ -1202,6 +1202,26 @@ char EngineOutputHandler::ChessPieceChar(PieceType chessPiece)
     }
 }
 
+// Musketeer Chess needs its own letters: 'c' is the Cannon here, not the Chancellor that
+// ChessPieceChar would give it. These are the letters the gating moves above are read back with.
+char EngineOutputHandler::MusketeerPieceChar(PieceType musketeerPiece)
+{
+    switch (musketeerPiece)
+    {
+    case Leopard:      return 'l';
+    case Cannon:       return 'c';
+    case Unicorn:      return 'u';
+    case FlyingDragon: return 'd';
+    case Elephant:     return 'e';
+    case Eagle:        return 'h';
+    case Fortress:     return 'f';
+    case Spider:       return 's';
+    case Archbishop:   return 'a';
+    case Chancellor:   return 'm';
+    default:           return ' ';
+    }
+}
+
 void EngineOutputHandler::ReadStandardError(const QByteArray& buf, QTextEdit* textEdit)
 {
 	textEdit->setHtml("<p style='color:red'>" + buf + "</p>");

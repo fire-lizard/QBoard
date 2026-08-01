@@ -177,9 +177,13 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 		moveStr.push_back(x2);
 		moveStr.push_back(y2);
 	}
+	// Promotion pieces, plus the Musketeer Chess gating letters d/e/h/l/s/u - without those the
+	// gated piece is silently dropped from the move and the engine never learns it entered.
     if (promotion == 'n' || promotion == 'b' || promotion == 'r' || promotion == 'q' ||
 		promotion == 'j' || promotion == 'f' || promotion == 'a' || promotion == 'c' ||
-		promotion == 'w' || promotion == 'm' || promotion == 'M' || promotion == '+')
+		promotion == 'w' || promotion == 'm' || promotion == 'M' || promotion == '+' ||
+		promotion == 'd' || promotion == 'e' || promotion == 'h' || promotion == 'l' ||
+		promotion == 's' || promotion == 'u')
 	{
 		moveStr.push_back(promotion);
 	}

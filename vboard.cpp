@@ -1531,6 +1531,13 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 				_board->Promote(x, y, Queen);
 			}
 		}
+		// A Musketeer piece that just gated in behind the moving piece rides along on the same move,
+		// as "b1c3l". Leave it off and it exists on our board only, so every later move of it is an
+		// illegal move to the engine. A pawn promotion cannot gate, so the two never collide.
+		else if (const PieceType gated = dynamic_cast<MusketeerChessBoard*>(_board)->GatedPiece; gated != None)
+		{
+			promotion = EngineOutputHandler::MusketeerPieceChar(gated);
+		}
 	}
 	else if (std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants))
     {

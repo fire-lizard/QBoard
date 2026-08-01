@@ -1897,10 +1897,8 @@ Rule: repeat3 = draw
 ################
 Variant: Musketeer
 Board: 8x8
-FEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR[EAMCHDULeamchdul] w KGFDCBQkgfdcbq -"
+FEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR[EAMCHDULFSeamchdulfs] w KGFDCBQkgfdcbq -"
 XBoard pieces: "PNBRQ.EAM..CLF.S.HD.UKpnbrqfeam..cl....hdsuk"
-FEN: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR[CLcl] w KGFDCBQkgfdcbq -"
-XBoard pieces: "PNBRQ......CL........Kpnbrq......cl........k"
 XBoard parent: "seirawan"
 
 Zone: rank8 = a8,b8,c8,d8,e8,f8,g8,h8

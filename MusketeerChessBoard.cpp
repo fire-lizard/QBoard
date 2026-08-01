@@ -335,6 +335,7 @@ bool MusketeerChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	const PieceColour pieceColour = GetData(oldX, oldY)->Colour;
 	bool hasMoved = GetData(oldX, oldY)->HasMoved;
 	const PieceType destPieceType = GetData(newX, newY) != std::nullopt ? GetData(newX, newY)->Type : None;
+	GatedPiece = None;
 	const bool result = CapablancaChessBoard::Move(oldX, oldY, newX, newY, cl);
 	if (result && GetData(newX, newY) != std::nullopt)
 	{
@@ -345,6 +346,7 @@ bool MusketeerChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 			{
 				SetData(oldX, oldY, GetData(oldX, oldY == 1 ? 0 : _height - 1));
 				SetData(oldX, oldY == 1 ? 0 : _height - 1, std::nullopt);
+				GatedPiece = GetData(oldX, oldY)->Type;
 			}
 		}
 		_data[newX][newY]->HasMoved = true;
