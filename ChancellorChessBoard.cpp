@@ -86,7 +86,11 @@ void ChancellorChessBoard::GetMoves(const std::optional<Piece>& piece, int x, in
             if (GetData(_width - 1, y) != std::nullopt)
             {
                 const std::optional<Piece> cp = GetData(_width - 1, y);
-                if (!cp->HasMoved && cp->Type == Rook && GetData(5, y) == std::nullopt && GetData(6, y) == std::nullopt)
+                // The corridor runs to _width - 2: this board is 9 files wide, so the rook stands on
+                // x = 8 and the 8-wide test copied from ChessBoard left x = 7 unchecked. The rook
+                // then jumped the piece still standing there and the engine refused the move.
+                if (!cp->HasMoved && cp->Type == Rook && GetData(5, y) == std::nullopt && GetData(6, y) == std::nullopt &&
+                    GetData(_width - 2, y) == std::nullopt)
                 {
                     if ((piece->Colour == White && _wkc == true) || (piece->Colour == Black && _bkc == true))
                     {

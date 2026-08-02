@@ -111,7 +111,7 @@ void EngineOutputHandler::RollbackIllegalMove(GameVariant gameVariant, Board *bo
         // A FEN restores the placement only. Without the hand the refused move keeps half its
         // effect: a rolled-back drop leaves the piece neither on the board nor in hand, and a
         // rolled-back capture leaves a piece in hand that is standing on the board again.
-        if (PieceStorage* ps = dynamic_cast<PieceStorage*>(board)) ps->SetCapturedPieces(history.back().hand);
+        if (PieceStorage* ps = dynamic_cast<PieceStorage*>(board)) ps->SetCapturedPieces(history.back().pieces);
     }
 }
 
@@ -422,26 +422,67 @@ QByteArray EngineOutputHandler::KoShogiShootToText(const QByteArray& moveArray)
 	return text;
 }
 
-Move EngineOutputHandler::CastlingToMove(const QByteArray& c, GameVariant gameVariant, PieceColour currentPlayer)
+// Where the king and the rook land when castling, given their files. Only the king's step differs
+// between the variants - the rook always finishes on the square the king crossed - so the rule
+// lives here once. It used to be copied into the click handler and into the engine-reply handler
+// per variant, and the copies drifted: Janus put the king on i1 but told the engine h1, and
+// Capablanca's queenside rook was written onto the square the king had just been placed on.
+std::pair<int, int> EngineOutputHandler::CastlingTargets(GameVariant gameVariant, int kingX, int rookX)
 {
-    QByteArray result;
-	if (gameVariant == OmegaChess)
-    {
-        result = currentPlayer == Black ? c == "O-O-O" ? "g11e11" : "g11i11" : c == "O-O-O" ? "g1e1" : "g1i1";
-        return ByteArrayToMove(result, XBoard, 12, 12);
-    }
-    if (gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess)
-    {
-        result = currentPlayer == Black ? c == "O-O-O" ? "f10c10" : "f10j10" : c == "O-O-O" ? "f1c1" : "f1j1";
-        return ByteArrayToMove(result, XBoard, 10, 8);
-    }
-    if (gameVariant == ChancellorChess || gameVariant == ModernChess)
-    {
-        result = currentPlayer == Black ? c == "O-O-O" ? "e10c10" : "e10g10" : c == "O-O-O" ? "e1c1" : "e1g1";
-        return ByteArrayToMove(result, XBoard, 9, 9);
-    }
-    result = currentPlayer == Black ? c == "O-O-O" ? "e8c8" : "e8g8" : c == "O-O-O" ? "e1c1" : "e1g1";
-    return ByteArrayToMove(result, XBoard, 8, 8);
+    const bool kingside = rookX > kingX;
+    int step = 2;
+    if (gameVariant == CapablancaChess || gameVariant == GothicChess) step = 3;
+    else if (gameVariant == JanusChess) step = kingside ? 4 : 3;
+    const int kingTo = kingside ? kingX + step : kingX - step;
+    return { kingTo, kingside ? kingTo - 1 : kingTo + 1 };
+}
+
+// The rank number as the engine counts it. Musketeer's gating rows and Grand/Xiangqi/Janggi's own
+// numbering hold the back rank one row inside the array, so the plain height - y is off by one for
+// them and the engine is handed a move on a rank the piece is not standing on.
+int EngineOutputHandler::EngineRank(GameVariant gameVariant, int height, int y)
+{
+    return gameVariant == Xiangqi || gameVariant == Janggi || gameVariant == GrandChess || gameVariant == MusketeerChess
+        ? height - y - 1 : height - y;
+}
+
+// "O-O" names no squares, so the from/to has to be read off the board: the king, and the rook it
+// castles with. Spelling the squares out per variant instead got the rank wrong on every board
+// whose back rank is not the edge row (Omega, Musketeer), used rank 10 for Black on the 8- and
+// 9-rank boards, gave Janus Capablanca's king file, and handed ASCII digits to ByteArrayToMove
+// where the wide boards encode the rank as a binary byte.
+Move EngineOutputHandler::CastlingToMove(const QByteArray& c, Board* board, PieceColour currentPlayer)
+{
+    const std::vector<std::pair<int, int>> kings = GetPieceLocations(board, King, currentPlayer);
+    if (kings.empty()) return { .x1 = -1, .y1 = -1, .x2 = -1, .y2 = -1 };
+    const auto [kingX, kingY] = kings.front();
+    const std::pair<int, int> rook = board->FindNearestPiece(kingX, kingY, c == "O-O-O" ? West : East);
+    return { .x1 = kingX, .y1 = kingY, .x2 = rook.first, .y2 = rook.second };
+}
+
+// x2 only says which side is being castled on: for an engine that spelled the move out it is the
+// king's destination, for "O-O" it is the rook's square. The rook itself is found from the board.
+// Returns the king's destination file, or -1 if there was no rook to castle with.
+int EngineOutputHandler::ApplyCastling(Board* board, GameVariant gameVariant, int x1, int y1, int x2)
+{
+    if (x2 == -1) return -1;
+    const std::pair<int, int> coords = board->FindNearestPiece(x1, y1, x1 < x2 ? East : West);
+    if (coords.first == -1) return -1;
+    const std::optional<Piece> king = board->GetData(x1, y1);
+    if (king == std::nullopt) return -1;
+    const std::optional<Piece> rook = board->GetData(coords.first, coords.second);
+    // Engine output is not ours to trust: without this, a castling the engine should not have sent
+    // relocates whatever piece happens to stand next to the king.
+    if (rook == std::nullopt || rook->Type != Rook) return -1;
+    const auto [kingTo, rookTo] = CastlingTargets(gameVariant, x1, coords.first);
+    // Clear both origins first: a queenside king and rook can otherwise land on a square the
+    // other one is still being written to, and the second write wins.
+    board->SetData(x1, y1, std::nullopt);
+    board->SetData(coords.first, coords.second, std::nullopt);
+    board->SetData(kingTo, y1, king);
+    board->SetData(rookTo, y1, rook);
+    dynamic_cast<ChessBoard*>(board)->WriteCastling(kingTo > x1 ? "O-O" : "O-O-O", king->Colour);
+    return kingTo;
 }
 
 void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::shared_ptr<Engine>& engine, Board * board, QTextEdit * textEdit,
@@ -463,7 +504,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     }
 	if (moveArray.isEmpty()) return;
     const Move m = moveArray.contains("O-O") ?
-        CastlingToMove(moveArray, gameVariant, currentPlayer) :
+        CastlingToMove(moveArray, board, currentPlayer) :
         ByteArrayToMove(moveArray, engine->GetType(), board->GetWidth(), board->GetHeight());
 	int x1 = m.x1;
 	int y1 = m.y1;
@@ -633,16 +674,11 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     else if (gameVariant == OmegaChess)
     {
         // Castling check
-        if (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King)
+        if (moveArray.contains("O-O") || (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King))
         {
-            auto coords = board->FindNearestPiece(x1, y1, x1 < x2 ? East : West);
-            std::optional<Piece> rook = board->GetData(coords.first, coords.second);
-            board->SetData(x1 < x2 ? x1 + 2 : x1 - 2, y2, board->GetData(x1, y1));
-            board->SetData(x1 < x2 ? coords.first - 3 : coords.first + 4, y1, rook);
-            board->SetData(x1, y1, std::nullopt);
-            board->SetData(coords.first, coords.second, std::nullopt);
-            dynamic_cast<ChessBoard*>(board)->WriteCastling(x2 > x1 ? "O-O" : "O-O-O");
-            engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, ' ');
+            const int kingTo = ApplyCastling(board, gameVariant, x1, y1, x2);
+            const int rank = EngineRank(gameVariant, board->GetHeight(), y1);
+            if (kingTo != -1) engine->AddMove(x1, rank, kingTo, rank, ' ');
         }
         else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
         {
@@ -685,26 +721,19 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     }
     else if (gameVariant == MusketeerChess)
     {
-        y1--;
-        y2--;
+        // The gating rows push the back rank one row in, which ByteArrayToMove knows nothing
+        // about. CastlingToMove reads the king off the board, so its rows are already right.
+        if (!moveArray.contains("O-O"))
+        {
+            y1--;
+            y2--;
+        }
         // Castling check
         if (moveArray.contains("O-O") || (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King))
         {
-            auto coords = board->FindNearestPiece(x1, y1, x1 < x2 ? East : West);
-            std::optional<Piece> rook = board->GetData(coords.first, coords.second);
-            board->SetData(x1 < x2 ? x1 + 2 : x1 - 2, y2, board->GetData(x1, y1));
-            board->SetData(x1 < x2 ? coords.first - 2 : coords.first + 3, y1, rook);
-            board->SetData(x1, y1, std::nullopt);
-            board->SetData(coords.first, coords.second, std::nullopt);
-            dynamic_cast<ChessBoard*>(board)->WriteCastling(x2 > x1 ? "O-O" : "O-O-O");
-            if (moveArray.contains("O-O"))
-            {
-                engine->AddMove(moveArray);
-            }
-            else
-            {
-                engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, ' ');
-            }
+            const int kingTo = ApplyCastling(board, gameVariant, x1, y1, x2);
+            const int rank = EngineRank(gameVariant, board->GetHeight(), y1);
+            if (kingTo != -1) engine->AddMove(x1, rank, kingTo, rank, ' ');
         }
         else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
         {
@@ -788,34 +817,9 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     	// Castling check
         if (moveArray.contains("O-O") || (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King))
 		{
-            auto coords = board->FindNearestPiece(x1, y1, x1 < x2 ? East : West);
-        	std::optional<Piece> rook = board->GetData(coords.first, coords.second);
-            if (gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == JanusChess)
-            {
-                board->SetData(x1 < x2 ? x1 + 4 : x1 - 3, y2, board->GetData(x1, y1));
-                board->SetData(x1 < x2 ? coords.first - 2 : coords.first + 2, y1, rook);
-            }
-            else if (gameVariant == ChancellorChess || gameVariant == ModernChess)
-            {
-                board->SetData(x1 < x2 ? x1 + 2 : x1 - 2, y2, board->GetData(x1, y1));
-                board->SetData(x1 < x2 ? coords.first - 3 : coords.first + 3, y1, rook);
-            }
-            else
-            {
-                board->SetData(x1 < x2 ? x1 + 2 : x1 - 2, y2, board->GetData(x1, y1));
-                board->SetData(x1 < x2 ? coords.first - 2 : coords.first + 3, y1, rook);
-            }
-            board->SetData(x1, y1, std::nullopt);
-            board->SetData(coords.first, coords.second, std::nullopt);
-            dynamic_cast<ChessBoard*>(board)->WriteCastling(x2 > x1 ? "O-O" : "O-O-O");
-            if (moveArray.contains("O-O"))
-            {
-                engine->AddMove(moveArray);
-            }
-            else
-            {
-                engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, ' ');
-            }
+            const int kingTo = ApplyCastling(board, gameVariant, x1, y1, x2);
+            const int rank = EngineRank(gameVariant, board->GetHeight(), y1);
+            if (kingTo != -1) engine->AddMove(x1, rank, kingTo, rank, ' ');
 		}
 		else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{

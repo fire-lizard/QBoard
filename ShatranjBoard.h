@@ -1,6 +1,5 @@
 #pragma once
 #include <map>
-#include "Common.h"
 #include "Board.h"
 
 class ShatranjBoard : public Board

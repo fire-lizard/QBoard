@@ -15,8 +15,6 @@ public:
 
 	int WhitePiecesToPlace = 2;
 	int BlackPiecesToPlace = 2;
-	// The Musketeer piece the last Move let onto the board, None if it let none. The engine has to
-	// be told about it in the same move, so the caller reads it straight after moving.
 	PieceType GatedPiece = None;
 
 protected:

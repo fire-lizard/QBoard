@@ -406,29 +406,17 @@ void ChessBoard::SetHalfMoveCount(int halfMoveCount)
 	_halfMoveCount = halfMoveCount;
 }
 
-void ChessBoard::WriteCastling(const std::string& moveStr)
+void ChessBoard::WriteCastling(const std::string& moveStr, PieceColour pieceColour)
 {
-	if (moveStr == "O-O")
+	if (pieceColour == White)
 	{
-		if (_moveCount % 2 == 0)
-		{
-			_wkc = false;
-		}
-		else
-		{
-			_bkc = false;
-		}
+		_wkc = false;
+		_wqc = false;
 	}
-	else if (moveStr == "O-O-O")
+	else
 	{
-		if (_moveCount % 2 == 0)
-		{
-			_wqc = false;
-		}
-		else
-		{
-			_bqc = false;
-		}
+		_bkc = false;
+		_bqc = false;
 	}
 	if (_moveCount % 2 == 0)
 	{

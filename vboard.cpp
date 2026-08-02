@@ -413,7 +413,7 @@ bool VBoard::AskForPromotion()
 void VBoard::PushHistory()
 {
 	const PieceStorage* ps = dynamic_cast<const PieceStorage*>(_board);
-	_fenHistory.push_back({ _board->GetFEN(), ps != nullptr ? ps->CapturedPieces() : std::vector<std::pair<PieceColour, PieceType>>() });
+	_fenHistory.push_back({.fen = _board->GetFEN(), .pieces = ps != nullptr ? ps->CapturedPieces() : std::vector<std::pair<PieceColour, PieceType>>() });
 }
 
 void VBoard::FinishMove(int x, int y)
@@ -518,78 +518,44 @@ void VBoard::mousePressEvent(QMouseEvent* event)
         _currentPiece != std::nullopt && _currentPiece->Type == King && !_currentPiece->HasMoved &&
         p != std::nullopt && p->Colour == _currentPlayer && p->Type == Rook && !p->HasMoved && _board->IsMovePossible(x, y))
 	{
-        if (_gameVariant == JanusChess)
-        {
-			if (_board->IsSquareUnderAttack(_oldX < x ? _oldX + 4 : _oldX - 3, _oldY, _currentPlayer))
-			{
-				QMessageBox::warning(this, "Warning", "Castling destination square is under attack.");
-			}
-			else
-			{
-				_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 4 : _oldX - 3, _oldY, false);
-				_board->Move(x, y, _oldX < x ? x - 2 : x + 2, y, false);
-				if (engine != nullptr && engine->IsActive())
-				{
-					engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 3 : _oldX - 3, _board->GetHeight() - y, ' ');
-				}
-				dynamic_cast<ChessBoard*>(_board)->WriteCastling(x > _oldX ? "O-O" : "O-O-O");
-				FinishMove(x, y);
-			}
-        }
-		else if (_gameVariant == CapablancaChess || _gameVariant == GothicChess)
+		// One set of targets for the board and for the engine. The four per-variant copies this
+		// replaces had drifted apart: Janus put the king on i1 but told the engine h1, and
+		// Musketeer's gating rows made every castling a rank too high ("e2g2", not "e1g1").
+		const auto [kingTo, rookTo] = EngineOutputHandler::CastlingTargets(_gameVariant, _oldX, x);
+		// The king may not start on, cross, or land on an attacked square. Only the destination
+		// used to be tested, so castling out of check or through it went to the engine as a move
+		// the engine then refused. The king walks a copy of the board rather than the squares
+		// being tested empty: IsSquareUnderAttack asks the opponent's move generator, which only
+		// offers a pawn its diagonal when something is standing on it, so an empty square never
+		// looks pawn-attacked.
+		const int step = kingTo > _oldX ? 1 : -1;
+		bool attacked = false;
+		Board* probe = _board->Clone();
+		const std::optional<Piece> king = probe->GetData(_oldX, _oldY);
+		probe->SetData(_oldX, _oldY, std::nullopt); // the king is walking, so it blocks nothing
+		for (int f = _oldX; f != kingTo + step && !attacked; f += step)
 		{
-			if (_board->IsSquareUnderAttack(_oldX < x ? _oldX + 3 : _oldX - 3, _oldY, _currentPlayer))
-			{
-				QMessageBox::warning(this, "Warning", "Castling destination square is under attack.");
-			}
-			else
-			{
-				_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 3 : _oldX - 3, _oldY, false);
-				_board->Move(x, y, _oldX < x ? x - 2 : x + 3, y, false);
-				if (engine != nullptr && engine->IsActive())
-				{
-					engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 3 : _oldX - 3, _board->GetHeight() - y, ' ');
-				}
-				dynamic_cast<ChessBoard*>(_board)->WriteCastling(x > _oldX ? "O-O" : "O-O-O");
-				FinishMove(x, y);
-			}
+			probe->SetData(f, _oldY, king);
+			attacked = probe->IsSquareUnderAttack(f, _oldY, _currentPlayer);
+			probe->SetData(f, _oldY, std::nullopt);
 		}
-		else if (_gameVariant == ChancellorChess || _gameVariant == ModernChess)
+		delete probe;
+		if (attacked)
 		{
-			if (_board->IsSquareUnderAttack(_oldX < x ? _oldX + 2 : _oldX - 2, _oldY, _currentPlayer))
-			{
-				QMessageBox::warning(this, "Warning", "Castling destination square is under attack.");
-			}
-			else
-			{
-				_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _oldY, false);
-				_board->Move(x, y, _oldX < x ? x - 3 : x + 3, y, false);
-				if (engine != nullptr && engine->IsActive())
-				{
-					engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _board->GetHeight() - y, ' ');
-				}
-				dynamic_cast<ChessBoard*>(_board)->WriteCastling(x > _oldX ? "O-O" : "O-O-O");
-				FinishMove(x, y);
-			}
+			QMessageBox::warning(this, "Warning", "The king may not castle out of, through, or into check.");
 		}
-        else
-        {
-			if (_board->IsSquareUnderAttack(_oldX < x ? _oldX + 2 : _oldX - 2, _oldY, _currentPlayer))
+		else
+		{
+			_board->Move(_oldX, _oldY, kingTo, _oldY, false);
+			_board->Move(x, y, rookTo, y, false);
+			if (engine != nullptr && engine->IsActive())
 			{
-				QMessageBox::warning(this, "Warning", "Castling destination square is under attack.");
+				const int rank = EngineOutputHandler::EngineRank(_gameVariant, _board->GetHeight(), _oldY);
+				engine->Move(_oldX, rank, kingTo, rank, ' ');
 			}
-			else
-			{
-				_board->Move(_oldX, _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _oldY, false);
-				_board->Move(x, y, _oldX < x ? x - 2 : x + 3, y, false);
-				if (engine != nullptr && engine->IsActive())
-				{
-					engine->Move(_oldX, _board->GetHeight() - _oldY, _oldX < x ? _oldX + 2 : _oldX - 2, _board->GetHeight() - y, ' ');
-				}
-				dynamic_cast<ChessBoard*>(_board)->WriteCastling(x > _oldX ? "O-O" : "O-O-O");
-				FinishMove(x, y);
-			}
-        }
+			dynamic_cast<ChessBoard*>(_board)->WriteCastling(kingTo > _oldX ? "O-O" : "O-O-O", _currentPlayer);
+			FinishMove(x, y);
+		}
 	}
 	// Null move
 	else if ((_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi ||
@@ -1290,12 +1256,11 @@ void VBoard::mousePressEvent(QMouseEvent* event)
             const char promotion = CheckPromotion(p, x, y);
 			if (engine != nullptr && engine->IsActive())
 			{
-                if (_gameVariant == Xiangqi || _gameVariant == Janggi || _gameVariant == GrandChess || _gameVariant == MusketeerChess)
-					engine->Move(_oldX, _board->GetHeight() - _oldY - 1, x, _board->GetHeight() - y - 1, promotion);
-                else if (engine->GetType() == USI)
+                if (engine->GetType() == USI)
 					engine->Move(_board->GetWidth() - _oldX, _oldY, _board->GetWidth() - x, y, promotion);
 				else
-					engine->Move(_oldX, _board->GetHeight() - _oldY, x, _board->GetHeight() - y, promotion);
+					engine->Move(_oldX, EngineOutputHandler::EngineRank(_gameVariant, _board->GetHeight(), _oldY),
+					             x, EngineOutputHandler::EngineRank(_gameVariant, _board->GetHeight(), y), promotion);
 			}
 			if (_board->GetData(x, y) != std::nullopt)
 			{
@@ -2147,7 +2112,10 @@ void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 					}
 					else
 					{
-						_blackEngine->SetFEN(_board->GetFEN());
+						// The bare placement drops the castling rights and the side to move, and the
+						// engine keeps its own stale copy of both -- after which it refuses the
+						// castling QBoard still believes in.
+						_blackEngine->SetFEN(EngineOutputHandler::GetFenFromBoard(_board, _gameVariant, _currentPlayer).toStdString());
 					}
 				}
 				if (_whiteEngine != nullptr && _whiteEngine->IsActive())
@@ -2158,7 +2126,7 @@ void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 					}
 					else
 					{
-						_whiteEngine->SetFEN(_board->GetFEN());
+						_whiteEngine->SetFEN(EngineOutputHandler::GetFenFromBoard(_board, _gameVariant, _currentPlayer).toStdString());
 					}
 				}
 			}
@@ -2354,15 +2322,24 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 		QMessageBox::information(this, "Game over", "White engine declares a win");
 		return;
 	}
-	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, White);
 	const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _whiteEngine->GetType(), _gameVariant);
+	// "O-O" is the engine that sent it talking in its own notation, not a move the second engine
+	// has to accept - a UCI opponent gets it spliced into its "position ... moves" list verbatim
+	// and rejects the whole game. Read the king off the board before ReadStandardOutput moves it.
+	const Move castling = moveArray.contains("O-O")
+		? EngineOutputHandler::CastlingToMove(moveArray, _board, White)
+		: Move{ .x1 = -1, .y1 = -1, .x2 = -1, .y2 = -1 };
+	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, White);
 	if (!moveArray.isEmpty()) PushHistory();
 	if (_blackEngine != nullptr && _blackEngine->IsActive())
 	{
 		if (moveArray.isEmpty()) return;
 		if (moveArray.contains("O-O"))
 		{
-			_blackEngine->Move(moveArray);
+			if (castling.x2 == -1) return;
+			const int rank = EngineOutputHandler::EngineRank(_gameVariant, _board->GetHeight(), castling.y1);
+			_blackEngine->Move(castling.x1, rank,
+				EngineOutputHandler::CastlingTargets(_gameVariant, castling.x1, castling.x2).first, rank, ' ');
 		}
 		else if (_gameVariant == KoShogi && moveArray.contains('x'))
 		{
@@ -2481,15 +2458,23 @@ void VBoard::blackEngineReadyReadStandardOutput()
 		QMessageBox::information(this, "Game over", "Black engine declares a win");
 		return;
 	}
-	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, Black);
 	const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _blackEngine->GetType(), _gameVariant);
+	// See the White handler: the second engine needs coordinates, and they have to be read before
+	// ReadStandardOutput moves the king off them.
+	const Move castling = moveArray.contains("O-O")
+		? EngineOutputHandler::CastlingToMove(moveArray, _board, Black)
+		: Move{ .x1 = -1, .y1 = -1, .x2 = -1, .y2 = -1 };
+	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, Black);
 	if (!moveArray.isEmpty()) PushHistory();
 	if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 	{
 		if (moveArray.isEmpty()) return;
 		if (moveArray.contains("O-O"))
 		{
-			_whiteEngine->Move(moveArray);
+			if (castling.x2 == -1) return;
+			const int rank = EngineOutputHandler::EngineRank(_gameVariant, _board->GetHeight(), castling.y1);
+			_whiteEngine->Move(castling.x1, rank,
+				EngineOutputHandler::CastlingTargets(_gameVariant, castling.x1, castling.x2).first, rank, ' ');
 		}
 		else if (_gameVariant == KoShogi && moveArray.contains('x'))
 		{

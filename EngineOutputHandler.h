@@ -33,17 +33,20 @@ public:
     static void CalculateXiangqiCheck(Board* board, std::vector<std::pair<int, int>>& moves, int oldX, int oldY, int newX, int newY);
     static std::vector<std::pair<int, int>> GetPieceLocations(const Board* board, PieceType pieceType, PieceColour pieceColour);
 	static bool IsInsidePromotionZone(GameVariant gameVariant, PieceColour pieceColour, int y);
-	static char MusketeerPieceChar(PieceType musketeerPiece);
 	static bool CanBePromoted(const std::optional<Piece>& piece, GameVariant gameVariant, int oldY, int newY);
 	static bool IsLionMove(const std::optional<Piece>& piece, int x1, int y1, int x2, int y2);
     static void RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<BoardSnapshot>& history);
 	static void RemoveMove(std::vector<std::pair<int, int>>& moves, int x, int y);
 	static int  GetEnPassantRank(GameVariant gameVariant, PieceColour pieceColour, char y);
 	static char ChessPieceChar(PieceType chessPiece);
+	static char MusketeerPieceChar(PieceType musketeerPiece);
 	static qsizetype CutAtLastCompleteMove(const QByteArray& buffer);
+	static Move CastlingToMove(const QByteArray& c, Board* board, PieceColour currentPlayer);
+	static std::pair<int, int> CastlingTargets(GameVariant gameVariant, int kingX, int rookX);
+	static int EngineRank(GameVariant gameVariant, int height, int y);
 
 private:
-	static Move CastlingToMove(const QByteArray& c, GameVariant gameVariant, PieceColour currentPlayer);
+	static int ApplyCastling(Board* board, GameVariant gameVariant, int x1, int y1, int x2);
 	template <typename T> static std::basic_string<T> lowercase(const std::basic_string<T>& s);
 	template <typename T> static std::basic_string<T> uppercase(const std::basic_string<T>& s);
 };
