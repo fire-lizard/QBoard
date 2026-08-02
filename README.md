@@ -12,6 +12,7 @@
      * Nightrider Chess
      * Courier Chess
      * Musketeer Chess
+     * Amazon Chess
      * Atomic Chess
      * Grande Acedrex
   2. Shogi Variants

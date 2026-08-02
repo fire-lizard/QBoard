@@ -28,6 +28,7 @@ namespace {
 			{OmegaChess,      "Omega Chess"},
 			{NightriderChess, "Nightrider Chess"},
 			{MusketeerChess,  "Musketeer Chess"},
+			{AmazonChess,     "Amazon Chess"},
 			{AtomicChess,     "Atomic Chess"},
 			{CourierChess,    "Courier Chess"},
 			{GrandeAcedrex,   "Grande Acedrex"},
