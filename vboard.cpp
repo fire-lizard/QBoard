@@ -408,6 +408,14 @@ bool VBoard::AskForPromotion()
 		QMessageBox::Yes | QMessageBox::No, this).exec() == QMessageBox::Yes;
 }
 
+// Record the position an illegal move may have to be rolled back to. The hand is snapshotted
+// alongside the FEN because the FEN does not carry it (see EngineOutputHandler::RollbackIllegalMove).
+void VBoard::PushHistory()
+{
+	const PieceStorage* ps = dynamic_cast<const PieceStorage*>(_board);
+	_fenHistory.push_back({ _board->GetFEN(), ps != nullptr ? ps->CapturedPieces() : std::vector<std::pair<PieceColour, PieceType>>() });
+}
+
 void VBoard::FinishMove(int x, int y)
 {
 	if (_currentPlayer == White)
@@ -436,7 +444,7 @@ void VBoard::FinishMove(int x, int y)
 			QMessageBox::information(this, "Game over", "Black wins by eliminating White King");
 		}
 	}
-	_fenHistory.push_back(_board->GetFEN());
+	PushHistory();
 	if (_comm && _comm->is_connected_remotely())
 	{
 		_comm->send_move(_board->GetFEN());
@@ -1957,7 +1965,7 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		break;
 	}
 	_fenHistory.clear();
-	_fenHistory.push_back(_board->GetFEN());
+	PushHistory();
     this->setFixedSize(_board->GetWidth() * s + 1, _board->GetHeight() * s + 1);
 	if (this->_window != nullptr)
 	{
@@ -2234,7 +2242,7 @@ bool VBoard::CheckRepetition(int oldX, int oldY, int newX, int newY)
 	int repetitions = 0;
 	for (auto& _whiteMove : _fenHistory)
 	{
-		if (*board == _whiteMove)
+		if (*board == _whiteMove.fen)
 		{
 			repetitions++;
 		}
@@ -2344,7 +2352,7 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	}
 	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, White);
 	const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _whiteEngine->GetType(), _gameVariant);
-	if (!moveArray.isEmpty()) _fenHistory.push_back(_board->GetFEN());
+	if (!moveArray.isEmpty()) PushHistory();
 	if (_blackEngine != nullptr && _blackEngine->IsActive())
 	{
 		if (moveArray.isEmpty()) return;
@@ -2471,7 +2479,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	}
 	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, Black);
 	const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _blackEngine->GetType(), _gameVariant);
-	if (!moveArray.isEmpty()) _fenHistory.push_back(_board->GetFEN());
+	if (!moveArray.isEmpty()) PushHistory();
 	if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 	{
 		if (moveArray.isEmpty()) return;

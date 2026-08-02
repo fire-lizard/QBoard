@@ -34,7 +34,7 @@ public:
 	static char MusketeerPieceChar(PieceType musketeerPiece);
 	static bool CanBePromoted(const std::optional<Piece>& piece, GameVariant gameVariant, int oldY, int newY);
 	static bool IsLionMove(const std::optional<Piece>& piece, int x1, int y1, int x2, int y2);
-    static void RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<std::string>& moves);
+    static void RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<BoardSnapshot>& history);
 	static void RemoveMove(std::vector<std::pair<int, int>>& moves, int x, int y);
 	static int  GetEnPassantRank(GameVariant gameVariant, PieceColour pieceColour, char y);
 	static char ChessPieceChar(PieceType chessPiece);

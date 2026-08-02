@@ -96,6 +96,7 @@ private:
 	void FinishRelayedMove(const std::optional<Piece>& captured, const std::shared_ptr<Engine>& engine, int x, int y);
 	void CancelLionMove();
 	void ReportInfo(const QString& buf, const QString& infoStr, QTextEdit* textEdit, LogLevel logLevel);
+	void PushHistory();
 
 	Board *_board;
 	Board *_editorBoard = nullptr;
@@ -111,7 +112,7 @@ private:
 	std::vector<std::pair<int, int>> _shoots;
 	std::vector<std::pair<int, int>> _attackers;
 	std::vector<std::pair<int, int>> _defenders;
-	std::vector<std::string> _fenHistory;
+	std::vector<BoardSnapshot> _fenHistory;
 	QStatusBar *_statusBar;
 	QTextEdit *_textEdit;
 	QTextEdit *_textEdit2;

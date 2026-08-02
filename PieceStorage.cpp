@@ -35,6 +35,16 @@ void PieceStorage::ClearCapturedPieces()
 	_capturedPieces.clear();
 }
 
+const std::vector<std::pair<PieceColour, PieceType>>& PieceStorage::CapturedPieces() const
+{
+	return _capturedPieces;
+}
+
+void PieceStorage::SetCapturedPieces(std::vector<std::pair<PieceColour, PieceType>> pieces)
+{
+	_capturedPieces = std::move(pieces);
+}
+
 std::string PieceStorage::CapturedPieceString(GameVariant gameVariant)
 {
 	if (_capturedPieces.empty())

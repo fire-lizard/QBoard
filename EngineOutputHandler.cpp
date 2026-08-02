@@ -102,12 +102,16 @@ void EngineOutputHandler::CalculateXiangqiCheck(Board* board, std::vector<std::p
     delete brd;
 }
 
-void EngineOutputHandler::RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<std::string>& moves)
+void EngineOutputHandler::RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<BoardSnapshot>& history)
 {
-    if (moves.size() > 1)
+    if (history.size() > 1)
     {
-        moves.pop_back();
-        SetFenToBoard(board, QByteArray::fromStdString(moves[moves.size() - 1]), gameVariant);
+        history.pop_back();
+        SetFenToBoard(board, QByteArray::fromStdString(history.back().fen), gameVariant);
+        // A FEN restores the placement only. Without the hand the refused move keeps half its
+        // effect: a rolled-back drop leaves the piece neither on the board nor in hand, and a
+        // rolled-back capture leaves a piece in hand that is standing on the board again.
+        if (PieceStorage* ps = dynamic_cast<PieceStorage*>(board)) ps->SetCapturedPieces(history.back().hand);
     }
 }
 
