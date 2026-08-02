@@ -140,70 +140,91 @@ void ShogiBoard::SetDrops(bool hasDrops)
 	}
 }
 
+// Coordinates arrive as raw board indices: x from 0 (left) and y from 0 (top). Every shogi
+// format numbers files right to left (width - x) and ranks downwards from the top (y + 1);
+// PSN writes that rank as a letter instead ('a' = top rank). A drop arrives with the piece
+// letter in x1 and, in place of a rank, '*' from the board or '@' from an XBoard engine.
 void ShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture)
 {
+	const bool drop = y1 == '*' || y1 == '@';
+	const int fromFile = _width - x1;
+	const int fromRank = y1 + 1;
+	const int toFile = _width - x2;
+	const int toRank = y2 + 1;
+	// KIF and KI2 write 同 ("same") instead of the coordinates when a move lands on the square
+	// the previous move landed on -- which a drop can be the target of just as well.
+	const bool sameSquare = x2 == _oldX2 && y2 == _oldY2;
 	// PSN
 	_moveCount++;
 	_psn += std::to_string(_moveCount) + ".";
-	if (y1 == '*' || y1 == '@')
+	if (drop)
 	{
 		_psn.push_back(static_cast<char>(x1));
-		_psn.push_back(static_cast<char>(y1));
-		_psn += std::to_string(_width - x2);
+		_psn.push_back('*');
+		_psn += std::to_string(toFile);
 		_psn.push_back(static_cast<char>(y2 + 97));
 	}
 	else
 	{
 		_psn += _pieceToPSN.at(pieceType);
-		_psn += std::to_string(_width - x1);
+		_psn += std::to_string(fromFile);
 		_psn.push_back(static_cast<char>(y1 + 97));
 		_psn += capture ? "x" : "-";
-		_psn += std::to_string(_width - x2);
+		_psn += std::to_string(toFile);
 		_psn.push_back(static_cast<char>(y2 + 97));
 		_psn += promotion;
 	}
 	_psn += "          (00:00 / 00:00:00)\n";
 	// CSA
 	_csa += (_moveCount + 1) % 2 == 0 ? "+" : "-";
-	_csa += y1 == '*' ? "00" : std::to_string(_width - x1) + std::to_string(y1);
-	_csa += std::to_string(_width - x2);
-	_csa += std::to_string(y2);
+	_csa += drop ? "00" : std::to_string(fromFile) + std::to_string(fromRank);
+	_csa += std::to_string(toFile);
+	_csa += std::to_string(toRank);
     _csa += _pieceToCSA.at(promotion != '+' || GetData(x2, y2) == std::nullopt ? pieceType : GetData(x2, y2)->Type);
 	_csa += ",T1\n";
 	// KIF
 	_kif += "  " + std::to_string(_moveCount) + " "; // Add move number
-	const int number = _height - y2 + 1;
-	if (x2 == _oldX2 && y2 == _oldY2)
+	if (sameSquare)
     {
         _kif += _sameCoordStr;
         _kif += " ";
     }
     else
     {
-        _kif += std::to_string(_width - x2);
-        _kif += _numberToKanji.at(number);
+        _kif += std::to_string(toFile);
+        _kif += _numberToKanji.at(toRank);
     }
 	_kif += _pieceToKIF.at(pieceType);
 	if (promotion == '+')
 	{
 		_kif += _promotionStr;
 	}
-	_kif += y1 == '*' ? _dropStr : "(" + std::to_string(_width - x1) + std::to_string(y1) + ")";
+	_kif += drop ? _dropStr : "(" + std::to_string(fromFile) + std::to_string(fromRank) + ")";
 	_kif += "          (00:00 / 00:00:00)\n";
 	// KI2
 	_ki2 += (_moveCount + 1) % 2 == 0 ? _senteStr : _goteStr;
-	_ki2 += y1 == '*' ? _dropStr : std::to_string(_width - x1);
-	_ki2 += x2 == _oldX2 && y2 == _oldY2 ? _sameCoordStr : "";
-    _ki2 += x2 == _oldX2 && y2 == _oldY2 ? " " : _numberToKanji.at(number);
+	if (sameSquare)
+	{
+		_ki2 += _sameCoordStr;
+	}
+	else
+	{
+		_ki2 += std::to_string(toFile);
+		_ki2 += _numberToKanji.at(toRank);
+	}
 	_ki2 += _pieceToKIF.at(pieceType);
 	if (promotion == '+')
 	{
 		_ki2 += _promotionStr;
 	}
-	_ki2 += promotion == '+' ? "   " : "    ";
+	if (drop)
+	{
+		_ki2 += _dropStr;   // KI2 marks the drop after the piece, not before the square
+	}
+	_ki2 += promotion == '+' || drop ? "   " : "    ";
 	_ki2 += _moveCount % 6 == 0 ? "\n" : "";
-	_oldX2 = y1 != '*' ? x2 : _oldX2;
-	_oldY2 = y1 != '*' ? y2 : _oldX2;
+	_oldX2 = x2;
+	_oldY2 = y2;
 }
 
 std::string ShogiBoard::GetPSN()

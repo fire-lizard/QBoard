@@ -88,7 +88,7 @@ void MakrukBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2,
 		_pgn += "x";
 	}
 	_pgn.push_back(static_cast<char>(x2 + 97));
-	_pgn += std::to_string(y2);
+	_pgn += std::to_string(_height - y2);   // same formula as the origin rank above
 	if (promotion != ' ')
 	{
 		_pgn += "=";

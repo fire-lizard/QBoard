@@ -307,28 +307,34 @@ void WaShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 	}
 }
 
+// Coordinate notation, one entry per ply: "d4d5", "d4xd5", "d4d5+", and "P*d5" for a drop.
+// x1/y1 are raw board indices, except on a drop, where x1 carries the piece letter and y1 is
+// '*' (from the board) or '@' (from an XBoard engine) instead of a rank.
 void WaShogiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2, char promotion, bool capture)
 {
 	if (_moveCount % 2 == 0)
 	{
 		_pgn += std::to_string((_moveCount / 2) + 1) + ". "; // Add move number for white
 	}
-	if (pieceType != Pawn)
+	if (y1 == '*' || y1 == '@')
 	{
-		//_pgn += _pieceToPGN.at(pieceType);
+		_pgn.push_back(static_cast<char>(x1));
+		_pgn += "*";
 	}
-	_pgn.push_back(static_cast<char>(x1 + 97));
-	_pgn += std::to_string(_height - y1);
-	if (capture)
+	else
 	{
-		_pgn += "x";
+		_pgn.push_back(static_cast<char>(x1 + 97));
+		_pgn += std::to_string(_height - y1);
+		if (capture)
+		{
+			_pgn += "x";
+		}
 	}
 	_pgn.push_back(static_cast<char>(x2 + 97));
-	_pgn += std::to_string(y2);
-	if (promotion != ' ')
+	_pgn += std::to_string(_height - y2);
+	if (promotion == '+')
 	{
-		_pgn += "=";
-		_pgn += static_cast<char>(std::toupper(promotion));
+		_pgn += "+";
 	}
 	_pgn += " ";
 	_moveCount++;

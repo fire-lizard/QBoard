@@ -1,4 +1,4 @@
-#include "EngineOutputHandler.h"
+﻿#include "EngineOutputHandler.h"
 
 void EngineOutputHandler::RemoveMove(std::vector<std::pair<int, int>>& moves, int x, int y)
 {
@@ -532,7 +532,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 				board->GetMoves(board->GetData(x1, y1), x1, y1);
 				board->SetData(x2, y2, board->GetData(x1, y1));
 				board->SetData(x1, y1, std::nullopt);
-                AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
+                AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
                 engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
 				if (isPromoted)
 				{
@@ -559,7 +559,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 					board->SetData(x4, y4, board->GetData(x1, y1));
 					board->SetData(x1, y1, std::nullopt);
 				}
-                AddMove(board, gameVariant, board->GetData(x4, y4)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x4, board->GetHeight() - y4);
+                AddMove(board, gameVariant, board->GetData(x4, y4)->Type, x1, y1, x2, y2, x4, y4);
 				if (triple)
 				{
 					std::dynamic_pointer_cast<WbEngine>(engine)->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x3, board->GetHeight() - y3, x4, board->GetHeight() - y4);
@@ -599,7 +599,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2,
                     isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
             if (isPromoted)
@@ -652,7 +652,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2,
                     isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
             if (isPromoted)
@@ -718,7 +718,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             const PieceType ct1 = board->GetData(x1, y1) != std::nullopt ? board->GetData(x1, y1)->Type : None;
             const PieceType ct2 = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2,
                 isPromoted ? moveArray[ms - 1] : ' ', ct2 != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
         	if (isPromoted)
@@ -825,7 +825,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
 			board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2,
                     isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
 			if (isPromoted)
@@ -866,7 +866,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             board->GetMoves(board->GetData(x1, y1), x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2,
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2,
                     isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
             if (isPromoted)
@@ -924,7 +924,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 break;
             }
             board->SetData(x2, y2, Piece(newPiece, currentPlayer));
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, moveArray[0], moveArray[1], x2, board->GetHeight() - y2, ' ', ' ');
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, moveArray[0], moveArray[1], x2, y2, ' ', ' ');
             engine->AddMove(moveArray[0], moveArray[1], x2, board->GetHeight() - y2, ' ');
         }
     	else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
@@ -1130,7 +1130,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 }
             }
             board->SetData(x2, y2, Piece(newPiece, currentPlayer));
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, moveArray[0], moveArray[1], x2, board->GetHeight() - y2, ' ', ' ');
+            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, moveArray[0], moveArray[1], x2, y2, ' ', ' ');
             if (engine->GetType() == USI)
             {
                 engine->AddMove(moveArray[0], moveArray[1], board->GetWidth() - x2, y2, ' ');
@@ -1148,7 +1148,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			board->Move(x1, y1, x2, y2, false);
             if (board->GetData(x2, y2) != std::nullopt)
             {
-                AddMove(board, gameVariant, board->GetData(x2, y2)->BaseType, x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
+                AddMove(board, gameVariant, board->GetData(x2, y2)->BaseType, x1, y1, x2, y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
             }
             if (engine->GetType() == USI)
             {
@@ -1245,8 +1245,11 @@ void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceTy
 	{
 		dynamic_cast<MakrukBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
+    // CrazyWa has its own WriteMove override. Whale/Tori/Yari also derive from ShogiBoard but
+    // must stay out: their pieces are absent from ShogiBoard's PSN/CSA/KIF tables, so the .at()
+    // lookups would throw. Heian Shogi is not a ShogiBoard at all (it descends from Heian Dai).
     else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi ||
-             gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == EuroShogi)
+             gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == EuroShogi || gameVariant == CrazyWa)
 	{
 		dynamic_cast<ShogiBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}

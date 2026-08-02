@@ -247,11 +247,15 @@ void XiangqiBoard::WriteMove(PieceType pieceType, int x1, int y1, int x2, int y2
 		}
 		else if (_pieceFiles[1] != -1 && _pieceFiles[2] != -1)
 		{
+			// Black counts from its own side, so the piece with the largest y is number 1.
+			// _pieceFiles holds y ascending, padded with -1: count the real entries first.
+			int count = 0;
+			for (const int f : _pieceFiles) if (f != -1) count++;
 			for (int index = 0; index < 5; index++)
 			{
 				if (_pieceFiles[index] == y1)
 				{
-					_wxf += std::to_string(5 - index);
+					_wxf += std::to_string(count - index);
 					break;
 				}
 			}
