@@ -447,7 +447,11 @@ void VBoard::FinishMove(int x, int y)
 	PushHistory();
 	if (_comm && _comm->is_connected_remotely())
 	{
-		_comm->send_move(_board->GetFEN());
+		// The full FEN, not just the placement: castling rights, the en passant square and the
+		// pieces in hand live beside the squares and the peer cannot reconstruct them. _currentPlayer
+		// still holds the side that just moved, so the side to move is the other one.
+		_comm->send_move(EngineOutputHandler::GetFenFromBoard(_board, _gameVariant,
+			_currentPlayer == White ? Black : White).toStdString());
 		_waitForOtherPlayer = true;
 	}
 	_currentPlayer = _currentPlayer == White ? Black : White;

@@ -1275,6 +1275,64 @@ template <typename T> std::basic_string<T> EngineOutputHandler::lowercase(const 
 	return s2;
 }
 
+// Variants whose FEN carries a holdings field as the third field. GetFenFromBoard writes it and
+// SetFenToBoard reads it, so the two must agree or a position stops round-tripping. (Sittuyin and
+// Musketeer Chess also have holdings, but theirs go in brackets after the placement.)
+bool EngineOutputHandler::HasHoldingsField(GameVariant gameVariant)
+{
+	return gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi ||
+		gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi ||
+		gameVariant == YariShogi || gameVariant == CrazyWa;
+}
+
+// The inverse of SetFenToBoard. Board::GetFEN() is the piece placement alone, so anything that
+// ships a bare GetFEN() loses the state that lives beside the squares -- castling rights, the en
+// passant square, the pieces in hand -- and the receiver silently keeps its own stale copy.
+QString EngineOutputHandler::GetFenFromBoard(Board* board, GameVariant gameVariant, PieceColour sideToMove)
+{
+	QString fen = QString::fromStdString(board->GetFEN());
+	if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
+	{
+		// pieces still to be placed, one letter each, uppercase for White
+		const auto pieceCodes = StringManager::GetOrderData(gameVariant).first;
+		auto* stb = dynamic_cast<PieceStorage*>(board);
+		QString cpStr;
+		if (stb != nullptr)
+		{
+			for (const auto& capturedPiece : stb->GetCapturedPieces(White))
+			{
+				const auto it = pieceCodes.find(capturedPiece);
+				if (it != pieceCodes.end()) cpStr += QString::fromStdString(it->second);
+			}
+			for (const auto& capturedPiece : stb->GetCapturedPieces(Black))
+			{
+				const auto it = pieceCodes.find(capturedPiece);
+				if (it != pieceCodes.end()) cpStr += static_cast<char>(std::tolower(it->second[0]));
+			}
+		}
+		fen += "[" + cpStr + "]";
+	}
+	fen += sideToMove == Black ? " b" : " w";
+	if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
+	{
+		auto* cb = dynamic_cast<ChessBoard*>(board);
+		if (cb != nullptr)
+		{
+			// Grand Chess has no castling, so it has no rights to spell out
+			fen += " " + (gameVariant != GrandChess ? QString::fromStdString(cb->GetCastling()) : "-");
+			fen += " " + QString::fromStdString(cb->GetEnPassant());
+			fen += " " + QString::number(cb->HalfMoveCount());
+		}
+	}
+	else if (HasHoldingsField(gameVariant))
+	{
+		auto* cps = dynamic_cast<PieceStorage*>(board);
+		if (cps != nullptr) fen += " " + QString::fromStdString(cps->CapturedPieceString(gameVariant));
+	}
+	fen += " " + QString::number(board->MoveCount());
+	return fen;
+}
+
 QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant)
 {
 	QStringList parts;
@@ -1373,7 +1431,9 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 		}
 		if (parts.size() >= 4)
 		{
-			if (parts[3].size() == 2 && parts[3][0] >= 'a' && parts[3][0] <= 'h' && parts[3][1] >= '1' && parts[3][1] <= '8')
+			// the file letter runs to the board's own width -- Capablanca and Grand reach 'j'
+			if (parts[3].size() == 2 && parts[3][0] >= 'a' && parts[3][0] < QChar('a' + board->GetWidth()) &&
+				parts[3][1] >= '1' && parts[3][1] <= '8')
 			{
 				cb->SetEnPassant(parts[3].toStdString());
 			}
@@ -1383,45 +1443,49 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			}
 		}
 	}
-    if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi ||
-        gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi)
+    if (HasHoldingsField(gameVariant))
 	{
 		if (parts.size() >= 3)
 		{
 			PieceStorage* cps = dynamic_cast<PieceStorage*>(board);
+			// The holdings field is the whole hand, not an addition to it: Board::Clear() above
+			// empties the squares only, so without this every parse doubles what is held.
+			cps->ClearCapturedPieces();
 			k = 0;
-            int c = 1;
+            int c = 0;   // 0 = no count prefix seen; Wa can hold more than 9 of a piece ("11P")
 			do
 			{
-                if (parts[2][k] >= '1' && parts[2][k] <= '9')
+                if (parts[2][k] >= '0' && parts[2][k] <= '9')
                 {
-                    c = QString(parts[2][k]).toInt();
+                    c = c * 10 + parts[2][k].digitValue();
                 }
                 else if (parts[2][k] >= 'a' && parts[2][k] <= 'z')
 				{
-                    for (int index = 0; index < c; index++)
+                    for (int index = 0; index < (c > 0 ? c : 1); index++)
                     {
                         PieceType pt = StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, parts[2][k].toLatin1())));
                     	if (pt != None) cps->AddCapturedPiece(pt, Black);
                     }
-                    c = 1;
+                    c = 0;
                 }
 				else if (parts[2][k] >= 'A' && parts[2][k] <= 'Z')
 				{
-                    for (int index = 0; index < c; index++)
+                    for (int index = 0; index < (c > 0 ? c : 1); index++)
                     {
                         PieceType pt = StringManager::StringCode2PieceType(gameVariant, std::string(1, parts[2][k].toLatin1()));
                         if (pt != None) cps->AddCapturedPiece(pt, White);
                     }
-                    c = 1;
+                    c = 0;
 				}
 				k++;
-			} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z') || (parts[2][k] >= '1' && parts[2][k] <= '9')));
+			} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z') || (parts[2][k] >= '0' && parts[2][k] <= '9')));
 		}
 	}
     if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
     {
-        if (parts.size() >= 2)
+        // an empty bracket pair ("...[] w") leaves parts[1] empty, and the loop below reads
+        // parts[1][0] before it tests anything
+        if (parts.size() >= 2 && !parts[1].isEmpty())
         {
             PieceStorage* cps = dynamic_cast<PieceStorage*>(board);
             k = 0;

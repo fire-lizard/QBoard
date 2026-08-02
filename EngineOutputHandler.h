@@ -27,6 +27,8 @@ public:
 	static void ReadStandardError(const QByteArray& buf, QTextEdit* textEdit);
 	static void AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3);
 	static QString SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant);
+	static QString GetFenFromBoard(Board* board, GameVariant gameVariant, PieceColour sideToMove);
+	static bool HasHoldingsField(GameVariant gameVariant);
 	static void CalculateCheck(Board* board, PieceColour pieceColour, std::vector<std::pair<int, int>>& moves, int oldX, int oldY, int newX, int newY);
     static void CalculateXiangqiCheck(Board* board, std::vector<std::pair<int, int>>& moves, int oldX, int oldY, int newX, int newY);
     static std::vector<std::pair<int, int>> GetPieceLocations(const Board* board, PieceType pieceType, PieceColour pieceColour);
