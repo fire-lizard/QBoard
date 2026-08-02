@@ -58,7 +58,7 @@ Name: "engines\UCI\Stockfish"; Description: "Stockfish 10"; Types: full custom
 Name: "engines\USI"; Description: "USI engines"; Types: full custom
 Name: "engines\USI\LaramieV3"; Description: "Laramie V3"; Types: full custom
 Name: "engines\WinBoard"; Description: "WinBoard engines"; Types: full custom
-Name: "engines\WinBoard\FairyMax"; Description: "Fairy-Max 5.0b"; Types: full custom
+Name: "engines\WinBoard\FairyMax"; Description: "Fairy-Max 5.0b3"; Types: full custom
 Name: "engines\WinBoard\FairyStockfish"; Description: "Fairy-Stockfish 14"; Types: full custom
 Name: "engines\WinBoard\Pulsar"; Description: "Pulsar"; Types: full custom
 Name: "engines\WinBoard\Nebiyu"; Description: "Nebiyu 1.45"; Types: full custom

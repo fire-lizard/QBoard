@@ -41,7 +41,7 @@ public:
 	static char ChessPieceChar(PieceType chessPiece);
 	static char MusketeerPieceChar(PieceType musketeerPiece);
 	static qsizetype CutAtLastCompleteMove(const QByteArray& buffer);
-	static Move CastlingToMove(const QByteArray& c, Board* board, PieceColour currentPlayer);
+	static Move CastlingToMove(const QByteArray& c, const Board* board, PieceColour currentPlayer);
 	static std::pair<int, int> CastlingTargets(GameVariant gameVariant, int kingX, int rookX);
 	static int EngineRank(GameVariant gameVariant, int height, int y);
 

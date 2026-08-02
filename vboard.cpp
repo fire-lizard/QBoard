@@ -514,7 +514,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	// Castling check
     if ((_gameVariant == Chess || _gameVariant == CapablancaChess || _gameVariant == GothicChess ||
          _gameVariant == JanusChess || _gameVariant == ChancellorChess || _gameVariant == ModernChess ||
-         _gameVariant == OmegaChess || _gameVariant == NightriderChess || _gameVariant == MusketeerChess) &&
+         _gameVariant == OmegaChess || _gameVariant == NightriderChess || _gameVariant == MusketeerChess ||
+		 _gameVariant == AmazonChess || _gameVariant == AtomicChess || _gameVariant == CylinderChess || _gameVariant == KnightmateChess) &&
         _currentPiece != std::nullopt && _currentPiece->Type == King && !_currentPiece->HasMoved &&
         p != std::nullopt && p->Colour == _currentPlayer && p->Type == Rook && !p->HasMoved && _board->IsMovePossible(x, y))
 	{
@@ -1847,7 +1848,19 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	case GrandeAcedrex:
         _board = new GrandeAcedrexBoard();
         break;
-    case Shogi:
+	case AmazonChess:
+		_board = new AmazonChessBoard();
+		break;
+	case AtomicChess:
+		_board = new AtomicChessBoard();
+		break;
+	case CylinderChess:
+		_board = new CylinderChessBoard();
+		break;
+	case KnightmateChess:
+		_board = new KnightmateChessBoard();
+		break;
+	case Shogi:
 		_board = new ShogiBoard();
 		break;
 	case ShoShogi:

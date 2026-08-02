@@ -148,6 +148,10 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
     case Shatranj:
     case Shatar:
     case Sittuyin:
+    case AmazonChess:
+    case AtomicChess:
+    case CylinderChess:
+    case KnightmateChess:
         if (pieceStyle == Mnemonic)
         {
             painter.drawPixmap(i * w + w / 10, j * h + h / 10, pixmap.size().width(), pixmap.size().height(), pixmap);
@@ -283,6 +287,10 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     case Shatranj:
     case Shatar:
     case Sittuyin:
+    case AmazonChess:
+    case AtomicChess:
+    case CylinderChess:
+    case KnightmateChess:
         if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
         if (pieceStyle == Mnemonic) return ":/pieces_eur/images/images_eur/";
         if (pieceStyle == Asian) return ":/pieces_eur2/images/images_eur2/";
@@ -393,6 +401,10 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     case Shatar:
     case Sittuyin:
     case GrandeAcedrex:
+    case AmazonChess:
+    case AtomicChess:
+    case CylinderChess:
+    case KnightmateChess:
         if (gameVariant == Sittuyin && pieceStyle == Asian4) imageFileName = GetSittuyinImageFileName(pieceColour, pieceType);
     	else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
         break;

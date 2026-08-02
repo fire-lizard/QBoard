@@ -236,6 +236,18 @@
     <ClCompile Include="editor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AmazonChessBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CylinderChessBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="KnightmateChessBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AtomicChessBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -425,6 +437,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TaiShogiBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KnightmateChessBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CylinderChessBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AmazonChessBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AtomicChessBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

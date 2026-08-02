@@ -451,7 +451,7 @@ int EngineOutputHandler::EngineRank(GameVariant gameVariant, int height, int y)
 // whose back rank is not the edge row (Omega, Musketeer), used rank 10 for Black on the 8- and
 // 9-rank boards, gave Janus Capablanca's king file, and handed ASCII digits to ByteArrayToMove
 // where the wide boards encode the rank as a binary byte.
-Move EngineOutputHandler::CastlingToMove(const QByteArray& c, Board* board, PieceColour currentPlayer)
+Move EngineOutputHandler::CastlingToMove(const QByteArray& c, const Board* board, PieceColour currentPlayer)
 {
     const std::vector<std::pair<int, int>> kings = GetPieceLocations(board, King, currentPlayer);
     if (kings.empty()) return { .x1 = -1, .y1 = -1, .x2 = -1, .y2 = -1 };
@@ -565,7 +565,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 {
                     board->Promote(x1, y1); // stationary in-zone promotion
                 }
-                return; // ponytail: shoot not recorded in the engine's _moves transcript (write-only list, no shoot overload)
+                return; // shoot not recorded in the engine's _moves transcript (write-only list, no shoot overload)
             }
             if (ms < 8)
 			{

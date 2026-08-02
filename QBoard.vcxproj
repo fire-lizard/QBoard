@@ -210,9 +210,13 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AmazonChessBoard.cpp" />
+    <ClCompile Include="AtomicChessBoard.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="CapablancaChessBoard.cpp" />
+    <ClCompile Include="CylinderChessBoard.cpp" />
     <ClCompile Include="editor.cpp" />
+    <ClCompile Include="KnightmateChessBoard.cpp" />
     <ClCompile Include="PieceStorage.cpp" />
     <ClCompile Include="ChancellorChessBoard.cpp" />
     <ClCompile Include="ChessBoard.cpp" />
@@ -275,9 +279,13 @@
     <ClCompile Include="zboard.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AmazonChessBoard.h" />
+    <ClInclude Include="AtomicChessBoard.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="CapablancaChessBoard.h" />
     <QtMoc Include="editor.h" />
+    <ClInclude Include="CylinderChessBoard.h" />
+    <ClInclude Include="KnightmateChessBoard.h" />
     <ClInclude Include="PieceStorage.h" />
     <ClInclude Include="ChancellorChessBoard.h" />
     <ClInclude Include="ChessBoard.h" />

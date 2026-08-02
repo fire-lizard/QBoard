@@ -28,6 +28,7 @@ namespace {
 			{OmegaChess,      "Omega Chess"},
 			{NightriderChess, "Nightrider Chess"},
 			{MusketeerChess,  "Musketeer Chess"},
+			{AtomicChess,     "Atomic Chess"},
 			{CourierChess,    "Courier Chess"},
 			{GrandeAcedrex,   "Grande Acedrex"},
 			{Xiangqi,         "Xiangqi"},
@@ -73,6 +74,10 @@ namespace {
 		{OmegaChess,        "omega"},
 		{NightriderChess,   "nightrider"},
 		{MusketeerChess,    "musketeer"},
+		{AmazonChess,       "amazon"},
+		{AtomicChess,       "atomic"},
+		{CylinderChess,     "cylinder"},
+		{KnightmateChess,   "knightmate"},
 		{CourierChess,      "courier"},
 		{GrandeAcedrex,     "grande-acedrex"},
 

@@ -18,6 +18,10 @@ macx-clang {
 
 SOURCES += main.cpp\
     PieceStorage.cpp \
+    AmazonChessBoard.cpp \
+    AtomicChessBoard.cpp \
+    CylinderChessBoard.cpp \
+    KnightmateChessBoard.cpp \
     CapablancaChessBoard.cpp \
     ChancellorChessBoard.cpp \
     CourierChessBoard.cpp \
@@ -82,6 +86,10 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     Board.h \
+    AmazonChessBoard.h \
+    AtomicChessBoard.h \
+    CylinderChessBoard.h \
+    KnightmateChessBoard.h \
     CapablancaChessBoard.h \
     ChancellorChessBoard.h \
     ChessBoard.h \

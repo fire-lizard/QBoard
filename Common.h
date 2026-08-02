@@ -13,9 +13,9 @@ enum GameFormat
 enum GameVariant
 {
     Chess, CapablancaChess, GothicChess, JanusChess, ChancellorChess, ModernChess, GrandChess, OmegaChess, NightriderChess, CourierChess,
-	MusketeerChess, GrandeAcedrex, Xiangqi, Janggi, Shatar, Shatranj, Makruk, Sittuyin, Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi,
-	WhaleShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi, ShoShogi, CrazyWa, ChuShogi, HeianDaiShogi, DaiShogi, TenjikuShogi, DaiDaiShogi,
-	MakaDaiDaiShogi, KoShogi, TaiShogi
+	AmazonChess, AtomicChess, CylinderChess, KnightmateChess, MusketeerChess, GrandeAcedrex, Xiangqi, Janggi, Shatar, Shatranj, Makruk,
+	Sittuyin, Shogi, MicroShogi, KyotoShogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi, ShoShogi,
+	CrazyWa, ChuShogi, HeianDaiShogi, DaiShogi, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi, TaiShogi
 };
 
 enum PieceColour
@@ -92,7 +92,7 @@ enum Direction
 };
 
 inline GameVariant chessVariants[] = { Chess, CapablancaChess, GothicChess, JanusChess, GrandChess, OmegaChess, NightriderChess,
-	                                   ChancellorChess, ModernChess, MusketeerChess };
+	                                   ChancellorChess, ModernChess, MusketeerChess, AmazonChess, AtomicChess, CylinderChess, KnightmateChess };
 
 inline GameVariant shogiVariants[] = { MicroShogi, KyotoShogi, Shogi, MiniShogi, JudkinShogi, WhaleShogi, ToriShogi, EuroShogi, YariShogi, HeianShogi,
                                        ChuShogi, HeianDaiShogi, DaiShogi, ShoShogi, CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi, TaiShogi };

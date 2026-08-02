@@ -617,7 +617,15 @@ void MainWindow::on_actionSave_triggered()
                     chessVariant = "[Variant \"courier\"]\n\n";
                 else if (gameVariant == GrandeAcedrex)
                     chessVariant = "[Variant \"grande acedrex\"]\n\n";
-                const QString result = "[Result \"*\"]\n";
+				else if (gameVariant == AmazonChess)
+					chessVariant = "[Variant \"amazon\"]\n\n";
+				else if (gameVariant == AtomicChess)
+					chessVariant = "[Variant \"atomic\"]\n\n";
+				else if (gameVariant == CylinderChess)
+					chessVariant = "[Variant \"cylinder\"]\n\n";
+				else if (gameVariant == KnightmateChess)
+					chessVariant = "[Variant \"knightmate\"]\n\n";
+				const QString result = "[Result \"*\"]\n";
 				const QString pgn = QString::fromStdString(dynamic_cast<ShatranjBoard*>(this->ui->vboard->GetBoard())->GetPGN());
                 str = (evt + site + currentDate + currentRound + whiteName + blackName + result + chessVariant + pgn).toLatin1();
 			}
