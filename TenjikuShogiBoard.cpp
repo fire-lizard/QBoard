@@ -188,12 +188,12 @@ void TenjikuShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y
 		CheckNullMove(x, y);
 		break;
 	case FireDemon:
-		CheckDirection(piece, x + 1, y + 1, SouthEast);
-		CheckDirection(piece, x + 1, y - 1, NorthEast);
-		CheckDirection(piece, x, y + 1, East);
-		CheckDirection(piece, x, y - 1, West);
-		CheckDirection(piece, x - 1, y + 1, SouthWest);
-		CheckDirection(piece, x - 1, y - 1, NorthWest);
+		CheckDirection(piece, x, y, East);
+		CheckDirection(piece, x, y, West);
+		CheckDirection(piece, x, y, NorthEast);
+		CheckDirection(piece, x, y, NorthWest);
+		CheckDirection(piece, x, y, SouthEast);
+		CheckDirection(piece, x, y, SouthWest);
 
 		GetPossibleMoves(x, y);
 
