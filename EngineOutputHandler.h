@@ -42,6 +42,10 @@ public:
 	static char MusketeerPieceChar(PieceType musketeerPiece);
 	static qsizetype CutAtLastCompleteMove(const QByteArray& buffer);
 	static Move CastlingToMove(const QByteArray& c, const Board* board, PieceColour currentPlayer);
+	static bool IsCastling(const QByteArray& moveArray, const Board* board, GameVariant gameVariant,
+		int x1, int y1, int x2, int y2);
+	static bool RelayMove(const std::shared_ptr<Engine>& to, const QByteArray& moveArray, const Move& castling,
+		const Board* board, GameVariant gameVariant);
 	static std::pair<int, int> CastlingTargets(GameVariant gameVariant, int kingX, int rookX);
 	static int EngineRank(GameVariant gameVariant, int height, int y);
 

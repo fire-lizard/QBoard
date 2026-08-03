@@ -446,6 +446,65 @@ int EngineOutputHandler::EngineRank(GameVariant gameVariant, int height, int y)
         ? height - y - 1 : height - y;
 }
 
+// Hand the move the engine on turn just made to its opponent. The two colours had a copy each of
+// this, and only the engine pointer differed. `castling` is what CastlingToMove read off the board
+// before ReadStandardOutput moved the king, and is only looked at for an "O-O" reply. False means
+// there was nothing to pass on - engine chatter, or a castling with no rook to castle with.
+bool EngineOutputHandler::RelayMove(const std::shared_ptr<Engine>& to, const QByteArray& moveArray,
+	const Move& castling, const Board* board, GameVariant gameVariant)
+{
+	if (moveArray.isEmpty()) return false;
+	if (moveArray.contains("O-O"))
+	{
+		// "O-O" is the engine that sent it talking in its own notation, not a move the opponent has
+		// to accept - a UCI opponent gets it spliced into its "position ... moves" list verbatim and
+		// rejects the whole game. CECP spells castling as the king's own from-to.
+		if (castling.x2 == -1) return false;
+		const int rank = EngineRank(gameVariant, board->GetHeight(), castling.y1);
+		to->Move(castling.x1, rank, CastlingTargets(gameVariant, castling.x1, castling.x2).first, rank, ' ');
+	}
+	else if (gameVariant == KoShogi && moveArray.contains('x'))
+	{
+		to->Move(KoShogiShootToText(moveArray));
+	}
+	else if (moveArray.size() < 8)
+	{
+		const Move m = ByteArrayToMove(moveArray, to->GetType(), board->GetWidth(), board->GetHeight());
+		QByteArray convertedMoveArray = MoveToByteArray(m, to->GetType(), board->GetWidth(), board->GetHeight());
+		to->Move(moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[0] : convertedMoveArray[0],
+		         moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[1] : convertedMoveArray[1],
+		         convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
+	}
+	else if (moveArray.size() < 12)
+	{
+		std::dynamic_pointer_cast<WbEngine>(to)->DoubleMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3],
+			moveArray[6], moveArray[7]);
+	}
+	else
+	{
+		std::dynamic_pointer_cast<WbEngine>(to)->TripleMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3],
+			moveArray[6], moveArray[7], moveArray[10], moveArray[11]);
+	}
+	return true;
+}
+
+// "A king that moved more than one file has castled" was too generous: in Knightmate the royal
+// piece is a knight, and every (2,1) jump it made matched. ApplyCastling then found a bishop where
+// it wanted a rook and dropped the move without a word, so QBoard's board fell a move behind the
+// engine's and everything after it came back "Illegal move". A castling stays on its rank and puts
+// the king either on the square CastlingTargets names or - for engines that spell it king-takes-
+// rook - on the rook itself. A knight's jump and a cylinder board's wrap-around match neither.
+bool EngineOutputHandler::IsCastling(const QByteArray& moveArray, const Board* board, GameVariant gameVariant,
+	int x1, int y1, int x2, int y2)
+{
+	if (moveArray.contains("O-O")) return true;
+	const std::optional<Piece> king = board->GetData(x1, y1);
+	if (y1 != y2 || abs(x1 - x2) <= 1 || king == std::nullopt || king->Type != King) return false;
+	const std::optional<Piece> target = board->GetData(x2, y2);
+	return x2 == CastlingTargets(gameVariant, x1, x2).first ||
+	       (target != std::nullopt && target->Type == Rook && target->Colour == king->Colour);
+}
+
 // "O-O" names no squares, so the from/to has to be read off the board: the king, and the rook it
 // castles with. Spelling the squares out per variant instead got the rank wrong on every board
 // whose back rank is not the edge row (Omega, Musketeer), used rank 10 for Black on the 8- and
@@ -674,7 +733,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     else if (gameVariant == OmegaChess)
     {
         // Castling check
-        if (moveArray.contains("O-O") || (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King))
+        if (IsCastling(moveArray, board, gameVariant, x1, y1, x2, y2))
         {
             const int kingTo = ApplyCastling(board, gameVariant, x1, y1, x2);
             const int rank = EngineRank(gameVariant, board->GetHeight(), y1);
@@ -729,7 +788,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             y2--;
         }
         // Castling check
-        if (moveArray.contains("O-O") || (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King))
+        if (IsCastling(moveArray, board, gameVariant, x1, y1, x2, y2))
         {
             const int kingTo = ApplyCastling(board, gameVariant, x1, y1, x2);
             const int rank = EngineRank(gameVariant, board->GetHeight(), y1);
@@ -815,7 +874,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     else if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
 	{
     	// Castling check
-        if (moveArray.contains("O-O") || (abs(x1 - x2) > 1 && board->GetData(x1, y1) != std::nullopt && board->GetData(x1, y1)->Type == King))
+        if (IsCastling(moveArray, board, gameVariant, x1, y1, x2, y2))
 		{
             const int kingTo = ApplyCastling(board, gameVariant, x1, y1, x2);
             const int rank = EngineRank(gameVariant, board->GetHeight(), y1);

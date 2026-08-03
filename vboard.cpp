@@ -2336,9 +2336,8 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 		return;
 	}
 	const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _whiteEngine->GetType(), _gameVariant);
-	// "O-O" is the engine that sent it talking in its own notation, not a move the second engine
-	// has to accept - a UCI opponent gets it spliced into its "position ... moves" list verbatim
-	// and rejects the whole game. Read the king off the board before ReadStandardOutput moves it.
+	// Read the king off the board before ReadStandardOutput moves it: an "O-O" reply names no
+	// squares, and the opponent has to be told the king's own from-to.
 	const Move castling = moveArray.contains("O-O")
 		? EngineOutputHandler::CastlingToMove(moveArray, _board, White)
 		: Move{ .x1 = -1, .y1 = -1, .x2 = -1, .y2 = -1 };
@@ -2346,36 +2345,9 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	if (!moveArray.isEmpty()) PushHistory();
 	if (_blackEngine != nullptr && _blackEngine->IsActive())
 	{
-		if (moveArray.isEmpty()) return;
-		if (moveArray.contains("O-O"))
-		{
-			if (castling.x2 == -1) return;
-			const int rank = EngineOutputHandler::EngineRank(_gameVariant, _board->GetHeight(), castling.y1);
-			_blackEngine->Move(castling.x1, rank,
-				EngineOutputHandler::CastlingTargets(_gameVariant, castling.x1, castling.x2).first, rank, ' ');
-		}
-		else if (_gameVariant == KoShogi && moveArray.contains('x'))
-		{
-			_blackEngine->Move(EngineOutputHandler::KoShogiShootToText(moveArray));
-		}
-		else if (moveArray.size() < 8)
-		{
-            const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
-            QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _blackEngine->GetType(), _board->GetWidth(), _board->GetHeight());
-			_blackEngine->Move(moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[0] : convertedMoveArray[0],
-			                   moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[1] : convertedMoveArray[1],
-				               convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
-		}
-		else if (moveArray.size() < 12)
-		{
-			std::dynamic_pointer_cast<WbEngine>(_blackEngine)->DoubleMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
-		}
-		else
-		{
-			std::dynamic_pointer_cast<WbEngine>(_blackEngine)->TripleMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7], moveArray[10], moveArray[11]);
-		}
+		if (!EngineOutputHandler::RelayMove(_blackEngine, moveArray, castling, _board, _gameVariant)) return;
 	}
-	else 
+	else
 	{
 		_currentPlayer = Black;
 	}
@@ -2481,34 +2453,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	if (!moveArray.isEmpty()) PushHistory();
 	if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 	{
-		if (moveArray.isEmpty()) return;
-		if (moveArray.contains("O-O"))
-		{
-			if (castling.x2 == -1) return;
-			const int rank = EngineOutputHandler::EngineRank(_gameVariant, _board->GetHeight(), castling.y1);
-			_whiteEngine->Move(castling.x1, rank,
-				EngineOutputHandler::CastlingTargets(_gameVariant, castling.x1, castling.x2).first, rank, ' ');
-		}
-		else if (_gameVariant == KoShogi && moveArray.contains('x'))
-		{
-			_whiteEngine->Move(EngineOutputHandler::KoShogiShootToText(moveArray));
-		}
-		else if (moveArray.size() < 8)
-		{
-            const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());
-            QByteArray convertedMoveArray = EngineOutputHandler::MoveToByteArray(m, _whiteEngine->GetType(), _board->GetWidth(), _board->GetHeight());
-			_whiteEngine->Move(moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[0] : convertedMoveArray[0],
-			                   moveArray[1] == '*' || moveArray[1] == '@' ? moveArray[1] : convertedMoveArray[1],
-				               convertedMoveArray[2], convertedMoveArray[3], moveArray.size() > 4 ? moveArray[4] : ' ');
-		}
-		else if (moveArray.size() < 12)
-		{
-			std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->DoubleMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7]);
-		}
-		else
-		{
-			std::dynamic_pointer_cast<WbEngine>(_whiteEngine)->TripleMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], moveArray[6], moveArray[7], moveArray[10], moveArray[11]);
-		}
+		if (!EngineOutputHandler::RelayMove(_whiteEngine, moveArray, castling, _board, _gameVariant)) return;
 	}
 	else
 	{

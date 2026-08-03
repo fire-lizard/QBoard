@@ -30,6 +30,7 @@ namespace {
 			{MusketeerChess,  "Musketeer Chess"},
 			{AmazonChess,     "Amazon Chess"},
 			{AtomicChess,     "Atomic Chess"},
+			{KnightmateChess, "Knightmate Chess"},
 			{CourierChess,    "Courier Chess"},
 			{GrandeAcedrex,   "Grande Acedrex"},
 			{Xiangqi,         "Xiangqi"},
