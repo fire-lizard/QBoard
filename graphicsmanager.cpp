@@ -1809,7 +1809,7 @@ QString GraphicsManager::GetKnightmateChessImageFileName(PieceColour pieceColour
         return colour + "Unicorn.png";
     case Rook:
         return colour + "Rook.png";
-    case Knight:
+    case Silver:
         return colour + "Advisor.png";
     case Bishop:
         return colour + "Bishop.png";

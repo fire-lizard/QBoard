@@ -54,6 +54,7 @@ void KnightmateChessBoard::Initialize()
 		}
 	}
 }
+
 void KnightmateChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 {
 	_moves.clear();
@@ -95,7 +96,7 @@ void KnightmateChessBoard::GetMoves(const std::optional<Piece>& piece, int x, in
 			}
 		}
 		break;
-	case Knight:
+	case Silver:
 		CheckMove(piece, x + 1, y + 1);
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x + 1, y - 1);
@@ -108,5 +109,18 @@ void KnightmateChessBoard::GetMoves(const std::optional<Piece>& piece, int x, in
 	default:
 		ChessBoard::GetMoves(piece, x, y);
 		break;
+	}
+}
+
+std::string KnightmateChessBoard::GetStringCode(int x, int y) const
+{
+	if (GetData(x, y) == std::nullopt) return "";
+	PieceType pieceType = GetData(x, y)->Type;
+	switch (pieceType)
+	{
+	case Silver:
+		return "M";
+	default:
+		return ChessBoard::GetStringCode(x, y);
 	}
 }
