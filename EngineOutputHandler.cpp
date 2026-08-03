@@ -505,6 +505,31 @@ bool EngineOutputHandler::IsCastling(const QByteArray& moveArray, const Board* b
 	       (target != std::nullopt && target->Type == Rook && target->Colour == king->Colour);
 }
 
+// CECP lets an engine leave the piece letter off a promotion - "c7c8" rather than "c7c8q" - and a
+// missing letter means a queen. Nebiyu always leaves it off. Without this the pawn stays a pawn on
+// the last rank while the engine has a queen there, and the two boards drift apart from that move
+// on. A move that did name its piece has already been promoted, so this sees no pawn and does
+// nothing. Musketeer's gating rows and Omega's wizard rows hold the last rank one row inside the
+// array, the same way EngineRank has to account for them.
+void EngineOutputHandler::PromoteIfUnmarked(Board* board, GameVariant gameVariant, int x2, int y2)
+{
+	// Sittuyin promotes on a diagonal and usually in place ("d5d5f"), not by arriving anywhere, so
+	// a pawn on its last rank there is still a pawn.
+	if (gameVariant == Sittuyin) return;
+	const std::optional<Piece> piece = board->GetData(x2, y2);
+	if (piece == std::nullopt || piece->Type != Pawn) return;
+	// How far inside the array the promotion row sits. Musketeer's gating rows and Omega's wizard
+	// rows hold the last rank one row in; Makruk promotes on the sixth rank rather than the last.
+	const int inset = gameVariant == Makruk ? 2
+		: gameVariant == MusketeerChess || gameVariant == OmegaChess ? 1 : 0;
+	if (y2 == (piece->Colour == White ? inset : board->GetHeight() - 1 - inset))
+	{
+		// One piece per variant, and every board that reaches here calls it a Queen: the Ferz of
+		// Shatranj and Courier, the Met of Makruk, a real queen in Shatar and the chess variants.
+		board->Promote(x2, y2, Queen);
+	}
+}
+
 // "O-O" names no squares, so the from/to has to be read off the board: the king, and the rook it
 // castles with. Spelling the squares out per variant instead got the rank wrong on every board
 // whose back rank is not the edge row (Omega, Musketeer), used rank 10 for Black on the 8- and
@@ -776,6 +801,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                     break;
                 }
             }
+            PromoteIfUnmarked(board, gameVariant, x2, y2);
         }
     }
     else if (gameVariant == MusketeerChess)
@@ -869,6 +895,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                     board->SetData(x1, y1, Piece(pt, currentPlayer));
                 }
             }
+            PromoteIfUnmarked(board, gameVariant, x2, y2);
         }
     }
     else if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
@@ -917,6 +944,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 					break;
 				}
 			}
+			PromoteIfUnmarked(board, gameVariant, x2, y2);
 		}
 	}
     else if (gameVariant == GrandeAcedrex)
@@ -1004,6 +1032,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			{
                 board->Promote(x2, y2);
 			}
+			PromoteIfUnmarked(board, gameVariant, x2, y2);
 		}
 	}
 	else if (gameVariant == Makruk)
@@ -1020,6 +1049,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			{
                 board->Promote(x2, y2);
 			}
+			PromoteIfUnmarked(board, gameVariant, x2, y2);
 		}
 	}
     else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||

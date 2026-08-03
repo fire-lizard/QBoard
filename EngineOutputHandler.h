@@ -44,6 +44,7 @@ public:
 	static Move CastlingToMove(const QByteArray& c, const Board* board, PieceColour currentPlayer);
 	static bool IsCastling(const QByteArray& moveArray, const Board* board, GameVariant gameVariant,
 		int x1, int y1, int x2, int y2);
+	static void PromoteIfUnmarked(Board* board, GameVariant gameVariant, int x2, int y2);
 	static bool RelayMove(const std::shared_ptr<Engine>& to, const QByteArray& moveArray, const Move& castling,
 		const Board* board, GameVariant gameVariant);
 	static std::pair<int, int> CastlingTargets(GameVariant gameVariant, int kingX, int rookX);

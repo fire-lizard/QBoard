@@ -58,11 +58,15 @@ void AtomicChessBoard::Initialize()
 bool AtomicChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	const PieceType destPieceType = GetData(newX, newY) != std::nullopt ? GetData(newX, newY)->Type : None;
+	// An en passant capture lands on an empty square, so the destination alone does not say whether
+	// anything was taken. A pawn only ever changes file to capture.
+	const std::optional<Piece> mover = GetData(oldX, oldY);
+	const bool enPassant = destPieceType == None && mover != std::nullopt && mover->Type == Pawn && oldX != newX;
 	const bool result = ChessBoard::Move(oldX, oldY, newX, newY, cl);
 	if (result && GetData(newX, newY) != std::nullopt)
 	{
 		_data[newX][newY]->HasMoved = true;
-		if (destPieceType != None)
+		if (destPieceType != None || enPassant)
 		{
 			Explode(newX, newY);
 		}
@@ -70,6 +74,10 @@ bool AtomicChessBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	return result;
 }
 
+// A capture takes the capturing piece with it, and every non-pawn on the eight neighbouring
+// squares. Pawns only die when they are the piece that was captured - the blast goes over them.
+// Both halves of that were wrong: the capturer was left standing and adjacent pawns were swept
+// away, so QBoard's board disagreed with the engine's from the first capture of the game.
 void AtomicChessBoard::Explode(int x, int y)
 {
     constexpr int directions[8][2] =
@@ -77,10 +85,15 @@ void AtomicChessBoard::Explode(int x, int y)
         {0, 1}, {1, 0}, {0, -1}, {-1, 0}, // Right, Down, Left, Up
         {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // NW, NE, SW, SE
     };
+    SetData(x, y, std::nullopt);
     for (const auto direction : directions)
     {
-        int i = x + direction[0];
-        int j = y + direction[1];
-        SetData(i, j, std::nullopt);
+        const int i = x + direction[0];
+        const int j = y + direction[1];
+        const std::optional<Piece> p = GetData(i, j);
+        if (p != std::nullopt && p->Type != Pawn)
+        {
+            SetData(i, j, std::nullopt);
+        }
     }
 }

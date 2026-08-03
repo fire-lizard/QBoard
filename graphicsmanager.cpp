@@ -151,7 +151,6 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
     case AmazonChess:
     case AtomicChess:
     case CylinderChess:
-    case KnightmateChess:
         if (pieceStyle == Mnemonic)
         {
             painter.drawPixmap(i * w + w / 10, j * h + h / 10, pixmap.size().width(), pixmap.size().height(), pixmap);
@@ -172,6 +171,9 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
         {
             painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
         }
+        break;
+    case KnightmateChess:
+        painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
         break;
     case Xiangqi:
         if (pieceStyle == European || pieceStyle == Asian)
@@ -290,13 +292,14 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     case AmazonChess:
     case AtomicChess:
     case CylinderChess:
-    case KnightmateChess:
         if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
         if (pieceStyle == Mnemonic) return ":/pieces_eur/images/images_eur/";
         if (pieceStyle == Asian) return ":/pieces_eur2/images/images_eur2/";
         if (pieceStyle == Asian2) return ":/pieces_eur3/images/images_eur3/";
         if (pieceStyle == Asian3) return ":/pieces_sit/images/images_sit/";
         return ":/pieces_sha/images/images_sha/";
+    case KnightmateChess:
+        return ":/pieces_eur/images/images_gen/";
     case Makruk:
         if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
         if (pieceStyle == Mnemonic) return ":/pieces_mak2/images/images_mak2/";
@@ -404,9 +407,11 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     case AmazonChess:
     case AtomicChess:
     case CylinderChess:
-    case KnightmateChess:
         if (gameVariant == Sittuyin && pieceStyle == Asian4) imageFileName = GetSittuyinImageFileName(pieceColour, pieceType);
     	else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
+        break;
+    case KnightmateChess:
+        imageFileName = GetKnightmateChessImageFileName(pieceColour, pieceType);
         break;
     case Makruk:
         if (pieceStyle == European) imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
@@ -1795,6 +1800,28 @@ QString GraphicsManager::GetToriShogiImageFileName(PieceStyle pieceStyle, PieceC
     }
 }
 
+QString GraphicsManager::GetKnightmateChessImageFileName(PieceColour pieceColour, PieceType pieceType)
+{
+    const QString colour = pieceColour == White ? "White" : "Black";
+    switch (pieceType)
+    {
+    case King:
+        return colour + "Unicorn.png";
+    case Rook:
+        return colour + "Rook.png";
+    case Knight:
+        return colour + "Advisor.png";
+    case Bishop:
+        return colour + "Bishop.png";
+    case Queen:
+        return colour + "Queen.png";
+    case Pawn:
+        return colour + "Pawn.png";
+    default:
+        return "";
+    }
+}
+
 QString GraphicsManager::GetSittuyinImageFileName(PieceColour pieceColour, PieceType pieceType)
 {
     QString colour = pieceColour == White ? "t_w" : "t_b";
@@ -1816,7 +1843,6 @@ QString GraphicsManager::GetSittuyinImageFileName(PieceColour pieceColour, Piece
         return "";
     }
 }
-
 
 QString GraphicsManager::GetJanggiImageFileName(PieceColour pieceColour, PieceType pieceType)
 {

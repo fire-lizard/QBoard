@@ -29,6 +29,7 @@ private:
     static QString GetWaShogiImageFileName(PieceStyle pieceStyle, PieceColour pieceColour, PieceType pieceType, bool isPromoted);
     static QString GetWhaleShogiImageFileName(PieceColour pieceColour, PieceType pieceType);
     static QString GetYariShogiImageFileName(PieceColour pieceColour, PieceType pieceType);
+    static QString GetKnightmateChessImageFileName(PieceColour pieceColour, PieceType pieceType);
     static QString GetSittuyinImageFileName(PieceColour pieceColour, PieceType pieceType);
     static QString GetJanggiImageFileName(PieceColour pieceColour, PieceType pieceType);
 };

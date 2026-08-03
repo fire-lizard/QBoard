@@ -4,7 +4,7 @@ ShatarBoard::ShatarBoard()
 {
     _width = 8;
     _height = 8;
-    ShatranjBoard::Initialize();
+    ShatarBoard::Initialize();
 }
 
 ShatarBoard::~ShatarBoard()
