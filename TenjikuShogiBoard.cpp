@@ -102,27 +102,41 @@ void TenjikuShogiBoard::Promote(int x, int y, PieceType pt)
     }
 }
 
+int TenjikuShogiBoard::GeneralRank(PieceType pieceType)
+{
+	switch (pieceType)
+	{
+	case GreatGeneral:
+		return 3;
+	case ViceGeneral:
+		return 2;
+	case RookGeneral:
+	case BishopGeneral:
+		return 1;
+	default:
+		return 0;
+	}
+}
+
 void TenjikuShogiBoard::CheckJump(const std::optional<Piece>& piece, int x, int y, Direction direction)
 {
 	bool beforeJump = true;
 	while (InBounds(x, y, direction))
 	{
 		CheckDirectionInc(x, y, direction);
-		if (beforeJump)
+		const std::optional<Piece> target = GetData(x, y);
+		if (target == std::nullopt)
 		{
-			CheckMove(piece, x, y);
+			// Empty squares are only reachable before anything has been jumped over.
+			if (beforeJump) CheckMove(piece, x, y);
+			continue;
 		}
-		if (GetData(x, y) != std::nullopt)
+		beforeJump = false;
+		if (target->Type == King || GeneralRank(target->Type) >= GeneralRank(piece->Type))
 		{
-			beforeJump = false;
-			CheckMove(piece, x, y);
-            PieceType pieceType = GetData(x, y)->Type;
-            if (pieceType == King || piece->Type == pieceType || pieceType == GreatGeneral
-				|| std::ranges::find(_jumpingPieces, pieceType) != std::end(_jumpingPieces))
-			{
-				break;
-			}
+			break;
 		}
+		CheckMove(piece, x, y);
 	}
 }
 
@@ -140,7 +154,8 @@ void TenjikuShogiBoard::CheckIgui(const std::optional<Piece>& piece, int x, int 
 bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
 	// Heavenly Tetrach moves
-    if (GetData(oldX, oldY)->Type == HeavenlyTetrarch && abs(oldX - newX) <= 1 && abs(oldY - newY) <= 1 && (oldX != newX || oldY != newY))
+	auto piece = GetData(oldX, oldY);
+	if (piece.has_value() && piece->Type == HeavenlyTetrarch && abs(oldX - newX) <= 1 && abs(oldY - newY) <= 1 && (oldX != newX || oldY != newY))
 	{
 		if (std::ranges::any_of(_moves, [=](std::pair<int, int> t) {return t.first == newX && t.second == newY;}))
 		{
@@ -150,20 +165,20 @@ bool TenjikuShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 	}
 	else
 	{
-		if (IsMovePossible(newX, newY))
+		if (piece.has_value() && (!cl || IsMovePossible(newX, newY)))
 		{
-            auto pieces = GetEnemyPiecesAround(newX, newY, GetData(oldX, oldY)->Colour);
-            if (std::ranges::any_of(pieces, [this](std::pair<int, int> t) {return GetData(t.first, t.second)->Type == FireDemon;}))
+            auto pieces = GetEnemyPiecesAround(newX, newY, piece->Colour);
+            if (std::ranges::any_of(pieces, [this](std::pair<int, int> t)
+            {
+	            return GetData(t.first, t.second).has_value() && GetData(t.first, t.second)->Type == FireDemon;
+            }))
 			{
 				SetData(oldX, oldY, std::nullopt);
-				if (GetData(newX, newY) != std::nullopt)
-				{
-					SetData(newX, newY, std::nullopt);
-				}
+				SetData(newX, newY, std::nullopt);
 				return true;
 			}
 			// Fire Demon moves
-            if (GetData(oldX, oldY)->Type == FireDemon)
+            if (piece->Type == FireDemon)
 			{
 				std::ranges::for_each(pieces, [&](std::pair<int, int> p) {SetData(p.first, p.second, std::nullopt);});
 			}

@@ -154,6 +154,7 @@ QByteArray WbEngine::AddMove(signed char x1, signed char y1, signed char x2, sig
 		moveStr.push_back(y1);
 		moveStr.push_back(static_cast<char>(x2 + 97));
 		moveStr.push_back(QString::number(y2)[0].toLatin1());
+		if (y2 >= 10) moveStr.push_back(QString::number(y2)[1].toLatin1());
 	}
 	else if (x1 == x2 && y1 == y2 && promotion == ' ')
 	{

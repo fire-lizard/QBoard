@@ -26,6 +26,7 @@ public:
 		GameVariant gameVariant, EngineOutput engineOutput, PieceColour currentPlayer);
 	static void ReadStandardError(const QByteArray& buf, QTextEdit* textEdit);
 	static void AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3);
+	static PieceType PieceTypeAt(const Board* board, int x, int y);
 	static QString SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant);
 	static QString GetFenFromBoard(Board* board, GameVariant gameVariant, PieceColour sideToMove);
 	static bool HasHoldingsField(GameVariant gameVariant);
@@ -45,6 +46,7 @@ public:
 	static bool IsCastling(const QByteArray& moveArray, const Board* board, GameVariant gameVariant,
 		int x1, int y1, int x2, int y2);
 	static void PromoteIfUnmarked(Board* board, GameVariant gameVariant, int x2, int y2);
+	static bool HasPromotion(const std::optional<Piece>& piece, GameVariant gameVariant);
 	static bool RelayMove(const std::shared_ptr<Engine>& to, const QByteArray& moveArray, const Move& castling,
 		const Board* board, GameVariant gameVariant);
 	static std::pair<int, int> CastlingTargets(GameVariant gameVariant, int kingX, int rookX);

@@ -191,13 +191,13 @@ void WaShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		CheckDirection(piece, x, y, NorthEast);
 		CheckDirection(piece, x, y, SouthWest);
 		CheckDirection(piece, x, y, SouthEast);
-        if (piece->Colour == Black)
+		if (piece->Colour == Black)
 		{
-			CheckMove(piece, x, y - 1);
+			CheckMove(piece, x, y + 1);
 		}
 		else
 		{
-			CheckMove(piece, x, y + 1);
+			CheckMove(piece, x, y - 1);
 		}
 		break;
 	case FlyingCock:
@@ -215,21 +215,21 @@ void WaShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		}
 		break;
 	case RaidingFalcon:
+	{
 		CheckDirection(piece, x, y, North);
 		CheckDirection(piece, x, y, South);
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x - 1, y);
-        if (piece->Colour == Black)
+		if (piece->Colour == Black)
 		{
-			CheckMove(piece, x - 1, y - 1);
-			CheckMove(piece, x + 1, y - 1);
+			CheckMove(piece, x - 1, y + 1);
 		}
 		else
 		{
-			CheckMove(piece, x - 1, y + 1);
-			CheckMove(piece, x + 1, y + 1);
+			CheckMove(piece, x + 1, y - 1);
 		}
 		break;
+	}
 	case FlyingGoose:
 	case ClimbingMonkey:
 		CheckMove(piece, x, y + 1);

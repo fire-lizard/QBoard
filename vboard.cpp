@@ -450,8 +450,7 @@ void VBoard::FinishMove(int x, int y)
 		// The full FEN, not just the placement: castling rights, the en passant square and the
 		// pieces in hand live beside the squares and the peer cannot reconstruct them. _currentPlayer
 		// still holds the side that just moved, so the side to move is the other one.
-		_comm->send_move(EngineOutputHandler::GetFenFromBoard(_board, _gameVariant,
-			_currentPlayer == White ? Black : White).toStdString());
+		_comm->send_move(EngineOutputHandler::GetFenFromBoard(_board, _gameVariant, _currentPlayer == White ? Black : White).toStdString());
 		_waitForOtherPlayer = true;
 	}
 	_currentPlayer = _currentPlayer == White ? Black : White;
@@ -519,16 +518,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
         _currentPiece != std::nullopt && _currentPiece->Type == King && !_currentPiece->HasMoved &&
         p != std::nullopt && p->Colour == _currentPlayer && p->Type == Rook && !p->HasMoved && _board->IsMovePossible(x, y))
 	{
-		// One set of targets for the board and for the engine. The four per-variant copies this
-		// replaces had drifted apart: Janus put the king on i1 but told the engine h1, and
-		// Musketeer's gating rows made every castling a rank too high ("e2g2", not "e1g1").
 		const auto [kingTo, rookTo] = EngineOutputHandler::CastlingTargets(_gameVariant, _oldX, x);
-		// The king may not start on, cross, or land on an attacked square. Only the destination
-		// used to be tested, so castling out of check or through it went to the engine as a move
-		// the engine then refused. The king walks a copy of the board rather than the squares
-		// being tested empty: IsSquareUnderAttack asks the opponent's move generator, which only
-		// offers a pawn its diagonal when something is standing on it, so an empty square never
-		// looks pawn-attacked.
 		const int step = kingTo > _oldX ? 1 : -1;
 		bool attacked = false;
 		Board* probe = _board->Clone();
@@ -575,8 +565,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		}
 	}
 	// Sittuyin promotion in place: clicking the highlighted square the selected pawn already stands
-	// on replaces it with a General. The pawn does not move, but this is a whole move of its own,
-	// so it goes to the engine as "d5d5f".
+	// on replaces it with a General. The pawn does not move, but this is a whole move of its own, so it goes to the engine as "d5d5f".
 	else if (_gameVariant == Sittuyin && _currentPiece != std::nullopt && x == _oldX && y == _oldY &&
 		PossibleMove(x, y) && dynamic_cast<SittuyinBoard*>(_board)->IsPromotionMove(x, y, x, y))
 	{
@@ -1716,6 +1705,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
         const PieceType pt = _currentPiece->Type;
 		const bool pcond1 = EngineOutputHandler::CanBePromoted(_currentPiece, _gameVariant, _oldY, y);
 		const bool pcond2 = (_gameVariant == ChuShogi || _gameVariant == DaiShogi || _gameVariant == TenjikuShogi) &&
+			EngineOutputHandler::HasPromotion(_currentPiece, _gameVariant) &&
 			EngineOutputHandler::IsInsidePromotionZone(_gameVariant, _currentPlayer, _oldY) &&
 			EngineOutputHandler::IsInsidePromotionZone(_gameVariant, _currentPlayer, y) && p != std::nullopt;
 		const bool pcond3 = _gameVariant == ChuShogi && pt == Pawn &&

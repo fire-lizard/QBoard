@@ -600,39 +600,6 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	{
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{
-            if (gameVariant == TenjikuShogi)
-            {
-            	if (board->GetData(x1, y1)->Type == HeavenlyTetrarch && abs(x1 - x2) <= 1 && abs(y1 - y2) <= 1 && (x1 != x2 || y1 != y2))
-                {
-                    if (std::ranges::any_of(board->Moves(), [=](std::pair<int, int> t) {return t.first == x2 && t.second == y2;}))
-                    {
-                        board->SetData(x2, y2, std::nullopt);
-                        return;
-                    }
-                }
-                else
-                {
-                    if (board->IsMovePossible(x2, y2))
-                    {
-                        auto tsb = dynamic_cast<TenjikuShogiBoard*>(board);
-                        auto pieces = tsb->GetEnemyPiecesAround(x2, y2, tsb->GetData(x1, y1)->Colour);
-                        if (std::ranges::any_of(pieces, [&](std::pair<int, int> t) {return tsb->GetData(t.first, t.second)->Type == FireDemon;}))
-                        {
-                            tsb->SetData(x1, y1, std::nullopt);
-                            if (tsb->GetData(x2, y2) != std::nullopt)
-                            {
-                                tsb->SetData(x2, y2, std::nullopt);
-                            }
-                            return;
-                        }
-                        // Fire Demon moves
-                        if (tsb->GetData(x1, y1)->Type == FireDemon)
-                        {
-                            std::ranges::for_each(pieces, [&](std::pair<int, int> p) {tsb->SetData(p.first, p.second, std::nullopt);});
-                        }
-                    }
-                }
-            }
             if (gameVariant == KoShogi && moveArray.contains('x'))
             {
                 // shoot capture: the shooter stays on (x1,y1); each "xFR" token names a removed victim
@@ -655,9 +622,15 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 			{
                 const bool isPromoted = moveArray[ms - 1] == '+';
 				board->GetMoves(board->GetData(x1, y1), x1, y1);
-				board->SetData(x2, y2, board->GetData(x1, y1));
-				board->SetData(x1, y1, std::nullopt);
-                AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
+				const PieceType movedType = PieceTypeAt(board, x1, y1);
+				// Through the board's own Move, not two SetData calls: the variant rules live in
+				// the override and were being skipped for every engine move. Tenjiku burns anything
+				// that ends its move beside an enemy Fire Demon - svengine burnt White's Great
+				// General the moment it landed on h13, next to the Fire Demon on g14, while QBoard
+				// left it standing and the two boards were out of step from the first move of the
+				// game. Chu's Lion capture rule is tracked in the same override.
+				board->Move(x1, y1, x2, y2, false);
+                AddMove(board, gameVariant, movedType, x1, y1, x2, y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
                 engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
 				if (isPromoted)
 				{
@@ -674,6 +647,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 				const int y3 = board->GetHeight() - moveArray[7];
 				const int x4 = triple ? moveArray[10] - 97 : x3;
 				const int y4 = triple ? board->GetHeight() - moveArray[11] : y3;
+				const PieceType movedType = PieceTypeAt(board, x1, y1);
 				board->SetData(x2, y2, std::nullopt);
 				if (triple)
 				{
@@ -681,10 +655,10 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 				}
 				if (x1 != x4 || y1 != y4)
 				{
-					board->SetData(x4, y4, board->GetData(x1, y1));
-					board->SetData(x1, y1, std::nullopt);
+					board->GetMoves(board->GetData(x1, y1), x1, y1);
+					board->Move(x1, y1, x4, y4, false); // as above: the variant's own Move, so it burns
 				}
-                AddMove(board, gameVariant, board->GetData(x4, y4)->Type, x1, y1, x2, y2, x4, y4);
+                AddMove(board, gameVariant, movedType, x1, y1, x2, y2, x4, y4);
 				if (triple)
 				{
 					std::dynamic_pointer_cast<WbEngine>(engine)->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, x3, board->GetHeight() - y3, x4, board->GetHeight() - y4);
@@ -707,8 +681,9 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
+			const PieceType movedType = PieceTypeAt(board, x1, y1);
 			board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2, ' ', ' ');
+            AddMove(board, gameVariant, movedType, x1, y1, x2, y2, ' ', ' ');
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], ' ');
 		}
 	}
@@ -722,9 +697,10 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
                 moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c';
             board->GetMoves(board->GetData(x1, y1), x1, y1);
+            const PieceType movedType = PieceTypeAt(board, x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2,
+            AddMove(board, gameVariant, movedType, x1, y1, x2, y2,
                     isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
             if (isPromoted)
@@ -770,9 +746,10 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
                 moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'c' || moveArray[ms - 1] == 'w';
             board->GetMoves(board->GetData(x1, y1), x1, y1);
+            const PieceType movedType = PieceTypeAt(board, x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2,
+            AddMove(board, gameVariant, movedType, x1, y1, x2, y2,
                     isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
             if (isPromoted)
@@ -829,10 +806,11 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 moveArray[ms - 1] == 'd' || moveArray[ms - 1] == 'e' || moveArray[ms - 1] == 'h' ||
                 moveArray[ms - 1] == 'f' || moveArray[ms - 1] == 's';
             board->GetMoves(board->GetData(x1, y1), x1, y1);
+            const PieceType movedType = PieceTypeAt(board, x1, y1);
             const PieceType ct1 = board->GetData(x1, y1) != std::nullopt ? board->GetData(x1, y1)->Type : None;
             const PieceType ct2 = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2,
+            AddMove(board, gameVariant, movedType, x1, y1, x2, y2,
                 isPromoted ? moveArray[ms - 1] : ' ', ct2 != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
         	if (isPromoted)
@@ -900,6 +878,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     }
     else if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
 	{
+    	
     	// Castling check
         if (IsCastling(moveArray, board, gameVariant, x1, y1, x2, y2))
 		{
@@ -913,9 +892,10 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
                 moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c';
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
+			const PieceType movedType = PieceTypeAt(board, x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
 			board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2,
+            AddMove(board, gameVariant, movedType, x1, y1, x2, y2,
                     isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
 			if (isPromoted)
@@ -955,9 +935,10 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 moveArray[ms - 1] == 'u' || moveArray[ms - 1] == 'l' || moveArray[ms - 1] == 'r' ||
                 moveArray[ms - 1] == 'g' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c';
             board->GetMoves(board->GetData(x1, y1), x1, y1);
+            const PieceType movedType = PieceTypeAt(board, x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
             board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2,
+            AddMove(board, gameVariant, movedType, x1, y1, x2, y2,
                     isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
             engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
             if (isPromoted)
@@ -1015,18 +996,18 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 break;
             }
             board->SetData(x2, y2, Piece(newPiece, currentPlayer));
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, moveArray[0], moveArray[1], x2, y2, ' ', ' ');
+            AddMove(board, gameVariant, PieceTypeAt(board, x2, y2), moveArray[0], moveArray[1], x2, y2, ' ', ' ');
             engine->AddMove(moveArray[0], moveArray[1], x2, board->GetHeight() - y2, ' ');
         }
     	else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
 		{
     		const bool isPromoted = moveArray[ms - 1] == 'f' || moveArray[ms - 1] == 'j' || moveArray[ms - 1] == 'q';
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
-			// Sittuyin promotes in place ("d5d5f"): the piece standing on the destination is the
-			// promoting pawn itself, not a victim.
+			const PieceType movedType = PieceTypeAt(board, x1, y1);
+			// Sittuyin promotes in place ("d5d5f"): the piece standing on the destination is the promoting pawn itself, not a victim.
             const PieceType ct = (x1 != x2 || y1 != y2) && board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
 			board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2, isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
+            AddMove(board, gameVariant, movedType, x1, y1, x2, y2, isPromoted ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[ms - 1] : ' ');
 			if (isPromoted)
 			{
@@ -1041,9 +1022,10 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		{
             const bool isPromoted = moveArray[ms - 1] == 'm' || moveArray[ms - 1] == 'M';
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
+			const PieceType movedType = PieceTypeAt(board, x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
 			board->Move(x1, y1, x2, y2, false);
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, x1, y1, x2, y2, ' ', ct != None ? 'x' : ' ');
+            AddMove(board, gameVariant, movedType, x1, y1, x2, y2, ' ', ct != None ? 'x' : ' ');
 			engine->AddMove(moveArray[0], moveArray[1], moveArray[2], moveArray[3], isPromoted ? moveArray[ms - 1] : ' ');
 			if (isPromoted)
 			{
@@ -1223,7 +1205,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 }
             }
             board->SetData(x2, y2, Piece(newPiece, currentPlayer));
-            AddMove(board, gameVariant, board->GetData(x2, y2)->Type, moveArray[0], moveArray[1], x2, y2, ' ', ' ');
+            AddMove(board, gameVariant, PieceTypeAt(board, x2, y2), moveArray[0], moveArray[1], x2, y2, ' ', ' ');
             if (engine->GetType() == USI)
             {
                 engine->AddMove(moveArray[0], moveArray[1], board->GetWidth() - x2, y2, ' ');
@@ -1322,6 +1304,12 @@ char EngineOutputHandler::MusketeerPieceChar(PieceType musketeerPiece)
 void EngineOutputHandler::ReadStandardError(const QByteArray& buf, QTextEdit* textEdit)
 {
 	textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
+}
+
+PieceType EngineOutputHandler::PieceTypeAt(const Board* board, int x, int y)
+{
+	const std::optional<Piece> piece = board->CheckPosition(x, y) ? board->GetData(x, y) : std::nullopt;
+	return piece != std::nullopt ? piece->Type : None;
 }
 
 void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3)
@@ -1576,8 +1564,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 	}
     if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
     {
-        // an empty bracket pair ("...[] w") leaves parts[1] empty, and the loop below reads
-        // parts[1][0] before it tests anything
+        // an empty bracket pair ("...[] w") leaves parts[1] empty, and the loop below reads parts[1][0] before it tests anything
         if (parts.size() >= 2 && !parts[1].isEmpty())
         {
             PieceStorage* cps = dynamic_cast<PieceStorage*>(board);
@@ -1694,6 +1681,29 @@ bool EngineOutputHandler::IsInsidePromotionZone(GameVariant gameVariant, PieceCo
 	return false;
 }
 
+// Which piece types have a promotion at all. Chu, Dai and Tenjiku also let a piece that is already
+// standing inside the zone promote when it captures, and that second path (VBoard::CheckPromotion)
+// never asked this question - which is how a Vice General, a piece with no promotion of its own, was
+// offered one and svengine came back "cannot promote on this move so remove the +: a12e16+".
+// The Tenjiku list is svengine's own promotion table, Data/Tenjiku.dat: those seven promote to
+// nothing, while the Free King promotes to the Free Eagle and the Lion to the Lion Hawk - both of
+// which used to be listed here, copied across from Chu where they really are the top of the ladder.
+bool EngineOutputHandler::HasPromotion(const std::optional<Piece>& piece, GameVariant gameVariant)
+{
+	if (piece == std::nullopt || piece->IsPromoted) return false;
+	if (gameVariant == ChuShogi || gameVariant == DaiShogi)
+	{
+		return piece->Type != King && piece->Type != Queen && piece->Type != Lion;
+	}
+	if (gameVariant == TenjikuShogi)
+	{
+		return piece->Type != King && piece->Type != Prince && piece->Type != LionHawk &&
+		       piece->Type != ViceGeneral && piece->Type != GreatGeneral &&
+		       piece->Type != FireDemon && piece->Type != FreeEagle;
+	}
+	return true;
+}
+
 bool EngineOutputHandler::CanBePromoted(const std::optional<Piece>& piece, GameVariant gameVariant, int oldY, int newY)
 {
 	if (piece != std::nullopt)
@@ -1732,20 +1742,7 @@ bool EngineOutputHandler::CanBePromoted(const std::optional<Piece>& piece, GameV
 		{
             return IsInsidePromotionZone(gameVariant, piece->Colour, oldY) || IsInsidePromotionZone(gameVariant, piece->Colour, newY);
 		}
-        if (gameVariant == ChuShogi && !piece->IsPromoted && piece->Type != King &&
-            piece->Type != Queen && piece->Type != Lion)
-		{
-            return !IsInsidePromotionZone(gameVariant, piece->Colour, oldY) && IsInsidePromotionZone(gameVariant, piece->Colour, newY);
-		}
-        if (gameVariant == DaiShogi && !piece->IsPromoted && piece->Type != King &&
-            piece->Type != Queen && piece->Type != Lion)
-		{
-            return !IsInsidePromotionZone(gameVariant, piece->Colour, oldY) && IsInsidePromotionZone(gameVariant, piece->Colour, newY);
-		}
-        if (gameVariant == TenjikuShogi && !piece->IsPromoted && piece->Type != King &&
-            piece->Type != Queen && piece->Type != Lion && piece->Type != LionHawk &&
-            piece->Type != ViceGeneral && piece->Type != GreatGeneral &&
-            piece->Type != FireDemon && piece->Type != FreeEagle)
+        if ((gameVariant == ChuShogi || gameVariant == DaiShogi || gameVariant == TenjikuShogi) && HasPromotion(piece, gameVariant))
 		{
             return !IsInsidePromotionZone(gameVariant, piece->Colour, oldY) && IsInsidePromotionZone(gameVariant, piece->Colour, newY);
 		}

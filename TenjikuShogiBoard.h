@@ -22,11 +22,10 @@ public:
 	bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
 
 private:
+	static int GeneralRank(PieceType pieceType);
 	void CheckJump(const std::optional<Piece>& piece, int x, int y, Direction direction);
 	void CheckIgui(const std::optional<Piece>& piece, int x, int y);
 	void GetPossibleMoves(int x, int y);
-
-	PieceType _jumpingPieces[4] = { GreatGeneral, ViceGeneral, BishopGeneral, RookGeneral };
 
 	PieceType _initialSetup[16][16] = {
 	{Lance, Knight, Leopard, Iron, Copper, Silver, Gold, Elephant, King, Gold, Silver, Copper, Iron, Leopard, Knight, Lance},
