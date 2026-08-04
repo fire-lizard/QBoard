@@ -50,7 +50,15 @@ void HeianDaiShogiBoard::Promote(int x, int y, PieceType pt)
     if (GetData(x, y) != std::nullopt)
     {
         _data[x][y]->IsPromoted = true;
-        _data[x][y]->Type = Gold;
+        switch (_data[x][y]->Type)
+        {
+        case FlyingDragon:
+            _data[x][y]->Type = DragonHorse;
+            break;
+        default:
+            _data[x][y]->Type = Gold;
+            break;
+        }
     }
 }
 
@@ -59,45 +67,11 @@ void HeianDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int 
     _moves.clear();
     switch (piece->Type)
     {
-    case SideMover:
-        CheckDirection(piece, x, y, East);
-        CheckDirection(piece, x, y, West);
-        if (piece->Colour == Black)
-        {
-            CheckMove(piece, x, y + 1);
-        }
-        else
-        {
-            CheckMove(piece, x, y - 1);
-        }
-        break;
     case FlyingDragon:
         CheckDirection(piece, x, y, SouthWest);
         CheckDirection(piece, x, y, NorthWest);
         CheckDirection(piece, x, y, SouthEast);
         CheckDirection(piece, x, y, NorthEast);
-        break;
-    case Copper:
-        CheckMove(piece, x + 1, y);
-        CheckMove(piece, x - 1, y);
-        CheckMove(piece, x, y + 1);
-        CheckMove(piece, x, y - 1);
-        break;
-    case Iron:
-        CheckMove(piece, x + 1, y);
-        CheckMove(piece, x - 1, y);
-        if (piece->Colour == Black)
-        {
-            CheckMove(piece, x, y + 1);
-            CheckMove(piece, x - 1, y + 1);
-            CheckMove(piece, x + 1, y + 1);
-        }
-        else
-        {
-            CheckMove(piece, x, y - 1);
-            CheckMove(piece, x - 1, y - 1);
-            CheckMove(piece, x + 1, y - 1);
-        }
         break;
     case Tiger:
         CheckMove(piece, x + 1, y + 1);

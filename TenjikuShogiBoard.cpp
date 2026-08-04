@@ -226,12 +226,10 @@ void TenjikuShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y
 
 		CheckNullMove(x, y);
 
-		CheckDirection(piece, x + 1, y + 1, SouthEast);
-		CheckDirection(piece, x + 1, y - 1, NorthEast);
-		CheckDirection(piece, x, y + 1, South);
-		CheckDirection(piece, x, y - 1, North);
-		CheckDirection(piece, x - 1, y + 1, SouthWest);
-		CheckDirection(piece, x - 1, y - 1, NorthWest);
+		CheckDirection(piece, x + 1, y + 1, NorthEast);
+		CheckDirection(piece, x + 1, y - 1, SouthEast);
+		CheckDirection(piece, x - 1, y + 1, NorthWest);
+		CheckDirection(piece, x - 1, y - 1, SouthWest);
 
 		CheckMove(piece, x + 2, y);
 		if (GetData(x + 2, y) == std::nullopt)

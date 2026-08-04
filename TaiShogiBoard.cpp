@@ -45,25 +45,70 @@ void TaiShogiBoard::Initialize()
 	}
 }
 
-void TaiShogiBoard::Promote(int x, int y, PieceType pt)
+PieceType TaiShogiBoard::PromotesTo(PieceType pieceType) const
 {
-	if (GetData(x, y) != std::nullopt)
+	switch (pieceType)
 	{
-		_data[x][y]->IsPromoted = true;
-		PieceType pieceType = None;
-		switch (_data[x][y]->Type)
-		{
-		case SideDragon:
-			pieceType = Gold;
-			break;
-		default:
-			DaiDaiShogiBoard::Promote(x, y, pt);
-			break;
-		}
-		if (pieceType != None)
-		{
-			_data[x][y]->Type = pieceType;
-		}
+	case Bishop:
+	case BuddhistDevil:
+	case Capricorn:
+	case Donkey:
+	case FlyingDragon:
+	case Guardian:
+	case HookMover:
+	case Knight:
+	case Rook:
+	case SideDragon:
+	case SideMover:
+	case VerticalMover:
+	case Wrestler:
+	case Yaksha:
+		return Gold;
+	case Kylin:
+		return GreatDragon;
+	case Phoenix:
+		return GoldenBird;
+	case Lion:
+		return FuriousFiend;
+	case ChineseCock:
+	case OldRat:
+		return WizardStork;
+	case DarkSpirit:
+		return BuddhistSpirit;
+	case Deva:
+		return TeachingKing;
+	case Elephant:
+		return Prince;
+	case LionDog:
+		return GreatElephant;
+	case BlindMonkey:
+		return MountainWitch;
+	case EasternBarbarian:
+		return Lion;
+	case EnchantedBadger:
+		return Dove;
+	case FlyingHorse:
+		return Queen;
+	case NeighboringKing:
+		return StandardBearer;
+	case NorthernBarbarian:
+		return FragrantElephant;
+	case OldKite:
+		return Tengu;
+	case RushingBird:
+		return FreeDemon;
+	case SouthernBarbarian:
+		return WhiteElephant;
+	case WaterBuffalo:
+		return FreeDreamEater;
+	case WesternBarbarian:
+		return LionDog;
+	case PoisonousSnake:
+		return HookMover;
+	case PrancingStag:
+		return SquareMover;
+	default:
+		return None;
 	}
 }
 
@@ -127,25 +172,21 @@ void TaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 	case VermillionSparrow:
 		if (piece->Colour == Black)
 		{
-			CheckDirection(piece, x, y, South);
+			CheckDirection(piece, x, y, North);
 			CheckDirection(piece, x, y, NorthWest);
 			CheckDirection(piece, x, y, NorthEast);
-			CheckMove(piece, x, y + 1);
-			CheckMove(piece, x + 1, y - 1);
-			CheckMove(piece, x - 1, y - 1);
-			CheckMove(piece, x + 2, y - 2);
-			CheckMove(piece, x - 2, y - 2);
+			CheckMove(piece, x, y - 1);
+			CheckDirection(piece, x, y, SouthEast, 2);
+			CheckDirection(piece, x, y, SouthWest, 2);
 		}
 		else
 		{
-			CheckDirection(piece, x, y, North);
+			CheckDirection(piece, x, y, South);
 			CheckDirection(piece, x, y, SouthWest);
 			CheckDirection(piece, x, y, SouthEast);
-			CheckMove(piece, x, y - 1);
-			CheckMove(piece, x + 1, y + 1);
-			CheckMove(piece, x - 1, y + 1);
-			CheckMove(piece, x + 2, y + 2);
-			CheckMove(piece, x - 2, y + 2);
+			CheckMove(piece, x, y + 1);
+			CheckDirection(piece, x, y, NorthEast, 2);
+			CheckDirection(piece, x, y, NorthWest, 2);
 		}
 		break;
 	case TurtleSnake:

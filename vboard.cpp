@@ -1603,11 +1603,13 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             _board->Promote(x, y);
         }
     }
+    // Dai Dai, Maka Dai Dai and Tai promote by capture, and each has its own table - ask the
+    // board rather than a shared list of exceptions, which fitted neither of them and offered
+    // a promotion the engine then refused.
     else if (_gameVariant == DaiDaiShogi || _gameVariant == TaiShogi)
 	{
         if (!_currentPiece->IsPromoted && p != std::nullopt &&
-			std::ranges::find(UnpromotablePieces,
-			                  _currentPiece->Type) == std::end(UnpromotablePieces))
+            dynamic_cast<MakaDaiDaiShogiBoard*>(_board)->PromotesTo(_currentPiece->Type) != None)
 		{
 			promotion = '+';
             _board->Promote(x, y);
@@ -1615,8 +1617,8 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 	}
 	else if (_gameVariant == MakaDaiDaiShogi)
 	{
-        if (_currentPiece->Type != Queen && _currentPiece->Type != DragonKing &&
-            _currentPiece->Type != DragonHorse && !_currentPiece->IsPromoted && p != std::nullopt)
+        if (!_currentPiece->IsPromoted && p != std::nullopt &&
+            dynamic_cast<MakaDaiDaiShogiBoard*>(_board)->PromotesTo(_currentPiece->Type) != None)
 		{
             if (p->BaseType == Deva)
 			{

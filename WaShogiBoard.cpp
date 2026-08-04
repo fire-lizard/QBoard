@@ -223,10 +223,12 @@ void WaShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		if (piece->Colour == Black)
 		{
 			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
 		}
 		else
 		{
 			CheckMove(piece, x + 1, y - 1);
+			CheckMove(piece, x - 1, y - 1);
 		}
 		break;
 	}

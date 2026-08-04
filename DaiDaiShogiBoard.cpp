@@ -44,86 +44,55 @@ Board* DaiDaiShogiBoard::Clone()
 	return cb;
 }
 
-void DaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
+PieceType DaiDaiShogiBoard::PromotesTo(PieceType pieceType) const
 {
-    if (_data[x][y] == std::nullopt || std::ranges::find(UnpromotablePieces, _data[x][y]->Type) != std::end(UnpromotablePieces))
-    {
-        return;
-    }
-	_data[x][y]->IsPromoted = true;
-    PieceType pieceType = None;
-    switch (_data[x][y]->Type)
-    {
-    case OldKite:
-        pieceType = Tengu;
-        break;
-    case PoisonousSnake:
-        pieceType = HookMover;
-        break;
-    case Lion:
-        pieceType = FuriousFiend;
-        break;
-    case LionDog:
-        pieceType = GreatElephant;
-        break;
-    case EasternBarbarian:
-        pieceType = Lion;
-        break;
-    case WesternBarbarian:
-        pieceType = LionDog;
-        break;
-    case NorthernBarbarian:
-        pieceType = FragrantElephant;
-        break;
-    case SouthernBarbarian:
-        pieceType = WhiteElephant;
-        break;
-    case WaterBuffalo:
-        pieceType = FreeDreamEater;
-        break;
-    case RushingBird:
-        pieceType = FreeDemon;
-        break;
-    case FlyingHorse:
-        pieceType = Queen;
-        break;
-    case NeighboringKing:
-        pieceType = StandardBearer;
-        break;
-    case BlindMonkey:
-        pieceType = MountainWitch;
-        break;
-    case OldRat:
-        pieceType = WizardStork;
-        break;
-    case EnchantedBadger:
-        pieceType = Dove;
-        break;
-    case EnchantedFox:
-        pieceType = Yaksha;
-        break;
-    case CatSword:
-        pieceType = DragonHorse;
-        break;
-    case FlyingDragon:
-        pieceType = DragonKing;
-        break;
-    case PrancingStag:
-        pieceType = SquareMover;
-        break;
-    case Phoenix:
-        pieceType = GoldenBird;
-        break;
-    case Kylin:
-        pieceType = GreatDragon;
-        break;
-    default:
-        break;
-    }
-    if (pieceType != None)
-    {
-		_data[x][y]->Type = pieceType;
-    }
+	switch (pieceType)
+	{
+	case BlindMonkey:
+		return MountainWitch;
+	case Kylin:
+		return GreatDragon;
+	case Phoenix:
+		return GoldenBird;
+	case Lion:
+		return FuriousFiend;
+	case WesternBarbarian:
+		return LionDog;
+	case CatSword:
+		return DragonHorse;
+	case EasternBarbarian:
+		return Lion;
+	case EnchantedBadger:
+		return Dove;
+	case EnchantedFox:
+		return Yaksha;
+	case FlyingDragon:
+		return DragonKing;
+	case FlyingHorse:
+		return Queen;
+	case LionDog:
+		return GreatElephant;
+	case NeighboringKing:
+		return StandardBearer;
+	case NorthernBarbarian:
+		return FragrantElephant;
+	case OldKite:
+		return Tengu;
+	case OldRat:
+		return WizardStork;
+	case PoisonousSnake:
+		return HookMover;
+	case PrancingStag:
+		return SquareMover;
+	case RushingBird:
+		return FreeDemon;
+	case SouthernBarbarian:
+		return WhiteElephant;
+	case WaterBuffalo:
+		return FreeDreamEater;
+	default:
+		return None;
+	}
 }
 
 void DaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
@@ -140,31 +109,23 @@ void DaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		CheckMove(piece, x - 1, y);
 		break;
 	case GreatElephant:
-		CheckLionDirection(piece, x, y, North, 3);
-		CheckLionDirection(piece, x, y, South, 3);
-		CheckLionDirection(piece, x, y, West, 3);
-		CheckLionDirection(piece, x, y, East, 3);
-		CheckDirection(piece, x, y, North);
-		CheckDirection(piece, x, y, South);
-		CheckDirection(piece, x, y, West);
-		CheckDirection(piece, x, y, East);
+		CheckDirection(piece, x, y, North, 3);
+		CheckDirection(piece, x, y, South, 3);
+		CheckDirection(piece, x, y, West, 5);
+		CheckDirection(piece, x, y, East, 5);
         if (piece->Colour == Black)
 		{
-			CheckLionDirection(piece, x, y, SouthWest, 3);
-			CheckLionDirection(piece, x, y, SouthEast, 3);
-			CheckDirection(piece, x, y, SouthWest);
-			CheckDirection(piece, x, y, SouthEast);
-			CheckDirection(piece, x, y, NorthWest, 2);
-			CheckDirection(piece, x, y, NorthEast, 2);
+			CheckDirection(piece, x, y, NorthWest, 3);
+			CheckDirection(piece, x, y, NorthEast, 3);
+			CheckDirection(piece, x, y, SouthWest, 5);
+			CheckDirection(piece, x, y, SouthEast, 5);
 		}
 		else
 		{
-			CheckDirection(piece, x, y, SouthWest, 2);
-			CheckDirection(piece, x, y, SouthEast, 2);
-			CheckLionDirection(piece, x, y, NorthWest, 3);
-			CheckLionDirection(piece, x, y, NorthEast, 3);
-			CheckDirection(piece, x, y, NorthWest);
-			CheckDirection(piece, x, y, NorthEast);
+			CheckDirection(piece, x, y, SouthWest, 3);
+			CheckDirection(piece, x, y, SouthEast, 3);
+			CheckDirection(piece, x, y, NorthWest, 5);
+			CheckDirection(piece, x, y, NorthEast, 5);
 		}
 		break;
 	case OldKite:
@@ -358,8 +319,6 @@ void DaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		}
 		break;
 	case EnchantedFox:
-		CheckDirection(piece, x, y, West, 2);
-		CheckDirection(piece, x, y, East, 2);
         if (piece->Colour == Black)
 		{
 			CheckDirection(piece, x, y, South, 2);
@@ -396,13 +355,13 @@ void DaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		CheckDirection(piece, x, y, South);
         if (piece->Colour == Black)
 		{
-			CheckDirection(piece, x, y, NorthEast);
-			CheckMove(piece, x - 1, y + 1);
+			CheckDirection(piece, x, y, NorthWest);
+			CheckMove(piece, x + 1, y + 1);
 		}
 		else
 		{
-			CheckDirection(piece, x, y, SouthWest);
-			CheckMove(piece, x + 1, y - 1);
+			CheckDirection(piece, x, y, SouthEast);
+			CheckMove(piece, x - 1, y - 1);
 		}
 		break;
 	case BlueDragon:
@@ -412,13 +371,13 @@ void DaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		CheckDirection(piece, x, y, South, 2);
         if (piece->Colour == Black)
 		{
-			CheckDirection(piece, x, y, NorthWest);
-			CheckMove(piece, x + 1, y + 1);
+			CheckDirection(piece, x, y, NorthEast);
+			CheckMove(piece, x - 1, y + 1);
 		}
 		else
 		{
-			CheckDirection(piece, x, y, SouthEast);
-			CheckMove(piece, x - 1, y - 1);
+			CheckDirection(piece, x, y, SouthWest);
+			CheckMove(piece, x + 1, y - 1);
 		}
 		break;
 	case ViolentBear:
@@ -436,17 +395,17 @@ void DaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		}
 		break;
 	case SavageTiger:
-		CheckMove(piece, x + 1, y);
-		CheckMove(piece, x - 1, y);
+		CheckDirection(piece, x, y, North, 2);
+		CheckDirection(piece, x, y, South, 2);
         if (piece->Colour == Black)
 		{
-			CheckDirection(piece, x, y, South, 2);
-			CheckMove(piece, x, y + 1);
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
 		}
 		else
 		{
-			CheckDirection(piece, x, y, North, 2);
-			CheckMove(piece, x, y - 1);
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y - 1);
 		}
 		break;
 	case Wood:
@@ -501,11 +460,17 @@ void DaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		CheckMove(piece, x + 1, y + 1);
 		CheckMove(piece, x + 1, y);
 		CheckMove(piece, x + 1, y - 1);
-		CheckMove(piece, x, y + 1);
-		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x - 1, y + 1);
 		CheckMove(piece, x - 1, y);
 		CheckMove(piece, x - 1, y - 1);
+        if (piece->Colour == Black)
+		{
+			CheckMove(piece, x, y + 1);
+		}
+		else
+		{
+			CheckMove(piece, x, y - 1);
+		}
 		break;
 	case BlindMonkey:
 		CheckMove(piece, x + 1, y + 1);

@@ -138,6 +138,7 @@ void ShogiBoard::SetDrops(bool hasDrops)
 		_initialSetup[1][4] = Elephant;
 		_initialSetup[7][4] = Elephant;
 	}
+	ShogiBoard::Initialize();
 }
 
 // Coordinates arrive as raw board indices: x from 0 (left) and y from 0 (top). Every shogi

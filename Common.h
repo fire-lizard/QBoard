@@ -98,7 +98,7 @@ inline GameVariant shogiVariants[] = { MicroShogi, KyotoShogi, Shogi, MiniShogi,
                                        ChuShogi, HeianDaiShogi, DaiShogi, ShoShogi, CrazyWa, TenjikuShogi, DaiDaiShogi, MakaDaiDaiShogi, KoShogi, TaiShogi };
 
 inline PieceType lionPieces[] = { Lion, Eagle, Falcon, LionHawk, FreeEagle, LionDog, TeachingKing, BuddhistSpirit,
-								  FuriousFiend, GreatElephant, RoamingAssault, RisingDragon, WingedTiger, FlyingHawk,
+								  FuriousFiend, RoamingAssault, RisingDragon, WingedTiger, FlyingHawk,
 								  Thunderclap, KnightCaptain, WingedHorse, ExtensiveFog, HolyLight, DoubleKylin, DoublePhoenix };
 
 inline PieceType KoShogiPieces[] = { King, Prince, Queen, Rook, Bishop, Gold, Silver, Copper, FlyingOx, FreeBoar, VerticalMover, DragonHorse, DragonKing, Pawn,

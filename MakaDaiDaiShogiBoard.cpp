@@ -46,126 +46,107 @@ Board* MakaDaiDaiShogiBoard::Clone()
 
 void MakaDaiDaiShogiBoard::Promote(int x, int y, PieceType pt)
 {
-    if (GetData(x, y) != std::nullopt)
+    if (GetData(x, y) == std::nullopt)
+    {
+        return;
+    }
+    if (pt != None)
     {
 		_data[x][y]->IsPromoted = true;
-        if (pt != None)
-        {
-			_data[x][y]->Type = pt;
-            return;
-        }
-        PieceType pieceType = _data[x][y]->Type;
-        switch (pieceType)
-        {
-        case King:
-            pieceType = Emperor;
-            break;
-        case Elephant:
-            pieceType = King;
-            break;
-        case Deva:
-            pieceType = TeachingKing;
-            break;
-        case DarkSpirit:
-            pieceType = BuddhistSpirit;
-            break;
-        case Gold:
-            pieceType = FreeGold;
-            break;
-        case Silver:
-            pieceType = FreeSilver;
-            break;
-        case Copper:
-            pieceType = FreeCopper;
-            break;
-        case Iron:
-            pieceType = FreeIron;
-            break;
-        case Tile:
-            pieceType = FreeTile;
-            break;
-        case Stone:
-            pieceType = FreeStone;
-            break;
-        case GoBetween:
-            pieceType = FreeGo;
-            break;
-        case Earth:
-            pieceType = FreeEarth;
-            break;
-        case Tiger:
-            pieceType = FreeTiger;
-            break;
-        case Leopard:
-            pieceType = FreeLeopard;
-            break;
-        case CoiledSerpent:
-            pieceType = FreeSerpent;
-            break;
-        case RecliningDragon:
-            pieceType = FreeDragon;
-            break;
-        case OldMonkey:
-            pieceType = MountainWitch;
-            break;
-        case ChineseCock:
-            pieceType = WizardStork;
-            break;
-        case CatSword:
-            pieceType = FreeCat;
-            break;
-        case Lion:
-            pieceType = FuriousFiend;
-            break;
-        case Phoenix:
-            pieceType = GoldenBird;
-            break;
-        case Kylin:
-            pieceType = GreatDragon;
-            break;
-        case EvilWolf:
-            pieceType = FreeWolf;
-            break;
-        case BlindBear:
-            pieceType = FreeBear;
-            break;
-        case AngryBoar:
-            pieceType = FreeBoar;
-            break;
-        case OldRat:
-            pieceType = Bat;
-            break;
-        case Lance:
-        case ReverseChariot:
-        case LionDog:
-        case Wrestler:
-        case Guardian:
-        case BuddhistDevil:
-        case Yaksha:
-        case FlyingDragon:
-        case ViolentOx:
-        case Knight:
-        case Donkey:
-        case Capricorn:
-        case HookMover:
-        case Bishop:
-        case Rook:
-        case VerticalMover:
-        case SideMover:
-        case LeftChariot:
-        case RightChariot:
-        case SideFlier:
-        case Pawn:
-            pieceType = Gold;
-            break;
-        default:
-            break;
-        }
-        if (pieceType != None)
-        {
-			_data[x][y]->Type = pieceType;
-        }
+		_data[x][y]->Type = pt;
+        return;
     }
+    const PieceType pieceType = PromotesTo(_data[x][y]->Type);
+    if (pieceType == None)
+    {
+        return;
+    }
+	_data[x][y]->IsPromoted = true;
+	_data[x][y]->Type = pieceType;
+}
+
+PieceType MakaDaiDaiShogiBoard::PromotesTo(PieceType pieceType) const
+{
+	switch (pieceType)
+	{
+	case King:
+		return Emperor;
+	case Pawn:
+		return Tokin;
+	case Bishop:
+	case BuddhistDevil:
+	case Capricorn:
+	case Donkey:
+	case FlyingDragon:
+	case Guardian:
+	case HookMover:
+	case Knight:
+	case Lance:
+	case LeftChariot:
+	case LionDog:
+	case ReverseChariot:
+	case RightChariot:
+	case Rook:
+	case SideFlier:
+	case SideMover:
+	case VerticalMover:
+	case ViolentOx:
+	case Wrestler:
+	case Yaksha:
+		return Gold;
+	case Silver:
+		return FreeSilver;
+	case Gold:
+		return FreeGold;
+	case Copper:
+		return FreeCopper;
+	case AngryBoar:
+		return FreeBoar;
+	case BlindBear:
+		return FreeBear;
+	case Leopard:
+		return FreeLeopard;
+	case Tiger:
+		return FreeTiger;
+	case Kylin:
+		return GreatDragon;
+	case Phoenix:
+		return GoldenBird;
+	case Lion:
+		return FuriousFiend;
+	case CatSword:
+		return FreeCat;
+	case ChineseCock:
+		return WizardStork;
+	case CoiledSerpent:
+		return FreeSerpent;
+	case DarkSpirit:
+		return BuddhistSpirit;
+	case EvilWolf:
+		return FreeWolf;
+	case Deva:
+		return TeachingKing;
+	case Elephant:
+		return Prince;
+	case Earth:
+		return FreeEarth;
+	case GoBetween:
+		return FreeGo;
+	case OldMonkey:
+		return MountainWitch;
+	case Iron:
+		return FreeIron;
+	case RecliningDragon:
+		return FreeDragon;
+	case Tile:
+		return FreeTile;
+	case Stone:
+		return FreeStone;
+	case OldRat:
+		return Bat;
+	default:
+		return None;
+	}
 }
 
 void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
@@ -359,32 +340,34 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
 	case Deva:
         if (piece->Colour == White)
 		{
-			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
-			CheckMove(piece, x + 1, y + 1);
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y);
 		}
 		else
 		{
 			CheckMove(piece, x - 1, y + 1);
 			CheckMove(piece, x + 1, y + 1);
 			CheckMove(piece, x + 1, y - 1);
+			CheckMove(piece, x - 1, y);
 		}
-		CheckMove(piece, x - 1, y);
 		break;
 	case DarkSpirit:
         if (piece->Colour == White)
 		{
-			CheckMove(piece, x - 1, y - 1);
 			CheckMove(piece, x + 1, y - 1);
-			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y + 1);
+			CheckMove(piece, x - 1, y);
 		}
 		else
 		{
 			CheckMove(piece, x - 1, y + 1);
 			CheckMove(piece, x + 1, y + 1);
 			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y);
 		}
-		CheckMove(piece, x + 1, y);
 		break;
 	case Tile:
         if (piece->Colour == White)
@@ -401,16 +384,8 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
 		}
 		break;
 	case Earth:
-        if (piece->Colour == White)
-		{
-			CheckMove(piece, x - 1, y - 1);
-			CheckMove(piece, x + 1, y - 1);
-		}
-		else
-		{
-			CheckMove(piece, x - 1, y + 1);
-			CheckMove(piece, x + 1, y + 1);
-		}
+		CheckMove(piece, x, y + 1);
+		CheckMove(piece, x, y - 1);
 		break;
 	case FreeGold:
 		CheckDirection(piece, x, y, North);
@@ -570,19 +545,23 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
 		}
 		break;
 	case FreeDragon:
-		CheckDirection(piece, x, y, North);
-		CheckDirection(piece, x, y, South);
-		CheckDirection(piece, x, y, East);
-		CheckDirection(piece, x, y, West);
         if (piece->Colour == White)
 		{
-			CheckDirection(piece, x, y, NorthEast);
-			CheckDirection(piece, x, y, NorthWest);
+			CheckDirection(piece, x, y, South);
+			CheckDirection(piece, x, y, SouthEast);
+			CheckDirection(piece, x, y, SouthWest);
+			CheckMove(piece, x, y + 1);
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y + 1);
 		}
 		else
 		{
-			CheckDirection(piece, x, y, SouthEast);
-			CheckDirection(piece, x, y, SouthWest);
+			CheckDirection(piece, x, y, North);
+			CheckDirection(piece, x, y, NorthEast);
+			CheckDirection(piece, x, y, NorthWest);
+			CheckMove(piece, x, y - 1);
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y - 1);
 		}
 		break;
 	case OldMonkey:
@@ -607,10 +586,12 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
         if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, North);
+			CheckMove(piece, x, y - 1); // the single step forward was missing
 		}
 		else
 		{
 			CheckDirection(piece, x, y, South);
+			CheckMove(piece, x, y + 1);
 		}
 		break;
 	case ChineseCock:
@@ -636,11 +617,13 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
 		CheckDirection(piece, x, y, SouthWest);
         if (piece->Colour == White)
 		{
-			CheckDirection(piece, x, y, North);
+			CheckDirection(piece, x, y, South);
+			CheckMove(piece, x, y + 1);
 		}
 		else
 		{
-			CheckDirection(piece, x, y, South);
+			CheckDirection(piece, x, y, North);
+			CheckMove(piece, x, y - 1);
 		}
 		break;
 	case FreeCat:
@@ -670,26 +653,20 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
 		CheckDirection(piece, x, y, South, 2);
 		break;
 	case FreeWolf:
-		CheckDirection(piece, x, y, East);
-		CheckDirection(piece, x, y, West);
-        if (piece->Colour == White)
-		{
-			CheckDirection(piece, x, y, South);
-			CheckDirection(piece, x, y, SouthEast);
-			CheckDirection(piece, x, y, SouthWest);
-		}
-		else
-		{
-			CheckDirection(piece, x, y, North);
-			CheckDirection(piece, x, y, NorthEast);
-			CheckDirection(piece, x, y, NorthWest);
-		}
+		CheckDirection(piece, x, y, East, 5);
+		CheckDirection(piece, x, y, West, 5);
+		CheckDirection(piece, x, y, North);
+		CheckDirection(piece, x, y, South);
+		CheckDirection(piece, x, y, NorthEast);
+		CheckDirection(piece, x, y, NorthWest);
+		CheckDirection(piece, x, y, SouthEast);
+		CheckDirection(piece, x, y, SouthWest);
 		break;
 	case BlindBear:
-		CheckMove(piece, x + 1, y);
-		CheckMove(piece, x, y + 1);
-		CheckMove(piece, x, y - 1);
-		CheckMove(piece, x - 1, y);
+		CheckMove(piece, x + 1, y + 1);
+		CheckMove(piece, x + 1, y - 1);
+		CheckMove(piece, x - 1, y + 1);
+		CheckMove(piece, x - 1, y - 1);
         if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, North);
@@ -787,9 +764,7 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
 		break;
 	case Donkey:
 		CheckMove(piece, x + 1, y);
-		CheckMove(piece, x, y + 1);
 		CheckMove(piece, x, y + 2);
-		CheckMove(piece, x, y - 1);
 		CheckMove(piece, x, y - 2);
 		CheckMove(piece, x - 1, y);
 		break;
@@ -797,8 +772,8 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
         if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, South);
-			CheckDirection(piece, x, y, SouthWest, 3);
-			CheckDirection(piece, x, y, NorthEast, 3);
+			CheckDirection(piece, x, y, NorthWest);
+			CheckDirection(piece, x, y, SouthEast);
 			CheckMove(piece, x, y + 1);
 		}
 		else
@@ -813,15 +788,15 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
         if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, South);
-			CheckDirection(piece, x, y, SouthEast);
-			CheckDirection(piece, x, y, NorthWest);
+			CheckDirection(piece, x, y, SouthWest);
+			CheckDirection(piece, x, y, NorthEast);
 			CheckMove(piece, x, y + 1);
 		}
 		else
 		{
 			CheckDirection(piece, x, y, North);
-			CheckDirection(piece, x, y, NorthEast, 3);
-			CheckDirection(piece, x, y, SouthWest, 3);
+			CheckDirection(piece, x, y, NorthEast);
+			CheckDirection(piece, x, y, SouthWest);
 			CheckMove(piece, x, y - 1);
 		}
 		break;

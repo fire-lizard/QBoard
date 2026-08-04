@@ -24,7 +24,7 @@ void ToriShogiBoard::Initialize()
                 if (j != 3)
                     SetData(i, j, Piece(_initialSetup[j][i], j < 3 ? Black : White));
                 else
-                    SetData(i, j, Piece(_initialSetup[j][i], i < 3 ? Black : White));
+                    SetData(i, j, Piece(_initialSetup[j][i], i > 3 ? Black : White));
             }
             else
             {
@@ -119,8 +119,8 @@ void ToriShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
         if (piece->Colour == White)
         {
             CheckDirection(piece, x, y, South);
-            CheckDirection(piece, x, y, NorthEast);
-            CheckMove(piece, x - 1, y + 1);
+            CheckDirection(piece, x, y, NorthWest);
+            CheckMove(piece, x + 1, y + 1);
         }
         else
         {
@@ -133,8 +133,8 @@ void ToriShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
         if (piece->Colour == White)
         {
             CheckDirection(piece, x, y, South);
-            CheckDirection(piece, x, y, NorthWest);
-            CheckMove(piece, x + 1, y + 1);
+            CheckDirection(piece, x, y, NorthEast);
+            CheckMove(piece, x - 1, y + 1);
         }
         else
         {
@@ -150,21 +150,19 @@ void ToriShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
         {
             CheckDirection(piece, x, y, SouthWest);
             CheckDirection(piece, x, y, SouthEast);
+            CheckDirection(piece, x, y, North);
             CheckMove(piece, x, y - 1);
-            CheckMove(piece, x + 1, y + 1);
-            CheckMove(piece, x - 1, y + 1);
-            CheckMove(piece, x + 2, y + 2);
-            CheckMove(piece, x - 2, y + 2);
+            CheckDirection(piece, x, y, NorthEast, 2);
+            CheckDirection(piece, x, y, NorthWest, 2);
         }
         else
         {
             CheckDirection(piece, x, y, NorthWest);
             CheckDirection(piece, x, y, NorthEast);
+            CheckDirection(piece, x, y, South);
             CheckMove(piece, x, y + 1);
-            CheckMove(piece, x + 1, y - 1);
-            CheckMove(piece, x - 1, y - 1);
-            CheckMove(piece, x + 2, y - 2);
-            CheckMove(piece, x - 2, y - 2);
+            CheckDirection(piece, x, y, SouthEast, 2);
+            CheckDirection(piece, x, y, SouthWest, 2);
         }
         break;
     case Goose:

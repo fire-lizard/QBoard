@@ -102,14 +102,14 @@ void YariShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
         CheckMove(piece, x - 1, y);
         if (piece->Colour == Black)
         {
-            CheckDirection(piece, x, y, North);
+            CheckDirection(piece, x, y, South);
             CheckMove(piece, x, y + 1);
             CheckMove(piece, x - 1, y + 1);
             CheckMove(piece, x + 1, y + 1);
         }
         else
         {
-            CheckDirection(piece, x, y, South);
+            CheckDirection(piece, x, y, North);
             CheckMove(piece, x, y - 1);
             CheckMove(piece, x - 1, y - 1);
             CheckMove(piece, x + 1, y - 1);
@@ -118,14 +118,14 @@ void YariShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
     case YariSilver:
         if (piece->Colour == Black)
         {
-            CheckDirection(piece, x, y, North);
+            CheckDirection(piece, x, y, South);
             CheckMove(piece, x, y + 1);
             CheckMove(piece, x - 1, y + 1);
             CheckMove(piece, x + 1, y + 1);
         }
         else
         {
-            CheckDirection(piece, x, y, South);
+            CheckDirection(piece, x, y, North);
             CheckMove(piece, x, y - 1);
             CheckMove(piece, x - 1, y - 1);
             CheckMove(piece, x + 1, y - 1);
