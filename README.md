@@ -14,6 +14,7 @@
      * Musketeer Chess
      * Amazon Chess
      * Atomic Chess
+     * Cylinder Chess
      * Knightmate Chess
      * Grande Acedrex
   2. Shogi Variants

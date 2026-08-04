@@ -9,7 +9,13 @@ public:
 	Board* Clone() override;
 	void GetMoves(const std::optional<Piece>& piece, int x, int y) override;
 
+protected:
+	bool EnemyPawnsAround(int x, int y) const override;
+
 private:
+	int Wrap(int x) const;
+	void CheckWrappedMove(const std::optional<Piece>& piece, int x, int y);
+	void CheckWrappedDirection(const std::optional<Piece>& piece, int x, int y, Direction direction);
 
 	PieceType _initialSetup[8][8] = {
 		{ Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook },
