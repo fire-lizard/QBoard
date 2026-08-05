@@ -50,43 +50,47 @@ Board* KyotoShogiBoard::Clone()
     return cb;
 }
 
+PieceType KyotoFlip(PieceType pieceType)
+{
+    switch (pieceType)
+    {
+    case Rook:
+        return Pawn;
+    case Bishop:
+        return Silver;
+    case Tokin:
+        return Lance;
+    case Lance:
+        return Tokin;
+    case Silver:
+        return Bishop;
+    case Knight:
+        return Gold;
+    case Gold:
+        return Knight;
+    case Pawn:
+        return Rook;
+    default:
+        return None;
+    }
+}
+
 void KyotoShogiBoard::Promote(int x, int y, PieceType pt)
 {
     if (GetData(x, y) != std::nullopt)
     {
-        PieceType pieceType = None;
-        switch (_data[x][y]->Type)
-        {
-        case Rook:
-            pieceType = Pawn;
-            break;
-        case Bishop:
-            pieceType = Silver;
-            break;
-        case Tokin:
-            pieceType = Lance;
-            break;
-        case Lance:
-            pieceType = Tokin;
-            break;
-        case Silver:
-            pieceType = Bishop;
-            break;
-        case Knight:
-            pieceType = Gold;
-            break;
-        case Gold:
-            pieceType = Knight;
-            break;
-        case Pawn:
-            pieceType = Rook;
-            break;
-        default:
-            break;
-        }
+        const PieceType pieceType = KyotoFlip(_data[x][y]->Type);
         if (pieceType != None)
         {
             _data[x][y]->Type = pieceType;
         }
     }
+}
+
+// Kyoto's tokin needs a letter of its own. Board::GetStringCode writes it as "+P", which the engines
+// read as the tokin's own other face (a rook), and which the drop relay truncates to a bare '+'.
+std::string KyotoShogiBoard::GetStringCode(int x, int y) const
+{
+    if (GetData(x, y) != std::nullopt && GetData(x, y)->Type == Tokin) return "T";
+    return ShogiBoard::GetStringCode(x, y);
 }

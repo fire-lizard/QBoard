@@ -22,24 +22,24 @@ private:
 	std::vector<std::pair<int, int>> GetRay(int startR, int startC, int dr, int dc, int n, PieceColour pieceColour) const;
 
 	PieceType _initialSetup[19][19] = {
-		{ Lance, Earth, Stone, Tile, Iron, Copper, Silver, Gold, Deva, King, DarkSpirit, Gold, Silver, Copper, Iron, Tile, Stone, Earth, Lance },
-		{ ReverseChariot, None, CatSword, None, ChineseCock, None, CoiledSerpent, Leopard, Tiger, Elephant, Tiger, Leopard, RecliningDragon, None, OldMonkey, None, CatSword, None, ReverseChariot },
-		{ None, OldRat, None, AngryBoar, None, BlindBear, None, EvilWolf, Kylin, Lion, Phoenix, EvilWolf, None, BlindBear, None, AngryBoar, None, OldRat, None },
-		{ Donkey, None, Knight, None, ViolentOx, None, FlyingDragon, BuddhistDevil, Wrestler, LionDog, Guardian, Yaksha, FlyingDragon, None, ViolentOx, None, Knight, None, Donkey },
-		{ Rook, LeftChariot, SideMover, SideFlier, VerticalMover, Bishop, DragonHorse, DragonKing, Capricorn, Queen, HookMover, DragonKing, DragonHorse, Bishop, VerticalMover, SideFlier, SideMover, RightChariot, Rook },
-		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
-		{ None, None, None, None, None, GoBetween, None, None, None, None, None, None, None, GoBetween, None, None, None, None, None },
-		{ None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None },
-		{ None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None },
-		{ None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None },
-		{ None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None },
-		{ None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None },
-		{ None, None, None, None, None, GoBetween, None, None, None, None, None, None, None, GoBetween, None, None, None, None, None },
-		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
-		{ Rook, RightChariot, SideMover, SideFlier, VerticalMover, Bishop, DragonHorse, DragonKing, HookMover, Queen, Capricorn, DragonKing, DragonHorse, Bishop, VerticalMover, SideFlier, SideMover, LeftChariot, Rook },
-		{ Donkey, None, Knight, None, ViolentOx, None, FlyingDragon, Yaksha, Guardian, LionDog, Wrestler, BuddhistDevil, FlyingDragon, None, ViolentOx, None, Knight, None, Donkey },
-		{ None, OldRat, None, AngryBoar, None, BlindBear, None, EvilWolf, Phoenix, Lion, Kylin, EvilWolf, None, BlindBear, None, AngryBoar, None, OldRat, None },
+		{ Lance, Earth, Stone, Tile, Iron, Copper, Silver, Gold, DarkSpirit, King, Deva, Gold, Silver, Copper, Iron, Tile, Stone, Earth, Lance },
 		{ ReverseChariot, None, CatSword, None, OldMonkey, None, RecliningDragon, Leopard, Tiger, Elephant, Tiger, Leopard, CoiledSerpent, None, ChineseCock, None, CatSword, None, ReverseChariot },
-		{ Lance, Earth, Stone, Tile, Iron, Copper, Silver, Gold, DarkSpirit, King, Deva, Gold, Silver, Copper, Iron, Tile, Stone, Earth, Lance }
+		{ None, OldRat, None, AngryBoar, None, BlindBear, None, EvilWolf, Phoenix, Lion, Kylin, EvilWolf, None, BlindBear, None, AngryBoar, None, OldRat, None },
+		{ Donkey, None, Knight, None, ViolentOx, None, FlyingDragon, Yaksha, Guardian, LionDog, Wrestler, BuddhistDevil, FlyingDragon, None, ViolentOx, None, Knight, None, Donkey },
+		{ Rook, RightChariot, SideMover, SideFlier, VerticalMover, Bishop, DragonHorse, DragonKing, HookMover, Queen, Capricorn, DragonKing, DragonHorse, Bishop, VerticalMover, SideFlier, SideMover, LeftChariot, Rook },
+		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
+		{ None, None, None, None, None, GoBetween, None, None, None, None, None, None, None, GoBetween, None, None, None, None, None },
+		{ None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None },
+		{ None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None },
+		{ None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None },
+		{ None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None },
+		{ None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None },
+		{ None, None, None, None, None, GoBetween, None, None, None, None, None, None, None, GoBetween, None, None, None, None, None },
+		{ Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
+		{ Rook, LeftChariot, SideMover, SideFlier, VerticalMover, Bishop, DragonHorse, DragonKing, Capricorn, Queen, HookMover, DragonKing, DragonHorse, Bishop, VerticalMover, SideFlier, SideMover, RightChariot, Rook },
+		{ Donkey, None, Knight, None, ViolentOx, None, FlyingDragon, BuddhistDevil, Wrestler, LionDog, Guardian, Yaksha, FlyingDragon, None, ViolentOx, None, Knight, None, Donkey },
+		{ None, OldRat, None, AngryBoar, None, BlindBear, None, EvilWolf, Kylin, Lion, Phoenix, EvilWolf, None, BlindBear, None, AngryBoar, None, OldRat, None },
+		{ ReverseChariot, None, CatSword, None, ChineseCock, None, CoiledSerpent, Leopard, Tiger, Elephant, Tiger, Leopard, RecliningDragon, None, OldMonkey, None, CatSword, None, ReverseChariot },
+		{ Lance, Earth, Stone, Tile, Iron, Copper, Silver, Gold, Deva, King, DarkSpirit, Gold, Silver, Copper, Iron, Tile, Stone, Earth, Lance }
 	};
 };

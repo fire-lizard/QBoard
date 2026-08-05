@@ -355,13 +355,13 @@ void DaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		CheckDirection(piece, x, y, South);
         if (piece->Colour == Black)
 		{
-			CheckDirection(piece, x, y, NorthWest);
-			CheckMove(piece, x + 1, y + 1);
+			CheckDirection(piece, x, y, NorthEast);
+			CheckMove(piece, x - 1, y + 1);
 		}
 		else
 		{
-			CheckDirection(piece, x, y, SouthEast);
-			CheckMove(piece, x - 1, y - 1);
+			CheckDirection(piece, x, y, SouthWest);
+			CheckMove(piece, x + 1, y - 1);
 		}
 		break;
 	case BlueDragon:
@@ -371,13 +371,13 @@ void DaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		CheckDirection(piece, x, y, South, 2);
         if (piece->Colour == Black)
 		{
-			CheckDirection(piece, x, y, NorthEast);
-			CheckMove(piece, x - 1, y + 1);
+			CheckDirection(piece, x, y, NorthWest);
+			CheckMove(piece, x + 1, y + 1);
 		}
 		else
 		{
-			CheckDirection(piece, x, y, SouthWest);
-			CheckMove(piece, x + 1, y - 1);
+			CheckDirection(piece, x, y, SouthEast);
+			CheckMove(piece, x - 1, y - 1);
 		}
 		break;
 	case ViolentBear:
@@ -544,11 +544,11 @@ void DaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		CheckMove(piece, x - 1, y - 1);
         if (piece->Colour == Black)
 		{
-			CheckMove(piece, x + 1, y);
+			CheckMove(piece, x - 1, y);
 		}
 		else
 		{
-			CheckMove(piece, x - 1, y);
+			CheckMove(piece, x + 1, y);
 		}
 		break;
 	case RightGeneral :
@@ -560,11 +560,11 @@ void DaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
 		CheckMove(piece, x - 1, y - 1);
         if (piece->Colour == Black)
 		{
-			CheckMove(piece, x - 1, y);
+			CheckMove(piece, x + 1, y);
 		}
 		else
 		{
-			CheckMove(piece, x + 1, y);
+			CheckMove(piece, x - 1, y);
 		}
 		break;
 	default:

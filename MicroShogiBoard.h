@@ -10,6 +10,8 @@ public:
     Board* Clone() override;
     bool Move(int oldX, int oldY, int newX, int newY, bool cl = true) override;
     void Promote(int x, int y, PieceType pt = None) override;
+    // Micro Shogi has its own coins and its own engines: it keeps the "+P" tokin, not Kyoto's "T".
+    std::string GetStringCode(int x, int y) const override;
 
 private:
 

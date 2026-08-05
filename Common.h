@@ -235,7 +235,7 @@ inline char SHOGIFEN[] = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKG
 
 inline char MICROSHOGIFEN[] = "kbgs/p3/4/3P/SGBK b - 1";
 
-inline char KYOTOSHOGIFEN[] = "pgks+p/5/5/5/+PSKGP b - 1";
+inline char KYOTOSHOGIFEN[] = "pgkst/5/5/5/TSKGP b - 1";
 
 inline char MINISHOGIFEN[] = "rbsgk/4p/5/P4/KGSBR b - 1";
 

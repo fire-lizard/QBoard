@@ -15,12 +15,12 @@ public:
 private:
 
     PieceType _initialSetup[7][7] = {
-        { LeftQuail, Pheasant, Crane, King, Crane, Pheasant, RightQuail },
+        { RightQuail, Pheasant, Crane, King, Crane, Pheasant, LeftQuail },
         { None, None, None, Falcon, None, None, None },
         { Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
         { None, None, Pawn, None, Pawn, None, None },
         { Pawn, Pawn, Pawn, Pawn, Pawn, Pawn, Pawn },
         { None, None, None, Falcon, None, None, None },
-        { RightQuail, Pheasant, Crane, King, Crane, Pheasant, LeftQuail }
+        { LeftQuail, Pheasant, Crane, King, Crane, Pheasant, RightQuail }
     };
 };

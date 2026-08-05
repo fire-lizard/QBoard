@@ -2498,6 +2498,12 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		{
 			const std::string str = StringManager::PieceType2Description(_gameVariant, cp);
 			menu.addAction(QString::fromStdString(str));
+			// A Kyoto coin in hand may be dropped on either face, so offer the other one too. The
+			// hand stores whichever face it was captured on, which is half of the legal drops.
+			if (_gameVariant == KyotoShogi)
+			{
+				menu.addAction(QString::fromStdString(StringManager::PieceType2Description(_gameVariant, KyotoFlip(cp))));
+			}
 		}
 	}
 
@@ -2526,15 +2532,18 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 					mb.exec();
 					return;
 				}
+				// Kyoto has neither rule: a pawn and a rook are one coin, so two pawns on a file are
+				// two different pieces, and a pawn drop may give check. Its engines offer both.
 				const std::optional<Piece> kp = _currentPlayer == White ? _board->GetData(x, y - 1) : _board->GetData(x, y + 1);
-				if (kp != std::nullopt && kp->Type == King && kp->Colour != _currentPlayer && _gameVariant != YariShogi)
+				if (kp != std::nullopt && kp->Type == King && kp->Colour != _currentPlayer &&
+					_gameVariant != YariShogi && _gameVariant != KyotoShogi)
 				{
 					QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot check king by the pawn drop",
 						QMessageBox::Ok, this);
 					mb.exec();
 					return;
 				}
-				for (int index = 0; index < _board->GetHeight(); index++)
+				for (int index = 0; _gameVariant != KyotoShogi && index < _board->GetHeight(); index++)
 				{
 					const std::optional<Piece> p = _board->GetData(x, index);
 					if (p != std::nullopt && p->Type == Pawn && p->Colour == _currentPlayer)
@@ -2634,7 +2643,13 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				engine->Move(sc, '@', x, _board->GetHeight() - y, ' ');
 		}
 		EngineOutputHandler::AddMove(_board, _gameVariant, newPiece, sc, '*', x, y, ' ', ' ');
-		dynamic_cast<PieceStorage*>(_board)->RemoveCapturedPiece(newPiece, _currentPlayer);
+		auto* store = dynamic_cast<PieceStorage*>(_board);
+		// A Kyoto coin is held under the face it was captured on; dropping the other face spends
+		// the same coin.
+		if (!store->RemoveCapturedPiece(newPiece, _currentPlayer) && _gameVariant == KyotoShogi)
+		{
+			store->RemoveCapturedPiece(KyotoFlip(newPiece), _currentPlayer);
+		}
 		if (_gameVariant == MusketeerChess)
 		{
 			if (_currentPlayer == White)

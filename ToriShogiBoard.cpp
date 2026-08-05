@@ -24,7 +24,7 @@ void ToriShogiBoard::Initialize()
                 if (j != 3)
                     SetData(i, j, Piece(_initialSetup[j][i], j < 3 ? Black : White));
                 else
-                    SetData(i, j, Piece(_initialSetup[j][i], i > 3 ? Black : White));
+                    SetData(i, j, Piece(_initialSetup[j][i], i < 3 ? Black : White));
             }
             else
             {
@@ -119,20 +119,6 @@ void ToriShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
         if (piece->Colour == White)
         {
             CheckDirection(piece, x, y, South);
-            CheckDirection(piece, x, y, NorthWest);
-            CheckMove(piece, x + 1, y + 1);
-        }
-        else
-        {
-            CheckDirection(piece, x, y, North);
-            CheckDirection(piece, x, y, SouthEast);
-            CheckMove(piece, x - 1, y - 1);
-        }
-        break;
-    case RightQuail:
-        if (piece->Colour == White)
-        {
-            CheckDirection(piece, x, y, South);
             CheckDirection(piece, x, y, NorthEast);
             CheckMove(piece, x - 1, y + 1);
         }
@@ -141,6 +127,20 @@ void ToriShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, int y)
             CheckDirection(piece, x, y, North);
             CheckDirection(piece, x, y, SouthWest);
             CheckMove(piece, x + 1, y - 1);
+        }
+        break;
+    case RightQuail:
+        if (piece->Colour == White)
+        {
+            CheckDirection(piece, x, y, South);
+            CheckDirection(piece, x, y, NorthWest);
+            CheckMove(piece, x + 1, y + 1);
+        }
+        else
+        {
+            CheckDirection(piece, x, y, North);
+            CheckDirection(piece, x, y, SouthEast);
+            CheckMove(piece, x - 1, y - 1);
         }
         break;
     case Eagle:

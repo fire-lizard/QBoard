@@ -50,6 +50,11 @@ Board* MicroShogiBoard::Clone()
     return cb;
 }
 
+std::string MicroShogiBoard::GetStringCode(int x, int y) const
+{
+    return ShogiBoard::GetStringCode(x, y);
+}
+
 bool MicroShogiBoard::Move(int oldX, int oldY, int newX, int newY, bool cl)
 {
     const PieceType destPieceType = GetData(newX, newY) != std::nullopt ? GetData(newX, newY)->Type : None;

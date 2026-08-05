@@ -1,4 +1,5 @@
 ﻿#include "EngineOutputHandler.h"
+#include "KyotoShogiBoard.h"
 
 void EngineOutputHandler::RemoveMove(std::vector<std::pair<int, int>>& moves, int x, int y)
 {
@@ -1196,6 +1197,11 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 case 'L':
                     newPiece = Lance;
                     break;
+                // Kyoto's tokin. Without it the drop landed a typeless, imageless piece on the
+                // square and the board never matched the engine's again.
+                case 'T':
+                    newPiece = Tokin;
+                    break;
                 case 'P':
                     newPiece = Pawn;
                     break;
@@ -1205,6 +1211,14 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 }
             }
             board->SetData(x2, y2, Piece(newPiece, currentPlayer));
+            // The drop does not go through Board::Move, so nothing else takes the piece out of the
+            // engine's hand - and the hand QBoard shows for it would only ever grow. A Kyoto coin is
+            // held under whichever face it was captured on, which need not be the face dropped.
+            if (auto* store = dynamic_cast<PieceStorage*>(board);
+                store != nullptr && !store->RemoveCapturedPiece(newPiece, currentPlayer) && gameVariant == KyotoShogi)
+            {
+                store->RemoveCapturedPiece(KyotoFlip(newPiece), currentPlayer);
+            }
             AddMove(board, gameVariant, PieceTypeAt(board, x2, y2), moveArray[0], moveArray[1], x2, y2, ' ', ' ');
             if (engine->GetType() == USI)
             {

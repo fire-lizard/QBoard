@@ -1117,6 +1117,11 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         if (stringCode == "J") return Queen;
         return StringCode2PieceType(Shatranj, stringCode);
     }
+    if (gameVariant == KyotoShogi)
+    {
+        // The tokin is "T" here, not the "+P" of the table below - see KyotoShogiBoard::GetStringCode.
+        if (stringCode == "T") return Tokin;
+    }
     if (gameVariant == Sittuyin)
     {
         if (stringCode == "S") return Bishop;
@@ -1784,7 +1789,9 @@ std::pair<std::unordered_map<PieceType, std::string>, std::vector<PieceType>> St
         {Silver, "S"},
         {Gold, "G"},
         {Knight, "N"},
+        // Only Kyoto holds a tokin in hand; elsewhere a captured tokin is stored as the pawn it was.
+        {Tokin, "T"},
         {Pawn, "P"}
-    }, { King, Queen, Rook, Bishop, Gold, Silver, Knight, Lance, Pawn } };
+    }, { King, Queen, Rook, Bishop, Gold, Silver, Knight, Lance, Tokin, Pawn } };
     }
 }

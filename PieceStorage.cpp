@@ -18,16 +18,17 @@ void PieceStorage::AddCapturedPiece(PieceType p, PieceColour pieceColour)
 	_capturedPieces.emplace_back(pieceColour, p);
 }
 
-void PieceStorage::RemoveCapturedPiece(PieceType p, PieceColour pieceColour)
+bool PieceStorage::RemoveCapturedPiece(PieceType p, PieceColour pieceColour)
 {
 	for (size_t index = 0; index < _capturedPieces.size(); index++)
 	{
 		if (_capturedPieces[index].first == pieceColour && _capturedPieces[index].second == p)
 		{
 			_capturedPieces.erase(_capturedPieces.begin() + index);
-			break;
+			return true;
 		}
 	}
+	return false;
 }
 
 void PieceStorage::ClearCapturedPieces()

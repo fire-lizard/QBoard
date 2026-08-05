@@ -340,33 +340,33 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
 	case Deva:
         if (piece->Colour == White)
 		{
-			CheckMove(piece, x + 1, y - 1);
 			CheckMove(piece, x - 1, y - 1);
-			CheckMove(piece, x - 1, y + 1);
-			CheckMove(piece, x + 1, y);
+			CheckMove(piece, x + 1, y - 1);
+			CheckMove(piece, x + 1, y + 1);
+			CheckMove(piece, x - 1, y);
 		}
 		else
 		{
-			CheckMove(piece, x - 1, y + 1);
 			CheckMove(piece, x + 1, y + 1);
-			CheckMove(piece, x + 1, y - 1);
-			CheckMove(piece, x - 1, y);
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x - 1, y - 1);
+			CheckMove(piece, x + 1, y);
 		}
 		break;
 	case DarkSpirit:
         if (piece->Colour == White)
 		{
-			CheckMove(piece, x + 1, y - 1);
 			CheckMove(piece, x - 1, y - 1);
-			CheckMove(piece, x + 1, y + 1);
-			CheckMove(piece, x - 1, y);
+			CheckMove(piece, x + 1, y - 1);
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y);
 		}
 		else
 		{
-			CheckMove(piece, x - 1, y + 1);
 			CheckMove(piece, x + 1, y + 1);
-			CheckMove(piece, x - 1, y - 1);
-			CheckMove(piece, x + 1, y);
+			CheckMove(piece, x - 1, y + 1);
+			CheckMove(piece, x + 1, y - 1);
+			CheckMove(piece, x - 1, y);
 		}
 		break;
 	case Tile:
@@ -772,15 +772,15 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
         if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, South);
-			CheckDirection(piece, x, y, NorthWest);
-			CheckDirection(piece, x, y, SouthEast);
+			CheckDirection(piece, x, y, SouthWest);
+			CheckDirection(piece, x, y, NorthEast);
 			CheckMove(piece, x, y + 1);
 		}
 		else
 		{
 			CheckDirection(piece, x, y, North);
-			CheckDirection(piece, x, y, SouthEast);
-			CheckDirection(piece, x, y, NorthWest);
+			CheckDirection(piece, x, y, NorthEast);
+			CheckDirection(piece, x, y, SouthWest);
 			CheckMove(piece, x, y - 1);
 		}
 		break;
@@ -788,15 +788,15 @@ void MakaDaiDaiShogiBoard::GetMoves(const std::optional<Piece>& piece, int x, in
         if (piece->Colour == White)
 		{
 			CheckDirection(piece, x, y, South);
-			CheckDirection(piece, x, y, SouthWest);
-			CheckDirection(piece, x, y, NorthEast);
+			CheckDirection(piece, x, y, SouthEast);
+			CheckDirection(piece, x, y, NorthWest);
 			CheckMove(piece, x, y + 1);
 		}
 		else
 		{
 			CheckDirection(piece, x, y, North);
-			CheckDirection(piece, x, y, NorthEast);
-			CheckDirection(piece, x, y, SouthWest);
+			CheckDirection(piece, x, y, NorthWest);
+			CheckDirection(piece, x, y, SouthEast);
 			CheckMove(piece, x, y - 1);
 		}
 		break;
