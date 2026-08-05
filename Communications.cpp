@@ -416,16 +416,9 @@ void Communications::slot_update_board() const
         if (message.isEmpty())
             continue; // incomplete/partial data stays buffered; empty frames ignored
 
-        // Validate on a throwaway clone first: SetFenToBoard clears the board before parsing,
-        // so a malformed/hostile peer packet must never touch the live board.
-        Board* live = m_vboard->GetBoard();
-        Board* trial = live->Clone();
-        const QString err = EngineOutputHandler::SetFenToBoard(trial, message, m_vboard->GetGameVariant());
-        delete trial;
-        if (!err.isEmpty())
+        if (!EngineOutputHandler::TrySetFenToBoard(m_vboard->GetBoard(), message, m_vboard->GetGameVariant()).isEmpty())
             continue; // reject; leave the live board and the turn untouched
 
-        EngineOutputHandler::SetFenToBoard(live, message, m_vboard->GetGameVariant());
         applied = true;
     }
 

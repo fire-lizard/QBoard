@@ -164,6 +164,8 @@ inline PieceType OmegaChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn,
 
 inline PieceType NightriderChessPieces[] = { King, Queen, Bishop, Nightrider, Rook, Pawn };
 
+inline PieceType KnightmateChessPieces[] = { King, Queen, Bishop, Silver, Rook, Pawn };
+
 inline PieceType CourierChessPieces[] = { King, Queen, Bishop, Knight, Rook, Pawn, Sage, Schleich, Courier };
 
 inline PieceType MusketeerChessPieces[] = {	King, Queen, Bishop, Knight, Rook, Pawn, Chancellor, Archbishop,
@@ -222,6 +224,8 @@ inline char MODERNFEN[] = "rnbqkabnr/ppppppppp/9/9/9/9/9/PPPPPPPPP/RNBAKQBNR w K
 inline char GRANDFEN[] = "r8r/1nbqkcabn1/pppppppppp/10/10/10/10/PPPPPPPPPP/1NBQKCABN1/R8R w - - 0 1";
 
 inline char OMEGAFEN[] = "w10w/1crnbqkbnrc1/1pppppppppp1/12/12/12/12/12/12/1PPPPPPPPPP1/1CRNBQKBNRC1/W10W w - - 0 1";
+
+inline char KNIGHTMATEFEN[] = "rmbqkbmr/pppppppp/8/8/8/8/PPPPPPPP/RMBQKBMR w KQkq - 0 1";
 
 inline char COURIERFEN[] = "rnebmkfwbenr/pppppppppppp/12/12/12/12/PPPPPPPPPPPP/RNEBMKFWBENR w - - 0 1";
 

@@ -9,6 +9,7 @@
 #include "MakrukBoard.h"
 #include "SittuyinBoard.h"
 #include "TenjikuShogiBoard.h"
+#include "KyotoShogiBoard.h"
 
 struct Move
 {
@@ -28,6 +29,8 @@ public:
 	static void AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3);
 	static PieceType PieceTypeAt(const Board* board, int x, int y);
 	static QString SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant);
+	// As above, but a FEN that fails to parse leaves the board untouched instead of half-cleared.
+	static QString TrySetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant);
 	static QString GetFenFromBoard(Board* board, GameVariant gameVariant, PieceColour sideToMove);
 	static bool HasHoldingsField(GameVariant gameVariant);
 	static void CalculateCheck(Board* board, PieceColour pieceColour, std::vector<std::pair<int, int>>& moves, int oldX, int oldY, int newX, int newY);

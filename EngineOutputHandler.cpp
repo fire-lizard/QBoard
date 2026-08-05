@@ -1,5 +1,4 @@
 ﻿#include "EngineOutputHandler.h"
-#include "KyotoShogiBoard.h"
 
 void EngineOutputHandler::RemoveMove(std::vector<std::pair<int, int>>& moves, int x, int y)
 {
@@ -103,12 +102,24 @@ void EngineOutputHandler::CalculateXiangqiCheck(Board* board, std::vector<std::p
     delete brd;
 }
 
+// SetFenToBoard clears the board before it parses, so a FEN it rejects half way through leaves the
+// live board wrecked - cleared below the point it gave up on. Parse a throwaway copy first and only
+// commit a FEN that parses clean.
+QString EngineOutputHandler::TrySetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant)
+{
+    Board* trial = board->Clone();
+    const QString err = SetFenToBoard(trial, str, gameVariant);
+    delete trial;
+    if (err.isEmpty()) SetFenToBoard(board, str, gameVariant);
+    return err;
+}
+
 void EngineOutputHandler::RollbackIllegalMove(GameVariant gameVariant, Board *board, std::vector<BoardSnapshot>& history)
 {
     if (history.size() > 1)
     {
         history.pop_back();
-        SetFenToBoard(board, QByteArray::fromStdString(history.back().fen), gameVariant);
+        TrySetFenToBoard(board, QByteArray::fromStdString(history.back().fen), gameVariant);
         // A FEN restores the placement only. Without the hand the refused move keeps half its
         // effect: a rolled-back drop leaves the piece neither on the board nor in hand, and a
         // rolled-back capture leaves a piece in hand that is standing on the board again.
@@ -1386,9 +1397,12 @@ bool EngineOutputHandler::HasHoldingsField(GameVariant gameVariant)
 QString EngineOutputHandler::GetFenFromBoard(Board* board, GameVariant gameVariant, PieceColour sideToMove)
 {
 	QString fen = QString::fromStdString(board->GetFEN());
-	if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
+	// Pieces in hand (or still to be placed) go in brackets straight after the placement, one letter
+	// each, uppercase for White. That is what the engines read: the shogi variants used to write the
+	// hand as a field of its own after the side to move, which every engine ignored, so a position
+	// handed over with setboard arrived with the right pieces on the board and an empty hand.
+	if (gameVariant == Sittuyin || gameVariant == MusketeerChess || HasHoldingsField(gameVariant))
 	{
-		// pieces still to be placed, one letter each, uppercase for White
 		const auto pieceCodes = StringManager::GetOrderData(gameVariant).first;
 		auto* stb = dynamic_cast<PieceStorage*>(board);
 		QString cpStr;
@@ -1421,8 +1435,7 @@ QString EngineOutputHandler::GetFenFromBoard(Board* board, GameVariant gameVaria
 	}
 	else if (HasHoldingsField(gameVariant))
 	{
-		auto* cps = dynamic_cast<PieceStorage*>(board);
-		if (cps != nullptr) fen += " " + QString::fromStdString(cps->CapturedPieceString(gameVariant));
+		fen += " -"; // placeholder where the hand used to sit, so the move number keeps its field
 	}
 	fen += " " + QString::number(board->MoveCount());
 	return fen;
@@ -1442,6 +1455,18 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
     }
 	if (parts.isEmpty() || parts.first().isEmpty())
 		return "Empty FEN string"; // guard before indexing parts[0]/fen[0]; also avoids wiping the board on junk input
+	// The hand may arrive bracketed after the placement, which is what GetFenFromBoard and every
+	// engine write, or in a field of its own, which is what QBoard wrote before and what the
+	// positions already saved to disk still hold. Lift the bracket into that field and read one code.
+	if (HasHoldingsField(gameVariant) && parts[0].contains('['))
+	{
+		const qsizetype open = parts[0].indexOf('[');
+		const qsizetype close = parts[0].indexOf(']', open);
+		const QString held = close > open ? parts[0].mid(open + 1, close - open - 1) : QString();
+		parts[0] = parts[0].left(open);
+		while (parts.size() < 3) parts.append("-");
+		parts[2] = held.isEmpty() ? "-" : held;
+	}
 	QString fen = parts[0];
 	board->Clear();
 	const int w = board->GetWidth();
@@ -1475,8 +1500,8 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
             }
             else
             {
-                int step = fen[k - 2].toLatin1() - 48;
-            	i += c != '0' ? step * 10 : step * 10 - 1;
+                const int step = fen[k - 2].toLatin1() - 48;
+                i += step * 9;
                 isDigit = false;
             }
 		}

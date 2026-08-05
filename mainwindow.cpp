@@ -236,7 +236,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-    aboutStr.append("<center>QBoard 1.1.9<br/>");
+    aboutStr.append("<center>QBoard 1.2.0<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Makruk graphics by Vuthy Tan<br/>");
@@ -501,14 +501,17 @@ void MainWindow::on_actionOpen_triggered()
 			this->ui->vboard->GetGameVariant() != Sittuyin && this->ui->vboard->GetGameVariant() != MusketeerChess ?
 				str.split(' ') : 
 				QString(str).replace('[', ' ').replace(']', ' ').toLatin1().split(' ');
-        if (parts.contains("w")) this->ui->vboard->SetCurrentPlayer(White);
-        else if (parts.contains("b")) this->ui->vboard->SetCurrentPlayer(Black);
         Board* board = this->ui->vboard->GetBoard();
-		const QString errorStr = EngineOutputHandler::SetFenToBoard(board, str, ui->vboard->GetGameVariant());
+		const QString errorStr = EngineOutputHandler::TrySetFenToBoard(board, str, ui->vboard->GetGameVariant());
 		if (!errorStr.isEmpty())
 		{
+			// The board still holds the position that was there before, so the side to move must
+			// stay as it was too, and there is nothing to hand the engines below.
 			QMessageBox::critical(this, "Error", errorStr);
+			return;
 		}
+        if (parts.contains("w")) this->ui->vboard->SetCurrentPlayer(White);
+        else if (parts.contains("b")) this->ui->vboard->SetCurrentPlayer(Black);
 		if (_blackEngine != nullptr && _blackEngine->IsActive())
 		{
 			if (_blackEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_blackEngine)->GetOption("setboard"))
@@ -694,16 +697,9 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-				QString mcStr = QString::number(ui->vboard->GetBoard()->MoveCount());
-				QString cpStr = QString::fromStdString(dynamic_cast<PieceStorage*>(ui->vboard->GetBoard())->CapturedPieceString(gameVariant));
-				str = QByteArray::fromStdString(ui->vboard->GetBoard()->GetFEN());
-				str += this->ui->vboard->GetCurrentPlayer() == Black ? " b " : " w ";
-				if (gameVariant != ShoShogi)
-				{
-					str += cpStr.toLatin1();
-					str += " ";
-				}
-				str += mcStr.toLatin1();
+				// One writer for the hand, shared with what goes to the engines and to a network peer
+				str = EngineOutputHandler::GetFenFromBoard(ui->vboard->GetBoard(), gameVariant,
+					ui->vboard->GetCurrentPlayer()).toLatin1();
 			}
 			else if (fileDialog.selectedNameFilter() == "PGN Files (*.pgn)")
 			{
