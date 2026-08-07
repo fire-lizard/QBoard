@@ -18,6 +18,7 @@
 #include "AmazonChessBoard.h"
 #include "AtomicChessBoard.h"
 #include "CylinderChessBoard.h"
+#include "FalconChessBoard.h"
 #include "KnightmateChessBoard.h"
 #include "CourierChessBoard.h"
 #include "MusketeerChessBoard.h"

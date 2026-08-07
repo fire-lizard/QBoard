@@ -16,6 +16,7 @@ private:
     static QString GetImageFileName(GameVariant gameVariant, PieceStyle pieceStyle, PieceColour pieceColour, PieceType pieceType, bool isPromoted);
     static QString GetImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted);
     static QString GetMakrukImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted);
+    static QString GetFalconChessImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted);
     static QString GetXiangqiImageFileName(PieceColour pieceColour, PieceType pieceType);
     static QString GetShogiImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted);
     static QString GetMnemonicImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted);

@@ -512,7 +512,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
          _gameVariant == JanusChess || _gameVariant == ChancellorChess || _gameVariant == ModernChess ||
          _gameVariant == OmegaChess || _gameVariant == NightriderChess || _gameVariant == MusketeerChess ||
 		 _gameVariant == AmazonChess || _gameVariant == AtomicChess || _gameVariant == CylinderChess ||
-		 _gameVariant == KnightmateChess || _gameVariant == CrazyHouse || _gameVariant ==SeirawanChess) &&
+		 _gameVariant == KnightmateChess || _gameVariant == CrazyHouse || _gameVariant == SeirawanChess ||
+		 _gameVariant == FalconChess) &&
         _currentPiece != std::nullopt && _currentPiece->Type == King && !_currentPiece->HasMoved &&
         p != std::nullopt && p->Colour == _currentPlayer && p->Type == Rook && !p->HasMoved && _board->IsMovePossible(x, y))
 	{
@@ -1537,7 +1538,9 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             pd->SetEnabled(Champion, false);
             pd->SetEnabled(Wizard, false);
 			pd->SetEnabled(Nightrider, _gameVariant == NightriderChess);
-			if (_gameVariant == Chess || _gameVariant == NightriderChess || _gameVariant == CrazyHouse)
+			pd->SetEnabled(Falcon, _gameVariant == FalconChess);
+			if (_gameVariant == Chess || _gameVariant == NightriderChess || _gameVariant == CrazyHouse ||
+				_gameVariant == FalconChess)
             {
                 pd->SetEnabled(Archbishop, false);
                 pd->SetEnabled(Chancellor, false);
@@ -1899,6 +1902,9 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		break;
 	case CylinderChess:
 		_board = new CylinderChessBoard();
+		break;
+	case FalconChess:
+		_board = new FalconChessBoard();
 		break;
 	case KnightmateChess:
 		_board = new KnightmateChessBoard();

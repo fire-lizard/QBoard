@@ -1112,6 +1112,11 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         if (stringCode == "S") return Spider;
         return StringCode2PieceType(Shatranj, stringCode);
     }
+    if (gameVariant == FalconChess)
+    {
+        if (stringCode == "F") return Falcon;
+        return StringCode2PieceType(Shatranj, stringCode);
+    }
     if (gameVariant == SeirawanChess)
     {
         // The Hawk and the Elephant, which is what the engines' H and E mean here.

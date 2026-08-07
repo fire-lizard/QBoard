@@ -126,6 +126,7 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
     case CourierChess:
     case ChancellorChess:
     case ModernChess:
+    case FalconChess:
     case MusketeerChess:
     case SeirawanChess:
     case GrandeAcedrex:
@@ -316,6 +317,7 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     case CourierChess:
     case ChancellorChess:
     case ModernChess:
+    case FalconChess:
     case MusketeerChess:
     case SeirawanChess:
     case GrandeAcedrex:
@@ -415,6 +417,9 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     case CrazyHouse:
         if (gameVariant == Sittuyin && pieceStyle == Asian4) imageFileName = GetSittuyinImageFileName(pieceColour, pieceType);
     	else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
+        break;
+    case FalconChess:
+        imageFileName = GetFalconChessImageFileName(pieceColour, pieceType, isPromoted);
         break;
     case KnightmateChess:
         imageFileName = GetKnightmateChessImageFileName(pieceColour, pieceType);
@@ -541,6 +546,19 @@ QString GraphicsManager::GetImageFileName(PieceColour pieceColour, PieceType pie
         return colour + "Axe.png";
     default:
         return "";
+    }
+}
+
+QString GraphicsManager::GetFalconChessImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted)
+{
+    QString colour = pieceColour == White ? "White" : "Black";
+    if (pieceType == Falcon)
+    {
+        return colour + "Hawk.png";
+    }
+    else
+    {
+        return GetImageFileName(pieceColour, pieceType, isPromoted);
     }
 }
 

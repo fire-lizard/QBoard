@@ -26,6 +26,7 @@ private:
 		{Bishop, 'B'},
         {Archbishop, 'A'},
         {Chancellor, 'C'},
+        {Falcon, 'F'},
         {Queen, 'Q'},
         {King, 'K'},
         {Champion, 'C'},

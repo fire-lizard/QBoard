@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>295</width>
-    <height>165</height>
+    <height>215</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -167,6 +167,26 @@
    <property name="icon">
     <iconset resource="resources.qrc">
      <normaloff>:/pieces_eur/images/images_gen/BlackNightrider.png</normaloff>:/pieces_eur/images/images_gen/BlackNightrider.png</iconset>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton_10">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>160</y>
+     <width>33</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/pieces_eur/images/images_gen/BlackUnicorn.png</normaloff>:/pieces_eur/images/images_gen/BlackUnicorn.png</iconset>
    </property>
   </widget>
  </widget>

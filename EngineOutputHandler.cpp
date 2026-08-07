@@ -210,7 +210,8 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
     }
     else if (gameVariant == CapablancaChess ||
 			 gameVariant == GothicChess || gameVariant == JanusChess || gameVariant == GrandChess ||
-			 gameVariant == OmegaChess || gameVariant == CourierChess || gameVariant == GrandeAcedrex)
+			 gameVariant == OmegaChess || gameVariant == CourierChess || gameVariant == GrandeAcedrex ||
+			 gameVariant == FalconChess)
     {
         static const QString _bbre = R"(^move ([a-s])(1[0-6]|[0-9])([a-s])(1[0-6]|[0-9])([nbrqfjacwmM])?)";
         QRegularExpression regexp = QRegularExpression(_bbre, QRegularExpression::MultilineOption);
@@ -442,7 +443,7 @@ std::pair<int, int> EngineOutputHandler::CastlingTargets(GameVariant gameVariant
 {
     const bool kingside = rookX > kingX;
     int step = 2;
-    if (gameVariant == CapablancaChess || gameVariant == GothicChess) step = 3;
+    if (gameVariant == CapablancaChess || gameVariant == GothicChess || gameVariant == FalconChess) step = 3;
     else if (gameVariant == JanusChess) step = kingside ? 4 : 3;
     const int kingTo = kingside ? kingX + step : kingX - step;
     return { kingTo, kingside ? kingTo - 1 : kingTo + 1 };
@@ -945,7 +946,8 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 		{
             const bool isPromoted =
                 moveArray[ms - 1] == 'n' || moveArray[ms - 1] == 'b' || moveArray[ms - 1] == 'r' ||
-                moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c';
+                moveArray[ms - 1] == 'q' || moveArray[ms - 1] == 'a' || moveArray[ms - 1] == 'c' ||
+                moveArray[ms - 1] == 'f';
 			board->GetMoves(board->GetData(x1, y1), x1, y1);
 			const PieceType movedType = PieceTypeAt(board, x1, y1);
             const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
@@ -974,6 +976,9 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                     break;
                 case 'c':
                     board->Promote(x2, y2, Chancellor);
+                    break;
+                case 'f':
+                    board->Promote(x2, y2, Falcon);
                     break;
                 default:
 					break;
@@ -1342,6 +1347,8 @@ char EngineOutputHandler::ChessPieceChar(PieceType chessPiece)
     case Chancellor:
     case Champion:
         return 'c';
+    case Falcon:
+        return 'f';
     case Wizard:
         return 'w';
     default:

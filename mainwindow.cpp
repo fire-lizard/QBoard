@@ -634,6 +634,8 @@ void MainWindow::on_actionSave_triggered()
 					chessVariant = "[Variant \"atomic\"]\n\n";
 				else if (gameVariant == CylinderChess)
 					chessVariant = "[Variant \"cylinder\"]\n\n";
+				else if (gameVariant == FalconChess)
+					chessVariant = "[Variant \"falcon\"]\n\n";
 				else if (gameVariant == KnightmateChess)
 					chessVariant = "[Variant \"knightmate\"]\n\n";
 				const QString result = "[Result \"*\"]\n";

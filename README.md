@@ -16,6 +16,7 @@
      * Amazon Chess
      * Atomic Chess
      * Cylinder Chess
+     * Falcon Chess
      * Knightmate Chess
      * Grande Acedrex
      * Crazy House
