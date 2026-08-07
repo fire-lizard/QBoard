@@ -30,7 +30,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/pieces_eur/images/BlackRook.png</normaloff>:/pieces_eur/images/BlackRook.png</iconset>
+     <normaloff>:/pieces_eur/images/images_gen/BlackRook.png</normaloff>:/pieces_eur/images/images_gen/BlackRook.png</iconset>
    </property>
   </widget>
   <widget class="QToolButton" name="toolButton_2">
@@ -47,7 +47,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/pieces_eur/images/BlackKnight.png</normaloff>:/pieces_eur/images/BlackKnight.png</iconset>
+     <normaloff>:/pieces_eur/images/images_gen/BlackKnight.png</normaloff>:/pieces_eur/images/images_gen/BlackKnight.png</iconset>
    </property>
   </widget>
   <widget class="QToolButton" name="toolButton_3">
@@ -64,7 +64,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/pieces_eur/images/BlackBishop.png</normaloff>:/pieces_eur/images/BlackBishop.png</iconset>
+     <normaloff>:/pieces_eur/images/images_gen/BlackBishop.png</normaloff>:/pieces_eur/images/images_gen/BlackBishop.png</iconset>
    </property>
   </widget>
   <widget class="QToolButton" name="toolButton_4">
@@ -81,7 +81,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/pieces_eur/images/BlackQueen.png</normaloff>:/pieces_eur/images/BlackQueen.png</iconset>
+     <normaloff>:/pieces_eur/images/images_gen/BlackQueen.png</normaloff>:/pieces_eur/images/images_gen/BlackQueen.png</iconset>
    </property>
   </widget>
   <widget class="QToolButton" name="toolButton_5">
@@ -98,7 +98,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/pieces_eur/images/BlackArchbishop.png</normaloff>:/pieces_eur/images/BlackArchbishop.png</iconset>
+     <normaloff>:/pieces_eur/images/images_gen/BlackArchbishop.png</normaloff>:/pieces_eur/images/images_gen/BlackArchbishop.png</iconset>
    </property>
   </widget>
   <widget class="QToolButton" name="toolButton_6">
@@ -115,7 +115,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/pieces_eur/images/BlackChancellor.png</normaloff>:/pieces_eur/images/BlackChancellor.png</iconset>
+     <normaloff>:/pieces_eur/images/images_gen/BlackChancellor.png</normaloff>:/pieces_eur/images/images_gen/BlackChancellor.png</iconset>
    </property>
   </widget>
   <widget class="QToolButton" name="toolButton_7">
@@ -132,7 +132,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/pieces_eur/images/BlackViking.png</normaloff>:/pieces_eur/images/BlackViking.png</iconset>
+     <normaloff>:/pieces_eur/images/images_gen/BlackViking.png</normaloff>:/pieces_eur/images/images_gen/BlackViking.png</iconset>
    </property>
   </widget>
   <widget class="QToolButton" name="toolButton_8">
@@ -149,7 +149,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/pieces_eur/images/BlackWizard.png</normaloff>:/pieces_eur/images/BlackWizard.png</iconset>
+     <normaloff>:/pieces_eur/images/images_gen/BlackWizard.png</normaloff>:/pieces_eur/images/images_gen/BlackWizard.png</iconset>
    </property>
   </widget>
   <widget class="QToolButton" name="toolButton_9">
@@ -166,7 +166,7 @@
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/pieces_eur/images/BlackNightrider.png</normaloff>:/pieces_eur/images/BlackNightrider.png</iconset>
+     <normaloff>:/pieces_eur/images/images_gen/BlackNightrider.png</normaloff>:/pieces_eur/images/images_gen/BlackNightrider.png</iconset>
    </property>
   </widget>
  </widget>

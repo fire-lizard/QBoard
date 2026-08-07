@@ -95,6 +95,7 @@ protected:
 private:
 	bool CheckRepetition(int oldX, int oldY, int newX, int newY);
     char CheckPromotion(const std::optional<Piece>& p, int x, int y);
+	char CheckGating(int x, int y);
 	bool PossibleMove(int x, int y) const;
 	bool PossibleShoot(int x, int y) const;
 	bool AskForPromotion();

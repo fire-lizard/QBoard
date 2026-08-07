@@ -10,6 +10,7 @@
 #include "SittuyinBoard.h"
 #include "TenjikuShogiBoard.h"
 #include "KyotoShogiBoard.h"
+#include "SeirawanChessBoard.h"
 
 struct Move
 {
@@ -42,6 +43,8 @@ public:
 	static int  GetEnPassantRank(GameVariant gameVariant, PieceColour pieceColour, char y);
 	static char ChessPieceChar(PieceType chessPiece);
 	static char MusketeerPieceChar(PieceType musketeerPiece);
+	static char SeirawanPieceChar(PieceType seirawanPiece);
+	static PieceType SeirawanCharPiece(char letter);
 	static qsizetype CutAtLastCompleteMove(const QByteArray& buffer);
 	static Move CastlingToMove(const QByteArray& c, const Board* board, PieceColour currentPlayer);
 	static bool IsCastling(const QByteArray& moveArray, const Board* board, GameVariant gameVariant,

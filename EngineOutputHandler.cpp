@@ -320,7 +320,7 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
         {
             regexp = QRegularExpression(_stre, QRegularExpression::MultilineOption);
         }
-        else if (gameVariant == MusketeerChess)
+        else if (gameVariant == MusketeerChess || gameVariant == SeirawanChess)
         {
             regexp = QRegularExpression(_mcre, QRegularExpression::MultilineOption);
         }
@@ -449,7 +449,7 @@ std::pair<int, int> EngineOutputHandler::CastlingTargets(GameVariant gameVariant
 int EngineOutputHandler::EngineRank(GameVariant gameVariant, int height, int y)
 {
     return gameVariant == Xiangqi || gameVariant == Janggi || gameVariant == GrandChess ||
-           gameVariant == MusketeerChess || gameVariant == SeirawanChess
+           gameVariant == MusketeerChess
         ? height - y - 1 : height - y;
 }
 
@@ -528,7 +528,7 @@ void EngineOutputHandler::PromoteIfUnmarked(Board* board, GameVariant gameVarian
 	// How far inside the array the promotion row sits. Musketeer's gating rows and Omega's wizard
 	// rows hold the last rank one row in; Makruk promotes on the sixth rank rather than the last.
 	const int inset = gameVariant == Makruk ? 2
-		: gameVariant == MusketeerChess || gameVariant == SeirawanChess || gameVariant == OmegaChess ? 1 : 0;
+		: gameVariant == MusketeerChess || gameVariant == OmegaChess ? 1 : 0;
 	if (y2 == (piece->Colour == White ? inset : board->GetHeight() - 1 - inset))
 	{
 		// One piece per variant, and every board that reaches here calls it a Queen: the Ferz of
@@ -782,7 +782,45 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             PromoteIfUnmarked(board, gameVariant, x2, y2);
         }
     }
-    else if (gameVariant == MusketeerChess || gameVariant == SeirawanChess)
+    else if (gameVariant == SeirawanChess)
+    {
+        SeirawanChessBoard* sb = dynamic_cast<SeirawanChessBoard*>(board);
+        const PieceType gated = ms > 4 ? SeirawanCharPiece(moveArray[ms - 1]) : None;
+        if (IsCastling(moveArray, board, gameVariant, x1, y1, x2, y2))
+        {
+            const int kingTo = ApplyCastling(board, gameVariant, x1, y1, x2);
+            if (kingTo != -1)
+            {
+                // Both engines gate onto the king's own square when castling.
+                if (gated != None && sb != nullptr) sb->Gate(x1, y1, gated, currentPlayer);
+                const int rank = EngineRank(gameVariant, board->GetHeight(), y1);
+                engine->AddMove(x1, rank, kingTo, rank, gated != None ? moveArray[ms - 1] : ' ');
+            }
+        }
+        else if (board->CheckPosition(x1, y1) && board->GetData(x1, y1) != std::nullopt)
+        {
+            const PieceType movedType = PieceTypeAt(board, x1, y1);
+            const PieceType ct = board->GetData(x2, y2) != std::nullopt ? board->GetData(x2, y2)->Type : None;
+            board->GetMoves(board->GetData(x1, y1), x1, y1);
+            board->Move(x1, y1, x2, y2, false);
+            AddMove(board, gameVariant, movedType, x1, y1, x2, y2,
+                gated != None ? moveArray[ms - 1] : ' ', ct != None ? 'x' : ' ');
+            engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, gated != None ? moveArray[ms - 1] : ' ');
+            if (gated != None)
+            {
+                if (movedType == Pawn)
+                {
+                    board->Promote(x2, y2, gated);
+                }
+                else if (sb != nullptr)
+                {
+                    sb->Gate(x1, y1, gated, currentPlayer);
+                }
+            }
+            PromoteIfUnmarked(board, gameVariant, x2, y2);
+        }
+    }
+    else if (gameVariant == MusketeerChess)
     {
         // The gating rows push the back rank one row in, which ByteArrayToMove knows nothing
         // about. CastlingToMove reads the king off the board, so its rows are already right.
@@ -1264,7 +1302,6 @@ int EngineOutputHandler::GetEnPassantRank(GameVariant gameVariant, PieceColour p
         return pieceColour == Black ? 5 : 3;
     case GrandChess:
     case MusketeerChess:
-	case SeirawanChess:
         return pieceColour == Black ? 5 : 4;
 	case OmegaChess:
         return y - 48 + ('6' - y) * 2;
@@ -1316,6 +1353,30 @@ char EngineOutputHandler::MusketeerPieceChar(PieceType musketeerPiece)
     }
 }
 
+char EngineOutputHandler::SeirawanPieceChar(PieceType seirawanPiece)
+{
+    switch (seirawanPiece)
+    {
+    case Archbishop: return 'h';
+    case Chancellor: return 'e';
+    default:         return ChessPieceChar(seirawanPiece);
+    }
+}
+
+PieceType EngineOutputHandler::SeirawanCharPiece(char letter)
+{
+    switch (letter)
+    {
+    case 'h': return Archbishop;
+    case 'e': return Chancellor;
+    case 'n': return Knight;
+    case 'b': return Bishop;
+    case 'r': return Rook;
+    case 'q': return Queen;
+    default:  return None;
+    }
+}
+
 void EngineOutputHandler::ReadStandardError(const QByteArray& buf, QTextEdit* textEdit)
 {
 	textEdit->setHtml("<p style='color:red'>" + buf + "</p>");
@@ -1329,7 +1390,7 @@ PieceType EngineOutputHandler::PieceTypeAt(const Board* board, int x, int y)
 
 void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3)
 {
-    if (gameVariant == MusketeerChess || gameVariant == SeirawanChess)
+    if (gameVariant == MusketeerChess)
     {
     }
 	else if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants) ||
@@ -1412,10 +1473,11 @@ QString EngineOutputHandler::GetFenFromBoard(Board* board, GameVariant gameVaria
 	if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
 	{
 		auto* cb = dynamic_cast<ChessBoard*>(board);
+		auto* sb = dynamic_cast<SeirawanChessBoard*>(board);
 		if (cb != nullptr)
 		{
-			// Grand Chess has no castling, so it has no rights to spell out
-			fen += " " + (gameVariant != GrandChess ? QString::fromStdString(cb->GetCastling()) : "-");
+			fen += " " + (sb != nullptr ? QString::fromStdString(sb->GatingRights())
+				: gameVariant != GrandChess ? QString::fromStdString(cb->GetCastling()) : "-");
 			fen += " " + QString::fromStdString(cb->GetEnPassant());
 			fen += " " + QString::number(cb->HalfMoveCount());
 		}
@@ -1431,10 +1493,19 @@ QString EngineOutputHandler::GetFenFromBoard(Board* board, GameVariant gameVaria
 QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant)
 {
 	QStringList parts;
+	QString bracketed;
     if (gameVariant == Sittuyin || gameVariant == MusketeerChess || gameVariant == SeirawanChess)
     {
         dynamic_cast<PieceStorage*>(board)->ClearCapturedPieces();
-        parts = QString(str).trimmed().replace('[', ' ').replace(']', ' ').split(' ');
+        QString rest = QString(str).trimmed();
+        const qsizetype open = rest.indexOf('[');
+        const qsizetype close = rest.indexOf(']', open);
+        if (open >= 0 && close > open)
+        {
+            bracketed = rest.mid(open + 1, close - open - 1);
+            rest = rest.left(open) + rest.mid(close + 1);
+        }
+        parts = rest.split(' ', Qt::SkipEmptyParts);
     }
     else
     {
@@ -1590,25 +1661,24 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 	}
     if (gameVariant == Sittuyin || gameVariant == MusketeerChess || gameVariant == SeirawanChess)
     {
-        // an empty bracket pair ("...[] w") leaves parts[1] empty, and the loop below reads parts[1][0] before it tests anything
-        if (parts.size() >= 2 && !parts[1].isEmpty())
+        if (!bracketed.isEmpty())
         {
             PieceStorage* cps = dynamic_cast<PieceStorage*>(board);
             k = 0;
             do
             {
-                if (parts[1][k] >= 'a' && parts[1][k] <= 'z')
+                if (bracketed[k] >= 'a' && bracketed[k] <= 'z')
                 {
-                    PieceType pt = StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, parts[1][k].toLatin1())));
+                    PieceType pt = StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, bracketed[k].toLatin1())));
                 	if (pt != None) cps->AddCapturedPiece(pt, Black);
                 }
-                else if (parts[1][k] >= 'A' && parts[1][k] <= 'Z')
+                else if (bracketed[k] >= 'A' && bracketed[k] <= 'Z')
                 {
-                    PieceType pt = StringManager::StringCode2PieceType(gameVariant, std::string(1, parts[1][k].toLatin1()));
+                    PieceType pt = StringManager::StringCode2PieceType(gameVariant, std::string(1, bracketed[k].toLatin1()));
                     if (pt != None) cps->AddCapturedPiece(pt, White);
                 }
                 k++;
-            } while (k < parts[1].size() && ((parts[1][k] >= 'a' && parts[1][k] <= 'z') || (parts[1][k] >= 'A' && parts[1][k] <= 'Z')));
+            } while (k < bracketed.size() && ((bracketed[k] >= 'a' && bracketed[k] <= 'z') || (bracketed[k] >= 'A' && bracketed[k] <= 'Z')));
         }
     }
     return "";

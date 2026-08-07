@@ -12,6 +12,7 @@
      * Nightrider Chess
      * Courier Chess
      * Musketeer Chess
+     * Seirawan Chess
      * Amazon Chess
      * Atomic Chess
      * Cylinder Chess

@@ -553,7 +553,12 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-				if (gameVariant == Sittuyin || gameVariant == MusketeerChess || gameVariant == SeirawanChess)
+				if (gameVariant == SeirawanChess)
+				{
+					str = EngineOutputHandler::GetFenFromBoard(ui->vboard->GetBoard(), gameVariant,
+						this->ui->vboard->GetCurrentPlayer()).toLatin1();
+				}
+				else if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
 				{
 					auto* stb = dynamic_cast<PieceStorage*>(ui->vboard->GetBoard());
 					auto pieceCodes = StringManager::GetOrderData(gameVariant).first;

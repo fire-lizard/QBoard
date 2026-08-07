@@ -1112,6 +1112,13 @@ PieceType StringManager::StringCode2PieceType(GameVariant gameVariant, const std
         if (stringCode == "S") return Spider;
         return StringCode2PieceType(Shatranj, stringCode);
     }
+    if (gameVariant == SeirawanChess)
+    {
+        // The Hawk and the Elephant, which is what the engines' H and E mean here.
+        if (stringCode == "H") return Archbishop;
+        if (stringCode == "E") return Chancellor;
+        return StringCode2PieceType(Shatranj, stringCode);
+    }
     if (gameVariant == Shatar)
     {
         if (stringCode == "J") return Queen;
@@ -1733,6 +1740,9 @@ std::pair<std::unordered_map<PieceType, std::string>, std::vector<PieceType>> St
 {
     switch (gameVariant)
     {
+    case SeirawanChess:
+        // Only the two held pieces matter: nothing else ever reaches Seirawan's hand.
+        return { { {Archbishop, "H"}, {Chancellor, "E"} }, { Archbishop, Chancellor } };
     case WhaleShogi:
         return { {
         {GreyWhale, "G"},

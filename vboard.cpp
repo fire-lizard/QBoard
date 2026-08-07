@@ -345,7 +345,7 @@ void VBoard::paintEvent(QPaintEvent *)
 					if ((i + j) % 2 != 0)
 						painter.setBrush(Qt::gray);
 				}
-				if (_gameVariant == MusketeerChess || _gameVariant == SeirawanChess)
+				if (_gameVariant == MusketeerChess)
 				{
 					if (j == 0 || j == _board->GetHeight() - 1)
 						painter.setBrush(QColorConstants::Svg::wheat);
@@ -486,7 +486,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 	const int h = this->size().height() / _board->GetHeight();
     const int x = static_cast<int>(event->position().x()) / w;
     const int y = static_cast<int>(event->position().y()) / h;
-	if (!_editorMode && (_gameVariant == MusketeerChess || _gameVariant == SeirawanChess))
+	if (!_editorMode && _gameVariant == MusketeerChess)
 	{
 		if (_currentPlayer == White && dynamic_cast<MusketeerChessBoard*>(_board)->WhitePiecesToPlace > 0) return;
 		if (_currentPlayer == Black && dynamic_cast<MusketeerChessBoard*>(_board)->BlackPiecesToPlace > 0) return;
@@ -537,10 +537,11 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 		{
 			_board->Move(_oldX, _oldY, kingTo, _oldY, false);
 			_board->Move(x, y, rookTo, y, false);
+			const char gated = _gameVariant == SeirawanChess ? CheckGating(_oldX, _oldY) : ' ';
 			if (engine != nullptr && engine->IsActive())
 			{
 				const int rank = EngineOutputHandler::EngineRank(_gameVariant, _board->GetHeight(), _oldY);
-				engine->Move(_oldX, rank, kingTo, rank, ' ');
+				engine->Move(_oldX, rank, kingTo, rank, gated);
 			}
 			dynamic_cast<ChessBoard*>(_board)->WriteCastling(kingTo > _oldX ? "O-O" : "O-O-O", _currentPlayer);
 			FinishMove(x, y);
@@ -1476,7 +1477,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             }
         }
     }
-	else if (_gameVariant == MusketeerChess || _gameVariant == SeirawanChess)
+	else if (_gameVariant == MusketeerChess)
 	{
 		if (_currentPiece->Type == Pawn &&
 			((y == 8 && _currentPiece->Colour == Black) ||
@@ -1502,6 +1503,28 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 		else if (const PieceType gated = dynamic_cast<MusketeerChessBoard*>(_board)->GatedPiece; gated != None)
 		{
 			promotion = EngineOutputHandler::MusketeerPieceChar(gated);
+		}
+	}
+	else if (_gameVariant == SeirawanChess)
+	{
+		if (_currentPiece->Type == Pawn &&
+			((y == _board->GetHeight() - 1 && _currentPiece->Colour == Black) ||
+			(y == 0 && _currentPiece->Colour == White)))
+		{
+			// A pawn may promote to a Hawk or an Elephant here whether or not one is still held -
+			// both engines allow it - so the hand is left alone. The letters are the gating ones.
+			PromotionDialog* pd = new PromotionDialog(this);
+			pd->SetEnabled(Champion, false);
+			pd->SetEnabled(Wizard, false);
+			pd->SetEnabled(Nightrider, false);
+			const PieceType pt = pd->exec() == QDialog::Accepted ? pd->GetChosenPiece() : Queen;
+			promotion = EngineOutputHandler::SeirawanPieceChar(pt);
+			_board->Promote(x, y, pt);
+		}
+		// A pawn promotion cannot gate, so the two never collide.
+		else
+		{
+			promotion = CheckGating(_oldX, _oldY);
 		}
 	}
 	else if (std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants))
@@ -1734,6 +1757,33 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
 		}
 	}
 	return promotion;
+}
+
+// Seirawan gating. A piece that leaves its own starting square on the back rank may bring a held
+// Hawk or Elephant in behind it, onto the square it just left, as part of the same move - and that
+// is the only way either of them ever reaches the board. The engines read it as the move with the
+// piece letter appended ("b1c3h"), so the letter has to ride along on the move that is relayed:
+// without it the gated piece exists on QBoard's board alone and every later move of it comes back
+// "Illegal move". Declining is a legal choice, so closing the dialog is not an error.
+char VBoard::CheckGating(int x, int y)
+{
+	SeirawanChessBoard* board = dynamic_cast<SeirawanChessBoard*>(_board);
+	if (board == nullptr || _currentPiece == std::nullopt) return ' ';
+	// HasMoved is read off the copy taken when the piece was picked up, so it still says what was
+	// true before the move. The square is empty by now unless castling put the rook back on it.
+	if (_currentPiece->HasMoved || y != board->BackRank(_currentPlayer)) return ' ';
+	if (board->GetData(x, y) != std::nullopt) return ' ';
+	const std::vector<PieceType> hand = board->GetCapturedPieces(_currentPlayer);
+	if (hand.empty()) return ' ';
+	PromotionDialog* pd = new PromotionDialog(this);
+	for (const PieceType pieceType : { Rook, Knight, Bishop, Queen, Champion, Wizard, Nightrider, Archbishop, Chancellor })
+	{
+		pd->SetEnabled(pieceType, std::ranges::find(hand, pieceType) != std::end(hand));
+	}
+	if (pd->exec() != QDialog::Accepted) return ' ';
+	const PieceType gated = pd->GetChosenPiece();
+	if (!board->Gate(x, y, gated, _currentPlayer)) return ' ';
+	return EngineOutputHandler::SeirawanPieceChar(gated);
 }
 
 bool VBoard::event(QEvent* event)
@@ -2477,17 +2527,15 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
     if (_gameVariant != MicroShogi && _gameVariant != KyotoShogi && _gameVariant != Shogi && _gameVariant != MiniShogi &&
 		_gameVariant != JudkinShogi && _gameVariant != WhaleShogi && _gameVariant != ToriShogi && _gameVariant != EuroShogi &&
 		_gameVariant != YariShogi && _gameVariant != CrazyWa && _gameVariant != Sittuyin && _gameVariant != CrazyHouse &&
-		_gameVariant != MusketeerChess && _gameVariant != SeirawanChess) return;
+		_gameVariant != MusketeerChess) return;
 	if ((_blackEngine != nullptr && _blackEngine->IsActive() && _currentPlayer == Black) ||
 		(_whiteEngine != nullptr && _whiteEngine->IsActive() && _currentPlayer == White)) return;
 	if (_gameVariant == MusketeerChess && _currentPlayer == White && dynamic_cast<MusketeerChessBoard*>(_board)->WhitePiecesToPlace == 0) return;
 	if (_gameVariant == MusketeerChess && _currentPlayer == Black && dynamic_cast<MusketeerChessBoard*>(_board)->BlackPiecesToPlace == 0) return;
-	if (_gameVariant == SeirawanChess && _currentPlayer == White && dynamic_cast<SeirawanChessBoard*>(_board)->WhitePiecesToPlace == 0) return;
-	if (_gameVariant == SeirawanChess && _currentPlayer == Black && dynamic_cast<SeirawanChessBoard*>(_board)->BlackPiecesToPlace == 0) return;
 
 	QMenu menu(this);
 
-	if ((_gameVariant == MusketeerChess || _gameVariant == SeirawanChess) && _currentPlayer == Black && _musketeerPiece != None)
+	if (_gameVariant == MusketeerChess && _currentPlayer == Black && _musketeerPiece != None)
 	{
 		const std::string str = StringManager::PieceType2Description(_gameVariant, _musketeerPiece);
 		menu.addAction(QString::fromStdString(str));
@@ -2609,7 +2657,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				}
 			}
 		}
-		if (_gameVariant == MusketeerChess || _gameVariant == SeirawanChess)
+		if (_gameVariant == MusketeerChess)
 		{
 			if ((_currentPlayer == White && y != _board->GetHeight() - 1) || (_currentPlayer == Black && y != 0))
 			{
@@ -2636,7 +2684,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		_board->SetData(x, y, Piece(newPiece, _currentPlayer));
         const char sc = _board->GetStringCode(x, y)[0];
 		const std::shared_ptr<Engine> engine = _currentPlayer == White ? _blackEngine : _whiteEngine;
-		if (engine != nullptr && engine->IsActive() && _gameVariant != MusketeerChess && _gameVariant != SeirawanChess)
+		if (engine != nullptr && engine->IsActive() && _gameVariant != MusketeerChess)
 		{
             if (engine->GetType() == USI)
 				engine->Move(sc, '*', _board->GetWidth() - x, y, ' ');
@@ -2650,7 +2698,7 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		{
 			store->RemoveCapturedPiece(KyotoFlip(newPiece), _currentPlayer);
 		}
-		if (_gameVariant == MusketeerChess || _gameVariant == SeirawanChess)
+		if (_gameVariant == MusketeerChess)
 		{
 			if (_currentPlayer == White)
 			{
