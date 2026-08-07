@@ -497,16 +497,15 @@ void MainWindow::on_actionOpen_triggered()
 		file.open(QIODevice::ReadOnly | QIODevice::Text);
 		const QByteArray str = file.readAll();
 		file.close();
+		GameVariant gameVariant = this->ui->vboard->GetGameVariant();
         QList<QByteArray> parts =
-			this->ui->vboard->GetGameVariant() != Sittuyin && this->ui->vboard->GetGameVariant() != MusketeerChess ?
+			gameVariant != Sittuyin && gameVariant != MusketeerChess && gameVariant != SeirawanChess ?
 				str.split(' ') : 
 				QString(str).replace('[', ' ').replace(']', ' ').toLatin1().split(' ');
         Board* board = this->ui->vboard->GetBoard();
-		const QString errorStr = EngineOutputHandler::TrySetFenToBoard(board, str, ui->vboard->GetGameVariant());
+		const QString errorStr = EngineOutputHandler::TrySetFenToBoard(board, str, gameVariant);
 		if (!errorStr.isEmpty())
 		{
-			// The board still holds the position that was there before, so the side to move must
-			// stay as it was too, and there is nothing to hand the engines below.
 			QMessageBox::critical(this, "Error", errorStr);
 			return;
 		}
@@ -554,7 +553,7 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-				if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
+				if (gameVariant == Sittuyin || gameVariant == MusketeerChess || gameVariant == SeirawanChess)
 				{
 					auto* stb = dynamic_cast<PieceStorage*>(ui->vboard->GetBoard());
 					auto pieceCodes = StringManager::GetOrderData(gameVariant).first;
@@ -616,6 +615,10 @@ void MainWindow::on_actionSave_triggered()
                     chessVariant = "[Variant \"modern\"]\n\n";
 				else if (gameVariant == MusketeerChess)
 					chessVariant = "[Variant \"musketeer\"]\n\n";
+				else if (gameVariant == SeirawanChess)
+					chessVariant = "[Variant \"seirawan\"]\n\n";
+				else if (gameVariant == CrazyHouse)
+					chessVariant = "[Variant \"crazyhouse\"]\n\n";
 				else if (gameVariant == CourierChess)
                     chessVariant = "[Variant \"courier\"]\n\n";
                 else if (gameVariant == GrandeAcedrex)
@@ -977,7 +980,7 @@ void MainWindow::LoadEngine(const std::shared_ptr<Engine>& engine, const QString
 {
 	if (engine != nullptr)
 	{
-        const QProcess* process = engine->RunProcess(this, engineExe, engineOptions);
+		const QProcess* process = engine->RunProcess(this, engineExe, engineOptions);
 		if (process->processId() > 0 && process->state() != QProcess::ProcessState::NotRunning)
 		{
 			if (engine->GetType() == XBoard)

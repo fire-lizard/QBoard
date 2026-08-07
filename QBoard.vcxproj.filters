@@ -248,6 +248,12 @@
     <ClCompile Include="AtomicChessBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CrazyHouseBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SeirawanChessBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -449,6 +455,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AtomicChessBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SeirawanChessBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CrazyHouseBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

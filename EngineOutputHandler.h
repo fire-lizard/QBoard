@@ -28,8 +28,6 @@ public:
 	static void ReadStandardError(const QByteArray& buf, QTextEdit* textEdit);
 	static void AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3);
 	static PieceType PieceTypeAt(const Board* board, int x, int y);
-	static QString SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant);
-	// As above, but a FEN that fails to parse leaves the board untouched instead of half-cleared.
 	static QString TrySetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant);
 	static QString GetFenFromBoard(Board* board, GameVariant gameVariant, PieceColour sideToMove);
 	static bool HasHoldingsField(GameVariant gameVariant);
@@ -56,6 +54,7 @@ public:
 	static int EngineRank(GameVariant gameVariant, int height, int y);
 
 private:
+	static QString SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant);
 	static int ApplyCastling(Board* board, GameVariant gameVariant, int x1, int y1, int x2);
 	template <typename T> static std::basic_string<T> lowercase(const std::basic_string<T>& s);
 	template <typename T> static std::basic_string<T> uppercase(const std::basic_string<T>& s);

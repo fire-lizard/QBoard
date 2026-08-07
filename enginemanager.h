@@ -82,6 +82,8 @@ namespace {
 		{CylinderChess,     "cylinder"},
 		{KnightmateChess,   "knightmate"},
 		{CourierChess,      "courier"},
+		{SeirawanChess,     "seirawan"},
+		{CrazyHouse,        "crazyhouse"},
 		{GrandeAcedrex,     "grande-acedrex"},
 
 		{Xiangqi,           "xiangqi"},

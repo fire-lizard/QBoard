@@ -73,10 +73,10 @@ void CylinderChessBoard::CheckWrappedDirection(const std::optional<Piece>& piece
 	while (true)
 	{
 		CheckDirectionInc(x, y, direction);
-		if (y < 0 || y > _height - 1) break;    // ranks do not wrap, only files do
+		if (y < 0 || y > _height - 1) break;
 		x = Wrap(x);
-		if (x == fromX && y == fromY) break;    // a full lap ends on the piece's own square
-		if (!IsMovePossible(x, y))              // opposite directions meet on the far side of the cylinder
+		if (x == fromX && y == fromY) break;
+		if (!IsMovePossible(x, y))
 		{
 			CheckMove(piece, x, y);
 		}
@@ -101,8 +101,8 @@ void CylinderChessBoard::GetMoves(const std::optional<Piece>& piece, int x, int 
 	switch (piece->Type)
 	{
 	case King:
-		ChessBoard::GetMoves(piece, x, y);      // the ordinary king moves, and castling
-		if (x == 0 || x == _width - 1)          // only the outer files gain neighbours across the seam
+		ChessBoard::GetMoves(piece, x, y);
+		if (x == 0 || x == _width - 1)
 		{
 			const int wx = x == 0 ? _width - 1 : 0;
 			CheckMove(piece, wx, y + 1);

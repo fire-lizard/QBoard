@@ -10,6 +10,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Se
 	}
 
     ui->variantsLineEdit->setStyleSheet("QLineEdit { background: rgb(0, 223, 223); selection-background-color: rgb(223, 99, 0); }");
+	ui->engine1DepthHorizontalSlider->setEnabled(ui->engine1DepthCheckBox->isChecked());
+	ui->engine2DepthHorizontalSlider->setEnabled(ui->engine2DepthCheckBox->isChecked());
+	ui->engine1TimeSpinBox->setEnabled(ui->engine1TimeCheckBox->isChecked());
+	ui->engine2TimeSpinBox->setEnabled(ui->engine2TimeCheckBox->isChecked());
 }
 
 SettingsDialog::~SettingsDialog()

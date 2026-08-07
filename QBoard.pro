@@ -20,6 +20,7 @@ SOURCES += main.cpp\
     PieceStorage.cpp \
     AmazonChessBoard.cpp \
     AtomicChessBoard.cpp \
+    CrazyHouseBoard.cpp \
     CylinderChessBoard.cpp \
     KnightmateChessBoard.cpp \
     CapablancaChessBoard.cpp \
@@ -38,6 +39,7 @@ SOURCES += main.cpp\
     ModernChessBoard.cpp \
     NightriderChessBoard.cpp \
     OmegaChessBoard.cpp \
+    SeirawanChessBoard.cpp \
     ShatarBoard.cpp \
     SittuyinBoard.cpp \
     ToriShogiBoard.cpp \
@@ -88,6 +90,7 @@ HEADERS  += mainwindow.h \
     Board.h \
     AmazonChessBoard.h \
     AtomicChessBoard.h \
+    CrazyHouseBoard.h \
     CylinderChessBoard.h \
     KnightmateChessBoard.h \
     CapablancaChessBoard.h \
@@ -111,6 +114,7 @@ HEADERS  += mainwindow.h \
     NightriderChessBoard.h \
     OmegaChessBoard.h \
     Logger.h \
+    SeirawanChessBoard.h \
     ShatarBoard.h \
     SittuyinBoard.h \
     ToriShogiBoard.h \

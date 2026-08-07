@@ -21,6 +21,8 @@
 #include "KnightmateChessBoard.h"
 #include "CourierChessBoard.h"
 #include "MusketeerChessBoard.h"
+#include "SeirawanChessBoard.h"
+#include "CrazyHouseBoard.h"
 #include "GrandeAcedrexBoard.h"
 #include "JanggiBoard.h"
 #include "ShatarBoard.h"

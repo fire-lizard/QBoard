@@ -214,6 +214,7 @@
     <ClCompile Include="AtomicChessBoard.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="CapablancaChessBoard.cpp" />
+    <ClCompile Include="CrazyHouseBoard.cpp" />
     <ClCompile Include="CylinderChessBoard.cpp" />
     <ClCompile Include="editor.cpp" />
     <ClCompile Include="KnightmateChessBoard.cpp" />
@@ -249,6 +250,7 @@
     <ClCompile Include="NightriderChessBoard.cpp" />
     <ClCompile Include="OmegaChessBoard.cpp" />
     <ClCompile Include="QianhongEngine.cpp" />
+    <ClCompile Include="SeirawanChessBoard.cpp" />
     <ClCompile Include="ShatarBoard.cpp" />
     <ClCompile Include="ShatranjBoard.cpp" />
     <ClCompile Include="ShogiBoard.cpp" />
@@ -284,6 +286,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="CapablancaChessBoard.h" />
     <QtMoc Include="editor.h" />
+    <ClInclude Include="CrazyHouseBoard.h" />
     <ClInclude Include="CylinderChessBoard.h" />
     <ClInclude Include="KnightmateChessBoard.h" />
     <ClInclude Include="PieceStorage.h" />
@@ -319,6 +322,7 @@
     <ClInclude Include="NightriderChessBoard.h" />
     <ClInclude Include="OmegaChessBoard.h" />
     <ClInclude Include="QianhongEngine.h" />
+    <ClInclude Include="SeirawanChessBoard.h" />
     <ClInclude Include="ShatarBoard.h" />
     <ClInclude Include="ShatranjBoard.h" />
     <ClInclude Include="ShogiBoard.h" />

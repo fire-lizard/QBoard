@@ -13,7 +13,7 @@ QProcess* Engine::RunProcess(QObject *parentObject, const QString& engineExe, co
 {
 	_process = std::make_unique<QProcess>(parentObject);
 	_process->setWorkingDirectory(QFileInfo(engineExe).absolutePath());
-	_process->setProgram(engineExe);
+	_process->setProgram(QFileInfo(engineExe).absoluteFilePath());
     if (!engineOptions.trimmed().isEmpty())
     {
         _process->setArguments(QProcess::splitCommand(engineOptions));

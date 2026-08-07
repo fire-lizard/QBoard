@@ -127,6 +127,7 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
     case ChancellorChess:
     case ModernChess:
     case MusketeerChess:
+    case SeirawanChess:
     case GrandeAcedrex:
         painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
         break;
@@ -151,6 +152,7 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
     case AmazonChess:
     case AtomicChess:
     case CylinderChess:
+    case CrazyHouse:
         if (pieceStyle == Mnemonic)
         {
             painter.drawPixmap(i * w + w / 10, j * h + h / 10, pixmap.size().width(), pixmap.size().height(), pixmap);
@@ -292,6 +294,7 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     case AmazonChess:
     case AtomicChess:
     case CylinderChess:
+    case CrazyHouse:
         if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
         if (pieceStyle == Mnemonic) return ":/pieces_eur/images/images_eur/";
         if (pieceStyle == Asian) return ":/pieces_eur2/images/images_eur2/";
@@ -314,6 +317,7 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
     case ChancellorChess:
     case ModernChess:
     case MusketeerChess:
+    case SeirawanChess:
     case GrandeAcedrex:
         return ":/pieces_eur/images/images_gen/";
     }
@@ -407,6 +411,8 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     case AmazonChess:
     case AtomicChess:
     case CylinderChess:
+    case SeirawanChess:
+    case CrazyHouse:
         if (gameVariant == Sittuyin && pieceStyle == Asian4) imageFileName = GetSittuyinImageFileName(pieceColour, pieceType);
     	else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
         break;

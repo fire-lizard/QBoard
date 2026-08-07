@@ -38,6 +38,7 @@ void ZBoard::Setup(int width, int height, GameVariant gameVariant, PieceStyle pi
 	case AmazonChess:
 	case AtomicChess:
 	case CylinderChess:
+	case CrazyHouse:
 		Fill(std::size(ChessPieces), ChessPieces);
 		break;
 	case KnightmateChess:
@@ -46,6 +47,7 @@ void ZBoard::Setup(int width, int height, GameVariant gameVariant, PieceStyle pi
 	case CapablancaChess:
 	case GothicChess:
 	case GrandChess:
+	case SeirawanChess:
 		Fill(std::size(GothicChessPieces), GothicChessPieces);
 		break;
 	case JanusChess:

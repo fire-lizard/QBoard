@@ -102,9 +102,6 @@ void EngineOutputHandler::CalculateXiangqiCheck(Board* board, std::vector<std::p
     delete brd;
 }
 
-// SetFenToBoard clears the board before it parses, so a FEN it rejects half way through leaves the
-// live board wrecked - cleared below the point it gave up on. Parse a throwaway copy first and only
-// commit a FEN that parses clean.
 QString EngineOutputHandler::TrySetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant)
 {
     Board* trial = board->Clone();
@@ -120,9 +117,6 @@ void EngineOutputHandler::RollbackIllegalMove(GameVariant gameVariant, Board *bo
     {
         history.pop_back();
         TrySetFenToBoard(board, QByteArray::fromStdString(history.back().fen), gameVariant);
-        // A FEN restores the placement only. Without the hand the refused move keeps half its
-        // effect: a rolled-back drop leaves the piece neither on the board nor in hand, and a
-        // rolled-back capture leaves a piece in hand that is standing on the board again.
         if (PieceStorage* ps = dynamic_cast<PieceStorage*>(board)) ps->SetCapturedPieces(history.back().pieces);
     }
 }
@@ -454,7 +448,8 @@ std::pair<int, int> EngineOutputHandler::CastlingTargets(GameVariant gameVariant
 // them and the engine is handed a move on a rank the piece is not standing on.
 int EngineOutputHandler::EngineRank(GameVariant gameVariant, int height, int y)
 {
-    return gameVariant == Xiangqi || gameVariant == Janggi || gameVariant == GrandChess || gameVariant == MusketeerChess
+    return gameVariant == Xiangqi || gameVariant == Janggi || gameVariant == GrandChess ||
+           gameVariant == MusketeerChess || gameVariant == SeirawanChess
         ? height - y - 1 : height - y;
 }
 
@@ -533,7 +528,7 @@ void EngineOutputHandler::PromoteIfUnmarked(Board* board, GameVariant gameVarian
 	// How far inside the array the promotion row sits. Musketeer's gating rows and Omega's wizard
 	// rows hold the last rank one row in; Makruk promotes on the sixth rank rather than the last.
 	const int inset = gameVariant == Makruk ? 2
-		: gameVariant == MusketeerChess || gameVariant == OmegaChess ? 1 : 0;
+		: gameVariant == MusketeerChess || gameVariant == SeirawanChess || gameVariant == OmegaChess ? 1 : 0;
 	if (y2 == (piece->Colour == White ? inset : board->GetHeight() - 1 - inset))
 	{
 		// One piece per variant, and every board that reaches here calls it a Queen: the Ferz of
@@ -635,12 +630,6 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
                 const bool isPromoted = moveArray[ms - 1] == '+';
 				board->GetMoves(board->GetData(x1, y1), x1, y1);
 				const PieceType movedType = PieceTypeAt(board, x1, y1);
-				// Through the board's own Move, not two SetData calls: the variant rules live in
-				// the override and were being skipped for every engine move. Tenjiku burns anything
-				// that ends its move beside an enemy Fire Demon - svengine burnt White's Great
-				// General the moment it landed on h13, next to the Fire Demon on g14, while QBoard
-				// left it standing and the two boards were out of step from the first move of the
-				// game. Chu's Lion capture rule is tracked in the same override.
 				board->Move(x1, y1, x2, y2, false);
                 AddMove(board, gameVariant, movedType, x1, y1, x2, y2, isPromoted ? moveArray[ms - 1] : ' ', ' ');
                 engine->AddMove(x1, board->GetHeight() - y1, x2, board->GetHeight() - y2, isPromoted ? moveArray[ms - 1] : ' ');
@@ -793,7 +782,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
             PromoteIfUnmarked(board, gameVariant, x2, y2);
         }
     }
-    else if (gameVariant == MusketeerChess)
+    else if (gameVariant == MusketeerChess || gameVariant == SeirawanChess)
     {
         // The gating rows push the back rank one row in, which ByteArrayToMove knows nothing
         // about. CastlingToMove reads the king off the board, so its rows are already right.
@@ -1048,7 +1037,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	}
     else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
              gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi ||
-             gameVariant == HeianShogi || gameVariant == CrazyWa)
+             gameVariant == HeianShogi || gameVariant == CrazyWa || gameVariant == CrazyHouse)
 	{
         if ((gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi ||
              gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == CrazyWa) && (moveArray[1] == '@' || moveArray[1] == '*'))
@@ -1275,6 +1264,7 @@ int EngineOutputHandler::GetEnPassantRank(GameVariant gameVariant, PieceColour p
         return pieceColour == Black ? 5 : 3;
     case GrandChess:
     case MusketeerChess:
+	case SeirawanChess:
         return pieceColour == Black ? 5 : 4;
 	case OmegaChess:
         return y - 48 + ('6' - y) * 2;
@@ -1339,7 +1329,7 @@ PieceType EngineOutputHandler::PieceTypeAt(const Board* board, int x, int y)
 
 void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceType p, int x1, int y1, int x2, int y2, int x3, int y3)
 {
-    if (gameVariant == MusketeerChess)
+    if (gameVariant == MusketeerChess || gameVariant == SeirawanChess)
     {
     }
 	else if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants) ||
@@ -1351,9 +1341,6 @@ void EngineOutputHandler::AddMove(Board* board, GameVariant gameVariant, PieceTy
 	{
 		dynamic_cast<MakrukBoard*>(board)->WriteMove(p, x1, y1, x2, y2, static_cast<char>(x3), static_cast<char>(y3) == 'x');
 	}
-    // CrazyWa has its own WriteMove override. Whale/Tori/Yari also derive from ShogiBoard but
-    // must stay out: their pieces are absent from ShogiBoard's PSN/CSA/KIF tables, so the .at()
-    // lookups would throw. Heian Shogi is not a ShogiBoard at all (it descends from Heian Dai).
     else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi ||
              gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == EuroShogi || gameVariant == CrazyWa)
 	{
@@ -1388,7 +1375,7 @@ bool EngineOutputHandler::HasHoldingsField(GameVariant gameVariant)
 {
 	return gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi ||
 		gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi ||
-		gameVariant == YariShogi || gameVariant == CrazyWa;
+		gameVariant == YariShogi || gameVariant == CrazyWa || gameVariant == CrazyHouse;
 }
 
 // The inverse of SetFenToBoard. Board::GetFEN() is the piece placement alone, so anything that
@@ -1401,7 +1388,7 @@ QString EngineOutputHandler::GetFenFromBoard(Board* board, GameVariant gameVaria
 	// each, uppercase for White. That is what the engines read: the shogi variants used to write the
 	// hand as a field of its own after the side to move, which every engine ignored, so a position
 	// handed over with setboard arrived with the right pieces on the board and an empty hand.
-	if (gameVariant == Sittuyin || gameVariant == MusketeerChess || HasHoldingsField(gameVariant))
+	if (gameVariant == Sittuyin || gameVariant == MusketeerChess || gameVariant == SeirawanChess || HasHoldingsField(gameVariant))
 	{
 		const auto pieceCodes = StringManager::GetOrderData(gameVariant).first;
 		auto* stb = dynamic_cast<PieceStorage*>(board);
@@ -1444,7 +1431,7 @@ QString EngineOutputHandler::GetFenFromBoard(Board* board, GameVariant gameVaria
 QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, GameVariant gameVariant)
 {
 	QStringList parts;
-    if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
+    if (gameVariant == Sittuyin || gameVariant == MusketeerChess || gameVariant == SeirawanChess)
     {
         dynamic_cast<PieceStorage*>(board)->ClearCapturedPieces();
         parts = QString(str).trimmed().replace('[', ' ').replace(']', ' ').split(' ');
@@ -1601,7 +1588,7 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z') || (parts[2][k] >= '0' && parts[2][k] <= '9')));
 		}
 	}
-    if (gameVariant == Sittuyin || gameVariant == MusketeerChess)
+    if (gameVariant == Sittuyin || gameVariant == MusketeerChess || gameVariant == SeirawanChess)
     {
         // an empty bracket pair ("...[] w") leaves parts[1] empty, and the loop below reads parts[1][0] before it tests anything
         if (parts.size() >= 2 && !parts[1].isEmpty())
