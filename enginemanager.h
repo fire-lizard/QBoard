@@ -35,6 +35,7 @@ namespace {
 			{KnightmateChess, "Knightmate Chess"},
 			{CourierChess,    "Courier Chess"},
 			{GrandeAcedrex,   "Grande Acedrex"},
+			{CrazyHouse,      "Crazy House"},
 			{Xiangqi,         "Xiangqi"},
 			{Janggi,          "Janggi"},
 			{Shatranj,        "Shatranj"},

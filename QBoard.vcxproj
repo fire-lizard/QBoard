@@ -217,6 +217,7 @@
     <ClCompile Include="CrazyHouseBoard.cpp" />
     <ClCompile Include="CylinderChessBoard.cpp" />
     <ClCompile Include="editor.cpp" />
+    <ClCompile Include="FalconChessBoard.cpp" />
     <ClCompile Include="KnightmateChessBoard.cpp" />
     <ClCompile Include="PieceStorage.cpp" />
     <ClCompile Include="ChancellorChessBoard.cpp" />
@@ -288,6 +289,7 @@
     <QtMoc Include="editor.h" />
     <ClInclude Include="CrazyHouseBoard.h" />
     <ClInclude Include="CylinderChessBoard.h" />
+    <ClInclude Include="FalconChessBoard.h" />
     <ClInclude Include="KnightmateChessBoard.h" />
     <ClInclude Include="PieceStorage.h" />
     <ClInclude Include="ChancellorChessBoard.h" />

@@ -21,6 +21,7 @@ SOURCES += main.cpp\
     AmazonChessBoard.cpp \
     AtomicChessBoard.cpp \
     CrazyHouseBoard.cpp \
+    FalconChessBoard.cpp \
     CylinderChessBoard.cpp \
     KnightmateChessBoard.cpp \
     CapablancaChessBoard.cpp \
@@ -91,6 +92,7 @@ HEADERS  += mainwindow.h \
     AmazonChessBoard.h \
     AtomicChessBoard.h \
     CrazyHouseBoard.h \
+    FalconChessBoard.h \
     CylinderChessBoard.h \
     KnightmateChessBoard.h \
     CapablancaChessBoard.h \

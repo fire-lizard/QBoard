@@ -553,7 +553,7 @@ void MainWindow::on_actionSave_triggered()
 			QByteArray str;
 			if (fileDialog.selectedNameFilter() == "FEN Files (*.fen)")
 			{
-				if (gameVariant == SeirawanChess)
+				if (gameVariant == SeirawanChess || gameVariant == CrazyHouse)
 				{
 					str = EngineOutputHandler::GetFenFromBoard(ui->vboard->GetBoard(), gameVariant,
 						this->ui->vboard->GetCurrentPlayer()).toLatin1();

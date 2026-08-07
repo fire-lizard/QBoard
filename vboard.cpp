@@ -1537,7 +1537,7 @@ char VBoard::CheckPromotion(const std::optional<Piece>& p, int x, int y)
             pd->SetEnabled(Champion, false);
             pd->SetEnabled(Wizard, false);
 			pd->SetEnabled(Nightrider, _gameVariant == NightriderChess);
-			if (_gameVariant == Chess || _gameVariant == NightriderChess)
+			if (_gameVariant == Chess || _gameVariant == NightriderChess || _gameVariant == CrazyHouse)
             {
                 pd->SetEnabled(Archbishop, false);
                 pd->SetEnabled(Chancellor, false);
@@ -2566,6 +2566,13 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 		if (_board->GetData(x, y) != std::nullopt)
 		{
 			QMessageBox mb(QMessageBox::Warning, "Illegal drop", "Square is already occupied",
+				QMessageBox::Ok, this);
+			mb.exec();
+			return;
+		}
+		if (_gameVariant == CrazyHouse && newPiece == Pawn && (y == 0 || y == _board->GetHeight() - 1))
+		{
+			QMessageBox mb(QMessageBox::Warning, "Illegal drop", "You cannot place a pawn on the first or the last row",
 				QMessageBox::Ok, this);
 			mb.exec();
 			return;

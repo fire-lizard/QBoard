@@ -18,6 +18,7 @@
      * Cylinder Chess
      * Knightmate Chess
      * Grande Acedrex
+     * Crazy House
   2. Shogi Variants
      * Shogi
      * Micro Shogi

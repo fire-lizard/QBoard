@@ -315,10 +315,15 @@ QByteArray EngineOutputHandler::ExtractMove(const QByteArray& buf, EngineProtoco
         static const QString _stre = R"(^move ([RNSFKa-h])(\@|[1-8])([a-h])([1-8])(f)?)";
         static const QString _sgre = R"(^move ([RBGSNLPFCWKHDYa-i])(@|[1-9])([a-i])([1-9])(\+)?)";
         static const QString _xbre = R"(^move ([a-i])([0-9])([a-i])([0-9])([+nbrqfjacwmM])?)";
+        static const QString _chre = R"(^move ([PNBRQa-h])(@|[1-8])([a-h])([1-8])([nbrq])?)";
         QRegularExpression regexp;
         if (gameVariant == Sittuyin)
         {
             regexp = QRegularExpression(_stre, QRegularExpression::MultilineOption);
+        }
+        else if (gameVariant == CrazyHouse)
+        {
+            regexp = QRegularExpression(_chre, QRegularExpression::MultilineOption);
         }
         else if (gameVariant == MusketeerChess || gameVariant == SeirawanChess)
         {
@@ -917,9 +922,20 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
     }
     else if (std::ranges::find(chessVariants, gameVariant) != std::end(chessVariants))
 	{
-    	
+    	if (gameVariant == CrazyHouse && (moveArray[1] == '@' || moveArray[1] == '*'))
+		{
+            const PieceType dropped = StringManager::StringCode2PieceType(gameVariant, std::string(1, moveArray[0]));
+            PieceStorage* cps = dynamic_cast<PieceStorage*>(board);
+            if (dropped != None && board->CheckPosition(x2, y2) && board->GetData(x2, y2) == std::nullopt)
+            {
+                board->SetData(x2, y2, Piece(dropped, currentPlayer));
+                if (cps != nullptr) cps->RemoveCapturedPiece(dropped, currentPlayer);
+                AddMove(board, gameVariant, dropped, moveArray[0], moveArray[1], x2, y2, ' ', ' ');
+                engine->AddMove(moveArray[0], moveArray[1], x2, board->GetHeight() - y2, ' ');
+            }
+		}
     	// Castling check
-        if (IsCastling(moveArray, board, gameVariant, x1, y1, x2, y2))
+        else if (IsCastling(moveArray, board, gameVariant, x1, y1, x2, y2))
 		{
             const int kingTo = ApplyCastling(board, gameVariant, x1, y1, x2);
             const int rank = EngineRank(gameVariant, board->GetHeight(), y1);
@@ -1075,7 +1091,7 @@ void EngineOutputHandler::ReadStandardOutput(const QByteArray& buf, const std::s
 	}
     else if (gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == ShoShogi || gameVariant == MiniShogi ||
              gameVariant == JudkinShogi || gameVariant == WhaleShogi || gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi ||
-             gameVariant == HeianShogi || gameVariant == CrazyWa || gameVariant == CrazyHouse)
+             gameVariant == HeianShogi || gameVariant == CrazyWa)
 	{
         if ((gameVariant == MicroShogi || gameVariant == KyotoShogi || gameVariant == Shogi || gameVariant == MiniShogi || gameVariant == JudkinShogi || gameVariant == WhaleShogi ||
              gameVariant == ToriShogi || gameVariant == EuroShogi || gameVariant == YariShogi || gameVariant == CrazyWa) && (moveArray[1] == '@' || moveArray[1] == '*'))
@@ -1494,9 +1510,10 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 {
 	QStringList parts;
 	QString bracketed;
-    if (gameVariant == Sittuyin || gameVariant == MusketeerChess || gameVariant == SeirawanChess)
+	const bool hasPieces = gameVariant == Sittuyin || gameVariant == MusketeerChess ||
+		gameVariant == SeirawanChess || HasHoldingsField(gameVariant);
+    if (hasPieces)
     {
-        dynamic_cast<PieceStorage*>(board)->ClearCapturedPieces();
         QString rest = QString(str).trimmed();
         const qsizetype open = rest.indexOf('[');
         const qsizetype close = rest.indexOf(']', open);
@@ -1513,18 +1530,6 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
     }
 	if (parts.isEmpty() || parts.first().isEmpty())
 		return "Empty FEN string"; // guard before indexing parts[0]/fen[0]; also avoids wiping the board on junk input
-	// The hand may arrive bracketed after the placement, which is what GetFenFromBoard and every
-	// engine write, or in a field of its own, which is what QBoard wrote before and what the
-	// positions already saved to disk still hold. Lift the bracket into that field and read one code.
-	if (HasHoldingsField(gameVariant) && parts[0].contains('['))
-	{
-		const qsizetype open = parts[0].indexOf('[');
-		const qsizetype close = parts[0].indexOf(']', open);
-		const QString held = close > open ? parts[0].mid(open + 1, close - open - 1) : QString();
-		parts[0] = parts[0].left(open);
-		while (parts.size() < 3) parts.append("-");
-		parts[2] = held.isEmpty() ? "-" : held;
-	}
 	QString fen = parts[0];
 	board->Clear();
 	const int w = board->GetWidth();
@@ -1621,66 +1626,38 @@ QString EngineOutputHandler::SetFenToBoard(Board* board, const QByteArray& str, 
 			}
 		}
 	}
-    if (HasHoldingsField(gameVariant))
+	if (PieceStorage* cps = hasPieces ? dynamic_cast<PieceStorage*>(board) : nullptr; cps != nullptr)
 	{
-		if (parts.size() >= 3)
+		const QString held = !bracketed.isEmpty() ? bracketed
+			: HasHoldingsField(gameVariant) && parts.size() >= 3 ? parts[2] : QString();
+		cps->ClearCapturedPieces();
+		int c = 0;   // 0 = no count prefix seen; Wa can hold more than 9 of a piece ("11P")
+		for (k = 0; k < held.size(); k++)
 		{
-			PieceStorage* cps = dynamic_cast<PieceStorage*>(board);
-			// The holdings field is the whole hand, not an addition to it: Board::Clear() above
-			// empties the squares only, so without this every parse doubles what is held.
-			cps->ClearCapturedPieces();
-			k = 0;
-            int c = 0;   // 0 = no count prefix seen; Wa can hold more than 9 of a piece ("11P")
-			do
+			if (held[k] >= '0' && held[k] <= '9')
 			{
-                if (parts[2][k] >= '0' && parts[2][k] <= '9')
-                {
-                    c = c * 10 + parts[2][k].digitValue();
-                }
-                else if (parts[2][k] >= 'a' && parts[2][k] <= 'z')
+				c = c * 10 + held[k].digitValue();
+			}
+			else if (held[k] >= 'a' && held[k] <= 'z')
+			{
+				for (int index = 0; index < (c > 0 ? c : 1); index++)
 				{
-                    for (int index = 0; index < (c > 0 ? c : 1); index++)
-                    {
-                        PieceType pt = StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, parts[2][k].toLatin1())));
-                    	if (pt != None) cps->AddCapturedPiece(pt, Black);
-                    }
-                    c = 0;
-                }
-				else if (parts[2][k] >= 'A' && parts[2][k] <= 'Z')
-				{
-                    for (int index = 0; index < (c > 0 ? c : 1); index++)
-                    {
-                        PieceType pt = StringManager::StringCode2PieceType(gameVariant, std::string(1, parts[2][k].toLatin1()));
-                        if (pt != None) cps->AddCapturedPiece(pt, White);
-                    }
-                    c = 0;
+					PieceType pt = StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, held[k].toLatin1())));
+					if (pt != None) cps->AddCapturedPiece(pt, Black);
 				}
-				k++;
-			} while (k < parts[2].size() && ((parts[2][k] >= 'a' && parts[2][k] <= 'z') || (parts[2][k] >= 'A' && parts[2][k] <= 'Z') || (parts[2][k] >= '0' && parts[2][k] <= '9')));
+				c = 0;
+			}
+			else if (held[k] >= 'A' && held[k] <= 'Z')
+			{
+				for (int index = 0; index < (c > 0 ? c : 1); index++)
+				{
+					PieceType pt = StringManager::StringCode2PieceType(gameVariant, std::string(1, held[k].toLatin1()));
+					if (pt != None) cps->AddCapturedPiece(pt, White);
+				}
+				c = 0;
+			}
 		}
 	}
-    if (gameVariant == Sittuyin || gameVariant == MusketeerChess || gameVariant == SeirawanChess)
-    {
-        if (!bracketed.isEmpty())
-        {
-            PieceStorage* cps = dynamic_cast<PieceStorage*>(board);
-            k = 0;
-            do
-            {
-                if (bracketed[k] >= 'a' && bracketed[k] <= 'z')
-                {
-                    PieceType pt = StringManager::StringCode2PieceType(gameVariant, uppercase(std::string(1, bracketed[k].toLatin1())));
-                	if (pt != None) cps->AddCapturedPiece(pt, Black);
-                }
-                else if (bracketed[k] >= 'A' && bracketed[k] <= 'Z')
-                {
-                    PieceType pt = StringManager::StringCode2PieceType(gameVariant, std::string(1, bracketed[k].toLatin1()));
-                    if (pt != None) cps->AddCapturedPiece(pt, White);
-                }
-                k++;
-            } while (k < bracketed.size() && ((bracketed[k] >= 'a' && bracketed[k] <= 'z') || (bracketed[k] >= 'A' && bracketed[k] <= 'Z')));
-        }
-    }
     return "";
 }
 
