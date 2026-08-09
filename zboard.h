@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QToolTip>
 #include "Common.h"
 #include "graphicsmanager.h"
 
@@ -20,6 +21,7 @@ public:
 protected:
     void paintEvent(QPaintEvent *) override;
     void mousePressEvent(QMouseEvent *event) override;
+    bool event(QEvent* event) override;
 
 private:
     std::vector<PieceType> GetPromotedPieces() const;

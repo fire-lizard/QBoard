@@ -2,6 +2,7 @@
 
 ZBoard::ZBoard(QWidget *parent) : QWidget(parent)
 {
+	setAttribute(Qt::WA_Hover, true);
 }
 
 void ZBoard::Fill(std::vector<std::pair<PieceColour, PieceType>> capturedPieces)
@@ -299,4 +300,31 @@ void ZBoard::mousePressEvent(QMouseEvent *event)
         _chosenPiece = _pieces[_width * _height - index - 1];
     }
 	repaint();
+}
+
+bool ZBoard::event(QEvent* event)
+{
+	if (event->type() == QEvent::HoverMove && std::ranges::find(shogiVariants, _gameVariant) != std::end(shogiVariants))
+	{
+		const QHoverEvent* hoverEvent = dynamic_cast<QHoverEvent*>(event);
+		const int w = this->size().width() / _width;
+		const int h = this->size().height() / _height;
+		const int x = static_cast<int>(hoverEvent->position().x()) / w;
+		const int y = static_cast<int>(hoverEvent->position().y()) / h;
+		unsigned long long index = y * _width + x;
+		if (_pieces.size() > index)
+		{
+			if (_pieces[index].has_value())
+			{
+				QString desc = QString::fromStdString(StringManager::PieceType2Description(_gameVariant, _pieces[index]->Type));
+				QToolTip::showText(QCursor::pos(), desc, this);
+			}
+		}
+		else if (_pieces.size() > _width * _height - index - 1)
+		{
+			QString desc = QString::fromStdString(StringManager::PieceType2Description(_gameVariant, _pieces[_width * _height - index - 1]->Type));
+			QToolTip::showText(QCursor::pos(), desc, this);
+		}
+	}
+	return QWidget::event(event); // Call base class implementation
 }

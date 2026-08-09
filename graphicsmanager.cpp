@@ -8,7 +8,18 @@ void GraphicsManager::DrawPiece(QPainter& painter, Piece p, GameVariant gameVari
     {
     case MicroShogi:
     case KyotoShogi:
-        painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+        if (pieceStyle == Asian)
+        {
+            painter.drawPixmap(i * w + w / 8, j * h + h / 8, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
+        else if (isAsianStyle)
+        {
+            painter.drawPixmap(i * w + w / 8, j * h + h / 8, 48, 48, pixmap);
+        }
+        else
+        {
+            painter.drawPixmap(i * w + w / 4, j * h + h / 4, pixmap.size().width(), pixmap.size().height(), pixmap);
+        }
         break;
     case Shogi:
     case ShoShogi:
@@ -238,6 +249,12 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
         return ":/pieces_kor5/images/images_kor5/";
     case MicroShogi:
     case KyotoShogi:
+        if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
+        if (pieceStyle == Mnemonic) return ":/pieces_sho2/images/images_sho2/";
+        if (pieceStyle == Asian2) return ":/pieces_sho/images/images_sho/";
+        if (pieceStyle == Asian3) return ":/pieces_sho3/images/images_sho3/";
+        if (pieceStyle == Asian4) return ":/pieces_maka/images/images_maka/";
+        if (pieceStyle == Asian5) return ":/pieces_tai/images/images_tai/";
         return ":/pieces_kyo/images/images_kyo/";
     case Shogi:
     case ShoShogi:
@@ -248,7 +265,8 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
         if (pieceStyle == Mnemonic) return ":/pieces_sho2/images/images_sho2/";
         if (pieceStyle == Asian) return ":/pieces_sho/images/images_sho/";
         if (pieceStyle == Asian2) return ":/pieces_sho3/images/images_sho3/";
-        return ":/pieces_maka/images/images_maka/";
+        if (pieceStyle == Asian3) return ":/pieces_maka/images/images_maka/";
+        return ":/pieces_tai/images/images_tai/";
     case WhaleShogi:
         return ":/pieces_wha/images/images_wha/";
     case ToriShogi:
@@ -342,7 +360,11 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
         break;
     case MicroShogi:
     case KyotoShogi:
-        imageFileName = GetKyotoShogiImageFileName(pieceStyle, pieceColour, pieceType);
+        if (pieceStyle == European) imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Mnemonic || pieceStyle == Asian2 || pieceStyle == Asian3) imageFileName = GetShogiImageFileName(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Asian4) imageFileName = GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Asian5) imageFileName = GetKanjiImageFileName3(pieceColour, pieceType, isPromoted);
+        else imageFileName = GetKyotoShogiImageFileName(pieceStyle, pieceColour, pieceType);
         break;
     case Shogi:
     case ShoShogi:
@@ -350,7 +372,8 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     case JudkinShogi:
     case EuroShogi:
         if (pieceStyle == Mnemonic || pieceStyle == Asian || pieceStyle == Asian2) imageFileName = GetShogiImageFileName(pieceColour, pieceType, isPromoted);
-        else if (pieceStyle == Asian3 || pieceStyle == Asian4) imageFileName = GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Asian3) imageFileName = GetKanjiImageFileName2(pieceColour, pieceType, isPromoted);
+        else if (pieceStyle == Asian4) imageFileName = GetKanjiImageFileName3(pieceColour, pieceType, isPromoted);
         else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
         break;
     case WhaleShogi:
@@ -1195,6 +1218,10 @@ QString GraphicsManager::GetKanjiImageFileName3(PieceColour pieceColour, PieceTy
     }
     switch (pieceType)
     {
+    case PromotedKnight:
+    case PromotedLance:
+    case PromotedSilver:
+        return "GoldGeneral" + colour + ".png";
     case Gold:
     case Silver:
     case Copper:

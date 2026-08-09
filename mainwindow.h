@@ -72,6 +72,10 @@ private:
 
 	void StartNewGame(GameVariant newGameVariant) const;
 
+	static QString PieceStyleToString(PieceStyle pieceStyle);
+
+	static PieceStyle StringToPieceStyle(const QString& str);
+
 	static void readXmlUsingStream(const QString& fileName, QTableWidget* engineTable);
 
 	static void createXmlFromTable(const QString& fileName, const QTableWidget* engineTable);

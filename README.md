@@ -19,7 +19,7 @@
      * Falcon Chess
      * Knightmate Chess
      * Grande Acedrex
-     * Crazy House
+     * Crazyhouse
   2. Shogi Variants
      * Shogi
      * Micro Shogi

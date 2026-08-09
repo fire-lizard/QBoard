@@ -31,32 +31,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		_currentStyle = settings.styleName;
 		QApplication::setStyle(_currentStyle);
 		this->ui->vboard->SetGameVariant(EngineManager::StringToGameVariant(settings.gameVariant));
-		PieceStyle pieceStyle;
-		if (settings.pieceStyle == "Mnemonic")
-		{
-			pieceStyle = Mnemonic;
-		}
-		else if (settings.pieceStyle == "Asian")
-		{
-			pieceStyle = Asian;
-		}
-		else if (settings.pieceStyle == "Asian 2")
-		{
-			pieceStyle = Asian2;
-		}
-		else if (settings.pieceStyle == "Asian 3")
-		{
-			pieceStyle = Asian3;
-		}
-		else if (settings.pieceStyle == "Asian 4")
-		{
-			pieceStyle = Asian4;
-		}
-		else
-		{
-			pieceStyle = European;
-		}
-		this->ui->vboard->SetPieceStyle(pieceStyle);
+		this->ui->vboard->SetPieceStyle(StringToPieceStyle(settings.pieceStyle));
 		this->ui->vboard->SetEngineOutput(settings.engineOutput == "Verbose" ? Verbose : Concise);
 		this->ui->vboard->SetHighlightMoves(settings.highlightMoves);
 		this->ui->vboard->SetHighlightShoots(settings.highlightShoots);
@@ -110,11 +85,66 @@ MainWindow::~MainWindow()
 	delete ui;
 }
 
+QString MainWindow::PieceStyleToString(PieceStyle pieceStyle)
+{
+	switch (pieceStyle)
+	{
+	case Mnemonic:
+		return "Mnemonic";
+	case Asian:
+		return "Asian";
+	case Asian2:
+		return "Asian 2";
+	case Asian3:
+		return "Asian 3";
+	case Asian4:
+		return "Asian 4";
+	case Asian5:
+		return "Asian 5";
+	default:
+		return "European";
+	}
+}
+
+PieceStyle MainWindow::StringToPieceStyle(const QString& str)
+{
+	PieceStyle pieceStyle;
+	if (str == "Mnemonic")
+	{
+		pieceStyle = Mnemonic;
+	}
+	else if (str == "Asian")
+	{
+		pieceStyle = Asian;
+	}
+	else if (str == "Asian 2")
+	{
+		pieceStyle = Asian2;
+	}
+	else if (str == "Asian 3")
+	{
+		pieceStyle = Asian3;
+	}
+	else if (str == "Asian 4")
+	{
+		pieceStyle = Asian4;
+	}
+	else if (str == "Asian 5")
+	{
+		pieceStyle = Asian5;
+	}
+	else
+	{
+		pieceStyle = European;
+	}
+	return pieceStyle;
+}
+
 void MainWindow::on_actionSettings_triggered()
 {
 	SettingsDialog *settingsDialog = new SettingsDialog(this);
-    settingsDialog->GetGameVariant()->setText(EngineManager::GameVariantToString(this->ui->vboard->GetGameVariant()));
-    settingsDialog->GetGamePieces()->setCurrentIndex(this->ui->vboard->GetPieceStyle());
+	GameVariant gameVariant = this->ui->vboard->GetGameVariant();
+	settingsDialog->GetGameVariant()->setText(EngineManager::GameVariantToString(gameVariant));
 	settingsDialog->GetEngineOutput()->setCurrentIndex(this->ui->vboard->GetEngineOutput());
 	settingsDialog->GetStyles()->setCurrentText(_currentStyle);
 	settingsDialog->GetHighlightMoves()->setChecked(this->ui->vboard->GetHighlightMoves());
@@ -131,13 +161,91 @@ void MainWindow::on_actionSettings_triggered()
 	settingsDialog->GetWhiteEngineTime()->setValue(_whiteEngineTime);
 	settingsDialog->GetUseBlackEngineTime()->setChecked(_useBlackEngineTime);
 	settingsDialog->GetBlackEngineTime()->setValue(_blackEngineTime);
+	settingsDialog->GetGamePieces()->clear();
+	switch (gameVariant)
+	{
+	case Chess:
+	case AmazonChess:
+	case AtomicChess:
+	case CylinderChess:
+	case CrazyHouse:
+	case Shatranj:
+	case Shatar:
+	case Sittuyin:
+	case Janggi:
+	case Xiangqi:
+	case ChuShogi:
+	case Shogi:
+	case MiniShogi:
+	case JudkinShogi:
+	case EuroShogi:
+	case ShoShogi:
+		settingsDialog->GetGamePieces()->addItem("European");
+		settingsDialog->GetGamePieces()->addItem("Mnemonic");
+		settingsDialog->GetGamePieces()->addItem("Asian");
+		settingsDialog->GetGamePieces()->addItem("Asian 2");
+		settingsDialog->GetGamePieces()->addItem("Asian 3");
+		settingsDialog->GetGamePieces()->addItem("Asian 4");
+		break;
+	case MicroShogi:
+	case KyotoShogi:
+		settingsDialog->GetGamePieces()->addItem("European");
+		settingsDialog->GetGamePieces()->addItem("Mnemonic");
+		settingsDialog->GetGamePieces()->addItem("Asian");
+		settingsDialog->GetGamePieces()->addItem("Asian 2");
+		settingsDialog->GetGamePieces()->addItem("Asian 3");
+		settingsDialog->GetGamePieces()->addItem("Asian 4");
+		settingsDialog->GetGamePieces()->addItem("Asian 5");
+		break;
+	case DaiShogi:
+	case HeianShogi:
+	case HeianDaiShogi:
+		settingsDialog->GetGamePieces()->addItem("European");
+		settingsDialog->GetGamePieces()->addItem("Asian");
+		settingsDialog->GetGamePieces()->addItem("Asian 2");
+		settingsDialog->GetGamePieces()->addItem("Asian 3");
+		settingsDialog->GetGamePieces()->addItem("Asian 4");
+		break;
+	case DaiDaiShogi:
+	case MakaDaiDaiShogi:
+	case TaiShogi:
+		settingsDialog->GetGamePieces()->addItem("Asian");
+		settingsDialog->GetGamePieces()->addItem("Asian 2");
+		break;
+	case Makruk:
+	case YariShogi:
+		settingsDialog->GetGamePieces()->addItem("European");
+		settingsDialog->GetGamePieces()->addItem("Mnemonic");
+		settingsDialog->GetGamePieces()->addItem("Asian");
+		break;
+	case TenjikuShogi:
+		settingsDialog->GetGamePieces()->addItem("European");
+		settingsDialog->GetGamePieces()->addItem("Asian");
+		settingsDialog->GetGamePieces()->addItem("Asian 2");
+		break;
+	case ToriShogi:
+	case KoShogi:
+		settingsDialog->GetGamePieces()->addItem("European");
+		settingsDialog->GetGamePieces()->addItem("Mnemonic");
+		settingsDialog->GetGamePieces()->addItem("Asian");
+		settingsDialog->GetGamePieces()->addItem("Asian 2");
+		break;
+	case CrazyWa:
+		settingsDialog->GetGamePieces()->addItem("European");
+		settingsDialog->GetGamePieces()->addItem("Asian");
+		break;
+	default:
+		settingsDialog->GetGamePieces()->addItem("European");
+		break;
+	}
+	settingsDialog->GetGamePieces()->setCurrentText(PieceStyleToString(this->ui->vboard->GetPieceStyle()));
 	settingsDialog->exec();
 	if (settingsDialog->result() == QDialog::Accepted)
 	{
 		QApplication::setStyle(settingsDialog->GetStyles()->itemText(settingsDialog->GetStyles()->currentIndex()));
 		_currentStyle = settingsDialog->GetStyles()->currentText();
         const GameVariant newGameVariant = EngineManager::StringToGameVariant(settingsDialog->GetGameVariant()->text());
-		const PieceStyle pieceStyle = static_cast<PieceStyle>(settingsDialog->GetGamePieces()->currentIndex());
+		const PieceStyle pieceStyle = StringToPieceStyle(settingsDialog->GetGamePieces()->currentText());
 		const EngineOutput engineOutput = static_cast<EngineOutput>(settingsDialog->GetEngineOutput()->currentIndex());
 		const bool highlightMoves = settingsDialog->GetHighlightMoves()->checkState() == Qt::Checked;
 		const bool highlightShoots = settingsDialog->GetHighlightShoots()->checkState() == Qt::Checked;
