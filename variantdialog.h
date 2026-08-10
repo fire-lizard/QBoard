@@ -16,18 +16,13 @@ public:
     explicit VariantDialog(QWidget *parent = nullptr);
     ~VariantDialog() override;
     QListWidget* GetVariant() const;
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 private slots:
     void on_variantList_itemDoubleClicked(QListWidgetItem *item);
 
-    void on_allGamesRadioButton_toggled(bool checked) const;
-
-    void on_chessGamesRadioButton_toggled(bool checked) const;
-
-    void on_shogiGamesRadioButton_toggled(bool checked) const;
-
-    void on_otherGamesRadioButton_toggled(bool checked) const;
-
 private:
+    void ApplyFilter() const;
+
     Ui::VariantDialog *ui;
 };

@@ -77,6 +77,7 @@ void AddEngineDialog::on_toolButton_2_clicked()
 {
 	VariantDialog* vd = new VariantDialog(this);
     vd->GetVariant()->setSelectionMode(QAbstractItemView::MultiSelection);
+    vd->GetVariant()->clearSelection(); // drop the dialog's initial single-select pick
     QStringList variants = ui->gameVariant->text().split(',');
     for (int index = 0; index < vd->GetVariant()->count(); index++)
     {

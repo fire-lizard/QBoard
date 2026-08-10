@@ -136,6 +136,8 @@ public:
 	static EngineProtocol StringToEngineProtocol(const QString& str);
 	static QString GameVariantToShortString(GameVariant gameVariant);
 	static std::optional<GameVariant> ShortStringToGameVariant(const QString& variantName);
+	static QString PieceStyleToString(PieceStyle pieceStyle);
+	static PieceStyle StringToPieceStyle(const QString& str);
 
 private slots:
 	void on_toolButton_clicked();

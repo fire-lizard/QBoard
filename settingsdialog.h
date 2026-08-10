@@ -43,7 +43,9 @@ private slots:
 	void on_engine2DepthCheckBox_checkStateChanged(Qt::CheckState state) const;
 	void on_engine1TimeCheckBox_checkStateChanged(Qt::CheckState state) const;
 	void on_engine2TimeCheckBox_checkStateChanged(Qt::CheckState state) const;
+	void on_variantsLineEdit_textChanged(const QString& text);
 
 private:
 	Ui::SettingsDialog *ui;
+	QString _pieceStyle = "European";
 };

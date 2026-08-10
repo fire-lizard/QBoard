@@ -131,11 +131,95 @@ void SettingsDialog::on_engine2TimeCheckBox_checkStateChanged(Qt::CheckState sta
 	ui->engine2TimeSpinBox->setEnabled(ui->engine2TimeCheckBox->isChecked());
 }
 
+void SettingsDialog::on_variantsLineEdit_textChanged(const QString& text)
+{
+	GameVariant gameVariant = EngineManager::StringToGameVariant(text);
+	_pieceStyle = ui->piecesComboBox->currentText();
+	ui->piecesComboBox->clear();
+	switch (gameVariant)
+	{
+	case Chess:
+	case AmazonChess:
+	case AtomicChess:
+	case CylinderChess:
+	case CrazyHouse:
+	case Shatranj:
+	case Shatar:
+	case Sittuyin:
+	case Janggi:
+	case Xiangqi:
+	case ChuShogi:
+	case Shogi:
+	case MiniShogi:
+	case JudkinShogi:
+	case EuroShogi:
+	case ShoShogi:
+		ui->piecesComboBox->addItem("European");
+		ui->piecesComboBox->addItem("Mnemonic");
+		ui->piecesComboBox->addItem("Asian");
+		ui->piecesComboBox->addItem("Asian 2");
+		ui->piecesComboBox->addItem("Asian 3");
+		ui->piecesComboBox->addItem("Asian 4");
+		break;
+	case MicroShogi:
+	case KyotoShogi:
+		ui->piecesComboBox->addItem("European");
+		ui->piecesComboBox->addItem("Mnemonic");
+		ui->piecesComboBox->addItem("Asian");
+		ui->piecesComboBox->addItem("Asian 2");
+		ui->piecesComboBox->addItem("Asian 3");
+		ui->piecesComboBox->addItem("Asian 4");
+		ui->piecesComboBox->addItem("Asian 5");
+		break;
+	case DaiShogi:
+	case HeianShogi:
+	case HeianDaiShogi:
+		ui->piecesComboBox->addItem("European");
+		ui->piecesComboBox->addItem("Asian");
+		ui->piecesComboBox->addItem("Asian 2");
+		ui->piecesComboBox->addItem("Asian 3");
+		ui->piecesComboBox->addItem("Asian 4");
+		break;
+	case DaiDaiShogi:
+	case MakaDaiDaiShogi:
+	case TaiShogi:
+		ui->piecesComboBox->addItem("Asian");
+		ui->piecesComboBox->addItem("Asian 2");
+		break;
+	case Makruk:
+	case YariShogi:
+		ui->piecesComboBox->addItem("European");
+		ui->piecesComboBox->addItem("Mnemonic");
+		ui->piecesComboBox->addItem("Asian");
+		break;
+	case TenjikuShogi:
+		ui->piecesComboBox->addItem("European");
+		ui->piecesComboBox->addItem("Asian");
+		ui->piecesComboBox->addItem("Asian 2");
+		break;
+	case ToriShogi:
+	case KoShogi:
+		ui->piecesComboBox->addItem("European");
+		ui->piecesComboBox->addItem("Mnemonic");
+		ui->piecesComboBox->addItem("Asian");
+		ui->piecesComboBox->addItem("Asian 2");
+		break;
+	case CrazyWa:
+		ui->piecesComboBox->addItem("European");
+		ui->piecesComboBox->addItem("Asian");
+		break;
+	default:
+		ui->piecesComboBox->addItem("European");
+		break;
+	}
+	ui->piecesComboBox->setCurrentText(_pieceStyle);
+}
+
 void SettingsDialog::on_toolButton_clicked()
 {
     VariantDialog* vd = new VariantDialog(this);
     vd->exec();
-    if (vd->result() == Accepted)
+    if (vd->result() == Accepted && vd->GetVariant()->currentItem() != nullptr)
     {
         ui->variantsLineEdit->setText(vd->GetVariant()->currentItem()->text());
     }

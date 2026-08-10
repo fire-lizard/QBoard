@@ -18,7 +18,7 @@ QProcess* QianhongEngine::RunProcess(QObject* parentObject, const QString& engin
 	QStringList engineArguments;
 	engineArguments << "-plugin";
 	_process->setArguments(engineArguments);
-	_process->start();
+	StartProcess();
 	return _process.get();
 }
 

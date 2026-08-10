@@ -146,6 +146,61 @@ QString EngineManager::GameVariantToShortString(GameVariant gameVariant)
     return "normal";
 }
 
+QString EngineManager::PieceStyleToString(PieceStyle pieceStyle)
+{
+    switch (pieceStyle)
+    {
+    case Mnemonic:
+        return "Mnemonic";
+    case Asian:
+        return "Asian";
+    case Asian2:
+        return "Asian 2";
+    case Asian3:
+        return "Asian 3";
+    case Asian4:
+        return "Asian 4";
+    case Asian5:
+        return "Asian 5";
+    default:
+        return "European";
+    }
+}
+
+PieceStyle EngineManager::StringToPieceStyle(const QString& str)
+{
+    PieceStyle pieceStyle;
+    if (str == "Mnemonic")
+    {
+        pieceStyle = Mnemonic;
+    }
+    else if (str == "Asian")
+    {
+        pieceStyle = Asian;
+    }
+    else if (str == "Asian 2")
+    {
+        pieceStyle = Asian2;
+    }
+    else if (str == "Asian 3")
+    {
+        pieceStyle = Asian3;
+    }
+    else if (str == "Asian 4")
+    {
+        pieceStyle = Asian4;
+    }
+    else if (str == "Asian 5")
+    {
+        pieceStyle = Asian5;
+    }
+    else
+    {
+        pieceStyle = European;
+    }
+    return pieceStyle;
+}
+
 void EngineManager::on_toolButton_2_clicked()
 {
 	const int currentRow = ui->engineTable->currentRow();

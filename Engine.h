@@ -35,7 +35,10 @@ public:
 	virtual QByteArray AddMove(signed char x1, signed char y1, signed char x2, signed char y2, char promotion = ' ') = 0;
 
 protected:
+	void StartProcess() const;
+
 	mutable std::unique_ptr<QProcess> _process = nullptr;
+	mutable void *_stdinWrite = nullptr;
 	QTextEdit *_textEdit;
 	bool _useEngineDepth = false;
 	int  _engineDepth = 10;
