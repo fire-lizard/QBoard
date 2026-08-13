@@ -322,8 +322,11 @@ bool ZBoard::event(QEvent* event)
 		}
 		else if (_pieces.size() > _width * _height - index - 1)
 		{
-			QString desc = QString::fromStdString(StringManager::PieceType2Description(_gameVariant, _pieces[_width * _height - index - 1]->Type));
-			QToolTip::showText(QCursor::pos(), desc, this);
+			if (_pieces[_width * _height - index - 1].has_value())
+			{
+				QString desc = QString::fromStdString(StringManager::PieceType2Description(_gameVariant, _pieces[_width * _height - index - 1]->Type));
+				QToolTip::showText(QCursor::pos(), desc, this);
+			}
 		}
 	}
 	return QWidget::event(event); // Call base class implementation

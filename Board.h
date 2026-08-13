@@ -16,7 +16,6 @@ struct Piece
         Colour = pieceColour;
         IsPromoted = false;
         HasMoved = false;
-		CanBePromoted = true;
 		CanMove = true;
     }
     PieceType BaseType;
@@ -25,8 +24,6 @@ struct Piece
     bool IsPromoted;
     // Used by Chess and its variants
 	bool HasMoved;
-	// Used by Sittuyin
-	bool CanBePromoted;
 	// Used by Ko Shogi
 	bool CanMove;
 };

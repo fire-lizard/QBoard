@@ -252,6 +252,7 @@
     <ClCompile Include="MusketeerChessBoard.cpp" />
     <ClCompile Include="NightriderChessBoard.cpp" />
     <ClCompile Include="OmegaChessBoard.cpp" />
+    <ClCompile Include="qcolorcombobox.cpp" />
     <ClCompile Include="QianhongEngine.cpp" />
     <ClCompile Include="SeirawanChessBoard.cpp" />
     <ClCompile Include="ShatarBoard.cpp" />
@@ -325,6 +326,7 @@
     <ClInclude Include="MusketeerChessBoard.h" />
     <ClInclude Include="NightriderChessBoard.h" />
     <ClInclude Include="OmegaChessBoard.h" />
+    <QtMoc Include="qcolorcombobox.h" />
     <ClInclude Include="QianhongEngine.h" />
     <ClInclude Include="SeirawanChessBoard.h" />
     <ClInclude Include="ShatarBoard.h" />

@@ -411,6 +411,11 @@
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="tab_3">
+    <attribute name="title">
+     <string>Colors</string>
+    </attribute>
+   </widget>
   </widget>
  </widget>
  <resources/>

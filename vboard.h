@@ -110,7 +110,7 @@ private:
 	Board *_editorBoard = nullptr;
 	PieceColour _currentPlayer = White;
 	PieceStyle _pieceStyle = European;
-	EngineOutput _engineOutput = Concise;
+	EngineOutput _engineOutput = Verbose;
 	std::optional<Piece> _currentPiece;
 	int _oldX = -1;
 	int _oldY = -1;
@@ -156,6 +156,28 @@ private:
 	// so a bestmove/move split across two readyRead signals is not silently dropped.
 	QByteArray _whiteEngineBuffer;
 	QByteArray _blackEngineBuffer;
+
+	QBrush _chuShogiRelayMoveColor = QColorConstants::Svg::lightgreen;
+	QBrush _chuShogiRelayCaptureColor = QColorConstants::Svg::hotpink;
+	QBrush _koShogiRelayMoveColor = QColorConstants::Svg::lightgreen;
+	QBrush _koShogiRelayCaptureColor = QColorConstants::Svg::hotpink;
+	QBrush _koShogiMoveColor = QColorConstants::Svg::greenyellow;
+	QBrush _koShogiCaptureColor = QColorConstants::Svg::lightpink;
+	QBrush _musketeerBackRankColor = QColorConstants::Svg::wheat;
+	QBrush _moveColor = QColorConstants::Svg::cyan;
+	QBrush _captureColor = QColorConstants::Svg::red;
+	QBrush _nullMoveColor = QColorConstants::Svg::magenta;
+	QBrush _thunderclapMoveColor = QColorConstants::Svg::yellow;
+	QBrush _heavenlyTetrarchMoveColor = QColorConstants::Svg::orange;
+	QBrush _shootingColor = QColorConstants::Svg::violet;
+	QBrush _attackerColor = QColorConstants::Svg::salmon;
+	QBrush _defenderColor = QColorConstants::Svg::aquamarine;
+	QBrush _castlingColor = QColorConstants::Svg::magenta;
+	QBrush _enPasantColor = QColorConstants::Svg::blue;
+	QBrush _darkCellColor = Qt::gray;
+	QBrush _lightCellColor = Qt::NoBrush;
+	QBrush _frozenColor = QColorConstants::Svg::lightsteelblue;
+	QBrush _lastMoveColor = QColorConstants::Svg::sandybrown;
 
 public slots :
 
