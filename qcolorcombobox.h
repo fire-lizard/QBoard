@@ -1,83 +1,64 @@
 #pragma once
 
-#include <QAbstractItemDelegate>
 #include <QComboBox>
-#include <QLineEdit>
 #include <QColor>
-#include <QModelIndex>
-#include <QPersistentModelIndex>
-#include <QSize>
-#include <QStyleOptionViewItem>
-#include <QWidget>
+#include <QColorDialog>
+#include <QPainter>
+#include <QPixmap>
 
-class QColorComboItemDelegate final : public QAbstractItemDelegate
-{
-public:
-    explicit QColorComboItemDelegate(QObject *parent = nullptr);
-
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-};
-
-class ColorComboLineEdit final : public QLineEdit
-{
-public:
-    explicit ColorComboLineEdit(QWidget *parent = nullptr);
-
-protected:
-    void mouseReleaseEvent(QMouseEvent *event) override;
-};
-
-class QColorComboBox final : public QComboBox
+class QColorComboBox : public QComboBox
 {
     Q_OBJECT
+        Q_PROPERTY(QColor currentColor READ currentColor WRITE setCurrentColor
+            NOTIFY colorChanged USER true)
 
 public:
-    enum class InvalidColorPolicy
-    {
-        Ignore = 1,
-        Warn,
-        Raise
-    };
-    Q_ENUM(InvalidColorPolicy)
+    explicit QColorComboBox(QWidget* parent = nullptr);
 
-    explicit QColorComboBox(QWidget *parent = nullptr, bool allowUserColors = false,
-                            QString addColorText = QStringLiteral("Add Color..."));
-
-    void setInvalidColorPolicy(InvalidColorPolicy policy);
-    InvalidColorPolicy invalidColorPolicy() const;
-
-    bool userColorsAllowed() const;
-    void setUserColorsAllowed(bool allow);
-
-    void clear();
-
-    void addColor(const QVariant &color);
-    void addColors(const QList<QVariant> &colors);
-
-    QColor itemColor(int index) const;
-
+    /// The currently selected color (invalid QColor if none).
     QColor currentColor() const;
-    void setCurrentColor(const QVariant &color);
 
-    QString currentColorName() const;
+    /// Color stored at a given index.
+    QColor color(int index) const;
+
+    /// Append a color. If name is empty, a hex string ("#rrggbb") is used.
+    void addColor(const QColor& color, const QString& name = QString());
+
+    /// Replace all colors with the given list.
+    void setColors(const QList<QColor>& colors);
+
+    /// Remove all color entries (keeps the "Custom..." entry if enabled).
+    void clearColors();
+
+    /// Populate with the SVG named colors (QColorConstants::Svg set,
+    /// via QColor::colorNames()). Called by default on construction.
+    void addStandardColors();
+
+    /// Enable/disable the trailing "Custom..." entry (QColorDialog).
+    void setCustomColorsEnabled(bool enabled);
+    bool customColorsEnabled() const;
+
+public slots:
+    /// Select the given color; the color is appended if not present.
+    void setCurrentColor(const QColor& color);
 
 signals:
-    void currentColorChanged(const QColor &color);
+    /// Emitted whenever the selected color changes (user or programmatic).
+    void colorChanged(const QColor& color);
+
+protected:
+    /// Builds the swatch icon shown next to each entry.
+    virtual QIcon colorIcon(const QColor& color) const;
 
 private slots:
-    void onActivated(int index);
-    void onIndexChanged(int index);
+    void handleActivated(int index);
+    void handleCurrentIndexChanged(int index);
 
 private:
-    static QColor castColor(const QVariant &value);
-    static QColor pickFontColor(const QColor &color);
+    int findColor(const QColor& color) const;
+    int colorCount() const;          // entry count excluding "Custom..."
+    void insertCustomEntry();
 
-    InvalidColorPolicy m_invalidPolicy = InvalidColorPolicy::Ignore;
-    QString m_addColorText = QStringLiteral("Add Color...");
-    bool m_allowUserColors = false;
-    QColor m_lastColor;
-
-    static constexpr int ColorRole = Qt::ItemDataRole::BackgroundRole;
+    bool m_customEnabled = true;
+    QColor m_lastColor;              // restore target if dialog is cancelled
 };

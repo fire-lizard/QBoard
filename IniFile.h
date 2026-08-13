@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <QSettings>
+#include <QBrush>
+#include <QMap>
 #include <QApplication>
 #include <qstyle.h>
 
@@ -25,6 +27,7 @@ public:
     int  whiteEngineTime;
     bool useBlackEngineTime;
     int  blackEngineTime;
+    QMap<QString, QBrush> colors;
 };
 
 class IniFile {

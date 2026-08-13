@@ -337,9 +337,9 @@ void VBoard::paintEvent(QPaintEvent *)
 					_gameVariant == Sittuyin)
 				{
 					if ((i + j) % 2 != 0)
-						painter.setBrush(_darkCellColor);
+						painter.setBrush(_darkSquareColor);
 					else
-						painter.setBrush(_lightCellColor);
+						painter.setBrush(_lightSquareColor);
 				}
 				if (_gameVariant == MusketeerChess)
 				{
@@ -409,7 +409,17 @@ bool VBoard::AskForPromotion()
 void VBoard::PushHistory()
 {
 	const PieceStorage* ps = dynamic_cast<const PieceStorage*>(_board);
-	_fenHistory.push_back({.fen = _board->GetFEN(), .pieces = ps != nullptr ? ps->CapturedPieces() : std::vector<std::pair<PieceColour, PieceType>>() });
+	BoardSnapshot bs;
+	bs.fen = _board->GetFEN();
+	if (ps != nullptr)
+	{
+		bs.pieces = ps->CapturedPieces();
+	}
+	else
+	{
+		bs.pieces = std::vector<std::pair<PieceColour, PieceType>>();
+	}
+	_fenHistory.push_back(bs);
 }
 
 void VBoard::FinishMove(int x, int y)
@@ -2259,6 +2269,54 @@ bool VBoard::GetTimerState() const
 void VBoard::SetTimerState(bool timerState)
 {
     _timerState = timerState;
+}
+
+std::vector<std::pair<QString, QBrush*>> VBoard::ColorTable()
+{
+	return {
+		{ "LightSquareColor", &_lightSquareColor },
+		{ "DarkSquareColor", &_darkSquareColor },
+		{ "MoveColor", &_moveColor },
+		{ "CaptureColor", &_captureColor },
+		{ "NullMoveColor", &_nullMoveColor },
+		{ "CastlingColor", &_castlingColor },
+		{ "EnPasantColor", &_enPasantColor },
+		{ "ShootingColor", &_shootingColor },
+		{ "AttackerColor", &_attackerColor },
+		{ "DefenderColor", &_defenderColor },
+		{ "LastMoveColor", &_lastMoveColor },
+		{ "FrozenColor", &_frozenColor },
+		{ "ThunderclapMoveColor", &_thunderclapMoveColor },
+		{ "HeavenlyTetrarchMoveColor", &_heavenlyTetrarchMoveColor },
+		{ "MusketeerBackRankColor", &_musketeerBackRankColor },
+		{ "ChuShogiRelayMoveColor", &_chuShogiRelayMoveColor },
+		{ "ChuShogiRelayCaptureColor", &_chuShogiRelayCaptureColor },
+		{ "KoShogiMoveColor", &_koShogiMoveColor },
+		{ "KoShogiCaptureColor", &_koShogiCaptureColor },
+		{ "KoShogiRelayMoveColor", &_koShogiRelayMoveColor },
+		{ "KoShogiRelayCaptureColor", &_koShogiRelayCaptureColor }
+	};
+}
+
+QMap<QString, QBrush> VBoard::GetColors()
+{
+	QMap<QString, QBrush> colors;
+	for (const auto& [key, brush] : ColorTable())
+		colors.insert(key, *brush);
+	return colors;
+}
+
+void VBoard::SetColors(const QMap<QString, QBrush>& colors)
+{
+	// Unknown or missing keys are left alone, so a hand-edited ini can override just one
+	// colour and the rest keep their built-in defaults.
+	for (const auto& [key, brush] : ColorTable())
+	{
+		const auto it = colors.constFind(key);
+		if (it != colors.constEnd())
+			*brush = *it;
+	}
+	update();
 }
 
 bool VBoard::CheckRepetition(int oldX, int oldY, int newX, int newY)

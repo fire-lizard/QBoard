@@ -56,6 +56,7 @@ SOURCES += main.cpp\
     ChuShogiBoard.cpp \
     Logger.cpp \
     promotiondialog.cpp \
+    qcolorcombobox.cpp \
     settingsdialog.cpp \
     stringmanager.cpp \
     variantdialog.cpp \
@@ -127,6 +128,7 @@ HEADERS  += mainwindow.h \
     editor.h \
     graphicsmanager.h \
     promotiondialog.h \
+    qcolorcombobox.h \
     settingsdialog.h \
     stringmanager.h \
     variantdialog.h \

@@ -4,6 +4,8 @@
 #include <QComboBox>
 #include <QCheckBox>
 #include <QSpinBox>
+#include <QMap>
+#include "qcolorcombobox.h"
 #include "variantdialog.h"
 
 namespace Ui {
@@ -35,6 +37,8 @@ public:
 	QSpinBox*  GetWhiteEngineTime() const;
 	QCheckBox* GetUseBlackEngineTime() const;
 	QSpinBox*  GetBlackEngineTime() const;
+	void SetColors(const QMap<QString, QBrush>& colors);
+	QMap<QString, QBrush> GetColors() const;
 
 private slots:
 
@@ -48,4 +52,5 @@ private slots:
 private:
 	Ui::SettingsDialog *ui;
 	QString _pieceStyle = "European";
+	QMap<QString, QColorComboBox*> _colorCombos;
 };

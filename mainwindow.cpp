@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 		this->ui->vboard->SetHighlightDefenders(settings.highlightDefenders);
 		this->ui->vboard->SetHighlightLastMoves(settings.highlightLastMoves);
         this->ui->vboard->SetTimerState(settings.timerState);
+		this->ui->vboard->SetColors(settings.colors);
 		_useWhiteEngineDepth = settings.useWhiteEngineDepth;
 		_whiteEngineDepth = settings.whiteEngineDepth;
         _useBlackEngineDepth = settings.useBlackEngineDepth;
@@ -62,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         configRecord.highlightDefenders = true;
         configRecord.highlightLastMoves = false;
         configRecord.timerState = this->ui->vboard->GetTimerState();
+        configRecord.colors = this->ui->vboard->GetColors();
         configRecord.useWhiteEngineDepth = _useWhiteEngineDepth;
 		configRecord.whiteEngineDepth = _whiteEngineDepth;
 		configRecord.useBlackEngineDepth = _useBlackEngineDepth;
@@ -107,6 +109,7 @@ void MainWindow::on_actionSettings_triggered()
 	settingsDialog->GetUseBlackEngineTime()->setChecked(_useBlackEngineTime);
 	settingsDialog->GetBlackEngineTime()->setValue(_blackEngineTime);
 	settingsDialog->GetGamePieces()->setCurrentText(EngineManager::PieceStyleToString(this->ui->vboard->GetPieceStyle()));
+	settingsDialog->SetColors(this->ui->vboard->GetColors());
 	settingsDialog->exec();
 	if (settingsDialog->result() == QDialog::Accepted)
 	{
@@ -186,6 +189,7 @@ void MainWindow::on_actionSettings_triggered()
 		this->ui->vboard->SetHighlightDefenders(highlightDefenders);
 		this->ui->vboard->SetHighlightLastMoves(highlightLastMoves);
         this->ui->vboard->SetTimerState(timerState);
+        this->ui->vboard->SetColors(settingsDialog->GetColors());
         ConfigRecord configRecord;
         configRecord.styleName = _currentStyle;
         configRecord.gameVariant = settingsDialog->GetGameVariant()->text();
@@ -197,6 +201,7 @@ void MainWindow::on_actionSettings_triggered()
         configRecord.highlightDefenders = highlightDefenders;
         configRecord.highlightLastMoves = highlightLastMoves;
         configRecord.timerState = timerState;
+        configRecord.colors = this->ui->vboard->GetColors();
         configRecord.useWhiteEngineDepth = _useWhiteEngineDepth;
 		configRecord.whiteEngineDepth = _whiteEngineDepth;
 		configRecord.useBlackEngineDepth = _useBlackEngineDepth;

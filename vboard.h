@@ -83,6 +83,8 @@ public:
 	void SetHighlightLastMoves(bool highlightLastMoves);
     bool GetTimerState() const;
     void SetTimerState(bool timerState);
+	QMap<QString, QBrush> GetColors();
+	void SetColors(const QMap<QString, QBrush>& colors);
 
 protected:
 	void contextMenuEvent(QContextMenuEvent* event) override;
@@ -105,6 +107,7 @@ private:
 	void CancelLionMove();
 	void ReportInfo(const QString& buf, const QString& infoStr, QTextEdit* textEdit, LogLevel logLevel);
 	void PushHistory();
+	std::vector<std::pair<QString, QBrush*>> ColorTable();
 
 	Board *_board;
 	Board *_editorBoard = nullptr;
@@ -174,8 +177,8 @@ private:
 	QBrush _defenderColor = QColorConstants::Svg::aquamarine;
 	QBrush _castlingColor = QColorConstants::Svg::magenta;
 	QBrush _enPasantColor = QColorConstants::Svg::blue;
-	QBrush _darkCellColor = Qt::gray;
-	QBrush _lightCellColor = Qt::NoBrush;
+	QBrush _darkSquareColor = Qt::gray;
+	QBrush _lightSquareColor = Qt::NoBrush;
 	QBrush _frozenColor = QColorConstants::Svg::lightsteelblue;
 	QBrush _lastMoveColor = QColorConstants::Svg::sandybrown;
 

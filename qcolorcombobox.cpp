@@ -1,408 +1,184 @@
 #include "qcolorcombobox.h"
 
-#include <QColorDialog>
-#include <QDebug>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QSignalBlocker>
-#include <QStyle>
-#include <QStyleOptionViewItem>
-
-namespace
-{
-    QMap<QString, QString> makeNameMap()
-    {
-        QMap<QString, QString> result;
-
-        const QStringList names = QColor::colorNames();
-        for (const QString& name : names)
-        {
-            // QColor::name() gives the normalized #RRGGBB representation.
-            const QColor color(name);
-            result.insert(color.name(), name);
-        }
-
-        return result;
-    }
-
-    const QMap<QString, QString> NAME_MAP = makeNameMap();
-
-    QColor castColorImpl(const QVariant& value)
-    {
-        if (value.canConvert<QColor>())
-        {
-            const QColor color = value.value<QColor>();
-            if (color.isValid())
-                return color;
-        }
-
-        // Support RGB/RGBA values supplied as a QVariantList.
-        if (value.canConvert<QVariantList>())
-        {
-            const QVariantList list = value.toList();
-
-            if (list.size() == 3 || list.size() == 4)
-            {
-                bool okR = false;
-                bool okG = false;
-                bool okB = false;
-
-                const int r = list.at(0).toInt(&okR);
-                const int g = list.at(1).toInt(&okG);
-                const int b = list.at(2).toInt(&okB);
-
-                if (okR && okG && okB)
-                {
-                    if (list.size() == 4)
-                    {
-                        bool okA = false;
-                        const int a = list.at(3).toInt(&okA);
-
-                        if (okA)
-                        {
-                            const QColor color(r, g, b, a);
-                            if (color.isValid())
-                                return color;
-                        }
-                    }
-                    else
-                    {
-                        const QColor color(r, g, b);
-                        if (color.isValid())
-                            return color;
-                    }
-                }
-            }
-        }
-
-        // Also accept a color string such as "#ff0000" or "red".
-        if (value.canConvert<QString>())
-        {
-            const QColor color(value.toString());
-            if (color.isValid())
-                return color;
-        }
-
-        return {};
-    }
-
-    QColor pickFontColorImpl(const QColor& color)
-    {
-        const double brightness =
-            color.red() * 0.299 +
-            color.green() * 0.587 +
-            color.blue() * 0.114;
-
-        if (brightness > 80.0)
-            return { 0, 0, 0, 128 };
-
-        return { 255, 255, 255, 128 };
-    }
+namespace {
+    // Role used to store the QColor on each item.
+    constexpr int ColorRole = Qt::UserRole;
+    // Marker stored on the "Custom..." entry.
+    constexpr int CustomRole = Qt::UserRole + 1;
 }
 
-// -----------------------------------------------------------------------------
-// ColorComboLineEdit
-// -----------------------------------------------------------------------------
-
-ColorComboLineEdit::ColorComboLineEdit(QWidget *parent) : QLineEdit(parent)
+QColorComboBox::QColorComboBox(QWidget* parent)
+    : QComboBox(parent)
 {
-    setReadOnly(true);
+    addStandardColors();
+    insertCustomEntry();
 
-    // Hide the original text. The background color is used to represent
-    // the selected color.
-    setStyleSheet(QStringLiteral("color: transparent"));
-    clear();
-}
+    connect(this, QOverload<int>::of(&QComboBox::activated),
+        this, &QColorComboBox::handleActivated);
+    connect(this, QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this, &QColorComboBox::handleCurrentIndexChanged);
 
-void ColorComboLineEdit::mouseReleaseEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event)
-
-    // The Python implementation deliberately uses mouseReleaseEvent:
-    // mousePressEvent would open the popup and then immediately close it.
-    if (auto *combo = qobject_cast<QComboBox *>(parentWidget()))
-        combo->showPopup();
-}
-
-// -----------------------------------------------------------------------------
-// QColorComboItemDelegate
-// -----------------------------------------------------------------------------
-
-QColorComboItemDelegate::QColorComboItemDelegate(QObject *parent) : QAbstractItemDelegate(parent)
-{
-}
-
-QSize QColorComboItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-    Q_UNUSED(option)
-    Q_UNUSED(index)
-    return {20, 20};
-}
-
-void QColorComboItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
-{
-    const QVariant data = index.data(Qt::ItemDataRole::BackgroundRole);
-
-    const QColor color = data.value<QColor>();
-    const QRect rect = option.rect;
-
-    const bool selected = option.state & QStyle::State_Selected;
-
-    const QColor border(QStringLiteral("lightgray"));
-
-    if (!color.isValid())
-    {
-        const QColor textColor = selected ? Qt::black : Qt::gray;
-
-        painter->setPen(textColor);
-
-        const QString text = index.data(Qt::ItemDataRole::DisplayRole).toString();
-
-        painter->drawText(rect, Qt::AlignCenter, text);
-
-        return;
-    }
-
-    QPen pen = painter->pen();
-    pen.setWidth(2);
-    pen.setColor(border);
-    painter->setPen(pen);
-
-    if (selected)
-    {
-        // When selected/hovered, slightly lighten the color and show
-        // the friendly color name.
-        painter->setBrush(color.lighter(110));
-        painter->drawRect(rect);
-
-        const QString name = NAME_MAP.value(color.name(), color.name());
-
-        painter->setPen(pickFontColorImpl(color));
-
-        painter->drawText(rect, Qt::AlignCenter, name);
-    }
-    else
-    {
-        painter->setBrush(color);
-        painter->drawRect(rect);
-    }
-}
-
-// -----------------------------------------------------------------------------
-// QColorComboBox
-// -----------------------------------------------------------------------------
-
-QColorComboBox::QColorComboBox(QWidget *parent, bool allowUserColors, QString addColorText)
-    : QComboBox(parent), m_addColorText(std::move(addColorText)), m_allowUserColors(allowUserColors)
-{
-    setLineEdit(new ColorComboLineEdit(this));
-    setItemDelegate(new QColorComboItemDelegate(this));
-
-    connect(this, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &QColorComboBox::onIndexChanged);
-
-    connect(this, QOverload<int>::of(&QComboBox::activated), this, &QColorComboBox::onActivated);
-
-    setUserColorsAllowed(allowUserColors);
-}
-
-void QColorComboBox::setInvalidColorPolicy(
-    InvalidColorPolicy policy)
-{
-    m_invalidPolicy = policy;
-}
-
-QColorComboBox::InvalidColorPolicy
-QColorComboBox::invalidColorPolicy() const
-{
-    return m_invalidPolicy;
-}
-
-bool QColorComboBox::userColorsAllowed() const
-{
-    return m_allowUserColors;
-}
-
-void QColorComboBox::setUserColorsAllowed(bool allow)
-{
-    m_allowUserColors = allow;
-
-    const int index = findData(m_addColorText, Qt::DisplayRole);
-
-    if (index < 0)
-    {
-        if (m_allowUserColors)
-            addItem(m_addColorText);
-    }
-    else if (!m_allowUserColors)
-    {
-        removeItem(index);
-    }
-}
-
-void QColorComboBox::clear()
-{
-    QComboBox::clear();
-
-    // Keep "Add Color..." when user colors are enabled.
-    setUserColorsAllowed(m_allowUserColors);
-}
-
-void QColorComboBox::addColor(const QVariant &color)
-{
-    const QColor converted = castColor(color);
-
-    if (!converted.isValid())
-    {
-        switch (m_invalidPolicy)
-        {
-        case InvalidColorPolicy::Raise:
-            qWarning() << "Invalid color:" << color;
-            Q_ASSERT_X(false, "QColorComboBox::addColor", "Invalid color");
-            return;
-
-        case InvalidColorPolicy::Warn:
-            qWarning() << "Ignoring invalid color:" << color;
-            return;
-
-        case InvalidColorPolicy::Ignore:
-            return;
-        }
-    }
-
-    const QColor current = currentColor();
-
-    // Avoid duplicates.
-    if (findData(converted) >= 0)
-        return;
-
-    // Add the actual color as item data.
-    addItem(QString(), converted);
-
-    setItemData(count() - 1, converted, Qt::ItemDataRole::BackgroundRole);
-
-    if (!current.isValid())
-        onIndexChanged(count() - 1);
-
-    // Make sure "Add Color..." stays last.
-    const int addColorIndex = findData(m_addColorText, Qt::DisplayRole);
-
-    if (addColorIndex >= 0)
-    {
-        QSignalBlocker blocker(this);
-
-        removeItem(addColorIndex);
-        addItem(m_addColorText);
-    }
-}
-
-QColor QColorComboBox::itemColor(int index) const
-{
-    return itemData(index, Qt::ItemDataRole::BackgroundRole).value<QColor>();
-}
-
-void QColorComboBox::addColors(
-    const QList<QVariant> &colors)
-{
-    for (const QVariant &color : colors)
-        addColor(color);
+    if (count() > 0)
+        m_lastColor = color(0);
 }
 
 QColor QColorComboBox::currentColor() const
 {
-    return currentData(Qt::ItemDataRole::BackgroundRole).value<QColor>();
+    return color(currentIndex());
 }
 
-void QColorComboBox::setCurrentColor(
-    const QVariant &color)
+QColor QColorComboBox::color(int index) const
 {
-    const QColor converted = castColor(color);
-
-    if (!converted.isValid())
-        return;
-
-    const int index = findData(converted, Qt::ItemDataRole::BackgroundRole);
-
-    if (index >= 0)
-        setCurrentIndex(index);
+    if (index < 0 || index >= count())
+        return {};
+    return itemData(index, ColorRole).value<QColor>();
 }
 
-QString QColorComboBox::currentColorName() const
+void QColorComboBox::addColor(const QColor& color, const QString& name)
 {
-    const QColor color = currentColor();
-
-    return color.isValid()
-        ? color.name()
-        : QStringLiteral("#000000");
-}
-
-void QColorComboBox::onActivated(int index)
-{
-    if (itemText(index) != m_addColorText)
-        return;
-
-    if (!lineEdit())
-        return;
-
-    // Show temporary text while the dialog is open.
-    lineEdit()->setStyleSheet(QStringLiteral("background-color: white; color: gray;"));
-
-    lineEdit()->setText(QStringLiteral("Pick a Color ..."));
-
-    QColor color;
-
-    try
-    {
-        color = QColorDialog::getColor(QColor(), this, QStringLiteral("Select Color"));
-    }
-    catch (...)
-    {
-        lineEdit()->clear();
-        throw;
-    }
-
-    lineEdit()->clear();
-
-    if (color.isValid())
-    {
-        addColor(color);
-    }
-    else if (m_lastColor.isValid())
-    {
-        const int previousIndex = findData(m_lastColor, Qt::ItemDataRole::BackgroundRole);
-
-        if (previousIndex >= 0)
-        {
-            QSignalBlocker blocker(this);
-
-            setCurrentIndex(previousIndex);
-
-            const QString hex = m_lastColor.name();
-
-            lineEdit()->setStyleSheet(QStringLiteral("background-color: %1;").arg(hex));
-        }
-    }
-}
-
-void QColorComboBox::onIndexChanged(int index)
-{
-    const QColor color = itemData(index, Qt::ItemDataRole::BackgroundRole).value<QColor>();
-
     if (!color.isValid())
         return;
 
-    lineEdit()->setStyleSheet(QStringLiteral("background-color: %1;").arg(color.name()));
+    const QString text = name.isEmpty() ? color.name() : name;
+    const int insertAt = colorCount();          // keep "Custom..." last
 
-    emit currentColorChanged(color);
-
-    m_lastColor = color;
+    insertItem(insertAt, colorIcon(color), text);
+    setItemData(insertAt, color, ColorRole);
 }
 
-QColor QColorComboBox::castColor(const QVariant &value)
+void QColorComboBox::setColors(const QList<QColor>& colors)
 {
-    return castColorImpl(value);
+    clearColors();
+    for (const QColor& c : colors)
+        addColor(c);
 }
 
-QColor QColorComboBox::pickFontColor(const QColor &color)
+void QColorComboBox::clearColors()
 {
-    return pickFontColorImpl(color);
+    const QSignalBlocker blocker(this);
+    while (colorCount() > 0)
+        removeItem(0);
+}
+
+void QColorComboBox::addStandardColors()
+{
+    // Adds the full SVG 1.0 named-color set — the same colors defined in
+    // QColorConstants::Svg (Qt >= 5.14). The constants themselves can't be
+    // iterated, but QColor::colorNames() returns exactly this SVG list, so
+    // we enumerate through it instead of hardcoding all 148 entries.
+    const QStringList names = QColor::colorNames();
+    for (const QString& name : names) {
+        QColor c(name);
+        if (!c.isValid())
+            continue;
+        // "aliceblue" -> "Aliceblue" for slightly nicer display.
+        QString display = name;
+        display[0] = display[0].toUpper();
+        addColor(c, display);
+    }
+}
+
+void QColorComboBox::setCustomColorsEnabled(bool enabled)
+{
+    if (enabled == m_customEnabled)
+        return;
+    m_customEnabled = enabled;
+
+    if (enabled) {
+        insertCustomEntry();
+    }
+    else if (count() > 0 && itemData(count() - 1, CustomRole).toBool()) {
+        removeItem(count() - 1);
+    }
+}
+
+bool QColorComboBox::customColorsEnabled() const
+{
+    return m_customEnabled;
+}
+
+void QColorComboBox::setCurrentColor(const QColor& color)
+{
+    if (!color.isValid())
+        return;
+
+    int index = findColor(color);
+    if (index < 0) {
+        addColor(color);
+        index = findColor(color);
+    }
+    setCurrentIndex(index);
+}
+
+QIcon QColorComboBox::colorIcon(const QColor& color) const
+{
+    const int size = iconSize().height() > 0 ? iconSize().height() : 16;
+    QPixmap pixmap(size, size);
+    pixmap.fill(Qt::transparent);
+
+    QPainter painter(&pixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(QPen(palette().color(QPalette::Shadow), 1));
+    painter.setBrush(color);
+    painter.drawRoundedRect(QRectF(0.5, 0.5, size - 1.0, size - 1.0), 2, 2);
+
+    return {pixmap};
+}
+
+void QColorComboBox::handleActivated(int index)
+{
+    if (!itemData(index, CustomRole).toBool())
+        return;
+
+    // "Custom..." was chosen: open a color dialog.
+    const QColor picked = QColorDialog::getColor(
+        m_lastColor.isValid() ? m_lastColor : Qt::white,
+        this, tr("Select color"));
+
+    if (picked.isValid()) {
+        setCurrentColor(picked);
+    }
+    else {
+        // Cancelled: restore previous selection without firing colorChanged.
+        const QSignalBlocker blocker(this);
+        const int prev = findColor(m_lastColor);
+        setCurrentIndex(prev >= 0 ? prev : 0);
+    }
+}
+
+void QColorComboBox::handleCurrentIndexChanged(int index)
+{
+    if (index < 0 || itemData(index, CustomRole).toBool())
+        return;
+
+    const QColor c = color(index);
+    if (c.isValid() && c != m_lastColor) {
+        m_lastColor = c;
+        emit colorChanged(c);
+    }
+}
+
+int QColorComboBox::findColor(const QColor& color) const
+{
+    for (int i = 0; i < colorCount(); ++i) {
+        if (this->color(i) == color)
+            return i;
+    }
+    return -1;
+}
+
+int QColorComboBox::colorCount() const
+{
+    int n = count();
+    if (n > 0 && itemData(n - 1, CustomRole).toBool())
+        --n;
+    return n;
+}
+
+void QColorComboBox::insertCustomEntry()
+{
+    if (!m_customEnabled)
+        return;
+    addItem(tr("Custom..."));
+    setItemData(count() - 1, true, CustomRole);
 }

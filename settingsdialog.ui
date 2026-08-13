@@ -413,7 +413,7 @@
    </widget>
    <widget class="QWidget" name="tab_3">
     <attribute name="title">
-     <string>Colors</string>
+     <string>Color</string>
     </attribute>
    </widget>
   </widget>
