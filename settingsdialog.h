@@ -37,7 +37,7 @@ public:
 	QSpinBox*  GetWhiteEngineTime() const;
 	QCheckBox* GetUseBlackEngineTime() const;
 	QSpinBox*  GetBlackEngineTime() const;
-	void SetColors(const QMap<QString, QBrush>& colors);
+	void SetColors(const QMap<QString, QBrush>& colors, const QStringList& order);
 	QMap<QString, QBrush> GetColors() const;
 
 private slots:

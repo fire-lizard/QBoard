@@ -123,20 +123,23 @@ QSpinBox* SettingsDialog::GetWhiteEngineTime() const
 	return ui->engine2TimeSpinBox;
 }
 
-void SettingsDialog::SetColors(const QMap<QString, QBrush>& colors)
+void SettingsDialog::SetColors(const QMap<QString, QBrush>& colors, const QStringList& order)
 {
 	// Too many colours to hand-place in Designer, so the rows are built here and put in a
 	// scroll area; the tab is the only page that gets a layout.
 	QWidget* rows = new QWidget;
 	QFormLayout* form = new QFormLayout(rows);
-	for (auto it = colors.constBegin(); it != colors.constEnd(); ++it)
+	// Rows follow `order` (VBoard::ColorTable()), not the QMap's alphabetical key order.
+	for (const QString& key : order)
 	{
+		const auto it = colors.constFind(key);
+		if (it == colors.constEnd())
+			continue;
 		QColorComboBox* combo = new QColorComboBox(rows);
-		// Qt::NoBrush has no colour of its own; "transparent" paints the same and survives
-		// the round-trip through QColor.
+		// Qt::NoBrush has no colour of its own; "transparent" paints the same and survives the round-trip through QColor.
 		combo->setCurrentColor(it.value().style() == Qt::NoBrush ? QColor(Qt::transparent) : it.value().color());
-		form->addRow(colorLabel(it.key()), combo);
-		_colorCombos.insert(it.key(), combo);
+		form->addRow(colorLabel(key), combo);
+		_colorCombos.insert(key, combo);
 	}
 	QScrollArea* area = new QScrollArea(ui->tab_3);
 	area->setWidget(rows);

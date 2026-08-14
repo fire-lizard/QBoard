@@ -109,7 +109,7 @@ void MainWindow::on_actionSettings_triggered()
 	settingsDialog->GetUseBlackEngineTime()->setChecked(_useBlackEngineTime);
 	settingsDialog->GetBlackEngineTime()->setValue(_blackEngineTime);
 	settingsDialog->GetGamePieces()->setCurrentText(EngineManager::PieceStyleToString(this->ui->vboard->GetPieceStyle()));
-	settingsDialog->SetColors(this->ui->vboard->GetColors());
+	settingsDialog->SetColors(this->ui->vboard->GetColors(), this->ui->vboard->ColorOrder());
 	settingsDialog->exec();
 	if (settingsDialog->result() == QDialog::Accepted)
 	{

@@ -85,6 +85,7 @@ public:
     void SetTimerState(bool timerState);
 	QMap<QString, QBrush> GetColors();
 	void SetColors(const QMap<QString, QBrush>& colors);
+	QStringList ColorOrder();
 
 protected:
 	void contextMenuEvent(QContextMenuEvent* event) override;
@@ -164,8 +165,8 @@ private:
 	QBrush _chuShogiRelayCaptureColor = QColorConstants::Svg::hotpink;
 	QBrush _koShogiRelayMoveColor = QColorConstants::Svg::lightgreen;
 	QBrush _koShogiRelayCaptureColor = QColorConstants::Svg::hotpink;
-	QBrush _koShogiMoveColor = QColorConstants::Svg::greenyellow;
-	QBrush _koShogiCaptureColor = QColorConstants::Svg::lightpink;
+	QBrush _koShogiLongMoveColor = QColorConstants::Svg::greenyellow;
+	QBrush _koShogiLongCaptureColor = QColorConstants::Svg::lightpink;
 	QBrush _musketeerBackRankColor = QColorConstants::Svg::wheat;
 	QBrush _moveColor = QColorConstants::Svg::cyan;
 	QBrush _captureColor = QColorConstants::Svg::red;

@@ -72,7 +72,7 @@ void VBoard::paintEvent(QPaintEvent *)
                             _currentPiece->Type == Thunderclap;
 						if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) != std::nullopt)
 						{
-							painter.setBrush(_koShogiCaptureColor);
+							painter.setBrush(_koShogiLongCaptureColor);
                             painter.setPen(Qt::NoPen);
                             painter.drawEllipse(rect);
                             painter.setPen(_editorMode ? Qt::magenta : Qt::black);
@@ -80,7 +80,7 @@ void VBoard::paintEvent(QPaintEvent *)
 						}
 						else if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) == std::nullopt)
 						{
-							painter.setBrush(_koShogiMoveColor);
+							painter.setBrush(_koShogiLongMoveColor);
                             painter.setPen(Qt::NoPen);
                             painter.drawEllipse(rect);
                             painter.setPen(_editorMode ? Qt::magenta : Qt::black);
@@ -2291,11 +2291,21 @@ std::vector<std::pair<QString, QBrush*>> VBoard::ColorTable()
 		{ "MusketeerBackRankColor", &_musketeerBackRankColor },
 		{ "ChuShogiRelayMoveColor", &_chuShogiRelayMoveColor },
 		{ "ChuShogiRelayCaptureColor", &_chuShogiRelayCaptureColor },
-		{ "KoShogiMoveColor", &_koShogiMoveColor },
-		{ "KoShogiCaptureColor", &_koShogiCaptureColor },
+		{ "KoShogiMoveColor", &_koShogiLongMoveColor },
+		{ "KoShogiCaptureColor", &_koShogiLongCaptureColor },
 		{ "KoShogiRelayMoveColor", &_koShogiRelayMoveColor },
 		{ "KoShogiRelayCaptureColor", &_koShogiRelayCaptureColor }
 	};
+}
+
+// GetColors() returns a QMap, which sorts alphabetically; this keeps the ColorTable() order
+// for anything that shows the colours to the user.
+QStringList VBoard::ColorOrder()
+{
+	QStringList keys;
+	for (const auto& [key, brush] : ColorTable())
+		keys << key;
+	return keys;
 }
 
 QMap<QString, QBrush> VBoard::GetColors()
