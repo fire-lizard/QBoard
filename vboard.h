@@ -107,6 +107,8 @@ private:
 	void FinishRelayedMove(const std::optional<Piece>& captured, const std::shared_ptr<Engine>& engine, int x, int y);
 	void CancelLionMove();
 	void ReportInfo(const QString& buf, const QString& infoStr, QTextEdit* textEdit, LogLevel logLevel);
+	void DrawLastMoveArrow(QPainter& painter, int w, int h) const;
+	void RecordEngineMove(const QByteArray& moveArray, const Move& castling, const std::shared_ptr<Engine>& engine, PieceColour colour);
 	void PushHistory();
 	std::vector<std::pair<QString, QBrush*>> ColorTable();
 
@@ -152,7 +154,7 @@ private:
 	bool _highlightShoots = true;
 	bool _highlightAttackers = true;
 	bool _highlightDefenders = true;
-	bool _highlightLastMoves = false;
+	bool _highlightLastMoves = true;
     bool _timerState = false;
 	Communications* _comm = nullptr;
 	bool _waitForOtherPlayer = false;
@@ -161,12 +163,8 @@ private:
 	QByteArray _whiteEngineBuffer;
 	QByteArray _blackEngineBuffer;
 
-	QBrush _chuShogiRelayMoveColor = QColorConstants::Svg::lightgreen;
-	QBrush _chuShogiRelayCaptureColor = QColorConstants::Svg::hotpink;
-	QBrush _koShogiRelayMoveColor = QColorConstants::Svg::lightgreen;
-	QBrush _koShogiRelayCaptureColor = QColorConstants::Svg::hotpink;
-	QBrush _koShogiLongMoveColor = QColorConstants::Svg::greenyellow;
-	QBrush _koShogiLongCaptureColor = QColorConstants::Svg::lightpink;
+	QBrush _shogiRelayMoveColor = QColorConstants::Svg::lightgreen;
+	QBrush _shogiRelayCaptureColor = QColorConstants::Svg::hotpink;
 	QBrush _musketeerBackRankColor = QColorConstants::Svg::wheat;
 	QBrush _moveColor = QColorConstants::Svg::cyan;
 	QBrush _captureColor = QColorConstants::Svg::red;
@@ -181,7 +179,7 @@ private:
 	QBrush _darkSquareColor = Qt::gray;
 	QBrush _lightSquareColor = Qt::NoBrush;
 	QBrush _frozenColor = QColorConstants::Svg::lightsteelblue;
-	QBrush _lastMoveColor = QColorConstants::Svg::sandybrown;
+	QBrush _lastMoveColor = QColorConstants::Svg::orangered;
 
 public slots :
 

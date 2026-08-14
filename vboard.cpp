@@ -72,7 +72,7 @@ void VBoard::paintEvent(QPaintEvent *)
                             _currentPiece->Type == Thunderclap;
 						if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) != std::nullopt)
 						{
-							painter.setBrush(_koShogiLongCaptureColor);
+							painter.setBrush(_shogiRelayCaptureColor);
                             painter.setPen(Qt::NoPen);
                             painter.drawEllipse(rect);
                             painter.setPen(_editorMode ? Qt::magenta : Qt::black);
@@ -80,7 +80,7 @@ void VBoard::paintEvent(QPaintEvent *)
 						}
 						else if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) == std::nullopt)
 						{
-							painter.setBrush(_koShogiLongMoveColor);
+							painter.setBrush(_shogiRelayMoveColor);
                             painter.setPen(Qt::NoPen);
                             painter.drawEllipse(rect);
                             painter.setPen(_editorMode ? Qt::magenta : Qt::black);
@@ -88,7 +88,7 @@ void VBoard::paintEvent(QPaintEvent *)
 						}
 						else if (_board->GetData(i, j) != std::nullopt)
 						{
-							painter.setBrush(_koShogiRelayCaptureColor);
+							painter.setBrush(_shogiRelayCaptureColor);
                             painter.setPen(Qt::NoPen);
                             painter.drawEllipse(rect);
                             painter.setPen(_editorMode ? Qt::magenta : Qt::black);
@@ -96,7 +96,7 @@ void VBoard::paintEvent(QPaintEvent *)
 						}
 						else if (_board->GetData(i, j) == std::nullopt)
 						{
-							painter.setBrush(_koShogiRelayMoveColor);
+							painter.setBrush(_shogiRelayMoveColor);
                             painter.setPen(Qt::NoPen);
                             painter.drawEllipse(rect);
                             painter.setPen(_editorMode ? Qt::magenta : Qt::black);
@@ -114,7 +114,7 @@ void VBoard::paintEvent(QPaintEvent *)
 							}
 							else
 							{
-								painter.setBrush(_chuShogiRelayCaptureColor);
+								painter.setBrush(_shogiRelayCaptureColor);
 							}
                             if (_gameVariant != KoShogi)
                             {
@@ -130,7 +130,7 @@ void VBoard::paintEvent(QPaintEvent *)
 						}
 						else if (_board->GetData(i, j) == std::nullopt)
 						{
-							painter.setBrush(_chuShogiRelayMoveColor);
+							painter.setBrush(_shogiRelayMoveColor);
                             if (_gameVariant != KoShogi)
                             {
                                 painter.drawRect(rect);
@@ -297,23 +297,6 @@ void VBoard::paintEvent(QPaintEvent *)
                 }
                 painter.setBrush(Qt::NoBrush);
 			}
-			else if ((_lastWhiteMoveFrom.first == i && _lastWhiteMoveFrom.second == j || _lastWhiteMoveTo.first == i && _lastWhiteMoveTo.second == j ||
-				      _lastBlackMoveFrom.first == i && _lastBlackMoveFrom.second == j || _lastBlackMoveTo.first == i && _lastBlackMoveTo.second == j) &&
-					  _highlightLastMoves)
-			{
-				painter.setBrush(_lastMoveColor);
-                if (_gameVariant != KoShogi && _gameVariant != Xiangqi && _gameVariant != Janggi)
-                {
-                    painter.drawRect(rect);
-                }
-                else
-                {
-                    painter.setPen(Qt::NoPen);
-                    painter.drawEllipse(rect);
-                    painter.setPen(_editorMode ? Qt::magenta : Qt::black);
-                }
-                painter.setBrush(Qt::NoBrush);
-			}
 			// En Passant square highlighting
             else if (std::ranges::find(chessVariants, _gameVariant) != std::end(chessVariants) &&
 					 dynamic_cast<ChessBoard*>(_board)->GetEnPassant() != "-" && dynamic_cast<ChessBoard*>(_board)->GetEnPassant()[0] - 97 == i &&
@@ -396,6 +379,56 @@ void VBoard::paintEvent(QPaintEvent *)
 			}
 		}
 	}
+	if (_highlightLastMoves)
+	{
+		DrawLastMoveArrow(painter, w, h);
+	}
+}
+
+// Semitransparent arrow over the pieces, from the origin of the last move to its destination.
+// Only one side's pair is ever set (FinishMove clears the other), so there is at most one arrow.
+// Drops have no origin square and null moves no direction - both are skipped.
+void VBoard::DrawLastMoveArrow(QPainter& painter, int w, int h) const
+{
+	const auto [from, to] = _lastWhiteMoveFrom.first >= 0
+		? std::pair(_lastWhiteMoveFrom, _lastWhiteMoveTo)
+		: std::pair(_lastBlackMoveFrom, _lastBlackMoveTo);
+	if (from.first < 0 || to.first < 0 || from == to) return;
+
+	const QPointF a(from.first * w + w / 2.0, from.second * h + h / 2.0);
+	const QPointF b(to.first * w + w / 2.0, to.second * h + h / 2.0);
+	const double head = std::min(w, h) * 0.4;
+	QLineF shaft(a, b);
+	shaft.setLength(std::max(shaft.length() - head, 0.1)); // stop where the head begins
+	QLineF wing(shaft.p2(), b);
+	wing = wing.normalVector();
+	wing.setLength(head * 0.45);
+	const QPointF off = wing.p2() - shaft.p2();
+
+	QColor colour = _lastMoveColor.color();
+	colour.setAlpha(150);
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.setPen(QPen(colour, std::min(w, h) * 0.14, Qt::SolidLine, Qt::FlatCap));
+	painter.drawLine(shaft);
+	painter.setPen(Qt::NoPen);
+	painter.setBrush(colour);
+	painter.drawPolygon(QPolygonF({ b, shaft.p2() + off, shaft.p2() - off }));
+	painter.setBrush(Qt::NoBrush);
+	painter.setRenderHint(QPainter::Antialiasing, false);
+}
+
+// The last-move squares were only ever recorded for moves made with the mouse; an engine's own
+// move left the highlight (and now the arrow) showing the previous ply, or nothing at all.
+void VBoard::RecordEngineMove(const QByteArray& moveArray, const Move& castling, const std::shared_ptr<Engine>& engine, PieceColour colour)
+{
+	if (moveArray.isEmpty()) return; // thinking output, not a move - leave the previous one showing
+	_lastWhiteMoveFrom = _lastWhiteMoveTo = _lastBlackMoveFrom = _lastBlackMoveTo = { -1, -1 };
+	if (moveArray.contains('*') || moveArray.contains('@')) return; // a drop has no origin square
+	const Move m = castling.x1 >= 0
+		? castling
+		: EngineOutputHandler::ByteArrayToMove(moveArray, engine->GetType(), _board->GetWidth(), _board->GetHeight());
+	(colour == White ? _lastWhiteMoveFrom : _lastBlackMoveFrom) = { m.x1, m.y1 };
+	(colour == White ? _lastWhiteMoveTo : _lastBlackMoveTo) = { m.x2, m.y2 };
 }
 
 bool VBoard::AskForPromotion()
@@ -2289,12 +2322,8 @@ std::vector<std::pair<QString, QBrush*>> VBoard::ColorTable()
 		{ "ThunderclapMoveColor", &_thunderclapMoveColor },
 		{ "HeavenlyTetrarchMoveColor", &_heavenlyTetrarchMoveColor },
 		{ "MusketeerBackRankColor", &_musketeerBackRankColor },
-		{ "ChuShogiRelayMoveColor", &_chuShogiRelayMoveColor },
-		{ "ChuShogiRelayCaptureColor", &_chuShogiRelayCaptureColor },
-		{ "KoShogiMoveColor", &_koShogiLongMoveColor },
-		{ "KoShogiCaptureColor", &_koShogiLongCaptureColor },
-		{ "KoShogiRelayMoveColor", &_koShogiRelayMoveColor },
-		{ "KoShogiRelayCaptureColor", &_koShogiRelayCaptureColor }
+		{ "ShogiRelayMoveColor", &_shogiRelayMoveColor },
+		{ "ShogiRelayCaptureColor", &_shogiRelayCaptureColor }
 	};
 }
 
@@ -2452,6 +2481,7 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 		? EngineOutputHandler::CastlingToMove(moveArray, _board, White)
 		: Move{ .x1 = -1, .y1 = -1, .x2 = -1, .y2 = -1 };
 	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, White);
+	RecordEngineMove(moveArray, castling, _whiteEngine, White);
 	if (!moveArray.isEmpty()) PushHistory();
 	if (_blackEngine != nullptr && _blackEngine->IsActive())
 	{
@@ -2560,6 +2590,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 		? EngineOutputHandler::CastlingToMove(moveArray, _board, Black)
 		: Move{ .x1 = -1, .y1 = -1, .x2 = -1, .y2 = -1 };
 	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, Black);
+	RecordEngineMove(moveArray, castling, _blackEngine, Black);
 	if (!moveArray.isEmpty()) PushHistory();
 	if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 	{
