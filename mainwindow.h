@@ -63,7 +63,7 @@ private slots:
 	void slot_update_black_player_time() const;
 
 protected:
-	void closeEvent(QCloseEvent*) override;
+	void closeEvent(QCloseEvent* event) override;
 
 private:
     void LoadEngine(const std::shared_ptr<Engine>& engine, const QString& engineExe, const QString& engineOptions, PieceColour player);

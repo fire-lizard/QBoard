@@ -861,7 +861,7 @@ void MainWindow::on_actionExit_triggered() const
 	QApplication::quit();
 }
 
-void MainWindow::closeEvent(QCloseEvent*)
+void MainWindow::closeEvent(QCloseEvent* event)
 {
 	if (_comm && _comm->is_connected_remotely())
 	{
@@ -878,6 +878,7 @@ void MainWindow::closeEvent(QCloseEvent*)
 	}
 	StopEngine(_whiteEngine);
 	StopEngine(_blackEngine);
+	QMainWindow::closeEvent(event);
 }
 
 void MainWindow::on_actionEngine_Manager_triggered()

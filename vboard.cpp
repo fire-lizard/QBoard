@@ -70,17 +70,9 @@ void VBoard::paintEvent(QPaintEvent *)
 						const bool lcond8 = !_tcMoves.empty() && 
 							(abs(_tcMoves[_tcMoves.size() - 1].first - i) > 1 || abs(_tcMoves[_tcMoves.size() - 1].second - j) > 1) &&
                             _currentPiece->Type == Thunderclap;
-						if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) != std::nullopt)
+						if (lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8)
 						{
-							painter.setBrush(_shogiRelayCaptureColor);
-                            painter.setPen(Qt::NoPen);
-                            painter.drawEllipse(rect);
-                            painter.setPen(_editorMode ? Qt::magenta : Qt::black);
-                            painter.setBrush(Qt::NoBrush);
-						}
-						else if ((lcond1 || lcond2 || lcond3 || lcond4 || lcond5 || lcond6 || lcond7 || lcond8) && _board->GetData(i, j) == std::nullopt)
-						{
-							painter.setBrush(_shogiRelayMoveColor);
+							painter.setBrush(Qt::NoBrush);
                             painter.setPen(Qt::NoPen);
                             painter.drawEllipse(rect);
                             painter.setPen(_editorMode ? Qt::magenta : Qt::black);
@@ -381,54 +373,92 @@ void VBoard::paintEvent(QPaintEvent *)
 	}
 	if (_highlightLastMoves)
 	{
-		DrawLastMoveArrow(painter, w, h);
+		DrawLastMove(painter, w, h);
 	}
 }
 
-// Semitransparent arrow over the pieces, from the origin of the last move to its destination.
-// Only one side's pair is ever set (FinishMove clears the other), so there is at most one arrow.
-// Drops have no origin square and null moves no direction - both are skipped.
-void VBoard::DrawLastMoveArrow(QPainter& painter, int w, int h) const
+// Semitransparent arrow over the pieces along the path of the last move: one shaft per leg, so a
+// lion's double or triple move shows every square it passed through, and one head on the last leg.
+// A drop has no origin to point from, so its square is ringed instead. Null moves go nowhere.
+void VBoard::DrawLastMove(QPainter& painter, int w, int h) const
 {
-	const auto [from, to] = _lastWhiteMoveFrom.first >= 0
-		? std::pair(_lastWhiteMoveFrom, _lastWhiteMoveTo)
-		: std::pair(_lastBlackMoveFrom, _lastBlackMoveTo);
-	if (from.first < 0 || to.first < 0 || from == to) return;
-
-	const QPointF a(from.first * w + w / 2.0, from.second * h + h / 2.0);
-	const QPointF b(to.first * w + w / 2.0, to.second * h + h / 2.0);
-	const double head = std::min(w, h) * 0.4;
-	QLineF shaft(a, b);
-	shaft.setLength(std::max(shaft.length() - head, 0.1)); // stop where the head begins
-	QLineF wing(shaft.p2(), b);
-	wing = wing.normalVector();
-	wing.setLength(head * 0.45);
-	const QPointF off = wing.p2() - shaft.p2();
-
+	if (_lastMovePath.empty()) return;
+	const auto centre = [w, h](const std::pair<int, int>& s)
+		{ return QPointF(s.first * w + w / 2.0, s.second * h + h / 2.0); };
 	QColor colour = _lastMoveColor.color();
 	colour.setAlpha(150);
+
+	if (_lastMovePath.size() == 1)
+	{
+		painter.setRenderHint(QPainter::Antialiasing);
+		painter.setPen(QPen(colour, std::min(w, h) * 0.1));
+		painter.drawEllipse(centre(_lastMovePath.front()), w * 0.42, h * 0.42);
+		painter.setPen(Qt::NoPen);
+		painter.setRenderHint(QPainter::Antialiasing, false);
+		return;
+	}
+
+	// Legs that went nowhere - a null move, or a lion re-clicked onto the square it stood on - have
+	// no direction to draw, so they are dropped before the head is placed on whatever is left.
+	std::vector<QLineF> legs;
+	for (size_t i = 1; i < _lastMovePath.size(); i++)
+	{
+		const QLineF leg(centre(_lastMovePath[i - 1]), centre(_lastMovePath[i]));
+		if (leg.length() > 1) legs.push_back(leg);
+	}
+	if (legs.empty()) return;
+
+	const double head = std::min(w, h) * 0.4;
+	const QPointF tip = legs.back().p2();
+	legs.back().setLength(std::max(legs.back().length() - head, 0.1)); // stop where the head begins
+	QLineF wing(legs.back().p2(), tip);
+	wing = wing.normalVector();
+	wing.setLength(head * 0.45);
+	const QPointF off = wing.p2() - legs.back().p2();
+
 	painter.setRenderHint(QPainter::Antialiasing);
-	painter.setPen(QPen(colour, std::min(w, h) * 0.14, Qt::SolidLine, Qt::FlatCap));
-	painter.drawLine(shaft);
+	painter.setPen(QPen(colour, std::min(w, h) * 0.14, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+	for (const QLineF& leg : legs)
+	{
+		painter.drawLine(leg);
+	}
 	painter.setPen(Qt::NoPen);
 	painter.setBrush(colour);
-	painter.drawPolygon(QPolygonF({ b, shaft.p2() + off, shaft.p2() - off }));
+	painter.drawPolygon(QPolygonF({ tip, legs.back().p2() + off, legs.back().p2() - off }));
 	painter.setBrush(Qt::NoBrush);
 	painter.setRenderHint(QPainter::Antialiasing, false);
 }
 
 // The last-move squares were only ever recorded for moves made with the mouse; an engine's own
 // move left the highlight (and now the arrow) showing the previous ply, or nothing at all.
+// A multi-leg reply arrives as one array of 4-byte legs (the layout RelayMove reads), so every
+// square it stopped on goes on the path.
 void VBoard::RecordEngineMove(const QByteArray& moveArray, const Move& castling, const std::shared_ptr<Engine>& engine, PieceColour colour)
 {
 	if (moveArray.isEmpty()) return; // thinking output, not a move - leave the previous one showing
-	_lastWhiteMoveFrom = _lastWhiteMoveTo = _lastBlackMoveFrom = _lastBlackMoveTo = { -1, -1 };
-	if (moveArray.contains('*') || moveArray.contains('@')) return; // a drop has no origin square
-	const Move m = castling.x1 >= 0
-		? castling
-		: EngineOutputHandler::ByteArrayToMove(moveArray, engine->GetType(), _board->GetWidth(), _board->GetHeight());
-	(colour == White ? _lastWhiteMoveFrom : _lastBlackMoveFrom) = { m.x1, m.y1 };
-	(colour == White ? _lastWhiteMoveTo : _lastBlackMoveTo) = { m.x2, m.y2 };
+	_lastMovePath.clear();
+	if (moveArray == "@@@@") return; // a null move goes nowhere
+	// A KoShogi shoot is not a from/to move: the shooter stays put and the array holds its victims.
+	if (_gameVariant == KoShogi && moveArray.contains('x')) return;
+	if (castling.x1 >= 0)
+	{
+		_lastMovePath = { { castling.x1, castling.y1 }, { castling.x2, castling.y2 } };
+		return;
+	}
+	const int width = _board->GetWidth();
+	const int height = _board->GetHeight();
+	const Move m = EngineOutputHandler::ByteArrayToMove(moveArray, engine->GetType(), width, height);
+	if (moveArray.contains('*') || moveArray.contains('@'))
+	{
+		_lastMovePath = { { m.x2, m.y2 } }; // a drop has no origin square, only a square it landed on
+		return;
+	}
+	_lastMovePath = { { m.x1, m.y1 }, { m.x2, m.y2 } };
+	for (qsizetype i = 4; i + 3 < moveArray.size(); i += 4) // the further legs of a lion's move
+	{
+		const Move leg = EngineOutputHandler::ByteArrayToMove(moveArray.mid(i, 4), engine->GetType(), width, height);
+		_lastMovePath.emplace_back(leg.x2, leg.y2);
+	}
 }
 
 bool VBoard::AskForPromotion()
@@ -455,14 +485,18 @@ void VBoard::PushHistory()
 	_fenHistory.push_back(bs);
 }
 
-void VBoard::FinishMove(int x, int y)
+void VBoard::FinishMove(int x, int y, bool drop)
 {
+	_lastMovePath.clear();
+	if (!drop && _oldX >= 0)
+	{
+		_lastMovePath.emplace_back(_oldX, _oldY);
+		if (_lionFirstMove.first >= 0) _lastMovePath.push_back(_lionFirstMove);
+		if (_lionSecondMove.first >= 0) _lastMovePath.push_back(_lionSecondMove);
+	}
+	_lastMovePath.emplace_back(x, y);
 	if (_currentPlayer == White)
 	{
-		_lastWhiteMoveFrom = { _oldX, _oldY };
-		_lastWhiteMoveTo = { x, y };
-		_lastBlackMoveFrom = { -1, -1 };
-		_lastBlackMoveTo = { -1, -1 };
 		if (!_board->HasPiece(King, Black) &&
 			(!_board->HasPiece(MiddleTroop, Black) || !_board->HasPiece(Flag, Black)) &&
 			!_board->HasPiece(Prince, Black) && !_board->HasPiece(Emperor, Black) && _gameVariant != Sittuyin)
@@ -472,10 +506,6 @@ void VBoard::FinishMove(int x, int y)
 	}
 	else
 	{
-		_lastWhiteMoveFrom = { -1, -1 };
-		_lastWhiteMoveTo = { -1, -1 };
-		_lastBlackMoveFrom = { _oldX, _oldY };
-		_lastBlackMoveTo = { x, y };
 		if (!_board->HasPiece(King, White) &&
 			(!_board->HasPiece(MiddleTroop, White) || !_board->HasPiece(Flag, White)) &&
 			!_board->HasPiece(Prince, White) && !_board->HasPiece(Emperor, White) && _gameVariant != Sittuyin)
@@ -1870,10 +1900,7 @@ GameVariant VBoard::GetGameVariant() const
 
 void VBoard::SetGameVariant(GameVariant gameVariant)
 {
-	_lastWhiteMoveFrom = { -1, -1 };
-	_lastWhiteMoveTo = { -1, -1 };
-	_lastBlackMoveFrom = { -1, -1 };
-	_lastBlackMoveTo = { -1, -1 };
+	_lastMovePath.clear();
 	if (_whiteEngine != nullptr)
 	{
 		_whiteEngine->SetActive(false);
@@ -2073,10 +2100,7 @@ PieceColour VBoard::GetCurrentPlayer() const
 
 void VBoard::SetCurrentPlayer(PieceColour currentPlayer)
 {
-	_lastWhiteMoveFrom = { -1, -1 };
-	_lastWhiteMoveTo = { -1, -1 };
-	_lastBlackMoveFrom = { -1, -1 };
-	_lastBlackMoveTo = { -1, -1 };
+	_lastMovePath.clear();
 	_moves.clear();
 	_shoots.clear();
 	_currentPlayer = currentPlayer;
@@ -2826,6 +2850,6 @@ void VBoard::contextMenuEvent(QContextMenuEvent* event)
 				}
 			}
 		}
-		FinishMove(x, y);
+		FinishMove(x, y, true);
 	}
 }
