@@ -377,9 +377,34 @@ void VBoard::paintEvent(QPaintEvent *)
 	}
 }
 
+// One shaft per leg with a single head on the last one, all in the one colour.
+static void DrawArrow(QPainter& painter, std::vector<QLineF> legs, const QColor& colour, int w, int h)
+{
+	if (legs.empty()) return;
+	const double head = std::min(w, h) * 0.4;
+	const QPointF tip = legs.back().p2();
+	legs.back().setLength(std::max(legs.back().length() - head, 0.1)); // stop where the head begins
+	QLineF wing(legs.back().p2(), tip);
+	wing = wing.normalVector();
+	wing.setLength(head * 0.45);
+	const QPointF off = wing.p2() - legs.back().p2();
+
+	painter.setPen(QPen(colour, std::min(w, h) * 0.14, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+	for (const QLineF& leg : legs)
+	{
+		painter.drawLine(leg);
+	}
+	painter.setPen(Qt::NoPen);
+	painter.setBrush(colour);
+	painter.drawPolygon(QPolygonF({ tip, legs.back().p2() + off, legs.back().p2() - off }));
+	painter.setBrush(Qt::NoBrush);
+}
+
 // Semitransparent arrow over the pieces along the path of the last move: one shaft per leg, so a
 // lion's double or triple move shows every square it passed through, and one head on the last leg.
 // A drop has no origin to point from, so its square is ringed instead. Null moves go nowhere.
+// A Ko Shogi shot is not a step of that path: it gets its own arrow, in the shooting colour, from
+// wherever the shooter came to rest to each victim - a Frankish cannon firing twice draws two.
 void VBoard::DrawLastMove(QPainter& painter, int w, int h) const
 {
 	if (_lastMovePath.empty()) return;
@@ -387,13 +412,24 @@ void VBoard::DrawLastMove(QPainter& painter, int w, int h) const
 		{ return QPointF(s.first * w + w / 2.0, s.second * h + h / 2.0); };
 	QColor colour = _lastMoveColor.color();
 	colour.setAlpha(150);
+	QColor shootColour = _shootingColor.color();
+	shootColour.setAlpha(150);
+	painter.setRenderHint(QPainter::Antialiasing);
+
+	for (const std::pair<int, int>& victim : _lastShoots)
+	{
+		const QLineF ray(centre(_lastMovePath.back()), centre(victim));
+		if (ray.length() > 1) DrawArrow(painter, { ray }, shootColour, w, h);
+	}
 
 	if (_lastMovePath.size() == 1)
 	{
-		painter.setRenderHint(QPainter::Antialiasing);
-		painter.setPen(QPen(colour, std::min(w, h) * 0.1));
-		painter.drawEllipse(centre(_lastMovePath.front()), w * 0.42, h * 0.42);
-		painter.setPen(Qt::NoPen);
+		if (_lastShoots.empty()) // a shooter that never left its square already has its rays
+		{
+			painter.setPen(QPen(colour, std::min(w, h) * 0.1));
+			painter.drawEllipse(centre(_lastMovePath.front()), w * 0.42, h * 0.42);
+			painter.setPen(Qt::NoPen);
+		}
 		painter.setRenderHint(QPainter::Antialiasing, false);
 		return;
 	}
@@ -406,26 +442,7 @@ void VBoard::DrawLastMove(QPainter& painter, int w, int h) const
 		const QLineF leg(centre(_lastMovePath[i - 1]), centre(_lastMovePath[i]));
 		if (leg.length() > 1) legs.push_back(leg);
 	}
-	if (legs.empty()) return;
-
-	const double head = std::min(w, h) * 0.4;
-	const QPointF tip = legs.back().p2();
-	legs.back().setLength(std::max(legs.back().length() - head, 0.1)); // stop where the head begins
-	QLineF wing(legs.back().p2(), tip);
-	wing = wing.normalVector();
-	wing.setLength(head * 0.45);
-	const QPointF off = wing.p2() - legs.back().p2();
-
-	painter.setRenderHint(QPainter::Antialiasing);
-	painter.setPen(QPen(colour, std::min(w, h) * 0.14, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-	for (const QLineF& leg : legs)
-	{
-		painter.drawLine(leg);
-	}
-	painter.setPen(Qt::NoPen);
-	painter.setBrush(colour);
-	painter.drawPolygon(QPolygonF({ tip, legs.back().p2() + off, legs.back().p2() - off }));
-	painter.setBrush(Qt::NoBrush);
+	DrawArrow(painter, legs, colour, w, h);
 	painter.setRenderHint(QPainter::Antialiasing, false);
 }
 
@@ -437,9 +454,19 @@ void VBoard::RecordEngineMove(const QByteArray& moveArray, const Move& castling,
 {
 	if (moveArray.isEmpty()) return; // thinking output, not a move - leave the previous one showing
 	_lastMovePath.clear();
+	_lastShoots.clear();
 	if (moveArray == "@@@@") return; // a null move goes nowhere
-	// A KoShogi shoot is not a from/to move: the shooter stays put and the array holds its victims.
-	if (_gameVariant == KoShogi && moveArray.contains('x')) return;
+	// A KoShogi shoot is not a from/to move: the shooter stays put on the leading square and each
+	// following "xFR" token names a victim it removed (the layout ApplyMove reads).
+	if (_gameVariant == KoShogi && moveArray.contains('x'))
+	{
+		_lastMovePath = { { moveArray[0] - 'a', _board->GetHeight() - moveArray[1] } };
+		for (qsizetype i = 2; i + 2 < moveArray.size() && moveArray[i] == 'x'; i += 3)
+		{
+			_lastShoots.emplace_back(moveArray[i + 1] - 'a', _board->GetHeight() - moveArray[i + 2]);
+		}
+		return;
+	}
 	if (castling.x1 >= 0)
 	{
 		_lastMovePath = { { castling.x1, castling.y1 }, { castling.x2, castling.y2 } };
@@ -485,16 +512,28 @@ void VBoard::PushHistory()
 	_fenHistory.push_back(bs);
 }
 
+// Shoot a victim and remember it, so the last-move arrow can tell the shot from the move.
+void VBoard::Shoot(int x, int y)
+{
+	dynamic_cast<KoShogiBoard*>(_board)->Shoot(x, y);
+	_pendingShoots.emplace_back(x, y);
+}
+
 void VBoard::FinishMove(int x, int y, bool drop)
 {
 	_lastMovePath.clear();
+	_lastShoots = std::exchange(_pendingShoots, {});
 	if (!drop && _oldX >= 0)
 	{
 		_lastMovePath.emplace_back(_oldX, _oldY);
 		if (_lionFirstMove.first >= 0) _lastMovePath.push_back(_lionFirstMove);
 		if (_lionSecondMove.first >= 0) _lastMovePath.push_back(_lionSecondMove);
 	}
-	_lastMovePath.emplace_back(x, y);
+	// A shoot branch finishes on the victim's square, which is not a square the shooter went to.
+	if (std::ranges::find(_lastShoots, std::pair(x, y)) == std::end(_lastShoots))
+	{
+		_lastMovePath.emplace_back(x, y);
+	}
 	if (_currentPlayer == White)
 	{
 		if (!_board->HasPiece(King, Black) &&
@@ -1187,7 +1226,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				{
 					KoShogiBoard* ksBoard = dynamic_cast<KoShogiBoard*>(_board);
 					ksBoard->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, _lionSecondMove.first, _lionSecondMove.second);
-					ksBoard->Shoot(x, y);
+					Shoot(x, y);
 					FinishMove(x, y);
 				}
 				else
@@ -1217,7 +1256,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 					ksBoard->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, _lionSecondMove.first, _lionSecondMove.second);
 					if (_pieceShotOnce)
 					{
-						ksBoard->Shoot(_firstShoot.first, _firstShoot.second);
+						Shoot(_firstShoot.first, _firstShoot.second);
 					}
 					FinishMove(x, y);
 				}
@@ -1227,8 +1266,8 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 			{
 				KoShogiBoard *ksBoard = dynamic_cast<KoShogiBoard*>(_board);
 				ksBoard->DoubleMove(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, _lionSecondMove.first, _lionSecondMove.second);
-				ksBoard->Shoot(_firstShoot.first, _firstShoot.second);
-				ksBoard->Shoot(x, y);
+				Shoot(_firstShoot.first, _firstShoot.second);
+				Shoot(x, y);
 				FinishMove(x, y);
 			}
 			else if (x == _lionFirstMove.first && y == _lionFirstMove.second)
@@ -1289,7 +1328,7 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				else
 				{
 					ksBoard->Move(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, false);
-					ksBoard->Shoot(x, y);
+					Shoot(x, y);
 					FinishMove(x, y);
 				}
 			}
@@ -1298,9 +1337,9 @@ void VBoard::mousePressEvent(QMouseEvent* event)
 				ksBoard->Move(_oldX, _oldY, _lionFirstMove.first, _lionFirstMove.second, false);
                 if (_currentPiece->BaseType == FrankishCannon && _pieceShotOnce)
 				{
-					ksBoard->Shoot(_firstShoot.first, _firstShoot.second);
+					Shoot(_firstShoot.first, _firstShoot.second);
 				}
-				ksBoard->Shoot(x, y);
+				Shoot(x, y);
 				FinishMove(x, y);
 			}
 		}

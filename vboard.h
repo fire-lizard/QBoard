@@ -103,6 +103,7 @@ private:
 	bool PossibleMove(int x, int y) const;
 	bool PossibleShoot(int x, int y) const;
 	bool AskForPromotion();
+	void Shoot(int x, int y);
 	void FinishMove(int x, int y, bool drop = false);
 	void FinishRelayedMove(const std::optional<Piece>& captured, const std::shared_ptr<Engine>& engine, int x, int y);
 	void CancelLionMove();
@@ -147,6 +148,8 @@ private:
 	std::pair<int, int> _lionSecondMove = { -1, -1 };
 	std::vector<std::pair<int, int>> _tcMoves;
 	std::vector<std::pair<int, int>> _lastMovePath;
+	std::vector<std::pair<int, int>> _pendingShoots;
+	std::vector<std::pair<int, int>> _lastShoots;
 	bool _highlightMoves = true;
 	bool _highlightShoots = true;
 	bool _highlightAttackers = false;
