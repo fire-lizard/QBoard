@@ -86,6 +86,7 @@ public:
 	QMap<QString, QBrush> GetColors();
 	void SetColors(const QMap<QString, QBrush>& colors);
 	QStringList ColorOrder();
+	void Relayout();
 
 protected:
 	void contextMenuEvent(QContextMenuEvent* event) override;
@@ -128,10 +129,10 @@ private:
 	std::vector<std::pair<int, int>> _attackers;
 	std::vector<std::pair<int, int>> _defenders;
 	std::vector<BoardSnapshot> _fenHistory;
-	QStatusBar *_statusBar;
-	QTextEdit *_textEdit;
-	QTextEdit *_textEdit2;
-    QGroupBox *_groupBox;
+	QStatusBar *_statusBar = nullptr;
+	QTextEdit *_textEdit = nullptr;
+	QTextEdit *_textEdit2 = nullptr;
+    QGroupBox *_groupBox = nullptr;
 	QMainWindow *_window = nullptr;
 	GameVariant _gameVariant = Chess;
 	std::shared_ptr<Engine> _whiteEngine = nullptr;

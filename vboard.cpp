@@ -2102,14 +2102,38 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 	}
 	_fenHistory.clear();
 	PushHistory();
-    this->setFixedSize(_board->GetWidth() * s + 1, _board->GetHeight() * s + 1);
 	if (this->_window != nullptr)
 	{
-        this->_window->setFixedSize(width() + 280, height() + 100);
-        this->_groupBox->setGeometry(x() + width() + 10, y() + 2, 250, 0.2 * height());
-        this->_textEdit->setGeometry(x() + width() + 10, y() + 2 + 0.2 * height(), 250, 0.4 * height());
-        this->_textEdit2->setGeometry(x() + width() + 10, y() + 2 + 0.6 * height(), 250, 0.4 * height());
+		if (!this->_window->isMaximized() && !this->_window->isFullScreen())
+		{
+			this->_window->resize(_board->GetWidth() * s + 281, _board->GetHeight() * s + 101);
+		}
+		Relayout();
 	}
+}
+
+void VBoard::Relayout()
+{
+	QWidget* area = parentWidget();
+	if (area == nullptr || _groupBox == nullptr || _textEdit == nullptr || _textEdit2 == nullptr)
+	{
+		return;
+	}
+	constexpr int margin = 10;
+	constexpr int panelWidth = 250;
+	constexpr int clockHeight = 90;
+	const int availWidth = area->width() - panelWidth - 3 * margin;
+	const int availHeight = area->height() - 2 * margin;
+	const int cell = std::max(8, std::min(availWidth / _board->GetWidth(), availHeight / _board->GetHeight()));
+	const int boardWidth = _board->GetWidth() * cell + 1;
+	const int boardHeight = _board->GetHeight() * cell + 1;
+	setGeometry(margin + std::max(0, (availWidth - boardWidth) / 2), margin + std::max(0, (availHeight - boardHeight) / 2),
+		boardWidth, boardHeight);
+	const int panelX = area->width() - panelWidth - margin;
+	const int textHeight = std::max(40, (availHeight - clockHeight - 2 * margin) / 2);
+	_groupBox->setGeometry(panelX, margin, panelWidth, clockHeight);
+	_textEdit->setGeometry(panelX, margin + clockHeight + margin, panelWidth, textHeight);
+	_textEdit2->setGeometry(panelX, margin + clockHeight + 2 * margin + textHeight, panelWidth, textHeight);
 }
 
 PieceStyle VBoard::GetPieceStyle() const
@@ -2253,9 +2277,10 @@ void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 		}
 		const int rowCount = _gameVariant == DaiDaiShogi || _gameVariant == MakaDaiDaiShogi || _gameVariant == TaiShogi ?
 			11 : ZBoard::GetRowCount(_gameVariant) * 2 + 1;
-		_editor->GetBoard()->setFixedSize(_board->GetWidth() * s + 1, rowCount * s + 1);
-		_editor->setFixedSize(_editor->GetBoard()->width() + 20, _editor->GetBoard()->height() + 20);
 		_editor->GetBoard()->Setup(_board->GetWidth(), rowCount, _gameVariant, _pieceStyle);
+		const QSize dims = _editor->GetBoard()->Dimensions();
+		_editor->resize(dims.width() * s + 21, dims.height() * s + 21);
+		_editor->Relayout();
 	}
     else if (!newGameStarted)
 	{

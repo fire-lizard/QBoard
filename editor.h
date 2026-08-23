@@ -14,6 +14,10 @@ public:
     explicit Editor(QWidget *parent = nullptr);
     ~Editor() override;
     ZBoard* GetBoard() const;
+    void Relayout();
+
+protected:
+    void resizeEvent(QResizeEvent*) override;
 
 private:
     Ui::Editor *ui;

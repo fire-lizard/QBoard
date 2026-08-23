@@ -17,6 +17,7 @@ public:
     void Setup(int width, int height, GameVariant gameVariant, PieceStyle pieceStyle);
     std::optional<Piece> GetChosenPiece() const;
     static int GetRowCount(GameVariant gameVariant);
+    QSize Dimensions() const { return {_width, _height}; }
 
 protected:
     void paintEvent(QPaintEvent *) override;

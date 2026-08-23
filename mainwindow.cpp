@@ -76,6 +76,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     }
 }
 
+void MainWindow::resizeEvent(QResizeEvent* event)
+{
+	QMainWindow::resizeEvent(event);
+	this->ui->vboard->Relayout();
+}
+
 MainWindow::~MainWindow()
 {
 	delete _nm;
