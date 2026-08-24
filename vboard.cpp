@@ -378,7 +378,7 @@ void VBoard::paintEvent(QPaintEvent *)
 }
 
 // One shaft per leg with a single head on the last one, all in the one colour.
-static void DrawArrow(QPainter& painter, std::vector<QLineF> legs, const QColor& colour, int w, int h)
+void VBoard::DrawArrow(QPainter& painter, std::vector<QLineF> legs, const QColor& colour, int w, int h)
 {
 	if (legs.empty()) return;
 	const double head = std::min(w, h) * 0.4;

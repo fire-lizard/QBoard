@@ -113,6 +113,7 @@ private:
 	void RecordEngineMove(const QByteArray& moveArray, const Move& castling, const std::shared_ptr<Engine>& engine, PieceColour colour);
 	void PushHistory();
 	std::vector<std::pair<QString, QBrush*>> ColorTable();
+	static void DrawArrow(QPainter& painter, std::vector<QLineF> legs, const QColor& colour, int w, int h);
 
 	Board *_board;
 	Board *_editorBoard = nullptr;
