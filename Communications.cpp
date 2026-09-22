@@ -131,6 +131,7 @@ void Communications::disconnect_remotely() const
     if (m_vboard)
     {
         m_vboard->GetBoard()->Initialize();
+        m_vboard->ResetHistory(White);
     }
 }
 
@@ -334,6 +335,7 @@ void Communications::slot_client_disconnected()
     if (m_vboard)
     {
         m_vboard->GetBoard()->Initialize();
+        m_vboard->ResetHistory(White);
     }
 
     emit disconnected_from_client();
@@ -407,6 +409,8 @@ void Communications::slot_update_board() const
 
     m_rx_buffer.append(m_client_connection->readAll());
 
+    m_vboard->PreviewPosition(nullptr); // the opponent's move is played on the game, not on a position on show
+
     bool applied = false;
     qsizetype nl;
     while ((nl = m_rx_buffer.indexOf('\n')) != -1)
@@ -428,6 +432,7 @@ void Communications::slot_update_board() const
     m_vboard->repaint();
     m_vboard->SetCurrentPlayer(m_vboard->GetCurrentPlayer() == White ? Black : White);
     m_vboard->SetWaitForOtherPlayer(false);
+    m_vboard->PushHistory(m_vboard->GetCurrentPlayer());
 }
 
 void Communications::stop_listening()

@@ -1,5 +1,6 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "analysisdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -223,7 +224,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
 	QString aboutStr;
-    aboutStr.append("<center>QBoard 1.2.0.2<br/>");
+    aboutStr.append("<center>QBoard 1.2.0.3<br/>");
 	aboutStr.append("Fire Lizard Software<br/>");
 	aboutStr.append("Programming by Anatoliy Sova<br/>");
 	aboutStr.append("Makruk graphics by Vuthy Tan<br/>");
@@ -302,48 +303,7 @@ void MainWindow::on_actionNew_game_triggered()
 	{
 		newGameDialog->GetWhitePlayerLabel()->setText("<html><head/><body><p><span style='background:#ffffff; '>White player</span></p></body></html>");
 	}
-	_engines.clear();
-	QFile file(_settingsDir + "/" + _enginesListFileName);
-
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		qDebug() << "Failed to open the file for reading.";
-	}
-    else
-    {
-        QXmlStreamReader xml(&file);
-
-        while (!xml.atEnd() && !xml.hasError()) {
-            const QXmlStreamReader::TokenType token = xml.readNext();
-
-            if (token == QXmlStreamReader::StartElement) {
-
-                // Read attributes
-                QString engineName;
-				QString gameVariant;
-                EngineProtocol engineProtocol;
-                QString enginePath;
-                QString engineOptions;
-                foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
-                    if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
-                    if (attr.name().toString() == "GameVariant") gameVariant = attr.value().toString();
-                    if (attr.name().toString() == "EngineProtocol") engineProtocol = EngineManager::StringToEngineProtocol(attr.value().toString());
-                    if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
-                    if (attr.name().toString() == "EngineOptions") engineOptions = attr.value().toString();
-                }
-				QStringList variants = gameVariant.split(',');
-            	if (engineName != "" && enginePath != "" && variants.contains(EngineManager::GameVariantToString(this->ui->vboard->GetGameVariant())))
-                {
-                	_engines.emplace_back(engineName, this->ui->vboard->GetGameVariant(), engineProtocol, enginePath, engineOptions);
-                }
-            }
-        }
-
-        if (xml.hasError()) {
-            qDebug() << "Error reading XML:" << xml.errorString();
-        }
-
-        file.close();
-    }
+	LoadEngines();
 	for (auto& engine : _engines)
 	{
 		newGameDialog->GetWhitePlayer()->addItem(std::get<0>(engine));
@@ -382,24 +342,7 @@ void MainWindow::on_actionNew_game_triggered()
 
 		if (_blackEngineExe != "")
 		{
-			switch (_blackEngineProtocol)
-			{
-			case UCI:
-				_blackEngine = std::make_shared<UciEngine>();
-				break;
-			case UCCI:
-				_blackEngine = std::make_shared<UcciEngine>();
-				break;
-			case Qianhong:
-				_blackEngine = std::make_shared<QianhongEngine>();
-				break;
-			case USI:
-				_blackEngine = std::make_shared<UsiEngine>();
-				break;
-			case XBoard:
-				_blackEngine = std::make_shared<WbEngine>();
-				break;
-			}
+			_blackEngine = CreateEngine(_blackEngineProtocol);
 			_blackEngine->UseEngineDepth(_useBlackEngineDepth);
 			_blackEngine->SetEngineDepth(_blackEngineDepth);
 			_blackEngine->UseEngineTime(_useBlackEngineTime);
@@ -413,24 +356,7 @@ void MainWindow::on_actionNew_game_triggered()
 
 		if (_whiteEngineExe != "")
 		{
-			switch (_whiteEngineProtocol)
-			{
-			case UCI:
-				_whiteEngine = std::make_shared<UciEngine>();
-				break;
-			case UCCI:
-				_whiteEngine = std::make_shared<UcciEngine>();
-				break;
-			case Qianhong:
-				_whiteEngine = std::make_shared<QianhongEngine>();
-				break;
-			case USI:
-				_whiteEngine = std::make_shared<UsiEngine>();
-				break;
-			case XBoard:
-				_whiteEngine = std::make_shared<WbEngine>();
-				break;
-			}
+			_whiteEngine = CreateEngine(_whiteEngineProtocol);
             _whiteEngine->UseEngineDepth(_useWhiteEngineDepth);
 			_whiteEngine->SetEngineDepth(_whiteEngineDepth);
 			_whiteEngine->UseEngineTime(_useWhiteEngineTime);
@@ -450,6 +376,7 @@ void MainWindow::on_actionNew_game_triggered()
         this->ui->vboard->SetWhiteEngine(_whiteEngine);
         this->ui->vboard->GetBoard()->Initialize();
 		this->ui->vboard->SetCurrentPlayer(White);
+		this->ui->vboard->ResetHistory(White);
 		this->ui->vboard->repaint();
 
         if (_whiteTimer != nullptr)
@@ -498,6 +425,7 @@ void MainWindow::on_actionOpen_triggered()
 		}
         if (parts.contains("w")) this->ui->vboard->SetCurrentPlayer(White);
         else if (parts.contains("b")) this->ui->vboard->SetCurrentPlayer(Black);
+        this->ui->vboard->ResetHistory(this->ui->vboard->GetCurrentPlayer());
 		if (_blackEngine != nullptr && _blackEngine->IsActive())
 		{
 			if (_blackEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_blackEngine)->GetOption("setboard"))
@@ -917,6 +845,84 @@ void MainWindow::on_actionNetwork_Manager_triggered()
 	{
 		ui->vboard->SetCommunications(_comm);
 	}
+}
+
+void MainWindow::on_actionGame_Analysis_triggered()
+{
+	if (_analysisDialog == nullptr)
+	{
+		_analysisDialog = new AnalysisDialog(ui->vboard, this);
+	}
+	LoadEngines();
+	_analysisDialog->SetEngines(_engines);
+	_analysisDialog->show();
+	_analysisDialog->raise();
+	_analysisDialog->activateWindow();
+}
+
+std::shared_ptr<Engine> MainWindow::CreateEngine(EngineProtocol engineProtocol)
+{
+	switch (engineProtocol)
+	{
+	case UCI:
+		return std::make_shared<UciEngine>();
+	case UCCI:
+		return std::make_shared<UcciEngine>();
+	case Qianhong:
+		return std::make_shared<QianhongEngine>();
+	case USI:
+		return std::make_shared<UsiEngine>();
+	case XBoard:
+	default:
+		return std::make_shared<WbEngine>();
+	}
+}
+
+// The engines from the Engine Manager that play the current variant
+void MainWindow::LoadEngines()
+{
+	_engines.clear();
+	QFile file(_settingsDir + "/" + _enginesListFileName);
+
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		qDebug() << "Failed to open the file for reading.";
+	}
+    else
+    {
+        QXmlStreamReader xml(&file);
+
+        while (!xml.atEnd() && !xml.hasError()) {
+            const QXmlStreamReader::TokenType token = xml.readNext();
+
+            if (token == QXmlStreamReader::StartElement) {
+
+                // Read attributes
+                QString engineName;
+				QString gameVariant;
+                EngineProtocol engineProtocol;
+                QString enginePath;
+                QString engineOptions;
+                foreach(const QXmlStreamAttribute & attr, xml.attributes()) {
+                    if (attr.name().toString() == "EngineName") engineName = attr.value().toString();
+                    if (attr.name().toString() == "GameVariant") gameVariant = attr.value().toString();
+                    if (attr.name().toString() == "EngineProtocol") engineProtocol = EngineManager::StringToEngineProtocol(attr.value().toString());
+                    if (attr.name().toString() == "EnginePath") enginePath = attr.value().toString();
+                    if (attr.name().toString() == "EngineOptions") engineOptions = attr.value().toString();
+                }
+				QStringList variants = gameVariant.split(',');
+            	if (engineName != "" && enginePath != "" && variants.contains(EngineManager::GameVariantToString(this->ui->vboard->GetGameVariant())))
+                {
+                	_engines.emplace_back(engineName, this->ui->vboard->GetGameVariant(), engineProtocol, enginePath, engineOptions);
+                }
+            }
+        }
+
+        if (xml.hasError()) {
+            qDebug() << "Error reading XML:" << xml.errorString();
+        }
+
+        file.close();
+    }
 }
 
 void MainWindow::StartNewGame(GameVariant newGameVariant) const

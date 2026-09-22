@@ -496,7 +496,9 @@ bool VBoard::AskForPromotion()
 
 // Record the position an illegal move may have to be rolled back to. The hand is snapshotted
 // alongside the FEN because the FEN does not carry it (see EngineOutputHandler::RollbackIllegalMove).
-void VBoard::PushHistory()
+// The game analysis walks the same list, so each entry also keeps the position as an engine is
+// handed it and the move that led to it.
+void VBoard::PushHistory(PieceColour sideToMove)
 {
 	const PieceStorage* ps = dynamic_cast<const PieceStorage*>(_board);
 	BoardSnapshot bs;
@@ -509,7 +511,90 @@ void VBoard::PushHistory()
 	{
 		bs.pieces = std::vector<std::pair<PieceColour, PieceType>>();
 	}
+	bs.engineFen = EngineOutputHandler::GetFenFromBoard(_board, _gameVariant, sideToMove).toStdString();
+	bs.move = LastMoveText();
+	bs.path = _lastMovePath;
+	bs.shoots = _lastShoots;
+	bs.sideToMove = sideToMove;
 	_fenHistory.push_back(bs);
+}
+
+// A new starting position (new game, loaded FEN, edited board): the moves before it are no longer
+// this game's, neither for the repetition count nor for the analysis.
+void VBoard::ResetHistory(PieceColour sideToMove)
+{
+	_fenHistory.clear();
+	_lastMovePath.clear();
+	_lastShoots.clear();
+	_previewing = false; // whatever was on show belonged to the game that has just been left behind
+	PushHistory(sideToMove);
+}
+
+const std::vector<BoardSnapshot>& VBoard::GetHistory() const
+{
+	return _fenHistory;
+}
+
+// Put an earlier position on the board without losing the game: nullptr puts the game back. The
+// board is only looked at while a position is on show — mousePressEvent turns the player away, and a
+// move arriving from an engine or over the network puts the game back first.
+void VBoard::PreviewPosition(const BoardSnapshot* snapshot)
+{
+	if (snapshot == nullptr && !_previewing) return;
+	if (!_previewing) // stepping away from the game: remember where it stands
+	{
+		_live.fen = _board->GetFEN();
+		const PieceStorage* ps = dynamic_cast<const PieceStorage*>(_board);
+		_live.pieces = ps != nullptr ? ps->CapturedPieces() : std::vector<std::pair<PieceColour, PieceType>>();
+		_live.path = _lastMovePath;
+		_live.shoots = _lastShoots;
+	}
+	_previewing = snapshot != nullptr;
+	const BoardSnapshot& shown = _previewing ? *snapshot : _live;
+	EngineOutputHandler::TrySetFenToBoard(_board, QByteArray::fromStdString(shown.fen), _gameVariant);
+	if (PieceStorage* ps = dynamic_cast<PieceStorage*>(_board)) ps->SetCapturedPieces(shown.pieces);
+	_lastMovePath = shown.path; // the move that led here keeps its arrow
+	_lastShoots = shown.shoots;
+	_currentPiece = std::nullopt; // no half-made move carried into, or out of, the position on show
+	_moves.clear();
+	_shoots.clear();
+	_attackers.clear();
+	_defenders.clear();
+	_tcMoves.clear();
+	if (_statusBar != nullptr)
+	{
+		_statusBar->showMessage(_previewing ? tr("Reviewing an earlier position — the game is untouched")
+			: _currentPlayer == White ? "White move" : "Black move");
+	}
+	repaint();
+}
+
+// The last move as plain coordinates, "e2-e4", "P*e5" for a drop and "e6xh6" for a shot, the squares
+// named the way the variant's engines name them: shogi counts files from the right and ranks from the
+// top ("7g-7f"), xiangqi counts ranks from 0. Empty when nothing is known of the move (a network
+// opponent's).
+std::string VBoard::LastMoveText() const
+{
+	const bool shogi = std::ranges::find(shogiVariants, _gameVariant) != std::end(shogiVariants);
+	const auto square = [this, shogi](const std::pair<int, int>& s)
+	{
+		if (shogi) return std::to_string(_board->GetWidth() - s.first) + static_cast<char>('a' + s.second);
+		return static_cast<char>('a' + s.first) + std::to_string(_board->GetHeight() - s.second - (_gameVariant == Xiangqi ? 1 : 0));
+	};
+	std::string text;
+	if (_lastMovePath.size() == 1 && _lastShoots.empty())
+	{
+		text = _board->GetStringCode(_lastMovePath[0].first, _lastMovePath[0].second) + "*";
+	}
+	for (size_t i = 0; i < _lastMovePath.size(); i++)
+	{
+		text += (i > 0 ? "-" : "") + square(_lastMovePath[i]);
+	}
+	for (const auto& shot : _lastShoots)
+	{
+		text += "x" + square(shot);
+	}
+	return text;
 }
 
 // Shoot a victim and remember it, so the last-move arrow can tell the shot from the move.
@@ -552,7 +637,7 @@ void VBoard::FinishMove(int x, int y, bool drop)
 			QMessageBox::information(this, "Game over", "Black wins by eliminating White King");
 		}
 	}
-	PushHistory();
+	PushHistory(_currentPlayer == White ? Black : White);
 	if (_comm && _comm->is_connected_remotely())
 	{
 		_comm->send_move(EngineOutputHandler::GetFenFromBoard(_board, _gameVariant, _currentPlayer == White ? Black : White).toStdString());
@@ -588,6 +673,7 @@ void VBoard::CancelLionMove()
 
 void VBoard::mousePressEvent(QMouseEvent* event)
 {
+	if (_previewing) return; // an earlier position is on show; it is not a position to play from
 	if (!_editorMode && _gameVariant == Sittuyin && !dynamic_cast<SittuyinBoard*>(_board)->GetCapturedPieces(_currentPlayer).empty()) return;
 	if (event->button() != Qt::MouseButton::LeftButton) return;
 	const int w = this->size().width() / _board->GetWidth();
@@ -2100,8 +2186,7 @@ void VBoard::SetGameVariant(GameVariant gameVariant)
 		_board = new SittuyinBoard();
 		break;
 	}
-	_fenHistory.clear();
-	PushHistory();
+	ResetHistory(White);
 	if (this->_window != nullptr)
 	{
 		if (!this->_window->isMaximized() && !this->_window->isFullScreen())
@@ -2293,6 +2378,7 @@ void VBoard::SetEditorMode(bool editorMode, bool newGameStarted)
 			{
 				delete _editorBoard;
 				_editorBoard = nullptr;
+				ResetHistory(_currentPlayer);
 				if (_blackEngine != nullptr && _blackEngine->IsActive())
 				{
                     if (_blackEngine->GetType() == XBoard && !std::dynamic_pointer_cast<WbEngine>(_blackEngine)->GetOption("setboard"))
@@ -2498,6 +2584,7 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 	_whiteEngineBuffer.remove(0, nl + 1);
 	if (buf.contains("Illegal move"))
 	{
+		PreviewPosition(nullptr); // the rollback belongs to the game, not to the position on show
         EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _fenHistory);
 		// An engine only echoes the move back, which says nothing about why it refused. Report the
 		// position the move was made from as well, so the two boards can be compared afterwards.
@@ -2563,6 +2650,7 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 		return;
 	}
 	const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _whiteEngine->GetType(), _gameVariant);
+	if (!moveArray.isEmpty()) PreviewPosition(nullptr); // the move is played on the game, not on the position on show
 	// Read the king off the board before ReadStandardOutput moves it: an "O-O" reply names no
 	// squares, and the opponent has to be told the king's own from-to.
 	const Move castling = moveArray.contains("O-O")
@@ -2570,7 +2658,7 @@ void VBoard::whiteEngineReadyReadStandardOutput()
 		: Move{ .x1 = -1, .y1 = -1, .x2 = -1, .y2 = -1 };
 	EngineOutputHandler::ReadStandardOutput(buf, _whiteEngine, _board, _textEdit2, _gameVariant, _engineOutput, White);
 	RecordEngineMove(moveArray, castling, _whiteEngine, White);
-	if (!moveArray.isEmpty()) PushHistory();
+	if (!moveArray.isEmpty()) PushHistory(Black);
 	if (_blackEngine != nullptr && _blackEngine->IsActive())
 	{
 		if (!EngineOutputHandler::RelayMove(_blackEngine, moveArray, castling, _board, _gameVariant)) return;
@@ -2607,6 +2695,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 	_blackEngineBuffer.remove(0, nl + 1);
 	if (buf.contains("Illegal move"))
 	{
+		PreviewPosition(nullptr); // the rollback belongs to the game, not to the position on show
 		EngineOutputHandler::RollbackIllegalMove(_gameVariant, _board, _fenHistory);
 		// An engine only echoes the move back, which says nothing about why it refused. Report the
 		// position the move was made from as well, so the two boards can be compared afterwards.
@@ -2672,6 +2761,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 		return;
 	}
 	const QByteArray moveArray = EngineOutputHandler::ExtractMove(buf, _blackEngine->GetType(), _gameVariant);
+	if (!moveArray.isEmpty()) PreviewPosition(nullptr); // the move is played on the game, not on the position on show
 	// See the White handler: the second engine needs coordinates, and they have to be read before
 	// ReadStandardOutput moves the king off them.
 	const Move castling = moveArray.contains("O-O")
@@ -2679,7 +2769,7 @@ void VBoard::blackEngineReadyReadStandardOutput()
 		: Move{ .x1 = -1, .y1 = -1, .x2 = -1, .y2 = -1 };
 	EngineOutputHandler::ReadStandardOutput(buf, _blackEngine, _board, _textEdit, _gameVariant, _engineOutput, Black);
 	RecordEngineMove(moveArray, castling, _blackEngine, Black);
-	if (!moveArray.isEmpty()) PushHistory();
+	if (!moveArray.isEmpty()) PushHistory(White);
 	if (_whiteEngine != nullptr && _whiteEngine->IsActive())
 	{
 		if (!EngineOutputHandler::RelayMove(_whiteEngine, moveArray, castling, _board, _gameVariant)) return;

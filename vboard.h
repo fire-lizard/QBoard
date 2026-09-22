@@ -87,6 +87,10 @@ public:
 	void SetColors(const QMap<QString, QBrush>& colors);
 	QStringList ColorOrder();
 	void Relayout();
+	const std::vector<BoardSnapshot>& GetHistory() const;
+	void ResetHistory(PieceColour sideToMove);
+	void PushHistory(PieceColour sideToMove);
+	void PreviewPosition(const BoardSnapshot* snapshot);
 
 protected:
 	void contextMenuEvent(QContextMenuEvent* event) override;
@@ -111,7 +115,7 @@ private:
 	void ReportInfo(const QString& buf, const QString& infoStr, QTextEdit* textEdit, LogLevel logLevel);
 	void DrawLastMove(QPainter& painter, int w, int h) const;
 	void RecordEngineMove(const QByteArray& moveArray, const Move& castling, const std::shared_ptr<Engine>& engine, PieceColour colour);
-	void PushHistory();
+	std::string LastMoveText() const;
 	std::vector<std::pair<QString, QBrush*>> ColorTable();
 	static void DrawArrow(QPainter& painter, std::vector<QLineF> legs, const QColor& colour, int w, int h);
 
@@ -130,6 +134,9 @@ private:
 	std::vector<std::pair<int, int>> _attackers;
 	std::vector<std::pair<int, int>> _defenders;
 	std::vector<BoardSnapshot> _fenHistory;
+	// The game itself, while an earlier position is being shown instead (see PreviewPosition)
+	bool _previewing = false;
+	BoardSnapshot _live;
 	QStatusBar *_statusBar = nullptr;
 	QTextEdit *_textEdit = nullptr;
 	QTextEdit *_textEdit2 = nullptr;

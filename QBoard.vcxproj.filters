@@ -182,6 +182,9 @@
     <ClCompile Include="addenginedialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="analysisdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="enginemanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -400,6 +403,9 @@
     <QtMoc Include="addenginedialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="analysisdialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <QtMoc Include="editor.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -475,6 +481,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="addenginedialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="analysisdialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="enginemanager.ui">

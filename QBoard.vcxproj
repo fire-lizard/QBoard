@@ -271,6 +271,7 @@
     <ClCompile Include="XiangqiBoard.cpp" />
     <ClCompile Include="YariShogiBoard.cpp" />
     <ClCompile Include="addenginedialog.cpp" />
+    <ClCompile Include="analysisdialog.cpp" />
     <ClCompile Include="enginemanager.cpp" />
     <ClCompile Include="graphicsmanager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -345,6 +346,7 @@
     <ClInclude Include="XiangqiBoard.h" />
     <ClInclude Include="YariShogiBoard.h" />
     <QtMoc Include="addenginedialog.h" />
+    <QtMoc Include="analysisdialog.h" />
     <QtMoc Include="enginemanager.h" />
     <ClInclude Include="graphicsmanager.h" />
     <QtMoc Include="mainwindow.h" />
@@ -360,6 +362,7 @@
   <ItemGroup />
   <ItemGroup>
     <QtUic Include="addenginedialog.ui" />
+    <QtUic Include="analysisdialog.ui" />
     <QtUic Include="editor.ui" />
     <QtUic Include="enginemanager.ui" />
     <QtUic Include="mainwindow.ui" />

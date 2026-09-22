@@ -137,6 +137,7 @@
    <addaction name="actionOpen"/>
    <addaction name="actionSave"/>
    <addaction name="actionStop_game"/>
+   <addaction name="actionGame_Analysis"/>
    <addaction name="separator"/>
    <addaction name="actionPlace"/>
    <addaction name="actionClear"/>
@@ -231,6 +232,18 @@
    </property>
    <property name="toolTip">
     <string>Stop game</string>
+   </property>
+  </action>
+  <action name="actionGame_Analysis">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/toolbar_icons/images/toolbar/Analysis.png</normaloff>:/toolbar_icons/images/toolbar/Analysis.png</iconset>
+   </property>
+   <property name="text">
+    <string>Game Analysis</string>
+   </property>
+   <property name="toolTip">
+    <string>Game Analysis</string>
    </property>
   </action>
   <action name="actionEngine_Manager">

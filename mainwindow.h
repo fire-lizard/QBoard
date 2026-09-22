@@ -9,6 +9,7 @@
 #include <QSysInfo>
 #include <QDate>
 #include <QTimer>
+#include <QPointer>
 #include <tuple>
 #include <vector>
 #include "settingsdialog.h"
@@ -27,6 +28,8 @@ namespace Ui {
 	class MainWindow;
 }
 
+class AnalysisDialog;
+
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -34,6 +37,7 @@ class MainWindow : public QMainWindow
 public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow() override;
+	static std::shared_ptr<Engine> CreateEngine(EngineProtocol engineProtocol);
 
 protected:
 	void resizeEvent(QResizeEvent* event) override;
@@ -61,6 +65,8 @@ private slots:
 
 	void on_actionNetwork_Manager_triggered();
 
+	void on_actionGame_Analysis_triggered();
+
 	void slot_update_white_player_time() const;
 
 	void slot_update_black_player_time() const;
@@ -75,12 +81,15 @@ private:
 
 	void StartNewGame(GameVariant newGameVariant) const;
 
+	void LoadEngines();
+
 	static void readXmlUsingStream(const QString& fileName, QTableWidget* engineTable);
 
 	static void createXmlFromTable(const QString& fileName, const QTableWidget* engineTable);
 
 	Ui::MainWindow *ui;
 	NetworkManager* _nm = nullptr;
+	QPointer<AnalysisDialog> _analysisDialog;
 	Communications *_comm = nullptr;
 	QString _currentStyle = "";
     int _engineMemorySize = 32;

@@ -16,6 +16,7 @@
     <file>images/toolbar/Clear.png</file>
     <file>images/toolbar/Place.png</file>
     <file>images/toolbar/Network.png</file>
+    <file>images/toolbar/Analysis.png</file>
   </qresource>
   <qresource prefix="/pieces_wha">
     <file>images/images_wha/BBeluga.png</file>

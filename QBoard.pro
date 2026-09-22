@@ -87,6 +87,7 @@ SOURCES += main.cpp\
     networkmanager.cpp \
     newgamedialog.cpp \
     addenginedialog.cpp \
+    analysisdialog.cpp \
     zboard.cpp
 
 HEADERS  += mainwindow.h \
@@ -159,6 +160,7 @@ HEADERS  += mainwindow.h \
     networkmanager.h \
     newgamedialog.h \
     addenginedialog.h \
+    analysisdialog.h \
     zboard.h
 
 FORMS    += mainwindow.ui \
@@ -169,6 +171,7 @@ FORMS    += mainwindow.ui \
     networkmanager.ui \
     newgamedialog.ui \
     addenginedialog.ui \
+    analysisdialog.ui \
     variantdialog.ui
 
 RESOURCES += \
