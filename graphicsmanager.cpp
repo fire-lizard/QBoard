@@ -89,8 +89,6 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
         return ":/pieces_kow/images/images_kow/";
     case Chess:
     case Shatranj:
-    case Shatar:
-    case Sittuyin:
     case AmazonChess:
     case AtomicChess:
     case CylinderChess:
@@ -98,9 +96,19 @@ QString GraphicsManager::GetResourcePrefix(GameVariant gameVariant, PieceStyle p
         if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
         if (pieceStyle == Mnemonic) return ":/pieces_eur/images/images_eur/";
         if (pieceStyle == Asian) return ":/pieces_eur2/images/images_eur2/";
-        if (pieceStyle == Asian2) return ":/pieces_eur3/images/images_eur3/";
-        if (pieceStyle == Asian3) return ":/pieces_sit/images/images_sit/";
+        return ":/pieces_eur3/images/images_eur3/";
+    case Shatar:
+        if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
+        if (pieceStyle == Mnemonic) return ":/pieces_eur/images/images_eur/";
+        if (pieceStyle == Asian) return ":/pieces_eur2/images/images_eur2/";
+        if (pieceStyle == Asian2 || pieceStyle == Asian3) return ":/pieces_eur3/images/images_eur3/";
         return ":/pieces_sha/images/images_sha/";
+    case Sittuyin:
+        if (pieceStyle == European) return ":/pieces_eur/images/images_gen/";
+        if (pieceStyle == Mnemonic) return ":/pieces_eur/images/images_eur/";
+        if (pieceStyle == Asian) return ":/pieces_eur2/images/images_eur2/";
+        if (pieceStyle == Asian2 || pieceStyle == Asian3) return ":/pieces_eur3/images/images_eur3/";
+        return ":/pieces_sit/images/images_sit/";
     case KnightmateChess:
         return ":/pieces_eur/images/images_gen/";
     case Makruk:
@@ -211,16 +219,24 @@ QString GraphicsManager::GetImageFileName(GameVariant gameVariant, PieceStyle pi
     case ModernChess:
     case MusketeerChess:
     case Shatranj:
-    case Shatar:
-    case Sittuyin:
     case GrandeAcedrex:
     case AmazonChess:
     case AtomicChess:
     case CylinderChess:
     case SeirawanChess:
     case CrazyHouse:
-        if (gameVariant == Sittuyin && pieceStyle == Asian4) imageFileName = GetSittuyinImageFileName(pieceColour, pieceType);
-    	else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
+        if (pieceStyle == Asian3) imageFileName = GetChessImageFileName(pieceColour, pieceType);
+        else if (pieceStyle == Asian4) imageFileName = GetChessImageFileName2(pieceColour, pieceType);
+        else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
+        break;
+    case Shatar:
+        if (pieceStyle == Asian3) imageFileName = GetChessImageFileName(pieceColour, pieceType);
+        else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
+        break;
+    case Sittuyin:
+        if (pieceStyle == Asian3) imageFileName = GetChessImageFileName(pieceColour, pieceType);
+        else if (pieceStyle == Asian4) imageFileName = GetSittuyinImageFileName(pieceColour, pieceType);
+        else imageFileName = GetImageFileName(pieceColour, pieceType, isPromoted);
         break;
     case FalconChess:
         imageFileName = GetFalconChessImageFileName(pieceColour, pieceType, isPromoted);
@@ -348,6 +364,50 @@ QString GraphicsManager::GetImageFileName(PieceColour pieceColour, PieceType pie
         return colour + "Tower.png";
     case Spider:
         return colour + "Axe.png";
+    default:
+        return "";
+    }
+}
+
+QString GraphicsManager::GetChessImageFileName(PieceColour pieceColour, PieceType pieceType)
+{
+    QString colour = pieceColour == White ? "NEOW" : "NEOB";
+    switch (pieceType)
+    {
+    case King:
+        return colour + "KING" + ".png";
+    case Rook:
+        return colour + "ROOK" + ".png";
+    case Pawn:
+        return colour + "PAWN" + ".png";
+    case Knight:
+        return colour + "KNIGHT" + ".png";
+    case Bishop:
+        return colour + "BISHOP" + ".png";
+    case Queen:
+        return colour + "QUEEN" + ".png";
+    default:
+        return "";
+    }
+}
+
+QString GraphicsManager::GetChessImageFileName2(PieceColour pieceColour, PieceType pieceType)
+{
+    QString colour = pieceColour == White ? "w" : "b";
+    switch (pieceType)
+    {
+    case King:
+        return colour + "King" + ".png";
+    case Rook:
+        return colour + "Rook" + ".png";
+    case Pawn:
+        return colour + "Pawn" + ".png";
+    case Knight:
+        return colour + "Knight" + ".png";
+    case Bishop:
+        return colour + "Bishop" + ".png";
+    case Queen:
+        return colour + "Queen" + ".png";
     default:
         return "";
     }

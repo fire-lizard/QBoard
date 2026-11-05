@@ -2411,6 +2411,30 @@
     <file>images/images_eur3/WhitePawn.png</file>
     <file>images/images_eur3/WhiteQueen.png</file>
     <file>images/images_eur3/WhiteRook.png</file>
+    <file>images/images_eur3/bBishop.png</file>
+    <file>images/images_eur3/bKing.png</file>
+    <file>images/images_eur3/bKnight.png</file>
+    <file>images/images_eur3/bPawn.png</file>
+    <file>images/images_eur3/bQueen.png</file>
+    <file>images/images_eur3/bRook.png</file>
+    <file>images/images_eur3/wBishop.png</file>
+    <file>images/images_eur3/wKing.png</file>
+    <file>images/images_eur3/wKnight.png</file>
+    <file>images/images_eur3/wPawn.png</file>
+    <file>images/images_eur3/wQueen.png</file>
+    <file>images/images_eur3/wRook.png</file>
+    <file>images/images_eur3/NEOBBISHOP.png</file>
+    <file>images/images_eur3/NEOBKING.png</file>
+    <file>images/images_eur3/NEOBKNIGHT.png</file>
+    <file>images/images_eur3/NEOBPAWN.png</file>
+    <file>images/images_eur3/NEOBQUEEN.png</file>
+    <file>images/images_eur3/NEOBROOK.png</file>
+    <file>images/images_eur3/NEOWBISHOP.png</file>
+    <file>images/images_eur3/NEOWKING.png</file>
+    <file>images/images_eur3/NEOWKNIGHT.png</file>
+    <file>images/images_eur3/NEOWPAWN.png</file>
+    <file>images/images_eur3/NEOWQUEEN.png</file>
+    <file>images/images_eur3/NEOWROOK.png</file>
   </qresource>
   <qresource prefix="/pieces_sha">
     <file>images/images_sha/BlackBishop.png</file>

@@ -15,6 +15,8 @@ private:
     static QString GetResourcePrefix(GameVariant gameVariant, PieceStyle pieceStyle);
     static QString GetImageFileName(GameVariant gameVariant, PieceStyle pieceStyle, PieceColour pieceColour, PieceType pieceType, bool isPromoted);
     static QString GetImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted);
+    static QString GetChessImageFileName(PieceColour pieceColour, PieceType pieceType);
+    static QString GetChessImageFileName2(PieceColour pieceColour, PieceType pieceType);
     static QString GetMakrukImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted);
     static QString GetFalconChessImageFileName(PieceColour pieceColour, PieceType pieceType, bool isPromoted);
     static QString GetXiangqiImageFileName(PieceColour pieceColour, PieceType pieceType);
